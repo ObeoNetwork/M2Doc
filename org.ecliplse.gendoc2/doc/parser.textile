@@ -1,0 +1,55 @@
+h1. Document Parser specification
+
+This document describes the document parsing algorithm used to transform docx template into org.eclipse.gendoc2.Template instance.
+
+h2. structure of a template
+
+Templates are made of instance of the following meta model :
+!template class diagram.jpg! 
+
+That is a tree of @Construct@ instances of various kinds. A @Construct@ instance contains a list of all the runs that compose it. Runs are the smallest subdivisions of document (smaller than paragaphs).
+
+h2. general structure of the parsing algorithm
+
+The algorithm is centered around a stack of @Construct@ isntances the top of which reflects the currently parsed construct.
+
+The algorithme is a mutually recursive top down parser made of the following routines :
+
+* @parseTemplate@
+* @parseQuery@
+* @parseImage@
+* @parseRepetition@
+* @parseConditionnal@
+* @parseTable@
+* @parseRepresentation@
+* @parseStaticFragment()@
+
+The algorithm starts with calling parseTemplate on an empty stack.
+
+parseTemplate goes like this :
+
+bc.. 
+Template template = createTemplate();
+stack.push(template);
+while (runIterator.hasNext()) {
+	Run curentRun = runIterator.next();
+   if(isFieldBegin(currentRun)){
+   		Run coderun = runIterator.next();
+   		switch(constructType(coderun)){
+   		  case AQL:
+ 			template.getSubConstructs.add(parseQuery(coderun));
+		   break;
+   		  case GDFOR:
+   		   template.getSubConstructs.add(parseFor());
+		   break;
+   		  case GDIF:
+   		  	parseConditionnal();
+		   break;
+   		  case ..
+   		  default:
+   		  	parseStaticFragment();
+   		}
+   } else {
+   }
+}
+

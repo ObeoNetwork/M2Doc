@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="template" nsURI="http://www.eclipse.org/mdt/gendoc/template/1.0"
+    nsPrefix="template">
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractConstruct" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="styleRun" eType="#//Run"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="runs" upperBound="-1" eType="#//Run"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="closingRuns" upperBound="-1"
+        eType="#//Run"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Conditionnal" eSuperTypes="#//Compound">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alternatives" upperBound="-1"
+        eType="#//Conditionnal" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="else" upperBound="-1" eType="#//Default"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Repetition" eSuperTypes="#//Compound">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iterationVar" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="behavior" eType="#//QueryBehavior"
+        defaultValueLiteral="TEXT"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Table" eSuperTypes="#//Compound">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legend" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legend" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Default" eSuperTypes="#//Compound"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Compound" abstract="true" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subConstructs" upperBound="-1"
+        eType="#//AbstractConstruct" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Template" eSuperTypes="#//Compound">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="templateName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" eType="#//Document"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Document" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFDocument"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Paragraph" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFParagraph"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Run" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFRun"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Representation" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//AbstractConstruct"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VarRef" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="varName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="QueryBehavior">
+    <eLiterals name="ICON"/>
+    <eLiterals name="LABEL" value="1"/>
+    <eLiterals name="TEXT" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="AstResult" instanceClassName="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"/>
+</ecore:EPackage>

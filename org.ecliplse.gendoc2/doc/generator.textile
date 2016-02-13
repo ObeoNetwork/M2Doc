@@ -1,0 +1,84 @@
+h1. Document generator
+
+The document generator takes a template model, a template document and a map of variable definitions as input. It produces the processed document.
+
+h2. Overall generation strategy
+
+The generation of a word document doens't only span the generation of the text but also covers the handling of styles and of all the definitions that come along a word package. 
+
+To ensure we reproduce the styles exactly the way they stand in the template, document generation uses the template saved in another place to produce a document. The template is used as a seed. 
+
+h2. var and aql tag generation
+
+
+h3. semantics of tags
+
+The var and aql tag generation semantics goes as follows :
+
+the variable is resolved or the expression is evaluated. The result is turned into a string calling toString on it. 
+
+The string must be substituted to the entire tag. The style of the substitution is the style of the first caracter following the ':'. For instance {var:__x__ x} in an environment where x is mapped to the string abcd, will be substituted by __abcd__.
+
+h3. implementation of the generation
+
+The generation must produce a XWPFRun with the style specified in the first character of the variable or expression in the tag.
+
+Then, the generation must replace The entire tag even in the case where it spans several paragraphs. 
+
+There are three cases to be considered:
+
+# the tag is embedded in a larger paragraph. In this case, there's no paragraph handling required. The set of XXPFRun of the tag is replaced by a single XWPFRun which text is the generated text and which style is the specified style. 
+# the tag starts in a paragraph and ends up in a second paragaph
+# the tag starts in a paragraph and spans more than two paragraphs
+
+Finally, there's probably a subcase to consider when first and last tag's paragraph only contain the tag itself an no other material.
+
+First we must determine the paragraphs that will be removed from 
+
+First the template parsing must discover the XWPFRun that corresponds to the style that must used for the generation.
+
+Here's a behavior for generation : 
+# we get the variable or the expression and we process it to obtain the replacement string. 
+# we remove any run, excepted the one containing the first character of the variable or query, that make up the tag keeping track of the spanned paragraphs
+# we replace the styled run by a text run containing the generated text.
+
+
+h2. repetition generation
+
+There are different cases 
+
+
+
+Génération d'un tag for:
+
+
+Autre possibilité : 
+# pour chaque variable dans le résultat de la requête, on produit une copie du corps procéssé. 
+# on supprime le tag gd:for et on fusionne le paragraphe du gd:for avec le premier paragraphe de la première itération 
+# on supprime le tag gd:for et on fusionne le dernier paragraphe  qui soit différent du premier avec le paragraphe du gd:endfor 
+
+Pour chaque itération sauf la dernière: 
+#on fait une copie du corps 
+
+comment faire une copie d'un compound : 
+
+On part avec un paragraphe vide qui représente le paragraphe du tag gd:for et on commence à copier les différents éléments :
+
+pour chaque 
+
+ 
+
+
+
+On itère sur les paragraphes du body et on recopie les paragraph après les avoir traité avec la variable d'itération posée. 
+
+
+
+On démarre la génération avec le premier paragraphe
+
+
+Pour copier un paragraphe : 
+
+ XWPFParagraph newParagraph = new XWPFParagraph(oldParagraph.getCP().copy(),oldParagraph.getBody());
+ 
+ 
