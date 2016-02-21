@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Logiciel créé en 2009 par la Caisse Nationale d'Assurance Vieillesse (Cnav) France.
+Logiciel protégé au sens de l'article L.112-2 13 du Code de la propriété intellectuelle (CPI).
+Tous les droits relatifs audit logiciel, sa documentation,
+y compris le matériel de conception préparatoire sont la propriété de la Cnav au sens du CPI.
+Ce fichier appartient a la suite d'outils SATURNE
+(Suite Applicative pour des Traitements Unifiés et Rationalisés fondés sur une Norme d'Echange).
+depot INPI en cours
+
+Ce logiciel et sa documentation sont proteges par la licence incluse.
+Vous devez avoir souscrit à une licence concedee par la Cnav
+pour installer et utiliser ce logiciel.
+
+
+This file is part of the SATURNE Tool Suite
+(Suite of Autonomous Tools for Unified and Rationalized Norms of Exchange)..
+
+This software and the attached documentation are protected by the included license.
+You must be in possession of a valid license conceded by the Cnav
+to install and use this software.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.apache.poi.cnav</groupId>
+	<artifactId>org.apache.poi.cnav</artifactId>
+	<version>3.11.0</version>
+	<parent>
+		<groupId>fr.cnav.saturne.docengine</groupId>
+		<artifactId>fr.cnav.saturne.docengine.releng.parent</artifactId>
+		<relativePath>../../releng/fr.cnav.saturne.docengine.releng.parent</relativePath>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<packaging>eclipse-plugin</packaging>
+</project>
