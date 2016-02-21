@@ -24,6 +24,7 @@ import org.eclipse.gendoc2.template.Table;
 import org.eclipse.gendoc2.template.Template;
 import org.eclipse.gendoc2.template.TemplatePackage;
 import org.eclipse.gendoc2.template.VarRef;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFldChar;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
@@ -66,13 +67,21 @@ public class DocumentParser {
 	}
 
 	private boolean isFieldBegin(XWPFRun run) {
-		return run.getCTR().getFldCharList().size() > 0
-				&& STFldCharType.BEGIN.equals(run.getCTR().getFldCharList().get(0).getFldCharType());
+		if (run.getCTR().getFldCharList().size() > 0) {
+			CTFldChar fldChar = run.getCTR().getFldCharList().get(0);
+			return STFldCharType.BEGIN.equals(fldChar.getFldCharType());
+		} else {
+			return false;
+		}
 	}
 
 	private boolean isFieldEnd(XWPFRun run) {
-		return run.getCTR().getFldCharList().size() > 0
-				&& STFldCharType.END.equals(run.getCTR().getFldCharList().get(0).getFldCharType());
+		if (run.getCTR().getFldCharList().size() > 0) {
+			CTFldChar fldChar = run.getCTR().getFldCharList().get(0);
+			return STFldCharType.END.equals(fldChar.getFldCharType());
+		} else {
+			return false;
+		}
 	}
 
 	private RunType getNextRunType() {

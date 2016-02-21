@@ -45,4 +45,9 @@ public class RunIterator implements Iterator<XWPFRun> {
 		}
 		return runIterator != null && runIterator.hasNext();
 	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 }

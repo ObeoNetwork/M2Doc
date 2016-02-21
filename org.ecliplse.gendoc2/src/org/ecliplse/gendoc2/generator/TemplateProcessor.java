@@ -1,5 +1,7 @@
 package org.ecliplse.gendoc2.generator;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ import org.eclipse.gendoc2.template.StaticFragment;
 import org.eclipse.gendoc2.template.Template;
 import org.eclipse.gendoc2.template.VarRef;
 import org.eclipse.gendoc2.template.util.TemplateSwitch;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 
 public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 
@@ -31,7 +34,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	/**
 	 * variable definition used during generation.
 	 */
-	private Map<String, Object> definitions;
+	private GenerationEnvironment definitions;
 	/**
 	 * The generated document.
 	 */
@@ -53,15 +56,15 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	 * Create a new {@link TemplateProcessor} instance given some definitions
 	 * and a query environment.
 	 * 
-	 * @param definitions
+	 * @param initialDefs
 	 *            the definitions used in queries and variable tags
 	 * @param queryEnvironment
 	 *            the query environment used to evaluate queries in the
 	 *            template.
 	 */
-	public TemplateProcessor(Map<String, Object> definitions, IQueryEnvironment queryEnvironment,
+	public TemplateProcessor(Map<String, Object> initialDefs, IQueryEnvironment queryEnvironment,
 			XWPFDocument destinationDocument) {
-		this.definitions = definitions;
+		this.definitions = new GenerationEnvironment(initialDefs);
 		this.queryEnvironment = queryEnvironment;
 		this.generatedDocument = destinationDocument;
 		generatedParagraphRank = -1;// will be incremented to 0 when the first
@@ -88,13 +91,14 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	@Override
 	public AbstractConstruct caseVarRef(VarRef object) {
 		// retrieve the variable in the definitions
-		Object value = definitions.get(object.getVarName());
+		Object value = definitions.getValue(object.getVarName());
 		if (value != null) {
 			insertFieldRunReplacement(object.getStyleRun(), value.toString());
 		}
 		return object;
 	}
 
+	@SuppressWarnings("deprecation")
 	private XWPFRun insertRun(XWPFRun srcRun) {
 		if (srcRun.getParagraph() != currentTemplateParagraph) {
 			createNewParagraph(srcRun.getParagraph());
@@ -118,10 +122,16 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	private void createNewParagraph(XWPFParagraph srcParagraph) {
 		// create a new paragraph.
 		XWPFParagraph newParagraph = generatedDocument.createParagraph();
-		newParagraph.getCTP().set(srcParagraph.getCTP());
+		CTP ctp = (CTP) srcParagraph.getCTP().copy();
+		ctp.getRList().clear();
+		ctp.getFldSimpleList().clear();
+		ctp.getHyperlinkList().clear();
+		newParagraph.getCTP().set(ctp);
 		int runNb = newParagraph.getRuns().size();
 		for (int i = 0; i < runNb; i++) {
 			newParagraph.removeRun(i);
+			// XXX : fixes a bug in poi
+			newParagraph.getCTP().removeR(i);
 		}
 		currentTemplateParagraph = srcParagraph;
 		currentGeneratedParagraph = newParagraph;
@@ -130,8 +140,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	@Override
 	public AbstractConstruct caseQuery(Query object) {
 		// first evaluate the query.
+		@SuppressWarnings("restriction")
 		IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
-		EvaluationResult result = evaluator.eval((AstResult) object.getQuery(), definitions);
+		EvaluationResult result = evaluator.eval((AstResult) object.getQuery(), definitions.getCurrentDefinitions());
 		String strResult;
 		if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
 			strResult = result.getDiagnostic().getMessage();
@@ -142,8 +153,25 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		return object;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public AbstractConstruct caseRepetition(Repetition object) {
-		throw new UnsupportedOperationException("unimplemnented");
+		// first evaluate the query
+		@SuppressWarnings("restriction")
+		EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
+				definitions.getCurrentDefinitions());
+		List<Object> iteration = new ArrayList<Object>();
+		if (result.getResult() instanceof Collection) {
+			iteration.addAll((Collection<? extends Object>) result.getResult());
+		} else {
+			iteration.add(result.getResult());
+		}
+		for (Object val : iteration) {
+			this.definitions.setValue(object.getIterationVar(), val);
+			for (AbstractConstruct construct : object.getSubConstructs()) {
+				doSwitch(construct);
+			}
+		}
+		return object;
 	}
 }

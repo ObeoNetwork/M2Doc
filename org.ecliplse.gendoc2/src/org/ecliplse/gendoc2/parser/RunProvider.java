@@ -69,4 +69,9 @@ public class RunProvider implements Iterator<XWPFRun> {
 		}
 	}
 
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
+
 }

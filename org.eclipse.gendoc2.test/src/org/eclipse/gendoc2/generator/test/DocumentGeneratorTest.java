@@ -18,6 +18,22 @@ import org.eclipse.gendoc2.template.Template;
 import org.junit.Test;
 
 public class DocumentGeneratorTest {
+	@Test
+	public void testStaticFragmentProcessing()
+			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newEnvironmentWithDefaultServices(null);
+		FileInputStream is = new FileInputStream("templates/testStaticFragment.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		Template template = parser.parseTemplate();
+		Map<String, Object> definitions = new HashMap<String, Object>();
+		definitions.put("x", "valueofx");
+		DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragment.docx",
+				"results/testStaticFragment.docx", template, definitions, queryEnvironment);
+		generator.generate();
+	}
 
 	@Test
 	public void testVarRefProcessing()
@@ -83,6 +99,23 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
+				template, definitions, queryEnvironment);
+		generator.generate();
+	}
+
+	@Test
+	public void testGDFORProcessing()
+			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newEnvironmentWithDefaultServices(null);
+		FileInputStream is = new FileInputStream("templates/testGDFOR.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		Template template = parser.parseTemplate();
+		Map<String, Object> definitions = new HashMap<String, Object>();
+		definitions.put("self", EcorePackage.eINSTANCE);
+		DocumentGenerator generator = new DocumentGenerator("templates/testGDFOR.docx", "results/testGDFOR.docx",
 				template, definitions, queryEnvironment);
 		generator.generate();
 	}
