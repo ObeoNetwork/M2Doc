@@ -15,6 +15,7 @@ import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.gendoc2.template.AbstractConstruct;
+import org.eclipse.gendoc2.template.Conditionnal;
 import org.eclipse.gendoc2.template.Query;
 import org.eclipse.gendoc2.template.Repetition;
 import org.eclipse.gendoc2.template.StaticFragment;
@@ -130,8 +131,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		int runNb = newParagraph.getRuns().size();
 		for (int i = 0; i < runNb; i++) {
 			newParagraph.removeRun(i);
-			// XXX : fixes a bug in poi
-			newParagraph.getCTP().removeR(i);
 		}
 		currentTemplateParagraph = srcParagraph;
 		currentGeneratedParagraph = newParagraph;
@@ -171,6 +170,34 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 			for (AbstractConstruct construct : object.getSubConstructs()) {
 				doSwitch(construct);
 			}
+		}
+		return object;
+	}
+
+	@Override
+	public AbstractConstruct caseConditionnal(Conditionnal object) {
+		@SuppressWarnings("restriction")
+		EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
+				definitions.getCurrentDefinitions());
+		if (result.getResult() instanceof Boolean) {
+			if ((Boolean) result.getResult()) {
+				for (AbstractConstruct construct : object.getSubConstructs()) {
+					doSwitch(construct);
+				}
+			} else if (object.getAlternative() != null) {
+				doSwitch(object.getAlternative());
+			} else if (object.getElse() != null) {
+				for (AbstractConstruct construct : object.getElse().getSubConstructs()) {
+					doSwitch(construct);
+				}
+			}
+		} else {
+			// TODO : the evaluation result could be the result of a runtime
+			// error that cannot be detected at validation time
+			// to cover such cases we should insert a piece of text in the
+			// resulting document indicating the problem.
+			throw new IllegalArgumentException(
+					"evaliation of conditionnal expression should result in boolean value : " + result.getResult());
 		}
 		return object;
 	}

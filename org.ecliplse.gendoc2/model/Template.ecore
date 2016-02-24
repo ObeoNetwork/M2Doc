@@ -9,9 +9,12 @@
         eType="#//Run"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conditionnal" eSuperTypes="#//Compound">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="alternatives" upperBound="-1"
-        eType="#//Conditionnal" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="else" upperBound="-1" eType="#//Default"
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="AlternativeExcludeElse"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alternative" eType="#//Conditionnal"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="else" eType="#//Default"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
   </eClassifiers>
@@ -37,9 +40,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Template" eSuperTypes="#//Compound">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="templateName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" eType="#//Document"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" eType="#//Body"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="Document" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFDocument"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Body" instanceClassName="org.apache.poi.xwpf.usermodel.IBody"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Paragraph" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFParagraph"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Run" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFRun"/>
   <eClassifiers xsi:type="ecore:EClass" name="Representation" eSuperTypes="#//AbstractConstruct">

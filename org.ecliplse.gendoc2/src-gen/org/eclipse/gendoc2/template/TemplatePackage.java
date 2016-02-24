@@ -224,16 +224,16 @@ public interface TemplatePackage extends EPackage {
 	int CONDITIONNAL__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
 
 	/**
-	 * The feature id for the '<em><b>Alternatives</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Alternative</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONDITIONNAL__ALTERNATIVES = COMPOUND_FEATURE_COUNT + 0;
+	int CONDITIONNAL__ALTERNATIVE = COMPOUND_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Else</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Else</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -909,14 +909,14 @@ public interface TemplatePackage extends EPackage {
 	int QUERY_BEHAVIOR = 12;
 
 	/**
-	 * The meta object id for the '<em>Document</em>' data type.
+	 * The meta object id for the '<em>Body</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.apache.poi.xwpf.usermodel.XWPFDocument
-	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocument()
+	 * @see org.apache.poi.xwpf.usermodel.IBody
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getBody()
 	 * @generated
 	 */
-	int DOCUMENT = 13;
+	int BODY = 13;
 
 	/**
 	 * The meta object id for the '<em>Paragraph</em>' data type.
@@ -1003,6 +1003,17 @@ public interface TemplatePackage extends EPackage {
 	EClass getConditionnal();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.gendoc2.template.Conditionnal#getAlternative <em>Alternative</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Alternative</em>'.
+	 * @see org.eclipse.gendoc2.template.Conditionnal#getAlternative()
+	 * @see #getConditionnal()
+	 * @generated
+	 */
+	EReference getConditionnal_Alternative();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.gendoc2.template.Conditionnal#getQuery <em>Query</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1014,21 +1025,10 @@ public interface TemplatePackage extends EPackage {
 	EAttribute getConditionnal_Query();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.gendoc2.template.Conditionnal#getAlternatives <em>Alternatives</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.gendoc2.template.Conditionnal#getElse <em>Else</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Alternatives</em>'.
-	 * @see org.eclipse.gendoc2.template.Conditionnal#getAlternatives()
-	 * @see #getConditionnal()
-	 * @generated
-	 */
-	EReference getConditionnal_Alternatives();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.gendoc2.template.Conditionnal#getElse <em>Else</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Else</em>'.
+	 * @return the meta object for the containment reference '<em>Else</em>'.
 	 * @see org.eclipse.gendoc2.template.Conditionnal#getElse()
 	 * @see #getConditionnal()
 	 * @generated
@@ -1278,15 +1278,15 @@ public interface TemplatePackage extends EPackage {
 	EEnum getQueryBehavior();
 
 	/**
-	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFDocument <em>Document</em>}'.
+	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.IBody <em>Body</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Document</em>'.
-	 * @see org.apache.poi.xwpf.usermodel.XWPFDocument
-	 * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFDocument"
+	 * @return the meta object for data type '<em>Body</em>'.
+	 * @see org.apache.poi.xwpf.usermodel.IBody
+	 * @model instanceClass="org.apache.poi.xwpf.usermodel.IBody"
 	 * @generated
 	 */
-	EDataType getDocument();
+	EDataType getBody();
 
 	/**
 	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFParagraph <em>Paragraph</em>}'.
@@ -1389,6 +1389,14 @@ public interface TemplatePackage extends EPackage {
 		EClass CONDITIONNAL = eINSTANCE.getConditionnal();
 
 		/**
+		 * The meta object literal for the '<em><b>Alternative</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONDITIONNAL__ALTERNATIVE = eINSTANCE.getConditionnal_Alternative();
+
+		/**
 		 * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1397,15 +1405,7 @@ public interface TemplatePackage extends EPackage {
 		EAttribute CONDITIONNAL__QUERY = eINSTANCE.getConditionnal_Query();
 
 		/**
-		 * The meta object literal for the '<em><b>Alternatives</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CONDITIONNAL__ALTERNATIVES = eINSTANCE.getConditionnal_Alternatives();
-
-		/**
-		 * The meta object literal for the '<em><b>Else</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Else</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1619,14 +1619,14 @@ public interface TemplatePackage extends EPackage {
 		EEnum QUERY_BEHAVIOR = eINSTANCE.getQueryBehavior();
 
 		/**
-		 * The meta object literal for the '<em>Document</em>' data type.
+		 * The meta object literal for the '<em>Body</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.apache.poi.xwpf.usermodel.XWPFDocument
-		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocument()
+		 * @see org.apache.poi.xwpf.usermodel.IBody
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getBody()
 		 * @generated
 		 */
-		EDataType DOCUMENT = eINSTANCE.getDocument();
+		EDataType BODY = eINSTANCE.getBody();
 
 		/**
 		 * The meta object literal for the '<em>Paragraph</em>' data type.

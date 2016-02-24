@@ -3,7 +3,7 @@ package org.ecliplse.gendoc2.parser;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 public class RunProvider implements Iterator<XWPFRun> {
@@ -12,8 +12,8 @@ public class RunProvider implements Iterator<XWPFRun> {
 
 	private LinkedList<XWPFRun> lookAhead;
 
-	public RunProvider(XWPFDocument document) {
-		this.runIterator = new RunIterator(document);
+	public RunProvider(IBody body) {
+		this.runIterator = new RunIterator(body);
 		lookAhead = new LinkedList<XWPFRun>();
 	}
 

@@ -17,3 +17,5 @@ Export-Package: org.ecliplse.gendoc2.generator,
  org.eclipse.gendoc2.template,
  org.eclipse.gendoc2.template.impl,
  org.eclipse.gendoc2.template.util
+Import-Package: com.google.common.base;version="15.0.0",
+ com.google.common.collect;version="15.0.0"

@@ -2,7 +2,7 @@
  */
 package org.eclipse.gendoc2.template;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.IBody;
 
 /**
  * <!-- begin-user-doc -->
@@ -57,12 +57,12 @@ public interface Template extends Compound {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Document</em>' attribute.
-	 * @see #setDocument(XWPFDocument)
+	 * @see #setDocument(IBody)
 	 * @see org.eclipse.gendoc2.template.TemplatePackage#getTemplate_Document()
-	 * @model dataType="org.eclipse.gendoc2.template.Document"
+	 * @model dataType="org.eclipse.gendoc2.template.Body"
 	 * @generated
 	 */
-	XWPFDocument getDocument();
+	IBody getDocument();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.gendoc2.template.Template#getDocument <em>Document</em>}' attribute.
@@ -72,6 +72,6 @@ public interface Template extends Compound {
 	 * @see #getDocument()
 	 * @generated
 	 */
-	void setDocument(XWPFDocument value);
+	void setDocument(IBody value);
 
 } // Template

@@ -2,7 +2,7 @@
  */
 package org.eclipse.gendoc2.template.impl;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.gendoc2.template.AbstractConstruct;
@@ -30,6 +31,7 @@ import org.eclipse.gendoc2.template.Template;
 import org.eclipse.gendoc2.template.TemplateFactory;
 import org.eclipse.gendoc2.template.TemplatePackage;
 import org.eclipse.gendoc2.template.VarRef;
+import org.eclipse.gendoc2.template.util.TemplateValidator;
 
 /**
  * <!-- begin-user-doc -->
@@ -134,7 +136,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType documentEDataType = null;
+	private EDataType bodyEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -209,6 +211,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		// Initialize created meta-data
 		theTemplatePackage.initializePackageContents();
 
+		// Register package validator
+		EValidator.Registry.INSTANCE.put
+			(theTemplatePackage, 
+			 new EValidator.Descriptor() {
+				 public EValidator getEValidator() {
+					 return TemplateValidator.INSTANCE;
+				 }
+			 });
+
 		// Mark meta-data to indicate it can't be changed
 		theTemplatePackage.freeze();
 
@@ -268,8 +279,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConditionnal_Query() {
-		return (EAttribute)conditionnalEClass.getEStructuralFeatures().get(2);
+	public EReference getConditionnal_Alternative() {
+		return (EReference)conditionnalEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -277,8 +288,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getConditionnal_Alternatives() {
-		return (EReference)conditionnalEClass.getEStructuralFeatures().get(0);
+	public EAttribute getConditionnal_Query() {
+		return (EAttribute)conditionnalEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -502,8 +513,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getDocument() {
-		return documentEDataType;
+	public EDataType getBody() {
+		return bodyEDataType;
 	}
 
 	/**
@@ -567,7 +578,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__CLOSING_RUNS);
 
 		conditionnalEClass = createEClass(CONDITIONNAL);
-		createEReference(conditionnalEClass, CONDITIONNAL__ALTERNATIVES);
+		createEReference(conditionnalEClass, CONDITIONNAL__ALTERNATIVE);
 		createEReference(conditionnalEClass, CONDITIONNAL__ELSE);
 		createEAttribute(conditionnalEClass, CONDITIONNAL__QUERY);
 
@@ -607,7 +618,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
 
 		// Create data types
-		documentEDataType = createEDataType(DOCUMENT);
+		bodyEDataType = createEDataType(BODY);
 		paragraphEDataType = createEDataType(PARAGRAPH);
 		runEDataType = createEDataType(RUN);
 		astResultEDataType = createEDataType(AST_RESULT);
@@ -660,8 +671,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		initEAttribute(getAbstractConstruct_ClosingRuns(), this.getRun(), "closingRuns", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(conditionnalEClass, Conditionnal.class, "Conditionnal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getConditionnal_Alternatives(), this.getConditionnal(), null, "alternatives", null, 0, -1, Conditionnal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConditionnal_Else(), this.getDefault(), null, "else", null, 0, -1, Conditionnal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConditionnal_Alternative(), this.getConditionnal(), null, "alternative", null, 0, 1, Conditionnal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConditionnal_Else(), this.getDefault(), null, "else", null, 0, 1, Conditionnal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConditionnal_Query(), this.getAstResult(), "query", null, 0, 1, Conditionnal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(repetitionEClass, Repetition.class, "Repetition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -685,7 +696,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 		initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTemplate_TemplateName(), ecorePackage.getEString(), "templateName", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTemplate_Document(), this.getDocument(), "document", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTemplate_Document(), this.getBody(), "document", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(representationEClass, Representation.class, "Representation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRepresentation_Query(), this.getAstResult(), "query", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -703,13 +714,33 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		addEEnumLiteral(queryBehaviorEEnum, QueryBehavior.TEXT);
 
 		// Initialize data types
-		initEDataType(documentEDataType, XWPFDocument.class, "Document", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(bodyEDataType, IBody.class, "Body", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(paragraphEDataType, XWPFParagraph.class, "Paragraph", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(runEDataType, XWPFRun.class, "Run", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(astResultEDataType, AstResult.class, "AstResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
+
+		// Create annotations
+		// http://www.eclipse.org/emf/2002/Ecore
+		createEcoreAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createEcoreAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore";	
+		addAnnotation
+		  (conditionnalEClass, 
+		   source, 
+		   new String[] {
+			 "constraints", "AlternativeExcludeElse"
+		   });
 	}
 
 } //TemplatePackageImpl

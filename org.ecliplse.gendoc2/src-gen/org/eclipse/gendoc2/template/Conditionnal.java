@@ -3,7 +3,6 @@
 package org.eclipse.gendoc2.template;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,16 +13,42 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.gendoc2.template.Conditionnal#getAlternatives <em>Alternatives</em>}</li>
+ *   <li>{@link org.eclipse.gendoc2.template.Conditionnal#getAlternative <em>Alternative</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.Conditionnal#getElse <em>Else</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.Conditionnal#getQuery <em>Query</em>}</li>
  * </ul>
  *
  * @see org.eclipse.gendoc2.template.TemplatePackage#getConditionnal()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='AlternativeExcludeElse'"
  * @generated
  */
 public interface Conditionnal extends Compound {
+	/**
+	 * Returns the value of the '<em><b>Alternative</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Alternative</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Alternative</em>' containment reference.
+	 * @see #setAlternative(Conditionnal)
+	 * @see org.eclipse.gendoc2.template.TemplatePackage#getConditionnal_Alternative()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Conditionnal getAlternative();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.gendoc2.template.Conditionnal#getAlternative <em>Alternative</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Alternative</em>' containment reference.
+	 * @see #getAlternative()
+	 * @generated
+	 */
+	void setAlternative(Conditionnal value);
+
 	/**
 	 * Returns the value of the '<em><b>Query</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -51,35 +76,29 @@ public interface Conditionnal extends Compound {
 	void setQuery(AstResult value);
 
 	/**
-	 * Returns the value of the '<em><b>Alternatives</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.gendoc2.template.Conditionnal}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Alternatives</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Alternatives</em>' containment reference list.
-	 * @see org.eclipse.gendoc2.template.TemplatePackage#getConditionnal_Alternatives()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Conditionnal> getAlternatives();
-
-	/**
-	 * Returns the value of the '<em><b>Else</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.gendoc2.template.Default}.
+	 * Returns the value of the '<em><b>Else</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Else</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Else</em>' containment reference list.
+	 * @return the value of the '<em>Else</em>' containment reference.
+	 * @see #setElse(Default)
 	 * @see org.eclipse.gendoc2.template.TemplatePackage#getConditionnal_Else()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Default> getElse();
+	Default getElse();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.gendoc2.template.Conditionnal#getElse <em>Else</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Else</em>' containment reference.
+	 * @see #getElse()
+	 * @generated
+	 */
+	void setElse(Default value);
 
 } // Conditionnal

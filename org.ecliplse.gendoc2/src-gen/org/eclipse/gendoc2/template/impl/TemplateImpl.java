@@ -2,8 +2,7 @@
  */
 package org.eclipse.gendoc2.template.impl;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -56,7 +55,7 @@ public class TemplateImpl extends CompoundImpl implements Template {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final XWPFDocument DOCUMENT_EDEFAULT = null;
+	protected static final IBody DOCUMENT_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getDocument() <em>Document</em>}' attribute.
@@ -66,7 +65,7 @@ public class TemplateImpl extends CompoundImpl implements Template {
 	 * @generated
 	 * @ordered
 	 */
-	protected XWPFDocument document = DOCUMENT_EDEFAULT;
+	protected IBody document = DOCUMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -113,7 +112,7 @@ public class TemplateImpl extends CompoundImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XWPFDocument getDocument() {
+	public IBody getDocument() {
 		return document;
 	}
 
@@ -122,8 +121,8 @@ public class TemplateImpl extends CompoundImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setDocument(XWPFDocument newDocument) {
-		XWPFDocument oldDocument = document;
+	public void setDocument(IBody newDocument) {
+		IBody oldDocument = document;
 		document = newDocument;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__DOCUMENT, oldDocument, document));
@@ -157,7 +156,7 @@ public class TemplateImpl extends CompoundImpl implements Template {
 				setTemplateName((String)newValue);
 				return;
 			case TemplatePackage.TEMPLATE__DOCUMENT:
-				setDocument((XWPFDocument)newValue);
+				setDocument((IBody)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

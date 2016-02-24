@@ -13,16 +13,17 @@
       <genEnumLiterals ecoreEnumLiteral="Template.ecore#//QueryBehavior/LABEL"/>
       <genEnumLiterals ecoreEnumLiteral="Template.ecore#//QueryBehavior/TEXT"/>
     </genEnums>
-    <genDataTypes ecoreDataType="Template.ecore#//Document"/>
+    <genDataTypes ecoreDataType="Template.ecore#//Body"/>
     <genDataTypes ecoreDataType="Template.ecore#//Paragraph"/>
     <genDataTypes ecoreDataType="Template.ecore#//Run"/>
     <genDataTypes ecoreDataType="Template.ecore#//AstResult"/>
     <genClasses ecoreClass="Template.ecore#//AbstractConstruct">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractConstruct/styleRun"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractConstruct/runs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractConstruct/closingRuns"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Conditionnal">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditionnal/alternatives"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditionnal/alternative"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditionnal/else"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Conditionnal/query"/>
     </genClasses>

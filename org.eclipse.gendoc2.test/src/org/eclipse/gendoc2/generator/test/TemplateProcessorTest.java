@@ -14,7 +14,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.ecliplse.gendoc2.generator.TemplateProcessor;
-import org.ecliplse.gendoc2.parser.DocumentParser;
+import org.ecliplse.gendoc2.parser.BodyParser;
 import org.ecliplse.gendoc2.parser.DocumentParserException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.gendoc2.template.Template;
@@ -41,7 +41,7 @@ public class TemplateProcessorTest {
 		FileInputStream is = new FileInputStream("templates/testVar.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, env);
+		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
@@ -61,7 +61,7 @@ public class TemplateProcessorTest {
 		FileInputStream is = new FileInputStream("templates/testVarStyle.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, env);
+		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
@@ -82,7 +82,7 @@ public class TemplateProcessorTest {
 		FileInputStream is = new FileInputStream("templates/testVar.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, env);
+		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
@@ -102,7 +102,7 @@ public class TemplateProcessorTest {
 		FileInputStream is = new FileInputStream("templates/testAQL.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, env);
+		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
@@ -123,7 +123,7 @@ public class TemplateProcessorTest {
 		FileInputStream is = new FileInputStream("templates/testGDFOR.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, env);
+		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");

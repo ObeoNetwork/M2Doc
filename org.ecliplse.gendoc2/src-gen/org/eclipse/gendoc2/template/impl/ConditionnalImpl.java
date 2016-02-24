@@ -2,21 +2,13 @@
  */
 package org.eclipse.gendoc2.template.impl;
 
-import java.util.Collection;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.eclipse.gendoc2.template.Conditionnal;
 import org.eclipse.gendoc2.template.Default;
 import org.eclipse.gendoc2.template.TemplatePackage;
@@ -29,7 +21,7 @@ import org.eclipse.gendoc2.template.TemplatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.gendoc2.template.impl.ConditionnalImpl#getAlternatives <em>Alternatives</em>}</li>
+ *   <li>{@link org.eclipse.gendoc2.template.impl.ConditionnalImpl#getAlternative <em>Alternative</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.impl.ConditionnalImpl#getElse <em>Else</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.impl.ConditionnalImpl#getQuery <em>Query</em>}</li>
  * </ul>
@@ -38,24 +30,24 @@ import org.eclipse.gendoc2.template.TemplatePackage;
  */
 public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	/**
-	 * The cached value of the '{@link #getAlternatives() <em>Alternatives</em>}' containment reference list.
+	 * The cached value of the '{@link #getAlternative() <em>Alternative</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAlternatives()
+	 * @see #getAlternative()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Conditionnal> alternatives;
+	protected Conditionnal alternative;
 
 	/**
-	 * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference list.
+	 * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getElse()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Default> else_;
+	protected Default else_;
 
 	/**
 	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
@@ -101,6 +93,49 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Conditionnal getAlternative() {
+		return alternative;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetAlternative(Conditionnal newAlternative, NotificationChain msgs) {
+		Conditionnal oldAlternative = alternative;
+		alternative = newAlternative;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ALTERNATIVE, oldAlternative, newAlternative);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAlternative(Conditionnal newAlternative) {
+		if (newAlternative != alternative) {
+			NotificationChain msgs = null;
+			if (alternative != null)
+				msgs = ((InternalEObject)alternative).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ALTERNATIVE, null, msgs);
+			if (newAlternative != null)
+				msgs = ((InternalEObject)newAlternative).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ALTERNATIVE, null, msgs);
+			msgs = basicSetAlternative(newAlternative, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ALTERNATIVE, newAlternative, newAlternative));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public AstResult getQuery() {
 		return query;
 	}
@@ -122,11 +157,8 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Conditionnal> getAlternatives() {
-		if (alternatives == null) {
-			alternatives = new EObjectContainmentEList<Conditionnal>(Conditionnal.class, this, TemplatePackage.CONDITIONNAL__ALTERNATIVES);
-		}
-		return alternatives;
+	public Default getElse() {
+		return else_;
 	}
 
 	/**
@@ -134,11 +166,33 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Default> getElse() {
-		if (else_ == null) {
-			else_ = new EObjectContainmentEList<Default>(Default.class, this, TemplatePackage.CONDITIONNAL__ELSE);
+	public NotificationChain basicSetElse(Default newElse, NotificationChain msgs) {
+		Default oldElse = else_;
+		else_ = newElse;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ELSE, oldElse, newElse);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
-		return else_;
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setElse(Default newElse) {
+		if (newElse != else_) {
+			NotificationChain msgs = null;
+			if (else_ != null)
+				msgs = ((InternalEObject)else_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ELSE, null, msgs);
+			if (newElse != null)
+				msgs = ((InternalEObject)newElse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ELSE, null, msgs);
+			msgs = basicSetElse(newElse, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ELSE, newElse, newElse));
 	}
 
 	/**
@@ -149,10 +203,10 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVES:
-				return ((InternalEList<?>)getAlternatives()).basicRemove(otherEnd, msgs);
+			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+				return basicSetAlternative(null, msgs);
 			case TemplatePackage.CONDITIONNAL__ELSE:
-				return ((InternalEList<?>)getElse()).basicRemove(otherEnd, msgs);
+				return basicSetElse(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -165,8 +219,8 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVES:
-				return getAlternatives();
+			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+				return getAlternative();
 			case TemplatePackage.CONDITIONNAL__ELSE:
 				return getElse();
 			case TemplatePackage.CONDITIONNAL__QUERY:
@@ -184,13 +238,11 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVES:
-				getAlternatives().clear();
-				getAlternatives().addAll((Collection<? extends Conditionnal>)newValue);
+			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+				setAlternative((Conditionnal)newValue);
 				return;
 			case TemplatePackage.CONDITIONNAL__ELSE:
-				getElse().clear();
-				getElse().addAll((Collection<? extends Default>)newValue);
+				setElse((Default)newValue);
 				return;
 			case TemplatePackage.CONDITIONNAL__QUERY:
 				setQuery((AstResult)newValue);
@@ -207,11 +259,11 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVES:
-				getAlternatives().clear();
+			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+				setAlternative((Conditionnal)null);
 				return;
 			case TemplatePackage.CONDITIONNAL__ELSE:
-				getElse().clear();
+				setElse((Default)null);
 				return;
 			case TemplatePackage.CONDITIONNAL__QUERY:
 				setQuery(QUERY_EDEFAULT);
@@ -228,10 +280,10 @@ public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVES:
-				return alternatives != null && !alternatives.isEmpty();
+			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+				return alternative != null;
 			case TemplatePackage.CONDITIONNAL__ELSE:
-				return else_ != null && !else_.isEmpty();
+				return else_ != null;
 			case TemplatePackage.CONDITIONNAL__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 		}

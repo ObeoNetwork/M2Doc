@@ -2,7 +2,7 @@
  */
 package org.eclipse.gendoc2.template.impl;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
@@ -86,8 +86,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 		switch (eDataType.getClassifierID()) {
 			case TemplatePackage.QUERY_BEHAVIOR:
 				return createQueryBehaviorFromString(eDataType, initialValue);
-			case TemplatePackage.DOCUMENT:
-				return createDocumentFromString(eDataType, initialValue);
+			case TemplatePackage.BODY:
+				return createBodyFromString(eDataType, initialValue);
 			case TemplatePackage.PARAGRAPH:
 				return createParagraphFromString(eDataType, initialValue);
 			case TemplatePackage.RUN:
@@ -109,8 +109,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 		switch (eDataType.getClassifierID()) {
 			case TemplatePackage.QUERY_BEHAVIOR:
 				return convertQueryBehaviorToString(eDataType, instanceValue);
-			case TemplatePackage.DOCUMENT:
-				return convertDocumentToString(eDataType, instanceValue);
+			case TemplatePackage.BODY:
+				return convertBodyToString(eDataType, instanceValue);
 			case TemplatePackage.PARAGRAPH:
 				return convertParagraphToString(eDataType, instanceValue);
 			case TemplatePackage.RUN:
@@ -247,8 +247,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XWPFDocument createDocumentFromString(EDataType eDataType, String initialValue) {
-		return (XWPFDocument)super.createFromString(eDataType, initialValue);
+	public IBody createBodyFromString(EDataType eDataType, String initialValue) {
+		return (IBody)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertDocumentToString(EDataType eDataType, Object instanceValue) {
+	public String convertBodyToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

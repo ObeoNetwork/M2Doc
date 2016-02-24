@@ -3,23 +3,23 @@ package org.ecliplse.gendoc2.parser;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 public class RunIterator implements Iterator<XWPFRun> {
 
-	private XWPFDocument document;
+	private IBody document;
 
 	private Iterator<XWPFParagraph> paragraphIterator;
 	private Iterator<XWPFRun> runIterator;
 
-	public RunIterator(XWPFDocument inputDocument) {
-		this.document = inputDocument;
-		if (inputDocument == null) {
+	public RunIterator(IBody inputBody) {
+		this.document = inputBody;
+		if (inputBody == null) {
 			throw new IllegalArgumentException("Input documnet shouldn't be null");
 		}
-		paragraphIterator = inputDocument.getParagraphs().iterator();
+		paragraphIterator = inputBody.getParagraphs().iterator();
 	}
 
 	@Override
