@@ -1,4 +1,4 @@
-package org.ecliplse.gendoc2.parser;
+package org.eclipse.gendoc2.parser;
 
 public enum RunType {
 	AQL("aql:"), GDFOR("gd:for"), GDENDFOR("gd:endfor"), GDIF("gd:if"), GDELSEIF("gd:elseif"), GDELSE(

@@ -1,4 +1,4 @@
-package org.ecliplse.gendoc2.parser;
+package org.eclipse.gendoc2.parser;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 

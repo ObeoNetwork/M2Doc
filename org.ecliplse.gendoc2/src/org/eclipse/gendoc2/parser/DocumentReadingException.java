@@ -1,4 +1,4 @@
-package org.ecliplse.gendoc2.parser;
+package org.eclipse.gendoc2.parser;
 
 public class DocumentReadingException extends Exception {
 

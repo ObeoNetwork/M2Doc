@@ -8,12 +8,12 @@ import java.util.Map;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.ecliplse.gendoc2.generator.DocumentGenerationException;
-import org.ecliplse.gendoc2.generator.DocumentGenerator;
-import org.ecliplse.gendoc2.parser.BodyParser;
-import org.ecliplse.gendoc2.parser.DocumentParserException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.gendoc2.generator.DocumentGenerationException;
+import org.eclipse.gendoc2.generator.DocumentGenerator;
+import org.eclipse.gendoc2.parser.BodyParser;
+import org.eclipse.gendoc2.parser.DocumentParserException;
 import org.eclipse.gendoc2.template.Template;
 import org.junit.Test;
 

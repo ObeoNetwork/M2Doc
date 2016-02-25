@@ -7,7 +7,7 @@ import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.ecliplse.gendoc2.generator.GenerationEnvironment;
+import org.eclipse.gendoc2.generator.GenerationEnvironment;
 import org.junit.Test;
 
 public class GenerationEnvironmentTest {

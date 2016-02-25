@@ -1,7 +1,9 @@
-package org.ecliplse.gendoc2.parser;
+package org.eclipse.gendoc2.parser;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -44,6 +46,8 @@ public class BodyParser {
 	private static final String LABEL_MODIFIER = " label";
 	private static final String ICON_MODIFIER = " icon";
 	private static final String TEXT_MODIFIER = " text";
+
+	private Map<XWPFRun, DocumentParsingError> parsingErrors = new HashMap<XWPFRun, DocumentParsingError>();
 	/**
 	 * Parsed template document.
 	 */
@@ -65,7 +69,7 @@ public class BodyParser {
 		this.queryParser = new QueryBuilderEngine(queryEnvironment);
 	}
 
-	private String message(DocumentParserError error, Object... objects) {
+	private String message(DocumentParsingError error, Object... objects) {
 		return MessageFormat.format(error.getMessage(), objects);
 	}
 
@@ -167,7 +171,7 @@ public class BodyParser {
 				// pursue parsing and catch on errors. There, for instance, we
 				// could seek an endif tag and ignore anything between here and
 				// the tag.
-				throw new DocumentParserException(message(DocumentParserError.UNEXPECTEDTAG, type),
+				throw new DocumentParserException(message(DocumentParsingError.UNEXPECTEDTAG, type),
 						runIterator.lookAhead(1));
 			case ELT:
 				compound.getSubConstructs().add(parseELT());

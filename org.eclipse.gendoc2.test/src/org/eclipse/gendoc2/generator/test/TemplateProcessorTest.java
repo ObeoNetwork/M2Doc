@@ -13,10 +13,10 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.ecliplse.gendoc2.generator.TemplateProcessor;
-import org.ecliplse.gendoc2.parser.BodyParser;
-import org.ecliplse.gendoc2.parser.DocumentParserException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.gendoc2.generator.TemplateProcessor;
+import org.eclipse.gendoc2.parser.BodyParser;
+import org.eclipse.gendoc2.parser.DocumentParserException;
 import org.eclipse.gendoc2.template.Template;
 import org.junit.Test;
 

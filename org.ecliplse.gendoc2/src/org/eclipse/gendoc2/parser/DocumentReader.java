@@ -1,4 +1,4 @@
-package org.ecliplse.gendoc2.parser;
+package org.eclipse.gendoc2.parser;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

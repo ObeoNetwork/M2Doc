@@ -1,4 +1,4 @@
-package org.ecliplse.gendoc2.generator;
+package org.eclipse.gendoc2.generator;
 
 public class DocumentGenerationException extends Exception {
 
