@@ -72,6 +72,26 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 									// paragraph is inserted.
 	}
 
+	int getDiagnostic(Diagnostic diagnostic, StringBuilder builder) {
+		if (diagnostic.getCode() == Diagnostic.ERROR) {
+			builder.append('\n').append(diagnostic.getMessage());
+			return Diagnostic.ERROR;
+		} else {
+			String message = diagnostic.getMessage();
+			if (message != null && !"".equals(message)) {
+				builder.append('\n').append(message);
+			}
+			int childrenCode = diagnostic.getCode();
+			for (Diagnostic child : diagnostic.getChildren()) {
+				int code = getDiagnostic(child, builder);
+				if (code > childrenCode) {
+					childrenCode = code;
+				}
+			}
+			return childrenCode;
+		}
+	}
+
 	@Override
 	public AbstractConstruct caseTemplate(Template object) {
 		List<AbstractConstruct> subConstructs = object.getSubConstructs();
@@ -95,6 +115,10 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		Object value = definitions.getValue(object.getVarName());
 		if (value != null) {
 			insertFieldRunReplacement(object.getStyleRun(), value.toString());
+		} else {
+			XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), "unknown variable : " + object.getVarName());
+			run.setBold(true);
+			run.setColor("FF0000");
 		}
 		return object;
 	}
@@ -143,12 +167,18 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
 		EvaluationResult result = evaluator.eval((AstResult) object.getQuery(), definitions.getCurrentDefinitions());
 		String strResult;
-		if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
-			strResult = result.getDiagnostic().getMessage();
+		if (result.getResult() == null) {
+			StringBuilder builder = new StringBuilder();
+			getDiagnostic(result.getDiagnostic(), builder);
+			strResult = builder.toString();
 		} else {
-			strResult = result.getResult() == null ? "null" : result.getResult().toString();
+			strResult = result.getResult().toString();
 		}
-		insertFieldRunReplacement(object.getStyleRun(), strResult);
+		XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), strResult);
+		if (result.getResult() == null) {
+			run.setBold(true);
+			run.setColor("FF0000");
+		}
 		return object;
 	}
 
@@ -159,16 +189,33 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		@SuppressWarnings("restriction")
 		EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
 				definitions.getCurrentDefinitions());
-		List<Object> iteration = new ArrayList<Object>();
-		if (result.getResult() instanceof Collection) {
-			iteration.addAll((Collection<? extends Object>) result.getResult());
+		if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+			// insert the tag runs as is.
+			for (XWPFRun tagRun : object.getRuns()) {
+				insertRun(tagRun);
+			}
+			// insert the error message.
+			XWPFRun run = currentGeneratedParagraph.createRun();
+			run.setText(result.getDiagnostic().getMessage());
+			if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+				run.setBold(true);
+				run.setColor("FF0000");
+			}
+			for (XWPFRun tagRun : object.getClosingRuns()) {
+				insertRun(tagRun);
+			}
 		} else {
-			iteration.add(result.getResult());
-		}
-		for (Object val : iteration) {
-			this.definitions.setValue(object.getIterationVar(), val);
-			for (AbstractConstruct construct : object.getSubConstructs()) {
-				doSwitch(construct);
+			List<Object> iteration = new ArrayList<Object>();
+			if (result.getResult() instanceof Collection) {
+				iteration.addAll((Collection<? extends Object>) result.getResult());
+			} else {
+				iteration.add(result.getResult());
+			}
+			for (Object val : iteration) {
+				this.definitions.setValue(object.getIterationVar(), val);
+				for (AbstractConstruct construct : object.getSubConstructs()) {
+					doSwitch(construct);
+				}
 			}
 		}
 		return object;
@@ -192,12 +239,18 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 				}
 			}
 		} else {
-			// TODO : the evaluation result could be the result of a runtime
-			// error that cannot be detected at validation time
-			// to cover such cases we should insert a piece of text in the
-			// resulting document indicating the problem.
-			throw new IllegalArgumentException(
-					"evaliation of conditionnal expression should result in boolean value : " + result.getResult());
+			for (XWPFRun tagRun : object.getRuns()) {
+				insertRun(tagRun);
+			}
+			XWPFRun run = currentGeneratedParagraph.createRun();
+			run.setText(result.getDiagnostic().getMessage());
+			if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+				run.setBold(true);
+				run.setColor("FF0000");
+			}
+			for (XWPFRun tagRun : object.getClosingRuns()) {
+				insertRun(tagRun);
+			}
 		}
 		return object;
 	}
