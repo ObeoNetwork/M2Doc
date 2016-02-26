@@ -14,6 +14,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.gendoc2.generator.TemplateProcessor;
 import org.eclipse.gendoc2.parser.BodyParser;
 import org.eclipse.gendoc2.parser.DocumentParserException;
@@ -99,17 +100,17 @@ public class TemplateProcessorTest {
 
 	@Test
 	public void testVarQueryStyledProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-		FileInputStream is = new FileInputStream("templates/testAQL.docx");
+		FileInputStream is = new FileInputStream("templates/testVarStyle.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
 		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
-		XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
+		XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");
 		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
 		processor.doSwitch(template);
-		assertEquals("Template de test pour les balises de référence à une variable\u00a0: ecore",
+		assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
 				destinationDoc.getParagraphs().get(0).getText());
 		XWPFParagraph paragraph = destinationDoc.getParagraphs().get(0);
 		XWPFRun run = paragraph.getRuns().get(paragraph.getRuns().size() - 1);
@@ -126,17 +127,13 @@ public class TemplateProcessorTest {
 		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
+		definitions.put("self", EcorePackage.eINSTANCE);
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testGDFOR.docx");
 		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
 		processor.doSwitch(template);
-		assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
+		assertEquals(
+				"Template de test pour les balises de répétition: name = EAttribute, name = EAnnotation, name = EClass, name = EClassifier, name = EDataType, name = EEnum, name = EEnumLiteral, name = EFactory, name = EModelElement, name = ENamedElement, name = EObject, name = EOperation, name = EPackage, name = EParameter, name = EReference, name = EStructuralFeature, name = ETypedElement, name = EStringToStringMapEntry, name = EGenericType, name = ETypeParameter, name = EBigDecimal, name = EBigInteger, name = EBoolean, name = EBooleanObject, name = EByte, name = EByteArray, name = EByteObject, name = EChar, name = ECharacterObject, name = EDate, name = EDiagnosticChain, name = EDouble, name = EDoubleObject, name = EEList, name = EEnumerator, name = EFeatureMap, name = EFeatureMapEntry, name = EFloat, name = EFloatObject, name = EInt, name = EIntegerObject, name = EJavaClass, name = EJavaObject, name = ELong, name = ELongObject, name = EMap, name = EResource, name = EResourceSet, name = EShort, name = EShortObject, name = EString, name = ETreeIterator, name = EInvocationTargetException, ",
 				destinationDoc.getParagraphs().get(0).getText());
-		XWPFParagraph paragraph = destinationDoc.getParagraphs().get(0);
-		XWPFRun run = paragraph.getRuns().get(paragraph.getRuns().size() - 1);
-		assertEquals("E36C0A", run.getColor());
-		assertNotNull(run.getCTR().getRPr().getI());
-		assertNotNull(run.getCTR().getRPr().getB());
 	}
 	//
 	// @Test

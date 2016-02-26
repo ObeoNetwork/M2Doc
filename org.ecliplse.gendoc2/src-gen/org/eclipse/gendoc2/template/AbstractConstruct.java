@@ -5,6 +5,7 @@ package org.eclipse.gendoc2.template;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gendoc2.parser.DocumentParsingError;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.gendoc2.template.AbstractConstruct#getStyleRun <em>Style Run</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.AbstractConstruct#getRuns <em>Runs</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.AbstractConstruct#getClosingRuns <em>Closing Runs</em>}</li>
+ *   <li>{@link org.eclipse.gendoc2.template.AbstractConstruct#getParsingErrors <em>Parsing Errors</em>}</li>
  * </ul>
  *
  * @see org.eclipse.gendoc2.template.TemplatePackage#getAbstractConstruct()
@@ -83,4 +85,20 @@ public interface AbstractConstruct extends EObject {
 	 * @generated
 	 */
 	EList<XWPFRun> getClosingRuns();
+
+	/**
+	 * Returns the value of the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * The list contents are of type {@link org.eclipse.gendoc2.parser.DocumentParsingError}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parsing Errors</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parsing Errors</em>' attribute list.
+	 * @see org.eclipse.gendoc2.template.TemplatePackage#getAbstractConstruct_ParsingErrors()
+	 * @model dataType="org.eclipse.gendoc2.template.DocumentParsingError"
+	 * @generated
+	 */
+	EList<DocumentParsingError> getParsingErrors();
 } // AbstractConstruct

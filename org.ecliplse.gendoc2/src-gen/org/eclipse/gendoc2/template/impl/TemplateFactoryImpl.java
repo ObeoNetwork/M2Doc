@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
+import org.eclipse.gendoc2.parser.DocumentParsingError;
 import org.eclipse.gendoc2.template.*;
 
 /**
@@ -94,6 +95,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 				return createRunFromString(eDataType, initialValue);
 			case TemplatePackage.AST_RESULT:
 				return createAstResultFromString(eDataType, initialValue);
+			case TemplatePackage.DOCUMENT_PARSING_ERROR:
+				return createDocumentParsingErrorFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -117,6 +120,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 				return convertRunToString(eDataType, instanceValue);
 			case TemplatePackage.AST_RESULT:
 				return convertAstResultToString(eDataType, instanceValue);
+			case TemplatePackage.DOCUMENT_PARSING_ERROR:
+				return convertDocumentParsingErrorToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -311,6 +316,24 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	 * @generated
 	 */
 	public String convertAstResultToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DocumentParsingError createDocumentParsingErrorFromString(EDataType eDataType, String initialValue) {
+		return (DocumentParsingError)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDocumentParsingErrorToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

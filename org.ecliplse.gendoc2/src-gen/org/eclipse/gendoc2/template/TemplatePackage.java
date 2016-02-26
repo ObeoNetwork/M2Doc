@@ -96,13 +96,22 @@ public interface TemplatePackage extends EPackage {
 	int ABSTRACT_CONSTRUCT__CLOSING_RUNS = 2;
 
 	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ABSTRACT_CONSTRUCT__PARSING_ERRORS = 3;
+
+	/**
 	 * The number of structural features of the '<em>Abstract Construct</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ABSTRACT_CONSTRUCT_FEATURE_COUNT = 3;
+	int ABSTRACT_CONSTRUCT_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Abstract Construct</em>' class.
@@ -149,6 +158,15 @@ public interface TemplatePackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+
+	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
 
 	/**
 	 * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
@@ -213,6 +231,15 @@ public interface TemplatePackage extends EPackage {
 	 * @ordered
 	 */
 	int CONDITIONNAL__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+
+	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONDITIONNAL__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
 
 	/**
 	 * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
@@ -306,6 +333,15 @@ public interface TemplatePackage extends EPackage {
 	int REPETITION__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPETITION__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+
+	/**
 	 * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -388,6 +424,15 @@ public interface TemplatePackage extends EPackage {
 	int QUERY__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUERY__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+
+	/**
 	 * The feature id for the '<em><b>Behavior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -459,6 +504,15 @@ public interface TemplatePackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+
+	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
 
 	/**
 	 * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
@@ -534,6 +588,15 @@ public interface TemplatePackage extends EPackage {
 	int IMAGE__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IMAGE__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+
+	/**
 	 * The feature id for the '<em><b>Legend</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -598,6 +661,15 @@ public interface TemplatePackage extends EPackage {
 	int DEFAULT__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEFAULT__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+
+	/**
 	 * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -660,6 +732,15 @@ public interface TemplatePackage extends EPackage {
 	 * @ordered
 	 */
 	int TEMPLATE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+
+	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEMPLATE__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
 
 	/**
 	 * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
@@ -744,6 +825,15 @@ public interface TemplatePackage extends EPackage {
 	int REPRESENTATION__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPRESENTATION__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+
+	/**
 	 * The feature id for the '<em><b>Query</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -817,6 +907,15 @@ public interface TemplatePackage extends EPackage {
 	int STATIC_FRAGMENT__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STATIC_FRAGMENT__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+
+	/**
 	 * The number of structural features of the '<em>Static Fragment</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -870,6 +969,15 @@ public interface TemplatePackage extends EPackage {
 	 * @ordered
 	 */
 	int VAR_REF__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+
+	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VAR_REF__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
 
 	/**
 	 * The feature id for the '<em><b>Var Name</b></em>' attribute.
@@ -950,6 +1058,16 @@ public interface TemplatePackage extends EPackage {
 	int AST_RESULT = 16;
 
 	/**
+	 * The meta object id for the '<em>Document Parsing Error</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.gendoc2.parser.DocumentParsingError
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocumentParsingError()
+	 * @generated
+	 */
+	int DOCUMENT_PARSING_ERROR = 17;
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.AbstractConstruct <em>Abstract Construct</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -991,6 +1109,17 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAbstractConstruct_ClosingRuns();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link org.eclipse.gendoc2.template.AbstractConstruct#getParsingErrors <em>Parsing Errors</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Parsing Errors</em>'.
+	 * @see org.eclipse.gendoc2.template.AbstractConstruct#getParsingErrors()
+	 * @see #getAbstractConstruct()
+	 * @generated
+	 */
+	EAttribute getAbstractConstruct_ParsingErrors();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.Conditionnal <em>Conditionnal</em>}'.
@@ -1322,6 +1451,17 @@ public interface TemplatePackage extends EPackage {
 	EDataType getAstResult();
 
 	/**
+	 * Returns the meta object for data type '{@link org.eclipse.gendoc2.parser.DocumentParsingError <em>Document Parsing Error</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Document Parsing Error</em>'.
+	 * @see org.eclipse.gendoc2.parser.DocumentParsingError
+	 * @model instanceClass="org.eclipse.gendoc2.parser.DocumentParsingError"
+	 * @generated
+	 */
+	EDataType getDocumentParsingError();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1377,6 +1517,14 @@ public interface TemplatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ABSTRACT_CONSTRUCT__CLOSING_RUNS = eINSTANCE.getAbstractConstruct_ClosingRuns();
+
+		/**
+		 * The meta object literal for the '<em><b>Parsing Errors</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ABSTRACT_CONSTRUCT__PARSING_ERRORS = eINSTANCE.getAbstractConstruct_ParsingErrors();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.gendoc2.template.impl.ConditionnalImpl <em>Conditionnal</em>}' class.
@@ -1657,6 +1805,16 @@ public interface TemplatePackage extends EPackage {
 		 * @generated
 		 */
 		EDataType AST_RESULT = eINSTANCE.getAstResult();
+
+		/**
+		 * The meta object literal for the '<em>Document Parsing Error</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.gendoc2.parser.DocumentParsingError
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocumentParsingError()
+		 * @generated
+		 */
+		EDataType DOCUMENT_PARSING_ERROR = eINSTANCE.getDocumentParsingError();
 
 	}
 

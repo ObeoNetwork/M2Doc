@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.eclipse.gendoc2.parser.DocumentParsingError;
 import org.eclipse.gendoc2.template.AbstractConstruct;
 import org.eclipse.gendoc2.template.Compound;
 import org.eclipse.gendoc2.template.Conditionnal;
@@ -160,6 +161,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	private EDataType astResultEDataType = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType documentParsingErrorEDataType = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -263,6 +271,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 */
 	public EAttribute getAbstractConstruct_ClosingRuns() {
 		return (EAttribute)abstractConstructEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAbstractConstruct_ParsingErrors() {
+		return (EAttribute)abstractConstructEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -549,6 +566,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getDocumentParsingError() {
+		return documentParsingErrorEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public TemplateFactory getTemplateFactory() {
 		return (TemplateFactory)getEFactoryInstance();
 	}
@@ -576,6 +602,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__STYLE_RUN);
 		createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__RUNS);
 		createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__CLOSING_RUNS);
+		createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__PARSING_ERRORS);
 
 		conditionnalEClass = createEClass(CONDITIONNAL);
 		createEReference(conditionnalEClass, CONDITIONNAL__ALTERNATIVE);
@@ -622,6 +649,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		paragraphEDataType = createEDataType(PARAGRAPH);
 		runEDataType = createEDataType(RUN);
 		astResultEDataType = createEDataType(AST_RESULT);
+		documentParsingErrorEDataType = createEDataType(DOCUMENT_PARSING_ERROR);
 	}
 
 	/**
@@ -669,6 +697,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		initEAttribute(getAbstractConstruct_StyleRun(), this.getRun(), "styleRun", null, 0, 1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAbstractConstruct_Runs(), this.getRun(), "runs", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAbstractConstruct_ClosingRuns(), this.getRun(), "closingRuns", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAbstractConstruct_ParsingErrors(), this.getDocumentParsingError(), "parsingErrors", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(conditionnalEClass, Conditionnal.class, "Conditionnal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getConditionnal_Alternative(), this.getConditionnal(), null, "alternative", null, 0, 1, Conditionnal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -718,6 +747,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		initEDataType(paragraphEDataType, XWPFParagraph.class, "Paragraph", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(runEDataType, XWPFRun.class, "Run", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(astResultEDataType, AstResult.class, "AstResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(documentParsingErrorEDataType, DocumentParsingError.class, "DocumentParsingError", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

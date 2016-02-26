@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.gendoc2.parser.DocumentParsingError;
 import org.eclipse.gendoc2.template.AbstractConstruct;
 import org.eclipse.gendoc2.template.TemplatePackage;
 
@@ -26,6 +27,7 @@ import org.eclipse.gendoc2.template.TemplatePackage;
  *   <li>{@link org.eclipse.gendoc2.template.impl.AbstractConstructImpl#getStyleRun <em>Style Run</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.impl.AbstractConstructImpl#getRuns <em>Runs</em>}</li>
  *   <li>{@link org.eclipse.gendoc2.template.impl.AbstractConstructImpl#getClosingRuns <em>Closing Runs</em>}</li>
+ *   <li>{@link org.eclipse.gendoc2.template.impl.AbstractConstructImpl#getParsingErrors <em>Parsing Errors</em>}</li>
  * </ul>
  *
  * @generated
@@ -69,6 +71,16 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 	 * @ordered
 	 */
 	protected EList<XWPFRun> closingRuns;
+
+	/**
+	 * The cached value of the '{@link #getParsingErrors() <em>Parsing Errors</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParsingErrors()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<DocumentParsingError> parsingErrors;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -139,6 +151,18 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<DocumentParsingError> getParsingErrors() {
+		if (parsingErrors == null) {
+			parsingErrors = new EDataTypeUniqueEList<DocumentParsingError>(DocumentParsingError.class, this, TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS);
+		}
+		return parsingErrors;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -148,6 +172,8 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 				return getRuns();
 			case TemplatePackage.ABSTRACT_CONSTRUCT__CLOSING_RUNS:
 				return getClosingRuns();
+			case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
+				return getParsingErrors();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -172,6 +198,10 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 				getClosingRuns().clear();
 				getClosingRuns().addAll((Collection<? extends XWPFRun>)newValue);
 				return;
+			case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
+				getParsingErrors().clear();
+				getParsingErrors().addAll((Collection<? extends DocumentParsingError>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -193,6 +223,9 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 			case TemplatePackage.ABSTRACT_CONSTRUCT__CLOSING_RUNS:
 				getClosingRuns().clear();
 				return;
+			case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
+				getParsingErrors().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -211,6 +244,8 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 				return runs != null && !runs.isEmpty();
 			case TemplatePackage.ABSTRACT_CONSTRUCT__CLOSING_RUNS:
 				return closingRuns != null && !closingRuns.isEmpty();
+			case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
+				return parsingErrors != null && !parsingErrors.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -231,6 +266,8 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 		result.append(runs);
 		result.append(", closingRuns: ");
 		result.append(closingRuns);
+		result.append(", parsingErrors: ");
+		result.append(parsingErrors);
 		result.append(')');
 		return result.toString();
 	}

@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.EObjectValidator;
 
+import org.eclipse.gendoc2.parser.DocumentParsingError;
 import org.eclipse.gendoc2.template.*;
 
 /**
@@ -126,6 +127,8 @@ public class TemplateValidator extends EObjectValidator {
 				return validateRun((XWPFRun)value, diagnostics, context);
 			case TemplatePackage.AST_RESULT:
 				return validateAstResult((AstResult)value, diagnostics, context);
+			case TemplatePackage.DOCUMENT_PARSING_ERROR:
+				return validateDocumentParsingError((DocumentParsingError)value, diagnostics, context);
 			default:
 				return true;
 		}
@@ -319,6 +322,15 @@ public class TemplateValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateAstResult(AstResult astResult, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateDocumentParsingError(DocumentParsingError documentParsingError, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return true;
 	}
 

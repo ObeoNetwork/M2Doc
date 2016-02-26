@@ -47,7 +47,7 @@ public class BodyParser {
 	private static final String ICON_MODIFIER = " icon";
 	private static final String TEXT_MODIFIER = " text";
 
-	private Map<XWPFRun, DocumentParsingError> parsingErrors = new HashMap<XWPFRun, DocumentParsingError>();
+	private Map<XWPFRun, ParsingErrorMessage> parsingErrors = new HashMap<XWPFRun, ParsingErrorMessage>();
 	/**
 	 * Parsed template document.
 	 */
@@ -69,7 +69,7 @@ public class BodyParser {
 		this.queryParser = new QueryBuilderEngine(queryEnvironment);
 	}
 
-	private String message(DocumentParsingError error, Object... objects) {
+	private String message(ParsingErrorMessage error, Object... objects) {
 		return MessageFormat.format(error.getMessage(), objects);
 	}
 
@@ -136,7 +136,7 @@ public class BodyParser {
 	/**
 	 * Returns the template contained in the document.
 	 * 
-	 * @return the parsed templte.
+	 * @return the parsed template.
 	 * @throws DocumentParserException
 	 *             if a syntax problem is detected during parsing.
 	 */
@@ -166,13 +166,16 @@ public class BodyParser {
 			case GDENDFOR:
 			case GDENDIF:
 			case GDENDLET:
+				// report the error and ignore the problem so that parsing
+				// continues in other parts of the document.
+				compound.getParsingErrors().add(new DocumentParsingError(
+						message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), runIterator.lookAhead(1)));
+				String tag = readTag(compound, compound.getRuns());
+				break;
 			case EOF:
-				// XXX: this approach of sending an exception does not allow to
-				// pursue parsing and catch on errors. There, for instance, we
-				// could seek an endif tag and ignore anything between here and
-				// the tag.
-				throw new DocumentParserException(message(DocumentParsingError.UNEXPECTEDTAG, type),
-						runIterator.lookAhead(1));
+				compound.getParsingErrors()
+						.add(new DocumentParsingError(message(ParsingErrorMessage.UNEXPECTEDTAG, type), null));
+				return;
 			case ELT:
 				compound.getSubConstructs().add(parseELT());
 				break;
@@ -194,7 +197,6 @@ public class BodyParser {
 			}
 			type = getNextRunType();
 		}
-
 	}
 
 	/**
@@ -244,7 +246,7 @@ public class BodyParser {
 		XWPFRun run = this.runIterator.lookAhead(1);
 		XWPFRun styleRun = null;
 		boolean columnRead = false;
-		if (isFieldBegin(run)) {
+		if (run != null && isFieldBegin(run)) {
 			runsToFill.add(runIterator.next());// consumme begin field
 			boolean finished = false;
 			StringBuilder builder = new StringBuilder();
@@ -290,6 +292,10 @@ public class BodyParser {
 	private VarRef parseVar() {
 		VarRef result = (VarRef) EcoreUtil.create(TemplatePackage.Literals.VAR_REF);
 		String varName = readTag(result, result.getRuns()).trim().substring(RunType.VAR.getValue().length());
+		if ("".equals(varName)) {
+			result.getParsingErrors()
+					.add(new DocumentParsingError(message(ParsingErrorMessage.NOVARDEFINED), result.getRuns().get(1)));
+		}
 		result.setVarName(varName);
 		return result;
 	}
@@ -317,11 +323,13 @@ public class BodyParser {
 		} else if (queryText.endsWith(TEXT_MODIFIER)) {
 			queryText = queryText.substring(0, tagLength - TEXT_MODIFIER.length());
 		}
+		queryText = queryText.trim();
 		AstResult result = queryParser.build(queryText.trim());
 		if (result.getErrors().size() == 0) {
 			query.setQuery(result);
 		} else {
-			throw new DocumentParserException("Query parsing error : ", query.getStyleRun());
+			query.getParsingErrors().add(
+					new DocumentParsingError(message(ParsingErrorMessage.INVALIDEXPR, queryText), query.getStyleRun()));
 		}
 		return query;
 	}
@@ -354,14 +362,13 @@ public class BodyParser {
 		String tag = readTag(conditionnal, conditionnal.getRuns()).trim();
 		boolean headConditionnal = tag.startsWith(RunType.GDIF.getValue());
 		int tagLength = headConditionnal ? RunType.GDIF.getValue().length() : RunType.GDELSEIF.getValue().length();
-		String query = tag.substring(tagLength);
+		String query = tag.substring(tagLength).trim();
 		AstResult result = queryParser.build(query);
 		if (result.getErrors().size() == 0) {
-			// TODO : check that the query type is boolean and report an error
-			// if not.
 			conditionnal.setQuery(result);
 		} else {
-			throw new DocumentParserException("Query parsing error : ", conditionnal.getStyleRun());
+			conditionnal.getParsingErrors().add(new DocumentParsingError(
+					message(ParsingErrorMessage.INVALIDEXPR, query), conditionnal.getRuns().get(1)));
 		}
 		parseCompound(conditionnal, RunType.GDELSEIF, RunType.GDELSE, RunType.GDENDIF);
 		RunType nextRunType = getNextRunType();
@@ -374,15 +381,18 @@ public class BodyParser {
 			readTag(defaultCompound, defaultCompound.getRuns());
 			parseCompound(defaultCompound, RunType.GDENDIF);
 			conditionnal.setElse(defaultCompound);
-			// read up the gd:endif tag.
-			readTag(conditionnal, conditionnal.getClosingRuns());
+
+			// read up the gd:endif tag if it exists
+			if (getNextRunType() != RunType.EOF) {
+				readTag(conditionnal, conditionnal.getClosingRuns());
+			}
 			break;
 		case GDENDIF:
 			readTag(conditionnal, conditionnal.getClosingRuns());
 			break;// we just finish the current conditionnal.
 		default:
-			throw new DocumentParserException("gd:elseif, gd:else or gd:endif expected here. ",
-					conditionnal.getStyleRun());
+			conditionnal.getParsingErrors().add(new DocumentParsingError(message(ParsingErrorMessage.CONDTAGEXPEXTED),
+					conditionnal.getRuns().get(1)));
 		}
 		return conditionnal;
 	}
@@ -403,27 +413,37 @@ public class BodyParser {
 		// extract the variable;
 		int indexOfPipe = tagText.indexOf('|');
 		if (indexOfPipe < 0) {
-			throw new DocumentParserException("Malformed tag gd:for, no '|' found :" + tagText);
-		}
-		String iterationVariable = tagText.substring(0, indexOfPipe).trim();
-		if ("".equals(iterationVariable)) {
-			throw new DocumentParserException("Malformed tag gd:for : no iteration variable specified.");
-		}
-		repetition.setIterationVar(iterationVariable);
-		if (tagText.length() == indexOfPipe + 1) {
-			throw new DocumentParserException("Malformed tag gd:for : no query expression specified.");
-		}
-		String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
-		AstResult result = queryParser.build(query);
-		if (result.getErrors().size() == 0) {
-			repetition.setQuery(result);
+			repetition.getParsingErrors()
+					.add(new DocumentParsingError("Malformed tag gd:for, no '|' found.", repetition.getRuns().get(1)));
 		} else {
-			throw new DocumentParserException("Query parsing error : ", repetition.getStyleRun());
+			String iterationVariable = tagText.substring(0, indexOfPipe).trim();
+			if ("".equals(iterationVariable)) {
+				repetition.getParsingErrors().add(new DocumentParsingError(
+						"Malformed tag gd:for : no iteration variable specified.", repetition.getRuns().get(1)));
+			}
+			repetition.setIterationVar(iterationVariable);
+			if (tagText.length() == indexOfPipe + 1) {
+				repetition.getParsingErrors()
+						.add(new DocumentParsingError("Malformed tag gd:for : no query expression specified." + tagText,
+								repetition.getRuns().get(1)));
+			}
+			String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
+			AstResult result = queryParser.build(query);
+			if (result.getErrors().size() == 0) {
+				repetition.setQuery(result);
+			} else {
+				// TODO : build an error message that contains the query parsing
+				// message.
+				repetition.getParsingErrors().add(new DocumentParsingError(
+						message(ParsingErrorMessage.INVALIDEXPR, query), repetition.getRuns().get(1)));
+			}
+			repetition.setQuery(result);
 		}
-		repetition.setQuery(result);
 		// read up the tags until the "gd:endfor" tag is encountered.
 		parseCompound(repetition, RunType.GDENDFOR);
-		readTag(repetition, repetition.getClosingRuns());
+		if (getNextRunType() != RunType.EOF) {
+			readTag(repetition, repetition.getClosingRuns());
+		}
 		return repetition;
 	}
 
