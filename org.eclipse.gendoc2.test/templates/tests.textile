@@ -1,0 +1,38 @@
+h2. Test des traitements d'erreur 
+
+* @gd:for@ avec query invalide
+* @gd:for@ sans variable
+* @gd:for@ sans |
+* @gd:for@ sans gd:endfor
+* @gd:endfor tout seul
+
+* @gd:if@ avec query invalide
+* @gd:if@ sans endif
+* @gd:if@ avec else sans endif
+* @gd:if@ avec elseif sans endif
+* @gd:if@ avec elseif à query invalide
+
+* query avec query invalide
+
+Vérifier que les bons messages d'erreur sont attachés aux éléments de la template parsée.
+
+h2. Test du traitement des templates :
+
+* @aql@: avec style
+* @var@:
+* @var@: avec style
+* @gd:for@ avec une liste complète
+* @gd:for@ avec une liste vide
+* @gd:if@ avec évaluation à vrai
+* @gd:if@ avec évaluation à faux
+* @gd:if/gd:else@ avec évaluation à vrai
+* @gd:if/gd:else@ avec évaluation à faux
+* @gd:if/gd:elseif/gd:else@ avec évaluation à vrai pour la première
+* @gd:if/gd:elseif/gd:else@ avec évaluation à faux  pour la première et vrai pour la deuxième
+* @gd:if/gd:elseif/gd:else@ avec évaluation à faux  pour la première et vrai pour la deuxième
+* @gd:if/gd:elseif/gd:else@ avec évaluation à vrai pour les deux expressions
+
+h2. Test de la restitution des erreurs :
+ 
+reprendre tous les tests de traitement d'erreur en validant que les bons runs sont insérés aux bons endroits avec le bon style (rouge vif!)
+
