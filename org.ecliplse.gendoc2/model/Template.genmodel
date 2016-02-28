@@ -14,10 +14,12 @@
       <genEnumLiterals ecoreEnumLiteral="Template.ecore#//QueryBehavior/TEXT"/>
     </genEnums>
     <genDataTypes ecoreDataType="Template.ecore#//Body"/>
-    <genDataTypes ecoreDataType="Template.ecore#//Paragraph"/>
+    <genDataTypes ecoreDataType="Template.ecore#//WTable"/>
     <genDataTypes ecoreDataType="Template.ecore#//Run"/>
     <genDataTypes ecoreDataType="Template.ecore#//AstResult"/>
     <genDataTypes ecoreDataType="Template.ecore#//DocumentParsingError"/>
+    <genDataTypes ecoreDataType="Template.ecore#//WTableRow"/>
+    <genDataTypes ecoreDataType="Template.ecore#//WTableCell"/>
     <genClasses ecoreClass="Template.ecore#//AbstractConstruct">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractConstruct/styleRun"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractConstruct/runs"/>
@@ -37,8 +39,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/behavior"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/query"/>
     </genClasses>
-    <genClasses ecoreClass="Template.ecore#//Table">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Table/legend"/>
+    <genClasses ecoreClass="Template.ecore#//TableMerge">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//TableMerge/legend"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Image">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Image/legend"/>
@@ -58,6 +60,18 @@
     <genClasses ecoreClass="Template.ecore#//StaticFragment"/>
     <genClasses ecoreClass="Template.ecore#//VarRef">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//VarRef/varName"/>
+    </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Table">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Table/rows"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Table/table"/>
+    </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Row">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Row/cells"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Row/tableRow"/>
+    </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Cell">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Cell/template"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Cell/tableCell"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

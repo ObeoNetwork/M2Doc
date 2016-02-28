@@ -1,19 +1,21 @@
 package org.eclipse.gendoc2.parser;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gendoc2.template.AbstractConstruct;
+import org.eclipse.gendoc2.template.Cell;
 import org.eclipse.gendoc2.template.Compound;
 import org.eclipse.gendoc2.template.Conditionnal;
 import org.eclipse.gendoc2.template.Default;
@@ -22,8 +24,10 @@ import org.eclipse.gendoc2.template.Query;
 import org.eclipse.gendoc2.template.QueryBehavior;
 import org.eclipse.gendoc2.template.Repetition;
 import org.eclipse.gendoc2.template.Representation;
+import org.eclipse.gendoc2.template.Row;
 import org.eclipse.gendoc2.template.StaticFragment;
 import org.eclipse.gendoc2.template.Table;
+import org.eclipse.gendoc2.template.TableMerge;
 import org.eclipse.gendoc2.template.Template;
 import org.eclipse.gendoc2.template.TemplatePackage;
 import org.eclipse.gendoc2.template.VarRef;
@@ -47,7 +51,6 @@ public class BodyParser {
 	private static final String ICON_MODIFIER = " icon";
 	private static final String TEXT_MODIFIER = " text";
 
-	private Map<XWPFRun, ParsingErrorMessage> parsingErrors = new HashMap<XWPFRun, ParsingErrorMessage>();
 	/**
 	 * Parsed template document.
 	 */
@@ -56,7 +59,7 @@ public class BodyParser {
 	 * iterator over the document used to access {@link XWPFRun} instances in
 	 * sequence.
 	 */
-	private RunProvider runIterator;
+	private TokenProvider runIterator;
 	/**
 	 * {@link IQueryBuilderEngine} used to parse AQL queries.
 	 */
@@ -65,8 +68,15 @@ public class BodyParser {
 	@SuppressWarnings("restriction")
 	public BodyParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
 		this.document = inputDocument;
-		runIterator = new RunProvider(inputDocument);
+		runIterator = new TokenProvider(inputDocument);
 		this.queryParser = new QueryBuilderEngine(queryEnvironment);
+	}
+
+	@SuppressWarnings("restriction")
+	BodyParser(IBody inputDocument, IQueryBuilderEngine queryParser) {
+		this.document = inputDocument;
+		runIterator = new TokenProvider(inputDocument);
+		this.queryParser = queryParser;
 	}
 
 	private String message(ParsingErrorMessage error, Object... objects) {
@@ -91,46 +101,50 @@ public class BodyParser {
 		}
 	}
 
-	private RunType getNextRunType() {
-		XWPFRun run = runIterator.lookAhead(1);
-		RunType result;
-		if (run == null) {
-			return RunType.EOF;
-		}
-		// is run a field begin run
-		if (isFieldBegin(run)) {
-			String code = lookAheadTag();
-			if (code.startsWith(RunType.AQL.getValue())) {
-				result = RunType.AQL;
-			} else if (code.startsWith(RunType.GDFOR.getValue())) {
-				result = RunType.GDFOR;
-			} else if (code.startsWith(RunType.GDENDFOR.getValue())) {
-				result = RunType.GDENDFOR;
-			} else if (code.startsWith(RunType.GDIF.getValue())) {
-				result = RunType.GDIF;
-			} else if (code.startsWith(RunType.GDELSEIF.getValue())) {
-				result = RunType.GDELSEIF;
-			} else if (code.startsWith(RunType.GDELSE.getValue())) {
-				result = RunType.GDELSE;
-			} else if (code.startsWith(RunType.GDENDIF.getValue())) {
-				result = RunType.GDENDIF;
-			} else if (code.startsWith(RunType.GDTABLE.getValue())) {
-				result = RunType.GDTABLE;
-			} else if (code.startsWith(RunType.ELT.getValue())) {
-				result = RunType.ELT;
-			} else if (code.startsWith(RunType.VAR.getValue())) {
-				result = RunType.VAR;
-			} else if (code.startsWith(RunType.GDLET.getValue())) {
-				result = RunType.GDLET;
-			} else if (code.startsWith(RunType.GDENDLET.getValue())) {
-				result = RunType.GDENDLET;
-			} else {
-				result = RunType.STATIC;
-			}
+	private TokenType getNextTokenType() {
+		ParsingToken token = runIterator.lookAhead(1);
+		if (token == null) {
+			return TokenType.EOF;
+		} else if (token.getKind() == ParsingTokenKind.TABLE) {
+			return TokenType.WTABLE;
 		} else {
-			result = RunType.STATIC;
+			XWPFRun run = token.getRun();
+			TokenType result;
+			// is run a field begin run
+			if (isFieldBegin(run)) {
+				String code = lookAheadTag();
+				if (code.startsWith(TokenType.AQL.getValue())) {
+					result = TokenType.AQL;
+				} else if (code.startsWith(TokenType.GDFOR.getValue())) {
+					result = TokenType.GDFOR;
+				} else if (code.startsWith(TokenType.GDENDFOR.getValue())) {
+					result = TokenType.GDENDFOR;
+				} else if (code.startsWith(TokenType.GDIF.getValue())) {
+					result = TokenType.GDIF;
+				} else if (code.startsWith(TokenType.GDELSEIF.getValue())) {
+					result = TokenType.GDELSEIF;
+				} else if (code.startsWith(TokenType.GDELSE.getValue())) {
+					result = TokenType.GDELSE;
+				} else if (code.startsWith(TokenType.GDENDIF.getValue())) {
+					result = TokenType.GDENDIF;
+				} else if (code.startsWith(TokenType.GDTABLE.getValue())) {
+					result = TokenType.GDTABLE;
+				} else if (code.startsWith(TokenType.ELT.getValue())) {
+					result = TokenType.ELT;
+				} else if (code.startsWith(TokenType.VAR.getValue())) {
+					result = TokenType.VAR;
+				} else if (code.startsWith(TokenType.GDLET.getValue())) {
+					result = TokenType.GDLET;
+				} else if (code.startsWith(TokenType.GDENDLET.getValue())) {
+					result = TokenType.GDENDLET;
+				} else {
+					result = TokenType.STATIC;
+				}
+			} else {
+				result = TokenType.STATIC;
+			}
+			return result;
 		}
-		return result;
 	}
 
 	/**
@@ -143,13 +157,13 @@ public class BodyParser {
 	public Template parseTemplate() throws DocumentParserException {
 		Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
 		template.setDocument(this.document);
-		parseCompound(template, RunType.EOF);
+		parseCompound(template, TokenType.EOF);
 		return template;
 	}
 
-	private void parseCompound(Compound compound, RunType... endTypes) throws DocumentParserException {
-		RunType type = getNextRunType();
-		List<RunType> endTypeList = Lists.newArrayList(endTypes);
+	private void parseCompound(Compound compound, TokenType... endTypes) throws DocumentParserException {
+		TokenType type = getNextTokenType();
+		List<TokenType> endTypeList = Lists.newArrayList(endTypes);
 		while (!endTypeList.contains(type)) {
 			switch (type) {
 			case AQL:
@@ -168,8 +182,13 @@ public class BodyParser {
 			case GDENDLET:
 				// report the error and ignore the problem so that parsing
 				// continues in other parts of the document.
-				compound.getParsingErrors().add(new DocumentParsingError(
-						message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), runIterator.lookAhead(1)));
+				XWPFRun run = runIterator.lookAhead(1).getRun();
+				if (run == null) {
+					throw new IllegalStateException(
+							"Token of type " + type + " detected. Run shouldn't be null at this place.");
+				}
+				compound.getParsingErrors().add(
+						new DocumentParsingError(message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
 				String tag = readTag(compound, compound.getRuns());
 				break;
 			case EOF:
@@ -189,13 +208,17 @@ public class BodyParser {
 				compound.getSubConstructs().add(parseStaticFragment());
 				break;
 			case GDTABLE:
-				compound.getSubConstructs().add(parseTable());
+				compound.getSubConstructs().add(parseTableMerge());
 				break;
 			case VAR:
 				compound.getSubConstructs().add(parseVar());
 				break;
+			case WTABLE:
+				compound.getSubConstructs().add(parseTable(runIterator.next().getTable()));
+				break;
+
 			}
-			type = getNextRunType();
+			type = getNextTokenType();
 		}
 	}
 
@@ -213,14 +236,18 @@ public class BodyParser {
 	private String lookAheadTag() {
 		int i = 1;
 		// first run must begin a field.
-		XWPFRun run = this.runIterator.lookAhead(1);
+		XWPFRun run = this.runIterator.lookAhead(1).getRun();
+		if (run == null) {
+			throw new IllegalStateException("lookAheadTag shouldn't be called on a table.");
+		}
 		if (isFieldBegin(run)) {
 			StringBuilder builder = new StringBuilder();
 			i++;
-			run = this.runIterator.lookAhead(i);
+			run = this.runIterator.lookAhead(i).getRun();
+			// run is null when EOF is reached or a table is encountered.
 			while (run != null && !isFieldEnd(run)) {
 				builder.append(readUpInstrText(run));
-				run = this.runIterator.lookAhead(++i);
+				run = this.runIterator.lookAhead(++i).getRun();
 			}
 			return builder.toString().trim();
 		} else {
@@ -243,15 +270,22 @@ public class BodyParser {
 	 * @return the string present into the tag as typed by the template author.
 	 */
 	String readTag(AbstractConstruct construct, List<XWPFRun> runsToFill) {
-		XWPFRun run = this.runIterator.lookAhead(1);
+		XWPFRun run = this.runIterator.lookAhead(1).getRun();
+		if (run == null) {
+			throw new IllegalStateException("readTag shouldn't be called with a table in the lookahead window.");
+		}
 		XWPFRun styleRun = null;
 		boolean columnRead = false;
 		if (run != null && isFieldBegin(run)) {
-			runsToFill.add(runIterator.next());// consumme begin field
+			runsToFill.add(runIterator.next().getRun());// consumme begin field
 			boolean finished = false;
 			StringBuilder builder = new StringBuilder();
 			while (runIterator.hasNext() && !finished) {
-				run = runIterator.next();
+				run = runIterator.next().getRun();
+				if (run == null) {
+					// XXX : treat this as a proper parsing error.
+					throw new IllegalArgumentException("table cannot be inserted into tags.");
+				}
 				runsToFill.add(run);
 				if (isFieldEnd(run)) {
 					finished = true;
@@ -291,7 +325,7 @@ public class BodyParser {
 	 */
 	private VarRef parseVar() {
 		VarRef result = (VarRef) EcoreUtil.create(TemplatePackage.Literals.VAR_REF);
-		String varName = readTag(result, result.getRuns()).trim().substring(RunType.VAR.getValue().length());
+		String varName = readTag(result, result.getRuns()).trim().substring(TokenType.VAR.getValue().length());
 		if ("".equals(varName)) {
 			result.getParsingErrors()
 					.add(new DocumentParsingError(message(ParsingErrorMessage.NOVARDEFINED), result.getRuns().get(1)));
@@ -312,7 +346,7 @@ public class BodyParser {
 
 	private Query parseQuery() throws DocumentParserException {
 		Query query = (Query) EcoreUtil.create(TemplatePackage.Literals.QUERY);
-		String queryText = readTag(query, query.getRuns()).trim().substring(RunType.AQL.getValue().length());
+		String queryText = readTag(query, query.getRuns()).trim().substring(TokenType.AQL.getValue().length());
 		int tagLength = queryText.length();
 		if (queryText.endsWith(LABEL_MODIFIER)) {
 			queryText = queryText.substring(0, tagLength - LABEL_MODIFIER.length());
@@ -340,8 +374,8 @@ public class BodyParser {
 
 	private StaticFragment parseStaticFragment() throws DocumentParserException {
 		StaticFragment result = (StaticFragment) EcoreUtil.create(TemplatePackage.Literals.STATIC_FRAGMENT);
-		while (getNextRunType() == RunType.STATIC) {
-			result.getRuns().add(runIterator.next());
+		while (getNextTokenType() == TokenType.STATIC) {
+			result.getRuns().add(runIterator.next().getRun());
 		}
 		return result;
 	}
@@ -360,8 +394,8 @@ public class BodyParser {
 	private Conditionnal parseConditionnal() throws DocumentParserException {
 		Conditionnal conditionnal = (Conditionnal) EcoreUtil.create(TemplatePackage.Literals.CONDITIONNAL);
 		String tag = readTag(conditionnal, conditionnal.getRuns()).trim();
-		boolean headConditionnal = tag.startsWith(RunType.GDIF.getValue());
-		int tagLength = headConditionnal ? RunType.GDIF.getValue().length() : RunType.GDELSEIF.getValue().length();
+		boolean headConditionnal = tag.startsWith(TokenType.GDIF.getValue());
+		int tagLength = headConditionnal ? TokenType.GDIF.getValue().length() : TokenType.GDELSEIF.getValue().length();
 		String query = tag.substring(tagLength).trim();
 		AstResult result = queryParser.build(query);
 		if (result.getErrors().size() == 0) {
@@ -370,8 +404,8 @@ public class BodyParser {
 			conditionnal.getParsingErrors().add(new DocumentParsingError(
 					message(ParsingErrorMessage.INVALIDEXPR, query), conditionnal.getRuns().get(1)));
 		}
-		parseCompound(conditionnal, RunType.GDELSEIF, RunType.GDELSE, RunType.GDENDIF);
-		RunType nextRunType = getNextRunType();
+		parseCompound(conditionnal, TokenType.GDELSEIF, TokenType.GDELSE, TokenType.GDENDIF);
+		TokenType nextRunType = getNextTokenType();
 		switch (nextRunType) {
 		case GDELSEIF:
 			conditionnal.setAlternative(parseConditionnal());
@@ -379,11 +413,11 @@ public class BodyParser {
 		case GDELSE:
 			Default defaultCompound = (Default) EcoreUtil.create(TemplatePackage.Literals.DEFAULT);
 			readTag(defaultCompound, defaultCompound.getRuns());
-			parseCompound(defaultCompound, RunType.GDENDIF);
+			parseCompound(defaultCompound, TokenType.GDENDIF);
 			conditionnal.setElse(defaultCompound);
 
 			// read up the gd:endif tag if it exists
-			if (getNextRunType() != RunType.EOF) {
+			if (getNextTokenType() != TokenType.EOF) {
 				readTag(conditionnal, conditionnal.getClosingRuns());
 			}
 			break;
@@ -409,7 +443,7 @@ public class BodyParser {
 		Repetition repetition = (Repetition) EcoreUtil.create(TemplatePackage.Literals.REPETITION);
 		String tagText = readTag(repetition, repetition.getRuns()).trim();
 		// remove the prefix
-		tagText = tagText.substring(RunType.GDFOR.getValue().length());
+		tagText = tagText.substring(TokenType.GDFOR.getValue().length());
 		// extract the variable;
 		int indexOfPipe = tagText.indexOf('|');
 		if (indexOfPipe < 0) {
@@ -440,15 +474,35 @@ public class BodyParser {
 			repetition.setQuery(result);
 		}
 		// read up the tags until the "gd:endfor" tag is encountered.
-		parseCompound(repetition, RunType.GDENDFOR);
-		if (getNextRunType() != RunType.EOF) {
+		parseCompound(repetition, TokenType.GDENDFOR);
+		if (getNextTokenType() != TokenType.EOF) {
 			readTag(repetition, repetition.getClosingRuns());
 		}
 		return repetition;
 	}
 
-	private Table parseTable() throws DocumentParserException {
+	private TableMerge parseTableMerge() throws DocumentParserException {
 		throw new UnsupportedOperationException("not implemented yet");
 	}
 
+	private Table parseTable(XWPFTable wtable) throws DocumentParserException {
+		if (wtable == null) {
+			throw new IllegalArgumentException("parseTable can't be called on a null argument.");
+		}
+		Table table = (Table) EcoreUtil.create(TemplatePackage.Literals.TABLE);
+		table.setTable(wtable);
+		for (XWPFTableRow tablerow : wtable.getRows()) {
+			Row row = (Row) EcoreUtil.create(TemplatePackage.Literals.ROW);
+			table.getRows().add(row);
+			row.setTableRow(tablerow);
+			for (XWPFTableCell tableCell : tablerow.getTableCells()) {
+				Cell cell = (Cell) EcoreUtil.create(TemplatePackage.Literals.CELL);
+				row.getCells().add(cell);
+				cell.setTableCell(tableCell);
+				BodyParser parser = new BodyParser(tableCell, this.queryParser);
+				cell.setTemplate(parser.parseTemplate());
+			}
+		}
+		return table;
+	}
 }

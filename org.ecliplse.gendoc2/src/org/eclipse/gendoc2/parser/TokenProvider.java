@@ -4,17 +4,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.apache.poi.xwpf.usermodel.IBody;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-public class RunProvider implements Iterator<XWPFRun> {
+public class TokenProvider implements Iterator<ParsingToken> {
 
-	private RunIterator runIterator;
+	private TokenIterator runIterator;
 
-	private LinkedList<XWPFRun> lookAhead;
+	private LinkedList<ParsingToken> lookAhead;
 
-	public RunProvider(IBody body) {
-		this.runIterator = new RunIterator(body);
-		lookAhead = new LinkedList<XWPFRun>();
+	public TokenProvider(IBody body) {
+		this.runIterator = new TokenIterator(body);
+		lookAhead = new LinkedList<ParsingToken>();
 	}
 
 	/**
@@ -23,7 +22,7 @@ public class RunProvider implements Iterator<XWPFRun> {
 	 * @param i
 	 * @return the ith element or <code>null</code> if there's no such element.
 	 */
-	public XWPFRun lookAhead(int i) {
+	public ParsingToken lookAhead(int i) {
 		loadNext(i);
 		if (lookAhead.size() == 0 && i > 0) {
 			return null;
@@ -61,7 +60,7 @@ public class RunProvider implements Iterator<XWPFRun> {
 	}
 
 	@Override
-	public XWPFRun next() {
+	public ParsingToken next() {
 		if (!lookAhead.isEmpty()) {
 			return lookAhead.removeFirst();
 		} else {

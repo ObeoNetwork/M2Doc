@@ -5,9 +5,11 @@ package org.eclipse.gendoc2.template.util;
 import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.IBody;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 
 import org.eclipse.emf.common.util.Diagnostic;
@@ -101,8 +103,8 @@ public class TemplateValidator extends EObjectValidator {
 				return validateRepetition((Repetition)value, diagnostics, context);
 			case TemplatePackage.QUERY:
 				return validateQuery((Query)value, diagnostics, context);
-			case TemplatePackage.TABLE:
-				return validateTable((Table)value, diagnostics, context);
+			case TemplatePackage.TABLE_MERGE:
+				return validateTableMerge((TableMerge)value, diagnostics, context);
 			case TemplatePackage.IMAGE:
 				return validateImage((Image)value, diagnostics, context);
 			case TemplatePackage.DEFAULT:
@@ -117,18 +119,28 @@ public class TemplateValidator extends EObjectValidator {
 				return validateStaticFragment((StaticFragment)value, diagnostics, context);
 			case TemplatePackage.VAR_REF:
 				return validateVarRef((VarRef)value, diagnostics, context);
+			case TemplatePackage.TABLE:
+				return validateTable((Table)value, diagnostics, context);
+			case TemplatePackage.ROW:
+				return validateRow((Row)value, diagnostics, context);
+			case TemplatePackage.CELL:
+				return validateCell((Cell)value, diagnostics, context);
 			case TemplatePackage.QUERY_BEHAVIOR:
 				return validateQueryBehavior((QueryBehavior)value, diagnostics, context);
 			case TemplatePackage.BODY:
 				return validateBody((IBody)value, diagnostics, context);
-			case TemplatePackage.PARAGRAPH:
-				return validateParagraph((XWPFParagraph)value, diagnostics, context);
+			case TemplatePackage.WTABLE:
+				return validateWTable((XWPFTable)value, diagnostics, context);
 			case TemplatePackage.RUN:
 				return validateRun((XWPFRun)value, diagnostics, context);
 			case TemplatePackage.AST_RESULT:
 				return validateAstResult((AstResult)value, diagnostics, context);
 			case TemplatePackage.DOCUMENT_PARSING_ERROR:
 				return validateDocumentParsingError((DocumentParsingError)value, diagnostics, context);
+			case TemplatePackage.WTABLE_ROW:
+				return validateWTableRow((XWPFTableRow)value, diagnostics, context);
+			case TemplatePackage.WTABLE_CELL:
+				return validateWTableCell((XWPFTableCell)value, diagnostics, context);
 			default:
 				return true;
 		}
@@ -213,8 +225,35 @@ public class TemplateValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean validateTableMerge(TableMerge tableMerge, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(tableMerge, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean validateTable(Table table, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(table, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateRow(Row row, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(row, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateCell(Cell cell, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(cell, diagnostics, context);
 	}
 
 	/**
@@ -303,7 +342,7 @@ public class TemplateValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateParagraph(XWPFParagraph paragraph, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateWTable(XWPFTable wTable, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return true;
 	}
 
@@ -331,6 +370,24 @@ public class TemplateValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDocumentParsingError(DocumentParsingError documentParsingError, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateWTableRow(XWPFTableRow wTableRow, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateWTableCell(XWPFTableCell wTableCell, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return true;
 	}
 

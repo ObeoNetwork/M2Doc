@@ -3,8 +3,10 @@
 package org.eclipse.gendoc2.template.impl;
 
 import org.apache.poi.xwpf.usermodel.IBody;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -18,6 +20,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.gendoc2.parser.DocumentParsingError;
 import org.eclipse.gendoc2.template.AbstractConstruct;
+import org.eclipse.gendoc2.template.Cell;
 import org.eclipse.gendoc2.template.Compound;
 import org.eclipse.gendoc2.template.Conditionnal;
 import org.eclipse.gendoc2.template.Default;
@@ -26,8 +29,10 @@ import org.eclipse.gendoc2.template.Query;
 import org.eclipse.gendoc2.template.QueryBehavior;
 import org.eclipse.gendoc2.template.Repetition;
 import org.eclipse.gendoc2.template.Representation;
+import org.eclipse.gendoc2.template.Row;
 import org.eclipse.gendoc2.template.StaticFragment;
 import org.eclipse.gendoc2.template.Table;
+import org.eclipse.gendoc2.template.TableMerge;
 import org.eclipse.gendoc2.template.Template;
 import org.eclipse.gendoc2.template.TemplateFactory;
 import org.eclipse.gendoc2.template.TemplatePackage;
@@ -74,7 +79,28 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass tableMergeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass tableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass rowEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass cellEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -144,7 +170,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType paragraphEDataType = null;
+	private EDataType wTableEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -166,6 +192,20 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * @generated
 	 */
 	private EDataType documentParsingErrorEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType wTableRowEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType wTableCellEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -368,6 +408,24 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTableMerge() {
+		return tableMergeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTableMerge_Legend() {
+		return (EAttribute)tableMergeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getQuery_Behavior() {
 		return (EAttribute)queryEClass.getEStructuralFeatures().get(0);
 	}
@@ -386,8 +444,71 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTable_Legend() {
-		return (EAttribute)tableEClass.getEStructuralFeatures().get(0);
+	public EReference getTable_Rows() {
+		return (EReference)tableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTable_Table() {
+		return (EAttribute)tableEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getRow() {
+		return rowEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRow_Cells() {
+		return (EReference)rowEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRow_TableRow() {
+		return (EAttribute)rowEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getCell() {
+		return cellEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getCell_Template() {
+		return (EReference)cellEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCell_TableCell() {
+		return (EAttribute)cellEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -539,8 +660,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getParagraph() {
-		return paragraphEDataType;
+	public EDataType getWTable() {
+		return wTableEDataType;
 	}
 
 	/**
@@ -568,6 +689,24 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 */
 	public EDataType getDocumentParsingError() {
 		return documentParsingErrorEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getWTableRow() {
+		return wTableRowEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getWTableCell() {
+		return wTableCellEDataType;
 	}
 
 	/**
@@ -617,8 +756,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		createEAttribute(queryEClass, QUERY__BEHAVIOR);
 		createEAttribute(queryEClass, QUERY__QUERY);
 
-		tableEClass = createEClass(TABLE);
-		createEAttribute(tableEClass, TABLE__LEGEND);
+		tableMergeEClass = createEClass(TABLE_MERGE);
+		createEAttribute(tableMergeEClass, TABLE_MERGE__LEGEND);
 
 		imageEClass = createEClass(IMAGE);
 		createEAttribute(imageEClass, IMAGE__LEGEND);
@@ -641,15 +780,29 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		varRefEClass = createEClass(VAR_REF);
 		createEAttribute(varRefEClass, VAR_REF__VAR_NAME);
 
+		tableEClass = createEClass(TABLE);
+		createEReference(tableEClass, TABLE__ROWS);
+		createEAttribute(tableEClass, TABLE__TABLE);
+
+		rowEClass = createEClass(ROW);
+		createEReference(rowEClass, ROW__CELLS);
+		createEAttribute(rowEClass, ROW__TABLE_ROW);
+
+		cellEClass = createEClass(CELL);
+		createEReference(cellEClass, CELL__TEMPLATE);
+		createEAttribute(cellEClass, CELL__TABLE_CELL);
+
 		// Create enums
 		queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
 
 		// Create data types
 		bodyEDataType = createEDataType(BODY);
-		paragraphEDataType = createEDataType(PARAGRAPH);
+		wTableEDataType = createEDataType(WTABLE);
 		runEDataType = createEDataType(RUN);
 		astResultEDataType = createEDataType(AST_RESULT);
 		documentParsingErrorEDataType = createEDataType(DOCUMENT_PARSING_ERROR);
+		wTableRowEDataType = createEDataType(WTABLE_ROW);
+		wTableCellEDataType = createEDataType(WTABLE_CELL);
 	}
 
 	/**
@@ -683,7 +836,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		conditionnalEClass.getESuperTypes().add(this.getCompound());
 		repetitionEClass.getESuperTypes().add(this.getCompound());
 		queryEClass.getESuperTypes().add(this.getAbstractConstruct());
-		tableEClass.getESuperTypes().add(this.getCompound());
+		tableMergeEClass.getESuperTypes().add(this.getCompound());
 		imageEClass.getESuperTypes().add(this.getAbstractConstruct());
 		defaultEClass.getESuperTypes().add(this.getCompound());
 		compoundEClass.getESuperTypes().add(this.getAbstractConstruct());
@@ -691,6 +844,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		representationEClass.getESuperTypes().add(this.getAbstractConstruct());
 		staticFragmentEClass.getESuperTypes().add(this.getAbstractConstruct());
 		varRefEClass.getESuperTypes().add(this.getAbstractConstruct());
+		tableEClass.getESuperTypes().add(this.getAbstractConstruct());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(abstractConstructEClass, AbstractConstruct.class, "AbstractConstruct", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -712,8 +866,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		initEAttribute(getQuery_Behavior(), this.getQueryBehavior(), "behavior", "TEXT", 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getQuery_Query(), this.getAstResult(), "query", null, 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(tableEClass, Table.class, "Table", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getTable_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, Table.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(tableMergeEClass, TableMerge.class, "TableMerge", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getTableMerge_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, TableMerge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(imageEClass, Image.class, "Image", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getImage_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -736,6 +890,18 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		initEClass(varRefEClass, VarRef.class, "VarRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVarRef_VarName(), ecorePackage.getEString(), "varName", null, 0, 1, VarRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(tableEClass, Table.class, "Table", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTable_Rows(), this.getRow(), null, "rows", null, 0, -1, Table.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTable_Table(), this.getWTable(), "table", null, 0, 1, Table.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(rowEClass, Row.class, "Row", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRow_Cells(), this.getCell(), null, "cells", null, 0, -1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRow_TableRow(), this.getWTableRow(), "tableRow", null, 0, 1, Row.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(cellEClass, Cell.class, "Cell", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getCell_Template(), this.getTemplate(), null, "template", null, 0, 1, Cell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCell_TableCell(), this.getWTableCell(), "tableCell", null, 0, 1, Cell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		// Initialize enums and add enum literals
 		initEEnum(queryBehaviorEEnum, QueryBehavior.class, "QueryBehavior");
 		addEEnumLiteral(queryBehaviorEEnum, QueryBehavior.ICON);
@@ -744,10 +910,12 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 		// Initialize data types
 		initEDataType(bodyEDataType, IBody.class, "Body", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(paragraphEDataType, XWPFParagraph.class, "Paragraph", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(wTableEDataType, XWPFTable.class, "WTable", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(runEDataType, XWPFRun.class, "Run", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(astResultEDataType, AstResult.class, "AstResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(documentParsingErrorEDataType, DocumentParsingError.class, "DocumentParsingError", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(wTableRowEDataType, XWPFTableRow.class, "WTableRow", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(wTableCellEDataType, XWPFTableCell.class, "WTableCell", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

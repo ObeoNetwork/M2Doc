@@ -11,7 +11,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.eclipse.gendoc2.parser.RunIterator;
+import org.eclipse.gendoc2.parser.TokenIterator;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -22,20 +22,20 @@ public class RunIteratorTests {
 		FileInputStream is = new FileInputStream("templates/RunIteratorTest.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		RunIterator iterator = new RunIterator(document);
-		XWPFRun run = iterator.next();
+		TokenIterator iterator = new TokenIterator(document);
+		XWPFRun run = iterator.next().getRun();
 		assertEquals("P1Run1 ", run.getText(run.getTextPosition()));
-		run = iterator.next();
+		run = iterator.next().getRun();
 		assertEquals("P1Run2", run.getText(run.getTextPosition()));
-		run = iterator.next();
+		run = iterator.next().getRun();
 		assertEquals(" P1Run3", run.getText(run.getTextPosition()));
-		run = iterator.next();
+		run = iterator.next().getRun();
 		assertEquals("P2Run1 ", run.getText(run.getTextPosition()));
-		run = iterator.next();
+		run = iterator.next().getRun();
 		assertEquals("P2Run2", run.getText(run.getTextPosition()));
-		run = iterator.next();
+		run = iterator.next().getRun();
 		assertEquals(" ", run.getText(run.getTextPosition()));
-		run = iterator.next();
+		run = iterator.next().getRun();
 		assertEquals("P2Run3", run.getText(run.getTextPosition()));
 		assertTrue(!iterator.hasNext());
 	}
@@ -45,7 +45,7 @@ public class RunIteratorTests {
 		FileInputStream is = new FileInputStream("templates/RunIteratorTest.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		RunIterator iterator = new RunIterator(document);
+		TokenIterator iterator = new TokenIterator(document);
 		iterator.next();
 		iterator.next();
 		iterator.next();
@@ -62,7 +62,7 @@ public class RunIteratorTests {
 		FileInputStream is = new FileInputStream("templates/EmptyDoc.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		RunIterator iterator = new RunIterator(document);
+		TokenIterator iterator = new TokenIterator(document);
 		assertTrue(!iterator.hasNext());
 	}
 }

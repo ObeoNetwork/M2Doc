@@ -18,7 +18,9 @@ import org.eclipse.gendoc2.template.Conditionnal;
 import org.eclipse.gendoc2.template.Default;
 import org.eclipse.gendoc2.template.Query;
 import org.eclipse.gendoc2.template.Repetition;
+import org.eclipse.gendoc2.template.Row;
 import org.eclipse.gendoc2.template.StaticFragment;
+import org.eclipse.gendoc2.template.Table;
 import org.eclipse.gendoc2.template.Template;
 import org.eclipse.gendoc2.template.VarRef;
 import org.junit.Test;
@@ -211,6 +213,55 @@ public class DocumentParserTest {
 		assertTrue(conditionnal.getAlternative().getAlternative().getElse() instanceof Default);
 		assertTrue(conditionnal.getAlternative().getAlternative().getElse().getSubConstructs()
 				.get(0) instanceof StaticFragment);
+	}
+
+	@Test
+	public void tableParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
+		FileInputStream is = new FileInputStream("templates/testTable.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		BodyParser parser = new BodyParser(document, env);
+		Template template = parser.parseTemplate();
+		assertEquals(2, template.getSubConstructs().size());
+		assertTrue(template.getSubConstructs().get(0) instanceof Table);
+		Table table = (Table) template.getSubConstructs().get(0);
+		assertEquals(2, table.getRows().size());
+		// First row testing.
+		Row row = table.getRows().get(0);
+		assertEquals(2, row.getCells().size());
+		assertTrue(row.getCells().get(0).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
+		assertNotNull(row.getCells().get(0).getTableCell());
+		assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
+		assertNotNull(row.getCells().get(1).getTableCell());
+		// Second row testing.
+		row = table.getRows().get(1);
+		assertEquals(2, row.getCells().size());
+		assertTrue(row.getCells().get(0).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
+		assertNotNull(row.getCells().get(0).getTableCell());
+		assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof Query);
+		assertNotNull(row.getCells().get(1).getTableCell());
+		assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
+
+	}
+
+	@Test
+	public void forWithtableParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
+		FileInputStream is = new FileInputStream("templates/testGDFORWithTable.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		BodyParser parser = new BodyParser(document, env);
+		Template template = parser.parseTemplate();
+		assertEquals(3, template.getSubConstructs().size());
+		Repetition rep = (Repetition) template.getSubConstructs().get(1);
+		Table table = (Table) rep.getSubConstructs().get(0);
+		assertEquals(1, table.getRows().size());
+		// First row testing.
+		Row row = table.getRows().get(0);
+		assertEquals(2, row.getCells().size());
+		assertTrue(row.getCells().get(0).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
+		assertNotNull(row.getCells().get(0).getTableCell());
+		assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof Query);
+		assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
 	}
 
 }

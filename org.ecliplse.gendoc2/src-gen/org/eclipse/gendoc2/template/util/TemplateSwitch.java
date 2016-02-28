@@ -95,11 +95,11 @@ public class TemplateSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case TemplatePackage.TABLE: {
-				Table table = (Table)theEObject;
-				T result = caseTable(table);
-				if (result == null) result = caseCompound(table);
-				if (result == null) result = caseAbstractConstruct(table);
+			case TemplatePackage.TABLE_MERGE: {
+				TableMerge tableMerge = (TableMerge)theEObject;
+				T result = caseTableMerge(tableMerge);
+				if (result == null) result = caseCompound(tableMerge);
+				if (result == null) result = caseAbstractConstruct(tableMerge);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -151,6 +151,25 @@ public class TemplateSwitch<T> extends Switch<T> {
 				VarRef varRef = (VarRef)theEObject;
 				T result = caseVarRef(varRef);
 				if (result == null) result = caseAbstractConstruct(varRef);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case TemplatePackage.TABLE: {
+				Table table = (Table)theEObject;
+				T result = caseTable(table);
+				if (result == null) result = caseAbstractConstruct(table);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case TemplatePackage.ROW: {
+				Row row = (Row)theEObject;
+				T result = caseRow(row);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case TemplatePackage.CELL: {
+				Cell cell = (Cell)theEObject;
+				T result = caseCell(cell);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -219,6 +238,21 @@ public class TemplateSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Table Merge</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Table Merge</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTableMerge(TableMerge object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -230,6 +264,36 @@ public class TemplateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTable(Table object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Row</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Row</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRow(Row object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cell</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cell</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCell(Cell object) {
 		return null;
 	}
 

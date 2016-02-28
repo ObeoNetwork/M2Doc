@@ -5,9 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -15,14 +19,20 @@ import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.gendoc2.template.AbstractConstruct;
+import org.eclipse.gendoc2.template.Cell;
 import org.eclipse.gendoc2.template.Conditionnal;
 import org.eclipse.gendoc2.template.Query;
 import org.eclipse.gendoc2.template.Repetition;
+import org.eclipse.gendoc2.template.Row;
 import org.eclipse.gendoc2.template.StaticFragment;
+import org.eclipse.gendoc2.template.Table;
 import org.eclipse.gendoc2.template.Template;
 import org.eclipse.gendoc2.template.VarRef;
 import org.eclipse.gendoc2.template.util.TemplateSwitch;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 
 public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 
@@ -39,7 +49,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	/**
 	 * The generated document.
 	 */
-	private XWPFDocument generatedDocument;
+	private IBody generatedDocument;
 	/**
 	 * The currently read template paragraph used to detect paragraph changes.
 	 */
@@ -64,8 +74,27 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	 *            template.
 	 */
 	public TemplateProcessor(Map<String, Object> initialDefs, IQueryEnvironment queryEnvironment,
-			XWPFDocument destinationDocument) {
+			IBody destinationDocument) {
 		this.definitions = new GenerationEnvironment(initialDefs);
+		this.queryEnvironment = queryEnvironment;
+		this.generatedDocument = destinationDocument;
+		generatedParagraphRank = -1;// will be incremented to 0 when the first
+									// paragraph is inserted.
+	}
+
+	/**
+	 * Create a new {@link TemplateProcessor} instance given some definitions
+	 * and a query environment.
+	 * 
+	 * @param initialDefs
+	 *            the definitions used in queries and variable tags
+	 * @param queryEnvironment
+	 *            the query environment used to evaluate queries in the
+	 *            template.
+	 */
+	public TemplateProcessor(GenerationEnvironment defs, IQueryEnvironment queryEnvironment,
+			IBody destinationDocument) {
+		this.definitions = defs;
 		this.queryEnvironment = queryEnvironment;
 		this.generatedDocument = destinationDocument;
 		generatedParagraphRank = -1;// will be incremented to 0 when the first
@@ -146,7 +175,15 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 
 	private void createNewParagraph(XWPFParagraph srcParagraph) {
 		// create a new paragraph.
-		XWPFParagraph newParagraph = generatedDocument.createParagraph();
+		XWPFParagraph newParagraph;
+		if (generatedDocument instanceof XWPFTableCell) {
+			XWPFTableCell cell = (XWPFTableCell) generatedDocument;
+			newParagraph = cell.addParagraph();
+		} else if (generatedDocument instanceof XWPFDocument) {
+			newParagraph = ((XWPFDocument) generatedDocument).createParagraph();
+		} else {
+			throw new UnsupportedOperationException("unkown IBody type :" + generatedDocument.getClass());
+		}
 		CTP ctp = (CTP) srcParagraph.getCTP().copy();
 		ctp.getRList().clear();
 		ctp.getFldSimpleList().clear();
@@ -253,5 +290,50 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 			}
 		}
 		return object;
+	}
+
+	@Override
+	public AbstractConstruct caseTable(Table object) {
+		// Create the table structure in the destination document.
+		XWPFTable generatedTable;
+		CTTbl copy = (CTTbl) object.getTable().getCTTbl().copy();
+		copy.getTrList().clear();
+		if (generatedDocument instanceof XWPFDocument) {
+			generatedTable = ((XWPFDocument) generatedDocument).createTable();
+			if (generatedTable.getRows().size() > 0) {
+				generatedTable.removeRow(0);
+			}
+			generatedTable.getCTTbl().set(copy);
+		} else if (generatedDocument instanceof XWPFTableCell) {
+			XWPFTableCell tCell = (XWPFTableCell) generatedDocument;
+			int tableRank = tCell.getTables().size();
+			XWPFTable newTable = new XWPFTable(copy, tCell, 0, 0);
+			if (newTable.getRows().size() > 0) {
+				newTable.removeRow(0);
+			}
+			tCell.insertTable(tableRank, newTable);
+			generatedTable = tCell.getTables().get(tableRank);
+		} else {
+			throw new UnsupportedOperationException("unknown type of IBody : " + generatedDocument.getClass());
+		}
+		// iterate on the row
+		for (Row row : object.getRows()) {
+			XWPFTableRow newRow = generatedTable.createRow();
+			CTRow ctRow = (CTRow) row.getTableRow().getCtRow().copy();
+			ctRow.getTcList().clear();
+			newRow.getCtRow().set(ctRow);
+			// iterate on cells.
+			for (Cell cell : row.getCells()) {
+				XWPFTableCell newCell = newRow.createCell();
+				CTTc ctCell = (CTTc) cell.getTableCell().getCTTc().copy();
+				ctCell.getPList().clear();
+				ctCell.getTblList().clear();
+				newCell.getCTTc().set(ctCell);
+				// process the cell :
+				TemplateProcessor processor = new TemplateProcessor(definitions, queryEnvironment, newCell);
+				processor.doSwitch(cell.getTemplate());
+			}
+		}
+		return super.caseTable(object);
 	}
 }

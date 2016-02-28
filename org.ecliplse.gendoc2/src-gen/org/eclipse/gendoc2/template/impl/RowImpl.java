@@ -3,73 +3,78 @@
 package org.eclipse.gendoc2.template.impl;
 
 import java.util.Collection;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
+
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.eclipse.gendoc2.template.Cell;
 import org.eclipse.gendoc2.template.Row;
-import org.eclipse.gendoc2.template.Table;
 import org.eclipse.gendoc2.template.TemplatePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Table</b></em>'.
+ * An implementation of the model object '<em><b>Row</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.gendoc2.template.impl.TableImpl#getRows <em>Rows</em>}</li>
- *   <li>{@link org.eclipse.gendoc2.template.impl.TableImpl#getTable <em>Table</em>}</li>
+ *   <li>{@link org.eclipse.gendoc2.template.impl.RowImpl#getCells <em>Cells</em>}</li>
+ *   <li>{@link org.eclipse.gendoc2.template.impl.RowImpl#getTableRow <em>Table Row</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class TableImpl extends AbstractConstructImpl implements Table {
+public class RowImpl extends MinimalEObjectImpl.Container implements Row {
 	/**
-	 * The cached value of the '{@link #getRows() <em>Rows</em>}' containment reference list.
+	 * The cached value of the '{@link #getCells() <em>Cells</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getRows()
+	 * @see #getCells()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Row> rows;
+	protected EList<Cell> cells;
 
 	/**
-	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
+	 * The default value of the '{@link #getTableRow() <em>Table Row</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTable()
+	 * @see #getTableRow()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final XWPFTable TABLE_EDEFAULT = null;
+	protected static final XWPFTableRow TABLE_ROW_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getTable() <em>Table</em>}' attribute.
+	 * The cached value of the '{@link #getTableRow() <em>Table Row</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTable()
+	 * @see #getTableRow()
 	 * @generated
 	 * @ordered
 	 */
-	protected XWPFTable table = TABLE_EDEFAULT;
+	protected XWPFTableRow tableRow = TABLE_ROW_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected TableImpl() {
+	protected RowImpl() {
 		super();
 	}
 
@@ -80,7 +85,7 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return TemplatePackage.Literals.TABLE;
+		return TemplatePackage.Literals.ROW;
 	}
 
 	/**
@@ -88,11 +93,11 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Row> getRows() {
-		if (rows == null) {
-			rows = new EObjectContainmentEList<Row>(Row.class, this, TemplatePackage.TABLE__ROWS);
+	public EList<Cell> getCells() {
+		if (cells == null) {
+			cells = new EObjectContainmentEList<Cell>(Cell.class, this, TemplatePackage.ROW__CELLS);
 		}
-		return rows;
+		return cells;
 	}
 
 	/**
@@ -100,8 +105,8 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XWPFTable getTable() {
-		return table;
+	public XWPFTableRow getTableRow() {
+		return tableRow;
 	}
 
 	/**
@@ -109,11 +114,11 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setTable(XWPFTable newTable) {
-		XWPFTable oldTable = table;
-		table = newTable;
+	public void setTableRow(XWPFTableRow newTableRow) {
+		XWPFTableRow oldTableRow = tableRow;
+		tableRow = newTableRow;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TABLE__TABLE, oldTable, table));
+			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.ROW__TABLE_ROW, oldTableRow, tableRow));
 	}
 
 	/**
@@ -124,8 +129,8 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				return ((InternalEList<?>)getRows()).basicRemove(otherEnd, msgs);
+			case TemplatePackage.ROW__CELLS:
+				return ((InternalEList<?>)getCells()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -138,10 +143,10 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				return getRows();
-			case TemplatePackage.TABLE__TABLE:
-				return getTable();
+			case TemplatePackage.ROW__CELLS:
+				return getCells();
+			case TemplatePackage.ROW__TABLE_ROW:
+				return getTableRow();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -155,12 +160,12 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				getRows().clear();
-				getRows().addAll((Collection<? extends Row>)newValue);
+			case TemplatePackage.ROW__CELLS:
+				getCells().clear();
+				getCells().addAll((Collection<? extends Cell>)newValue);
 				return;
-			case TemplatePackage.TABLE__TABLE:
-				setTable((XWPFTable)newValue);
+			case TemplatePackage.ROW__TABLE_ROW:
+				setTableRow((XWPFTableRow)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -174,11 +179,11 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				getRows().clear();
+			case TemplatePackage.ROW__CELLS:
+				getCells().clear();
 				return;
-			case TemplatePackage.TABLE__TABLE:
-				setTable(TABLE_EDEFAULT);
+			case TemplatePackage.ROW__TABLE_ROW:
+				setTableRow(TABLE_ROW_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -192,10 +197,10 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				return rows != null && !rows.isEmpty();
-			case TemplatePackage.TABLE__TABLE:
-				return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
+			case TemplatePackage.ROW__CELLS:
+				return cells != null && !cells.isEmpty();
+			case TemplatePackage.ROW__TABLE_ROW:
+				return TABLE_ROW_EDEFAULT == null ? tableRow != null : !TABLE_ROW_EDEFAULT.equals(tableRow);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -210,10 +215,10 @@ public class TableImpl extends AbstractConstructImpl implements Table {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (table: ");
-		result.append(table);
+		result.append(" (tableRow: ");
+		result.append(tableRow);
 		result.append(')');
 		return result.toString();
 	}
 
-} //TableImpl
+} //RowImpl

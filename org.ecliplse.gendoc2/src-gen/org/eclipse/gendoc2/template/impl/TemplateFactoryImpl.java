@@ -3,8 +3,10 @@
 package org.eclipse.gendoc2.template.impl;
 
 import org.apache.poi.xwpf.usermodel.IBody;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -65,13 +67,16 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 			case TemplatePackage.CONDITIONNAL: return createConditionnal();
 			case TemplatePackage.REPETITION: return createRepetition();
 			case TemplatePackage.QUERY: return createQuery();
-			case TemplatePackage.TABLE: return createTable();
+			case TemplatePackage.TABLE_MERGE: return createTableMerge();
 			case TemplatePackage.IMAGE: return createImage();
 			case TemplatePackage.DEFAULT: return createDefault();
 			case TemplatePackage.TEMPLATE: return createTemplate();
 			case TemplatePackage.REPRESENTATION: return createRepresentation();
 			case TemplatePackage.STATIC_FRAGMENT: return createStaticFragment();
 			case TemplatePackage.VAR_REF: return createVarRef();
+			case TemplatePackage.TABLE: return createTable();
+			case TemplatePackage.ROW: return createRow();
+			case TemplatePackage.CELL: return createCell();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -89,14 +94,18 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 				return createQueryBehaviorFromString(eDataType, initialValue);
 			case TemplatePackage.BODY:
 				return createBodyFromString(eDataType, initialValue);
-			case TemplatePackage.PARAGRAPH:
-				return createParagraphFromString(eDataType, initialValue);
+			case TemplatePackage.WTABLE:
+				return createWTableFromString(eDataType, initialValue);
 			case TemplatePackage.RUN:
 				return createRunFromString(eDataType, initialValue);
 			case TemplatePackage.AST_RESULT:
 				return createAstResultFromString(eDataType, initialValue);
 			case TemplatePackage.DOCUMENT_PARSING_ERROR:
 				return createDocumentParsingErrorFromString(eDataType, initialValue);
+			case TemplatePackage.WTABLE_ROW:
+				return createWTableRowFromString(eDataType, initialValue);
+			case TemplatePackage.WTABLE_CELL:
+				return createWTableCellFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -114,14 +123,18 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 				return convertQueryBehaviorToString(eDataType, instanceValue);
 			case TemplatePackage.BODY:
 				return convertBodyToString(eDataType, instanceValue);
-			case TemplatePackage.PARAGRAPH:
-				return convertParagraphToString(eDataType, instanceValue);
+			case TemplatePackage.WTABLE:
+				return convertWTableToString(eDataType, instanceValue);
 			case TemplatePackage.RUN:
 				return convertRunToString(eDataType, instanceValue);
 			case TemplatePackage.AST_RESULT:
 				return convertAstResultToString(eDataType, instanceValue);
 			case TemplatePackage.DOCUMENT_PARSING_ERROR:
 				return convertDocumentParsingErrorToString(eDataType, instanceValue);
+			case TemplatePackage.WTABLE_ROW:
+				return convertWTableRowToString(eDataType, instanceValue);
+			case TemplatePackage.WTABLE_CELL:
+				return convertWTableCellToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -162,9 +175,39 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public TableMerge createTableMerge() {
+		TableMergeImpl tableMerge = new TableMergeImpl();
+		return tableMerge;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Table createTable() {
 		TableImpl table = new TableImpl();
 		return table;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Row createRow() {
+		RowImpl row = new RowImpl();
+		return row;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Cell createCell() {
+		CellImpl cell = new CellImpl();
+		return cell;
 	}
 
 	/**
@@ -270,8 +313,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XWPFParagraph createParagraphFromString(EDataType eDataType, String initialValue) {
-		return (XWPFParagraph)super.createFromString(eDataType, initialValue);
+	public XWPFTable createWTableFromString(EDataType eDataType, String initialValue) {
+		return (XWPFTable)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -279,7 +322,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertParagraphToString(EDataType eDataType, Object instanceValue) {
+	public String convertWTableToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -334,6 +377,42 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	 * @generated
 	 */
 	public String convertDocumentParsingErrorToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XWPFTableRow createWTableRowFromString(EDataType eDataType, String initialValue) {
+		return (XWPFTableRow)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertWTableRowToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XWPFTableCell createWTableCellFromString(EDataType eDataType, String initialValue) {
+		return (XWPFTableCell)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertWTableCellToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

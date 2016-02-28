@@ -469,14 +469,14 @@ public interface TemplatePackage extends EPackage {
 	int QUERY_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.gendoc2.template.impl.TableImpl <em>Table</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.gendoc2.template.impl.TableMergeImpl <em>Table Merge</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.gendoc2.template.impl.TableImpl
-	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getTable()
+	 * @see org.eclipse.gendoc2.template.impl.TableMergeImpl
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getTableMerge()
 	 * @generated
 	 */
-	int TABLE = 4;
+	int TABLE_MERGE = 4;
 
 	/**
 	 * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -485,7 +485,7 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__STYLE_RUN = COMPOUND__STYLE_RUN;
+	int TABLE_MERGE__STYLE_RUN = COMPOUND__STYLE_RUN;
 
 	/**
 	 * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -494,7 +494,7 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__RUNS = COMPOUND__RUNS;
+	int TABLE_MERGE__RUNS = COMPOUND__RUNS;
 
 	/**
 	 * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -503,7 +503,7 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+	int TABLE_MERGE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
 	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
@@ -512,7 +512,7 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+	int TABLE_MERGE__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
 
 	/**
 	 * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
@@ -521,7 +521,7 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
+	int TABLE_MERGE__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
 
 	/**
 	 * The feature id for the '<em><b>Legend</b></em>' attribute.
@@ -530,25 +530,55 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__LEGEND = COMPOUND_FEATURE_COUNT + 0;
+	int TABLE_MERGE__LEGEND = COMPOUND_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Table</em>' class.
+	 * The number of structural features of the '<em>Table Merge</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 1;
+	int TABLE_MERGE_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Table</em>' class.
+	 * The number of operations of the '<em>Table Merge</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+	int TABLE_MERGE_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.gendoc2.template.impl.TableImpl <em>Table</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.gendoc2.template.impl.TableImpl
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getTable()
+	 * @generated
+	 */
+	int TABLE = 12;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.gendoc2.template.impl.RowImpl <em>Row</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.gendoc2.template.impl.RowImpl
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getRow()
+	 * @generated
+	 */
+	int ROW = 13;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.gendoc2.template.impl.CellImpl <em>Cell</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.gendoc2.template.impl.CellImpl
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getCell()
+	 * @generated
+	 */
+	int CELL = 14;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.gendoc2.template.impl.ImageImpl <em>Image</em>}' class.
@@ -1007,6 +1037,150 @@ public interface TemplatePackage extends EPackage {
 	int VAR_REF_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Style Run</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+
+	/**
+	 * The feature id for the '<em><b>Runs</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+
+	/**
+	 * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+
+	/**
+	 * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+
+	/**
+	 * The feature id for the '<em><b>Rows</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__ROWS = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Table</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__TABLE = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Table</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Table</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Cells</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROW__CELLS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Table Row</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROW__TABLE_ROW = 1;
+
+	/**
+	 * The number of structural features of the '<em>Row</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROW_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Row</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROW_OPERATION_COUNT = 0;
+
+	/**
+	 * The feature id for the '<em><b>Template</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CELL__TEMPLATE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Table Cell</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CELL__TABLE_CELL = 1;
+
+	/**
+	 * The number of structural features of the '<em>Cell</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CELL_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Cell</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CELL_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.gendoc2.template.QueryBehavior <em>Query Behavior</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1014,7 +1188,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getQueryBehavior()
 	 * @generated
 	 */
-	int QUERY_BEHAVIOR = 12;
+	int QUERY_BEHAVIOR = 15;
 
 	/**
 	 * The meta object id for the '<em>Body</em>' data type.
@@ -1024,17 +1198,17 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getBody()
 	 * @generated
 	 */
-	int BODY = 13;
+	int BODY = 16;
 
 	/**
-	 * The meta object id for the '<em>Paragraph</em>' data type.
+	 * The meta object id for the '<em>WTable</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.apache.poi.xwpf.usermodel.XWPFParagraph
-	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getParagraph()
+	 * @see org.apache.poi.xwpf.usermodel.XWPFTable
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTable()
 	 * @generated
 	 */
-	int PARAGRAPH = 14;
+	int WTABLE = 17;
 
 	/**
 	 * The meta object id for the '<em>Run</em>' data type.
@@ -1044,7 +1218,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getRun()
 	 * @generated
 	 */
-	int RUN = 15;
+	int RUN = 18;
 
 
 	/**
@@ -1055,7 +1229,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getAstResult()
 	 * @generated
 	 */
-	int AST_RESULT = 16;
+	int AST_RESULT = 19;
 
 	/**
 	 * The meta object id for the '<em>Document Parsing Error</em>' data type.
@@ -1065,7 +1239,27 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocumentParsingError()
 	 * @generated
 	 */
-	int DOCUMENT_PARSING_ERROR = 17;
+	int DOCUMENT_PARSING_ERROR = 20;
+
+	/**
+	 * The meta object id for the '<em>WTable Row</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.apache.poi.xwpf.usermodel.XWPFTableRow
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTableRow()
+	 * @generated
+	 */
+	int WTABLE_ROW = 21;
+
+	/**
+	 * The meta object id for the '<em>WTable Cell</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.apache.poi.xwpf.usermodel.XWPFTableCell
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTableCell()
+	 * @generated
+	 */
+	int WTABLE_CELL = 22;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.AbstractConstruct <em>Abstract Construct</em>}'.
@@ -1218,6 +1412,27 @@ public interface TemplatePackage extends EPackage {
 	EAttribute getQuery_Query();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.TableMerge <em>Table Merge</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Table Merge</em>'.
+	 * @see org.eclipse.gendoc2.template.TableMerge
+	 * @generated
+	 */
+	EClass getTableMerge();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.gendoc2.template.TableMerge#getLegend <em>Legend</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Legend</em>'.
+	 * @see org.eclipse.gendoc2.template.TableMerge#getLegend()
+	 * @see #getTableMerge()
+	 * @generated
+	 */
+	EAttribute getTableMerge_Legend();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.gendoc2.template.Query#getBehavior <em>Behavior</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1239,15 +1454,90 @@ public interface TemplatePackage extends EPackage {
 	EClass getTable();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.gendoc2.template.Table#getLegend <em>Legend</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.gendoc2.template.Table#getRows <em>Rows</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Legend</em>'.
-	 * @see org.eclipse.gendoc2.template.Table#getLegend()
+	 * @return the meta object for the containment reference list '<em>Rows</em>'.
+	 * @see org.eclipse.gendoc2.template.Table#getRows()
 	 * @see #getTable()
 	 * @generated
 	 */
-	EAttribute getTable_Legend();
+	EReference getTable_Rows();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.gendoc2.template.Table#getTable <em>Table</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Table</em>'.
+	 * @see org.eclipse.gendoc2.template.Table#getTable()
+	 * @see #getTable()
+	 * @generated
+	 */
+	EAttribute getTable_Table();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.Row <em>Row</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Row</em>'.
+	 * @see org.eclipse.gendoc2.template.Row
+	 * @generated
+	 */
+	EClass getRow();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.gendoc2.template.Row#getCells <em>Cells</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Cells</em>'.
+	 * @see org.eclipse.gendoc2.template.Row#getCells()
+	 * @see #getRow()
+	 * @generated
+	 */
+	EReference getRow_Cells();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.gendoc2.template.Row#getTableRow <em>Table Row</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Table Row</em>'.
+	 * @see org.eclipse.gendoc2.template.Row#getTableRow()
+	 * @see #getRow()
+	 * @generated
+	 */
+	EAttribute getRow_TableRow();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.Cell <em>Cell</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cell</em>'.
+	 * @see org.eclipse.gendoc2.template.Cell
+	 * @generated
+	 */
+	EClass getCell();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.gendoc2.template.Cell#getTemplate <em>Template</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Template</em>'.
+	 * @see org.eclipse.gendoc2.template.Cell#getTemplate()
+	 * @see #getCell()
+	 * @generated
+	 */
+	EReference getCell_Template();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.gendoc2.template.Cell#getTableCell <em>Table Cell</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Table Cell</em>'.
+	 * @see org.eclipse.gendoc2.template.Cell#getTableCell()
+	 * @see #getCell()
+	 * @generated
+	 */
+	EAttribute getCell_TableCell();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.Image <em>Image</em>}'.
@@ -1418,15 +1708,15 @@ public interface TemplatePackage extends EPackage {
 	EDataType getBody();
 
 	/**
-	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFParagraph <em>Paragraph</em>}'.
+	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTable <em>WTable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Paragraph</em>'.
-	 * @see org.apache.poi.xwpf.usermodel.XWPFParagraph
-	 * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFParagraph"
+	 * @return the meta object for data type '<em>WTable</em>'.
+	 * @see org.apache.poi.xwpf.usermodel.XWPFTable
+	 * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFTable"
 	 * @generated
 	 */
-	EDataType getParagraph();
+	EDataType getWTable();
 
 	/**
 	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFRun <em>Run</em>}'.
@@ -1460,6 +1750,28 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getDocumentParsingError();
+
+	/**
+	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTableRow <em>WTable Row</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>WTable Row</em>'.
+	 * @see org.apache.poi.xwpf.usermodel.XWPFTableRow
+	 * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFTableRow"
+	 * @generated
+	 */
+	EDataType getWTableRow();
+
+	/**
+	 * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTableCell <em>WTable Cell</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>WTable Cell</em>'.
+	 * @see org.apache.poi.xwpf.usermodel.XWPFTableCell
+	 * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFTableCell"
+	 * @generated
+	 */
+	EDataType getWTableCell();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1605,6 +1917,24 @@ public interface TemplatePackage extends EPackage {
 		EAttribute QUERY__QUERY = eINSTANCE.getQuery_Query();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.gendoc2.template.impl.TableMergeImpl <em>Table Merge</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.gendoc2.template.impl.TableMergeImpl
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getTableMerge()
+		 * @generated
+		 */
+		EClass TABLE_MERGE = eINSTANCE.getTableMerge();
+
+		/**
+		 * The meta object literal for the '<em><b>Legend</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TABLE_MERGE__LEGEND = eINSTANCE.getTableMerge_Legend();
+
+		/**
 		 * The meta object literal for the '<em><b>Behavior</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1623,12 +1953,72 @@ public interface TemplatePackage extends EPackage {
 		EClass TABLE = eINSTANCE.getTable();
 
 		/**
-		 * The meta object literal for the '<em><b>Legend</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Rows</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute TABLE__LEGEND = eINSTANCE.getTable_Legend();
+		EReference TABLE__ROWS = eINSTANCE.getTable_Rows();
+
+		/**
+		 * The meta object literal for the '<em><b>Table</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TABLE__TABLE = eINSTANCE.getTable_Table();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.gendoc2.template.impl.RowImpl <em>Row</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.gendoc2.template.impl.RowImpl
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getRow()
+		 * @generated
+		 */
+		EClass ROW = eINSTANCE.getRow();
+
+		/**
+		 * The meta object literal for the '<em><b>Cells</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ROW__CELLS = eINSTANCE.getRow_Cells();
+
+		/**
+		 * The meta object literal for the '<em><b>Table Row</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROW__TABLE_ROW = eINSTANCE.getRow_TableRow();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.gendoc2.template.impl.CellImpl <em>Cell</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.gendoc2.template.impl.CellImpl
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getCell()
+		 * @generated
+		 */
+		EClass CELL = eINSTANCE.getCell();
+
+		/**
+		 * The meta object literal for the '<em><b>Template</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CELL__TEMPLATE = eINSTANCE.getCell_Template();
+
+		/**
+		 * The meta object literal for the '<em><b>Table Cell</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CELL__TABLE_CELL = eINSTANCE.getCell_TableCell();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.gendoc2.template.impl.ImageImpl <em>Image</em>}' class.
@@ -1777,14 +2167,14 @@ public interface TemplatePackage extends EPackage {
 		EDataType BODY = eINSTANCE.getBody();
 
 		/**
-		 * The meta object literal for the '<em>Paragraph</em>' data type.
+		 * The meta object literal for the '<em>WTable</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.apache.poi.xwpf.usermodel.XWPFParagraph
-		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getParagraph()
+		 * @see org.apache.poi.xwpf.usermodel.XWPFTable
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTable()
 		 * @generated
 		 */
-		EDataType PARAGRAPH = eINSTANCE.getParagraph();
+		EDataType WTABLE = eINSTANCE.getWTable();
 
 		/**
 		 * The meta object literal for the '<em>Run</em>' data type.
@@ -1815,6 +2205,26 @@ public interface TemplatePackage extends EPackage {
 		 * @generated
 		 */
 		EDataType DOCUMENT_PARSING_ERROR = eINSTANCE.getDocumentParsingError();
+
+		/**
+		 * The meta object literal for the '<em>WTable Row</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.apache.poi.xwpf.usermodel.XWPFTableRow
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTableRow()
+		 * @generated
+		 */
+		EDataType WTABLE_ROW = eINSTANCE.getWTableRow();
+
+		/**
+		 * The meta object literal for the '<em>WTable Cell</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.apache.poi.xwpf.usermodel.XWPFTableCell
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTableCell()
+		 * @generated
+		 */
+		EDataType WTABLE_CELL = eINSTANCE.getWTableCell();
 
 	}
 
