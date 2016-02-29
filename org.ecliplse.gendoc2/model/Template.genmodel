@@ -73,5 +73,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Cell/template"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Cell/tableCell"/>
     </genClasses>
+    <genClasses ecoreClass="Template.ecore#//DocumentTemplate">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/headers"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/footers"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/body"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

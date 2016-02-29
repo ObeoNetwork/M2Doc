@@ -4,13 +4,19 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
+import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.gendoc2.template.DocumentTemplate;
 import org.eclipse.gendoc2.template.Template;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 
 public class DocumentGenerator {
 	/**
@@ -26,7 +32,7 @@ public class DocumentGenerator {
 	/**
 	 * The template against which generation is done.
 	 */
-	private Template template;
+	private DocumentTemplate template;
 	/**
 	 * The file where the generation is stored.
 	 */
@@ -46,7 +52,7 @@ public class DocumentGenerator {
 	 *            a mapping of variables used during generation.
 	 * @throws DocumentGenerationException
 	 */
-	public DocumentGenerator(String inputDocumentFileName, String destinationFileName, Template theTemplate,
+	public DocumentGenerator(String inputDocumentFileName, String destinationFileName, DocumentTemplate theTemplate,
 			Map<String, Object> variables, IQueryEnvironment environment) throws DocumentGenerationException {
 		this.definitions = new HashMap<String, Object>(variables);
 		this.template = theTemplate;
@@ -71,10 +77,39 @@ public class DocumentGenerator {
 		// The output document is created from the input so as to get the styles
 		// and definitions in the original template.
 		TemplateProcessor processor = new TemplateProcessor(definitions, queryEnvironment, destinationDocument);
-		this.template = (Template) processor.doSwitch(this.template);
+		processor.doSwitch(this.template.getBody());
+		Iterator<XWPFFooter> footers = destinationDocument.getFooterList().iterator();
+		for (Template footerTemplate : this.template.getFooters()) {
+			XWPFFooter footer = footers.next();
+			cleanHeaderFooter(footer);
+			TemplateProcessor footerProc = new TemplateProcessor(definitions, queryEnvironment, footer);
+			footerProc.doSwitch(footerTemplate);
+		}
+		Iterator<XWPFHeader> headers = destinationDocument.getHeaderList().iterator();
+		for (Template headerTemplate : this.template.getHeaders()) {
+			XWPFHeader header = headers.next();
+			cleanHeaderFooter(header);
+			TemplateProcessor headerProc = new TemplateProcessor(definitions, queryEnvironment, header);
+			headerProc.doSwitch(headerTemplate);
+		}
 		// At this point, the documnet has been generated and just needs being
 		// writen on disk.
 		saveFile();
+	}
+
+	/**
+	 * Clear up the header or footer from the existing paragraphs and tables.
+	 * 
+	 * @param headerFooter
+	 *            the header or footer to clean up.
+	 */
+	void cleanHeaderFooter(XWPFHeaderFooter headerFooter) {
+		CTHdrFtr ctHdrFtr = (CTHdrFtr) headerFooter._getHdrFtr().copy();
+		ctHdrFtr.getPList().clear();
+		ctHdrFtr.getTblList().clear();
+		// XXX : there are many other lists in the header and footer that should
+		// probably be cleaned.
+		headerFooter.setHeaderFooter(ctHdrFtr);
 	}
 
 	private XWPFDocument createDestinationDocument(String inputDocumentFileName)

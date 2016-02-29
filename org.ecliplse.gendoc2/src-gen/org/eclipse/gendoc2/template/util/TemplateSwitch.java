@@ -173,6 +173,12 @@ public class TemplateSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TemplatePackage.DOCUMENT_TEMPLATE: {
+				DocumentTemplate documentTemplate = (DocumentTemplate)theEObject;
+				T result = caseDocumentTemplate(documentTemplate);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -294,6 +300,21 @@ public class TemplateSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseCell(Cell object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Document Template</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Document Template</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDocumentTemplate(DocumentTemplate object) {
 		return null;
 	}
 

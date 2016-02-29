@@ -1181,6 +1181,61 @@ public interface TemplatePackage extends EPackage {
 	int CELL_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.gendoc2.template.impl.DocumentTemplateImpl <em>Document Template</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.gendoc2.template.impl.DocumentTemplateImpl
+	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocumentTemplate()
+	 * @generated
+	 */
+	int DOCUMENT_TEMPLATE = 15;
+
+	/**
+	 * The feature id for the '<em><b>Headers</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT_TEMPLATE__HEADERS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Footers</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT_TEMPLATE__FOOTERS = 1;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT_TEMPLATE__BODY = 2;
+
+	/**
+	 * The number of structural features of the '<em>Document Template</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT_TEMPLATE_FEATURE_COUNT = 3;
+
+	/**
+	 * The number of operations of the '<em>Document Template</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT_TEMPLATE_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.gendoc2.template.QueryBehavior <em>Query Behavior</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1188,7 +1243,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getQueryBehavior()
 	 * @generated
 	 */
-	int QUERY_BEHAVIOR = 15;
+	int QUERY_BEHAVIOR = 16;
 
 	/**
 	 * The meta object id for the '<em>Body</em>' data type.
@@ -1198,7 +1253,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getBody()
 	 * @generated
 	 */
-	int BODY = 16;
+	int BODY = 17;
 
 	/**
 	 * The meta object id for the '<em>WTable</em>' data type.
@@ -1208,7 +1263,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTable()
 	 * @generated
 	 */
-	int WTABLE = 17;
+	int WTABLE = 18;
 
 	/**
 	 * The meta object id for the '<em>Run</em>' data type.
@@ -1218,7 +1273,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getRun()
 	 * @generated
 	 */
-	int RUN = 18;
+	int RUN = 19;
 
 
 	/**
@@ -1229,7 +1284,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getAstResult()
 	 * @generated
 	 */
-	int AST_RESULT = 19;
+	int AST_RESULT = 20;
 
 	/**
 	 * The meta object id for the '<em>Document Parsing Error</em>' data type.
@@ -1239,7 +1294,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocumentParsingError()
 	 * @generated
 	 */
-	int DOCUMENT_PARSING_ERROR = 20;
+	int DOCUMENT_PARSING_ERROR = 21;
 
 	/**
 	 * The meta object id for the '<em>WTable Row</em>' data type.
@@ -1249,7 +1304,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTableRow()
 	 * @generated
 	 */
-	int WTABLE_ROW = 21;
+	int WTABLE_ROW = 22;
 
 	/**
 	 * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -1259,7 +1314,7 @@ public interface TemplatePackage extends EPackage {
 	 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getWTableCell()
 	 * @generated
 	 */
-	int WTABLE_CELL = 22;
+	int WTABLE_CELL = 23;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.AbstractConstruct <em>Abstract Construct</em>}'.
@@ -1538,6 +1593,49 @@ public interface TemplatePackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getCell_TableCell();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.DocumentTemplate <em>Document Template</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Document Template</em>'.
+	 * @see org.eclipse.gendoc2.template.DocumentTemplate
+	 * @generated
+	 */
+	EClass getDocumentTemplate();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.gendoc2.template.DocumentTemplate#getHeaders <em>Headers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Headers</em>'.
+	 * @see org.eclipse.gendoc2.template.DocumentTemplate#getHeaders()
+	 * @see #getDocumentTemplate()
+	 * @generated
+	 */
+	EReference getDocumentTemplate_Headers();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.gendoc2.template.DocumentTemplate#getFooters <em>Footers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Footers</em>'.
+	 * @see org.eclipse.gendoc2.template.DocumentTemplate#getFooters()
+	 * @see #getDocumentTemplate()
+	 * @generated
+	 */
+	EReference getDocumentTemplate_Footers();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.gendoc2.template.DocumentTemplate#getBody <em>Body</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Body</em>'.
+	 * @see org.eclipse.gendoc2.template.DocumentTemplate#getBody()
+	 * @see #getDocumentTemplate()
+	 * @generated
+	 */
+	EReference getDocumentTemplate_Body();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.gendoc2.template.Image <em>Image</em>}'.
@@ -2019,6 +2117,40 @@ public interface TemplatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CELL__TABLE_CELL = eINSTANCE.getCell_TableCell();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.gendoc2.template.impl.DocumentTemplateImpl <em>Document Template</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.gendoc2.template.impl.DocumentTemplateImpl
+		 * @see org.eclipse.gendoc2.template.impl.TemplatePackageImpl#getDocumentTemplate()
+		 * @generated
+		 */
+		EClass DOCUMENT_TEMPLATE = eINSTANCE.getDocumentTemplate();
+
+		/**
+		 * The meta object literal for the '<em><b>Headers</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DOCUMENT_TEMPLATE__HEADERS = eINSTANCE.getDocumentTemplate_Headers();
+
+		/**
+		 * The meta object literal for the '<em><b>Footers</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DOCUMENT_TEMPLATE__FOOTERS = eINSTANCE.getDocumentTemplate_Footers();
+
+		/**
+		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DOCUMENT_TEMPLATE__BODY = eINSTANCE.getDocumentTemplate_Body();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.gendoc2.template.impl.ImageImpl <em>Image</em>}' class.

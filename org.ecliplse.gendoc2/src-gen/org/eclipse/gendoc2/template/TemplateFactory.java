@@ -85,6 +85,15 @@ public interface TemplateFactory extends EFactory {
 	Cell createCell();
 
 	/**
+	 * Returns a new object of class '<em>Document Template</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Document Template</em>'.
+	 * @generated
+	 */
+	DocumentTemplate createDocumentTemplate();
+
+	/**
 	 * Returns a new object of class '<em>Image</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

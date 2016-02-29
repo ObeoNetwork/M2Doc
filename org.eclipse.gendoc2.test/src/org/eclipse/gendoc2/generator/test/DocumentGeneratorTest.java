@@ -12,9 +12,9 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.gendoc2.generator.DocumentGenerationException;
 import org.eclipse.gendoc2.generator.DocumentGenerator;
-import org.eclipse.gendoc2.parser.BodyParser;
+import org.eclipse.gendoc2.parser.DocumentParser;
 import org.eclipse.gendoc2.parser.DocumentParserException;
-import org.eclipse.gendoc2.template.Template;
+import org.eclipse.gendoc2.template.DocumentTemplate;
 import org.junit.Test;
 
 public class DocumentGeneratorTest {
@@ -26,8 +26,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testStaticFragmentWithfields.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragmentWithfields.docx",
@@ -43,8 +43,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testStaticFragment.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragment.docx",
@@ -60,12 +60,29 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testVarInHeader.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVarInHeader.docx",
 				"results/testVarInHeaderResult.docx", template, definitions, queryEnvironment);
+		generator.generate();
+	}
+
+	@Test
+	public void testVarRefInFooterProcessing()
+			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newEnvironmentWithDefaultServices(null);
+		FileInputStream is = new FileInputStream("templates/testVarInFooter.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
+		Map<String, Object> definitions = new HashMap<String, Object>();
+		definitions.put("x", "valueofx");
+		DocumentGenerator generator = new DocumentGenerator("templates/testVarInFooter.docx",
+				"results/testVarInFooterResult.docx", template, definitions, queryEnvironment);
 		generator.generate();
 	}
 
@@ -77,8 +94,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testVar.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
@@ -94,8 +111,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testVar.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
 				template, definitions, queryEnvironment);
@@ -110,8 +127,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testVarStyle.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVarStyle.docx",
@@ -127,8 +144,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testVarStyleSpanning2Paragraphs.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVarStyleSpanning2Paragraphs.docx",
@@ -144,8 +161,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testAQL.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
@@ -161,8 +178,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testAQL.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
 				template, definitions, queryEnvironment);
@@ -177,8 +194,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testGDFOR.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testGDFOR.docx", "results/testGDFOR.docx",
@@ -194,8 +211,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testGDFORWithTable.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testGDFORWithTable.docx",
@@ -211,8 +228,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal1.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
@@ -228,8 +245,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal1.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
@@ -245,8 +262,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal2.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
@@ -262,8 +279,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal2.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
@@ -323,8 +340,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
@@ -340,8 +357,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value2");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
@@ -357,8 +374,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value3");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
@@ -374,8 +391,8 @@ public class DocumentGeneratorTest {
 		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
-		BodyParser parser = new BodyParser(document, queryEnvironment);
-		Template template = parser.parseTemplate();
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",

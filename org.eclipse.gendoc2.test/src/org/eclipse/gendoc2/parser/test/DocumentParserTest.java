@@ -251,8 +251,8 @@ public class DocumentParserTest {
 		XWPFDocument document = new XWPFDocument(oPackage);
 		BodyParser parser = new BodyParser(document, env);
 		Template template = parser.parseTemplate();
-		assertEquals(3, template.getSubConstructs().size());
-		Repetition rep = (Repetition) template.getSubConstructs().get(1);
+		assertEquals(6, template.getSubConstructs().size());
+		Repetition rep = (Repetition) template.getSubConstructs().get(4);
 		Table table = (Table) rep.getSubConstructs().get(0);
 		assertEquals(1, table.getRows().size());
 		// First row testing.

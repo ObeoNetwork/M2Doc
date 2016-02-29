@@ -77,6 +77,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 			case TemplatePackage.TABLE: return createTable();
 			case TemplatePackage.ROW: return createRow();
 			case TemplatePackage.CELL: return createCell();
+			case TemplatePackage.DOCUMENT_TEMPLATE: return createDocumentTemplate();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -208,6 +209,16 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	public Cell createCell() {
 		CellImpl cell = new CellImpl();
 		return cell;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DocumentTemplate createDocumentTemplate() {
+		DocumentTemplateImpl documentTemplate = new DocumentTemplateImpl();
+		return documentTemplate;
 	}
 
 	/**

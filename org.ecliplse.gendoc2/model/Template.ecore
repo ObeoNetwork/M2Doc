@@ -79,4 +79,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="WTableRow" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTableRow"/>
   <eClassifiers xsi:type="ecore:EDataType" name="WTableCell" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTableCell"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentTemplate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="headers" upperBound="-1"
+        eType="#//Template" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="footers" upperBound="-1"
+        eType="#//Template" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//Template"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

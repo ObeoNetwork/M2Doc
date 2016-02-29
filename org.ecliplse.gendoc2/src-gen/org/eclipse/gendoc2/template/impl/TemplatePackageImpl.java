@@ -24,6 +24,7 @@ import org.eclipse.gendoc2.template.Cell;
 import org.eclipse.gendoc2.template.Compound;
 import org.eclipse.gendoc2.template.Conditionnal;
 import org.eclipse.gendoc2.template.Default;
+import org.eclipse.gendoc2.template.DocumentTemplate;
 import org.eclipse.gendoc2.template.Image;
 import org.eclipse.gendoc2.template.Query;
 import org.eclipse.gendoc2.template.QueryBehavior;
@@ -101,6 +102,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * @generated
 	 */
 	private EClass cellEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass documentTemplateEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -516,6 +524,42 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getDocumentTemplate() {
+		return documentTemplateEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getDocumentTemplate_Headers() {
+		return (EReference)documentTemplateEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getDocumentTemplate_Footers() {
+		return (EReference)documentTemplateEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getDocumentTemplate_Body() {
+		return (EReference)documentTemplateEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getImage() {
 		return imageEClass;
 	}
@@ -792,6 +836,11 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		createEReference(cellEClass, CELL__TEMPLATE);
 		createEAttribute(cellEClass, CELL__TABLE_CELL);
 
+		documentTemplateEClass = createEClass(DOCUMENT_TEMPLATE);
+		createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__HEADERS);
+		createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__FOOTERS);
+		createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__BODY);
+
 		// Create enums
 		queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
 
@@ -901,6 +950,11 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 		initEClass(cellEClass, Cell.class, "Cell", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCell_Template(), this.getTemplate(), null, "template", null, 0, 1, Cell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCell_TableCell(), this.getWTableCell(), "tableCell", null, 0, 1, Cell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(documentTemplateEClass, DocumentTemplate.class, "DocumentTemplate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDocumentTemplate_Headers(), this.getTemplate(), null, "headers", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentTemplate_Footers(), this.getTemplate(), null, "footers", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentTemplate_Body(), this.getTemplate(), null, "body", null, 0, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(queryBehaviorEEnum, QueryBehavior.class, "QueryBehavior");

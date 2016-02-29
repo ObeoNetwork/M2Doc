@@ -125,6 +125,8 @@ public class TemplateValidator extends EObjectValidator {
 				return validateRow((Row)value, diagnostics, context);
 			case TemplatePackage.CELL:
 				return validateCell((Cell)value, diagnostics, context);
+			case TemplatePackage.DOCUMENT_TEMPLATE:
+				return validateDocumentTemplate((DocumentTemplate)value, diagnostics, context);
 			case TemplatePackage.QUERY_BEHAVIOR:
 				return validateQueryBehavior((QueryBehavior)value, diagnostics, context);
 			case TemplatePackage.BODY:
@@ -254,6 +256,15 @@ public class TemplateValidator extends EObjectValidator {
 	 */
 	public boolean validateCell(Cell cell, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(cell, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateDocumentTemplate(DocumentTemplate documentTemplate, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(documentTemplate, diagnostics, context);
 	}
 
 	/**

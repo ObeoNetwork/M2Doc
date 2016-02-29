@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -181,6 +182,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 			newParagraph = cell.addParagraph();
 		} else if (generatedDocument instanceof XWPFDocument) {
 			newParagraph = ((XWPFDocument) generatedDocument).createParagraph();
+		} else if (generatedDocument instanceof XWPFHeaderFooter) {
+			newParagraph = ((XWPFHeaderFooter) generatedDocument).createParagraph();
 		} else {
 			throw new UnsupportedOperationException("unkown IBody type :" + generatedDocument.getClass());
 		}
