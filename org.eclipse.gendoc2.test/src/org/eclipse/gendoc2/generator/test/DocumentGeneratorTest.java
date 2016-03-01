@@ -287,6 +287,7 @@ public class DocumentGeneratorTest {
 				"results/testConditionnal2FalseResult.docx", template, definitions, queryEnvironment);
 		generator.generate();
 	}
+
 	//
 	// @Test
 	// public void testConditionnal3Processing()
@@ -310,27 +311,23 @@ public class DocumentGeneratorTest {
 	// generator.generate();
 	// }
 	//
-	// @Test
-	// public void testConditionnal4Processing()
-	// throws InvalidFormatException, IOException, DocumentParserException,
-	// DocumentGenerationException {
-	// IQueryEnvironment queryEnvironment =
-	// org.eclipse.acceleo.query.runtime.Query
-	// .newEnvironmentWithDefaultServices(null);
-	// FileInputStream is = new
-	// FileInputStream("templates/testConditionnal4.docx");
-	// OPCPackage oPackage = OPCPackage.open(is);
-	// XWPFDocument document = new XWPFDocument(oPackage);
-	// BodyParser parser = new BodyParser(document, queryEnvironment);
-	// Template template = parser.parseTemplate();
-	// Map<String, Object> definitions = new HashMap<String, Object>();
-	// definitions.put("x", "valueofx");
-	// DocumentGenerator generator = new
-	// DocumentGenerator("templates/testConditionnal4.docx",
-	// "results/testConditionnal4Result.docx", template, definitions,
-	// queryEnvironment);
-	// generator.generate();
-	// }
+	@Test
+	public void testImagesAndFootersAndHeadersAndBullets()
+			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newEnvironmentWithDefaultServices(null);
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		FileInputStream is = new FileInputStream("templates/test.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
+		Map<String, Object> definitions = new HashMap<String, Object>();
+		definitions.put("self", EcorePackage.eINSTANCE);
+		DocumentGenerator generator = new DocumentGenerator("templates/test.docx", "results/testResult.docx", template,
+				definitions, queryEnvironment);
+		generator.generate();
+	}
 
 	@Test
 	public void testConditionnal5Processing()

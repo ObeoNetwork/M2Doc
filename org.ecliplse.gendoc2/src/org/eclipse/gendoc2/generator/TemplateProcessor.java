@@ -63,6 +63,11 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	 * The index of the currentGeneratedParagraph in the generatedDocument.
 	 */
 	private int generatedParagraphRank;
+	/**
+	 * Used to force a new paragraph in gf:for body when there's a carriage
+	 * return before the {gd:endfor} tag.
+	 */
+	private boolean forceNewParagraph;
 
 	/**
 	 * Create a new {@link TemplateProcessor} instance given some definitions
@@ -155,8 +160,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 
 	@SuppressWarnings("deprecation")
 	private XWPFRun insertRun(XWPFRun srcRun) {
-		if (srcRun.getParagraph() != currentTemplateParagraph) {
+		if (srcRun.getParagraph() != currentTemplateParagraph || forceNewParagraph) {
 			createNewParagraph(srcRun.getParagraph());
+			forceNewParagraph = false;
 		}
 		XWPFRun generatedRun = currentGeneratedParagraph.createRun();
 		generatedRun.getCTR().set(srcRun.getCTR());
@@ -164,8 +170,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	}
 
 	private XWPFRun insertFieldRunReplacement(XWPFRun srcRun, String replacement) {
-		if (srcRun.getParagraph() != currentTemplateParagraph) {
+		if (srcRun.getParagraph() != currentTemplateParagraph || forceNewParagraph) {
 			createNewParagraph(srcRun.getParagraph());
+			forceNewParagraph = false;
 		}
 		XWPFRun generatedRun = currentGeneratedParagraph.createRun();
 		generatedRun.getCTR().set(srcRun.getCTR());
@@ -256,6 +263,23 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 				for (AbstractConstruct construct : object.getSubConstructs()) {
 					doSwitch(construct);
 				}
+				// if the {gd:endfor} lies on a distinct paragraph, insert a new
+				// paragraph there to take this into acount.
+				int bodySize = object.getSubConstructs().size();
+				if (bodySize > 0) {
+					AbstractConstruct lastBodyPart = object.getSubConstructs().get(bodySize - 1);
+					int runNumber = lastBodyPart.getRuns().size();
+					if (runNumber > 0) {
+						XWPFRun lastRun = lastBodyPart.getRuns().get(runNumber - 1);
+						int closingRunNumber = object.getClosingRuns().size();
+						if (closingRunNumber > 0) {
+							XWPFRun firstClosingRun = object.getClosingRuns().get(0);
+							if (firstClosingRun.getParent() != lastRun.getParent()) {
+								forceNewParagraph = true;
+							}
+						}
+					}
+				}
 			}
 		}
 		return object;
@@ -266,6 +290,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		@SuppressWarnings("restriction")
 		EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
 				definitions.getCurrentDefinitions());
+		// XXX : result can be null here : check that before using it.
 		if (result.getResult() instanceof Boolean) {
 			if ((Boolean) result.getResult()) {
 				for (AbstractConstruct construct : object.getSubConstructs()) {
