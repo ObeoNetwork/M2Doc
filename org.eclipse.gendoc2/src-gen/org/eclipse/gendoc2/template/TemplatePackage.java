@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see org.eclipse.gendoc2.template.TemplateFactory
  * @model kind="package"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='Le m\351ta mod\350le \'template\' repr\351sente les concepts produit par le parsing \r\ndes templates de g\351n\351ration documentaire.\r\n\r\nLes mod\350les instances sont utilis\351s pour la g\351n\351ration.'"
  * @generated
  */
 public interface TemplatePackage extends EPackage {

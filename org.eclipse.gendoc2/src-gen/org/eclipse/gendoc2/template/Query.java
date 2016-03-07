@@ -19,7 +19,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.eclipse.gendoc2.template.TemplatePackage#getQuery()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='La balise est remplac\351e dans le document par la repr\351sentation en \r\nchaine de caract\350re du r\351sultat de l\'\351valuation de l\'expression dans le \r\ncontexte courant. La style du premier run contenant query est utilis\351 pour g\351n\351rer le document. Il n\'y a pas de sens \340 utiliser plusieurs styles diff\351rents dans une requ\352te si bien que seul le premier est utilis\351 si plusieurs sont pr\351sents.\r\n- Lorsque le modifier icon est pr\351cis\351, l\'icone de l\'\351l\351ment \351valu\351 telle que d\351finie dans le .edit correspondant  est ins\351r\351e \340 la place du run\r\n- Lorsque le modifier label est pr\351cis\351, le label de l\'\351l\351ment \351valu\351 tel que d\351finin dans le .edit correspondant est ins\351r\351 \340 la place du run.\r\n- Lorsque le modifier text ou qu\'aucun modifier n\'apparait, la repr\351sentation en chaine de caract\350re de l\'\351valuation du r\351sultat est ins\351r\351.' syntax='{aql:query [icon, label,text]}'"
  * @generated
  */
 public interface Query extends AbstractConstruct {

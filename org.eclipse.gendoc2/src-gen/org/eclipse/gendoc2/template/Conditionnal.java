@@ -19,7 +19,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.eclipse.gendoc2.template.TemplatePackage#getConditionnal()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='AlternativeExcludeElse'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='AlternativeExcludeElse' documentation='Si l\'expression expr est \351valu\351e \340 true dans le contexte courant alors l\'ensemble de la balise jusqu\'\340 la balise gd:endif comprisee est remplac\351e par le traitement de runs1 dans le contexte courant. Sinon, l\'ensemble des balises est remplac\351e par le traitement du premier run_n tel que l\'expression expr de la balise gd:elseif associ\351e est \351valu\351e \340 vrai. Si aucune telle balise n\'est pr\351sente ou si aucune d\'entre-elle porte une expression \351valu\351e \340 true, le r\351sultat du traitement de run_else, si la balise gd:else est pr\351sente, dans le contexte courant est ins\351r\351 \340 la place de l\'ensemble des balises' syntax='{gd:if expr} runs1 [{gd:elseif <expr>} runs_n]* [{gd:else} run_else]{gd:endif}'"
  * @generated
  */
 public interface Conditionnal extends Compound {

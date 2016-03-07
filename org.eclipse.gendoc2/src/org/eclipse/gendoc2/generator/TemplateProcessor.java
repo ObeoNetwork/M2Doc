@@ -174,10 +174,32 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 			createNewParagraph(srcRun.getParagraph());
 			forceNewParagraph = false;
 		}
+		// creates as many paragraphs as there are '\n's in the string.
+		String[] fragments = replacement.split("\n");
+		XWPFRun result = null;
+		int size = fragments.length;
+		for (int i = 0; i < size - 1; i++) {
+			String fragment = fragments[i];
+			XWPFRun generatedRun = insertFragment(fragments[i], srcRun);
+			if (result == null) {
+				result = generatedRun;
+			}
+			createNewParagraph(srcRun.getParagraph());
+		}
+		if (size > 0) {
+			XWPFRun generatedRun = insertFragment(fragments[size - 1], srcRun);
+			if (result == null) {
+				result = generatedRun;
+			}
+		}
+		return result;
+	}
+
+	private XWPFRun insertFragment(String fragment, XWPFRun srcRun) {
 		XWPFRun generatedRun = currentGeneratedParagraph.createRun();
-		generatedRun.getCTR().set(srcRun.getCTR());
+		generatedRun.getCTR().set(srcRun.getCTR().copy());
 		generatedRun.getCTR().getInstrTextList().clear();
-		generatedRun.setText(replacement);
+		generatedRun.setText(fragment);
 		return generatedRun;
 	}
 

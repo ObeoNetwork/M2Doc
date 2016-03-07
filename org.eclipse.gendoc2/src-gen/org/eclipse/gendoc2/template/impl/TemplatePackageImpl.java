@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import org.eclipse.gendoc2.parser.DocumentParsingError;
 import org.eclipse.gendoc2.template.AbstractConstruct;
 import org.eclipse.gendoc2.template.Cell;
@@ -1053,10 +1052,39 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	protected void createEcoreAnnotations() {
 		String source = "http://www.eclipse.org/emf/2002/Ecore";	
 		addAnnotation
+		  (this, 
+		   source, 
+		   new String[] {
+			 "documentation", "Le m\u00e9ta mod\u00e8le \'template\' repr\u00e9sente les concepts produit par le parsing \r\ndes templates de g\u00e9n\u00e9ration documentaire.\r\n\r\nLes mod\u00e8les instances sont utilis\u00e9s pour la g\u00e9n\u00e9ration."
+		   });	
+		addAnnotation
 		  (conditionnalEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "AlternativeExcludeElse"
+			 "constraints", "AlternativeExcludeElse",
+			 "documentation", "Si l\'expression expr est \u00e9valu\u00e9e \u00e0 true dans le contexte courant alors l\'ensemble de la balise jusqu\'\u00e0 la balise gd:endif comprisee est remplac\u00e9e par le traitement de runs1 dans le contexte courant. Sinon, l\'ensemble des balises est remplac\u00e9e par le traitement du premier run_n tel que l\'expression expr de la balise gd:elseif associ\u00e9e est \u00e9valu\u00e9e \u00e0 vrai. Si aucune telle balise n\'est pr\u00e9sente ou si aucune d\'entre-elle porte une expression \u00e9valu\u00e9e \u00e0 true, le r\u00e9sultat du traitement de run_else, si la balise gd:else est pr\u00e9sente, dans le contexte courant est ins\u00e9r\u00e9 \u00e0 la place de l\'ensemble des balises",
+			 "syntax", "{gd:if expr} runs1 [{gd:elseif <expr>} runs_n]* [{gd:else} run_else]{gd:endif}"
+		   });	
+		addAnnotation
+		  (repetitionEClass, 
+		   source, 
+		   new String[] {
+			 "documentation", "pour chaque valeur v dans le r\u00e9sultat de l\'\u00e9valuation de query, \r\n- un nouveau contexte est cr\u00e9e en ajoutant la d\u00e9finition \'var =v\' au contexte courant\r\n- le r\u00e9sultat du traitement du corps runs est ins\u00e9r\u00e9 dans le document \r\nles balises {gd:for} et {gd:endfor} sont supprim\u00e9es.\r\nSi la balise {gd:for} est imm\u00e9diatement suivie d\'un retour chariot alors l\'ensemble du paragraphe la contenant est supprim\u00e9e du r\u00e9sultat sinon, le paragraphe duquel on a supprim\u00e9 la balise est ins\u00e9r\u00e9 dans le r\u00e9sultat. Le m\u00eame traitement est appliqu\u00e9 \u00e0 la balise {gd:endfor}",
+			 "syntax", "{gd:for var | query} body {gd:endfor}"
+		   });	
+		addAnnotation
+		  (queryEClass, 
+		   source, 
+		   new String[] {
+			 "documentation", "La balise est remplac\u00e9e dans le document par la repr\u00e9sentation en \r\nchaine de caract\u00e8re du r\u00e9sultat de l\'\u00e9valuation de l\'expression dans le \r\ncontexte courant. La style du premier run contenant query est utilis\u00e9 pour g\u00e9n\u00e9rer le document. Il n\'y a pas de sens \u00e0 utiliser plusieurs styles diff\u00e9rents dans une requ\u00eate si bien que seul le premier est utilis\u00e9 si plusieurs sont pr\u00e9sents.\r\n- Lorsque le modifier icon est pr\u00e9cis\u00e9, l\'icone de l\'\u00e9l\u00e9ment \u00e9valu\u00e9 telle que d\u00e9finie dans le .edit correspondant  est ins\u00e9r\u00e9e \u00e0 la place du run\r\n- Lorsque le modifier label est pr\u00e9cis\u00e9, le label de l\'\u00e9l\u00e9ment \u00e9valu\u00e9 tel que d\u00e9finin dans le .edit correspondant est ins\u00e9r\u00e9 \u00e0 la place du run.\r\n- Lorsque le modifier text ou qu\'aucun modifier n\'apparait, la repr\u00e9sentation en chaine de caract\u00e8re de l\'\u00e9valuation du r\u00e9sultat est ins\u00e9r\u00e9.",
+			 "syntax", "{aql:query [icon, label,text]}"
+		   });	
+		addAnnotation
+		  (varRefEClass, 
+		   source, 
+		   new String[] {
+			 "documentation", "remplace le champ par la valeur de la variable dans l\'environnement ou par un commentaire disant que la variable n\'est pas d\u00e9finie.",
+			 "syntax", "{var:varName}"
 		   });
 	}
 

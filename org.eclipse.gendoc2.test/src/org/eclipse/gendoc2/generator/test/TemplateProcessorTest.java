@@ -335,4 +335,27 @@ public class TemplateProcessorTest {
 				destinationDoc.getParagraphs().get(0).getText());
 	}
 
+	/**
+	 * Tests a gd:if with <code>false</code> expression evaluation and with an
+	 * else.
+	 * 
+	 * @throws InvalidFormatException
+	 * @throws IOException
+	 * @throws DocumentParserException
+	 */
+	@Test
+	public void testCarryageReturnProcessing() throws InvalidFormatException, IOException, DocumentParserException {
+		FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		BodyParser parser = new BodyParser(document, env);
+		Template template = parser.parseTemplate();
+		Map<String, Object> definitions = new HashMap<String, Object>();
+		definitions.put("v", "part1\npart2\npart3\npart4");
+		XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		processor.doSwitch(template);
+		assertEquals(4, destinationDoc.getParagraphs().size());
+	}
+
 }

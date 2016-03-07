@@ -16,7 +16,7 @@ package org.eclipse.gendoc2.template;
  * </ul>
  *
  * @see org.eclipse.gendoc2.template.TemplatePackage#getVarRef()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='remplace le champ par la valeur de la variable dans l\'environnement ou par un commentaire disant que la variable n\'est pas d\351finie.' syntax='{var:varName}'"
  * @generated
  */
 public interface VarRef extends AbstractConstruct {
