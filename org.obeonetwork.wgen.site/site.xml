@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.obeonetwork.wgen.feature_0.6.0.201603081806.jar" id="org.obeonetwork.wgen.feature" version="0.6.0.201603081806">
+      <category name="WGen"/>
+   </feature>
+   <category-def name="WGen" label="WGen"/>
+</site>
