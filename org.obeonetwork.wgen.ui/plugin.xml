@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.emf.ecore.EObject"
+            id="org.obeonetwork.wgen.ui.genaction">
+         <menu
+               icon="icons/wgen.png"
+               id="org.obeonetwork.wgen.ui.menu1"
+               label="WGen"
+               path="additions">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               class="org.obeonetwork.wgen.ui.popup.actions.GenerateDocumentation"
+               enablesFor="1"
+               icon="icons/wgen.png"
+               id="org.obeonetwork.wgen.ui.genAction"
+               label="Generate Doc"
+               menubarPath="org.obeonetwork.wgen.ui.menu1/group1">
+         </action>
+      </objectContribution>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated wgenconf -->
+      <package
+            uri="http://www.obeonetwork.org/wgen/genconf/1.0"
+            class="org.obeonetwork.wgen.ui.genconf.GenconfPackage"
+            genModel="model/wgenconf.genmodel"/>
+   </extension>
+
+</plugin>
