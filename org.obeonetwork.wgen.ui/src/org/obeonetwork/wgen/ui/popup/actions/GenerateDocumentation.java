@@ -66,7 +66,13 @@ public class GenerateDocumentation implements IObjectActionDelegate {
 				Map<String, Object> definitions = createDefinitions(((Generation) selected));
 				try {
 					generate((Generation) selected, definitions);
-				} catch (IOException | DocumentParserException | DocumentGenerationException e) {
+				} catch (IOException e) {
+					Activator.getDefault().getLog()
+							.log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+				} catch (DocumentParserException e) {
+					Activator.getDefault().getLog()
+							.log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+				} catch (DocumentGenerationException e) {
 					Activator.getDefault().getLog()
 							.log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
 				}

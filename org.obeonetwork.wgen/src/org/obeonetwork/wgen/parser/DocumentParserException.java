@@ -1,16 +1,13 @@
 package org.obeonetwork.wgen.parser;
 
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-
 public class DocumentParserException extends Exception {
 
-	private XWPFRun run;
+	/**
+	 * generated serial version UID.
+	 */
+	private static final long serialVersionUID = -5608638529753048869L;
 
 	public DocumentParserException(String message) {
-		super(message);
-	}
-
-	public DocumentParserException(String message, XWPFRun run) {
 		super(message);
 	}
 

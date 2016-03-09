@@ -11,13 +11,10 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 public class TokenIterator implements Iterator<ParsingToken> {
 
-	private IBody document;
-
 	private Iterator<IBodyElement> elementIterator;
 	private Iterator<ParsingToken> tokenIterator;
 
 	public TokenIterator(IBody inputBody) {
-		this.document = inputBody;
 		if (inputBody == null) {
 			throw new IllegalArgumentException("Input documnet shouldn't be null");
 		}

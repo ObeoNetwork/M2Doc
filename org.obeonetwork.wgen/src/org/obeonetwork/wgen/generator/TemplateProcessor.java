@@ -60,10 +60,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	 */
 	private XWPFParagraph currentGeneratedParagraph;
 	/**
-	 * The index of the currentGeneratedParagraph in the generatedDocument.
-	 */
-	private int generatedParagraphRank;
-	/**
 	 * Used to force a new paragraph in gf:for body when there's a carriage
 	 * return before the {gd:endfor} tag.
 	 */
@@ -84,8 +80,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		this.definitions = new GenerationEnvironment(initialDefs);
 		this.queryEnvironment = queryEnvironment;
 		this.generatedDocument = destinationDocument;
-		generatedParagraphRank = -1;// will be incremented to 0 when the first
-									// paragraph is inserted.
 	}
 
 	/**
@@ -103,8 +97,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		this.definitions = defs;
 		this.queryEnvironment = queryEnvironment;
 		this.generatedDocument = destinationDocument;
-		generatedParagraphRank = -1;// will be incremented to 0 when the first
-									// paragraph is inserted.
 	}
 
 	int getDiagnostic(Diagnostic diagnostic, StringBuilder builder) {
@@ -179,7 +171,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		XWPFRun result = null;
 		int size = fragments.length;
 		for (int i = 0; i < size - 1; i++) {
-			String fragment = fragments[i];
 			XWPFRun generatedRun = insertFragment(fragments[i], srcRun);
 			if (result == null) {
 				result = generatedRun;

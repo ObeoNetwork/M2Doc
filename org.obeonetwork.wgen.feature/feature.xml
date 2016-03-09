@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.obeonetwork.wgen.feature"
-      label="WGen Feature"
+      label="WGen"
       version="0.6.0.qualifier"
       provider-name="Obeonetwork">
 

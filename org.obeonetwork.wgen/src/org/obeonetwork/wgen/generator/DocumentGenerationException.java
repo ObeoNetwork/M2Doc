@@ -2,6 +2,11 @@ package org.obeonetwork.wgen.generator;
 
 public class DocumentGenerationException extends Exception {
 
+	/**
+	 * generated serial version UID.
+	 */
+	private static final long serialVersionUID = -1381727145002218485L;
+
 	public DocumentGenerationException() {
 	}
 
@@ -16,9 +21,4 @@ public class DocumentGenerationException extends Exception {
 	public DocumentGenerationException(String arg0, Throwable arg1) {
 		super(arg0, arg1);
 	}
-
-	public DocumentGenerationException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
-		super(arg0, arg1, arg2, arg3);
-	}
-
 }

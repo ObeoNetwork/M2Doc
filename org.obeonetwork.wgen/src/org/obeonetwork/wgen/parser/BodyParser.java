@@ -211,7 +211,7 @@ public class BodyParser {
 				}
 				compound.getParsingErrors().add(
 						new DocumentParsingError(message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
-				String tag = readTag(compound, compound.getRuns());
+				readTag(compound, compound.getRuns());
 				break;
 			case EOF:
 				compound.getParsingErrors()

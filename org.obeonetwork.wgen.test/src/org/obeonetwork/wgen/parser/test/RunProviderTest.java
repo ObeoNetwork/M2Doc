@@ -46,14 +46,14 @@ public class RunProviderTest {
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
 		TokenProvider iterator = new TokenProvider(document);
-		XWPFRun run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
 	}
 
 	@Test
@@ -62,13 +62,13 @@ public class RunProviderTest {
 		OPCPackage oPackage = OPCPackage.open(is);
 		XWPFDocument document = new XWPFDocument(oPackage);
 		TokenProvider iterator = new TokenProvider(document);
-		XWPFRun run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
-		run = iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
+		iterator.next().getRun();
 		assertNull(iterator.lookAhead(1));
 	}
 
