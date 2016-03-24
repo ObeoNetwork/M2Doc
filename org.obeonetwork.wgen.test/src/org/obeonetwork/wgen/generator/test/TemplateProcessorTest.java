@@ -54,7 +54,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		// scan the destination document
 		assertEquals(2, destinationDoc.getParagraphs().size());
@@ -74,7 +74,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -95,7 +95,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		// scan the destination document
 		assertEquals(2, destinationDoc.getParagraphs().size());
@@ -115,7 +115,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -136,7 +136,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testGDFOR.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals(
 				"Template de test pour les balises de répétition: name = EAttribute, name = EAnnotation, name = EClass, name = EClassifier, name = EDataType, name = EEnum, name = EEnumLiteral, name = EFactory, name = EModelElement, name = ENamedElement, name = EObject, name = EOperation, name = EPackage, name = EParameter, name = EReference, name = EStructuralFeature, name = ETypedElement, name = EStringToStringMapEntry, name = EGenericType, name = ETypeParameter, name = EBigDecimal, name = EBigInteger, name = EBoolean, name = EBooleanObject, name = EByte, name = EByteArray, name = EByteObject, name = EChar, name = ECharacterObject, name = EDate, name = EDiagnosticChain, name = EDouble, name = EDoubleObject, name = EEList, name = EEnumerator, name = EFeatureMap, name = EFeatureMapEntry, name = EFloat, name = EFloatObject, name = EInt, name = EIntegerObject, name = EJavaClass, name = EJavaObject, name = ELong, name = ELongObject, name = EMap, name = EResource, name = EResourceSet, name = EShort, name = EShortObject, name = EString, name = ETreeIterator, name = EInvocationTargetException, ",
@@ -161,7 +161,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal1.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -185,7 +185,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal1.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -209,7 +209,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal2.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -233,7 +233,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal2.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de default value",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -257,7 +257,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -281,7 +281,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value2");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value2",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -305,7 +305,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de default value",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -329,7 +329,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal6.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
 				destinationDoc.getParagraphs().get(0).getText());
@@ -353,7 +353,7 @@ public class TemplateProcessorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("v", "part1\npart2\npart3\npart4");
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		assertEquals(4, destinationDoc.getParagraphs().size());
 	}

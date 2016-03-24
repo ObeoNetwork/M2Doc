@@ -19,6 +19,23 @@ import org.obeonetwork.wgen.template.DocumentTemplate;
 
 public class DocumentGeneratorTest {
 	@Test
+	public void testFormsAndTextArea()
+			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newEnvironmentWithDefaultServices(null);
+		FileInputStream is = new FileInputStream("templates/testTextAreaAndForms.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
+		Map<String, Object> definitions = new HashMap<String, Object>();
+		definitions.put("self", EcorePackage.eINSTANCE);
+		DocumentGenerator generator = new DocumentGenerator("templates/testTextAreaAndForms.docx",
+				"results/testTextAreaAndForms.docx", template, definitions, queryEnvironment);
+		generator.generate();
+	}
+
+	@Test
 	public void testStaticFragmentWithFieldProcessing()
 			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
 		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
@@ -394,6 +411,23 @@ public class DocumentGeneratorTest {
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
 				"results/testConditionnal8Result.docx", template, definitions, queryEnvironment);
+		generator.generate();
+	}
+
+	@Test
+	public void testImageGeneration()
+			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+				.newEnvironmentWithDefaultServices(null);
+		FileInputStream is = new FileInputStream("templates/testImageTag.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		DocumentParser parser = new DocumentParser(document, queryEnvironment);
+		DocumentTemplate template = parser.parseDocument();
+		Map<String, Object> definitions = new HashMap<String, Object>();
+		definitions.put("x", "valueofx");
+		DocumentGenerator generator = new DocumentGenerator("templates/testImageTag.docx", "results/testImageTag.docx",
+				template, definitions, queryEnvironment);
 		generator.generate();
 	}
 

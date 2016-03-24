@@ -41,6 +41,10 @@ public class DocumentGenerator {
 	 * The generated document.
 	 */
 	private XWPFDocument destinationDocument;
+	/**
+	 * The root path where to relate the file path in the template.
+	 */
+	private String projectPath;
 
 	/**
 	 * Create a new {@link DocumentGenerator} instance given a template and a
@@ -54,10 +58,30 @@ public class DocumentGenerator {
 	 */
 	public DocumentGenerator(String inputDocumentFileName, String destinationFileName, DocumentTemplate theTemplate,
 			Map<String, Object> variables, IQueryEnvironment environment) throws DocumentGenerationException {
+		this("", inputDocumentFileName, destinationFileName, theTemplate, variables, environment);
+	}
+
+	/**
+	 * Create a new {@link DocumentGenerator} instance given a template and a
+	 * variable definition map.
+	 * 
+	 * @param projectPath
+	 *            the path of the project that serve as a root to relative
+	 *            paths.
+	 * @param theTemplate
+	 *            the template used for generation
+	 * @param variables
+	 *            a mapping of variables used during generation.
+	 * @throws DocumentGenerationException
+	 */
+	public DocumentGenerator(String projectPath, String inputDocumentFileName, String destinationFileName,
+			DocumentTemplate theTemplate, Map<String, Object> variables, IQueryEnvironment environment)
+			throws DocumentGenerationException {
 		this.definitions = new HashMap<String, Object>(variables);
 		this.template = theTemplate;
 		this.destinationFileName = destinationFileName;
 		this.queryEnvironment = environment;
+		this.projectPath = projectPath;
 		try {
 			this.destinationDocument = createDestinationDocument(inputDocumentFileName);
 		} catch (InvalidFormatException e) {
@@ -76,20 +100,23 @@ public class DocumentGenerator {
 	public void generate() throws IOException {
 		// The output document is created from the input so as to get the styles
 		// and definitions in the original template.
-		TemplateProcessor processor = new TemplateProcessor(definitions, queryEnvironment, destinationDocument);
+		TemplateProcessor processor = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
+				destinationDocument);
 		processor.doSwitch(this.template.getBody());
 		Iterator<XWPFFooter> footers = destinationDocument.getFooterList().iterator();
 		for (Template footerTemplate : this.template.getFooters()) {
 			XWPFFooter footer = footers.next();
 			cleanHeaderFooter(footer);
-			TemplateProcessor footerProc = new TemplateProcessor(definitions, queryEnvironment, footer);
+			TemplateProcessor footerProc = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
+					footer);
 			footerProc.doSwitch(footerTemplate);
 		}
 		Iterator<XWPFHeader> headers = destinationDocument.getHeaderList().iterator();
 		for (Template headerTemplate : this.template.getHeaders()) {
 			XWPFHeader header = headers.next();
 			cleanHeaderFooter(header);
-			TemplateProcessor headerProc = new TemplateProcessor(definitions, queryEnvironment, header);
+			TemplateProcessor headerProc = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
+					header);
 			headerProc.doSwitch(headerTemplate);
 		}
 		// At this point, the documnet has been generated and just needs being

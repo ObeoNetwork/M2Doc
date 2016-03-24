@@ -66,12 +66,25 @@ public class BodyParser {
 	private static final String IMAGE_LEGEND_BELOW = "below";
 	private static final String[] IMAGE_OPTION_SET =
 
-	{ IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
+			{ IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
 
 	/**
 	 * Regex that allows to parse image options.
 	 */
-	private static final Pattern IMAGE_OPTIONS_PATTERN = Pattern.compile("(([a..zA..Z])\\s*:\\s*'([^']*)')+");
+	private static final Pattern IMAGE_TAG_PATTERN = Pattern
+			.compile("\\s*gd:image\\s*(([a-zA-Z]+)\\s*:\\s*'([^']*)')+\\s*");
+	/**
+	 * Regex that allows to parse image options.
+	 */
+	private static final Pattern IMAGE_OPTION_PATTERN = Pattern.compile("([a-zA-Z]+)\\s*:\\s*'([^']*)'*");
+	/**
+	 * Rank of the option's name group in the matcher
+	 */
+	private static final int OPTION_VAL_GROUP_RANK = 2;
+	/**
+	 * Rank of the option's value group in the matcher
+	 */
+	private static final int OPTION_GROUP_RANK = 1;
 
 	/**
 	 * Parsed template document.
@@ -159,6 +172,8 @@ public class BodyParser {
 					result = TokenType.GDLET;
 				} else if (code.startsWith(TokenType.GDENDLET.getValue())) {
 					result = TokenType.GDENDLET;
+				} else if (code.startsWith(TokenType.GDIMAGE.getValue())) {
+					result = TokenType.GDIMAGE;
 				} else {
 					result = TokenType.STATIC;
 				}
@@ -392,10 +407,17 @@ public class BodyParser {
 
 	Map<String, String> parseImageOptions(String tag) {
 		Map<String, String> result = new HashMap<String, String>();
-		Matcher matcher = IMAGE_OPTIONS_PATTERN.matcher(tag);
-		if (matcher.find()) {
-			for (int i = 0; i < matcher.groupCount() / 2; i += 2) {
-				result.put(matcher.group(i), matcher.group(i + 1));
+		// first match the tag:
+		tag = tag.trim();
+		if (tag.startsWith(TokenType.GDIMAGE.getValue())) {
+			int length = TokenType.GDIMAGE.getValue().length();
+			int tagLength = tag.length();
+			tag = tag.substring(length, tagLength);
+			Matcher matcher = IMAGE_OPTION_PATTERN.matcher(tag);
+			while (matcher.find()) {
+				String option = matcher.group(OPTION_GROUP_RANK);
+				String value = matcher.group(OPTION_VAL_GROUP_RANK);
+				result.put(option, value);
 			}
 		}
 		return result;
@@ -443,7 +465,7 @@ public class BodyParser {
 			if (options.containsKey(IMAGE_HEIGHT_KEY)) {
 				String heightStr = options.get(IMAGE_HEIGHT_KEY);
 				try {
-					image.setHeight(Integer.parseInt(options.get(IMAGE_HEIGHT_KEY)));
+					image.setHeight(Integer.parseInt(heightStr));
 				} catch (NumberFormatException e) {
 					image.getParsingErrors()
 							.add(new DocumentParsingError(
@@ -454,7 +476,7 @@ public class BodyParser {
 			if (options.containsKey(IMAGE_WIDTH_KEY)) {
 				String heightStr = options.get(IMAGE_WIDTH_KEY);
 				try {
-					image.setHeight(Integer.parseInt(options.get(IMAGE_WIDTH_KEY)));
+					image.setWidth(Integer.parseInt(options.get(IMAGE_WIDTH_KEY)));
 				} catch (NumberFormatException e) {
 					image.getParsingErrors()
 							.add(new DocumentParsingError(

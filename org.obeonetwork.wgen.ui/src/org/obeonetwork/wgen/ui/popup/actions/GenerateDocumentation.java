@@ -9,8 +9,10 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
@@ -75,6 +77,9 @@ public class GenerateDocumentation implements IObjectActionDelegate {
 				} catch (DocumentGenerationException e) {
 					Activator.getDefault().getLog()
 							.log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+				} catch (InvalidAcceleoPackageException e) {
+					Activator.getDefault().getLog()
+							.log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
 				}
 			} else {
 				MessageDialog.openError(shell, "Bad selection",
@@ -91,9 +96,11 @@ public class GenerateDocumentation implements IObjectActionDelegate {
 	}
 
 	private void generate(Generation generation, Map<String, Object> definitions)
-			throws IOException, DocumentParserException, DocumentGenerationException {
+			throws IOException, DocumentParserException, DocumentGenerationException, InvalidAcceleoPackageException {
 		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
 				.newEnvironmentWithDefaultServices(null);
+		// queryEnvironment.registerServicePackage(DatabaseServices.class);
+
 		for (String nsURI : generation.getPackagesNSURI()) {
 			EPackage p = EPackage.Registry.INSTANCE.getEPackage(nsURI);
 			if (p == null) {
@@ -107,8 +114,12 @@ public class GenerateDocumentation implements IObjectActionDelegate {
 		workspace.getRoot().getLocation();
 		IContainer container = workspace.getRoot().findMember(generation.eResource().getURI().toPlatformString(true))
 				.getParent();
+		while (!(container instanceof IProject)) {
+			container = container.getParent();
+		}
 		IFile templateFile = container.getFile(new Path(generation.getTemplateFileName()));
 		IFile generatedFile = container.getFile(new Path(generation.getResultFileName()));
+		String projectRoot = container.getLocation().toString();
 		if (!templateFile.exists()) {
 			MessageDialog.openError(shell, "File not found", "Couldn't find file " + templateFile);
 			return;
@@ -123,7 +134,8 @@ public class GenerateDocumentation implements IObjectActionDelegate {
 		XWPFDocument document = new XWPFDocument(oPackage);
 		DocumentParser parser = new DocumentParser(document, queryEnvironment);
 		DocumentTemplate template = parser.parseDocument();
-		DocumentGenerator generator = new DocumentGenerator(templateFile.getLocation().toFile().getAbsolutePath(),
+		DocumentGenerator generator = new DocumentGenerator(projectRoot,
+				templateFile.getLocation().toFile().getAbsolutePath(),
 				generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment);
 		generator.generate();
 		MessageDialog.openConfirm(shell, "WGen generation",

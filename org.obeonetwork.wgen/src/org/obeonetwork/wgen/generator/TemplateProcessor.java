@@ -1,10 +1,16 @@
 package org.obeonetwork.wgen.generator;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
@@ -22,6 +28,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.obeonetwork.wgen.template.AbstractConstruct;
 import org.obeonetwork.wgen.template.Cell;
 import org.obeonetwork.wgen.template.Conditionnal;
+import org.obeonetwork.wgen.template.Image;
 import org.obeonetwork.wgen.template.Query;
 import org.obeonetwork.wgen.template.Repetition;
 import org.obeonetwork.wgen.template.Row;
@@ -37,6 +44,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 
 public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 
+	private String rootProjectPath;
 	/**
 	 * The {@link IQueryEnvironment} instance used for evaluating all the AQL
 	 * queries found in the template.
@@ -75,8 +83,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 	 *            the query environment used to evaluate queries in the
 	 *            template.
 	 */
-	public TemplateProcessor(Map<String, Object> initialDefs, IQueryEnvironment queryEnvironment,
+	public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, IQueryEnvironment queryEnvironment,
 			IBody destinationDocument) {
+		this.rootProjectPath = projectPath;
 		this.definitions = new GenerationEnvironment(initialDefs);
 		this.queryEnvironment = queryEnvironment;
 		this.generatedDocument = destinationDocument;
@@ -227,7 +236,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 		IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
 		EvaluationResult result = evaluator.eval((AstResult) object.getQuery(), definitions.getCurrentDefinitions());
 		String strResult;
-		if (result.getResult() == null) {
+		if (result == null) {
+			strResult = "Couldn't parse query.";
+		} else if (result.getResult() == null) {
 			StringBuilder builder = new StringBuilder();
 			getDiagnostic(result.getDiagnostic(), builder);
 			strResult = builder.toString();
@@ -235,7 +246,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 			strResult = result.getResult().toString();
 		}
 		XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), strResult);
-		if (result.getResult() == null) {
+		if (result == null || result.getResult() == null) {
 			run.setBold(true);
 			run.setColor("FF0000");
 		}
@@ -376,5 +387,73 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 			}
 		}
 		return super.caseTable(object);
+	}
+
+	int getPictureType(String fileName) {
+		String[] segments = fileName.split("\\.");
+		int result;
+		if (segments.length > 1) {
+			String extension = segments[segments.length - 1].trim();
+			if ("jpg".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_JPEG;
+			} else if ("gif".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_GIF;
+			} else if ("png".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_PNG;
+			} else if ("emf".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_EMF;
+			} else if ("wmf".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_WMF;
+			} else if ("pict".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_PICT;
+			} else if ("dib".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_DIB;
+			} else if ("tiff".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_TIFF;
+			} else if ("eps".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_EPS;
+			} else if ("bmp".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_BMP;
+			} else if ("wpg".equalsIgnoreCase(extension)) {
+				result = Document.PICTURE_TYPE_WPG;
+			} else {
+				result = 0;
+			}
+		} else {
+			result = 0;
+		}
+		return result;
+	}
+
+	@Override
+	public AbstractConstruct caseImage(Image object) {
+		XWPFRun imageRun = insertRun(object.getStyleRun());
+		imageRun.setText("");
+		imageRun.getCTR().getInstrTextList().clear();
+		String filePath;
+		if ("".equals(this.rootProjectPath) || this.rootProjectPath == null) {
+			filePath = object.getFileName();
+		} else {
+			filePath = this.rootProjectPath + "/" + object.getFileName();
+		}
+		try {
+			int heigth = Units.toEMU(object.getHeight());
+			int width = Units.toEMU(object.getWidth());
+			imageRun.addPicture(new FileInputStream(filePath), getPictureType(object.getFileName()),
+					object.getFileName(), width, heigth);
+		} catch (InvalidFormatException e) {
+			imageRun.setText("Picture in " + object.getFileName() + " has an invalid format.");
+			imageRun.setBold(true);
+			imageRun.setColor("FF0000");
+		} catch (FileNotFoundException e) {
+			imageRun.setText("File " + filePath + " cannot be found.");
+			imageRun.setBold(true);
+			imageRun.setColor("FF0000");
+		} catch (IOException e) {
+			imageRun.setText("An I/O Problem occured while reading file ");
+			imageRun.setBold(true);
+			imageRun.setColor("FF0000");
+		}
+		return super.caseImage(object);
 	}
 }

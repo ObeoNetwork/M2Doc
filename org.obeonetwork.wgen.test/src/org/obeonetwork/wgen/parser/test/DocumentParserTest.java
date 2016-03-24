@@ -17,6 +17,8 @@ import org.obeonetwork.wgen.parser.BodyParser;
 import org.obeonetwork.wgen.parser.DocumentParserException;
 import org.obeonetwork.wgen.template.Conditionnal;
 import org.obeonetwork.wgen.template.Default;
+import org.obeonetwork.wgen.template.Image;
+import org.obeonetwork.wgen.template.POSITION;
 import org.obeonetwork.wgen.template.Query;
 import org.obeonetwork.wgen.template.Repetition;
 import org.obeonetwork.wgen.template.Row;
@@ -262,6 +264,48 @@ public class DocumentParserTest {
 		assertNotNull(row.getCells().get(0).getTableCell());
 		assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof Query);
 		assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
+	}
+
+	@Test
+	public void imageParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
+		FileInputStream is = new FileInputStream("templates/testImageTag.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		BodyParser parser = new BodyParser(document, env);
+		Template template = parser.parseTemplate();
+		assertEquals(1, template.getSubConstructs().size());
+		Image im = (Image) template.getSubConstructs().get(0);
+		assertEquals("images/dh1.gif", im.getFileName());
+		assertEquals(100, im.getHeight());
+		assertEquals(100, im.getWidth());
+		assertEquals("plan de forme du dingy herbulot", im.getLegend());
+		assertEquals(POSITION.BELOW, im.getLegendPOS());
+	}
+
+	@Test
+	public void imageParsingTestWithoutFiledirective()
+			throws IOException, InvalidFormatException, DocumentParserException {
+		FileInputStream is = new FileInputStream("templates/testImageTag2.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		BodyParser parser = new BodyParser(document, env);
+		Template template = parser.parseTemplate();
+		assertEquals(1, template.getSubConstructs().size());
+		Image im = (Image) template.getSubConstructs().get(0);
+		assertEquals("Invalid image directive : no file name provided.", im.getParsingErrors().get(0).getMessage());
+	}
+
+	@Test
+	public void imageParsingTestWithBadOptionName()
+			throws IOException, InvalidFormatException, DocumentParserException {
+		FileInputStream is = new FileInputStream("templates/testImageTag3.docx");
+		OPCPackage oPackage = OPCPackage.open(is);
+		XWPFDocument document = new XWPFDocument(oPackage);
+		BodyParser parser = new BodyParser(document, env);
+		Template template = parser.parseTemplate();
+		assertEquals(1, template.getSubConstructs().size());
+		Image im = (Image) template.getSubConstructs().get(0);
+		assertEquals("Invalid image option (leg): unknown option name.", im.getParsingErrors().get(0).getMessage());
 	}
 
 }

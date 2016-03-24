@@ -51,7 +51,7 @@ public class TemplateRuntimeErrorTests {
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		// scan the destination document
 		assertEquals(2, destinationDoc.getParagraphs().size());
@@ -83,7 +83,7 @@ public class TemplateRuntimeErrorTests {
 		Template template = parser.parseTemplate();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
-		TemplateProcessor processor = new TemplateProcessor(definitions, env, destinationDoc);
+		TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
 		processor.doSwitch(template);
 		// scan the destination document
 		assertEquals(4, destinationDoc.getParagraphs().size());
