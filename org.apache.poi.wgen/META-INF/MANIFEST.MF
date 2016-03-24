@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Poi for Cnav Product
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.poi.wgen
 Bundle-Version: 3.13.0
-Bundle-Vendor: Apache
+Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: commons-codec-1.9.jar,
  commons-logging-1.1.3.jar,

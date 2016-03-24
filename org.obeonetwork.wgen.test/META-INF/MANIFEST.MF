@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.wgen.test
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.obeonetwork.wgen.parser.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.wgen;bundle-version="0.1.0",
@@ -11,3 +11,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.acceleo.query.runtime
+Bundle-Vendor: %providerName
