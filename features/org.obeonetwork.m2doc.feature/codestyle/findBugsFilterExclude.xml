@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+<Match>
+    <Package name="fr.cnav.saturne.dsl.parser"/>
+</Match>
+<Match>
+    <Package name="fr.cnav.saturne.impl"/>
+</Match>
+<Match>
+    <Package name="fr.cnav.saturne.util"/>
+</Match>
+<Match>
+    <Package name="fr.cnav.saturne.components"/>
+</Match>
+<Match>
+    <Package name="fr.cnav.saturne.dsl.formules.impl"/>
+</Match>
+<Match>
+    <Package name="fr.cnav.saturne.dsl.formules.util"/>
+</Match>
+<Match>
+    <Package name="~fr.cnav.saturne.parts.*"/>
+</Match>
+<Match>
+    <Package name="fr.cnav.saturne.presentation"/>
+</Match>
+</FindBugsFilter>

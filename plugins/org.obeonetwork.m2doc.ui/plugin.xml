@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+     Copyright (c) 2016 Obeo. 
+     All rights reserved. This program and the accompanying materials
+     are made available under the terms of the Eclipse Public License v1.0
+     which accompanies this distribution, and is available at
+     http://www.eclipse.org/legal/epl-v10.html
+      
+      Contributors:
+          Obeo - initial API and implementation
+     
+ -->
+
+<plugin>
+   <extension-point id="org.obeonetwork.m2doc.services.register" name="M2Doc Service Register" schema="schema/org.obeonetwork.m2doc.services.register.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.emf.ecore.EObject"
+            id="org.obeonetwork.m2doc.ui.genaction">
+         <menu
+               icon="icons/m2doc.png"
+               id="org.obeonetwork.m2doc.ui.menu1"
+               label="M2Doc"
+               path="additions">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               class="org.obeonetwork.m2doc.ui.popup.actions.GenerateDocumentation"
+               enablesFor="1"
+               icon="icons/m2doc.png"
+               id="org.obeonetwork.m2doc.ui.genAction"
+               label="Generate Doc"
+               menubarPath="org.obeonetwork.m2doc.ui.menu1/group1">
+         </action>
+      </objectContribution>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated m2docconf -->
+      <package
+            uri="http://www.obeonetwork.org/m2doc/genconf/1.0"
+            class="org.obeonetwork.m2doc.ui.genconf.GenconfPackage"
+            genModel="model/m2docconf.genmodel"/>
+   </extension>
+
+</plugin>

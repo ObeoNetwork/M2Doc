@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.obeonetwork.m2doc.test
+Bundle-Version: 0.7.0.qualifier
+Bundle-Activator: org.obeonetwork.m2doc.parser.test.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.obeonetwork.m2doc;bundle-version="0.1.0",
+ org.junit;bundle-version="4.12.0",
+ org.apache.poi.m2doc;bundle-version="3.13.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.acceleo.query.runtime
+Bundle-Vendor: %providerName
