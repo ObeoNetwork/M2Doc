@@ -11,18 +11,37 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+/**
+ * Exception thrown during parsing.
+ * 
+ * @author Romain Guider
+ */
 public class DocumentParserException extends Exception {
 
-	/**
-	 * generated serial version UID.
-	 */
-	private static final long serialVersionUID = -5608638529753048869L;
+    /**
+     * generated serial version UID.
+     */
+    private static final long serialVersionUID = -5608638529753048869L;
 
-	public DocumentParserException(String message) {
-		super(message);
-	}
+    /**
+     * Creates a new {@link DocumentParserException} instance.
+     * 
+     * @param message
+     *            the error message
+     */
+    public DocumentParserException(String message) {
+        super(message);
+    }
 
-	public DocumentParserException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Creates a new {@link DocumentParserException} instance.
+     * 
+     * @param message
+     *            the message
+     * @param cause
+     *            the cause
+     */
+    public DocumentParserException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

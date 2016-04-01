@@ -20,44 +20,57 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
+/**
+ * A document parser organizes the parsing.
+ * 
+ * @author Romain Guider
+ */
 public class DocumentParser {
-	/**
-	 * The environment used to parse queries.
-	 */
-	private IQueryEnvironment queryEnvironment;
-	/**
-	 * Main parsed document.
-	 */
-	private XWPFDocument document;
+    /**
+     * The environment used to parse queries.
+     */
+    private IQueryEnvironment queryEnvironment;
+    /**
+     * Main parsed document.
+     */
+    private XWPFDocument document;
 
-	public DocumentParser(XWPFDocument document, IQueryEnvironment queryEnvironment) {
-		this.queryEnvironment = queryEnvironment;
-		this.document = document;
-	}
+    /**
+     * Creates a new {@link DocumentParser} isntance.
+     * 
+     * @param document
+     *            the document to parse.
+     * @param queryEnvironment
+     *            the queryEnvironment to used during parsing.
+     */
+    public DocumentParser(XWPFDocument document, IQueryEnvironment queryEnvironment) {
+        this.queryEnvironment = queryEnvironment;
+        this.document = document;
+    }
 
-	/**
-	 * Parses a document and returns the {@link DocumentTemplate} resulting from
-	 * this parsing.
-	 * 
-	 * @return the {@link DocumentTemplate} resulting from parsing the specified
-	 *         document.
-	 * @throws DocumentParserException
-	 *             if a problem occurs while parsing the document.
-	 */
-	public DocumentTemplate parseDocument() throws DocumentParserException {
-		@SuppressWarnings("restriction")
-		DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
-		BodyParser parser = new BodyParser(document, new QueryBuilderEngine(queryEnvironment));
-		result.setBody(parser.parseTemplate());
-		for (XWPFFooter footer : document.getFooterList()) {
-			BodyParser footerParser = new BodyParser(footer, new QueryBuilderEngine(queryEnvironment));
-			result.getFooters().add(footerParser.parseTemplate());
-		}
-		for (XWPFHeader header : document.getHeaderList()) {
-			BodyParser headerParser = new BodyParser(header, new QueryBuilderEngine(queryEnvironment));
-			result.getHeaders().add(headerParser.parseTemplate());
-		}
-		return result;
-	}
+    /**
+     * Parses a document and returns the {@link DocumentTemplate} resulting from
+     * this parsing.
+     * 
+     * @return the {@link DocumentTemplate} resulting from parsing the specified
+     *         document.
+     * @throws DocumentParserException
+     *             if a problem occurs while parsing the document.
+     */
+    public DocumentTemplate parseDocument() throws DocumentParserException {
+        @SuppressWarnings("restriction")
+        DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
+        BodyParser parser = new BodyParser(document, new QueryBuilderEngine(queryEnvironment));
+        result.setBody(parser.parseTemplate());
+        for (XWPFFooter footer : document.getFooterList()) {
+            BodyParser footerParser = new BodyParser(footer, new QueryBuilderEngine(queryEnvironment));
+            result.getFooters().add(footerParser.parseTemplate());
+        }
+        for (XWPFHeader header : document.getHeaderList()) {
+            BodyParser headerParser = new BodyParser(header, new QueryBuilderEngine(queryEnvironment));
+            result.getHeaders().add(headerParser.parseTemplate());
+        }
+        return result;
+    }
 
 }

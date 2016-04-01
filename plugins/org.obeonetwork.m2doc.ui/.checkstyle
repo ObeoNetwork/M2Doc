@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fileset-config file-format-version="1.2.0" simple-config="true" sync-formatter="false">
+  <local-check-config name="M2Doc" location="internal_config_1459526512711.xml" type="internal" description=""/>
+  <fileset name="all" enabled="true" check-config-name="M2Doc" local="true">
+    <file-match-pattern match-pattern="." include-pattern="true"/>
+  </fileset>
+  <filter name="FilesFromPackage" enabled="true">
+    <filter-data value="src-gen"/>
+  </filter>
+</fileset-config>

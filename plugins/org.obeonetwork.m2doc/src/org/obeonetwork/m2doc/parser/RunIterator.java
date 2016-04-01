@@ -16,30 +16,41 @@ import java.util.Iterator;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
+/**
+ * {@link RunIterator} are used to create {@link ParsingToken} isntances from {@link XWPFRun} instances.
+ * 
+ * @author Romain Guider
+ */
 public class RunIterator implements Iterator<ParsingToken> {
 
-	/**
-	 * The internal iterator.
-	 */
-	private Iterator<XWPFRun> internalIterator;
+    /**
+     * The internal iterator.
+     */
+    private Iterator<XWPFRun> internalIterator;
 
-	public RunIterator(Collection<XWPFRun> runs) {
-		this.internalIterator = runs.iterator();
-	}
+    /**
+     * Create a new {@link RunIterator}.
+     * 
+     * @param runs
+     *            the list of runs to iterate on.
+     */
+    public RunIterator(Collection<XWPFRun> runs) {
+        this.internalIterator = runs.iterator();
+    }
 
-	@Override
-	public boolean hasNext() {
-		return internalIterator.hasNext();
-	}
+    @Override
+    public boolean hasNext() {
+        return internalIterator.hasNext();
+    }
 
-	@Override
-	public ParsingToken next() {
-		return new ParsingToken(internalIterator.next());
-	}
+    @Override
+    public ParsingToken next() {
+        return new ParsingToken(internalIterator.next());
+    }
 
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 
 }

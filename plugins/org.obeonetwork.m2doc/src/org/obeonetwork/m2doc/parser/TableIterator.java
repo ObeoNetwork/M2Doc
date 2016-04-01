@@ -11,47 +11,49 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+//CHECKSTYLE:OFF
+import com.google.common.collect.Lists;
+
 import java.util.Iterator;
 
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 
-import com.google.common.collect.Lists;
-
+//CHECKSTYLE:ON
 /**
  * Table iterator instances are only iterating over a single instance but they
  * are useful to simplify the code of the {@link TokenIterator} class.
  * 
  * @author Romain Guider
- *
  */
 public class TableIterator implements Iterator<ParsingToken> {
-	/**
-	 * The underlying iterator.
-	 */
-	private Iterator<XWPFTable> iterator;
+    /**
+     * The underlying iterator.
+     */
+    private Iterator<XWPFTable> iterator;
 
-	/**
-	 * Create a new iterator for a single table.
-	 * 
-	 * @param table
-	 */
-	public TableIterator(XWPFTable table) {
-		this.iterator = Lists.newArrayList(table).iterator();
-	}
+    /**
+     * Create a new iterator for a single table.
+     * 
+     * @param table
+     *            the table to iterate on.
+     */
+    public TableIterator(XWPFTable table) {
+        this.iterator = Lists.newArrayList(table).iterator();
+    }
 
-	@Override
-	public boolean hasNext() {
-		return iterator.hasNext();
-	}
+    @Override
+    public boolean hasNext() {
+        return iterator.hasNext();
+    }
 
-	@Override
-	public ParsingToken next() {
-		return new ParsingToken(iterator.next());
-	}
+    @Override
+    public ParsingToken next() {
+        return new ParsingToken(iterator.next());
+    }
 
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 
 }

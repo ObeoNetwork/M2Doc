@@ -15,13 +15,12 @@ package org.obeonetwork.m2doc.service;
  * Interface used to convey service package's classes through extensions.
  * 
  * @author Romain Guider
- *
  */
 public interface IServiceHolder {
-	/**
-	 * Returns the actual service's class.
-	 * 
-	 * @return the actual service's class.
-	 */
-	Class<?> getServiceClass();
+    /**
+     * Returns the actual service's class.
+     * 
+     * @return the actual service's class.
+     */
+    Class<?> getServiceClass();
 }

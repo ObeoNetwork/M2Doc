@@ -11,21 +11,48 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+/**
+ * Enum used for handling parsing error messages.
+ * 
+ * @author Romain Guider
+ */
 public enum ParsingErrorMessage {
+    /**
+     * Error message issued when a cnoditionnal end tag is expected.
+     */
+    CONDTAGEXPEXTED("gd:elseif, gd:else or gd:endif expected here."), /**
+                                                                       * Error message issued when unexpected tag is encountered.
+                                                                       */
+    UNEXPECTEDTAG("Unexpected tag {0} at this location"), MALFORMEDTAG("Tag {0} is malformed"),
+    /**
+     * Error message issued when a invalid AQL expression is encountered.
+     */
+    INVALIDEXPR("Expression {0} is invalid"), /**
+                                               * Error message issued when a var tag has no variable value.
+                                               */
+    NOVARDEFINED("no variable defined."), /**
+                                           * Error message issued when an image tag has an invalid form.
+                                           */
+    INVALID_IMAGE_TAG("Invalid image directive : no file name provided."), /**
+                                                                            * Error message issued when an image tag has an invalid option.
+                                                                            */
+    INVALID_IMAGE_OPTION("Invalid image option ({0}): {1}.");
+    /**
+     * The error message.
+     */
+    private String errorMsg;
 
-	CONDTAGEXPEXTED("gd:elseif, gd:else or gd:endif expected here."), UNEXPECTEDTAG(
-			"Unexpected tag {0} at this location"), MALFORMEDTAG("Tag {0} is malformed"), INVALIDEXPR(
-					"Expression {0} is invalid"), NOVARDEFINED("no variable defined."), INVALID_IMAGE_TAG(
-							"Invalid image directive : no file name provided."), INVALID_IMAGE_OPTION(
-									"Invalid image option ({0}): {1}.");
+    /**
+     * creates a new instance.
+     * 
+     * @param msg
+     *            the message
+     */
+    ParsingErrorMessage(String msg) {
+        this.errorMsg = msg;
+    }
 
-	private String errorMsg;
-
-	private ParsingErrorMessage(String msg) {
-		this.errorMsg = msg;
-	}
-
-	public String getMessage() {
-		return errorMsg;
-	}
+    public String getMessage() {
+        return errorMsg;
+    }
 }
