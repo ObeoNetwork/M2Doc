@@ -9,8 +9,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport,
- org.apache.poi.m2doc;bundle-version="3.13.0"
+ org.eclipse.emf.ecore.xmi;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.generator,
  org.obeonetwork.m2doc.parser,
@@ -20,5 +19,13 @@ Export-Package: org.obeonetwork.m2doc.generator,
  org.obeonetwork.m2doc.template.util
 Import-Package: com.google.common.base;version="15.0.0",
  com.google.common.collect;version="15.0.0",
+ org.apache.poi,
+ org.apache.poi.openxml4j.exceptions,
+ org.apache.poi.openxml4j.opc,
+ org.apache.poi.util,
+ org.apache.poi.xwpf.usermodel,
+ org.apache.xmlbeans,
  org.eclipse.acceleo.query.runtime;version="3.6.0",
- org.eclipse.acceleo.query.runtime.impl
+ org.eclipse.acceleo.query.runtime.impl,
+ org.openxmlformats.schemas.wordprocessingml.x2006.main,
+ org.openxmlformats.schemas.wordprocessingml.x2006.main.impl

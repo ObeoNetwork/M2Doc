@@ -231,12 +231,6 @@ litigation.
    </license>
 
    <plugin
-         id="org.apache.poi.m2doc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.obeonetwork.m2doc"
          download-size="0"
          install-size="0"
