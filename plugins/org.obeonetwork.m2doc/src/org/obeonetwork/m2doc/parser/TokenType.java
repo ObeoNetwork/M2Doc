@@ -17,9 +17,9 @@ package org.obeonetwork.m2doc.parser;
  * @author Romain Guider
  */
 public enum TokenType {
-    AQL("aql:"), GDFOR("gd:for"), GDENDFOR("gd:endfor"), GDIF("gd:if"), GDELSEIF("gd:elseif"), GDELSE("gd:else"),
-    GDENDIF("gd:endif"), GDTABLE("gd:table"), GDLET("gd:let"), GDENDLET("gd:endlet"), ELT("elt:"), VAR("var:"),
-    STATIC("static"), GDIMAGE("gd:image"), EOF("end of file."), WTABLE("table");
+    AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"),
+    TABLE("m:table"), LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), VAR("var:"), STATIC("static"),
+    IMAGE("m:image"), EOF("end of file."), WTABLE("table");
 
     private String value;
 

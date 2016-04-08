@@ -31,42 +31,23 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
 public class EcoreDocumentationGeneration {
-	@Test
-	public void testStaticFragmentWithFieldProcessing() throws InvalidFormatException, IOException,
-			DocumentParserException, DocumentGenerationException, InvalidAcceleoPackageException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
-		queryEnvironment.registerServicePackage(EcoreDocumentationServices.class);
-		FileInputStream is = new FileInputStream("templates/ecoreDocumentationTemplate.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("self", TemplatePackage.eINSTANCE);
-		DocumentGenerator generator = new DocumentGenerator("templates/ecoreDocumentationTemplate.docx",
-				"results/ecoreDocumentationTemplateResults.docx", template, definitions, queryEnvironment);
-		generator.generate();
-	}
-
-	@Test
-	public void syntaxDocumentationGeneration() throws InvalidFormatException, IOException, DocumentParserException,
-			DocumentGenerationException, InvalidAcceleoPackageException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
-		queryEnvironment.registerServicePackage(EcoreDocumentationServices.class);
-		FileInputStream is = new FileInputStream("templates/M2DocSyntax.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("self", TemplatePackage.eINSTANCE);
-		DocumentGenerator generator = new DocumentGenerator("templates/M2DocSyntax.docx", "results/M2DocSyntax.docx",
-				template, definitions, queryEnvironment);
-		generator.generate();
-	}
+    @Test
+    public void testStaticFragmentWithFieldProcessing() throws InvalidFormatException, IOException,
+            DocumentParserException, DocumentGenerationException, InvalidAcceleoPackageException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+        queryEnvironment.registerServicePackage(EcoreDocumentationServices.class);
+        FileInputStream is = new FileInputStream("templates/ecoreDocumentationTemplate.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", TemplatePackage.eINSTANCE);
+        DocumentGenerator generator = new DocumentGenerator("templates/ecoreDocumentationTemplate.docx",
+                "results/ecoreDocumentationTemplateResults.docx", template, definitions, queryEnvironment);
+        generator.generate();
+    }
 
 }

@@ -235,32 +235,32 @@ public class BodyParser {
             // is run a field begin run
             if (isFieldBegin(run)) {
                 String code = lookAheadTag();
-                if (code.startsWith(TokenType.AQL.getValue())) {
-                    result = TokenType.AQL;
-                } else if (code.startsWith(TokenType.GDFOR.getValue())) {
-                    result = TokenType.GDFOR;
-                } else if (code.startsWith(TokenType.GDENDFOR.getValue())) {
-                    result = TokenType.GDENDFOR;
-                } else if (code.startsWith(TokenType.GDIF.getValue())) {
-                    result = TokenType.GDIF;
-                } else if (code.startsWith(TokenType.GDELSEIF.getValue())) {
-                    result = TokenType.GDELSEIF;
-                } else if (code.startsWith(TokenType.GDELSE.getValue())) {
-                    result = TokenType.GDELSE;
-                } else if (code.startsWith(TokenType.GDENDIF.getValue())) {
-                    result = TokenType.GDENDIF;
-                } else if (code.startsWith(TokenType.GDTABLE.getValue())) {
-                    result = TokenType.GDTABLE;
+                if (code.startsWith(TokenType.FOR.getValue())) {
+                    result = TokenType.FOR;
+                } else if (code.startsWith(TokenType.ENDFOR.getValue())) {
+                    result = TokenType.ENDFOR;
+                } else if (code.startsWith(TokenType.IF.getValue())) {
+                    result = TokenType.IF;
+                } else if (code.startsWith(TokenType.ELSEIF.getValue())) {
+                    result = TokenType.ELSEIF;
+                } else if (code.startsWith(TokenType.ELSE.getValue())) {
+                    result = TokenType.ELSE;
+                } else if (code.startsWith(TokenType.ENDIF.getValue())) {
+                    result = TokenType.ENDIF;
+                } else if (code.startsWith(TokenType.TABLE.getValue())) {
+                    result = TokenType.TABLE;
                 } else if (code.startsWith(TokenType.ELT.getValue())) {
                     result = TokenType.ELT;
                 } else if (code.startsWith(TokenType.VAR.getValue())) {
                     result = TokenType.VAR;
-                } else if (code.startsWith(TokenType.GDLET.getValue())) {
-                    result = TokenType.GDLET;
-                } else if (code.startsWith(TokenType.GDENDLET.getValue())) {
-                    result = TokenType.GDENDLET;
-                } else if (code.startsWith(TokenType.GDIMAGE.getValue())) {
-                    result = TokenType.GDIMAGE;
+                } else if (code.startsWith(TokenType.LET.getValue())) {
+                    result = TokenType.LET;
+                } else if (code.startsWith(TokenType.ENDLET.getValue())) {
+                    result = TokenType.ENDLET;
+                } else if (code.startsWith(TokenType.IMAGE.getValue())) {
+                    result = TokenType.IMAGE;
+                } else if (code.startsWith(TokenType.AQL.getValue())) {
+                    result = TokenType.AQL;
                 } else {
                     result = TokenType.STATIC;
                 }
@@ -303,17 +303,17 @@ public class BodyParser {
                 case AQL:
                     compound.getSubConstructs().add(parseQuery());
                     break;
-                case GDFOR:
+                case FOR:
                     compound.getSubConstructs().add(parseRepetition());
                     break;
-                case GDIF:
+                case IF:
                     compound.getSubConstructs().add(parseConditionnal());
                     break;
-                case GDELSEIF:
-                case GDELSE:
-                case GDENDFOR:
-                case GDENDIF:
-                case GDENDLET:
+                case ELSEIF:
+                case ELSE:
+                case ENDFOR:
+                case ENDIF:
+                case ENDLET:
                     // report the error and ignore the problem so that parsing
                     // continues in other parts of the document.
                     XWPFRun run = runIterator.lookAhead(1).getRun();
@@ -329,10 +329,10 @@ public class BodyParser {
                     compound.getParsingErrors()
                             .add(new DocumentParsingError(message(ParsingErrorMessage.UNEXPECTEDTAG, type), null));
                     return;
-                case GDLET:
+                case LET:
                     compound.getSubConstructs().add(parseLet());
                     break;
-                case GDIMAGE:
+                case IMAGE:
                     compound.getSubConstructs().add(parseImage());
                     break;
                 case STATIC:
@@ -531,8 +531,8 @@ public class BodyParser {
         Map<String, String> result = new HashMap<String, String>();
         // first match the tag:
         String trimedTag = tag.trim();
-        if (tag.startsWith(TokenType.GDIMAGE.getValue())) {
-            int length = TokenType.GDIMAGE.getValue().length();
+        if (tag.startsWith(TokenType.IMAGE.getValue())) {
+            int length = TokenType.IMAGE.getValue().length();
             int tagLength = trimedTag.length();
             trimedTag = trimedTag.substring(length, tagLength);
             Matcher matcher = IMAGE_OPTION_PATTERN.matcher(trimedTag);
@@ -663,8 +663,8 @@ public class BodyParser {
     private Conditionnal parseConditionnal() throws DocumentParserException {
         Conditionnal conditionnal = (Conditionnal) EcoreUtil.create(TemplatePackage.Literals.CONDITIONNAL);
         String tag = readTag(conditionnal, conditionnal.getRuns()).trim();
-        boolean headConditionnal = tag.startsWith(TokenType.GDIF.getValue());
-        int tagLength = headConditionnal ? TokenType.GDIF.getValue().length() : TokenType.GDELSEIF.getValue().length();
+        boolean headConditionnal = tag.startsWith(TokenType.IF.getValue());
+        int tagLength = headConditionnal ? TokenType.IF.getValue().length() : TokenType.ELSEIF.getValue().length();
         String query = tag.substring(tagLength).trim();
         AstResult result = queryParser.build(query);
         if (result.getErrors().size() == 0) {
@@ -673,16 +673,16 @@ public class BodyParser {
             conditionnal.getParsingErrors().add(new DocumentParsingError(
                     message(ParsingErrorMessage.INVALIDEXPR, query), conditionnal.getRuns().get(1)));
         }
-        parseCompound(conditionnal, TokenType.GDELSEIF, TokenType.GDELSE, TokenType.GDENDIF);
+        parseCompound(conditionnal, TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
         TokenType nextRunType = getNextTokenType();
         switch (nextRunType) {
-            case GDELSEIF:
+            case ELSEIF:
                 conditionnal.setAlternative(parseConditionnal());
                 break;
-            case GDELSE:
+            case ELSE:
                 Default defaultCompound = (Default) EcoreUtil.create(TemplatePackage.Literals.DEFAULT);
                 readTag(defaultCompound, defaultCompound.getRuns());
-                parseCompound(defaultCompound, TokenType.GDENDIF);
+                parseCompound(defaultCompound, TokenType.ENDIF);
                 conditionnal.setElse(defaultCompound);
 
                 // read up the gd:endif tag if it exists
@@ -690,7 +690,7 @@ public class BodyParser {
                     readTag(conditionnal, conditionnal.getClosingRuns());
                 }
                 break;
-            case GDENDIF:
+            case ENDIF:
                 readTag(conditionnal, conditionnal.getClosingRuns());
                 break; // we just finish the current conditionnal.
             default:
@@ -713,7 +713,7 @@ public class BodyParser {
         Repetition repetition = (Repetition) EcoreUtil.create(TemplatePackage.Literals.REPETITION);
         String tagText = readTag(repetition, repetition.getRuns()).trim();
         // remove the prefix
-        tagText = tagText.substring(TokenType.GDFOR.getValue().length());
+        tagText = tagText.substring(TokenType.FOR.getValue().length());
         // extract the variable;
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
@@ -744,7 +744,7 @@ public class BodyParser {
             repetition.setQuery(result);
         }
         // read up the tags until the "gd:endfor" tag is encountered.
-        parseCompound(repetition, TokenType.GDENDFOR);
+        parseCompound(repetition, TokenType.ENDFOR);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(repetition, repetition.getClosingRuns());
         }

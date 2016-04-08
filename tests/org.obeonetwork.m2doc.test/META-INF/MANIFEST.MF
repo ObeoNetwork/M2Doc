@@ -14,5 +14,6 @@ Import-Package: org.apache.poi,
  org.apache.poi.openxml4j.opc,
  org.apache.poi.xwpf.usermodel,
  org.eclipse.acceleo.query.runtime,
+ org.openxmlformats.schemas.officeDocument.x2006.customProperties,
  org.openxmlformats.schemas.wordprocessingml.x2006.main
 Bundle-Vendor: %providerName

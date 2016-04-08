@@ -145,23 +145,28 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * @return the diagnostic status of the specified diagnostic tree.
      */
     private int getDiagnostic(Diagnostic diagnostic, StringBuilder builder) {
+        String message;
+        int code;
         if (diagnostic.getCode() == Diagnostic.ERROR) {
-            builder.append('\n').append(diagnostic.getMessage());
-            return Diagnostic.ERROR;
+            message = diagnostic.getMessage();
+            code = Diagnostic.ERROR;
         } else {
-            String message = diagnostic.getMessage();
-            if (message != null && !"".equals(message)) {
-                builder.append('\n').append(message);
-            }
-            int childrenCode = diagnostic.getCode();
+            message = diagnostic.getMessage();
+            code = diagnostic.getCode();
             for (Diagnostic child : diagnostic.getChildren()) {
-                int code = getDiagnostic(child, builder);
-                if (code > childrenCode) {
-                    childrenCode = code;
+                int childrenCode = getDiagnostic(child, builder);
+                if (childrenCode > code) {
+                    code = childrenCode;
                 }
             }
-            return childrenCode;
         }
+        if (message != null) {
+            if (builder.length() > 0) {
+                builder.append('\n');
+            }
+            builder.append(message);
+        }
+        return code;
     }
 
     @Override
