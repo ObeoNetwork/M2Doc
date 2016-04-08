@@ -33,26 +33,26 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Compound extends AbstractConstruct {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * Returns the value of the '<em><b>Sub Constructs</b></em>' containment reference list.
-	 * The list contents are of type {@link org.obeonetwork.m2doc.template.AbstractConstruct}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Sub Constructs</b></em>' containment reference list.
+     * The list contents are of type {@link org.obeonetwork.m2doc.template.AbstractConstruct}.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Sub Constructs</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Sub Constructs</em>' containment reference list.
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getCompound_SubConstructs()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Sub Constructs</em>' containment reference list.
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getCompound_SubConstructs()
+     * @model containment="true"
+     * @generated
+     */
 	EList<AbstractConstruct> getSubConstructs();
 
 } // Compound

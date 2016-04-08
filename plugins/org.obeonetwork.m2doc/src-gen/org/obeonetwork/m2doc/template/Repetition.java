@@ -35,62 +35,62 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  */
 public interface Repetition extends Compound {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * Returns the value of the '<em><b>Iteration Var</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Iteration Var</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Iteration Var</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Iteration Var</em>' attribute.
-	 * @see #setIterationVar(String)
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_IterationVar()
-	 * @model
-	 * @generated
-	 */
+     * @return the value of the '<em>Iteration Var</em>' attribute.
+     * @see #setIterationVar(String)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_IterationVar()
+     * @model
+     * @generated
+     */
 	String getIterationVar();
 
 	/**
-	 * Sets the value of the '{@link org.obeonetwork.m2doc.template.Repetition#getIterationVar <em>Iteration Var</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Repetition#getIterationVar <em>Iteration Var</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Iteration Var</em>' attribute.
-	 * @see #getIterationVar()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Iteration Var</em>' attribute.
+     * @see #getIterationVar()
+     * @generated
+     */
 	void setIterationVar(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Query</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Query</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Query</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Query</em>' attribute.
-	 * @see #setQuery(AstResult)
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_Query()
-	 * @model dataType="org.obeonetwork.m2doc.template.AstResult"
-	 * @generated
-	 */
+     * @return the value of the '<em>Query</em>' attribute.
+     * @see #setQuery(AstResult)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_Query()
+     * @model dataType="org.obeonetwork.m2doc.template.AstResult"
+     * @generated
+     */
 	AstResult getQuery();
 
 	/**
-	 * Sets the value of the '{@link org.obeonetwork.m2doc.template.Repetition#getQuery <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Repetition#getQuery <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Query</em>' attribute.
-	 * @see #getQuery()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Query</em>' attribute.
+     * @see #getQuery()
+     * @generated
+     */
 	void setQuery(AstResult value);
 
 } // Repetition

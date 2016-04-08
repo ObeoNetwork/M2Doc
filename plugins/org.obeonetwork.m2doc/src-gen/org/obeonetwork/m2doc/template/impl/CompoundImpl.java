@@ -43,124 +43,124 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  */
 public abstract class CompoundImpl extends AbstractConstructImpl implements Compound {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 	/**
-	 * The cached value of the '{@link #getSubConstructs() <em>Sub Constructs</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getSubConstructs() <em>Sub Constructs</em>}' containment reference list.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSubConstructs()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getSubConstructs()
+     * @generated
+     * @ordered
+     */
 	protected EList<AbstractConstruct> subConstructs;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected CompoundImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return TemplatePackage.Literals.COMPOUND;
-	}
+        return TemplatePackage.Literals.COMPOUND;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EList<AbstractConstruct> getSubConstructs() {
-		if (subConstructs == null) {
-			subConstructs = new EObjectContainmentEList<AbstractConstruct>(AbstractConstruct.class, this, TemplatePackage.COMPOUND__SUB_CONSTRUCTS);
-		}
-		return subConstructs;
-	}
+        if (subConstructs == null) {
+            subConstructs = new EObjectContainmentEList<AbstractConstruct>(AbstractConstruct.class, this, TemplatePackage.COMPOUND__SUB_CONSTRUCTS);
+        }
+        return subConstructs;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
-				return ((InternalEList<?>)getSubConstructs()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID) {
+            case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
+                return ((InternalEList<?>)getSubConstructs()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
-				return getSubConstructs();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
+                return getSubConstructs();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
-				getSubConstructs().clear();
-				getSubConstructs().addAll((Collection<? extends AbstractConstruct>)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
+                getSubConstructs().clear();
+                getSubConstructs().addAll((Collection<? extends AbstractConstruct>)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
-				getSubConstructs().clear();
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
+                getSubConstructs().clear();
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
-				return subConstructs != null && !subConstructs.isEmpty();
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.COMPOUND__SUB_CONSTRUCTS:
+                return subConstructs != null && !subConstructs.isEmpty();
+        }
+        return super.eIsSet(featureID);
+    }
 
 } //CompoundImpl

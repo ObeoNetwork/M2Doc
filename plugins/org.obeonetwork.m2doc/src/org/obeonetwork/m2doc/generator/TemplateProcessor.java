@@ -46,7 +46,6 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.template.VarRef;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
@@ -182,20 +181,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     public AbstractConstruct caseStaticFragment(StaticFragment object) {
         for (XWPFRun run : object.getRuns()) {
             insertRun(run);
-        }
-        return object;
-    }
-
-    @Override
-    public AbstractConstruct caseVarRef(VarRef object) {
-        // retrieve the variable in the definitions
-        Object value = definitions.getValue(object.getVarName());
-        if (value != null) {
-            insertFieldRunReplacement(object.getStyleRun(), value.toString());
-        } else {
-            XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), "unknown variable : " + object.getVarName());
-            run.setBold(true);
-            run.setColor(ERROR_COLOR);
         }
         return object;
     }

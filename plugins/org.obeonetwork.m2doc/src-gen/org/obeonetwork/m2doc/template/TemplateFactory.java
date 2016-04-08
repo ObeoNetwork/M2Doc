@@ -25,152 +25,143 @@ import org.eclipse.emf.ecore.EFactory;
  */
 public interface TemplateFactory extends EFactory {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 	/**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
+     * The singleton instance of the factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	TemplateFactory eINSTANCE = org.obeonetwork.m2doc.template.impl.TemplateFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Conditionnal</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Conditionnal</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Conditionnal</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Conditionnal</em>'.
+     * @generated
+     */
 	Conditionnal createConditionnal();
 
 	/**
-	 * Returns a new object of class '<em>Repetition</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Repetition</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Repetition</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Repetition</em>'.
+     * @generated
+     */
 	Repetition createRepetition();
 
 	/**
-	 * Returns a new object of class '<em>Query</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Query</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Query</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Query</em>'.
+     * @generated
+     */
 	Query createQuery();
 
 	/**
-	 * Returns a new object of class '<em>Table Merge</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Table Merge</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Table Merge</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Table Merge</em>'.
+     * @generated
+     */
 	TableMerge createTableMerge();
 
 	/**
-	 * Returns a new object of class '<em>Table</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Table</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Table</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Table</em>'.
+     * @generated
+     */
 	Table createTable();
 
 	/**
-	 * Returns a new object of class '<em>Row</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Row</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Row</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Row</em>'.
+     * @generated
+     */
 	Row createRow();
 
 	/**
-	 * Returns a new object of class '<em>Cell</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Cell</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cell</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Cell</em>'.
+     * @generated
+     */
 	Cell createCell();
 
 	/**
-	 * Returns a new object of class '<em>Document Template</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Document Template</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Document Template</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Document Template</em>'.
+     * @generated
+     */
 	DocumentTemplate createDocumentTemplate();
 
 	/**
-	 * Returns a new object of class '<em>Image</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Image</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Image</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Image</em>'.
+     * @generated
+     */
 	Image createImage();
 
 	/**
-	 * Returns a new object of class '<em>Default</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Default</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Default</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Default</em>'.
+     * @generated
+     */
 	Default createDefault();
 
 	/**
-	 * Returns a new object of class '<em>Template</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Template</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Template</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Template</em>'.
+     * @generated
+     */
 	Template createTemplate();
 
 	/**
-	 * Returns a new object of class '<em>Representation</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Representation</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Representation</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Representation</em>'.
+     * @generated
+     */
 	Representation createRepresentation();
 
 	/**
-	 * Returns a new object of class '<em>Static Fragment</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Static Fragment</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Static Fragment</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Static Fragment</em>'.
+     * @generated
+     */
 	StaticFragment createStaticFragment();
 
 	/**
-	 * Returns a new object of class '<em>Var Ref</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the package supported by this factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Var Ref</em>'.
-	 * @generated
-	 */
-	VarRef createVarRef();
-
-	/**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
+     * @return the package supported by this factory.
+     * @generated
+     */
 	TemplatePackage getTemplatePackage();
 
 } //TemplateFactory

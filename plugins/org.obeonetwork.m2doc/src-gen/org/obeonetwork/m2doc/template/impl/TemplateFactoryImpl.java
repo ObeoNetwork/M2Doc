@@ -38,454 +38,443 @@ import org.obeonetwork.m2doc.template.*;
  */
 public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
+     * Creates the default factory implementation.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static TemplateFactory init() {
-		try {
-			TemplateFactory theTemplateFactory = (TemplateFactory)EPackage.Registry.INSTANCE.getEFactory(TemplatePackage.eNS_URI);
-			if (theTemplateFactory != null) {
-				return theTemplateFactory;
-			}
-		}
-		catch (Exception exception) {
-			EcorePlugin.INSTANCE.log(exception);
-		}
-		return new TemplateFactoryImpl();
-	}
+        try {
+            TemplateFactory theTemplateFactory = (TemplateFactory)EPackage.Registry.INSTANCE.getEFactory(TemplatePackage.eNS_URI);
+            if (theTemplateFactory != null) {
+                return theTemplateFactory;
+            }
+        }
+        catch (Exception exception) {
+            EcorePlugin.INSTANCE.log(exception);
+        }
+        return new TemplateFactoryImpl();
+    }
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
+     * Creates an instance of the factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public TemplateFactoryImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public EObject create(EClass eClass) {
-		switch (eClass.getClassifierID()) {
-			case TemplatePackage.CONDITIONNAL: return createConditionnal();
-			case TemplatePackage.REPETITION: return createRepetition();
-			case TemplatePackage.QUERY: return createQuery();
-			case TemplatePackage.TABLE_MERGE: return createTableMerge();
-			case TemplatePackage.IMAGE: return createImage();
-			case TemplatePackage.DEFAULT: return createDefault();
-			case TemplatePackage.TEMPLATE: return createTemplate();
-			case TemplatePackage.REPRESENTATION: return createRepresentation();
-			case TemplatePackage.STATIC_FRAGMENT: return createStaticFragment();
-			case TemplatePackage.VAR_REF: return createVarRef();
-			case TemplatePackage.TABLE: return createTable();
-			case TemplatePackage.ROW: return createRow();
-			case TemplatePackage.CELL: return createCell();
-			case TemplatePackage.DOCUMENT_TEMPLATE: return createDocumentTemplate();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-		}
-	}
+        switch (eClass.getClassifierID()) {
+            case TemplatePackage.CONDITIONNAL: return createConditionnal();
+            case TemplatePackage.REPETITION: return createRepetition();
+            case TemplatePackage.QUERY: return createQuery();
+            case TemplatePackage.TABLE_MERGE: return createTableMerge();
+            case TemplatePackage.IMAGE: return createImage();
+            case TemplatePackage.DEFAULT: return createDefault();
+            case TemplatePackage.TEMPLATE: return createTemplate();
+            case TemplatePackage.REPRESENTATION: return createRepresentation();
+            case TemplatePackage.STATIC_FRAGMENT: return createStaticFragment();
+            case TemplatePackage.TABLE: return createTable();
+            case TemplatePackage.ROW: return createRow();
+            case TemplatePackage.CELL: return createCell();
+            case TemplatePackage.DOCUMENT_TEMPLATE: return createDocumentTemplate();
+            default:
+                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+        }
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
-		switch (eDataType.getClassifierID()) {
-			case TemplatePackage.QUERY_BEHAVIOR:
-				return createQueryBehaviorFromString(eDataType, initialValue);
-			case TemplatePackage.POSITION:
-				return createPOSITIONFromString(eDataType, initialValue);
-			case TemplatePackage.BODY:
-				return createBodyFromString(eDataType, initialValue);
-			case TemplatePackage.WTABLE:
-				return createWTableFromString(eDataType, initialValue);
-			case TemplatePackage.RUN:
-				return createRunFromString(eDataType, initialValue);
-			case TemplatePackage.AST_RESULT:
-				return createAstResultFromString(eDataType, initialValue);
-			case TemplatePackage.DOCUMENT_PARSING_ERROR:
-				return createDocumentParsingErrorFromString(eDataType, initialValue);
-			case TemplatePackage.WTABLE_ROW:
-				return createWTableRowFromString(eDataType, initialValue);
-			case TemplatePackage.WTABLE_CELL:
-				return createWTableCellFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
+        switch (eDataType.getClassifierID()) {
+            case TemplatePackage.QUERY_BEHAVIOR:
+                return createQueryBehaviorFromString(eDataType, initialValue);
+            case TemplatePackage.POSITION:
+                return createPOSITIONFromString(eDataType, initialValue);
+            case TemplatePackage.BODY:
+                return createBodyFromString(eDataType, initialValue);
+            case TemplatePackage.WTABLE:
+                return createWTableFromString(eDataType, initialValue);
+            case TemplatePackage.RUN:
+                return createRunFromString(eDataType, initialValue);
+            case TemplatePackage.AST_RESULT:
+                return createAstResultFromString(eDataType, initialValue);
+            case TemplatePackage.DOCUMENT_PARSING_ERROR:
+                return createDocumentParsingErrorFromString(eDataType, initialValue);
+            case TemplatePackage.WTABLE_ROW:
+                return createWTableRowFromString(eDataType, initialValue);
+            case TemplatePackage.WTABLE_CELL:
+                return createWTableCellFromString(eDataType, initialValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+        }
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
-		switch (eDataType.getClassifierID()) {
-			case TemplatePackage.QUERY_BEHAVIOR:
-				return convertQueryBehaviorToString(eDataType, instanceValue);
-			case TemplatePackage.POSITION:
-				return convertPOSITIONToString(eDataType, instanceValue);
-			case TemplatePackage.BODY:
-				return convertBodyToString(eDataType, instanceValue);
-			case TemplatePackage.WTABLE:
-				return convertWTableToString(eDataType, instanceValue);
-			case TemplatePackage.RUN:
-				return convertRunToString(eDataType, instanceValue);
-			case TemplatePackage.AST_RESULT:
-				return convertAstResultToString(eDataType, instanceValue);
-			case TemplatePackage.DOCUMENT_PARSING_ERROR:
-				return convertDocumentParsingErrorToString(eDataType, instanceValue);
-			case TemplatePackage.WTABLE_ROW:
-				return convertWTableRowToString(eDataType, instanceValue);
-			case TemplatePackage.WTABLE_CELL:
-				return convertWTableCellToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
+        switch (eDataType.getClassifierID()) {
+            case TemplatePackage.QUERY_BEHAVIOR:
+                return convertQueryBehaviorToString(eDataType, instanceValue);
+            case TemplatePackage.POSITION:
+                return convertPOSITIONToString(eDataType, instanceValue);
+            case TemplatePackage.BODY:
+                return convertBodyToString(eDataType, instanceValue);
+            case TemplatePackage.WTABLE:
+                return convertWTableToString(eDataType, instanceValue);
+            case TemplatePackage.RUN:
+                return convertRunToString(eDataType, instanceValue);
+            case TemplatePackage.AST_RESULT:
+                return convertAstResultToString(eDataType, instanceValue);
+            case TemplatePackage.DOCUMENT_PARSING_ERROR:
+                return convertDocumentParsingErrorToString(eDataType, instanceValue);
+            case TemplatePackage.WTABLE_ROW:
+                return convertWTableRowToString(eDataType, instanceValue);
+            case TemplatePackage.WTABLE_CELL:
+                return convertWTableCellToString(eDataType, instanceValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+        }
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Conditionnal createConditionnal() {
-		ConditionnalImpl conditionnal = new ConditionnalImpl();
-		return conditionnal;
-	}
+        ConditionnalImpl conditionnal = new ConditionnalImpl();
+        return conditionnal;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Repetition createRepetition() {
-		RepetitionImpl repetition = new RepetitionImpl();
-		return repetition;
-	}
+        RepetitionImpl repetition = new RepetitionImpl();
+        return repetition;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Query createQuery() {
-		QueryImpl query = new QueryImpl();
-		return query;
-	}
+        QueryImpl query = new QueryImpl();
+        return query;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public TableMerge createTableMerge() {
-		TableMergeImpl tableMerge = new TableMergeImpl();
-		return tableMerge;
-	}
+        TableMergeImpl tableMerge = new TableMergeImpl();
+        return tableMerge;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Table createTable() {
-		TableImpl table = new TableImpl();
-		return table;
-	}
+        TableImpl table = new TableImpl();
+        return table;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Row createRow() {
-		RowImpl row = new RowImpl();
-		return row;
-	}
+        RowImpl row = new RowImpl();
+        return row;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Cell createCell() {
-		CellImpl cell = new CellImpl();
-		return cell;
-	}
+        CellImpl cell = new CellImpl();
+        return cell;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public DocumentTemplate createDocumentTemplate() {
-		DocumentTemplateImpl documentTemplate = new DocumentTemplateImpl();
-		return documentTemplate;
-	}
+        DocumentTemplateImpl documentTemplate = new DocumentTemplateImpl();
+        return documentTemplate;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Image createImage() {
-		ImageImpl image = new ImageImpl();
-		return image;
-	}
+        ImageImpl image = new ImageImpl();
+        return image;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Default createDefault() {
-		DefaultImpl default_ = new DefaultImpl();
-		return default_;
-	}
+        DefaultImpl default_ = new DefaultImpl();
+        return default_;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Template createTemplate() {
-		TemplateImpl template = new TemplateImpl();
-		return template;
-	}
+        TemplateImpl template = new TemplateImpl();
+        return template;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Representation createRepresentation() {
-		RepresentationImpl representation = new RepresentationImpl();
-		return representation;
-	}
+        RepresentationImpl representation = new RepresentationImpl();
+        return representation;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public StaticFragment createStaticFragment() {
-		StaticFragmentImpl staticFragment = new StaticFragmentImpl();
-		return staticFragment;
-	}
+        StaticFragmentImpl staticFragment = new StaticFragmentImpl();
+        return staticFragment;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public VarRef createVarRef() {
-		VarRefImpl varRef = new VarRefImpl();
-		return varRef;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public QueryBehavior createQueryBehaviorFromString(EDataType eDataType, String initialValue) {
-		QueryBehavior result = QueryBehavior.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
+        QueryBehavior result = QueryBehavior.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertQueryBehaviorToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
+        return instanceValue == null ? null : instanceValue.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public POSITION createPOSITIONFromString(EDataType eDataType, String initialValue) {
-		POSITION result = POSITION.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
+        POSITION result = POSITION.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertPOSITIONToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
+        return instanceValue == null ? null : instanceValue.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public IBody createBodyFromString(EDataType eDataType, String initialValue) {
-		return (IBody)super.createFromString(eDataType, initialValue);
-	}
+        return (IBody)super.createFromString(eDataType, initialValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertBodyToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+        return super.convertToString(eDataType, instanceValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public XWPFTable createWTableFromString(EDataType eDataType, String initialValue) {
-		return (XWPFTable)super.createFromString(eDataType, initialValue);
-	}
+        return (XWPFTable)super.createFromString(eDataType, initialValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertWTableToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+        return super.convertToString(eDataType, instanceValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public XWPFRun createRunFromString(EDataType eDataType, String initialValue) {
-		return (XWPFRun)super.createFromString(eDataType, initialValue);
-	}
+        return (XWPFRun)super.createFromString(eDataType, initialValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertRunToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+        return super.convertToString(eDataType, instanceValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public AstResult createAstResultFromString(EDataType eDataType, String initialValue) {
-		return (AstResult)super.createFromString(eDataType, initialValue);
-	}
+        return (AstResult)super.createFromString(eDataType, initialValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertAstResultToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+        return super.convertToString(eDataType, instanceValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public DocumentParsingError createDocumentParsingErrorFromString(EDataType eDataType, String initialValue) {
-		return (DocumentParsingError)super.createFromString(eDataType, initialValue);
-	}
+        return (DocumentParsingError)super.createFromString(eDataType, initialValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertDocumentParsingErrorToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+        return super.convertToString(eDataType, instanceValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public XWPFTableRow createWTableRowFromString(EDataType eDataType, String initialValue) {
-		return (XWPFTableRow)super.createFromString(eDataType, initialValue);
-	}
+        return (XWPFTableRow)super.createFromString(eDataType, initialValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertWTableRowToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+        return super.convertToString(eDataType, instanceValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public XWPFTableCell createWTableCellFromString(EDataType eDataType, String initialValue) {
-		return (XWPFTableCell)super.createFromString(eDataType, initialValue);
-	}
+        return (XWPFTableCell)super.createFromString(eDataType, initialValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertWTableCellToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
+        return super.convertToString(eDataType, instanceValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public TemplatePackage getTemplatePackage() {
-		return (TemplatePackage)getEPackage();
-	}
+        return (TemplatePackage)getEPackage();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @deprecated
-	 * @generated
-	 */
+     * @deprecated
+     * @generated
+     */
 	@Deprecated
 	public static TemplatePackage getPackage() {
-		return TemplatePackage.eINSTANCE;
-	}
+        return TemplatePackage.eINSTANCE;
+    }
 
 } //TemplateFactoryImpl

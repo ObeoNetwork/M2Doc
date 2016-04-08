@@ -38,197 +38,197 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  */
 public class RepetitionImpl extends CompoundImpl implements Repetition {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * The default value of the '{@link #getIterationVar() <em>Iteration Var</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getIterationVar() <em>Iteration Var</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIterationVar()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIterationVar()
+     * @generated
+     * @ordered
+     */
 	protected static final String ITERATION_VAR_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getIterationVar() <em>Iteration Var</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getIterationVar() <em>Iteration Var</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIterationVar()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIterationVar()
+     * @generated
+     * @ordered
+     */
 	protected String iterationVar = ITERATION_VAR_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getQuery()
+     * @generated
+     * @ordered
+     */
 	protected static final AstResult QUERY_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getQuery()
+     * @generated
+     * @ordered
+     */
 	protected AstResult query = QUERY_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected RepetitionImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return TemplatePackage.Literals.REPETITION;
-	}
+        return TemplatePackage.Literals.REPETITION;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getIterationVar() {
-		return iterationVar;
-	}
+        return iterationVar;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setIterationVar(String newIterationVar) {
-		String oldIterationVar = iterationVar;
-		iterationVar = newIterationVar;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.REPETITION__ITERATION_VAR, oldIterationVar, iterationVar));
-	}
+        String oldIterationVar = iterationVar;
+        iterationVar = newIterationVar;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.REPETITION__ITERATION_VAR, oldIterationVar, iterationVar));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public AstResult getQuery() {
-		return query;
-	}
+        return query;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setQuery(AstResult newQuery) {
-		AstResult oldQuery = query;
-		query = newQuery;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.REPETITION__QUERY, oldQuery, query));
-	}
+        AstResult oldQuery = query;
+        query = newQuery;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.REPETITION__QUERY, oldQuery, query));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case TemplatePackage.REPETITION__ITERATION_VAR:
-				return getIterationVar();
-			case TemplatePackage.REPETITION__QUERY:
-				return getQuery();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case TemplatePackage.REPETITION__ITERATION_VAR:
+                return getIterationVar();
+            case TemplatePackage.REPETITION__QUERY:
+                return getQuery();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case TemplatePackage.REPETITION__ITERATION_VAR:
-				setIterationVar((String)newValue);
-				return;
-			case TemplatePackage.REPETITION__QUERY:
-				setQuery((AstResult)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case TemplatePackage.REPETITION__ITERATION_VAR:
+                setIterationVar((String)newValue);
+                return;
+            case TemplatePackage.REPETITION__QUERY:
+                setQuery((AstResult)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.REPETITION__ITERATION_VAR:
-				setIterationVar(ITERATION_VAR_EDEFAULT);
-				return;
-			case TemplatePackage.REPETITION__QUERY:
-				setQuery(QUERY_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.REPETITION__ITERATION_VAR:
+                setIterationVar(ITERATION_VAR_EDEFAULT);
+                return;
+            case TemplatePackage.REPETITION__QUERY:
+                setQuery(QUERY_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.REPETITION__ITERATION_VAR:
-				return ITERATION_VAR_EDEFAULT == null ? iterationVar != null : !ITERATION_VAR_EDEFAULT.equals(iterationVar);
-			case TemplatePackage.REPETITION__QUERY:
-				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.REPETITION__ITERATION_VAR:
+                return ITERATION_VAR_EDEFAULT == null ? iterationVar != null : !ITERATION_VAR_EDEFAULT.equals(iterationVar);
+            case TemplatePackage.REPETITION__QUERY:
+                return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+        if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (iterationVar: ");
-		result.append(iterationVar);
-		result.append(", query: ");
-		result.append(query);
-		result.append(')');
-		return result.toString();
-	}
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (iterationVar: ");
+        result.append(iterationVar);
+        result.append(", query: ");
+        result.append(query);
+        result.append(')');
+        return result.toString();
+    }
 
 } //RepetitionImpl

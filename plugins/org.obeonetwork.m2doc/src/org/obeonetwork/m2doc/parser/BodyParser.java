@@ -49,7 +49,6 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
-import org.obeonetwork.m2doc.template.VarRef;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFldChar;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
@@ -251,8 +250,6 @@ public class BodyParser {
                     result = TokenType.TABLE;
                 } else if (code.startsWith(TokenType.ELT.getValue())) {
                     result = TokenType.ELT;
-                } else if (code.startsWith(TokenType.VAR.getValue())) {
-                    result = TokenType.VAR;
                 } else if (code.startsWith(TokenType.LET.getValue())) {
                     result = TokenType.LET;
                 } else if (code.startsWith(TokenType.ENDLET.getValue())) {
@@ -337,9 +334,6 @@ public class BodyParser {
                     break;
                 case STATIC:
                     compound.getSubConstructs().add(parseStaticFragment());
-                    break;
-                case VAR:
-                    compound.getSubConstructs().add(parseVar());
                     break;
                 case WTABLE:
                     compound.getSubConstructs().add(parseTable(runIterator.next().getTable()));
@@ -459,23 +453,6 @@ public class BodyParser {
     }
 
     // CHECKSTYLE:ON
-
-    /**
-     * Parses a tag formed like "{var:varname}" Parser is positionned on the.
-     * first run of the field
-     * 
-     * @return the VarRef parsed.
-     */
-    private VarRef parseVar() {
-        VarRef result = (VarRef) EcoreUtil.create(TemplatePackage.Literals.VAR_REF);
-        String varName = readTag(result, result.getRuns()).trim().substring(TokenType.VAR.getValue().length());
-        if ("".equals(varName)) {
-            result.getParsingErrors()
-                    .add(new DocumentParsingError(message(ParsingErrorMessage.NOVARDEFINED), result.getRuns().get(1)));
-        }
-        result.setVarName(varName);
-        return result;
-    }
 
     /**
      * Parses a let construct.

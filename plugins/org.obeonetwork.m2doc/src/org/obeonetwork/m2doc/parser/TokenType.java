@@ -18,8 +18,8 @@ package org.obeonetwork.m2doc.parser;
  */
 public enum TokenType {
     AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"),
-    TABLE("m:table"), LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), VAR("var:"), STATIC("static"),
-    IMAGE("m:image"), EOF("end of file."), WTABLE("table");
+    TABLE("m:table"), LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), STATIC("static"), IMAGE("m:image"),
+    EOF("end of file."), WTABLE("table");
 
     private String value;
 

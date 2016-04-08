@@ -69,13 +69,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//AbstractConstruct"/>
-  <eClassifiers xsi:type="ecore:EClass" name="VarRef" eSuperTypes="#//AbstractConstruct">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="documentation" value="remplace le champ par la valeur de la variable dans l'environnement ou par un commentaire disant que la variable n'est pas définie."/>
-      <details key="syntax" value="{var:varName}"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="varName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="QueryBehavior">
     <eLiterals name="ICON"/>
     <eLiterals name="LABEL" value="1"/>

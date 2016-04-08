@@ -36,62 +36,62 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Cell extends EObject {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * Returns the value of the '<em><b>Template</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Template</b></em>' containment reference.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Template</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Template</em>' containment reference.
-	 * @see #setTemplate(Template)
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getCell_Template()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Template</em>' containment reference.
+     * @see #setTemplate(Template)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getCell_Template()
+     * @model containment="true"
+     * @generated
+     */
 	Template getTemplate();
 
 	/**
-	 * Sets the value of the '{@link org.obeonetwork.m2doc.template.Cell#getTemplate <em>Template</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Cell#getTemplate <em>Template</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Template</em>' containment reference.
-	 * @see #getTemplate()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Template</em>' containment reference.
+     * @see #getTemplate()
+     * @generated
+     */
 	void setTemplate(Template value);
 
 	/**
-	 * Returns the value of the '<em><b>Table Cell</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Table Cell</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Table Cell</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Table Cell</em>' attribute.
-	 * @see #setTableCell(XWPFTableCell)
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getCell_TableCell()
-	 * @model dataType="org.obeonetwork.m2doc.template.WTableCell"
-	 * @generated
-	 */
+     * @return the value of the '<em>Table Cell</em>' attribute.
+     * @see #setTableCell(XWPFTableCell)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getCell_TableCell()
+     * @model dataType="org.obeonetwork.m2doc.template.WTableCell"
+     * @generated
+     */
 	XWPFTableCell getTableCell();
 
 	/**
-	 * Sets the value of the '{@link org.obeonetwork.m2doc.template.Cell#getTableCell <em>Table Cell</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Cell#getTableCell <em>Table Cell</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Table Cell</em>' attribute.
-	 * @see #getTableCell()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Table Cell</em>' attribute.
+     * @see #getTableCell()
+     * @generated
+     */
 	void setTableCell(XWPFTableCell value);
 
 } // Cell

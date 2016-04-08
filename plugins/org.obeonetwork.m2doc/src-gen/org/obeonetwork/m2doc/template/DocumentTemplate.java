@@ -37,68 +37,68 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface DocumentTemplate extends EObject {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * Returns the value of the '<em><b>Headers</b></em>' containment reference list.
-	 * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Headers</b></em>' containment reference list.
+     * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Headers</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Headers</em>' containment reference list.
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Headers()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Headers</em>' containment reference list.
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Headers()
+     * @model containment="true"
+     * @generated
+     */
 	EList<Template> getHeaders();
 
 	/**
-	 * Returns the value of the '<em><b>Footers</b></em>' containment reference list.
-	 * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Footers</b></em>' containment reference list.
+     * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Footers</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Footers</em>' containment reference list.
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Footers()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Footers</em>' containment reference list.
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Footers()
+     * @model containment="true"
+     * @generated
+     */
 	EList<Template> getFooters();
 
 	/**
-	 * Returns the value of the '<em><b>Body</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Body</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Body</em>' containment reference.
-	 * @see #setBody(Template)
-	 * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Body()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Body</em>' containment reference.
+     * @see #setBody(Template)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Body()
+     * @model containment="true"
+     * @generated
+     */
 	Template getBody();
 
 	/**
-	 * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Body</em>' containment reference.
-	 * @see #getBody()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Body</em>' containment reference.
+     * @see #getBody()
+     * @generated
+     */
 	void setBody(Template value);
 
 } // DocumentTemplate

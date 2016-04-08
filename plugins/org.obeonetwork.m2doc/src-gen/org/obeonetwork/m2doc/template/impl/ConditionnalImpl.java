@@ -41,287 +41,287 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  */
 public class ConditionnalImpl extends CompoundImpl implements Conditionnal {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * The cached value of the '{@link #getAlternative() <em>Alternative</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getAlternative() <em>Alternative</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAlternative()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getAlternative()
+     * @generated
+     * @ordered
+     */
 	protected Conditionnal alternative;
 
 	/**
-	 * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getElse()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getElse()
+     * @generated
+     * @ordered
+     */
 	protected Default else_;
 
 	/**
-	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getQuery()
+     * @generated
+     * @ordered
+     */
 	protected static final AstResult QUERY_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getQuery()
+     * @generated
+     * @ordered
+     */
 	protected AstResult query = QUERY_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ConditionnalImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return TemplatePackage.Literals.CONDITIONNAL;
-	}
+        return TemplatePackage.Literals.CONDITIONNAL;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Conditionnal getAlternative() {
-		return alternative;
-	}
+        return alternative;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public NotificationChain basicSetAlternative(Conditionnal newAlternative, NotificationChain msgs) {
-		Conditionnal oldAlternative = alternative;
-		alternative = newAlternative;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ALTERNATIVE, oldAlternative, newAlternative);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
+        Conditionnal oldAlternative = alternative;
+        alternative = newAlternative;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ALTERNATIVE, oldAlternative, newAlternative);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setAlternative(Conditionnal newAlternative) {
-		if (newAlternative != alternative) {
-			NotificationChain msgs = null;
-			if (alternative != null)
-				msgs = ((InternalEObject)alternative).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ALTERNATIVE, null, msgs);
-			if (newAlternative != null)
-				msgs = ((InternalEObject)newAlternative).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ALTERNATIVE, null, msgs);
-			msgs = basicSetAlternative(newAlternative, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ALTERNATIVE, newAlternative, newAlternative));
-	}
+        if (newAlternative != alternative) {
+            NotificationChain msgs = null;
+            if (alternative != null)
+                msgs = ((InternalEObject)alternative).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ALTERNATIVE, null, msgs);
+            if (newAlternative != null)
+                msgs = ((InternalEObject)newAlternative).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ALTERNATIVE, null, msgs);
+            msgs = basicSetAlternative(newAlternative, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ALTERNATIVE, newAlternative, newAlternative));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public AstResult getQuery() {
-		return query;
-	}
+        return query;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setQuery(AstResult newQuery) {
-		AstResult oldQuery = query;
-		query = newQuery;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__QUERY, oldQuery, query));
-	}
+        AstResult oldQuery = query;
+        query = newQuery;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__QUERY, oldQuery, query));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Default getElse() {
-		return else_;
-	}
+        return else_;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public NotificationChain basicSetElse(Default newElse, NotificationChain msgs) {
-		Default oldElse = else_;
-		else_ = newElse;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ELSE, oldElse, newElse);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
+        Default oldElse = else_;
+        else_ = newElse;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ELSE, oldElse, newElse);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setElse(Default newElse) {
-		if (newElse != else_) {
-			NotificationChain msgs = null;
-			if (else_ != null)
-				msgs = ((InternalEObject)else_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ELSE, null, msgs);
-			if (newElse != null)
-				msgs = ((InternalEObject)newElse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ELSE, null, msgs);
-			msgs = basicSetElse(newElse, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ELSE, newElse, newElse));
-	}
+        if (newElse != else_) {
+            NotificationChain msgs = null;
+            if (else_ != null)
+                msgs = ((InternalEObject)else_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ELSE, null, msgs);
+            if (newElse != null)
+                msgs = ((InternalEObject)newElse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.CONDITIONNAL__ELSE, null, msgs);
+            msgs = basicSetElse(newElse, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONDITIONNAL__ELSE, newElse, newElse));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
-				return basicSetAlternative(null, msgs);
-			case TemplatePackage.CONDITIONNAL__ELSE:
-				return basicSetElse(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID) {
+            case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+                return basicSetAlternative(null, msgs);
+            case TemplatePackage.CONDITIONNAL__ELSE:
+                return basicSetElse(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
-				return getAlternative();
-			case TemplatePackage.CONDITIONNAL__ELSE:
-				return getElse();
-			case TemplatePackage.CONDITIONNAL__QUERY:
-				return getQuery();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+                return getAlternative();
+            case TemplatePackage.CONDITIONNAL__ELSE:
+                return getElse();
+            case TemplatePackage.CONDITIONNAL__QUERY:
+                return getQuery();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
-				setAlternative((Conditionnal)newValue);
-				return;
-			case TemplatePackage.CONDITIONNAL__ELSE:
-				setElse((Default)newValue);
-				return;
-			case TemplatePackage.CONDITIONNAL__QUERY:
-				setQuery((AstResult)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+                setAlternative((Conditionnal)newValue);
+                return;
+            case TemplatePackage.CONDITIONNAL__ELSE:
+                setElse((Default)newValue);
+                return;
+            case TemplatePackage.CONDITIONNAL__QUERY:
+                setQuery((AstResult)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
-				setAlternative((Conditionnal)null);
-				return;
-			case TemplatePackage.CONDITIONNAL__ELSE:
-				setElse((Default)null);
-				return;
-			case TemplatePackage.CONDITIONNAL__QUERY:
-				setQuery(QUERY_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+                setAlternative((Conditionnal)null);
+                return;
+            case TemplatePackage.CONDITIONNAL__ELSE:
+                setElse((Default)null);
+                return;
+            case TemplatePackage.CONDITIONNAL__QUERY:
+                setQuery(QUERY_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
-				return alternative != null;
-			case TemplatePackage.CONDITIONNAL__ELSE:
-				return else_ != null;
-			case TemplatePackage.CONDITIONNAL__QUERY:
-				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.CONDITIONNAL__ALTERNATIVE:
+                return alternative != null;
+            case TemplatePackage.CONDITIONNAL__ELSE:
+                return else_ != null;
+            case TemplatePackage.CONDITIONNAL__QUERY:
+                return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+        if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (query: ");
-		result.append(query);
-		result.append(')');
-		return result.toString();
-	}
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (query: ");
+        result.append(query);
+        result.append(')');
+        return result.toString();
+    }
 
 } //ConditionnalImpl

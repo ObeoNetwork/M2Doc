@@ -46,192 +46,192 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  */
 public class TableImpl extends AbstractConstructImpl implements Table {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
 	/**
-	 * The cached value of the '{@link #getRows() <em>Rows</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getRows() <em>Rows</em>}' containment reference list.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getRows()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getRows()
+     * @generated
+     * @ordered
+     */
 	protected EList<Row> rows;
 
 	/**
-	 * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getTable() <em>Table</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTable()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getTable()
+     * @generated
+     * @ordered
+     */
 	protected static final XWPFTable TABLE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getTable() <em>Table</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getTable() <em>Table</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTable()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getTable()
+     * @generated
+     * @ordered
+     */
 	protected XWPFTable table = TABLE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected TableImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return TemplatePackage.Literals.TABLE;
-	}
+        return TemplatePackage.Literals.TABLE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EList<Row> getRows() {
-		if (rows == null) {
-			rows = new EObjectContainmentEList<Row>(Row.class, this, TemplatePackage.TABLE__ROWS);
-		}
-		return rows;
-	}
+        if (rows == null) {
+            rows = new EObjectContainmentEList<Row>(Row.class, this, TemplatePackage.TABLE__ROWS);
+        }
+        return rows;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public XWPFTable getTable() {
-		return table;
-	}
+        return table;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setTable(XWPFTable newTable) {
-		XWPFTable oldTable = table;
-		table = newTable;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TABLE__TABLE, oldTable, table));
-	}
+        XWPFTable oldTable = table;
+        table = newTable;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TABLE__TABLE, oldTable, table));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				return ((InternalEList<?>)getRows()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID) {
+            case TemplatePackage.TABLE__ROWS:
+                return ((InternalEList<?>)getRows()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				return getRows();
-			case TemplatePackage.TABLE__TABLE:
-				return getTable();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case TemplatePackage.TABLE__ROWS:
+                return getRows();
+            case TemplatePackage.TABLE__TABLE:
+                return getTable();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				getRows().clear();
-				getRows().addAll((Collection<? extends Row>)newValue);
-				return;
-			case TemplatePackage.TABLE__TABLE:
-				setTable((XWPFTable)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case TemplatePackage.TABLE__ROWS:
+                getRows().clear();
+                getRows().addAll((Collection<? extends Row>)newValue);
+                return;
+            case TemplatePackage.TABLE__TABLE:
+                setTable((XWPFTable)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				getRows().clear();
-				return;
-			case TemplatePackage.TABLE__TABLE:
-				setTable(TABLE_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.TABLE__ROWS:
+                getRows().clear();
+                return;
+            case TemplatePackage.TABLE__TABLE:
+                setTable(TABLE_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case TemplatePackage.TABLE__ROWS:
-				return rows != null && !rows.isEmpty();
-			case TemplatePackage.TABLE__TABLE:
-				return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case TemplatePackage.TABLE__ROWS:
+                return rows != null && !rows.isEmpty();
+            case TemplatePackage.TABLE__TABLE:
+                return TABLE_EDEFAULT == null ? table != null : !TABLE_EDEFAULT.equals(table);
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+        if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (table: ");
-		result.append(table);
-		result.append(')');
-		return result.toString();
-	}
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (table: ");
+        result.append(table);
+        result.append(')');
+        return result.toString();
+    }
 
 } //TableImpl
