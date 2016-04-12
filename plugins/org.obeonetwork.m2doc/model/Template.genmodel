@@ -67,9 +67,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationId"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//StaticFragment"/>
-    <genClasses ecoreClass="Template.ecore#//VarRef">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//VarRef/varName"/>
-    </genClasses>
     <genClasses ecoreClass="Template.ecore#//Table">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Table/rows"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Table/table"/>

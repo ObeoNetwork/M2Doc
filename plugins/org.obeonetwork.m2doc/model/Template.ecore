@@ -50,7 +50,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legendPOS" eType="#//POSITION"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legendPOS" eType="#//POSITION"
+        defaultValueLiteral="BELOW"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Default" eSuperTypes="#//Compound"/>
   <eClassifiers xsi:type="ecore:EClass" name="Compound" abstract="true" eSuperTypes="#//AbstractConstruct">

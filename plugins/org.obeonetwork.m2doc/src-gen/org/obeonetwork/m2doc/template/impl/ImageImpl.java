@@ -135,7 +135,7 @@ public class ImageImpl extends AbstractConstructImpl implements Image {
      * @generated
      * @ordered
      */
-	protected static final POSITION LEGEND_POS_EDEFAULT = POSITION.ABOVE;
+	protected static final POSITION LEGEND_POS_EDEFAULT = POSITION.BELOW;
 
 	/**
      * The cached value of the '{@link #getLegendPOS() <em>Legend POS</em>}' attribute.

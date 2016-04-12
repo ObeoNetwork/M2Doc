@@ -148,6 +148,7 @@ public interface Image extends AbstractConstruct {
 
 	/**
      * Returns the value of the '<em><b>Legend POS</b></em>' attribute.
+     * The default value is <code>"BELOW"</code>.
      * The literals are from the enumeration {@link org.obeonetwork.m2doc.template.POSITION}.
      * <!-- begin-user-doc -->
 	 * <p>
@@ -159,7 +160,7 @@ public interface Image extends AbstractConstruct {
      * @see org.obeonetwork.m2doc.template.POSITION
      * @see #setLegendPOS(POSITION)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getImage_LegendPOS()
-     * @model
+     * @model default="BELOW"
      * @generated
      */
 	POSITION getLegendPOS();
