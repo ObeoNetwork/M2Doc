@@ -246,8 +246,6 @@ public class BodyParser {
                     result = TokenType.ELSE;
                 } else if (code.startsWith(TokenType.ENDIF.getValue())) {
                     result = TokenType.ENDIF;
-                } else if (code.startsWith(TokenType.TABLE.getValue())) {
-                    result = TokenType.TABLE;
                 } else if (code.startsWith(TokenType.ELT.getValue())) {
                     result = TokenType.ELT;
                 } else if (code.startsWith(TokenType.LET.getValue())) {
