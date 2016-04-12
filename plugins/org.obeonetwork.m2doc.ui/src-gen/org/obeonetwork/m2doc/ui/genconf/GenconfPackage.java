@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.EReference;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
  * @see org.obeonetwork.m2doc.ui.genconf.GenconfFactory
  * @model kind="package"
  * @generated
@@ -40,7 +39,6 @@ public interface GenconfPackage extends EPackage {
      * The package name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     String eNAME = "genconf";
@@ -49,7 +47,6 @@ public interface GenconfPackage extends EPackage {
      * The package namespace URI.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     String eNS_URI = "http://www.obeonetwork.org/m2doc/genconf/1.0";
@@ -58,7 +55,6 @@ public interface GenconfPackage extends EPackage {
      * The package namespace name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     String eNS_PREFIX = "genconf";
@@ -67,7 +63,6 @@ public interface GenconfPackage extends EPackage {
      * The singleton instance of the package.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     GenconfPackage eINSTANCE = org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl.init();
@@ -76,7 +71,6 @@ public interface GenconfPackage extends EPackage {
      * The meta object id for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl <em>Generation</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl
      * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getGeneration()
      * @generated
@@ -87,7 +81,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -97,7 +90,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Template File Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -107,7 +99,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Result File Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -117,7 +108,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Time Stamped</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -127,7 +117,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Definitions</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -137,27 +126,33 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Packages NSURI</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
     int GENERATION__PACKAGES_NSURI = 5;
 
     /**
-     * The number of structural features of the '<em>Generation</em>' class.
+     * The feature id for the '<em><b>Services Tokens</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
-    int GENERATION_FEATURE_COUNT = 6;
+    int GENERATION__SERVICES_TOKENS = 6;
+
+    /**
+     * The number of structural features of the '<em>Generation</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GENERATION_FEATURE_COUNT = 7;
 
     /**
      * The number of operations of the '<em>Generation</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -167,7 +162,6 @@ public interface GenconfPackage extends EPackage {
      * The meta object id for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.DefinitionImpl <em>Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see org.obeonetwork.m2doc.ui.genconf.impl.DefinitionImpl
      * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getDefinition()
      * @generated
@@ -178,7 +172,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Key</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -188,7 +181,6 @@ public interface GenconfPackage extends EPackage {
      * The number of structural features of the '<em>Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -198,7 +190,6 @@ public interface GenconfPackage extends EPackage {
      * The number of operations of the '<em>Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -208,7 +199,6 @@ public interface GenconfPackage extends EPackage {
      * The meta object id for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.ModelDefinitionImpl <em>Model Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see org.obeonetwork.m2doc.ui.genconf.impl.ModelDefinitionImpl
      * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getModelDefinition()
      * @generated
@@ -219,7 +209,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Key</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -229,7 +218,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Value</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -239,7 +227,6 @@ public interface GenconfPackage extends EPackage {
      * The number of structural features of the '<em>Model Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -249,7 +236,6 @@ public interface GenconfPackage extends EPackage {
      * The number of operations of the '<em>Model Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -259,7 +245,6 @@ public interface GenconfPackage extends EPackage {
      * The meta object id for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.StringDefinitionImpl <em>String Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see org.obeonetwork.m2doc.ui.genconf.impl.StringDefinitionImpl
      * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getStringDefinition()
      * @generated
@@ -270,7 +255,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Key</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -280,7 +264,6 @@ public interface GenconfPackage extends EPackage {
      * The feature id for the '<em><b>Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -290,7 +273,6 @@ public interface GenconfPackage extends EPackage {
      * The number of structural features of the '<em>String Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -300,7 +282,6 @@ public interface GenconfPackage extends EPackage {
      * The number of operations of the '<em>String Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      * @ordered
      */
@@ -310,7 +291,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.ui.genconf.Generation <em>Generation</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for class '<em>Generation</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Generation
      * @generated
@@ -321,7 +301,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getName <em>Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the attribute '<em>Name</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Generation#getName()
      * @see #getGeneration()
@@ -330,11 +309,9 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_Name();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getTemplateFileName
-     * <em>Template File Name</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getTemplateFileName <em>Template File Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the attribute '<em>Template File Name</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Generation#getTemplateFileName()
      * @see #getGeneration()
@@ -343,11 +320,9 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_TemplateFileName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getResultFileName
-     * <em>Result File Name</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getResultFileName <em>Result File Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the attribute '<em>Result File Name</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Generation#getResultFileName()
      * @see #getGeneration()
@@ -359,7 +334,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.Generation#isTimeStamped <em>Time Stamped</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the attribute '<em>Time Stamped</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Generation#isTimeStamped()
      * @see #getGeneration()
@@ -368,11 +342,9 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_TimeStamped();
 
     /**
-     * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getDefinitions
-     * <em>Definitions</em>}'.
+     * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getDefinitions <em>Definitions</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the containment reference list '<em>Definitions</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Generation#getDefinitions()
      * @see #getGeneration()
@@ -381,11 +353,9 @@ public interface GenconfPackage extends EPackage {
     EReference getGeneration_Definitions();
 
     /**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getPackagesNSURI
-     * <em>Packages NSURI</em>}'.
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getPackagesNSURI <em>Packages NSURI</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the attribute list '<em>Packages NSURI</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Generation#getPackagesNSURI()
      * @see #getGeneration()
@@ -394,10 +364,20 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_PackagesNSURI();
 
     /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getServicesTokens <em>Services Tokens</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Services Tokens</em>'.
+     * @see org.obeonetwork.m2doc.ui.genconf.Generation#getServicesTokens()
+     * @see #getGeneration()
+     * @generated
+     */
+    EAttribute getGeneration_ServicesTokens();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.ui.genconf.Definition <em>Definition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for class '<em>Definition</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Definition
      * @generated
@@ -408,7 +388,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.Definition#getKey <em>Key</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the attribute '<em>Key</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.Definition#getKey()
      * @see #getDefinition()
@@ -420,7 +399,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.ui.genconf.ModelDefinition <em>Model Definition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for class '<em>Model Definition</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.ModelDefinition
      * @generated
@@ -431,7 +409,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for the reference '{@link org.obeonetwork.m2doc.ui.genconf.ModelDefinition#getValue <em>Value</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the reference '<em>Value</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.ModelDefinition#getValue()
      * @see #getModelDefinition()
@@ -443,7 +420,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.ui.genconf.StringDefinition <em>String Definition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for class '<em>String Definition</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.StringDefinition
      * @generated
@@ -454,7 +430,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.ui.genconf.StringDefinition#getValue <em>Value</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the meta object for the attribute '<em>Value</em>'.
      * @see org.obeonetwork.m2doc.ui.genconf.StringDefinition#getValue()
      * @see #getStringDefinition()
@@ -466,7 +441,6 @@ public interface GenconfPackage extends EPackage {
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -483,7 +457,6 @@ public interface GenconfPackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     interface Literals {
@@ -491,7 +464,6 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl <em>Generation</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @see org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl
          * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getGeneration()
          * @generated
@@ -502,7 +474,6 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EAttribute GENERATION__NAME = eINSTANCE.getGeneration_Name();
@@ -511,7 +482,6 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Template File Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EAttribute GENERATION__TEMPLATE_FILE_NAME = eINSTANCE.getGeneration_TemplateFileName();
@@ -520,7 +490,6 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Result File Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EAttribute GENERATION__RESULT_FILE_NAME = eINSTANCE.getGeneration_ResultFileName();
@@ -529,7 +498,6 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Time Stamped</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EAttribute GENERATION__TIME_STAMPED = eINSTANCE.getGeneration_TimeStamped();
@@ -538,7 +506,6 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Definitions</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EReference GENERATION__DEFINITIONS = eINSTANCE.getGeneration_Definitions();
@@ -547,16 +514,22 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Packages NSURI</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EAttribute GENERATION__PACKAGES_NSURI = eINSTANCE.getGeneration_PackagesNSURI();
 
         /**
+         * The meta object literal for the '<em><b>Services Tokens</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GENERATION__SERVICES_TOKENS = eINSTANCE.getGeneration_ServicesTokens();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.DefinitionImpl <em>Definition</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @see org.obeonetwork.m2doc.ui.genconf.impl.DefinitionImpl
          * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getDefinition()
          * @generated
@@ -567,17 +540,14 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EAttribute DEFINITION__KEY = eINSTANCE.getDefinition_Key();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.ModelDefinitionImpl <em>Model Definition</em>}'
-         * class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.ModelDefinitionImpl <em>Model Definition</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @see org.obeonetwork.m2doc.ui.genconf.impl.ModelDefinitionImpl
          * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getModelDefinition()
          * @generated
@@ -588,17 +558,14 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Value</b></em>' reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EReference MODEL_DEFINITION__VALUE = eINSTANCE.getModelDefinition_Value();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.StringDefinitionImpl <em>String Definition</em>}'
-         * class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.ui.genconf.impl.StringDefinitionImpl <em>String Definition</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @see org.obeonetwork.m2doc.ui.genconf.impl.StringDefinitionImpl
          * @see org.obeonetwork.m2doc.ui.genconf.impl.GenconfPackageImpl#getStringDefinition()
          * @generated
@@ -609,7 +576,6 @@ public interface GenconfPackage extends EPackage {
          * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * 
          * @generated
          */
         EAttribute STRING_DEFINITION__VALUE = eINSTANCE.getStringDefinition_Value();

@@ -15,6 +15,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/timeStamped"/>
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference m2docconf.ecore#//Generation/definitions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/packagesNSURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/servicesTokens"/>
     </genClasses>
     <genClasses image="false" ecoreClass="m2docconf.ecore#//Definition">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Definition/key"/>

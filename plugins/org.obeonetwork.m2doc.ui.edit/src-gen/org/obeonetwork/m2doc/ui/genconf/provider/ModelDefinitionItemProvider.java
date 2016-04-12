@@ -38,8 +38,8 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 	 * @generated
 	 */
 	public ModelDefinitionItemProvider(AdapterFactory adapterFactory) {
-		super(adapterFactory);
-	}
+        super(adapterFactory);
+    }
 
 	/**
 	 * This returns the property descriptors for the adapted class. <!--
@@ -49,13 +49,13 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 	 */
 	@Override
 	public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-		if (itemPropertyDescriptors == null) {
-			super.getPropertyDescriptors(object);
+        if (itemPropertyDescriptors == null) {
+            super.getPropertyDescriptors(object);
 
-			addValuePropertyDescriptor(object);
-		}
-		return itemPropertyDescriptors;
-	}
+            addValuePropertyDescriptor(object);
+        }
+        return itemPropertyDescriptors;
+    }
 
 	/**
 	 * This adds a property descriptor for the Value feature. <!--
@@ -64,20 +64,20 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 	 * @generated
 	 */
 	protected void addValuePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ModelDefinition_value_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ModelDefinition_value_feature", "_UI_ModelDefinition_type"),
-				 GenconfPackage.Literals.MODEL_DEFINITION__VALUE,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_ModelDefinition_value_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_ModelDefinition_value_feature", "_UI_ModelDefinition_type"),
+                 GenconfPackage.Literals.MODEL_DEFINITION__VALUE,
+                 true,
+                 false,
+                 true,
+                 null,
+                 null,
+                 null));
+    }
 
 	/**
 	 * This returns ModelDefinition.gif. <!-- begin-user-doc --> <!--
@@ -87,7 +87,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ModelDef.png"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ModelDef"));
 	}
 
 	/**
@@ -103,17 +103,17 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc --> <!--
+     * This handles model notifications by calling {@link #updateChildren} to update any cached
+     * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+     * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void notifyChanged(Notification notification) {
-		updateChildren(notification);
-		super.notifyChanged(notification);
-	}
+        updateChildren(notification);
+        super.notifyChanged(notification);
+    }
 
 	/**
 	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
@@ -124,7 +124,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-		super.collectNewChildDescriptors(newChildDescriptors, object);
-	}
+        super.collectNewChildDescriptors(newChildDescriptors, object);
+    }
 
 }

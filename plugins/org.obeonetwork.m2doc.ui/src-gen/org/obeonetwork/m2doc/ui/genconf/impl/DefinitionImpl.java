@@ -30,7 +30,7 @@ import org.obeonetwork.m2doc.ui.genconf.GenconfPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.DefinitionImpl#getKey <em>Key</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.DefinitionImpl#getKey <em>Key</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,7 +40,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
      * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getKey()
      * @generated
      * @ordered
@@ -51,7 +50,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
      * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getKey()
      * @generated
      * @ordered
@@ -61,7 +59,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected DefinitionImpl() {
@@ -71,7 +68,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -82,7 +78,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public String getKey() {
@@ -92,7 +87,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public void setKey(String newKey) {
@@ -105,7 +99,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -120,14 +113,13 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case GenconfPackage.DEFINITION__KEY:
-                setKey((String) newValue);
+                setKey((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -136,7 +128,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -152,7 +143,6 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -167,13 +157,11 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
-            return super.toString();
+        if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (key: ");

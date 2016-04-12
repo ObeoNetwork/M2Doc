@@ -38,12 +38,13 @@ import org.obeonetwork.m2doc.ui.genconf.Generation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getName <em>Name</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getTemplateFileName <em>Template File Name</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getResultFileName <em>Result File Name</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#isTimeStamped <em>Time Stamped</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getDefinitions <em>Definitions</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getPackagesNSURI <em>Packages NSURI</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getTemplateFileName <em>Template File Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getResultFileName <em>Result File Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#isTimeStamped <em>Time Stamped</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getDefinitions <em>Definitions</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getPackagesNSURI <em>Packages NSURI</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.GenerationImpl#getServicesTokens <em>Services Tokens</em>}</li>
  * </ul>
  *
  * @generated
@@ -53,7 +54,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The default value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -64,7 +64,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -75,7 +74,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The default value of the '{@link #getTemplateFileName() <em>Template File Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getTemplateFileName()
      * @generated
      * @ordered
@@ -86,7 +84,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The cached value of the '{@link #getTemplateFileName() <em>Template File Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getTemplateFileName()
      * @generated
      * @ordered
@@ -97,7 +94,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The default value of the '{@link #getResultFileName() <em>Result File Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getResultFileName()
      * @generated
      * @ordered
@@ -108,7 +104,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The cached value of the '{@link #getResultFileName() <em>Result File Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getResultFileName()
      * @generated
      * @ordered
@@ -119,7 +114,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The default value of the '{@link #isTimeStamped() <em>Time Stamped</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #isTimeStamped()
      * @generated
      * @ordered
@@ -130,7 +124,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The cached value of the '{@link #isTimeStamped() <em>Time Stamped</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #isTimeStamped()
      * @generated
      * @ordered
@@ -141,7 +134,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The cached value of the '{@link #getDefinitions() <em>Definitions</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getDefinitions()
      * @generated
      * @ordered
@@ -152,7 +144,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * The cached value of the '{@link #getPackagesNSURI() <em>Packages NSURI</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getPackagesNSURI()
      * @generated
      * @ordered
@@ -160,9 +151,18 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     protected EList<String> packagesNSURI;
 
     /**
+     * The cached value of the '{@link #getServicesTokens() <em>Services Tokens</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     * @see #getServicesTokens()
+     * @generated
+     * @ordered
+     */
+    protected EList<String> servicesTokens;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
     protected GenerationImpl() {
@@ -172,7 +172,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -183,7 +182,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public String getName() {
@@ -193,7 +191,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public void setName(String newName) {
@@ -206,7 +203,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public String getTemplateFileName() {
@@ -216,21 +212,18 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public void setTemplateFileName(String newTemplateFileName) {
         String oldTemplateFileName = templateFileName;
         templateFileName = newTemplateFileName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__TEMPLATE_FILE_NAME,
-                    oldTemplateFileName, templateFileName));
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__TEMPLATE_FILE_NAME, oldTemplateFileName, templateFileName));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public String getResultFileName() {
@@ -240,21 +233,18 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public void setResultFileName(String newResultFileName) {
         String oldResultFileName = resultFileName;
         resultFileName = newResultFileName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__RESULT_FILE_NAME,
-                    oldResultFileName, resultFileName));
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__RESULT_FILE_NAME, oldResultFileName, resultFileName));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public boolean isTimeStamped() {
@@ -264,27 +254,23 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public void setTimeStamped(boolean newTimeStamped) {
         boolean oldTimeStamped = timeStamped;
         timeStamped = newTimeStamped;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__TIME_STAMPED,
-                    oldTimeStamped, timeStamped));
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__TIME_STAMPED, oldTimeStamped, timeStamped));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public EList<Definition> getDefinitions() {
         if (definitions == null) {
-            definitions = new EObjectContainmentEList<Definition>(Definition.class, this,
-                    GenconfPackage.GENERATION__DEFINITIONS);
+            definitions = new EObjectContainmentEList<Definition>(Definition.class, this, GenconfPackage.GENERATION__DEFINITIONS);
         }
         return definitions;
     }
@@ -292,13 +278,11 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public EList<String> getPackagesNSURI() {
         if (packagesNSURI == null) {
-            packagesNSURI = new EDataTypeUniqueEList<String>(String.class, this,
-                    GenconfPackage.GENERATION__PACKAGES_NSURI);
+            packagesNSURI = new EDataTypeUniqueEList<String>(String.class, this, GenconfPackage.GENERATION__PACKAGES_NSURI);
         }
         return packagesNSURI;
     }
@@ -306,14 +290,25 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     * @generated
+     */
+    public EList<String> getServicesTokens() {
+        if (servicesTokens == null) {
+            servicesTokens = new EDataTypeUniqueEList<String>(String.class, this, GenconfPackage.GENERATION__SERVICES_TOKENS);
+        }
+        return servicesTokens;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case GenconfPackage.GENERATION__DEFINITIONS:
-                return ((InternalEList<?>) getDefinitions()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>)getDefinitions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -321,7 +316,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -339,6 +333,8 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return getDefinitions();
             case GenconfPackage.GENERATION__PACKAGES_NSURI:
                 return getPackagesNSURI();
+            case GenconfPackage.GENERATION__SERVICES_TOKENS:
+                return getServicesTokens();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -346,7 +342,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -354,24 +349,28 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case GenconfPackage.GENERATION__NAME:
-                setName((String) newValue);
+                setName((String)newValue);
                 return;
             case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
-                setTemplateFileName((String) newValue);
+                setTemplateFileName((String)newValue);
                 return;
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
-                setResultFileName((String) newValue);
+                setResultFileName((String)newValue);
                 return;
             case GenconfPackage.GENERATION__TIME_STAMPED:
-                setTimeStamped((Boolean) newValue);
+                setTimeStamped((Boolean)newValue);
                 return;
             case GenconfPackage.GENERATION__DEFINITIONS:
                 getDefinitions().clear();
-                getDefinitions().addAll((Collection<? extends Definition>) newValue);
+                getDefinitions().addAll((Collection<? extends Definition>)newValue);
                 return;
             case GenconfPackage.GENERATION__PACKAGES_NSURI:
                 getPackagesNSURI().clear();
-                getPackagesNSURI().addAll((Collection<? extends String>) newValue);
+                getPackagesNSURI().addAll((Collection<? extends String>)newValue);
+                return;
+            case GenconfPackage.GENERATION__SERVICES_TOKENS:
+                getServicesTokens().clear();
+                getServicesTokens().addAll((Collection<? extends String>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -380,7 +379,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -404,6 +402,9 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__PACKAGES_NSURI:
                 getPackagesNSURI().clear();
                 return;
+            case GenconfPackage.GENERATION__SERVICES_TOKENS:
+                getServicesTokens().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -411,7 +412,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -420,17 +420,17 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__NAME:
                 return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
             case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
-                return TEMPLATE_FILE_NAME_EDEFAULT == null ? templateFileName != null
-                        : !TEMPLATE_FILE_NAME_EDEFAULT.equals(templateFileName);
+                return TEMPLATE_FILE_NAME_EDEFAULT == null ? templateFileName != null : !TEMPLATE_FILE_NAME_EDEFAULT.equals(templateFileName);
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
-                return RESULT_FILE_NAME_EDEFAULT == null ? resultFileName != null
-                        : !RESULT_FILE_NAME_EDEFAULT.equals(resultFileName);
+                return RESULT_FILE_NAME_EDEFAULT == null ? resultFileName != null : !RESULT_FILE_NAME_EDEFAULT.equals(resultFileName);
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 return timeStamped != TIME_STAMPED_EDEFAULT;
             case GenconfPackage.GENERATION__DEFINITIONS:
                 return definitions != null && !definitions.isEmpty();
             case GenconfPackage.GENERATION__PACKAGES_NSURI:
                 return packagesNSURI != null && !packagesNSURI.isEmpty();
+            case GenconfPackage.GENERATION__SERVICES_TOKENS:
+                return servicesTokens != null && !servicesTokens.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -438,13 +438,11 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
-            return super.toString();
+        if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (name: ");
@@ -457,6 +455,8 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
         result.append(timeStamped);
         result.append(", packagesNSURI: ");
         result.append(packagesNSURI);
+        result.append(", servicesTokens: ");
+        result.append(servicesTokens);
         result.append(')');
         return result.toString();
     }

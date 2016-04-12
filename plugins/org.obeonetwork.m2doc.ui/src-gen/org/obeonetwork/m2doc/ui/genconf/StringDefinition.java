@@ -17,11 +17,12 @@ package org.obeonetwork.m2doc.ui.genconf;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>String Definition</b></em>'.
  * <!-- end-user-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.StringDefinition#getValue <em>Value</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.StringDefinition#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getStringDefinition()
@@ -37,7 +38,6 @@ public interface StringDefinition extends Definition {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Value</em>' attribute.
      * @see #setValue(String)
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getStringDefinition_Value()
@@ -50,9 +50,7 @@ public interface StringDefinition extends Definition {
      * Sets the value of the '{@link org.obeonetwork.m2doc.ui.genconf.StringDefinition#getValue <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Value</em>' attribute.
+     * @param value the new value of the '<em>Value</em>' attribute.
      * @see #getValue()
      * @generated
      */

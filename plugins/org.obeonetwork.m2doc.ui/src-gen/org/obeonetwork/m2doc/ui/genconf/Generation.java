@@ -20,16 +20,18 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Generation</b></em>'.
  * <!-- end-user-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getName <em>Name</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getTemplateFileName <em>Template File Name</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getResultFileName <em>Result File Name</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#isTimeStamped <em>Time Stamped</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getDefinitions <em>Definitions</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getPackagesNSURI <em>Packages NSURI</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getName <em>Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getTemplateFileName <em>Template File Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getResultFileName <em>Result File Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#isTimeStamped <em>Time Stamped</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getDefinitions <em>Definitions</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getPackagesNSURI <em>Packages NSURI</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Generation#getServicesTokens <em>Services Tokens</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration()
@@ -45,7 +47,6 @@ public interface Generation extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration_Name()
@@ -58,9 +59,7 @@ public interface Generation extends EObject {
      * Sets the value of the '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getName <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
+     * @param value the new value of the '<em>Name</em>' attribute.
      * @see #getName()
      * @generated
      */
@@ -74,7 +73,6 @@ public interface Generation extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Template File Name</em>' attribute.
      * @see #setTemplateFileName(String)
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration_TemplateFileName()
@@ -84,13 +82,10 @@ public interface Generation extends EObject {
     String getTemplateFileName();
 
     /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getTemplateFileName <em>Template File Name</em>}'
-     * attribute.
+     * Sets the value of the '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getTemplateFileName <em>Template File Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Template File Name</em>' attribute.
+     * @param value the new value of the '<em>Template File Name</em>' attribute.
      * @see #getTemplateFileName()
      * @generated
      */
@@ -104,7 +99,6 @@ public interface Generation extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Result File Name</em>' attribute.
      * @see #setResultFileName(String)
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration_ResultFileName()
@@ -117,9 +111,7 @@ public interface Generation extends EObject {
      * Sets the value of the '{@link org.obeonetwork.m2doc.ui.genconf.Generation#getResultFileName <em>Result File Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Result File Name</em>' attribute.
+     * @param value the new value of the '<em>Result File Name</em>' attribute.
      * @see #getResultFileName()
      * @generated
      */
@@ -134,7 +126,6 @@ public interface Generation extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Time Stamped</em>' attribute.
      * @see #setTimeStamped(boolean)
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration_TimeStamped()
@@ -147,9 +138,7 @@ public interface Generation extends EObject {
      * Sets the value of the '{@link org.obeonetwork.m2doc.ui.genconf.Generation#isTimeStamped <em>Time Stamped</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Time Stamped</em>' attribute.
+     * @param value the new value of the '<em>Time Stamped</em>' attribute.
      * @see #isTimeStamped()
      * @generated
      */
@@ -164,7 +153,6 @@ public interface Generation extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Definitions</em>' containment reference list.
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration_Definitions()
      * @model containment="true"
@@ -181,12 +169,27 @@ public interface Generation extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Packages NSURI</em>' attribute list.
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration_PackagesNSURI()
      * @model
      * @generated
      */
     EList<String> getPackagesNSURI();
+
+    /**
+     * Returns the value of the '<em><b>Services Tokens</b></em>' attribute list.
+     * The list contents are of type {@link java.lang.String}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Services Tokens</em>' attribute list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Services Tokens</em>' attribute list.
+     * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getGeneration_ServicesTokens()
+     * @model
+     * @generated
+     */
+    EList<String> getServicesTokens();
 
 } // Generation

@@ -28,7 +28,7 @@
             name="%_UI_GenconfModelWizard_label"
             class="org.obeonetwork.m2doc.ui.genconf.presentation.GenconfModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/m2docFile.png">
+            icon="icons/full/obj16/GenconfModelFile.gif">
          <description>%_UI_GenconfModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
@@ -39,7 +39,7 @@
       <editor
             id="org.obeonetwork.m2doc.ui.genconf.presentation.GenconfEditorID"
             name="%_UI_GenconfEditor_label"
-            icon="icons/full/obj16/m2docFile.png"
+            icon="icons/full/obj16/GenconfModelFile.gif"
             extensions="genconf"
             class="org.obeonetwork.m2doc.ui.genconf.presentation.GenconfEditor"
             contributorClass="org.obeonetwork.m2doc.ui.genconf.presentation.GenconfActionBarContributor">

@@ -19,11 +19,12 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Definition</b></em>'.
  * <!-- end-user-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.Definition#getKey <em>Key</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.Definition#getKey <em>Key</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getDefinition()
@@ -39,7 +40,6 @@ public interface Definition extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Key</em>' attribute.
      * @see #setKey(String)
      * @see org.obeonetwork.m2doc.ui.genconf.GenconfPackage#getDefinition_Key()
@@ -52,9 +52,7 @@ public interface Definition extends EObject {
      * Sets the value of the '{@link org.obeonetwork.m2doc.ui.genconf.Definition#getKey <em>Key</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Key</em>' attribute.
+     * @param value the new value of the '<em>Key</em>' attribute.
      * @see #getKey()
      * @generated
      */

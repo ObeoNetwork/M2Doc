@@ -31,7 +31,7 @@ import org.obeonetwork.m2doc.ui.genconf.ModelDefinition;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.ModelDefinitionImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.ui.genconf.impl.ModelDefinitionImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,7 +41,6 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
      * The cached value of the '{@link #getValue() <em>Value</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getValue()
      * @generated
      * @ordered
@@ -51,7 +50,6 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected ModelDefinitionImpl() {
@@ -61,7 +59,6 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -72,17 +69,15 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public EObject getValue() {
         if (value != null && value.eIsProxy()) {
-            InternalEObject oldValue = (InternalEObject) value;
+            InternalEObject oldValue = (InternalEObject)value;
             value = eResolveProxy(oldValue);
             if (value != oldValue) {
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, GenconfPackage.MODEL_DEFINITION__VALUE,
-                            oldValue, value));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, GenconfPackage.MODEL_DEFINITION__VALUE, oldValue, value));
             }
         }
         return value;
@@ -91,7 +86,6 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public EObject basicGetValue() {
@@ -101,29 +95,25 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public void setValue(EObject newValue) {
         EObject oldValue = value;
         value = newValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.MODEL_DEFINITION__VALUE, oldValue,
-                    value));
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.MODEL_DEFINITION__VALUE, oldValue, value));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case GenconfPackage.MODEL_DEFINITION__VALUE:
-                if (resolve)
-                    return getValue();
+                if (resolve) return getValue();
                 return basicGetValue();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -132,14 +122,13 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case GenconfPackage.MODEL_DEFINITION__VALUE:
-                setValue((EObject) newValue);
+                setValue((EObject)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -148,14 +137,13 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case GenconfPackage.MODEL_DEFINITION__VALUE:
-                setValue((EObject) null);
+                setValue((EObject)null);
                 return;
         }
         super.eUnset(featureID);
@@ -164,7 +152,6 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override

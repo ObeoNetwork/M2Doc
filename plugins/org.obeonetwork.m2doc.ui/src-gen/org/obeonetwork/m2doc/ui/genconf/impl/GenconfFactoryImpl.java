@@ -26,7 +26,6 @@ import org.obeonetwork.m2doc.ui.genconf.*;
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Factory</b>.
  * <!-- end-user-doc -->
- * 
  * @generated
  */
 public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
@@ -34,17 +33,16 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
      * Creates the default factory implementation.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public static GenconfFactory init() {
         try {
-            GenconfFactory theGenconfFactory = (GenconfFactory) EPackage.Registry.INSTANCE
-                    .getEFactory(GenconfPackage.eNS_URI);
+            GenconfFactory theGenconfFactory = (GenconfFactory)EPackage.Registry.INSTANCE.getEFactory(GenconfPackage.eNS_URI);
             if (theGenconfFactory != null) {
                 return theGenconfFactory;
             }
-        } catch (Exception exception) {
+        }
+        catch (Exception exception) {
             EcorePlugin.INSTANCE.log(exception);
         }
         return new GenconfFactoryImpl();
@@ -54,7 +52,6 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
      * Creates an instance of the factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public GenconfFactoryImpl() {
@@ -64,18 +61,14 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case GenconfPackage.GENERATION:
-                return createGeneration();
-            case GenconfPackage.MODEL_DEFINITION:
-                return createModelDefinition();
-            case GenconfPackage.STRING_DEFINITION:
-                return createStringDefinition();
+            case GenconfPackage.GENERATION: return createGeneration();
+            case GenconfPackage.MODEL_DEFINITION: return createModelDefinition();
+            case GenconfPackage.STRING_DEFINITION: return createStringDefinition();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -84,7 +77,6 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public Generation createGeneration() {
@@ -95,7 +87,6 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public ModelDefinition createModelDefinition() {
@@ -106,7 +97,6 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public StringDefinition createStringDefinition() {
@@ -117,17 +107,15 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     public GenconfPackage getGenconfPackage() {
-        return (GenconfPackage) getEPackage();
+        return (GenconfPackage)getEPackage();
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @deprecated
      * @generated
      */

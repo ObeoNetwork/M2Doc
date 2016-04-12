@@ -21,7 +21,7 @@
             objectClass="org.eclipse.emf.ecore.EObject"
             id="org.obeonetwork.m2doc.ui.genaction">
          <menu
-               icon="icons/m2doc.png"
+               icon="icons/m2doc.gif"
                id="org.obeonetwork.m2doc.ui.menu1"
                label="M2Doc"
                path="additions">
@@ -32,7 +32,7 @@
          <action
                class="org.obeonetwork.m2doc.ui.popup.actions.GenerateDocumentation"
                enablesFor="1"
-               icon="icons/m2doc.png"
+               icon="icons/m2doc.gif"
                id="org.obeonetwork.m2doc.ui.genAction"
                label="Generate Doc"
                menubarPath="org.obeonetwork.m2doc.ui.menu1/group1">

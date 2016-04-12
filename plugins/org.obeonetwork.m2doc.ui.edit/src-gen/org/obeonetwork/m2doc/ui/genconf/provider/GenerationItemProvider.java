@@ -50,8 +50,8 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 * @generated
 	 */
 	public GenerationItemProvider(AdapterFactory adapterFactory) {
-		super(adapterFactory);
-	}
+        super(adapterFactory);
+    }
 
 	/**
 	 * This returns the property descriptors for the adapted class. <!--
@@ -61,40 +61,41 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 */
 	@Override
 	public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-		if (itemPropertyDescriptors == null) {
-			super.getPropertyDescriptors(object);
+        if (itemPropertyDescriptors == null) {
+            super.getPropertyDescriptors(object);
 
-			addNamePropertyDescriptor(object);
-			addTemplateFileNamePropertyDescriptor(object);
-			addResultFileNamePropertyDescriptor(object);
-			addTimeStampedPropertyDescriptor(object);
-			addDefinitionsPropertyDescriptor(object);
-			addPackagesNSURIPropertyDescriptor(object);
-		}
-		return itemPropertyDescriptors;
-	}
+            addNamePropertyDescriptor(object);
+            addTemplateFileNamePropertyDescriptor(object);
+            addResultFileNamePropertyDescriptor(object);
+            addTimeStampedPropertyDescriptor(object);
+            addDefinitionsPropertyDescriptor(object);
+            addPackagesNSURIPropertyDescriptor(object);
+            addServicesTokensPropertyDescriptor(object);
+        }
+        return itemPropertyDescriptors;
+    }
 
 	/**
-	 * This adds a property descriptor for the Name feature.
-	 * <!-- begin-user-doc
+     * This adds a property descriptor for the Name feature.
+     * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Generation_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Generation_name_feature", "_UI_Generation_type"),
-				 GenconfPackage.Literals.GENERATION__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_name_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_name_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__NAME,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                 null,
+                 null));
+    }
 
 	/**
 	 * This adds a property descriptor for the Template File Name feature. <!--
@@ -103,20 +104,20 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 * @generated
 	 */
 	protected void addTemplateFileNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Generation_templateFileName_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Generation_templateFileName_feature", "_UI_Generation_type"),
-				 GenconfPackage.Literals.GENERATION__TEMPLATE_FILE_NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_templateFileName_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_templateFileName_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__TEMPLATE_FILE_NAME,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                 null,
+                 null));
+    }
 
 	/**
 	 * This adds a property descriptor for the Result File Name feature. <!--
@@ -125,20 +126,20 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 * @generated
 	 */
 	protected void addResultFileNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Generation_resultFileName_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Generation_resultFileName_feature", "_UI_Generation_type"),
-				 GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_resultFileName_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_resultFileName_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                 null,
+                 null));
+    }
 
 	/**
 	 * This adds a property descriptor for the Time Stamped feature. <!--
@@ -147,20 +148,20 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 * @generated
 	 */
 	protected void addTimeStampedPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Generation_timeStamped_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Generation_timeStamped_feature", "_UI_Generation_type"),
-				 GenconfPackage.Literals.GENERATION__TIME_STAMPED,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_timeStamped_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_timeStamped_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__TIME_STAMPED,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                 null,
+                 null));
+    }
 
 	/**
 	 * This adds a property descriptor for the Definitions feature. <!--
@@ -169,70 +170,92 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 * @generated
 	 */
 	protected void addDefinitionsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Generation_definitions_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Generation_definitions_feature", "_UI_Generation_type"),
-				 GenconfPackage.Literals.GENERATION__DEFINITIONS,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_definitions_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_definitions_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                 true,
+                 false,
+                 true,
+                 null,
+                 null,
+                 null));
+    }
 
 	/**
-	 * This adds a property descriptor for the Packages NSURI feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Packages NSURI feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addPackagesNSURIPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Generation_packagesNSURI_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Generation_packagesNSURI_feature", "_UI_Generation_type"),
-				 GenconfPackage.Literals.GENERATION__PACKAGES_NSURI,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_packagesNSURI_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_packagesNSURI_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__PACKAGES_NSURI,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                 null,
+                 null));
+    }
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
+     * This adds a property descriptor for the Services Tokens feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected void addServicesTokensPropertyDescriptor(Object object) {
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_servicesTokens_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_servicesTokens_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__SERVICES_TOKENS,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                 null,
+                 null));
+    }
+
+    /**
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
+     */
 	@Override
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(GenconfPackage.Literals.GENERATION__DEFINITIONS);
-		}
-		return childrenFeatures;
-	}
+        if (childrenFeatures == null) {
+            super.getChildrenFeatures(object);
+            childrenFeatures.add(GenconfPackage.Literals.GENERATION__DEFINITIONS);
+        }
+        return childrenFeatures;
+    }
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
+     */
 	@Override
 	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
+        // Check the type of the specified child object and return the proper feature to use for
+        // adding (see {@link AddCommand}) it as a child.
 
-		return super.getChildFeature(object, child);
-	}
+        return super.getChildFeature(object, child);
+    }
 
 	/**
 	 * This returns Generation.gif. <!-- begin-user-doc --> <!-- end-user-doc
@@ -242,7 +265,7 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Generation.png"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Generation"));
 	}
 
 	/**
@@ -258,30 +281,31 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc --> <!--
+     * This handles model notifications by calling {@link #updateChildren} to update any cached
+     * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+     * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void notifyChanged(Notification notification) {
-		updateChildren(notification);
+        updateChildren(notification);
 
-		switch (notification.getFeatureID(Generation.class)) {
-			case GenconfPackage.GENERATION__NAME:
-			case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
-			case GenconfPackage.GENERATION__RESULT_FILE_NAME:
-			case GenconfPackage.GENERATION__TIME_STAMPED:
-			case GenconfPackage.GENERATION__PACKAGES_NSURI:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case GenconfPackage.GENERATION__DEFINITIONS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
-		}
-		super.notifyChanged(notification);
-	}
+        switch (notification.getFeatureID(Generation.class)) {
+            case GenconfPackage.GENERATION__NAME:
+            case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
+            case GenconfPackage.GENERATION__RESULT_FILE_NAME:
+            case GenconfPackage.GENERATION__TIME_STAMPED:
+            case GenconfPackage.GENERATION__PACKAGES_NSURI:
+            case GenconfPackage.GENERATION__SERVICES_TOKENS:
+                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case GenconfPackage.GENERATION__DEFINITIONS:
+                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
+        }
+        super.notifyChanged(notification);
+    }
 
 	/**
 	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
@@ -292,18 +316,18 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-		super.collectNewChildDescriptors(newChildDescriptors, object);
+        super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
-			(createChildParameter
-				(GenconfPackage.Literals.GENERATION__DEFINITIONS,
-				 GenconfFactory.eINSTANCE.createModelDefinition()));
+        newChildDescriptors.add
+            (createChildParameter
+                (GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                 GenconfFactory.eINSTANCE.createModelDefinition()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(GenconfPackage.Literals.GENERATION__DEFINITIONS,
-				 GenconfFactory.eINSTANCE.createStringDefinition()));
-	}
+        newChildDescriptors.add
+            (createChildParameter
+                (GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                 GenconfFactory.eINSTANCE.createStringDefinition()));
+    }
 
 	/**
 	 * Return the resource locator for this item provider's resources. <!--
@@ -313,7 +337,7 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return M2docconfEditPlugin.INSTANCE;
-	}
+        return M2docconfEditPlugin.INSTANCE;
+    }
 
 }
