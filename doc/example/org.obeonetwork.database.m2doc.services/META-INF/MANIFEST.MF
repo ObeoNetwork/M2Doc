@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Wgen
+Bundle-SymbolicName: org.obeonetwork.database.m2doc.services;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.obeonetwork.database.wgen.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.obeonetwork.dsl.database;bundle-version="4.0.0",
+ org.obeonetwork.m2doc.ui;bundle-version="0.7.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
