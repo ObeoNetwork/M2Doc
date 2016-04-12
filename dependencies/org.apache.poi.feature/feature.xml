@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.poi.feature"
-      label="Feature"
+      label="Apache POI"
       version="3.13.0.qualifier"
       provider-name="Apache">
 
-   <description url="http://www.example.com/description">
-      Re-packaging of POI and dependencies as propert eclipse plug-ins.
+   <description url="https://poi.apache.org/">
+      Re-packaging of POI and dependencies as a proper eclipse plug-ins.
    </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
       Apache License

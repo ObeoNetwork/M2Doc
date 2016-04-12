@@ -1,4 +1,4 @@
-h1. Document Parser specification
+h1. Document Parser 
 
 This document describes the document parsing algorithm used to transform docx template into org.eclipse.gendoc2.Template instance.
 
@@ -11,9 +11,7 @@ That is a tree of @Construct@ instances of various kinds. A @Construct@ instance
 
 h2. general structure of the parsing algorithm
 
-The algorithm is centered around a stack of @Construct@ isntances the top of which reflects the currently parsed construct.
-
-The algorithme is a mutually recursive top down parser made of the following routines :
+The parsing algorithme is a mutually recursive top down parser made of the following routines :
 
 * @parseTemplate@
 * @parseQuery@
@@ -24,32 +22,9 @@ The algorithme is a mutually recursive top down parser made of the following rou
 * @parseRepresentation@
 * @parseStaticFragment()@
 
-The algorithm starts with calling parseTemplate on an empty stack.
+OOXML documents are broken into bodies which are made of paragraphs which are made of runs. Runs are a homogeneous unit of style and are atomic. 
 
-parseTemplate goes like this :
+The parsing is directed by a lookahead that predicts the next construct in the template based on whether it detects a field and on the field's code. Each routine implements the detailed parsing of the related directive and inserts error diagnostics in the template in case parsing errors are found. 
 
-bc.. 
-Template template = createTemplate();
-stack.push(template);
-while (runIterator.hasNext()) {
-	Run curentRun = runIterator.next();
-   if(isFieldBegin(currentRun)){
-   		Run coderun = runIterator.next();
-   		switch(constructType(coderun)){
-   		  case AQL:
- 			template.getSubConstructs.add(parseQuery(coderun));
-		   break;
-   		  case GDFOR:
-   		   template.getSubConstructs.add(parseFor());
-		   break;
-   		  case GDIF:
-   		  	parseConditionnal();
-		   break;
-   		  case ..
-   		  default:
-   		  	parseStaticFragment();
-   		}
-   } else {
-   }
-}
+The result of the parsing is a template which elements point on the runs in the input document. This allows to reproduce the static parts. 
 

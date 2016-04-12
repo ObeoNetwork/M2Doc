@@ -8,7 +8,7 @@ h2. Introduction and example
 
 The M2Doc technology adopts an approach where the document authoring tools (Libre Office, Open Office, MS Word) are leverage as much as possible. What other tool is more adapted to style and static part authoring? Furthermore, these tools are quite common and widely adopted so that there's no necesity to learn yet another document authoring tool. Last but not least, there's a great deal of document models legacy all over the places that should be reused as easily as possible.
 
-Templates are made of static parts and dynamic parts. Static parts are produced in the generated document as they are in the templates while dynamic parts are replaced by some text which depends on the input models provided. Dynamic parts are provided in fields so that there's always a clear separation between static and dynamic parts.   
+Templates are made of static parts and dynamic parts. Static parts are produced in the generated document as they are in the templates while dynamic parts are replaced by some text which depends on the provided input models. Dynamic parts are provided in fields so that there's always a clear separation between static and dynamic parts.   
 
 Let's have an example to start with template writing. The following image represents a page of a template comprising three parts:
 * a first static part that is reproduced as is in the generated result
@@ -21,6 +21,10 @@ A generation of the template on a database model that comprises three tables nam
 
 h2. First generation tutorial 
 
+The tutorial will guide you, step by step, to create a data dictionary for a database  
+
+Templates are made of word fields with field code that are M2Doc specific. As a consequence templates must be edited with Word's field codes toggled on. The insertion of a field code is made by pressing Ctrl-F9. This introduces an empty field which code must be completed. Alternatively, the model provided in the example project allows to introduce fields 
+
 Before entering into the details of template writing, let's have a quick tutorial where we reproduce the introductory example step by step. 
 
 First, make sure you have the database plug-ins installed from obeonetwork. 
@@ -29,15 +33,36 @@ h2. Template authoring overview
 
 The development of templates encompasses different activites :
 * authoring of the static fragments of the generated document : a documnent is made of static fragments that are identical over all the generated documents. This includes the setting of styles, colors, etc. for the generated document. 
-* authoring of generated parts. This is a mix of writing template fields and static parts. The development of template fields follow a syntax that is described below and makes extensive use of Acceleo Query Language (AQL). The relation between the template and the model is achieved by providing values for the variables that are referenced in the AQL queries within the templates. This is described in greater details below. 
+* authoring of generated parts. This is a mix of writing template fields and static parts. The development of template fields follow a syntax that is described below and makes extensive use of the Acceleo Query Language (AQL). The relation between the template and the model is achieved by providing values for the variables that are referenced in the AQL queries within the templates. This is described in greater details below. 
+* generation of context configuration. The generation context configuration is intended to provide enough information so that the template is self sufficient. It comprises the definition of  
+** the set of Ecore packages involved (it is not mandatory but strongly recommended to provide all the packages. This enables precise validation and static error discovery)
+** the set of variables declared in the template along with their type (see below)
+** the set of service's tokens used : AQL is extensible by service packages that must be registered in the AQL runtime environment. The M2Doc technology provides a mechanism that can be used to contribute services through an eclipse extension. This is described below. 
 
-AQL is extensible by service packages that must be registered in the AQL runtime environment. The M2Doc technology provides a mecanism that can be used to contribute services through an eclipse extension. This is described below. 
+Given these three elements, the system will be able to validate the templates and statically discover problems. Givena value for each variable, it will be able to actually generate a document from the template.
 
 h3. Definition of variables
 
-Variables that are used within AQL queries must be defined for a generation to be able to run.  
+ Ultimately the variables will be defined in the template's custom properties so that a template is self sufficient in terms of validation and understanding. A variable definition must provide 
+* a variable name
+* a type which must be one of 
+** a qualified EClass name (e.g. @database.Table@)
+** @int@ for integer values
+** @string@ for string values
+** @object@ for Java Object values
+
+variable's custom properties must be provided in the following form : @m:var:<variable name>@ where the prefix @m:var@ allows to recognize that the custom property is a M2Doc variable definition. The value associated to the custom property provides the variable's intended type.  
+
+
+bc.. As of now, the variables types aren't exploited by the generation engine and are only declared in a configuration model. This will evolve by including functionnalities where a generation configuration model is initialized from a template and where only the variable's value can be edited.
+
+p. 
+
 
 h3. Definition of services
+
+
+
 
 h2. Detailed template syntax and semantics
 

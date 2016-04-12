@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.apache.poi.feature_3.13.0.201604062247.jar" id="org.apache.poi.feature" version="3.13.0.201604062247">
+   <feature url="features/org.apache.poi.feature_3.13.0.201604121146.jar" id="org.apache.poi.feature" version="3.13.0.201604121146">
       <category name="org.apache.poi"/>
    </feature>
    <category-def name="org.apache.poi" label="POI">

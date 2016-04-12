@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="gettercomment_context" deleted="false" description="Comment for getter method" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.gettercomment" name="gettercomment">/**
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+     Copyright (c) 2016 Obeo. 
+     All rights reserved. This program and the accompanying materials
+     are made available under the terms of the Eclipse Public License v1.0
+     which accompanies this distribution, and is available at
+     http://www.eclipse.org/legal/epl-v10.html
+      
+      Contributors:
+          Obeo - initial API and implementation
+     
+ -->
+<templates><template autoinsert="true" context="gettercomment_context" deleted="false" description="Comment for getter method" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.gettercomment" name="gettercomment">/**
  * @return the ${bare_field_name}
  */</template><template autoinsert="true" context="settercomment_context" deleted="false" description="Comment for setter method" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.settercomment" name="settercomment">/**
  * @param ${param} the ${bare_field_name} to set

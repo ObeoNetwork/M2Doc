@@ -317,18 +317,23 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         @SuppressWarnings("restriction")
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
                 definitions.getCurrentDefinitions());
-        if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+        if (result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
             // insert the tag runs as is.
             for (XWPFRun tagRun : object.getRuns()) {
                 insertRun(tagRun);
             }
             // insert the error message.
             XWPFRun run = currentGeneratedParagraph.createRun();
-            run.setText(result.getDiagnostic().getMessage());
-            if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+            if (result != null) {
+                run.setText(result.getDiagnostic().getMessage());
+            } else {
+                run.setText("couldn't evaluate expression");
+            }
+            if (result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
                 run.setBold(true);
                 run.setColor(ERROR_COLOR);
             }
+
             for (XWPFRun tagRun : object.getClosingRuns()) {
                 insertRun(tagRun);
             }
