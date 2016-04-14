@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Poi
 Bundle-SymbolicName: org.apache.poi
-Bundle-Version: 3.13.0
+Bundle-Version: 3.13.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: Apache
 Export-Package: org.apache.commons.logging,

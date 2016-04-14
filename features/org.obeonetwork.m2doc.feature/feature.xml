@@ -238,13 +238,6 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.m2doc.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.obeonetwork.m2doc.ui"
          download-size="0"
          install-size="0"

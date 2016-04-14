@@ -5,7 +5,7 @@
          point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.DatabaseServiceHolder"
-            serviceToken="database">
+            serviceToken="default">
       </service>
    </extension>
 
