@@ -1,15 +1,39 @@
+/*******************************************************************************
+ *  Copyright (c) 2016 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
 package org.obeonetwork.database.wgen.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
 import org.obeonetwork.dsl.database.DataBase;
+import org.obeonetwork.dsl.database.Schema;
 import org.obeonetwork.dsl.database.Table;
 import org.obeonetwork.dsl.typeslibrary.NativeType;
 import org.obeonetwork.dsl.typeslibrary.Type;
 import org.obeonetwork.dsl.typeslibrary.TypeInstance;
 import org.obeonetwork.dsl.typeslibrary.UserDefinedTypeRef;
 
+/**
+ * Set of services for the Database DSL.
+ * 
+ * @author Romain Guider
+ *
+ */
 public class DatabaseServices {
-
+	/**
+	 * No arg constructor required by the AQL runtime.
+	 */
 	public DatabaseServices() {
 	}
 
@@ -76,4 +100,27 @@ public class DatabaseServices {
 		}
 	}
 
+	/**
+	 * Creates and returns a complete list of the database tables.
+	 * 
+	 * @param db
+	 * @return
+	 */
+	public List<Table> allTables(DataBase db) {
+		List<Table> result = new ArrayList<Table>();
+		for (AbstractTable table : db.getTables()) {
+			if (table instanceof Table) {
+				result.add((Table) table);
+			}
+		}
+		for (Schema schema : db.getSchemas()) {
+			System.out.println("iterating on schemas");
+			for (AbstractTable table : schema.getTables()) {
+				if (table instanceof Table) {
+					result.add((Table) table);
+				}
+			}
+		}
+		return result;
+	}
 }

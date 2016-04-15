@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:database="http://www.obeonetwork.org/dsl/database/1.0" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_SbzRQPBMEeW9ULtwZoIWnA" selectedViews="_ncfc0PBMEeW9ULtwZoIWnA" version="10.1.0.201509162000">
+  <semanticResources>models/My.database</semanticResources>
+  <semanticResources>pathmap://NativeDBTypes/MySQL-5</semanticResources>
+  <semanticResources>pathmap://LogicalDBTypes</semanticResources>
+  <semanticResources>models/MPDGenConf.genconf</semanticResources>
+  <semanticResources>models/MPDGenConf2.genconf</semanticResources>
+  <semanticResources>models/My.genconf</semanticResources>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_ncfc0PBMEeW9ULtwZoIWnA">
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_o2k1MPBMEeW9ULtwZoIWnA" name="My Database">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_o2k1MfBMEeW9ULtwZoIWnA" source="DANNOTATION_CUSTOMIZATION_KEY">
+        <data xmi:type="diagram:ComputedStyleDescriptionRegistry" xmi:id="_o2k1MvBMEeW9ULtwZoIWnA">
+          <computedStyleDescriptions xmi:type="style:SquareDescription" xmi:id="_qqbYcPBMEeW9ULtwZoIWnA" labelExpression="service:getDatabaseElementLabel" labelAlignment="LEFT">
+            <borderColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+          </computedStyleDescriptions>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_o23wIPBMEeW9ULtwZoIWnA" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_o23wIfBMEeW9ULtwZoIWnA" type="Sirius" element="_o2k1MPBMEeW9ULtwZoIWnA" measurementUnit="Pixel">
+          <children xmi:type="notation:Node" xmi:id="_qCYhAPBMEeW9ULtwZoIWnA" type="2003" element="_qBuZsPBMEeW9ULtwZoIWnA">
+            <children xmi:type="notation:Node" xmi:id="_qCiSAPBMEeW9ULtwZoIWnA" type="5007"/>
+            <children xmi:type="notation:Node" xmi:id="_qCiSAfBMEeW9ULtwZoIWnA" type="7004">
+              <children xmi:type="notation:Node" xmi:id="_qrDqkPBMEeW9ULtwZoIWnA" visible="false" type="3010" element="_qqH2cPBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_qrDqkfBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_qrDqkvBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_qrE4sPBMEeW9ULtwZoIWnA" type="3010" element="_qquTYfBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_qrE4sfBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_qrE4svBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_rqHT0vBMEeW9ULtwZoIWnA" type="3010" element="_rqHT0PBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_rqHT0_BMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_rqHT1PBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_xrYSsvBMEeW9ULtwZoIWnA" type="3010" element="_xrYSsPBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_xrYSs_BMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_xrYStPBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_4sSwsPBMEeW9ULtwZoIWnA" type="3010" element="_4sJmwPBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_4sSwsfBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_4sSwsvBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_rqHT1fBMEeW9ULtwZoIWnA" visible="false" type="3010" element="_rp9i0_BMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_rqHT1vBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_rqHT1_BMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_xrYStfBMEeW9ULtwZoIWnA" visible="false" type="3010" element="_xrOhs_BMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_xrYStvBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_xrYSt_BMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_2mXmAPBMEeW9ULtwZoIWnA" visible="false" type="3010" element="_2l3PsPBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_2mXmAfBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_2mXmAvBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_2mXmA_BMEeW9ULtwZoIWnA" type="3010" element="_2mOcEPBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_2mXmBPBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_2mXmBfBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_4sSws_BMEeW9ULtwZoIWnA" visible="false" type="3010" element="_4r_1wPBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_4sSwtPBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_4sSwtfBMEeW9ULtwZoIWnA"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_7QeksvBMEeW9ULtwZoIWnA" type="3010" element="_7QeksPBMEeW9ULtwZoIWnA">
+                <styles xmi:type="notation:FontStyle" xmi:id="_7Qeks_BMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_7QektPBMEeW9ULtwZoIWnA"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_qCiSAvBMEeW9ULtwZoIWnA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_qCiSA_BMEeW9ULtwZoIWnA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_qCYhAfBMEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qCYhAvBMEeW9ULtwZoIWnA" x="310" y="115"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_L8DYAPE7EeWKQ7KaCe0CIg" type="2003" element="_L6tUMPE7EeWKQ7KaCe0CIg">
+            <children xmi:type="notation:Node" xmi:id="_L8LT0PE7EeWKQ7KaCe0CIg" type="5007"/>
+            <children xmi:type="notation:Node" xmi:id="_L8L64PE7EeWKQ7KaCe0CIg" type="7004">
+              <children xmi:type="notation:Node" xmi:id="_a5oxoPE7EeWKQ7KaCe0CIg" type="3010" element="_a5ckYPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_a5oxofE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_a5oxovE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_euGhwPE7EeWKQ7KaCe0CIg" type="3010" element="_et1cAPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_euGhwfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_euGhwvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_gY8S8PE7EeWKQ7KaCe0CIg" type="3010" element="_gYhcMPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_gY8S8fE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_gY8S8vE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_jbF1UPE7EeWKQ7KaCe0CIg" type="3010" element="_ja3y4PE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_jbF1UfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_jbF1UvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_gY86APE7EeWKQ7KaCe0CIg" visible="false" type="3010" element="_gYQWcPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_gY86AfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_gY86AvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_jbGcYPE7EeWKQ7KaCe0CIg" visible="false" type="3010" element="_jaoiUPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_jbGcYfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_jbGcYvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_nR8LEPE7EeWKQ7KaCe0CIg" type="3010" element="_nRuIoPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_nR8LEfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_nR8LEvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_L8L64fE7EeWKQ7KaCe0CIg"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_L8L64vE7EeWKQ7KaCe0CIg"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_L8DYAfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_L8DYAvE7EeWKQ7KaCe0CIg" x="640" y="100" width="208" height="158"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_OEjVkPE7EeWKQ7KaCe0CIg" type="2003" element="_OENXUPE7EeWKQ7KaCe0CIg">
+            <children xmi:type="notation:Node" xmi:id="_OEj8oPE7EeWKQ7KaCe0CIg" type="5007"/>
+            <children xmi:type="notation:Node" xmi:id="_OEkjsPE7EeWKQ7KaCe0CIg" type="7004">
+              <children xmi:type="notation:Node" xmi:id="_PihvcPE7EeWKQ7KaCe0CIg" visible="false" type="3010" element="_PhspAPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_PihvcfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_PihvcvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_PiiWgPE7EeWKQ7KaCe0CIg" type="3010" element="_PiONcPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_PiiWgfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_PiiWgvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_VKdoUPE7EeWKQ7KaCe0CIg" type="3010" element="_VKUeYPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_VKdoUfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_VKdoUvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_Pii9kPE7EeWKQ7KaCe0CIg" type="3010" element="_PiQpsPE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_Pii9kfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_Pii9kvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_VKePYPE7EeWKQ7KaCe0CIg" visible="false" type="3010" element="_VKFN0PE7EeWKQ7KaCe0CIg">
+                <styles xmi:type="notation:FontStyle" xmi:id="_VKePYfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8" bold="true"/>
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_VKePYvE7EeWKQ7KaCe0CIg"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_OEkjsfE7EeWKQ7KaCe0CIg"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_OEkjsvE7EeWKQ7KaCe0CIg"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_OEjVkfE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OEjVkvE7EeWKQ7KaCe0CIg" x="1005" y="102" width="193" height="153"/>
+          </children>
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_o23wIvBMEeW9ULtwZoIWnA"/>
+          <edges xmi:type="notation:Edge" xmi:id="_a5xUgPE7EeWKQ7KaCe0CIg" type="4001" element="_a4-DQPE7EeWKQ7KaCe0CIg" source="_L8DYAPE7EeWKQ7KaCe0CIg" target="_qCYhAPBMEeW9ULtwZoIWnA">
+            <children xmi:type="notation:Node" xmi:id="_a50-4PE7EeWKQ7KaCe0CIg" type="6001">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_a50-4fE7EeWKQ7KaCe0CIg" x="1" y="-8"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_a52NAPE7EeWKQ7KaCe0CIg" type="6002">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_a52NAfE7EeWKQ7KaCe0CIg" x="2" y="11"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_a520EPE7EeWKQ7KaCe0CIg" type="6003">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_a520EfE7EeWKQ7KaCe0CIg" y="10"/>
+            </children>
+            <styles xmi:type="notation:ConnectorStyle" xmi:id="_a5xUgfE7EeWKQ7KaCe0CIg"/>
+            <styles xmi:type="notation:FontStyle" xmi:id="_a5xUgvE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_a5xUg_E7EeWKQ7KaCe0CIg" points="[0, 0, 134, 12]$[-134, -12, 0, 0]"/>
+            <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_a54pQPE7EeWKQ7KaCe0CIg" id="(0.0,0.5769230769230769)"/>
+            <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_a54pQfE7EeWKQ7KaCe0CIg" id="(1.0,0.504)"/>
+          </edges>
+          <edges xmi:type="notation:Edge" xmi:id="_euHv4PE7EeWKQ7KaCe0CIg" type="4001" element="_etmLcPE7EeWKQ7KaCe0CIg" source="_L8DYAPE7EeWKQ7KaCe0CIg" target="_OEjVkPE7EeWKQ7KaCe0CIg">
+            <children xmi:type="notation:Node" xmi:id="_euIW8PE7EeWKQ7KaCe0CIg" type="6001">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_euIW8fE7EeWKQ7KaCe0CIg" x="3" y="-11"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_euIW8vE7EeWKQ7KaCe0CIg" type="6002">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_euIW8_E7EeWKQ7KaCe0CIg" x="-4" y="8"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_euIW9PE7EeWKQ7KaCe0CIg" type="6003">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_euIW9fE7EeWKQ7KaCe0CIg" x="-5" y="8"/>
+            </children>
+            <styles xmi:type="notation:ConnectorStyle" xmi:id="_euHv4fE7EeWKQ7KaCe0CIg"/>
+            <styles xmi:type="notation:FontStyle" xmi:id="_euHv4vE7EeWKQ7KaCe0CIg" fontName="Segoe UI" fontHeight="8"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_euHv4_E7EeWKQ7KaCe0CIg" points="[0, 0, -159, -7]$[159, 7, 0, 0]"/>
+            <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_euIW9vE7EeWKQ7KaCe0CIg" id="(1.0,0.0641025641025641)"/>
+            <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_euI-APE7EeWKQ7KaCe0CIg" id="(0.0,0.09933774834437085)"/>
+          </edges>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_qBuZsPBMEeW9ULtwZoIWnA" name="Personne" incomingEdges="_a4-DQPE7EeWKQ7KaCe0CIg">
+        <target xmi:type="database:Table" href="models/My.database#_qAIeQfBMEeW9ULtwZoIWnA"/>
+        <semanticElements xmi:type="database:Table" href="models/My.database#_qAIeQfBMEeW9ULtwZoIWnA"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_qB4KsPBMEeW9ULtwZoIWnA" borderSize="1" borderSizeComputationExpression="1" borderColor="39,76,114" foregroundColor="114,159,207">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMappingImport" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']"/>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_qqH2cPBMEeW9ULtwZoIWnA" name="column1 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_qp6bEfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_qp6bEfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_qquTYPBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_qquTYfBMEeW9ULtwZoIWnA" name="Nom : text">
+          <target xmi:type="database:Column" href="models/My.database#_qp6bEfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_qp6bEfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_qquTYvBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_rqHT0PBMEeW9ULtwZoIWnA" name="Prenom : text">
+          <target xmi:type="database:Column" href="models/My.database#_rp9i0fBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_rp9i0fBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_rqHT0fBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_xrYSsPBMEeW9ULtwZoIWnA" name="age : integer()">
+          <target xmi:type="database:Column" href="models/My.database#_xrOhsfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_xrOhsfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_xrYSsfBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_4sJmwPBMEeW9ULtwZoIWnA" name="NIR : text">
+          <target xmi:type="database:Column" href="models/My.database#_4r2EwfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_4r2EwfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_4sJmwfBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_rp9i0_BMEeW9ULtwZoIWnA" name="column2 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_rp9i0fBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_rp9i0fBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_rp9i1PBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_xrOhs_BMEeW9ULtwZoIWnA" name="column3 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_xrOhsfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_xrOhsfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_xrOhtPBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_2l3PsPBMEeW9ULtwZoIWnA" name="PK_Personne" visible="false">
+          <target xmi:type="database:PrimaryKey" href="models/My.database#_2ltesfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:PrimaryKey" href="models/My.database#_2ltesfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_2l3PsfBMEeW9ULtwZoIWnA" labelAlignment="LEFT">
+            <description xmi:type="style:SquareDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_PrimaryKey']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_PrimaryKey']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_2mOcEPBMEeW9ULtwZoIWnA" name="PK_Personne">
+          <target xmi:type="database:PrimaryKey" href="models/My.database#_2ltesfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:PrimaryKey" href="models/My.database#_2ltesfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_2mOcEfBMEeW9ULtwZoIWnA" labelAlignment="LEFT">
+            <description xmi:type="style:SquareDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_PrimaryKey']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_PrimaryKey']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_4r_1wPBMEeW9ULtwZoIWnA" name="column4 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_4r2EwfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_4r2EwfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_4r_1wfBMEeW9ULtwZoIWnA" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_7QeksPBMEeW9ULtwZoIWnA" name="Personne_UNIQUE_INDEX    &lt;i1>">
+          <target xmi:type="database:Index" href="models/My.database#_7QbhYfBMEeW9ULtwZoIWnA"/>
+          <semanticElements xmi:type="database:Index" href="models/My.database#_7QbhYfBMEeW9ULtwZoIWnA"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_7QeksfBMEeW9ULtwZoIWnA" labelAlignment="LEFT">
+            <description xmi:type="style:SquareDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Index']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Index']"/>
+        </ownedElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_L6tUMPE7EeWKQ7KaCe0CIg" name="Emploi" outgoingEdges="_a4-DQPE7EeWKQ7KaCe0CIg _etmLcPE7EeWKQ7KaCe0CIg">
+        <target xmi:type="database:Table" href="models/My.database#_L6VgwPE7EeWKQ7KaCe0CIg"/>
+        <semanticElements xmi:type="database:Table" href="models/My.database#_L6VgwPE7EeWKQ7KaCe0CIg"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_L6uiUPE7EeWKQ7KaCe0CIg" borderSize="1" borderSizeComputationExpression="1" borderColor="39,76,114" foregroundColor="114,159,207">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMappingImport" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']"/>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_a5ckYPE7EeWKQ7KaCe0CIg" name="NIR : text">
+          <target xmi:type="database:Column" href="models/My.database#_a4PqgvE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_a4PqgvE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_a5dygPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_et1cAPE7EeWKQ7KaCe0CIg" name="codeMission : varchar()">
+          <target xmi:type="database:Column" href="models/My.database#_etgr4_E7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_etgr4_E7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_et3RMPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_gYhcMPE7EeWKQ7KaCe0CIg" name="dateDebut : date">
+          <target xmi:type="database:Column" href="models/My.database#_gYPIUPE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_gYPIUPE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_gYjRYPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_ja3y4PE7EeWKQ7KaCe0CIg" name="indice : int()">
+          <target xmi:type="database:Column" href="models/My.database#_janUMfE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_janUMfE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_ja5oEPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_gYQWcPE7EeWKQ7KaCe0CIg" name="column3 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_gYPIUPE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_gYPIUPE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_gYSysPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_jaoiUPE7EeWKQ7KaCe0CIg" name="column4 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_janUMfE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_janUMfE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_japwcPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_nRuIoPE7EeWKQ7KaCe0CIg" name="Emploi_PK">
+          <target xmi:type="database:PrimaryKey" href="models/My.database#_nRNLQfE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:PrimaryKey" href="models/My.database#_nRNLQfE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_nRuIofE7EeWKQ7KaCe0CIg" labelAlignment="LEFT">
+            <description xmi:type="style:SquareDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_PrimaryKey']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_PrimaryKey']"/>
+        </ownedElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_OENXUPE7EeWKQ7KaCe0CIg" name="Mission" incomingEdges="_etmLcPE7EeWKQ7KaCe0CIg">
+        <target xmi:type="database:Table" href="models/My.database#_OEMJMfE7EeWKQ7KaCe0CIg"/>
+        <semanticElements xmi:type="database:Table" href="models/My.database#_OEMJMfE7EeWKQ7KaCe0CIg"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_OEN-YPE7EeWKQ7KaCe0CIg" borderSize="1" borderSizeComputationExpression="1" borderColor="39,76,114" foregroundColor="114,159,207">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMappingImport" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']"/>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_PhspAPE7EeWKQ7KaCe0CIg" name="column1 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_PhTAYfE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_PhTAYfE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_PiCnQPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_PiONcPE7EeWKQ7KaCe0CIg" name="codeMission : varchar()">
+          <target xmi:type="database:Column" href="models/My.database#_PhTAYfE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_PhTAYfE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_PiQCoPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_VKUeYPE7EeWKQ7KaCe0CIg" name="description : text">
+          <target xmi:type="database:Column" href="models/My.database#_VKEmwfE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_VKEmwfE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_VKWTkPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_PiQpsPE7EeWKQ7KaCe0CIg" name="Mission_PK">
+          <target xmi:type="database:PrimaryKey" href="models/My.database#_Phqz0fE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:PrimaryKey" href="models/My.database#_Phqz0fE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_PiQpsfE7EeWKQ7KaCe0CIg" labelAlignment="LEFT">
+            <description xmi:type="style:SquareDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_PrimaryKey']/@style"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']/@containerMappings[name='DB_TableWithIndex']/@subNodeMappings[name='DB_PrimaryKey']"/>
+        </ownedElements>
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_VKFN0PE7EeWKQ7KaCe0CIg" name="column2 : &lt;undefined>" visible="false">
+          <target xmi:type="database:Column" href="models/My.database#_VKEmwfE7EeWKQ7KaCe0CIg"/>
+          <semanticElements xmi:type="database:Column" href="models/My.database#_VKEmwfE7EeWKQ7KaCe0CIg"/>
+          <ownedStyle xmi:type="diagram:Square" xmi:id="_VKHDAPE7EeWKQ7KaCe0CIg" labelAlignment="LEFT" description="_qqbYcPBMEeW9ULtwZoIWnA">
+            <labelFormat>bold</labelFormat>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_Table']/@subNodeMappings[name='DB_Column']"/>
+        </ownedElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_a4-DQPE7EeWKQ7KaCe0CIg" name="FK_1" sourceNode="_L6tUMPE7EeWKQ7KaCe0CIg" targetNode="_qBuZsPBMEeW9ULtwZoIWnA">
+        <target xmi:type="database:ForeignKey" href="models/My.database#_a4PqgPE7EeWKQ7KaCe0CIg"/>
+        <semanticElements xmi:type="database:ForeignKey" href="models/My.database#_a4PqgPE7EeWKQ7KaCe0CIg"/>
+        <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_a5CUsPE7EeWKQ7KaCe0CIg">
+          <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@edgeMappings[name='DB_ForeignKey']/@style"/>
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_a5CUsfE7EeWKQ7KaCe0CIg" showIcon="false"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@edgeMappings[name='DB_ForeignKey']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_etmLcPE7EeWKQ7KaCe0CIg" name="FK_2" sourceNode="_L6tUMPE7EeWKQ7KaCe0CIg" targetNode="_OENXUPE7EeWKQ7KaCe0CIg">
+        <target xmi:type="database:ForeignKey" href="models/My.database#_etgr4fE7EeWKQ7KaCe0CIg"/>
+        <semanticElements xmi:type="database:ForeignKey" href="models/My.database#_etgr4fE7EeWKQ7KaCe0CIg"/>
+        <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_etmygPE7EeWKQ7KaCe0CIg">
+          <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@edgeMappings[name='DB_ForeignKey']/@style"/>
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_etmygfE7EeWKQ7KaCe0CIg" showIcon="false"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@edgeMappings[name='DB_ForeignKey']"/>
+      </ownedDiagramElements>
+      <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_o2k1M_BMEeW9ULtwZoIWnA"/>
+      <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer"/>
+      <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Schemas']"/>
+      <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='External%20Tables']"/>
+      <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@additionalLayers[name='Index']"/>
+      <target xmi:type="database:DataBase" href="models/My.database#_jT0-UPBMEeW9ULtwZoIWnA"/>
+    </ownedRepresentations>
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_GT514PBNEeW9ULtwZoIWnA" name="Schema1 Schema">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_GT514fBNEeW9ULtwZoIWnA" source="DANNOTATION_CUSTOMIZATION_KEY">
+        <data xmi:type="diagram:ComputedStyleDescriptionRegistry" xmi:id="_GT514vBNEeW9ULtwZoIWnA"/>
+      </ownedAnnotationEntries>
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_GUBKoPBNEeW9ULtwZoIWnA" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_GUBKofBNEeW9ULtwZoIWnA" type="Sirius" element="_GT514PBNEeW9ULtwZoIWnA" measurementUnit="Pixel">
+          <children xmi:type="notation:Node" xmi:id="_HAbksPBNEeW9ULtwZoIWnA" type="2003" element="_G_1u0PBNEeW9ULtwZoIWnA">
+            <children xmi:type="notation:Node" xmi:id="_HAbks_BNEeW9ULtwZoIWnA" type="5007"/>
+            <children xmi:type="notation:Node" xmi:id="_HAbktPBNEeW9ULtwZoIWnA" type="7004">
+              <styles xmi:type="notation:SortingStyle" xmi:id="_HAbktfBNEeW9ULtwZoIWnA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_HAbktvBNEeW9ULtwZoIWnA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_HAbksfBNEeW9ULtwZoIWnA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HAbksvBNEeW9ULtwZoIWnA" x="130" y="100" width="243" height="118"/>
+          </children>
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_GUBKovBNEeW9ULtwZoIWnA"/>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_G_1u0PBNEeW9ULtwZoIWnA" name="View1" tooltipText="">
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_G_1u0fBNEeW9ULtwZoIWnA" showIcon="false" borderSize="1" borderSizeComputationExpression="1" borderColor="114,73,110" foregroundColor="173,127,168">
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_View']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Database%20Diagram']/@defaultLayer/@containerMappings[name='DB_View']"/>
+      </ownedDiagramElements>
+      <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Schema%20Diagram']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_GT514_BNEeW9ULtwZoIWnA"/>
+      <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Schema%20Diagram']/@defaultLayer"/>
+      <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Schema%20Diagram']/@additionalLayers[name='External%20Tables']"/>
+      <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Schema%20Diagram']/@additionalLayers[name='Index']"/>
+    </ownedRepresentations>
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']"/>
+  </ownedViews>
+</viewpoint:DAnalysis>
