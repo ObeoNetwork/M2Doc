@@ -101,6 +101,10 @@ public class StringDefinitionItemProvider extends DefinitionItemProvider {
 	@Override
 	public String getText(Object object) {
 		String label = ((StringDefinition) object).getKey();
+		String value = ((StringDefinition) object).getValue();
+		if (label != null && label.length() != 0 && value != null && value.length() != 0) {
+			label = label + " = " + value;
+		}
 		return label == null || label.length() == 0 ? getString("_UI_StringDefinition_type") : label;
 	}
 
