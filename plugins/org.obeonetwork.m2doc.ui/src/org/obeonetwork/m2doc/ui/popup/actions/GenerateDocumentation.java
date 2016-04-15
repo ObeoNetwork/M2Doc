@@ -180,6 +180,12 @@ public class GenerateDocumentation implements IObjectActionDelegate {
         while (!(container instanceof IProject)) {
             container = container.getParent();
         }
+        if (generation.getTemplateFileName() == null) {
+            throw new DocumentGenerationException("Template file name must be filled.");
+        }
+        if (generation.getResultFileName() == null) {
+            throw new DocumentGenerationException("Generated file name must be filled.");
+        }
         IFile templateFile = container.getFile(new Path(generation.getTemplateFileName()));
         IFile generatedFile = container.getFile(new Path(generation.getResultFileName()));
         String projectRoot = container.getLocation().toString();
