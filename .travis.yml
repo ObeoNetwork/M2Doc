@@ -1,0 +1,11 @@
+language: java
+env:
+  global:
+      - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"  
+jdk:
+  - oraclejdk7
+sudo: false
+script:
+- cd releng/org.obeonetwork.m2doc.parent/
+- mvn clean verify package 
+after_script:
