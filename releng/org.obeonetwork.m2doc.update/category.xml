@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.obeonetwork.m2doc.feature_0.7.0.qualifier.jar" id="org.obeonetwork.m2doc.feature" version="0.7.0.qualifier"/>
+   <category-def name="M2Doc" label="M2Doc">
+      <description>
+         plug-ins for the M2Doc technology
+      </description>
+   </category-def>
+</site>
