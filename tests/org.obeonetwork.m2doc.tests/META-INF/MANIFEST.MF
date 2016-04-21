@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.obeonetwork.m2doc.test
+Bundle-SymbolicName: org.obeonetwork.m2doc.tests
 Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.obeonetwork.m2doc.parser.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
