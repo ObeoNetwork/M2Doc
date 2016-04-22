@@ -7,5 +7,6 @@ jdk:
 sudo: false
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
+- mvn -v
 - mvn clean verify package 
 after_script:
