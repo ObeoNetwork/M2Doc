@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<prerequisites>
-		<maven>3.3</maven>
+		<maven>3.2</maven>
 	</prerequisites>
 	<groupId>org.obeonetwork.m2doc</groupId>
 	<artifactId>org.obeonetwork.m2doc.parent</artifactId>
@@ -31,7 +31,12 @@
 		<repository>
 			<id>eclipse</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/mars/</url>
+			<url>http://download.eclipse.org/releases/luna/</url>
+		</repository>
+		<repository>
+			<id>acceleo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/acceleo/updates/releases/3.6/</url>
 		</repository>
 	</repositories>
 	<build>

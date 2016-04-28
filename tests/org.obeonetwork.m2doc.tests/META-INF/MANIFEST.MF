@@ -6,7 +6,7 @@ Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.obeonetwork.m2doc.parser.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc;bundle-version="0.1.0",
- org.junit;bundle-version="4.12.0"
+ org.junit;bundle-version="4.11.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.poi,
