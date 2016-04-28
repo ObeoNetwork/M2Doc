@@ -9,3 +9,13 @@ script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
 - mvn clean verify 
+deploy:
+  provider: releases
+  api_key: "$GH_TOKEN"
+  file: 
+  - "releng/org.obeonetwork.m2doc.update/target/org.obeonetwork.m2doc.update-0.7.0-SNAPSHOT.zip"
+  - "dependencies/org.apache.poi.update/target/org.apache.poi.update-0.7.0-SNAPSHOT.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+    
