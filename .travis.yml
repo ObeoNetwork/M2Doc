@@ -9,6 +9,7 @@ script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
 - mvn clean verify 
+- cd ../..
 deploy:
   provider: releases
   api_key: "$GH_TOKEN"
