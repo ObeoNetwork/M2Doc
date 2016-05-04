@@ -20,6 +20,26 @@ The following set of functionalities is currently supported :
 
 A complete documentation can be found [here](doc/doc/M2DocUserGuide.docx)
 
+As a preview here follows a screen shot of a template's fragment and the corresponding generation result for a database. 
+
+![DB Template](doc/doc/DBTemplate.png)
+The generation results looks like this 
+![DB Result](doc/doc/DBResult.png)
+
+## Architecture 
+
+The overall architecture of M2Doc is organized around three building blocs:
+* Apache POI for the parsing and generation of OOXML documents
+* AQL for querying the models
+* EMF as a general platform
+
+![Technical architecture](doc/doc/TechnicalArchitecture.png)
+
+The workflow of M2Doc is depicted below: 
+
+![M2Doc Workflow](doc/doc/M2DocWorkflow.png)
+
+
 ## Disclaimer 
 
 Although it is already quite usable, the M2Doc technology isn't mature yet and needs being completed: in particular, the user interface and configuration model shouldn't be taken for granted.They may change as they were not the main focus of the first development sprint. 
