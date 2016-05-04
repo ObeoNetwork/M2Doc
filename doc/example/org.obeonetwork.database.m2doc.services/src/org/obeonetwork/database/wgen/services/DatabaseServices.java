@@ -11,14 +11,17 @@
  *******************************************************************************/
 package org.obeonetwork.database.wgen.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.Column;
 import org.obeonetwork.dsl.database.DataBase;
+import org.obeonetwork.dsl.database.ForeignKey;
 import org.obeonetwork.dsl.database.Schema;
 import org.obeonetwork.dsl.database.Table;
+import org.obeonetwork.dsl.database.View;
+import org.obeonetwork.dsl.database.util.DatabaseSwitch;
 import org.obeonetwork.dsl.typeslibrary.NativeType;
 import org.obeonetwork.dsl.typeslibrary.Type;
 import org.obeonetwork.dsl.typeslibrary.TypeInstance;
@@ -106,21 +109,103 @@ public class DatabaseServices {
 	 * @param db
 	 * @return
 	 */
-	public List<Table> allTables(DataBase db) {
-		List<Table> result = new ArrayList<Table>();
-		for (AbstractTable table : db.getTables()) {
-			if (table instanceof Table) {
-				result.add((Table) table);
-			}
-		}
-		for (Schema schema : db.getSchemas()) {
-			System.out.println("iterating on schemas");
-			for (AbstractTable table : schema.getTables()) {
-				if (table instanceof Table) {
-					result.add((Table) table);
-				}
-			}
-		}
-		return result;
+	public Set<Table> allTables(DataBase db) {
+		TableCollector collector = new TableCollector();
+		collector.doSwitch(db);
+		return collector.tables;
 	}
+
+	/**
+	 * Creates and returns a complete list of the database tables.
+	 * 
+	 * @param db
+	 * @return
+	 */
+	public Set<View> allViews(DataBase db) {
+		ViewCollector collector = new ViewCollector();
+		collector.doSwitch(db);
+		return collector.tables;
+	}
+
+	/**
+	 * Switch class used to collect the tables of a data base.
+	 * 
+	 * @author Romain Guider
+	 *
+	 */
+	private static class TableCollector extends DatabaseSwitch<String> {
+		/**
+		 * The set used to collect tables.
+		 */
+		private Set<Table> tables = new HashSet<Table>();
+
+		@Override
+		public String caseDataBase(DataBase object) {
+			for (AbstractTable table : object.getTables()) {
+				doSwitch(table);
+			}
+			for (Schema schema : object.getSchemas()) {
+				doSwitch(schema);
+			}
+			return "";
+		}
+
+		@Override
+		public String caseTable(Table object) {
+			tables.add(object);
+			for (ForeignKey key : object.getForeignKeys()) {
+				doSwitch(key.getTarget());
+			}
+			return "";
+		}
+
+		@Override
+		public String caseSchema(Schema object) {
+			for (AbstractTable table : object.getTables()) {
+				doSwitch(table);
+			}
+			return "";
+		}
+
+	}
+
+	/**
+	 * Switch class used to collect the tables of a data base.
+	 * 
+	 * @author Romain Guider
+	 *
+	 */
+	private static class ViewCollector extends DatabaseSwitch<String> {
+		/**
+		 * The set used to collect tables.
+		 */
+		private Set<View> tables = new HashSet<View>();
+
+		@Override
+		public String caseDataBase(DataBase object) {
+			for (AbstractTable table : object.getTables()) {
+				doSwitch(table);
+			}
+			for (Schema schema : object.getSchemas()) {
+				doSwitch(schema);
+			}
+			return "";
+		}
+
+		@Override
+		public String caseView(View object) {
+			tables.add(object);
+			return "";
+		}
+
+		@Override
+		public String caseSchema(Schema object) {
+			for (AbstractTable table : object.getTables()) {
+				doSwitch(table);
+			}
+			return "";
+		}
+
+	}
+
 }
