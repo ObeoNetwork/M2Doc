@@ -98,7 +98,7 @@ public class TemplateRuntimeErrorTests {
         TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
         processor.doSwitch(template);
         // scan the destination document
-        assertEquals(3, destinationDoc.getParagraphs().size());
+        assertEquals(4, destinationDoc.getParagraphs().size());
         System.out.println(destinationDoc.getParagraphs().get(0).getText());
         assertEquals("Template de test pour les balises de query aql\u00a0: Couldn't find the self variable",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -110,6 +110,7 @@ public class TemplateRuntimeErrorTests {
         assertEquals("FF0000", run.getColor());
         assertNotNull(run.getCTR().getRPr().getB());
         assertEquals("Fin du gabarit", destinationDoc.getParagraphs().get(2).getText());
+        assertEquals("", destinationDoc.getParagraphs().get(3).getText());
     }
 
 }
