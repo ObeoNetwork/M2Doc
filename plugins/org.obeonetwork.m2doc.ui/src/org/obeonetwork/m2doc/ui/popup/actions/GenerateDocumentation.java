@@ -95,17 +95,24 @@ public class GenerateDocumentation implements IObjectActionDelegate {
                 } catch (IOException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
                 } catch (DocumentParserException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    MessageDialog.openError(shell, "Template parsing problem. See the error log for details",
+                            e.getMessage());
                 } catch (DocumentGenerationException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
                 }
             } else {
                 MessageDialog.openError(shell, "Bad selection",
                         "Document generation action can only be triggered on Generation object.");
             }
+        } else {
+            MessageDialog.openError(shell, "Bad selection",
+                    "Document generation action can only be triggered on Generation object.");
         }
     }
 
