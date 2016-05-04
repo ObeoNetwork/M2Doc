@@ -57,6 +57,13 @@ public class TokenIterator implements Iterator<ParsingToken> {
             while (elementIterator.hasNext() && (tokenIterator == null || !tokenIterator.hasNext())) {
                 final IBodyElement element = elementIterator.next();
                 if (element.getElementType().equals(BodyElementType.PARAGRAPH)) {
+                    // create an empty run if there's no run in the paragraph.
+                    // this eases the processing of documents. The processing is based on runs and a paragraph that has no run in it won't
+                    // be seen by the generator and, as a consequence, won't be inserted as a static part in the result.
+                    XWPFParagraph paragraph = (XWPFParagraph) element;
+                    if (paragraph.getRuns().size() == 0) {
+                        paragraph.createRun().setText("");
+                    }
                     tokenIterator = new RunIterator(((XWPFParagraph) element).getRuns());
                 } else if (element.getElementType().equals(BodyElementType.TABLE)) {
                     tokenIterator = new TableIterator((XWPFTable) element);
