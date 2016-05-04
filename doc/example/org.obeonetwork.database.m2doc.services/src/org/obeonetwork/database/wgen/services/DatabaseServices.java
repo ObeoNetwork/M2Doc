@@ -67,11 +67,11 @@ public class DatabaseServices {
 	}
 
 	public String isPrimaryKey(Column col) {
-		return col.isInPrimaryKey() ? "Non" : "Oui";
+		return col.isInPrimaryKey() ? "Oui" : "Non";
 	}
 
 	public String isForeignKey(Column col) {
-		return col.isInForeignKey() ? "Non" : "Oui";
+		return col.isInForeignKey() ? "Oui" : "Non";
 	}
 
 	public int recordNumber(Column col) {
