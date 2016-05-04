@@ -18,6 +18,8 @@ The following set of functionalities is currently supported :
   * insertion of an image from a file
   * insertion of the evaluation result of an AQL query (as of now, a string representation of the result is inserted)
 
+A complete documentation can be found [here](doc/doc/M2DocUserGuide.docx)
+
 ## Disclaimer 
 
 Although it is already quite usable, the M2Doc technology isn't mature yet and needs being completed: in particular, the user interface and configuration model shouldn't be taken for granted.They may change as they were not the main focus of the first development sprint. 
