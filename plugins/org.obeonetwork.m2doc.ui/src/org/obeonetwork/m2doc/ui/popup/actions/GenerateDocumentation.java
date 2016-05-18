@@ -105,6 +105,12 @@ public class GenerateDocumentation implements IObjectActionDelegate {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
+                } catch (RuntimeException e) {// do not let exception leak out.
+                    String msg = e.getMessage();
+                    Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR,
+                            "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
+                    MessageDialog.openError(shell, "Generation problem. See the error log for details",
+                            "A technical error occured. Please log a bug (see the error log for details)");
                 }
             } else {
                 MessageDialog.openError(shell, "Bad selection",
