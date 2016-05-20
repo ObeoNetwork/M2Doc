@@ -716,7 +716,6 @@ public class BodyParser {
                 repetition.getParsingErrors().add(new DocumentParsingError(
                         message(ParsingErrorMessage.INVALIDEXPR, query), repetition.getRuns().get(1)));
             }
-            repetition.setQuery(result);
         }
         // read up the tags until the "gd:endfor" tag is encountered.
         parseCompound(repetition, TokenType.ENDFOR);

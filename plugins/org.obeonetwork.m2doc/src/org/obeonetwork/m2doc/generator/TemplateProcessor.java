@@ -58,6 +58,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
  * @author Romain Guider
  */
 public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
+    private static final String QUERY_EVALERROR_MESSAGE = "Couldn't evaluate query.";
+    private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression.";
     /**
      * constant defining the color of error messages.
      */
@@ -289,21 +291,26 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     @Override
     public AbstractConstruct caseQuery(Query object) {
         // first evaluate the query.
-        @SuppressWarnings("restriction")
-        IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
-        EvaluationResult result = evaluator.eval((AstResult) object.getQuery(), definitions.getCurrentDefinitions());
         String strResult;
-        if (result == null) {
-            strResult = "Couldn't parse query.";
-        } else if (result.getResult() == null) {
-            StringBuilder builder = new StringBuilder();
-            getDiagnostic(result.getDiagnostic(), builder);
-            strResult = builder.toString();
+        EvaluationResult result = null;
+        if (object.getQuery() == null) {
+            strResult = QUERY_SYNTAX_ERROR_MESSAGE + ":" + object.getParsingErrors().get(0).getMessage();
         } else {
-            strResult = result.getResult().toString();
+            @SuppressWarnings("restriction")
+            IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
+            result = evaluator.eval((AstResult) object.getQuery(), definitions.getCurrentDefinitions());
+            if (result == null) {
+                strResult = QUERY_EVALERROR_MESSAGE;
+            } else if (result.getResult() == null) {
+                StringBuilder builder = new StringBuilder();
+                getDiagnostic(result.getDiagnostic(), builder);
+                strResult = builder.toString();
+            } else {
+                strResult = result.getResult().toString();
+            }
         }
         XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), strResult);
-        if (result == null || result.getResult() == null) {
+        if (object.getQuery() == null || result == null || result.getResult() == null) {
             run.setBold(true);
             run.setColor(ERROR_COLOR);
         }
@@ -314,22 +321,25 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     @Override
     public AbstractConstruct caseRepetition(Repetition object) {
         // first evaluate the query
+        boolean validQuery = object.getQuery() != null;
         @SuppressWarnings("restriction")
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
                 definitions.getCurrentDefinitions());
-        if (result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+        if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
             // insert the tag runs as is.
             for (XWPFRun tagRun : object.getRuns()) {
                 insertRun(tagRun);
             }
             // insert the error message.
             XWPFRun run = currentGeneratedParagraph.createRun();
-            if (result != null) {
+            if (!validQuery) {
+                run.setText(QUERY_SYNTAX_ERROR_MESSAGE);
+            } else if (result != null) {
                 run.setText(result.getDiagnostic().getMessage());
             } else {
-                run.setText("couldn't evaluate expression");
+                run.setText(QUERY_EVALERROR_MESSAGE);
             }
-            if (result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+            if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
                 run.setBold(true);
                 run.setColor(ERROR_COLOR);
             }
@@ -372,8 +382,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         @SuppressWarnings("restriction")
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
                 definitions.getCurrentDefinitions());
-        // XXX : result can be null here : check that before using it.
-        if (result.getResult() instanceof Boolean) {
+        boolean validQuery = object.getQuery() != null;
+        if (validQuery && result != null && result.getResult() instanceof Boolean) {
             if ((Boolean) result.getResult()) {
                 for (AbstractConstruct construct : object.getSubConstructs()) {
                     doSwitch(construct);
@@ -390,8 +400,16 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 insertRun(tagRun);
             }
             XWPFRun run = currentGeneratedParagraph.createRun();
-            run.setText(result.getDiagnostic().getMessage());
-            if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+            String message;
+            if (!validQuery) {
+                message = QUERY_SYNTAX_ERROR_MESSAGE;
+            } else if (result != null) {
+                message = result.getDiagnostic().getMessage();
+            } else {
+                message = QUERY_EVALERROR_MESSAGE;
+            }
+            run.setText(message);
+            if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
                 run.setBold(true);
                 run.setColor(ERROR_COLOR);
             }
