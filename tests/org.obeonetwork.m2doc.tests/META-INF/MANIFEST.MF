@@ -1,12 +1,18 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.obeonetwork.m2doc.tests
+Bundle-SymbolicName: org.obeonetwork.m2doc.tests;singleton:=true
 Bundle-Version: 0.7.1.qualifier
-Bundle-Activator: org.obeonetwork.m2doc.parser.test.Activator
+Bundle-Activator: org.obeonetwork.m2doc.test.M2DocTestPlugin
 Require-Bundle: org.eclipse.core.runtime,
- org.obeonetwork.m2doc;bundle-version="0.1.0",
- org.junit;bundle-version="4.11.0"
+ org.obeonetwork.m2doc,
+ org.junit;bundle-version="4.11.0",
+ org.obeonetwork.m2doc.sirius,
+ org.eclipse.sirius.tests.junit.support;bundle-version="3.1.1",
+ org.eclipse.sirius.diagram;bundle-version="3.1.1",
+ org.obeonetwork.dsl.database;bundle-version="4.0.0",
+ org.obeonetwork.dsl.database.design;bundle-version="4.0.0",
+ org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.poi,
@@ -17,3 +23,4 @@ Import-Package: org.apache.poi,
  org.openxmlformats.schemas.officeDocument.x2006.customProperties,
  org.openxmlformats.schemas.wordprocessingml.x2006.main
 Bundle-Vendor: %providerName
+Export-Package: org.obeonetwork.m2doc.test

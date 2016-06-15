@@ -38,6 +38,11 @@
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/acceleo/updates/releases/3.6/</url>
 		</repository>
+		<repository>
+			<id>sirius</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/sirius/updates/releases/3.1.1/mars</url>
+		</repository>
 	</repositories>
 	<build>
 		<plugins>

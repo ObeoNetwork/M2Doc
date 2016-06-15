@@ -13,6 +13,7 @@
  */
 package org.obeonetwork.m2doc.template.util;
 
+import java.util.Map;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -142,6 +143,18 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseDocumentTemplate(DocumentTemplate object) {
                 return createDocumentTemplateAdapter();
+            }
+            @Override
+            public Adapter caseOptionValueMap(Map.Entry<String, Object> object) {
+                return createOptionValueMapAdapter();
+            }
+            @Override
+            public Adapter caseAbstractImage(AbstractImage object) {
+                return createAbstractImageAdapter();
+            }
+            @Override
+            public Adapter caseAbstractProvider(AbstractProvider object) {
+                return createAbstractProviderAdapter();
             }
             @Override
             public Adapter defaultCase(EObject object) {
@@ -290,6 +303,48 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
     }
 
 	/**
+     * Creates a new adapter for an object of class '{@link java.util.Map.Entry <em>Option Value Map</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see java.util.Map.Entry
+     * @generated
+     */
+    public Adapter createOptionValueMapAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.AbstractImage <em>Abstract Image</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.AbstractImage
+     * @generated
+     */
+    public Adapter createAbstractImageAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.AbstractProvider <em>Abstract Provider</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.AbstractProvider
+     * @generated
+     */
+    public Adapter createAbstractProviderAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
      * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;

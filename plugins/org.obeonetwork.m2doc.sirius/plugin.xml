@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.obeonetwork.m2doc.providers.register">
+      <diagramProvider
+            diagramClass="org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider">
+      </diagramProvider>
+      <diagramProvider
+            diagramClass="org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider">
+      </diagramProvider>
+   </extension>
+
+</plugin>

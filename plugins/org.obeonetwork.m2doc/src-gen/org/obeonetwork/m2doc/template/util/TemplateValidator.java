@@ -27,10 +27,12 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.ResourceLocator;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.template.*;
 
 /**
@@ -142,6 +144,12 @@ public class TemplateValidator extends EObjectValidator {
                 return validateCell((Cell)value, diagnostics, context);
             case TemplatePackage.DOCUMENT_TEMPLATE:
                 return validateDocumentTemplate((DocumentTemplate)value, diagnostics, context);
+            case TemplatePackage.OPTION_VALUE_MAP:
+                return validateOptionValueMap((Map.Entry<?, ?>)value, diagnostics, context);
+            case TemplatePackage.ABSTRACT_IMAGE:
+                return validateAbstractImage((AbstractImage)value, diagnostics, context);
+            case TemplatePackage.ABSTRACT_PROVIDER:
+                return validateAbstractProvider((AbstractProvider)value, diagnostics, context);
             case TemplatePackage.QUERY_BEHAVIOR:
                 return validateQueryBehavior((QueryBehavior)value, diagnostics, context);
             case TemplatePackage.POSITION:
@@ -160,6 +168,8 @@ public class TemplateValidator extends EObjectValidator {
                 return validateWTableRow((XWPFTableRow)value, diagnostics, context);
             case TemplatePackage.WTABLE_CELL:
                 return validateWTableCell((XWPFTableCell)value, diagnostics, context);
+            case TemplatePackage.PROVIDER:
+                return validateProvider((IProvider)value, diagnostics, context);
             default:
                 return true;
         }
@@ -285,6 +295,33 @@ public class TemplateValidator extends EObjectValidator {
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateOptionValueMap(Map.Entry<?, ?> optionValueMap, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint((EObject)optionValueMap, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateAbstractImage(AbstractImage abstractImage, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(abstractImage, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateAbstractProvider(AbstractProvider abstractProvider, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(abstractProvider, diagnostics, context);
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -420,6 +457,15 @@ public class TemplateValidator extends EObjectValidator {
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateProvider(IProvider provider, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return true;
+    }
+
+    /**
      * Returns the resource locator that will be used to fetch messages for this validator's diagnostics.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

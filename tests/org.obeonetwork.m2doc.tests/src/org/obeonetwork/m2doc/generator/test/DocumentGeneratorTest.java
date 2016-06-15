@@ -42,7 +42,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testTextAreaAndForms.docx",
-				"results/testTextAreaAndForms.docx", template, definitions, queryEnvironment);
+				"results/testTextAreaAndForms.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -59,7 +59,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragmentWithfields.docx",
-				"results/testStaticFragmentWithfields.docx", template, definitions, queryEnvironment);
+				"results/testStaticFragmentWithfields.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -76,7 +76,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragment.docx",
-				"results/testStaticFragment.docx", template, definitions, queryEnvironment);
+				"results/testStaticFragment.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -93,7 +93,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVarInHeader.docx",
-				"results/testVarInHeaderResult.docx", template, definitions, queryEnvironment);
+				"results/testVarInHeaderResult.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -110,7 +110,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVarInFooter.docx",
-				"results/testVarInFooterResult.docx", template, definitions, queryEnvironment);
+				"results/testVarInFooterResult.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -127,7 +127,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
-				template, definitions, queryEnvironment);
+				template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -143,7 +143,7 @@ public class DocumentGeneratorTest {
 		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
-				template, definitions, queryEnvironment);
+				template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -160,7 +160,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVarStyle.docx",
-				"results/testVarStyleResult.docx", template, definitions, queryEnvironment);
+				"results/testVarStyleResult.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -177,7 +177,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testVarStyleSpanning2Paragraphs.docx",
-				"results/testVarStyleSpanning2ParagraphsResult.docx", template, definitions, queryEnvironment);
+				"results/testVarStyleSpanning2ParagraphsResult.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -194,7 +194,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
-				template, definitions, queryEnvironment);
+				template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -210,7 +210,7 @@ public class DocumentGeneratorTest {
 		DocumentTemplate template = parser.parseDocument();
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
-				template, definitions, queryEnvironment);
+				template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -227,7 +227,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testGDFOR.docx", "results/testGDFOR.docx",
-				template, definitions, queryEnvironment);
+				template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -244,7 +244,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/testGDFORWithTable.docx",
-				"results/testGDFORWithTable.docx", template, definitions, queryEnvironment);
+				"results/testGDFORWithTable.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -261,7 +261,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
-				"results/testConditionnal1Result.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal1Result.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -278,7 +278,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
-				"results/testConditionnal1FalseResult.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal1FalseResult.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -295,7 +295,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
-				"results/testConditionnal2Result.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal2Result.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -312,7 +312,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
-				"results/testConditionnal2FalseResult.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal2FalseResult.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -353,7 +353,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("self", EcorePackage.eINSTANCE);
 		DocumentGenerator generator = new DocumentGenerator("templates/test.docx", "results/testResult.docx", template,
-				definitions, queryEnvironment);
+				definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -370,7 +370,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value1");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
-				"results/testConditionnal5Result.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal5Result.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -387,7 +387,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value2");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
-				"results/testConditionnal6Result.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal6Result.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -404,7 +404,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "value3");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
-				"results/testConditionnal7Result.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal7Result.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -421,7 +421,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
-				"results/testConditionnal8Result.docx", template, definitions, queryEnvironment);
+				"results/testConditionnal8Result.docx", template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
@@ -438,7 +438,7 @@ public class DocumentGeneratorTest {
 		Map<String, Object> definitions = new HashMap<String, Object>();
 		definitions.put("x", "valueofx");
 		DocumentGenerator generator = new DocumentGenerator("templates/testImageTag.docx", "results/testImageTag.docx",
-				template, definitions, queryEnvironment);
+				template, definitions, queryEnvironment,null);
 		generator.generate();
 	}
 
