@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator.test;
 
+//CHECKSTYLE:OFF
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

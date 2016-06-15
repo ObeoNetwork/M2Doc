@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator.test;
 
+//CHECKSTYLE:OFF
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class EcoreDocumentationGeneration {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("self", TemplatePackage.eINSTANCE);
         DocumentGenerator generator = new DocumentGenerator("templates/ecoreDocumentationTemplate.docx",
-                "results/ecoreDocumentationTemplateResults.docx", template, definitions, queryEnvironment);
+                "results/ecoreDocumentationTemplateResults.docx", template, definitions, queryEnvironment, null);
         generator.generate();
     }
 

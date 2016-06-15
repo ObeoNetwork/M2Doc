@@ -1,19 +1,27 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.obeonetwork.m2doc.tests
+Bundle-SymbolicName: org.obeonetwork.m2doc.tests;singleton:=true
 Bundle-Version: 0.7.1.qualifier
-Bundle-Activator: org.obeonetwork.m2doc.parser.test.Activator
+Bundle-Activator: org.obeonetwork.m2doc.test.M2DocTestPlugin
 Require-Bundle: org.eclipse.core.runtime,
- org.obeonetwork.m2doc;bundle-version="0.1.0",
- org.junit;bundle-version="4.11.0"
+ org.obeonetwork.m2doc,
+ org.junit;bundle-version="4.11.0",
+ org.obeonetwork.m2doc.sirius,
+ org.eclipse.sirius.tests.junit.support;bundle-version="3.1.1",
+ org.eclipse.sirius.diagram;bundle-version="3.1.1",
+ org.eclipse.core.resources,
+ org.obeonetwork.m2doc.ui;bundle-version="0.7.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.poi,
  org.apache.poi.openxml4j.exceptions,
  org.apache.poi.openxml4j.opc,
  org.apache.poi.xwpf.usermodel,
- org.eclipse.acceleo.query.runtime,
+ org.eclipse.acceleo.query.ast,
+ org.eclipse.acceleo.query.ast.impl,
+ org.eclipse.acceleo.query.runtime;version="[0.0.0,4.2.0)",
  org.openxmlformats.schemas.officeDocument.x2006.customProperties,
  org.openxmlformats.schemas.wordprocessingml.x2006.main
 Bundle-Vendor: %providerName
+Export-Package: org.obeonetwork.m2doc.test

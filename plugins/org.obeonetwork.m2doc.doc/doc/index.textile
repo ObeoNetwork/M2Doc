@@ -1,0 +1,12 @@
+h1=. M2Doc
+
+h2=. A tool for document production based on Ecore models.
+
+h3. Overview
+
+The M2Doc tool is the combination of the M2Doc template language and Eclipse UI integration that allows production of Word document based on word template.
+
+Index : 
+
+<a href="m2DocUserGuide.html">User guide</a>
+<a href="m2DocDeveloperGuide.html">Developer guide</a>

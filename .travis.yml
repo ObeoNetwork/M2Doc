@@ -1,10 +1,16 @@
 language: java
 env:
   global:
+      - DISPLAY=:99.0
       - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"  
 jdk:
   - oraclejdk7
 sudo: false
+before_script:
+ - export SWT_GTK3=0
+ - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16
+ - sh -e /etc/init.d/xvfb start
+ - sleep 10
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v

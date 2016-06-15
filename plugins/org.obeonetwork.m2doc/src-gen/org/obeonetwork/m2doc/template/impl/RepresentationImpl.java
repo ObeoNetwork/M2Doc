@@ -15,9 +15,7 @@ package org.obeonetwork.m2doc.template.impl;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -32,11 +30,12 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * <ul>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getQuery <em>Query</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getRepresentationId <em>Representation Id</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getRepresentationTitle <em>Representation Title</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RepresentationImpl extends AbstractConstructImpl implements Representation {
+public class RepresentationImpl extends AbstractImageImpl implements Representation {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -85,6 +84,26 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
 	protected String representationId = REPRESENTATION_ID_EDEFAULT;
 
 	/**
+     * The default value of the '{@link #getRepresentationTitle() <em>Representation Title</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRepresentationTitle()
+     * @generated
+     * @ordered
+     */
+    protected static final String REPRESENTATION_TITLE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getRepresentationTitle() <em>Representation Title</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRepresentationTitle()
+     * @generated
+     * @ordered
+     */
+    protected String representationTitle = REPRESENTATION_TITLE_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -147,6 +166,27 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getRepresentationTitle() {
+        return representationTitle;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setRepresentationTitle(String newRepresentationTitle) {
+        String oldRepresentationTitle = representationTitle;
+        representationTitle = newRepresentationTitle;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE, oldRepresentationTitle, representationTitle));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -157,6 +197,8 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
                 return getQuery();
             case TemplatePackage.REPRESENTATION__REPRESENTATION_ID:
                 return getRepresentationId();
+            case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
+                return getRepresentationTitle();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -166,7 +208,8 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
 	 * <!-- end-user-doc -->
      * @generated
      */
-	@Override
+	@SuppressWarnings("unchecked")
+    @Override
 	public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case TemplatePackage.REPRESENTATION__QUERY:
@@ -174,6 +217,9 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
                 return;
             case TemplatePackage.REPRESENTATION__REPRESENTATION_ID:
                 setRepresentationId((String)newValue);
+                return;
+            case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
+                setRepresentationTitle((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -193,6 +239,9 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
             case TemplatePackage.REPRESENTATION__REPRESENTATION_ID:
                 setRepresentationId(REPRESENTATION_ID_EDEFAULT);
                 return;
+            case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
+                setRepresentationTitle(REPRESENTATION_TITLE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -209,6 +258,8 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
                 return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
             case TemplatePackage.REPRESENTATION__REPRESENTATION_ID:
                 return REPRESENTATION_ID_EDEFAULT == null ? representationId != null : !REPRESENTATION_ID_EDEFAULT.equals(representationId);
+            case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
+                return REPRESENTATION_TITLE_EDEFAULT == null ? representationTitle != null : !REPRESENTATION_TITLE_EDEFAULT.equals(representationTitle);
         }
         return super.eIsSet(featureID);
     }
@@ -227,6 +278,8 @@ public class RepresentationImpl extends AbstractConstructImpl implements Represe
         result.append(query);
         result.append(", representationId: ");
         result.append(representationId);
+        result.append(", representationTitle: ");
+        result.append(representationTitle);
         result.append(')');
         return result.toString();
     }

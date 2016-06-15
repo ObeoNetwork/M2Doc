@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator.test;
 
+//CHECKSTYLE:OFF
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class TemplateRuntimeErrorTests {
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(2, destinationDoc.getParagraphs().size());
@@ -95,7 +96,7 @@ public class TemplateRuntimeErrorTests {
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(4, destinationDoc.getParagraphs().size());
@@ -132,7 +133,7 @@ public class TemplateRuntimeErrorTests {
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testRepetitionSyntaxError.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
@@ -157,7 +158,7 @@ public class TemplateRuntimeErrorTests {
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal1.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
@@ -182,7 +183,7 @@ public class TemplateRuntimeErrorTests {
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal5.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
