@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -65,11 +63,23 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
  * DocumentParser reads a {@link XWPFDocument} and produces a abstract syntax
  * tree that represents the template in the document.
  * The parsing algorithm is an LL(k) like algorithm that uses look ahead to predict parsing decisions. Tokens are only read from fields so
- * that there's no ambiguïty with the rest of the text.
+ * that there's no ambiguity with the rest of the text.
  * 
  * @author Romain Guider
  */
 public class BodyParser {
+    /**
+     * The M2Doc escape character.
+     */
+    public static final char M2DOC_ESCAPE_CHARACTER = '\\';
+    /**
+     * The character delimiting a value. Value is enclosed by this character.
+     */
+    public static final char VALUE_DELIMITER_CHARACTER = '"';
+    /**
+     * The character used to separate the key from the value.
+     */
+    public static final char KEY_VALUE_SEPARATOR = ':';
     /**
      * Label modifier constant.
      */
@@ -90,10 +100,6 @@ public class BodyParser {
      * Diagram provider option name.
      */
     private static final String DIAGRAM_PROVIDER_KEY = "diagramProvider";
-    /**
-     * Diagram title option name.
-     */
-    private static final String DIAGRAM_TITLE_KEY = "title";
     /**
      * Image height option name.
      */
@@ -131,16 +137,8 @@ public class BodyParser {
 
     {DIAGRAM_PROVIDER_KEY, IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION,
         IMAGE_WIDTH_KEY};
-
-    /**
-     * Regex that allows to parse image options.
-     */
-    private static final Pattern IMAGE_TAG_PATTERN = Pattern
-            .compile("\\s*gd:image\\s*(([a-zA-Z]+)\\s*:\\s*'([^']*)')+\\s*");
-    /**
-     * Regex that allows to parse image options.
-     */
-    private static final Pattern OPTION_PATTERN = Pattern.compile("([a-zA-Z]+)\\s*:\\s*'([^']*)'*");
+    String pattern = "\"(?<!\\)";
+    String pattern2 = "([^\"]|\"(?<=\\))*";
 
     /**
      * Rank of the option's value group in the matcher.
@@ -524,7 +522,7 @@ public class BodyParser {
     }
 
     /**
-     * Parses an option regarding the given parametering context.
+     * Parses all options of the given tag.
      * 
      * @param tag
      *            the tag to parse
@@ -534,24 +532,89 @@ public class BodyParser {
      *            the rank of the option in the tag.
      * @param optionValGroupRank
      *            the rank of the option's value in the tag.
+     * @param image
+     *            the result image were to put error messages.
      * @param optionPattern
      *            the authorized pattern for the option.
      * @return the option map created.
+     * @throws DocumentParserException
+     *             if tag is syntactically invalid.
      */
-    Map<String, String> parseOptions(String tag, TokenType tokenType, Pattern optionPattern, int optionGroupRank,
-            int optionValGroupRank) {
+    Map<String, String> parseOptions(String tag, TokenType tokenType, int optionGroupRank, int optionValGroupRank,
+            AbstractImage image) throws DocumentParserException {
         Map<String, String> result = new HashMap<String, String>();
         // first match the tag:
-        String trimedTag = tag.trim();
         if (tag.startsWith(tokenType.getValue())) {
-            int length = tokenType.getValue().length();
-            int tagLength = trimedTag.length();
-            trimedTag = trimedTag.substring(length, tagLength);
-            Matcher matcher = optionPattern.matcher(trimedTag);
-            while (matcher.find()) {
-                String option = matcher.group(optionGroupRank);
-                String value = matcher.group(optionValGroupRank);
-                result.put(option, value);
+            // remove the token type from the type to handle generically all options from the same string.
+            int tokenLength = tokenType.getValue().length();
+            String options = tag.trim().substring(tokenLength).trim();
+            int index = 0;
+            int maxIndex = options.length();
+            String key = "";
+            String value = "";
+            boolean valueEnclosingQuoteReached = false;
+            boolean keyParsed = false;
+            boolean nextCharEscaped = false;
+            // We stop reading options when we have parse all the line.
+            while (index < maxIndex) {
+                char charAt = options.charAt(index);
+                if (!keyParsed) {
+                    // we are parsing the next available key.
+                    if (KEY_VALUE_SEPARATOR == charAt) {
+                        // we reach the character telling the key has been parsed.
+                        // So we cache the key.
+                        keyParsed = true;
+                        key = key.trim();
+                        int firstIndexOfSpace = key.indexOf(' ');
+                        if (firstIndexOfSpace < key.length() && -1 != firstIndexOfSpace) {
+                            // we have a space between two key character. So we log an error message.
+                            image.getParsingErrors()
+                                    .add(new DocumentParsingError("A forbidden character is present at the index "
+                                        + firstIndexOfSpace + " of the key definition '" + key + "'.",
+                                    image.getRuns().get(1)));
+                        }
+                    } else {
+                        // we keep the spaces that we remove when the end key character is detected.
+                        key += charAt;
+                    }
+                } else {
+                    // we are parsing the next available value.
+                    if (valueEnclosingQuoteReached && VALUE_DELIMITER_CHARACTER == charAt && !nextCharEscaped) {
+                        // The value delimiter quote has been reached.
+                        // We put the couple key/value in the options result map and reset all booleans and key/value variables
+                        result.put(key, value);
+                        key = "";
+                        value = "";
+                        keyParsed = false;
+                        valueEnclosingQuoteReached = false;
+                    } else if (!valueEnclosingQuoteReached && VALUE_DELIMITER_CHARACTER == charAt) {
+                        // We have encountered the first quote after the key/value separator.
+                        valueEnclosingQuoteReached = true;
+                    } else if (valueEnclosingQuoteReached) {
+                        if (M2DOC_ESCAPE_CHARACTER == charAt) {
+                            if (nextCharEscaped) {
+                                // We have a double \ character so we must add the last one to the value that is escaped.
+                                value += charAt;
+                                nextCharEscaped = false;
+                            } else {
+                                nextCharEscaped = true;
+                            }
+                        } else {
+                            value += charAt;
+                            nextCharEscaped = false;
+                        }
+
+                    } else if (' ' != charAt) {
+                        // we have a forbidden character that is not a space between the key/value separator and the value
+                        // delimiter.
+                        image.getParsingErrors()
+                                .add(new DocumentParsingError(
+                                        "A forbidden character is present after the key value separator of the key : '"
+                                            + key + "'.",
+                                        image.getRuns().get(1)));
+                    }
+                }
+                index++;
             }
         }
         return result;
@@ -598,8 +661,8 @@ public class BodyParser {
      */
     private Image parseImage() throws DocumentParserException {
         Image image = (Image) EcoreUtil.create(TemplatePackage.Literals.IMAGE);
-        Map<String, String> options = parseOptions(readTag(image, image.getRuns()), TokenType.IMAGE, OPTION_PATTERN,
-                OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK);
+        Map<String, String> options = parseOptions(readTag(image, image.getRuns()), TokenType.IMAGE, OPTION_GROUP_RANK,
+                OPTION_VAL_GROUP_RANK, image);
         checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0));
         if (!options.containsKey(IMAGE_FILE_NAME_KEY)) {
             image.getParsingErrors().add(
@@ -728,7 +791,7 @@ public class BodyParser {
 
         Representation representation = (Representation) EcoreUtil.create(TemplatePackage.Literals.REPRESENTATION);
         Map<String, String> options = parseOptions(readTag(representation, representation.getRuns()), TokenType.DIAGRAM,
-                OPTION_PATTERN, OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK);
+                OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK, representation);
         IProvider provider = null;
         String providerQualifiedName = options.get(DIAGRAM_PROVIDER_KEY);
         if (providerQualifiedName != null) {

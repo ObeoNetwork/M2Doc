@@ -113,6 +113,31 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
 
     /**
      * Tests {@link SiriusDiagramByTitleProvider#getRepresentationImagePath(Map)}.
+     * When the title option refers to an AQL expression that does not provide a String but another type like int.
+     * 
+     * @throws ProviderException
+     */
+    @Test
+    public void testInvalidAQLExpression() throws ProviderException {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put(ProviderConstants.KEY_CONF_ROOT_OBJECT, getSemanticResource().getContents().get(0));
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        options.put(ProviderConstants.KEY_PROJECT_ROOT_PATH, iProject.getLocation().toString());
+        options.put(ProviderConstants.KEY_IMAGE_HEIGHT, 500);
+        options.put(ProviderConstants.KEY_IMAGE_WIDTH, 500);
+        options.put("title", 0);
+        try {
+            siriusDiagramByTitleProvider.getRepresentationImagePath(options);
+            throw new AssertionFailedError("An exception should have been thrown");
+        } catch (ProviderException e) {
+            assertEquals(
+                    "Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider\"",
+                    e.getMessage());
+        }
+    }
+
+    /**
+     * Tests {@link SiriusDiagramByTitleProvider#getRepresentationImagePath(Map)}.
      * When the title option refers to an unknown Sirius diagram representation, then an exception must be thrown.
      * 
      * @throws ProviderException

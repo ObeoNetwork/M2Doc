@@ -194,7 +194,7 @@ public class SiriusDiagramByTitleProvider extends DiagramProvider {
     @Override
     public Map<String, OptionType> getOptionTypes() {
         Map<String, OptionType> options = new HashMap<String, OptionType>();
-        options.put(KEY_REPRESENTATION_TITLE, OptionType.STRING);
+        options.put(KEY_REPRESENTATION_TITLE, OptionType.AQL_EXPRESSION);
         return options;
     }
 
