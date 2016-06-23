@@ -31,7 +31,6 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getQuery <em>Query</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getRepresentationId <em>Representation Id</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getRepresentationTitle <em>Representation Title</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getRepresentationProvider <em>Representation Provider</em>}</li>
  * </ul>
  *
  * @generated
@@ -103,26 +102,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
      * @ordered
      */
     protected String representationTitle = REPRESENTATION_TITLE_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getRepresentationProvider() <em>Representation Provider</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getRepresentationProvider()
-     * @generated
-     * @ordered
-     */
-    protected static final String REPRESENTATION_PROVIDER_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getRepresentationProvider() <em>Representation Provider</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getRepresentationProvider()
-     * @generated
-     * @ordered
-     */
-    protected String representationProvider = REPRESENTATION_PROVIDER_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -208,27 +187,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
 
     /**
      * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String getRepresentationProvider() {
-        return representationProvider;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setRepresentationProvider(String newRepresentationProvider) {
-        String oldRepresentationProvider = representationProvider;
-        representationProvider = newRepresentationProvider;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.REPRESENTATION__REPRESENTATION_PROVIDER, oldRepresentationProvider, representationProvider));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -241,8 +199,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
                 return getRepresentationId();
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 return getRepresentationTitle();
-            case TemplatePackage.REPRESENTATION__REPRESENTATION_PROVIDER:
-                return getRepresentationProvider();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -265,9 +221,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 setRepresentationTitle((String)newValue);
                 return;
-            case TemplatePackage.REPRESENTATION__REPRESENTATION_PROVIDER:
-                setRepresentationProvider((String)newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -289,9 +242,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 setRepresentationTitle(REPRESENTATION_TITLE_EDEFAULT);
                 return;
-            case TemplatePackage.REPRESENTATION__REPRESENTATION_PROVIDER:
-                setRepresentationProvider(REPRESENTATION_PROVIDER_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -310,8 +260,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
                 return REPRESENTATION_ID_EDEFAULT == null ? representationId != null : !REPRESENTATION_ID_EDEFAULT.equals(representationId);
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 return REPRESENTATION_TITLE_EDEFAULT == null ? representationTitle != null : !REPRESENTATION_TITLE_EDEFAULT.equals(representationTitle);
-            case TemplatePackage.REPRESENTATION__REPRESENTATION_PROVIDER:
-                return REPRESENTATION_PROVIDER_EDEFAULT == null ? representationProvider != null : !REPRESENTATION_PROVIDER_EDEFAULT.equals(representationProvider);
         }
         return super.eIsSet(featureID);
     }
@@ -332,8 +280,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
         result.append(representationId);
         result.append(", representationTitle: ");
         result.append(representationTitle);
-        result.append(", representationProvider: ");
-        result.append(representationProvider);
         result.append(')');
         return result.toString();
     }

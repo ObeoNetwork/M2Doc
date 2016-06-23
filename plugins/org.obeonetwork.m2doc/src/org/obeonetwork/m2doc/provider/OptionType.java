@@ -18,5 +18,8 @@ public enum OptionType {
     /**
      * Any option used with this type will have it's value evaluating by M2Doc with its AQL parsing and evaluating capabilities.
      */
-    AQL_EXPRESSION
+    AQL_EXPRESSION, /**
+                     * Any option used with this type will be pass as a String to the provider.
+                     */
+    STRING
 }

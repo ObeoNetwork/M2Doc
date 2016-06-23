@@ -52,6 +52,32 @@ public class ProviderRegistryTest {
     }
 
     /**
+     * Tests the provider retrieving when the given provider qualified name is registered.
+     */
+    @Test
+    public void registerProviderRetrievingTest() {
+        registry.registerDiagramProvider(new SiriusDiagramByTitleProvider());
+        registry.registerDiagramProvider(new SiriusDiagramByRepresentationAndEObjectProvider());
+        assertTrue(registry.getProvider(
+                "org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider") instanceof SiriusDiagramByRepresentationAndEObjectProvider);
+        assertTrue(registry.getProvider(
+                "org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider") instanceof SiriusDiagramByTitleProvider);
+    }
+
+    /**
+     * Tests the provider retrieving when given provider qualified name is not registered.
+     */
+    @Test
+    public void registerInvalidProviderRetrievingTest() {
+        registry.registerDiagramProvider(new SiriusDiagramByTitleProvider());
+        registry.registerDiagramProvider(new SiriusDiagramByRepresentationAndEObjectProvider());
+        assertTrue(registry.getProvider(
+                "org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider") instanceof SiriusDiagramByRepresentationAndEObjectProvider);
+        assertTrue(registry.getProvider(
+                "org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider") instanceof SiriusDiagramByTitleProvider);
+    }
+
+    /**
      * Tests the provider unregistration.
      */
     @Test

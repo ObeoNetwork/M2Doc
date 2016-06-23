@@ -812,15 +812,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
     /**
      * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getRepresentation_RepresentationProvider() {
-        return (EAttribute)representationEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -984,7 +975,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(representationEClass, REPRESENTATION__QUERY);
         createEAttribute(representationEClass, REPRESENTATION__REPRESENTATION_ID);
         createEAttribute(representationEClass, REPRESENTATION__REPRESENTATION_TITLE);
-        createEAttribute(representationEClass, REPRESENTATION__REPRESENTATION_PROVIDER);
 
         staticFragmentEClass = createEClass(STATIC_FRAGMENT);
 
@@ -1115,7 +1105,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEAttribute(getRepresentation_Query(), this.getAstResult(), "query", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRepresentation_RepresentationId(), ecorePackage.getEString(), "representationId", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRepresentation_RepresentationTitle(), ecorePackage.getEString(), "representationTitle", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getRepresentation_RepresentationProvider(), ecorePackage.getEString(), "representationProvider", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(staticFragmentEClass, StaticFragment.class, "StaticFragment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

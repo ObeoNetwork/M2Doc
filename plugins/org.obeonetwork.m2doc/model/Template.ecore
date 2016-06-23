@@ -64,8 +64,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationTitle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationProvider"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//AbstractConstruct"/>
   <eClassifiers xsi:type="ecore:EEnum" name="QueryBehavior">

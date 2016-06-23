@@ -24,19 +24,21 @@ import org.junit.Before;
 /**
  * @author pguilet<pierre.guilet@obeo.fr>
  */
-public abstract class AbstractM2DocTest extends SiriusDiagramTestCase {
+public abstract class AbstractM2DocSiriusTest extends SiriusDiagramTestCase {
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
         EclipseTestsSupportHelper.INSTANCE.copyFile("org.obeonetwork.m2doc.tests",
-                "/resources/referentiel-mld.database", "/" + TEMPORARY_PROJECT_NAME + "/" + "referentiel-mld.database");
+                "/resources/" + getSemanticModelName(), "/" + TEMPORARY_PROJECT_NAME + "/" + getSemanticModelName());
         EclipseTestsSupportHelper.INSTANCE.copyFile("org.obeonetwork.m2doc.tests", "/resources/representations.aird",
                 "/" + TEMPORARY_PROJECT_NAME + "/" + "representations.aird");
         URI uri = URI.createPlatformResourceURI(TEMPORARY_PROJECT_NAME + "/representations.aird", true);
         session = SessionManager.INSTANCE.getSession(uri, new NullProgressMonitor());
         session.open(new NullProgressMonitor());
     }
+
+    public abstract String getSemanticModelName();
 
     /**
      * Provides the semantic resource of the session of the parent class initialized by the setup.

@@ -20,9 +20,10 @@ import java.util.Map;
  */
 public interface IProvider {
     /**
-     * Returns a map of option key to the {@link OptionType} corresponding.
+     * Must returns a map of option key to the {@link OptionType} corresponding for each new option handled by the provider.
+     * A missing handled option in the map will cause parsing errors.
      * 
-     * @return a map of option key to the {@link OptionType} corresponding. Null or empty list if not used.
+     * @return a map of option key to the {@link OptionType} corresponding for each new option handled by the provider.
      */
     Map<String, OptionType> getOptionTypes();
 }

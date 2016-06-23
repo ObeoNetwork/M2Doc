@@ -31,9 +31,9 @@ import org.obeonetwork.m2doc.generator.TemplateProcessor;
 import org.obeonetwork.m2doc.parser.BodyParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.test.AbstractM2DocTest;
+import org.obeonetwork.m2doc.test.AbstractM2DocSiriusTest;
 
-public class TemplateProcessorTest extends AbstractM2DocTest {
+public class TemplateProcessorTest extends AbstractM2DocSiriusTest {
 
     private IQueryEnvironment env = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
 
@@ -414,7 +414,8 @@ public class TemplateProcessorTest extends AbstractM2DocTest {
      * @throws DocumentParserException
      */
     @Test
-    public void testRepresentationProcessing() throws InvalidFormatException, IOException, DocumentParserException {
+    public void testRepresentationProcessingWithTitleProviderOk()
+            throws InvalidFormatException, IOException, DocumentParserException {
         FileInputStream is = new FileInputStream("templates/diagramValid.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
@@ -426,8 +427,67 @@ public class TemplateProcessorTest extends AbstractM2DocTest {
         TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
                 destinationDoc, getSemanticResource().getContents().get(0));
         processor.doSwitch(template);
-        assertEquals(2, destinationDoc.getParagraphs().size());
+        assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals(1, destinationDoc.getParagraphs().get(0).getRuns().get(0).getEmbeddedPictures().size());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider'
+     * width:'200' height:'200' rootObject:'db.schemas->first()' diagramDescriptionName:'Schema Diagram'} that should produced an image in
+     * the run.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingWithRootObjectProviderOk()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramValidRootObject.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("db", getSemanticResource().getContents().get(0));
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidRootObject.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("", destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
+        assertEquals(2, destinationDoc.getParagraphs().get(0).getRuns().get(0).getEmbeddedPictures().size());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider'
+     * width:'200' height:'200' rootObject:'db.schemas->first()'} that should produced an error message in the run because the diagram
+     * description is missing.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingWithRootObjectProviderKo()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramValidRootObjectKo.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("db", getSemanticResource().getContents().get(0));
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidRootObjectKo.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals(
+                "A problem occured while creating image from an IDiagramProvider : Image cannot be computed because no diagram description name has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider\"",
+                destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
     }
 
     /**
@@ -455,6 +515,102 @@ public class TemplateProcessorTest extends AbstractM2DocTest {
         assertEquals(
                 "A problem occured while creating image from an IDiagramProvider : Representation with title 'wrong' not found",
                 destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider' width:'200'
+     * height:'200'} that should produced an error in the run because not diagram title is provided.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingFail2()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramInvalid2.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalid2.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals(
+                "A problem occured while creating image from an IDiagramProvider : Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider\"",
+                destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.Wrong' width:'200' height:'200'
+     * rootObject:'db.schemas->first()' diagramDescriptionName:'Schema Diagram'} that should produced an error in the run because not
+     * diagram title is provided.
+     * The given provider does not exists. An error message should be in the run.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingFailNoProviderCorresponding()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramInvalidNoProvider.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalidNoProvider.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("The image tag is referencing an unknown diagram provider : 'wrong'",
+                destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.test.AbstractM2DocTest#getSemanticModelName()
+     */
+    @Override
+    public String getSemanticModelName() {
+        return "referentiel-oracle.database";
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider'
+     * width:'200' height:'200' rootObject:'wrong.->' diagramDescriptionName:'Schema Diagram' legend:'plan de forme du dingy herbulot'
+     * legendPos:'below'} that should produced an error message in the run because the AQL expression in invalid.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingWithRootObjectProviderAQLKO()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramInvalidAqlExpression.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("db", getSemanticResource().getContents().get(0));
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalidAqlExpression.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("Syntax error in AQL expression.:Expression wrong.-> is invalid",
+                destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
     }
 
 }

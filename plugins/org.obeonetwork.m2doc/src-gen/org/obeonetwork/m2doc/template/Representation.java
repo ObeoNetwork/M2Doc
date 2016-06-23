@@ -28,7 +28,6 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getQuery <em>Query</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getRepresentationId <em>Representation Id</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getRepresentationTitle <em>Representation Title</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Representation#getRepresentationProvider <em>Representation Provider</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation()
@@ -120,31 +119,5 @@ public interface Representation extends AbstractImage {
      * @generated
      */
     void setRepresentationTitle(String value);
-
-    /**
-     * Returns the value of the '<em><b>Representation Provider</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Representation Provider</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Representation Provider</em>' attribute.
-     * @see #setRepresentationProvider(String)
-     * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation_RepresentationProvider()
-     * @model
-     * @generated
-     */
-    String getRepresentationProvider();
-
-    /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationProvider <em>Representation Provider</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Representation Provider</em>' attribute.
-     * @see #getRepresentationProvider()
-     * @generated
-     */
-    void setRepresentationProvider(String value);
 
 } // Representation

@@ -566,11 +566,14 @@ public class BodyParser {
      *            the image
      * @param imageOptionSet
      *            the options set to take in consideration.
+     * @param providerOptions
+     *            the options handled by the provider.
      */
-    private void checkImagesOptions(Map<String, String> options, AbstractImage image, String[] imageOptionSet) {
-        Set<String> optionSet = Sets.newHashSet(IMAGE_OPTION_SET);
+    private void checkImagesOptions(Map<String, String> options, AbstractImage image, String[] imageOptionSet,
+            Set<String> providerOptions) {
+        Set<String> optionSet = Sets.newHashSet(imageOptionSet);
         for (String key : options.keySet()) {
-            if (!optionSet.contains(key)) {
+            if (!optionSet.contains(key) && !providerOptions.contains(key)) {
                 image.getParsingErrors()
                         .add(new DocumentParsingError(
                                 message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"),
@@ -597,7 +600,7 @@ public class BodyParser {
         Image image = (Image) EcoreUtil.create(TemplatePackage.Literals.IMAGE);
         Map<String, String> options = parseOptions(readTag(image, image.getRuns()), TokenType.IMAGE, OPTION_PATTERN,
                 OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK);
-        checkImagesOptions(options, image, IMAGE_OPTION_SET);
+        checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0));
         if (!options.containsKey(IMAGE_FILE_NAME_KEY)) {
             image.getParsingErrors().add(
                     new DocumentParsingError(message(ParsingErrorMessage.INVALID_IMAGE_TAG), image.getRuns().get(1)));
@@ -673,7 +676,7 @@ public class BodyParser {
         Map<String, OptionType> optionTypes = provider.getOptionTypes();
         Set<Entry<String, String>> parsedOptions = options.entrySet();
         for (Entry<String, String> parsedOption : parsedOptions) {
-            if (!optionToIgnore.contains(parsedOption)) {
+            if (!optionToIgnore.contains(parsedOption.getKey())) {
                 OptionType optionType = optionTypes == null ? null : optionTypes.get(parsedOption.getKey());
                 if (optionType != null) {
                     if (OptionType.AQL_EXPRESSION == optionType) {
@@ -687,6 +690,8 @@ public class BodyParser {
                                             providerTemplate.getRuns().get(1)));
                             providerTemplate.getOptionValueMap().put(parsedOption.getKey(), null);
                         }
+                    } else if (OptionType.STRING == optionType) {
+                        providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
                     } else {
                         throw new UnsupportedOperationException("All option types should be supported.");
                     }
@@ -724,26 +729,34 @@ public class BodyParser {
         Representation representation = (Representation) EcoreUtil.create(TemplatePackage.Literals.REPRESENTATION);
         Map<String, String> options = parseOptions(readTag(representation, representation.getRuns()), TokenType.DIAGRAM,
                 OPTION_PATTERN, OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK);
-        checkImagesOptions(options, representation, DIAGRAM_OPTION_SET);
-        setImageOptions(representation, options);
-        if (options.containsKey(DIAGRAM_PROVIDER_KEY)) {
-            representation.setRepresentationProvider(options.get(DIAGRAM_PROVIDER_KEY));
+        IProvider provider = null;
+        String providerQualifiedName = options.get(DIAGRAM_PROVIDER_KEY);
+        if (providerQualifiedName != null) {
+            provider = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
         }
-        Set<String> optionToIgnore = new HashSet<String>();
-        optionToIgnore.add(IMAGE_LEGEND_KEY);
-        optionToIgnore.add(IMAGE_HEIGHT_KEY);
-        optionToIgnore.add(IMAGE_WIDTH_KEY);
-        optionToIgnore.add(DIAGRAM_PROVIDER_KEY);
-        IProvider provider = ProviderRegistry.INSTANCE.getProvider(representation.getRepresentationProvider());
+
         if (provider == null) {
             representation.getParsingErrors().add(new DocumentParsingError(
-                    "The image tag is referencing an unknown diagram provider.", representation.getRuns().get(1)));
+                    "The image tag is referencing an unknown diagram provider : '" + providerQualifiedName + "'",
+                    representation.getRuns().get(1)));
         } else if (!(provider instanceof DiagramProvider)) {
             representation.getParsingErrors()
                     .add(new DocumentParsingError(
-                            "The image tag is referencing a provider that is not an instance of DiagramProvider.",
+                            "The image tag is referencing a provider that is not an instance of DiagramProvider : '"
+                                + providerQualifiedName + "'",
                             representation.getRuns().get(1)));
         } else {
+            representation.setProvider(provider);
+            Set<String> providerOptions = provider.getOptionTypes() == null ? new HashSet<String>(0)
+                    : provider.getOptionTypes().keySet();
+            checkImagesOptions(options, representation, DIAGRAM_OPTION_SET, providerOptions);
+            setImageOptions(representation, options);
+            Set<String> optionToIgnore = new HashSet<String>();
+            optionToIgnore.add(IMAGE_LEGEND_KEY);
+            optionToIgnore.add(IMAGE_LEGEND_POSITION);
+            optionToIgnore.add(IMAGE_HEIGHT_KEY);
+            optionToIgnore.add(IMAGE_WIDTH_KEY);
+            optionToIgnore.add(DIAGRAM_PROVIDER_KEY);
             setGenericOptions(representation, options, optionToIgnore, provider);
         }
         return representation;

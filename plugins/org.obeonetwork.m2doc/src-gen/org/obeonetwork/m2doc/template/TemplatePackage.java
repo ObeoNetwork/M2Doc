@@ -1218,22 +1218,13 @@ public interface TemplatePackage extends EPackage {
     int REPRESENTATION__REPRESENTATION_TITLE = ABSTRACT_IMAGE_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Representation Provider</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPRESENTATION__REPRESENTATION_PROVIDER = ABSTRACT_IMAGE_FEATURE_COUNT + 3;
-
-    /**
      * The number of structural features of the '<em>Representation</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 4;
+	int REPRESENTATION_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 3;
 
 	/**
      * The number of operations of the '<em>Representation</em>' class.
@@ -2223,17 +2214,6 @@ public interface TemplatePackage extends EPackage {
     EAttribute getRepresentation_RepresentationTitle();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationProvider <em>Representation Provider</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Representation Provider</em>'.
-     * @see org.obeonetwork.m2doc.template.Representation#getRepresentationProvider()
-     * @see #getRepresentation()
-     * @generated
-     */
-    EAttribute getRepresentation_RepresentationProvider();
-
-    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2831,14 +2811,6 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute REPRESENTATION__REPRESENTATION_TITLE = eINSTANCE.getRepresentation_RepresentationTitle();
-
-        /**
-         * The meta object literal for the '<em><b>Representation Provider</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute REPRESENTATION__REPRESENTATION_PROVIDER = eINSTANCE.getRepresentation_RepresentationProvider();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.StaticFragmentImpl <em>Static Fragment</em>}' class.

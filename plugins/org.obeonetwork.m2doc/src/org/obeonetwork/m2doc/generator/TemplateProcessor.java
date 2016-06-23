@@ -46,7 +46,6 @@ import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
-import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProvider;
 import org.obeonetwork.m2doc.template.Cell;
@@ -574,13 +573,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     @Override
     public AbstractConstruct caseRepresentation(Representation object) {
         XWPFRun imageRun = insertRun(object.getStyleRun());
-        IProvider provider = ProviderRegistry.INSTANCE.getProvider(object.getRepresentationProvider());
+        IProvider provider = object.getProvider();
         if (provider == null) {
-            imageRun.setText("The image tag is referencing an unknown diagram provider.");
-            imageRun.setBold(true);
-            imageRun.setColor(ERROR_COLOR);
-        } else if (!(provider instanceof DiagramProvider)) {
-            imageRun.setText("The image tag is referencing a provider that is not an instance of DiagramProvider.");
+            imageRun.setText(object.getParsingErrors().get(0).getMessage());
             imageRun.setBold(true);
             imageRun.setColor(ERROR_COLOR);
         } else {
@@ -696,6 +691,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                         }
                     }
 
+                } else if (OptionType.STRING == optionType) {
+                    parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
                 } else {
                     throw new UnsupportedOperationException("All option types should be supported.");
                 }

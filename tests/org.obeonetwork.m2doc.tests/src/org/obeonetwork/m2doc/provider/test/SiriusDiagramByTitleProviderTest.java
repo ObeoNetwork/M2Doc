@@ -27,14 +27,14 @@ import org.junit.Test;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider;
-import org.obeonetwork.m2doc.test.AbstractM2DocTest;
+import org.obeonetwork.m2doc.test.AbstractM2DocSiriusTest;
 
 /**
  * {@link SiriusDiagramByTitleProvider} test class.
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
-public class SiriusDiagramByTitleProviderTest extends AbstractM2DocTest {
+public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
 
     /**
      * Component to test.
@@ -109,6 +109,40 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocTest {
         } catch (ProviderException e) {
             assertEquals("Representation with title 'wrongReference' not found", e.getMessage());
         }
+    }
+
+    /**
+     * Tests {@link SiriusDiagramByTitleProvider#getRepresentationImagePath(Map)}.
+     * When the title option refers to an unknown Sirius diagram representation, then an exception must be thrown.
+     * 
+     * @throws ProviderException
+     */
+    @Test
+    public void testTitleNotPresent() throws ProviderException {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put(ProviderConstants.KEY_CONF_ROOT_OBJECT, getSemanticResource().getContents().get(0));
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        options.put(ProviderConstants.KEY_PROJECT_ROOT_PATH, iProject.getLocation().toString());
+        options.put(ProviderConstants.KEY_IMAGE_HEIGHT, 500);
+        options.put(ProviderConstants.KEY_IMAGE_WIDTH, 500);
+        try {
+            siriusDiagramByTitleProvider.getRepresentationImagePath(options);
+            throw new AssertionFailedError("An exception should have been thrown");
+        } catch (ProviderException e) {
+            assertEquals(
+                    "Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider\"",
+                    e.getMessage());
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.test.AbstractM2DocTest#getSemanticModelName()
+     */
+    @Override
+    public String getSemanticModelName() {
+        return "referentiel-oracle.database";
     }
 
 }

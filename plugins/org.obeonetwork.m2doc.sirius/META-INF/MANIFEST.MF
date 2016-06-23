@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Sirius
 Bundle-SymbolicName: org.obeonetwork.m2doc.sirius;singleton:=true
 Bundle-Version: 0.7.0.qualifier
-Bundle-Activator: org.obeonetwork.m2doc.sirius.Activator
+Bundle-Activator: org.obeonetwork.m2doc.sirius.M2DocSiriusPlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc,
  org.eclipse.sirius;bundle-version="3.1.1",
