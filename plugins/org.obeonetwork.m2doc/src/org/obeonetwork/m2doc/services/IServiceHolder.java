@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.service;
+package org.obeonetwork.m2doc.services;
 
 /**
  * Interface used to convey service package's classes through extensions.

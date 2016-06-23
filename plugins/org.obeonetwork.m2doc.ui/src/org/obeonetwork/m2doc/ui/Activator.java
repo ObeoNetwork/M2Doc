@@ -14,7 +14,7 @@ package org.obeonetwork.m2doc.ui;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.obeonetwork.m2doc.service.DeclaredServicesListener;
+import org.obeonetwork.m2doc.services.DeclaredServicesListener;
 import org.osgi.framework.BundleContext;
 
 /**

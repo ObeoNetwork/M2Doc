@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.service;
+package org.obeonetwork.m2doc.services;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -19,8 +19,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.obeonetwork.m2doc.services.ServiceRegistry;
-import org.obeonetwork.m2doc.ui.Activator;
+import org.obeonetwork.m2doc.M2DocPlugin;
 
 /**
  * Listener that registers services that are declared through an extension.
@@ -71,7 +70,7 @@ public class DeclaredServicesListener implements IRegistryEventListener {
                     String token = confElt.getAttribute(SERVICE_TOKEN_ATTR_NAME);
                     ServiceRegistry.INSTANCE.registerServicePackage(holder.getServiceClass(), token);
                 } catch (CoreException e) {
-                    Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR,
+                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                             "Problem while registering M2Doc Services : " + e.getMessage(), e));
                 }
             }
@@ -99,8 +98,8 @@ public class DeclaredServicesListener implements IRegistryEventListener {
                             String token = confElt.getAttribute(SERVICE_TOKEN_ATTR_NAME);
                             ServiceRegistry.INSTANCE.remove(holder.getServiceClass(), token);
                         } catch (CoreException e) {
-                            Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID,
-                                    Status.ERROR, "Problem while registering M2Doc Services : " + e.getMessage(), e));
+                            M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
+                                    "Problem while registering M2Doc Services : " + e.getMessage(), e));
                         }
 
                     }

@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.database.wgen.services;
 
-import org.obeonetwork.m2doc.service.IServiceHolder;
+import org.obeonetwork.m2doc.services.IServiceHolder;
 
 /**
  * Holder for the data base services.
