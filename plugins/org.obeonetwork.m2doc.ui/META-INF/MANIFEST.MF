@@ -14,8 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.obeonetwork.m2doc;bundle-version="0.1.0",
  org.eclipse.acceleo.query;bundle-version="[4.1.0,4.2.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.obeonetwork.m2doc.service,
- org.obeonetwork.m2doc.ui.genconf,
+Export-Package: org.obeonetwork.m2doc.ui.genconf,
  org.obeonetwork.m2doc.ui.genconf.impl,
  org.obeonetwork.m2doc.ui.genconf.util
 Bundle-ActivationPolicy: lazy
