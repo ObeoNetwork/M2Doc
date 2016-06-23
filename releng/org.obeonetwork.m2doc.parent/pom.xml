@@ -24,12 +24,14 @@
 		<module>../../plugins/org.obeonetwork.m2doc.ui</module>
 		<module>../../plugins/org.obeonetwork.m2doc.ui.edit</module>
 		<module>../../plugins/org.obeonetwork.m2doc.ui.editor</module>
+		<module>../../plugins/org.obeonetwork.m2doc.sirius</module>
 		<module>../../tests/org.obeonetwork.m2doc.tests</module>
 		<module>../../features/org.obeonetwork.m2doc.feature</module>
+		<module>../../features/org.apache.poi.feature</module>
+		<module>../../features/org.obeonetwork.m2doc.sirius.feature</module>
 		<module>../../releng/org.obeonetwork.m2doc.update</module>
 		<module>../../dependencies/org.apache.poi</module>
 		<module>../../dependencies/org.apache.poi.feature</module>
-		<module>../../dependencies/org.apache.poi.update</module>
 	</modules>
 
 	<properties>
