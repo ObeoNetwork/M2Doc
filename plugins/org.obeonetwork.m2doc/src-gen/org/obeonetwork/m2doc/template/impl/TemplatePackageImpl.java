@@ -13,6 +13,7 @@
  */
 package org.obeonetwork.m2doc.template.impl;
 
+import java.util.Map;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -29,7 +30,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.AbstractImage;
+import org.obeonetwork.m2doc.template.AbstractProvider;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditionnal;
@@ -127,6 +131,27 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	private EClass documentTemplateEClass = null;
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass optionValueMapEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass abstractImageEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass abstractProviderEClass = null;
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -232,6 +257,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	private EDataType wTableCellEDataType = null;
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType providerEDataType = null;
+
+    /**
      * Creates an instance of the model <b>Package</b>, registered with
      * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
      * package URI value.
@@ -573,6 +605,105 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getOptionValueMap() {
+        return optionValueMapEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOptionValueMap_Key() {
+        return (EAttribute)optionValueMapEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOptionValueMap_Value() {
+        return (EAttribute)optionValueMapEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getAbstractImage() {
+        return abstractImageEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_Legend() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_Height() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_Width() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_LegendPOS() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getAbstractProvider() {
+        return abstractProviderEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getAbstractProvider_OptionValueMap() {
+        return (EReference)abstractProviderEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractProvider_Provider() {
+        return (EAttribute)abstractProviderEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -585,44 +716,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public EAttribute getImage_Legend() {
-        return (EAttribute)imageEClass.getEStructuralFeatures().get(0);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
 	public EAttribute getImage_FileName() {
-        return (EAttribute)imageEClass.getEStructuralFeatures().get(1);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public EAttribute getImage_Height() {
-        return (EAttribute)imageEClass.getEStructuralFeatures().get(2);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public EAttribute getImage_Width() {
-        return (EAttribute)imageEClass.getEStructuralFeatures().get(3);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public EAttribute getImage_LegendPOS() {
-        return (EAttribute)imageEClass.getEStructuralFeatures().get(4);
+        return (EAttribute)imageEClass.getEStructuralFeatures().get(0);
     }
 
 	/**
@@ -707,6 +802,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRepresentation_RepresentationTitle() {
+        return (EAttribute)representationEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -798,6 +902,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getProvider() {
+        return providerEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -847,11 +960,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(tableMergeEClass, TABLE_MERGE__LEGEND);
 
         imageEClass = createEClass(IMAGE);
-        createEAttribute(imageEClass, IMAGE__LEGEND);
         createEAttribute(imageEClass, IMAGE__FILE_NAME);
-        createEAttribute(imageEClass, IMAGE__HEIGHT);
-        createEAttribute(imageEClass, IMAGE__WIDTH);
-        createEAttribute(imageEClass, IMAGE__LEGEND_POS);
 
         defaultEClass = createEClass(DEFAULT);
 
@@ -865,6 +974,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         representationEClass = createEClass(REPRESENTATION);
         createEAttribute(representationEClass, REPRESENTATION__QUERY);
         createEAttribute(representationEClass, REPRESENTATION__REPRESENTATION_ID);
+        createEAttribute(representationEClass, REPRESENTATION__REPRESENTATION_TITLE);
 
         staticFragmentEClass = createEClass(STATIC_FRAGMENT);
 
@@ -885,6 +995,20 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__FOOTERS);
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__BODY);
 
+        optionValueMapEClass = createEClass(OPTION_VALUE_MAP);
+        createEAttribute(optionValueMapEClass, OPTION_VALUE_MAP__KEY);
+        createEAttribute(optionValueMapEClass, OPTION_VALUE_MAP__VALUE);
+
+        abstractImageEClass = createEClass(ABSTRACT_IMAGE);
+        createEAttribute(abstractImageEClass, ABSTRACT_IMAGE__LEGEND);
+        createEAttribute(abstractImageEClass, ABSTRACT_IMAGE__HEIGHT);
+        createEAttribute(abstractImageEClass, ABSTRACT_IMAGE__WIDTH);
+        createEAttribute(abstractImageEClass, ABSTRACT_IMAGE__LEGEND_POS);
+
+        abstractProviderEClass = createEClass(ABSTRACT_PROVIDER);
+        createEReference(abstractProviderEClass, ABSTRACT_PROVIDER__OPTION_VALUE_MAP);
+        createEAttribute(abstractProviderEClass, ABSTRACT_PROVIDER__PROVIDER);
+
         // Create enums
         queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
         positionEEnum = createEEnum(POSITION);
@@ -897,6 +1021,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         documentParsingErrorEDataType = createEDataType(DOCUMENT_PARSING_ERROR);
         wTableRowEDataType = createEDataType(WTABLE_ROW);
         wTableCellEDataType = createEDataType(WTABLE_CELL);
+        providerEDataType = createEDataType(PROVIDER);
     }
 
 	/**
@@ -931,13 +1056,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         repetitionEClass.getESuperTypes().add(this.getCompound());
         queryEClass.getESuperTypes().add(this.getAbstractConstruct());
         tableMergeEClass.getESuperTypes().add(this.getCompound());
-        imageEClass.getESuperTypes().add(this.getAbstractConstruct());
+        imageEClass.getESuperTypes().add(this.getAbstractImage());
         defaultEClass.getESuperTypes().add(this.getCompound());
         compoundEClass.getESuperTypes().add(this.getAbstractConstruct());
         templateEClass.getESuperTypes().add(this.getCompound());
-        representationEClass.getESuperTypes().add(this.getAbstractConstruct());
+        representationEClass.getESuperTypes().add(this.getAbstractImage());
         staticFragmentEClass.getESuperTypes().add(this.getAbstractConstruct());
         tableEClass.getESuperTypes().add(this.getAbstractConstruct());
+        abstractImageEClass.getESuperTypes().add(this.getAbstractProvider());
+        abstractProviderEClass.getESuperTypes().add(this.getAbstractConstruct());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(abstractConstructEClass, AbstractConstruct.class, "AbstractConstruct", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -963,11 +1090,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEAttribute(getTableMerge_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, TableMerge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(imageEClass, Image.class, "Image", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getImage_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getImage_FileName(), ecorePackage.getEString(), "fileName", null, 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getImage_Height(), ecorePackage.getEInt(), "height", null, 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getImage_Width(), ecorePackage.getEInt(), "width", null, 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getImage_LegendPOS(), this.getPOSITION(), "legendPOS", "BELOW", 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(defaultEClass, Default.class, "Default", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -981,6 +1104,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEClass(representationEClass, Representation.class, "Representation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRepresentation_Query(), this.getAstResult(), "query", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRepresentation_RepresentationId(), ecorePackage.getEString(), "representationId", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRepresentation_RepresentationTitle(), ecorePackage.getEString(), "representationTitle", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(staticFragmentEClass, StaticFragment.class, "StaticFragment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1001,6 +1125,20 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEReference(getDocumentTemplate_Footers(), this.getTemplate(), null, "footers", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentTemplate_Body(), this.getTemplate(), null, "body", null, 0, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        initEClass(optionValueMapEClass, Map.Entry.class, "OptionValueMap", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getOptionValueMap_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getOptionValueMap_Value(), ecorePackage.getEJavaObject(), "value", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(abstractImageEClass, AbstractImage.class, "AbstractImage", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getAbstractImage_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, AbstractImage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAbstractImage_Height(), ecorePackage.getEInt(), "height", null, 0, 1, AbstractImage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAbstractImage_Width(), ecorePackage.getEInt(), "width", null, 0, 1, AbstractImage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAbstractImage_LegendPOS(), this.getPOSITION(), "legendPOS", "BELOW", 0, 1, AbstractImage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(abstractProviderEClass, AbstractProvider.class, "AbstractProvider", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getAbstractProvider_OptionValueMap(), this.getOptionValueMap(), null, "optionValueMap", null, 0, -1, AbstractProvider.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAbstractProvider_Provider(), this.getProvider(), "provider", null, 0, 1, AbstractProvider.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Initialize enums and add enum literals
         initEEnum(queryBehaviorEEnum, QueryBehavior.class, "QueryBehavior");
         addEEnumLiteral(queryBehaviorEEnum, QueryBehavior.ICON);
@@ -1019,6 +1157,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEDataType(documentParsingErrorEDataType, DocumentParsingError.class, "DocumentParsingError", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(wTableRowEDataType, XWPFTableRow.class, "WTableRow", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(wTableCellEDataType, XWPFTableCell.class, "WTableCell", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(providerEDataType, IProvider.class, "Provider", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

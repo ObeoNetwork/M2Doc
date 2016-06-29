@@ -6,6 +6,7 @@ Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: org.obeonetwork.database.m2doc.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.dsl.database;bundle-version="4.0.0",
- org.obeonetwork.m2doc.ui;bundle-version="0.7.0"
+ org.obeonetwork.m2doc.ui;bundle-version="0.7.0",
+ org.obeonetwork.m2doc
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

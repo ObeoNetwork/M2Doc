@@ -25,6 +25,7 @@ import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
@@ -45,6 +46,10 @@ public class DocumentGenerator {
      * variable definition used during generation.
      */
     private Map<String, Object> definitions;
+    /**
+     * An EObject from the conf model from which the generation has been called.
+     */
+    private EObject targetConfObject;
     /**
      * The template against which generation is done.
      */
@@ -76,12 +81,15 @@ public class DocumentGenerator {
      *            a mapping of variables used during generation.
      * @param environment
      *            the {@link IQueryEnvironment} used to generate
+     * @param targetConfObject
+     *            the root EObject of the gen conf model.
      * @throws DocumentGenerationException
      *             when a generation problem occurs.
      */
     public DocumentGenerator(String inputDocumentFileName, String destinationFileName, DocumentTemplate theTemplate,
-            Map<String, Object> variables, IQueryEnvironment environment) throws DocumentGenerationException {
-        this("", inputDocumentFileName, destinationFileName, theTemplate, variables, environment);
+            Map<String, Object> variables, IQueryEnvironment environment, EObject theTargetConfObject)
+                    throws DocumentGenerationException {
+        this("", inputDocumentFileName, destinationFileName, theTemplate, variables, environment, theTargetConfObject);
     }
 
     /**
@@ -101,17 +109,20 @@ public class DocumentGenerator {
      *            a mapping of variables used during generation.
      * @param environment
      *            the {@link IQueryEnvironment} used to generate
+     * @param targetConfObject
+     *            the root EObject of the gen conf model.
      * @throws DocumentGenerationException
      *             when a generation problem occurs.
      */
     public DocumentGenerator(String projectPath, String inputDocumentFileName, String destinationFileName,
-            DocumentTemplate theTemplate, Map<String, Object> variables, IQueryEnvironment environment)
-                    throws DocumentGenerationException {
+            DocumentTemplate theTemplate, Map<String, Object> variables, IQueryEnvironment environment,
+            EObject theTargetConfObject) throws DocumentGenerationException {
         this.definitions = new HashMap<String, Object>(variables);
         this.template = theTemplate;
         this.destinationFileName = destinationFileName;
         this.queryEnvironment = environment;
         this.projectPath = projectPath;
+        this.targetConfObject = theTargetConfObject;
         try {
             this.destinationDocument = createDestinationDocument(inputDocumentFileName);
         } catch (InvalidFormatException e) {
@@ -131,14 +142,14 @@ public class DocumentGenerator {
         // The output document is created from the input so as to get the styles
         // and definitions in the original template.
         TemplateProcessor processor = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
-                destinationDocument);
+                destinationDocument, targetConfObject);
         processor.doSwitch(this.template.getBody());
         Iterator<XWPFFooter> footers = destinationDocument.getFooterList().iterator();
         for (Template footerTemplate : this.template.getFooters()) {
             XWPFFooter footer = footers.next();
             cleanHeaderFooter(footer);
             TemplateProcessor footerProc = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
-                    footer);
+                    footer, targetConfObject);
             footerProc.doSwitch(footerTemplate);
         }
         Iterator<XWPFHeader> headers = destinationDocument.getHeaderList().iterator();
@@ -146,7 +157,7 @@ public class DocumentGenerator {
             XWPFHeader header = headers.next();
             cleanHeaderFooter(header);
             TemplateProcessor headerProc = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
-                    header);
+                    header, targetConfObject);
             headerProc.doSwitch(headerTemplate);
         }
         // At this point, the documnet has been generated and just needs being

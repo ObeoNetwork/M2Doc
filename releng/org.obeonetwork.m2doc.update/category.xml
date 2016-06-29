@@ -3,9 +3,25 @@
    <feature url="features/org.obeonetwork.m2doc.feature_0.7.1.qualifier.jar" id="org.obeonetwork.m2doc.feature" version="0.7.1.qualifier">
       <category name="M2Doc"/>
    </feature>
+   <feature url="features/org.apache.poi.feature_3.13.0.qualifier.jar" id="org.apache.poi.feature" version="3.13.0.qualifier">
+      <category name="Apache POI"/>
+   </feature>
+   <feature url="features/org.obeonetwork.m2doc.sirius.feature_1.0.0.qualifier.jar" id="org.obeonetwork.m2doc.sirius.feature" version="1.0.0.qualifier">
+      <category name="Sirius Provider"/>
+   </feature>
    <category-def name="M2Doc" label="M2Doc">
       <description>
          plug-ins for the M2Doc technology
+      </description>
+   </category-def>
+   <category-def name="Apache POI" label="Apache POI">
+      <description>
+         Plugins required by M2Doc to parse word documents.
+      </description>
+   </category-def>
+   <category-def name="Sirius Provider" label="Sirius Provider">
+      <description>
+         Plugins containing Sirius provider to provide diagram images.
       </description>
    </category-def>
 </site>

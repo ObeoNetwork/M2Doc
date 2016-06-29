@@ -16,8 +16,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
@@ -36,12 +39,21 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.EObject;
+import org.obeonetwork.m2doc.provider.DiagramProvider;
+import org.obeonetwork.m2doc.provider.IProvider;
+import org.obeonetwork.m2doc.provider.OptionType;
+import org.obeonetwork.m2doc.provider.ProviderConstants;
+import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.AbstractProvider;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
@@ -58,6 +70,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
  * @author Romain Guider
  */
 public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
+    private static final String QUERY_EVALERROR_MESSAGE = "Couldn't evaluate query.";
+    private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression.";
     /**
      * constant defining the color of error messages.
      */
@@ -93,6 +107,10 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * return before the {gd:endfor} tag.
      */
     private boolean forceNewParagraph;
+    /**
+     * An EObject from the conf model from which the generation has been called.
+     */
+    private EObject targetConfObject;
 
     /**
      * Create a new {@link TemplateProcessor} instance given some definitions
@@ -106,13 +124,16 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            the query environment used to evaluate queries in the
      * @param destinationDocument
      *            the path to the destination document.
+     * @param targetConfObject
+     *            the root EObject of the gen conf model.
      */
     public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, IQueryEnvironment queryEnvironment,
-            IBody destinationDocument) {
+            IBody destinationDocument, EObject theTargetConfObject) {
         this.rootProjectPath = projectPath;
         this.definitions = new GenerationEnvironment(initialDefs);
         this.queryEnvironment = queryEnvironment;
         this.generatedDocument = destinationDocument;
+        this.targetConfObject = theTargetConfObject;
     }
 
     /**
@@ -126,12 +147,15 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            template.
      * @param destinationDocument
      *            the path to the destination document.
+     * @param targetConfObject
+     *            the root EObject of the gen conf model.
      */
-    public TemplateProcessor(GenerationEnvironment defs, IQueryEnvironment queryEnvironment,
-            IBody destinationDocument) {
+    public TemplateProcessor(GenerationEnvironment defs, IQueryEnvironment queryEnvironment, IBody destinationDocument,
+            EObject theTargetConfObject) {
         this.definitions = defs;
         this.queryEnvironment = queryEnvironment;
         this.generatedDocument = destinationDocument;
+        this.targetConfObject = theTargetConfObject;
     }
 
     /**
@@ -289,21 +313,26 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     @Override
     public AbstractConstruct caseQuery(Query object) {
         // first evaluate the query.
-        @SuppressWarnings("restriction")
-        IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
-        EvaluationResult result = evaluator.eval((AstResult) object.getQuery(), definitions.getCurrentDefinitions());
         String strResult;
-        if (result == null) {
-            strResult = "Couldn't parse query.";
-        } else if (result.getResult() == null) {
-            StringBuilder builder = new StringBuilder();
-            getDiagnostic(result.getDiagnostic(), builder);
-            strResult = builder.toString();
+        EvaluationResult result = null;
+        if (object.getQuery() == null) {
+            strResult = QUERY_SYNTAX_ERROR_MESSAGE + ":" + object.getParsingErrors().get(0).getMessage();
         } else {
-            strResult = result.getResult().toString();
+            @SuppressWarnings("restriction")
+            IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
+            result = evaluator.eval(object.getQuery(), definitions.getCurrentDefinitions());
+            if (result == null) {
+                strResult = QUERY_EVALERROR_MESSAGE;
+            } else if (result.getResult() == null) {
+                StringBuilder builder = new StringBuilder();
+                getDiagnostic(result.getDiagnostic(), builder);
+                strResult = builder.toString();
+            } else {
+                strResult = result.getResult().toString();
+            }
         }
         XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), strResult);
-        if (result == null || result.getResult() == null) {
+        if (object.getQuery() == null || result == null || result.getResult() == null) {
             run.setBold(true);
             run.setColor(ERROR_COLOR);
         }
@@ -314,22 +343,25 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     @Override
     public AbstractConstruct caseRepetition(Repetition object) {
         // first evaluate the query
+        boolean validQuery = object.getQuery() != null;
         @SuppressWarnings("restriction")
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
                 definitions.getCurrentDefinitions());
-        if (result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+        if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
             // insert the tag runs as is.
             for (XWPFRun tagRun : object.getRuns()) {
                 insertRun(tagRun);
             }
             // insert the error message.
             XWPFRun run = currentGeneratedParagraph.createRun();
-            if (result != null) {
+            if (!validQuery) {
+                run.setText(QUERY_SYNTAX_ERROR_MESSAGE);
+            } else if (result != null) {
                 run.setText(result.getDiagnostic().getMessage());
             } else {
-                run.setText("couldn't evaluate expression");
+                run.setText(QUERY_EVALERROR_MESSAGE);
             }
-            if (result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+            if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
                 run.setBold(true);
                 run.setColor(ERROR_COLOR);
             }
@@ -372,8 +404,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         @SuppressWarnings("restriction")
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
                 definitions.getCurrentDefinitions());
-        // XXX : result can be null here : check that before using it.
-        if (result.getResult() instanceof Boolean) {
+        boolean validQuery = object.getQuery() != null;
+        if (validQuery && result != null && result.getResult() instanceof Boolean) {
             if ((Boolean) result.getResult()) {
                 for (AbstractConstruct construct : object.getSubConstructs()) {
                     doSwitch(construct);
@@ -390,8 +422,16 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 insertRun(tagRun);
             }
             XWPFRun run = currentGeneratedParagraph.createRun();
-            run.setText(result.getDiagnostic().getMessage());
-            if (result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+            String message;
+            if (!validQuery) {
+                message = QUERY_SYNTAX_ERROR_MESSAGE;
+            } else if (result != null) {
+                message = result.getDiagnostic().getMessage();
+            } else {
+                message = QUERY_EVALERROR_MESSAGE;
+            }
+            run.setText(message);
+            if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
                 run.setBold(true);
                 run.setColor(ERROR_COLOR);
             }
@@ -440,7 +480,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 ctCell.getTblList().clear();
                 newCell.getCTTc().set(ctCell);
                 // process the cell :
-                TemplateProcessor processor = new TemplateProcessor(definitions, queryEnvironment, newCell);
+                TemplateProcessor processor = new TemplateProcessor(definitions, queryEnvironment, newCell,
+                        targetConfObject);
                 processor.doSwitch(cell.getTemplate());
             }
         }
@@ -459,7 +500,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         int result;
         if (segments.length > 1) {
             String extension = segments[segments.length - 1].trim();
-            if ("jpg".equalsIgnoreCase(extension)) {
+            if ("jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)) {
                 result = Document.PICTURE_TYPE_JPEG;
             } else if ("gif".equalsIgnoreCase(extension)) {
                 result = Document.PICTURE_TYPE_GIF;
@@ -504,8 +545,15 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         try {
             int heigth = Units.toEMU(object.getHeight());
             int width = Units.toEMU(object.getWidth());
-            imageRun.addPicture(new FileInputStream(filePath), getPictureType(object.getFileName()),
-                    object.getFileName(), width, heigth);
+            FileInputStream imageStream = new FileInputStream(filePath);
+            try {
+                imageRun.addPicture(imageStream, getPictureType(object.getFileName()), object.getFileName(), width,
+                        heigth);
+            } finally {
+                if (imageStream != null) {
+                    imageStream.close();
+                }
+            }
         } catch (InvalidFormatException e) {
             imageRun.setText("Picture in " + object.getFileName() + " has an invalid format.");
             imageRun.setBold(true);
@@ -521,4 +569,136 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         }
         return super.caseImage(object);
     }
+
+    @Override
+    public AbstractConstruct caseRepresentation(Representation object) {
+        XWPFRun imageRun = insertRun(object.getStyleRun());
+        IProvider provider = object.getProvider();
+        if (provider == null) {
+            imageRun.setText(object.getParsingErrors().get(0).getMessage());
+            imageRun.setBold(true);
+            imageRun.setColor(ERROR_COLOR);
+        } else {
+            Map<String, Object> parameters;
+            try {
+                parameters = setupParametersMap(object, provider);
+                List<String> imagePaths = ((DiagramProvider) provider).getRepresentationImagePath(parameters);
+                for (String imagePath : imagePaths) {
+                    try {
+                        imageRun.setText("");
+                        imageRun.getCTR().getInstrTextList().clear();
+
+                        int heigth = Units.toEMU(object.getHeight());
+                        int width = Units.toEMU(object.getWidth());
+                        FileInputStream fileInputStream = new FileInputStream(imagePath);
+                        try {
+                            imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePath, width, heigth);
+                        } finally {
+                            if (fileInputStream != null) {
+                                fileInputStream.close();
+                            }
+                        }
+                    } catch (InvalidFormatException e) {
+                        imageRun.setText("Picture in " + imagePath + " has an invalid format.");
+                        imageRun.setBold(true);
+                        imageRun.setColor(ERROR_COLOR);
+                    } catch (FileNotFoundException e) {
+                        imageRun.setText("File " + imagePath + " cannot be found.");
+                        imageRun.setBold(true);
+                        imageRun.setColor(ERROR_COLOR);
+                    } catch (IOException e) {
+                        imageRun.setText("An I/O Problem occured while reading file ");
+                        imageRun.setBold(true);
+                        imageRun.setColor(ERROR_COLOR);
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                imageRun.setText(e.getMessage());
+                imageRun.setBold(true);
+                imageRun.setColor(ERROR_COLOR);
+            } catch (ProviderException e) {
+                imageRun.setText("A problem occured while creating image from an IDiagramProvider : " + e.getMessage());
+                imageRun.setBold(true);
+                imageRun.setColor(ERROR_COLOR);
+            }
+
+        }
+
+        return super.caseRepresentation(object);
+    }
+
+    /**
+     * Returns a map containing all parameters coming from the representation tag
+     * and global variables available.
+     * 
+     * @param object
+     *            the {@link Representation} object from which we extracts needed parameters.
+     * @param provider
+     *            the provider providing information regarding tag options.
+     * @return a map containing all parameters coming from the representation tag
+     *         and global variables available.
+     * @throws IllegalArgumentException
+     *             if the evaluation fails because error were present during parse time or evaluation time.
+     */
+    private Map<String, Object> setupParametersMap(Representation object, IProvider provider)
+            throws IllegalArgumentException {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(ProviderConstants.KEY_CONF_ROOT_OBJECT, targetConfObject);
+        parameters.put(ProviderConstants.KEY_PROJECT_ROOT_PATH, rootProjectPath);
+        parameters.put(ProviderConstants.KEY_IMAGE_HEIGHT, object.getHeight());
+        parameters.put(ProviderConstants.KEY_IMAGE_WIDTH, object.getWidth());
+        setGenericParameters(object, provider.getOptionTypes(), parameters);
+        return parameters;
+    }
+
+    /**
+     * Adds all parameters with the value evaluated if needed.
+     * 
+     * @param templateProvider
+     *            the template element from which we set generic parameters.
+     * @param optionTypes
+     *            the option types provided by the provider used by the template provider model element.
+     * @param parameters
+     *            the map containing the parameters to pass to the provider.
+     * @throws IllegalArgumentException
+     *             if the evaluation fails because error were present during parse time or evaluation time.
+     */
+    private void setGenericParameters(AbstractProvider templateProvider, Map<String, OptionType> optionTypes,
+            Map<String, Object> parameters) throws IllegalArgumentException {
+        EMap<String, Object> optionsMap = templateProvider.getOptionValueMap();
+        Set<Entry<String, Object>> optionsMapEntries = optionsMap.entrySet();
+        for (Entry<String, Object> optionsMapEntry : optionsMapEntries) {
+            if ((optionTypes != null && optionTypes.get(optionsMapEntry.getKey()) == null) || optionTypes == null) {
+                parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
+            } else if (optionTypes != null) {
+                OptionType optionType = optionTypes.get(optionsMapEntry.getKey());
+                if (OptionType.AQL_EXPRESSION == optionType) {
+                    if (optionsMapEntry.getValue() == null) {
+                        throw new IllegalArgumentException(QUERY_SYNTAX_ERROR_MESSAGE + ":"
+                            + templateProvider.getParsingErrors().get(0).getMessage());
+                    } else {
+                        @SuppressWarnings("restriction")
+                        EvaluationResult result = new QueryEvaluationEngine(queryEnvironment)
+                                .eval((AstResult) optionsMapEntry.getValue(), definitions.getCurrentDefinitions());
+                        if (result == null) {
+                            throw new IllegalArgumentException(QUERY_EVALERROR_MESSAGE);
+                        } else if (result.getResult() == null) {
+                            StringBuilder builder = new StringBuilder();
+                            getDiagnostic(result.getDiagnostic(), builder);
+                            throw new IllegalArgumentException(builder.toString());
+                        } else {
+                            parameters.put(optionsMapEntry.getKey(), result.getResult());
+                        }
+                    }
+
+                } else if (OptionType.STRING == optionType) {
+                    parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
+                } else {
+                    throw new UnsupportedOperationException("All option types should be supported.");
+                }
+            }
+
+        }
+    }
+
 }

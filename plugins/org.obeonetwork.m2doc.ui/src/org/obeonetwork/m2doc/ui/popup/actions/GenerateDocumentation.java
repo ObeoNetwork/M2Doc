@@ -218,7 +218,7 @@ public class GenerateDocumentation implements IObjectActionDelegate {
         DocumentTemplate template = parser.parseDocument();
         DocumentGenerator generator = new DocumentGenerator(projectRoot,
                 templateFile.getLocation().toFile().getAbsolutePath(),
-                generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment);
+                generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment,generation);
         generator.generate();
         MessageDialog.openConfirm(shell, "M2Doc generation",
                 "document " + generatedFile.getLocation().toString() + " generated");

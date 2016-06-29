@@ -570,6 +570,206 @@ public interface TemplatePackage extends EPackage {
 	int TABLE_MERGE_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
 
 	/**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.AbstractProviderImpl <em>Abstract Provider</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.AbstractProviderImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractProvider()
+     * @generated
+     */
+    int ABSTRACT_PROVIDER = 17;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+
+    /**
+     * The feature id for the '<em><b>Option Value Map</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER__OPTION_VALUE_MAP = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Provider</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER__PROVIDER = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Abstract Provider</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Abstract Provider</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_PROVIDER_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.AbstractImageImpl <em>Abstract Image</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.AbstractImageImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractImage()
+     * @generated
+     */
+    int ABSTRACT_IMAGE = 16;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__STYLE_RUN = ABSTRACT_PROVIDER__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__RUNS = ABSTRACT_PROVIDER__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__CLOSING_RUNS = ABSTRACT_PROVIDER__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__PARSING_ERRORS = ABSTRACT_PROVIDER__PARSING_ERRORS;
+
+    /**
+     * The feature id for the '<em><b>Option Value Map</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__OPTION_VALUE_MAP = ABSTRACT_PROVIDER__OPTION_VALUE_MAP;
+
+    /**
+     * The feature id for the '<em><b>Provider</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__PROVIDER = ABSTRACT_PROVIDER__PROVIDER;
+
+    /**
+     * The feature id for the '<em><b>Legend</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__LEGEND = ABSTRACT_PROVIDER_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__HEIGHT = ABSTRACT_PROVIDER_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Width</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__WIDTH = ABSTRACT_PROVIDER_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Legend POS</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE__LEGEND_POS = ABSTRACT_PROVIDER_FEATURE_COUNT + 3;
+
+    /**
+     * The number of structural features of the '<em>Abstract Image</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE_FEATURE_COUNT = ABSTRACT_PROVIDER_FEATURE_COUNT + 4;
+
+    /**
+     * The number of operations of the '<em>Abstract Image</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ABSTRACT_IMAGE_OPERATION_COUNT = ABSTRACT_PROVIDER_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableImpl <em>Table</em>}' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -616,7 +816,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int IMAGE__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+	int IMAGE__STYLE_RUN = ABSTRACT_IMAGE__STYLE_RUN;
 
 	/**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -625,7 +825,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int IMAGE__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+	int IMAGE__RUNS = ABSTRACT_IMAGE__RUNS;
 
 	/**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -634,7 +834,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int IMAGE__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+	int IMAGE__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
 
 	/**
      * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
@@ -643,52 +843,70 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int IMAGE__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+	int IMAGE__PARSING_ERRORS = ABSTRACT_IMAGE__PARSING_ERRORS;
 
 	/**
+     * The feature id for the '<em><b>Option Value Map</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IMAGE__OPTION_VALUE_MAP = ABSTRACT_IMAGE__OPTION_VALUE_MAP;
+
+    /**
+     * The feature id for the '<em><b>Provider</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IMAGE__PROVIDER = ABSTRACT_IMAGE__PROVIDER;
+
+    /**
      * The feature id for the '<em><b>Legend</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__LEGEND = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+	int IMAGE__LEGEND = ABSTRACT_IMAGE__LEGEND;
 
-	/**
-     * The feature id for the '<em><b>File Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int IMAGE__FILE_NAME = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
-
-	/**
+    /**
      * The feature id for the '<em><b>Height</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__HEIGHT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+	int IMAGE__HEIGHT = ABSTRACT_IMAGE__HEIGHT;
 
-	/**
+    /**
      * The feature id for the '<em><b>Width</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__WIDTH = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 3;
+	int IMAGE__WIDTH = ABSTRACT_IMAGE__WIDTH;
 
-	/**
+    /**
      * The feature id for the '<em><b>Legend POS</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__LEGEND_POS = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 4;
+	int IMAGE__LEGEND_POS = ABSTRACT_IMAGE__LEGEND_POS;
+
+    /**
+     * The feature id for the '<em><b>File Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+	int IMAGE__FILE_NAME = ABSTRACT_IMAGE_FEATURE_COUNT + 0;
 
 	/**
      * The number of structural features of the '<em>Image</em>' class.
@@ -697,7 +915,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int IMAGE_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 5;
+	int IMAGE_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 1;
 
 	/**
      * The number of operations of the '<em>Image</em>' class.
@@ -706,7 +924,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int IMAGE_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+	int IMAGE_OPERATION_COUNT = ABSTRACT_IMAGE_OPERATION_COUNT + 0;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.DefaultImpl <em>Default</em>}' class.
@@ -889,7 +1107,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int REPRESENTATION__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+	int REPRESENTATION__STYLE_RUN = ABSTRACT_IMAGE__STYLE_RUN;
 
 	/**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -898,7 +1116,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int REPRESENTATION__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+	int REPRESENTATION__RUNS = ABSTRACT_IMAGE__RUNS;
 
 	/**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -907,7 +1125,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int REPRESENTATION__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+	int REPRESENTATION__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
 
 	/**
      * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
@@ -916,34 +1134,97 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int REPRESENTATION__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+	int REPRESENTATION__PARSING_ERRORS = ABSTRACT_IMAGE__PARSING_ERRORS;
 
 	/**
+     * The feature id for the '<em><b>Option Value Map</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__OPTION_VALUE_MAP = ABSTRACT_IMAGE__OPTION_VALUE_MAP;
+
+    /**
+     * The feature id for the '<em><b>Provider</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__PROVIDER = ABSTRACT_IMAGE__PROVIDER;
+
+    /**
+     * The feature id for the '<em><b>Legend</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__LEGEND = ABSTRACT_IMAGE__LEGEND;
+
+    /**
+     * The feature id for the '<em><b>Height</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__HEIGHT = ABSTRACT_IMAGE__HEIGHT;
+
+    /**
+     * The feature id for the '<em><b>Width</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__WIDTH = ABSTRACT_IMAGE__WIDTH;
+
+    /**
+     * The feature id for the '<em><b>Legend POS</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__LEGEND_POS = ABSTRACT_IMAGE__LEGEND_POS;
+
+    /**
      * The feature id for the '<em><b>Query</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__QUERY = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+	int REPRESENTATION__QUERY = ABSTRACT_IMAGE_FEATURE_COUNT + 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Representation Id</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__REPRESENTATION_ID = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+	int REPRESENTATION__REPRESENTATION_ID = ABSTRACT_IMAGE_FEATURE_COUNT + 1;
 
-	/**
+    /**
+     * The feature id for the '<em><b>Representation Title</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__REPRESENTATION_TITLE = ABSTRACT_IMAGE_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Representation</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+	int REPRESENTATION_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 3;
 
 	/**
      * The number of operations of the '<em>Representation</em>' class.
@@ -952,7 +1233,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int REPRESENTATION_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+	int REPRESENTATION_OPERATION_COUNT = ABSTRACT_IMAGE_OPERATION_COUNT + 0;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.StaticFragmentImpl <em>Static Fragment</em>}' class.
@@ -1218,6 +1499,52 @@ public interface TemplatePackage extends EPackage {
 	int DOCUMENT_TEMPLATE_OPERATION_COUNT = 0;
 
 	/**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.OptionValueMapImpl <em>Option Value Map</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.OptionValueMapImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOptionValueMap()
+     * @generated
+     */
+    int OPTION_VALUE_MAP = 15;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION_VALUE_MAP__KEY = 0;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION_VALUE_MAP__VALUE = 1;
+
+    /**
+     * The number of structural features of the '<em>Option Value Map</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION_VALUE_MAP_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Option Value Map</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION_VALUE_MAP_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}' enum.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1225,7 +1552,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-	int QUERY_BEHAVIOR = 15;
+	int QUERY_BEHAVIOR = 18;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
@@ -1235,7 +1562,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-	int POSITION = 16;
+	int POSITION = 19;
 
 	/**
      * The meta object id for the '<em>Body</em>' data type.
@@ -1245,7 +1572,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-	int BODY = 17;
+	int BODY = 20;
 
 	/**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -1255,7 +1582,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-	int WTABLE = 18;
+	int WTABLE = 21;
 
 	/**
      * The meta object id for the '<em>Run</em>' data type.
@@ -1265,7 +1592,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-	int RUN = 19;
+	int RUN = 22;
 
 
 	/**
@@ -1276,7 +1603,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-	int AST_RESULT = 20;
+	int AST_RESULT = 23;
 
 	/**
      * The meta object id for the '<em>Document Parsing Error</em>' data type.
@@ -1286,7 +1613,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocumentParsingError()
      * @generated
      */
-	int DOCUMENT_PARSING_ERROR = 21;
+	int DOCUMENT_PARSING_ERROR = 24;
 
 	/**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -1296,7 +1623,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-	int WTABLE_ROW = 22;
+	int WTABLE_ROW = 25;
 
 	/**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -1306,9 +1633,19 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-	int WTABLE_CELL = 23;
+	int WTABLE_CELL = 26;
 
 	/**
+     * The meta object id for the '<em>Provider</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.provider.IProvider
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
+     * @generated
+     */
+    int PROVIDER = 27;
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractConstruct <em>Abstract Construct</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1630,6 +1967,126 @@ public interface TemplatePackage extends EPackage {
 	EReference getDocumentTemplate_Body();
 
 	/**
+     * Returns the meta object for class '{@link java.util.Map.Entry <em>Option Value Map</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Option Value Map</em>'.
+     * @see java.util.Map.Entry
+     * @model keyDataType="org.eclipse.emf.ecore.EString"
+     *        valueDataType="org.eclipse.emf.ecore.EJavaObject"
+     * @generated
+     */
+    EClass getOptionValueMap();
+
+    /**
+     * Returns the meta object for the attribute '{@link java.util.Map.Entry <em>Key</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Key</em>'.
+     * @see java.util.Map.Entry
+     * @see #getOptionValueMap()
+     * @generated
+     */
+    EAttribute getOptionValueMap_Key();
+
+    /**
+     * Returns the meta object for the attribute '{@link java.util.Map.Entry <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Value</em>'.
+     * @see java.util.Map.Entry
+     * @see #getOptionValueMap()
+     * @generated
+     */
+    EAttribute getOptionValueMap_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractImage <em>Abstract Image</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Abstract Image</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractImage
+     * @generated
+     */
+    EClass getAbstractImage();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.AbstractImage#getLegend <em>Legend</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Legend</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractImage#getLegend()
+     * @see #getAbstractImage()
+     * @generated
+     */
+    EAttribute getAbstractImage_Legend();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.AbstractImage#getHeight <em>Height</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Height</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractImage#getHeight()
+     * @see #getAbstractImage()
+     * @generated
+     */
+    EAttribute getAbstractImage_Height();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.AbstractImage#getWidth <em>Width</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Width</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractImage#getWidth()
+     * @see #getAbstractImage()
+     * @generated
+     */
+    EAttribute getAbstractImage_Width();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.AbstractImage#getLegendPOS <em>Legend POS</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Legend POS</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractImage#getLegendPOS()
+     * @see #getAbstractImage()
+     * @generated
+     */
+    EAttribute getAbstractImage_LegendPOS();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractProvider <em>Abstract Provider</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Abstract Provider</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractProvider
+     * @generated
+     */
+    EClass getAbstractProvider();
+
+    /**
+     * Returns the meta object for the map '{@link org.obeonetwork.m2doc.template.AbstractProvider#getOptionValueMap <em>Option Value Map</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the map '<em>Option Value Map</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractProvider#getOptionValueMap()
+     * @see #getAbstractProvider()
+     * @generated
+     */
+    EReference getAbstractProvider_OptionValueMap();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.AbstractProvider#getProvider <em>Provider</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Provider</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractProvider#getProvider()
+     * @see #getAbstractProvider()
+     * @generated
+     */
+    EAttribute getAbstractProvider_Provider();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1638,17 +2095,6 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
 	EClass getImage();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Image#getLegend <em>Legend</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Legend</em>'.
-     * @see org.obeonetwork.m2doc.template.Image#getLegend()
-     * @see #getImage()
-     * @generated
-     */
-	EAttribute getImage_Legend();
 
 	/**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Image#getFileName <em>File Name</em>}'.
@@ -1660,39 +2106,6 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
 	EAttribute getImage_FileName();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Image#getHeight <em>Height</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Height</em>'.
-     * @see org.obeonetwork.m2doc.template.Image#getHeight()
-     * @see #getImage()
-     * @generated
-     */
-	EAttribute getImage_Height();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Image#getWidth <em>Width</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Width</em>'.
-     * @see org.obeonetwork.m2doc.template.Image#getWidth()
-     * @see #getImage()
-     * @generated
-     */
-	EAttribute getImage_Width();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Image#getLegendPOS <em>Legend POS</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Legend POS</em>'.
-     * @see org.obeonetwork.m2doc.template.Image#getLegendPOS()
-     * @see #getImage()
-     * @generated
-     */
-	EAttribute getImage_LegendPOS();
 
 	/**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Default <em>Default</em>}'.
@@ -1790,6 +2203,17 @@ public interface TemplatePackage extends EPackage {
 	EAttribute getRepresentation_RepresentationId();
 
 	/**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationTitle <em>Representation Title</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Representation Title</em>'.
+     * @see org.obeonetwork.m2doc.template.Representation#getRepresentationTitle()
+     * @see #getRepresentation()
+     * @generated
+     */
+    EAttribute getRepresentation_RepresentationTitle();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1897,6 +2321,17 @@ public interface TemplatePackage extends EPackage {
 	EDataType getWTableCell();
 
 	/**
+     * Returns the meta object for data type '{@link org.obeonetwork.m2doc.provider.IProvider <em>Provider</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Provider</em>'.
+     * @see org.obeonetwork.m2doc.provider.IProvider
+     * @model instanceClass="org.obeonetwork.m2doc.provider.IProvider"
+     * @generated
+     */
+    EDataType getProvider();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2178,6 +2613,100 @@ public interface TemplatePackage extends EPackage {
 		EReference DOCUMENT_TEMPLATE__BODY = eINSTANCE.getDocumentTemplate_Body();
 
 		/**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.OptionValueMapImpl <em>Option Value Map</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.OptionValueMapImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOptionValueMap()
+         * @generated
+         */
+        EClass OPTION_VALUE_MAP = eINSTANCE.getOptionValueMap();
+
+        /**
+         * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute OPTION_VALUE_MAP__KEY = eINSTANCE.getOptionValueMap_Key();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute OPTION_VALUE_MAP__VALUE = eINSTANCE.getOptionValueMap_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.AbstractImageImpl <em>Abstract Image</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.AbstractImageImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractImage()
+         * @generated
+         */
+        EClass ABSTRACT_IMAGE = eINSTANCE.getAbstractImage();
+
+        /**
+         * The meta object literal for the '<em><b>Legend</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ABSTRACT_IMAGE__LEGEND = eINSTANCE.getAbstractImage_Legend();
+
+        /**
+         * The meta object literal for the '<em><b>Height</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ABSTRACT_IMAGE__HEIGHT = eINSTANCE.getAbstractImage_Height();
+
+        /**
+         * The meta object literal for the '<em><b>Width</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ABSTRACT_IMAGE__WIDTH = eINSTANCE.getAbstractImage_Width();
+
+        /**
+         * The meta object literal for the '<em><b>Legend POS</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ABSTRACT_IMAGE__LEGEND_POS = eINSTANCE.getAbstractImage_LegendPOS();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.AbstractProviderImpl <em>Abstract Provider</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.AbstractProviderImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractProvider()
+         * @generated
+         */
+        EClass ABSTRACT_PROVIDER = eINSTANCE.getAbstractProvider();
+
+        /**
+         * The meta object literal for the '<em><b>Option Value Map</b></em>' map feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference ABSTRACT_PROVIDER__OPTION_VALUE_MAP = eINSTANCE.getAbstractProvider_OptionValueMap();
+
+        /**
+         * The meta object literal for the '<em><b>Provider</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ABSTRACT_PROVIDER__PROVIDER = eINSTANCE.getAbstractProvider_Provider();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2188,44 +2717,12 @@ public interface TemplatePackage extends EPackage {
 		EClass IMAGE = eINSTANCE.getImage();
 
 		/**
-         * The meta object literal for the '<em><b>Legend</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute IMAGE__LEGEND = eINSTANCE.getImage_Legend();
-
-		/**
          * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
          * @generated
          */
 		EAttribute IMAGE__FILE_NAME = eINSTANCE.getImage_FileName();
-
-		/**
-         * The meta object literal for the '<em><b>Height</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute IMAGE__HEIGHT = eINSTANCE.getImage_Height();
-
-		/**
-         * The meta object literal for the '<em><b>Width</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute IMAGE__WIDTH = eINSTANCE.getImage_Width();
-
-		/**
-         * The meta object literal for the '<em><b>Legend POS</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute IMAGE__LEGEND_POS = eINSTANCE.getImage_LegendPOS();
 
 		/**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.DefaultImpl <em>Default</em>}' class.
@@ -2308,6 +2805,14 @@ public interface TemplatePackage extends EPackage {
 		EAttribute REPRESENTATION__REPRESENTATION_ID = eINSTANCE.getRepresentation_RepresentationId();
 
 		/**
+         * The meta object literal for the '<em><b>Representation Title</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REPRESENTATION__REPRESENTATION_TITLE = eINSTANCE.getRepresentation_RepresentationTitle();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.StaticFragmentImpl <em>Static Fragment</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2406,6 +2911,16 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
 		EDataType WTABLE_CELL = eINSTANCE.getWTableCell();
+
+        /**
+         * The meta object literal for the '<em>Provider</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.provider.IProvider
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
+         * @generated
+         */
+        EDataType PROVIDER = eINSTANCE.getProvider();
 
 	}
 

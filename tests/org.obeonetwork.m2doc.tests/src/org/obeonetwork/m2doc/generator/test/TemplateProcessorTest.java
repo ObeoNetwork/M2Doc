@@ -22,19 +22,26 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.TemplateProcessor;
 import org.obeonetwork.m2doc.parser.BodyParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.test.AbstractM2DocSiriusTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-public class TemplateProcessorTest {
+public class TemplateProcessorTest extends AbstractM2DocSiriusTest {
 
     private IQueryEnvironment env = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
+
+    @Override
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+    }
 
     private XWPFDocument createDestinationDocument(String inputDocumentFileName)
             throws IOException, InvalidFormatException {
@@ -65,7 +72,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "valueofx");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(2, destinationDoc.getParagraphs().size());
@@ -85,7 +92,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "valueofx");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -106,7 +113,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("self", EcorePackage.eINSTANCE);
         XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(3, destinationDoc.getParagraphs().size());
@@ -127,7 +134,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "valueofx");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -148,7 +155,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("self", EcorePackage.eINSTANCE);
         XWPFDocument destinationDoc = createDestinationDocument("templates/testGDFOR.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(
                 "Template de test pour les balises de répétition: name = EAttribute, name = EAnnotation, name = EClass, name = EClassifier, name = EDataType, name = EEnum, name = EEnumLiteral, name = EFactory, name = EModelElement, name = ENamedElement, name = EObject, name = EOperation, name = EPackage, name = EParameter, name = EReference, name = EStructuralFeature, name = ETypedElement, name = EStringToStringMapEntry, name = EGenericType, name = ETypeParameter, name = EBigDecimal, name = EBigInteger, name = EBoolean, name = EBooleanObject, name = EByte, name = EByteArray, name = EByteObject, name = EChar, name = ECharacterObject, name = EDate, name = EDiagnosticChain, name = EDouble, name = EDoubleObject, name = EEList, name = EEnumerator, name = EFeatureMap, name = EFeatureMapEntry, name = EFloat, name = EFloatObject, name = EInt, name = EIntegerObject, name = EJavaClass, name = EJavaObject, name = ELong, name = ELongObject, name = EMap, name = EResource, name = EResourceSet, name = EShort, name = EShortObject, name = EString, name = ETreeIterator, name = EInvocationTargetException, ",
@@ -173,7 +180,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal1.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -197,7 +204,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal1.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -221,7 +228,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal2.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -245,7 +252,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal2.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de default value",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -269,7 +276,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -293,7 +300,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value2");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value2",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -317,7 +324,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de default value",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -341,7 +348,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal6.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
                 destinationDoc.getParagraphs().get(0).getText());
@@ -365,7 +372,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "part1\npart2\npart3\npart4");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(4, destinationDoc.getParagraphs().size());
     }
@@ -388,7 +395,7 @@ public class TemplateProcessorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("author", "Moi");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testEmptyParagraphs.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(5, destinationDoc.getParagraphs().size());
         assertEquals("Paragraph1 Moi", destinationDoc.getParagraphs().get(0).getText());
@@ -396,6 +403,214 @@ public class TemplateProcessorTest {
         assertEquals("Paragraph2", destinationDoc.getParagraphs().get(2).getText());
         assertEquals("", destinationDoc.getParagraphs().get(3).getText());
         assertEquals("Paragraph3 Moi", destinationDoc.getParagraphs().get(4).getText());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider' width:'200'
+     * height:'200' title:'RF Schema'} that should produced an image in the run.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingWithTitleProviderOk()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramValid.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValid.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals(1, destinationDoc.getParagraphs().get(0).getRuns().get(0).getEmbeddedPictures().size());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider'
+     * width:'200' height:'200' rootObject:'db.schemas->first()' diagramDescriptionName:'Schema Diagram'} that should produced an image in
+     * the run.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingWithRootObjectProviderOk()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramValidRootObject.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("db", getSemanticResource().getContents().get(0));
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidRootObject.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("", destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
+        assertEquals(2, destinationDoc.getParagraphs().get(0).getRuns().get(0).getEmbeddedPictures().size());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider'
+     * width:'200' height:'200' rootObject:'db.schemas->first()'} that should produced an error message in the run because the diagram
+     * description is missing.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingWithRootObjectProviderKo()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramValidRootObjectKo.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("db", getSemanticResource().getContents().get(0));
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidRootObjectKo.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals(
+                "A problem occured while creating image from an IDiagramProvider : Image cannot be computed because no diagram description name has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider\"",
+                destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider' width:'200'
+     * height:'200' title:'wrong'} that should produced an error in the run because the corresponding diagram does not exist.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingFail() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramInvalid.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalid.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(2, destinationDoc.getParagraphs().size());
+        assertEquals(
+                "A problem occured while creating image from an IDiagramProvider : Representation with title 'wrong' not found",
+                destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider' width:'200'
+     * height:'200'} that should produced an error in the run because not diagram title is provided.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingFail2()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramInvalid2.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalid2.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals(
+                "A problem occured while creating image from an IDiagramProvider : Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider\"",
+                destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.Wrong' width:'200' height:'200'
+     * rootObject:'db.schemas->first()' diagramDescriptionName:'Schema Diagram'} that should produced an error in the run because not
+     * diagram title is provided.
+     * The given provider does not exists. An error message should be in the run.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingFailNoProviderCorresponding()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramInvalidNoProvider.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalidNoProvider.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("The image tag is referencing an unknown diagram provider : 'wrong'",
+                destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.test.AbstractM2DocTest#getSemanticModelName()
+     */
+    @Override
+    public String getSemanticModelName() {
+        return "referentiel-oracle.database";
+    }
+
+    /**
+     * Tests template tag {m:diagram diagramProvider:'org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider'
+     * width:'200' height:'200' rootObject:'wrong.->' diagramDescriptionName:'Schema Diagram' legend:'plan de forme du dingy herbulot'
+     * legendPos:'below'} that should produced an error message in the run because the AQL expression in invalid.
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testRepresentationProcessingWithRootObjectProviderAQLKO()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/diagramInvalidAqlExpression.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("db", getSemanticResource().getContents().get(0));
+        XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalidAqlExpression.docx");
+        IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProjects()[0];
+        TemplateProcessor processor = new TemplateProcessor(definitions, iProject.getLocation().toString(), env,
+                destinationDoc, getSemanticResource().getContents().get(0));
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("Syntax error in AQL expression.:Expression wrong.-> is invalid",
+                destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
     }
 
 }

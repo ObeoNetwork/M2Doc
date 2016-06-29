@@ -27,13 +27,14 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * <ul>
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getQuery <em>Query</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getRepresentationId <em>Representation Id</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.Representation#getRepresentationTitle <em>Representation Title</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation()
  * @model
  * @generated
  */
-public interface Representation extends AbstractConstruct {
+public interface Representation extends AbstractImage {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -92,5 +93,31 @@ public interface Representation extends AbstractConstruct {
      * @generated
      */
 	void setRepresentationId(String value);
+
+    /**
+     * Returns the value of the '<em><b>Representation Title</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Representation Title</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Representation Title</em>' attribute.
+     * @see #setRepresentationTitle(String)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation_RepresentationTitle()
+     * @model
+     * @generated
+     */
+    String getRepresentationTitle();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationTitle <em>Representation Title</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Representation Title</em>' attribute.
+     * @see #getRepresentationTitle()
+     * @generated
+     */
+    void setRepresentationTitle(String value);
 
 } // Representation

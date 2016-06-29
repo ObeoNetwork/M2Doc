@@ -45,13 +45,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="TableMerge" eSuperTypes="#//Compound">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="legend" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//AbstractConstruct">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legend" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//AbstractImage">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legendPOS" eType="#//POSITION"
-        defaultValueLiteral="BELOW"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Default" eSuperTypes="#//Compound"/>
   <eClassifiers xsi:type="ecore:EClass" name="Compound" abstract="true" eSuperTypes="#//AbstractConstruct">
@@ -65,9 +60,10 @@
   <eClassifiers xsi:type="ecore:EDataType" name="Body" instanceClassName="org.apache.poi.xwpf.usermodel.IBody"/>
   <eClassifiers xsi:type="ecore:EDataType" name="WTable" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTable"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Run" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFRun"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Representation" eSuperTypes="#//AbstractConstruct">
+  <eClassifiers xsi:type="ecore:EClass" name="Representation" eSuperTypes="#//AbstractImage">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationTitle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//AbstractConstruct"/>
   <eClassifiers xsi:type="ecore:EEnum" name="QueryBehavior">
@@ -105,5 +101,22 @@
   <eClassifiers xsi:type="ecore:EEnum" name="POSITION">
     <eLiterals name="ABOVE"/>
     <eLiterals name="BELOW" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OptionValueMap" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractImage" abstract="true" eSuperTypes="#//AbstractProvider">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legend" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legendPOS" eType="#//POSITION"
+        defaultValueLiteral="BELOW"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Provider" instanceClassName="org.obeonetwork.m2doc.provider.IProvider"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractProvider" abstract="true" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="optionValueMap" upperBound="-1"
+        eType="#//OptionValueMap" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="provider" eType="#//Provider"/>
   </eClassifiers>
 </ecore:EPackage>
