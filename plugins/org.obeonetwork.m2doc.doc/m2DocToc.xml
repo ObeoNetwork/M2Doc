@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="M2Doc" topic="doc/index.html">
+   <topic href="doc/m2DocUserGuide.html" label="M2Doc User Guide">
+   </topic>
+   <topic href="doc/m2DocDeveloperGuide.html" label="M2Doc Developer Guide">
+   </topic>
+</toc>
