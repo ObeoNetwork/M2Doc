@@ -459,4 +459,36 @@ public class DocumentGeneratorTest {
         generator.generate();
     }
 
+    @Test
+    public void testStaticHyperlink()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/staticHyperlink.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        DocumentGenerator generator = new DocumentGenerator("templates/staticHyperlink.docx",
+                "results/staticHyperlink.docx", template, definitions, queryEnvironment, null);
+        generator.generate();
+    }
+
+    @Test
+    public void testDynamicHyperlink()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/dynamicHyperlink.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        DocumentGenerator generator = new DocumentGenerator("templates/dynamicHyperlink.docx",
+                "results/dynamicHyperlink.docx", template, definitions, queryEnvironment, null);
+        generator.generate();
+    }
+
 }

@@ -44,6 +44,7 @@ import org.obeonetwork.m2doc.ui.genconf.GenconfPackage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test the {@link TemplateProcessor} class.
@@ -642,4 +643,75 @@ public class TemplateProcessorTest {
         assertEquals(1, destinationDoc.getParagraphs().get(0).getRuns().get(0).getEmbeddedPictures().size());
     }
 
+    /**
+     * Tests that a static hyperlink is correctly produced in the generated document. ({HYPERLINK "http://www.obeo.fr"},Lien statique vers
+     * obeo)
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testStaticHyperLink() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/staticHyperlink.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/staticHyperlink.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "results", env, destinationDoc, rootObject);
+        processor.doSwitch(template);
+        // CHECKSTYLE:OFF
+        assertEquals(18, destinationDoc.getParagraphs().size());
+        // CHECKSTYLE:ON
+        assertEquals(1, destinationDoc.getParagraphs().get(0).getCTP().getHyperlinkList().size());
+        assertEquals(1, destinationDoc.getHyperlinks().length);
+        assertEquals("rId8", destinationDoc.getHyperlinks()[0].getId());
+        assertEquals("http://www.obeo.fr", destinationDoc.getHyperlinks()[0].getURL());
+        assertEquals(1, destinationDoc.getParagraphs().get(0).getRuns().size());
+        assertEquals("Lien statique vers obeo", destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
+    }
+
+    /**
+     * Tests that a dynamic hyperlink which has its URL provided by an AQL expression is generated correctly. ({HYPERLINK
+     * "{m:'http://www.obeo.fr'}"},Lien dynamique vers obeo).
+     * 
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     */
+    @Test
+    public void testDynamicHyperLink() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/dynamicHyperlink.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/dynamicHyperlink.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "results", env, destinationDoc, rootObject);
+        processor.doSwitch(template);
+        // CHECKSTYLE:OFF
+        assertEquals(17, destinationDoc.getParagraphs().size());
+        // CHECKSTYLE:ON
+        assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getHyperlinkList().size());
+        assertEquals(0, destinationDoc.getHyperlinks().length);
+        // CHECKSTYLE:OFF
+        assertEquals(8, destinationDoc.getParagraphs().get(0).getRuns().size());
+        // CHECKSTYLE:ON
+        assertTrue(destinationDoc.getParagraphs().get(0).getCTP().toString().replaceAll("[\\s\\t]", "")
+                .replaceAll("(\\r)?\\n", "")
+                .contains(("<w:r>" + "  <w:fldChar w:fldCharType=\"begin\"/>" + "</w:r>" + " <w:r>"
+                    + "  <w:instrText xml:space=\"preserve\">HYPERLINK</w:instrText>" + "</w:r>"
+                    + " <w:r w:rsidR=\"003177F4\">" + "  <w:instrText>\"</w:instrText>" + " </w:r>"
+                    + "<w:r w:rsidR=\"003177F4\">" + "  <w:t>http://www.obeo.fr</w:t>" + " </w:r>"
+                    + "<w:r w:rsidR=\"003177F4\">" + "  <w:instrText>\"</w:instrText>" + "</w:r>" + "<w:r>"
+                    + " <w:fldChar w:fldCharType=\"separate\"/>" + "</w:r>"
+                    + "<w:r w:rsidR=\"00047C1A\" w:rsidRPr=\"00047C1A\">" + "  <w:rPr>"
+                    + "   <w:rStyle w:val=\"Lienhypertexte\"/>" + "  </w:rPr>" + " <w:t>Lien dynamique vers obeo</w:t>"
+                    + "</w:r>" + "<w:r>" + "  <w:rPr>" + "   <w:rStyle w:val=\"Lienhypertexte\"/>" + "  </w:rPr>"
+                    + "  <w:fldChar w:fldCharType=\"end\"/>" + " </w:r>" + "</xml-fragment>").replaceAll("[\\s\\t]", "")
+                            .replaceAll("(\\r)?\\n", "")));
+    }
 }

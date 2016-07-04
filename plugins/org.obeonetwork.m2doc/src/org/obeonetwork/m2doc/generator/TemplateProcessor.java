@@ -28,6 +28,7 @@ import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -59,6 +60,7 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
@@ -229,9 +231,20 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             createNewParagraph(srcRun.getParagraph());
             forceNewParagraph = false;
         }
-        XWPFRun generatedRun = currentGeneratedParagraph.createRun();
-        generatedRun.getCTR().set(srcRun.getCTR());
-        return generatedRun;
+        XWPFRun newRun = null;
+        if (srcRun instanceof XWPFHyperlinkRun) {
+            // Hyperlinks meta information is saved in the paragraph and not in the run. So we have to update the paragrapah with a copy of
+            // the hyperlink to insert.
+            CTHyperlink newHyperlink = currentGeneratedParagraph.getCTP().addNewHyperlink();
+            newHyperlink.set(((XWPFHyperlinkRun) srcRun).getCTHyperlink());
+
+            newRun = new XWPFHyperlinkRun(newHyperlink, srcRun.getCTR(), srcRun.getParagraph());
+            currentGeneratedParagraph.addRun(newRun);
+        } else {
+            newRun = currentGeneratedParagraph.createRun();
+            newRun.getCTR().set(srcRun.getCTR());
+        }
+        return newRun;
     }
 
     /**
