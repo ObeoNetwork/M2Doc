@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.generator.test;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,8 @@ import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+
+import static org.junit.Assert.fail;
 
 public class DocumentGeneratorTest {
 	@Test
@@ -441,5 +444,117 @@ public class DocumentGeneratorTest {
 				template, definitions, queryEnvironment);
 		generator.generate();
 	}
+	
+	 /**
+	  * Generate document from template.
+     * @param templateFileName 
+     * @param resultFileName
+     * @param definitions
+     * @throws FileNotFoundException
+     * @throws InvalidFormatException
+     * @throws IOException
+     * @throws DocumentParserException
+     * @throws DocumentGenerationException
+     */
+    private void generateDocument(String templateFileName, String resultFileName, Map<String, Object> definitions)
+            throws FileNotFoundException, InvalidFormatException, IOException, DocumentParserException,
+            DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream(templateFileName);
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        DocumentGenerator generator = new DocumentGenerator(templateFileName,
+                resultFileName, template, definitions, queryEnvironment);
+        generator.generate();
+    }
+	
+	@Test
+    public void testStaticFragmentInFooterProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/footer/testStaticFragmentInFooter.docx";
+        String resultFileName = "results/footer/testStaticFragmentInFooterResult.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
 
+	@Test
+    public void testStaticFragmentWithFieldInFooterProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+	    String templateFileName = "templates/footer/testStaticFragmentWithFieldInFooter.docx";
+        String resultFileName = "results/footer/testStaticFragmentWithFieldInFooter.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+
+	@Test
+    public void testQueryStyledInFooterProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+	    String templateFileName = "templates/footer/testAQLInFooter.docx";
+        String resultFileName = "results/footer/testAQLInFooter.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+	
+	@Test
+    public void testInvalidQueryStyledInFooterProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/footer/testAQLInvalidInFooter.docx";
+        String resultFileName = "results/footer/testAQLInvalidInFooter.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+	
+	@Test
+    public void testConditionnal1trueInFooterProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+	    String templateFileName = "templates/footer/testConditionalInFooter.docx";
+        String resultFileName = "results/footer/testConditionalInFooter.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "value1");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+	
+	@Test
+    public void testImageInFooterGeneration()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+	    String templateFileName = "templates/footer/testImageInFooter.docx";
+        String resultFileName = "results/footer/testImageInFooter.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+	
+	@Test
+    public void testFormsAndTextAreaInFooter()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+	    String templateFileName = "templates/footer/testTextAreaInFooter.docx";
+        String resultFileName = "results/footer/testTextAreaInFooter.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        generateDocument(templateFileName, resultFileName, definitions);
+        fail("query in text area does not work !");
+    }
+	
+	@Test
+    public void testVarRefStyledInFooterProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/footer/testVarStyleInFooter.docx";
+        String resultFileName = "results/footer/testVarStyleInFooter.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+	
+	   
+    @Test
+    public void testCommentInFooterProcessing() {
+        // footer can not have comments
+    }
 }
