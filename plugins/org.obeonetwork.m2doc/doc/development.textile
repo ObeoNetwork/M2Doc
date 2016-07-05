@@ -1,0 +1,28 @@
+h1. Word functionalities not handled in POI
+
+h2. The Hyperlinks and Fields
+
+POI does not provide methods in XWPFParagraph to add HyperlinkRun and FieldRun.
+A WORD static hyperlink if a field {HYPERLINK "www.obeo.fr"} associated to a label MyLink.
+In OOXML it looks like the following code :
+
+bc. <w:p w:rsidR="006C33F3" w:rsidRDefault="00912194" w:rsidP="006C33F3">
+	<w:hyperlink r:id="rId8" w:history="1">
+		<w:r w:rsidR="00523101" w:rsidRPr="00523101">
+			<w:rPr>
+				<w:rStyle w:val="Lienhypertexte" />
+			</w:rPr>
+			<w:t>Lien statique vers obeo</w:t>
+		</w:r>
+	</w:hyperlink>
+	<w:bookmarkStart w:id="0" w:name="_GoBack" />
+	<w:bookmarkEnd w:id="0" />
+</w:p>
+
+The run is encapsulated in an hyperlink tag element that is not a run but is present in the XWPFParagraph. 
+So we have to use the OOXML API to add  the hyperlink in the paragraph with paragraph.getCTP.addNewHyperlink
+		
+h1. Update the paragraph content with a new run.
+
+It is the setCtr method on a run in an XWPFParagraph that update it and not the addRun method with a run already containing the wanted CTR.
+

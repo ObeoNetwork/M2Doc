@@ -13,6 +13,7 @@
  */
 package org.obeonetwork.m2doc.template.impl;
 
+import java.util.Map;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -28,6 +29,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.template.*;
 
 /**
@@ -94,6 +96,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
             case TemplatePackage.ROW: return createRow();
             case TemplatePackage.CELL: return createCell();
             case TemplatePackage.DOCUMENT_TEMPLATE: return createDocumentTemplate();
+            case TemplatePackage.OPTION_VALUE_MAP: return (EObject)createOptionValueMap();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -125,6 +128,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createWTableRowFromString(eDataType, initialValue);
             case TemplatePackage.WTABLE_CELL:
                 return createWTableCellFromString(eDataType, initialValue);
+            case TemplatePackage.PROVIDER:
+                return createProviderFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -156,6 +161,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return convertWTableRowToString(eDataType, instanceValue);
             case TemplatePackage.WTABLE_CELL:
                 return convertWTableCellToString(eDataType, instanceValue);
+            case TemplatePackage.PROVIDER:
+                return convertProviderToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -242,6 +249,16 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Map.Entry<String, Object> createOptionValueMap() {
+        OptionValueMapImpl optionValueMap = new OptionValueMapImpl();
+        return optionValueMap;
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -458,6 +475,24 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public IProvider createProviderFromString(EDataType eDataType, String initialValue) {
+        return (IProvider)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertProviderToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated

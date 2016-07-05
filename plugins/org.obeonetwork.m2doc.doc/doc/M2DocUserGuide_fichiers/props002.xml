@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+    Copyright (c) 2016 Obeo. 
+       All rights reserved. This program and the accompanying materials
+       are made available under the terms of the Eclipse Public License v1.0
+       which accompanies this distribution, and is available at
+       http://www.eclipse.org/legal/epl-v10.html
+        
+        Contributors:
+            Obeo - initial API and implementation
+ -->
+
+<ds:datastoreItem ds:itemID="{9656C2DC-E252-4EF4-9EE1-6893E72500B2}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml"><ds:schemaRefs><ds:schemaRef ds:uri="http://schemas.openxmlformats.org/officeDocument/2006/bibliography"/></ds:schemaRefs></ds:datastoreItem>

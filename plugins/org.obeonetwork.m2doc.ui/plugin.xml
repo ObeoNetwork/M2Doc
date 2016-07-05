@@ -13,8 +13,6 @@
  -->
 
 <plugin>
-   <extension-point id="org.obeonetwork.m2doc.services.register" name="M2Doc Service Register" schema="schema/org.obeonetwork.m2doc.services.register.exsd"/>
-
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution

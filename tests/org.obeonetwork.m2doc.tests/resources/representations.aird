@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_R6YrED4QEeaMm6sFVIe49w" selectedViews="_Ir1JcD4TEea6Bc_dF3Y1_A" version="10.1.0.201509162000">
+  <semanticResources>semantic.genconf</semanticResources>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_Ir1JcD4TEea6Bc_dF3Y1_A">
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_Jw6iMD4TEea6Bc_dF3Y1_A" name="RF Schema">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_Jw6iMT4TEea6Bc_dF3Y1_A" source="DANNOTATION_CUSTOMIZATION_KEY">
+        <data xmi:type="diagram:ComputedStyleDescriptionRegistry" xmi:id="_Jw6iMj4TEea6Bc_dF3Y1_A"/>
+      </ownedAnnotationEntries>
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_JxWAAD4TEea6Bc_dF3Y1_A" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_JxWAAT4TEea6Bc_dF3Y1_A" type="Sirius" element="_Jw6iMD4TEea6Bc_dF3Y1_A" measurementUnit="Pixel">
+          <children xmi:type="notation:Node" xmi:id="_JxkpgD4TEea6Bc_dF3Y1_A" type="2001" element="_Jw6iMz4TEea6Bc_dF3Y1_A">
+            <children xmi:type="notation:Node" xmi:id="_Jx5ZoD4TEea6Bc_dF3Y1_A" type="5002">
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Jx5ZoT4TEea6Bc_dF3Y1_A" y="5"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_JyDxsD4TEea6Bc_dF3Y1_A" type="3004" element="_Jw6iND4TEea6Bc_dF3Y1_A">
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_JyDxsT4TEea6Bc_dF3Y1_A" fontName="Segoe UI"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JyDxsj4TEea6Bc_dF3Y1_A"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_JxkpgT4TEea6Bc_dF3Y1_A" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Jxkpgj4TEea6Bc_dF3Y1_A" x="15" y="5" width="30" height="30"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_JyCjkD4TEea6Bc_dF3Y1_A" type="2001" element="_Jw6iNT4TEea6Bc_dF3Y1_A">
+            <children xmi:type="notation:Node" xmi:id="_JyCjkz4TEea6Bc_dF3Y1_A" type="5002">
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_JyCjlD4TEea6Bc_dF3Y1_A" y="5"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_JyE_0D4TEea6Bc_dF3Y1_A" type="3004" element="_Jw6iNj4TEea6Bc_dF3Y1_A">
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_JyE_0T4TEea6Bc_dF3Y1_A" fontName="Segoe UI"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JyE_0j4TEea6Bc_dF3Y1_A"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_JyCjkT4TEea6Bc_dF3Y1_A" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JyCjkj4TEea6Bc_dF3Y1_A" x="90" width="30" height="30"/>
+          </children>
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_JxWAAj4TEea6Bc_dF3Y1_A"/>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_Jw6iMz4TEea6Bc_dF3Y1_A" width="3" height="3" resizeKind="NSEW">
+        <target xmi:type="genconf:ModelDefinition" href="semantic.genconf#//@definitions.0"/>
+        <semanticElements xmi:type="genconf:ModelDefinition" href="semantic.genconf#//@definitions.0"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_Jw6iND4TEea6Bc_dF3Y1_A" labelPosition="node">
+          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='ModelDefinition']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='ModelDefinition']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_Jw6iNT4TEea6Bc_dF3Y1_A" width="3" height="3" resizeKind="NSEW">
+        <target xmi:type="genconf:StringDefinition" href="semantic.genconf#//@definitions.1"/>
+        <semanticElements xmi:type="genconf:StringDefinition" href="semantic.genconf#//@definitions.1"/>
+        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_Jw6iNj4TEea6Bc_dF3Y1_A" labelPosition="node" shape="dot">
+          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='StringDefinition']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='StringDefinition']"/>
+      </ownedDiagramElements>
+      <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_Jw6iNz4TEea6Bc_dF3Y1_A"/>
+      <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer"/>
+      <target xmi:type="genconf:Generation" href="semantic.genconf#/"/>
+    </ownedRepresentations>
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_NFClYD4TEea6Bc_dF3Y1_A" name="RF Schema2">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_NFClYT4TEea6Bc_dF3Y1_A" source="DANNOTATION_CUSTOMIZATION_KEY">
+        <data xmi:type="diagram:ComputedStyleDescriptionRegistry" xmi:id="_NFClYj4TEea6Bc_dF3Y1_A"/>
+      </ownedAnnotationEntries>
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_NFDMcD4TEea6Bc_dF3Y1_A" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_NFDMcT4TEea6Bc_dF3Y1_A" type="Sirius" element="_NFClYD4TEea6Bc_dF3Y1_A" measurementUnit="Pixel">
+          <children xmi:type="notation:Node" xmi:id="_NFDMcz4TEea6Bc_dF3Y1_A" type="2001" element="_NFClYz4TEea6Bc_dF3Y1_A">
+            <children xmi:type="notation:Node" xmi:id="_NFDzgD4TEea6Bc_dF3Y1_A" type="5002">
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_NFDzgT4TEea6Bc_dF3Y1_A" y="5"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_NFFBoD4TEea6Bc_dF3Y1_A" type="3004" element="_NFClZD4TEea6Bc_dF3Y1_A">
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_NFFBoT4TEea6Bc_dF3Y1_A" fontName="Segoe UI"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NFFBoj4TEea6Bc_dF3Y1_A"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_NFDMdD4TEea6Bc_dF3Y1_A" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NFDMdT4TEea6Bc_dF3Y1_A" width="30" height="30"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_NFEakD4TEea6Bc_dF3Y1_A" type="2001" element="_NFClZT4TEea6Bc_dF3Y1_A">
+            <children xmi:type="notation:Node" xmi:id="_NFEakz4TEea6Bc_dF3Y1_A" type="5002">
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_NFEalD4TEea6Bc_dF3Y1_A" y="5"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_NFFBoz4TEea6Bc_dF3Y1_A" type="3004" element="_NFClZj4TEea6Bc_dF3Y1_A">
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_NFFBpD4TEea6Bc_dF3Y1_A" fontName="Segoe UI"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NFFBpT4TEea6Bc_dF3Y1_A"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_NFEakT4TEea6Bc_dF3Y1_A" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NFEakj4TEea6Bc_dF3Y1_A" x="90" width="30" height="30"/>
+          </children>
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_NFDMcj4TEea6Bc_dF3Y1_A"/>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_NFClYz4TEea6Bc_dF3Y1_A" width="3" height="3" resizeKind="NSEW">
+        <target xmi:type="genconf:ModelDefinition" href="semantic.genconf#//@definitions.0"/>
+        <semanticElements xmi:type="genconf:ModelDefinition" href="semantic.genconf#//@definitions.0"/>
+        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_NFClZD4TEea6Bc_dF3Y1_A" labelPosition="node">
+          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='ModelDefinition']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='ModelDefinition']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_NFClZT4TEea6Bc_dF3Y1_A" width="3" height="3" resizeKind="NSEW">
+        <target xmi:type="genconf:StringDefinition" href="semantic.genconf#//@definitions.1"/>
+        <semanticElements xmi:type="genconf:StringDefinition" href="semantic.genconf#//@definitions.1"/>
+        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_NFClZj4TEea6Bc_dF3Y1_A" labelPosition="node" shape="dot">
+          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='StringDefinition']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer/@nodeMappings[name='StringDefinition']"/>
+      </ownedDiagramElements>
+      <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_NFClZz4TEea6Bc_dF3Y1_A"/>
+      <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']/@ownedRepresentations[name='diagram']/@defaultLayer"/>
+      <target xmi:type="genconf:Generation" href="semantic.genconf#/"/>
+    </ownedRepresentations>
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.m2doc.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']"/>
+  </ownedViews>
+</viewpoint:DAnalysis>

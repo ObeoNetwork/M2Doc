@@ -13,6 +13,7 @@
  */
 package org.obeonetwork.m2doc.template.util;
 
+import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -122,6 +123,8 @@ public class TemplateSwitch<T> extends Switch<T> {
             case TemplatePackage.IMAGE: {
                 Image image = (Image)theEObject;
                 T result = caseImage(image);
+                if (result == null) result = caseAbstractImage(image);
+                if (result == null) result = caseAbstractProviderClient(image);
                 if (result == null) result = caseAbstractConstruct(image);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -152,6 +155,8 @@ public class TemplateSwitch<T> extends Switch<T> {
             case TemplatePackage.REPRESENTATION: {
                 Representation representation = (Representation)theEObject;
                 T result = caseRepresentation(representation);
+                if (result == null) result = caseAbstractImage(representation);
+                if (result == null) result = caseAbstractProviderClient(representation);
                 if (result == null) result = caseAbstractConstruct(representation);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -185,6 +190,27 @@ public class TemplateSwitch<T> extends Switch<T> {
             case TemplatePackage.DOCUMENT_TEMPLATE: {
                 DocumentTemplate documentTemplate = (DocumentTemplate)theEObject;
                 T result = caseDocumentTemplate(documentTemplate);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.OPTION_VALUE_MAP: {
+                @SuppressWarnings("unchecked") Map.Entry<String, Object> optionValueMap = (Map.Entry<String, Object>)theEObject;
+                T result = caseOptionValueMap(optionValueMap);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.ABSTRACT_IMAGE: {
+                AbstractImage abstractImage = (AbstractImage)theEObject;
+                T result = caseAbstractImage(abstractImage);
+                if (result == null) result = caseAbstractProviderClient(abstractImage);
+                if (result == null) result = caseAbstractConstruct(abstractImage);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.ABSTRACT_PROVIDER_CLIENT: {
+                AbstractProviderClient abstractProviderClient = (AbstractProviderClient)theEObject;
+                T result = caseAbstractProviderClient(abstractProviderClient);
+                if (result == null) result = caseAbstractConstruct(abstractProviderClient);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -328,6 +354,51 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
 	/**
+     * Returns the result of interpreting the object as an instance of '<em>Option Value Map</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Option Value Map</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOptionValueMap(Map.Entry<String, Object> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Abstract Image</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Abstract Image</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseAbstractImage(AbstractImage object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Abstract Provider Client</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Abstract Provider Client</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseAbstractProviderClient(AbstractProviderClient object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Image</em>'.
      * <!-- begin-user-doc -->
 	 * This implementation returns null;

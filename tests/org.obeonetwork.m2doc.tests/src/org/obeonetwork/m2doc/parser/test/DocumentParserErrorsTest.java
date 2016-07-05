@@ -309,7 +309,7 @@ public class DocumentParserErrorsTest {
         assertEquals(document, template.getDocument());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Query);
-        Query query = ((Query) template.getSubConstructs().get(0));
+        Query query = (Query) template.getSubConstructs().get(0);
         assertEquals(1, query.getParsingErrors().size());
         assertEquals("Expression  is invalid", query.getParsingErrors().get(0).getMessage());
     }

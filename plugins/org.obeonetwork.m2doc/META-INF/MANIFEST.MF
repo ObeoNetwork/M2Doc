@@ -9,11 +9,20 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.sirius;bundle-version="3.1.1",
+ org.eclipse.sirius.diagram;bundle-version="3.1.1",
+ org.eclipse.gmf,
+ org.eclipse.emf.edit,
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.eclipse.sirius.diagram.ui;bundle-version="3.1.1",
+ org.eclipse.gmf.runtime.diagram.ui.render
 Bundle-ActivationPolicy: lazy
-Export-Package: org.obeonetwork.m2doc.generator,
+Export-Package: org.obeonetwork.m2doc,
+ org.obeonetwork.m2doc.generator,
  org.obeonetwork.m2doc.parser,
  org.obeonetwork.m2doc.properties,
+ org.obeonetwork.m2doc.provider,
  org.obeonetwork.m2doc.services,
  org.obeonetwork.m2doc.template,
  org.obeonetwork.m2doc.template.impl,
@@ -26,8 +35,9 @@ Import-Package: com.google.common.base;version="15.0.0",
  org.apache.poi.util;version="3.13.0",
  org.apache.poi.xwpf.usermodel;version="3.13.0",
  org.apache.xmlbeans;version="2.6.0",
- org.eclipse.acceleo.query.runtime;version="3.6.0",
+ org.eclipse.acceleo.query.runtime;version="[3.6.0,4.2.0)",
  org.eclipse.acceleo.query.runtime.impl,
  org.openxmlformats.schemas.officeDocument.x2006.customProperties;version="1.1.0",
  org.openxmlformats.schemas.wordprocessingml.x2006.main;version="1.1.0",
  org.openxmlformats.schemas.wordprocessingml.x2006.main.impl;version="1.1.0"
+Bundle-Activator: org.obeonetwork.m2doc.M2DocPlugin

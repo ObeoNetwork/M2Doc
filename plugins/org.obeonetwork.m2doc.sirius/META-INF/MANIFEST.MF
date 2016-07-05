@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.obeonetwork.m2doc.sirius;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: org.obeonetwork.m2doc.sirius.M2DocSiriusPlugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.obeonetwork.m2doc,
+ org.eclipse.sirius;bundle-version="3.1.1",
+ org.eclipse.sirius.diagram;bundle-version="3.1.1",
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.eclipse.gmf.runtime.diagram.ui.render,
+ org.eclipse.sirius.diagram.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: org.obeonetwork.m2doc.sirius
+Bundle-Vendor: %providerName

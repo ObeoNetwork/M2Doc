@@ -36,7 +36,15 @@ public enum ParsingErrorMessage {
     INVALID_IMAGE_TAG("Invalid image directive : no file name provided."), /**
                                                                             * Error message issued when an image tag has an invalid option.
                                                                             */
-    INVALID_IMAGE_OPTION("Invalid image option ({0}): {1}.");
+    INVALID_IMAGE_OPTION("Invalid image option ({0}): {1}."),
+    /**
+     * Error message issued when a diagram tag has an invalid form.
+     */
+    INVALID_DIAGRAM_TAG("Invalid diagram directive : no title provided."),
+    /**
+     * Error message issued when a diagram tag has invalid option.
+     */
+    INVALID_DIAGRAM_OPTION("Invalid diagram option ({0}): {1}.");
     /**
      * The error message.
      */
