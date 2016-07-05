@@ -557,4 +557,75 @@ public class DocumentGeneratorTest {
     public void testCommentInFooterProcessing() {
         // footer can not have comments
     }
+    
+    @Test
+    public void testStaticFragmentInColumnsProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/column/testStaticFragmentInColumns.docx";
+        String resultFileName = "results/column/testStaticFragmentInColumnsResult.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+
+    @Test
+    public void testStaticFragmentWithFieldInColumnsProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/column/testStaticFragmentWithFieldInColumns.docx";
+        String resultFileName = "results/column/testStaticFragmentWithFieldInColumns.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+
+    @Test
+    public void testQueryStyledInColumnsProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/column/testAQLInColumns.docx";
+        String resultFileName = "results/column/testAQLInColumns.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+    
+    @Test
+    public void testInvalidQueryStyledInColumnsProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/column/testAQLInvalidInColumns.docx";
+        String resultFileName = "results/column/testAQLInvalidInColumns.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+    
+    @Test
+    public void testConditionnal1trueInColumnsProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/column/testConditionalInColumns.docx";
+        String resultFileName = "results/column/testConditionalInColumns.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "value1");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+    
+    @Test
+    public void testImageInColumnsGeneration()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/column/testImageInColumns.docx";
+        String resultFileName = "results/column/testImageInColumns.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+    
+    @Test
+    public void testVarRefStyledInColumnsProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        String templateFileName = "templates/column/testVarStyleInColumns.docx";
+        String resultFileName = "results/column/testVarStyleInColumns.docx";
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        generateDocument(templateFileName, resultFileName, definitions);
+    }
+       
 }
