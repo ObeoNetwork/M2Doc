@@ -262,36 +262,62 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             createNewParagraph(srcRun.getParagraph());
             forceNewParagraph = false;
         }
-        // creates as many paragraphs as there are '\n's in the string.
-        String[] fragments = replacement.split("\n");
-        XWPFRun result = null;
-        int size = fragments.length;
-        for (int i = 0; i < size - 1; i++) {
-            XWPFRun generatedRun = insertFragment(fragments[i], srcRun);
-            if (result == null) {
-                result = generatedRun;
-            }
-            createNewParagraph(srcRun.getParagraph());
-        }
-        if (size > 0) {
-            XWPFRun generatedRun = insertFragment(fragments[size - 1], srcRun);
-            if (result == null) {
-                result = generatedRun;
-            }
-        }
-        return result;
+        return insertString(srcRun, replacement);
     }
 
     /**
-     * Insert a new run for a fragment of text following a '\n' character.
+     * Insert the given text into to given {@link XWPFRun}. This take care of new lines and tabulations.
      * 
-     * @param fragment
-     *            the text fragment to insert
+     * @param srcRun
+     *            the {@link XWPFRun} to populate
+     * @param text
+     *            the text
+     * @return the last inserted {@link XWPFRun}.
+     */
+    private XWPFRun insertString(XWPFRun srcRun, String text) {
+        int fragmentStart = 0;
+
+        XWPFRun inserted;
+        for (int i = 0; i < text.length(); i++) {
+            final char current = text.charAt(i);
+            switch (current) {
+                case '\n':
+                    inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
+                    inserted.addBreak();
+                    fragmentStart = i + 1;
+                    break;
+                case '\t':
+                    inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
+                    inserted.addTab();
+                    fragmentStart = i + 1;
+                    break;
+                case '\r':
+                    if (i + 1 < text.length() && text.charAt(i + 1) == '\n') {
+                        inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
+                        inserted.addBreak();
+                        i++;
+                        fragmentStart = i + 1;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return insertFragment(srcRun, text.substring(fragmentStart, text.length()));
+    }
+
+    /**
+     * Insert a new run containing the given text.
+     * 
      * @param srcRun
      *            the run to copy the style from.
+     * @param fragment
+     *            the text fragment to insert
      * @return the generated run.
      */
-    private XWPFRun insertFragment(String fragment, XWPFRun srcRun) {
+    private XWPFRun insertFragment(XWPFRun srcRun, String fragment) {
         XWPFRun generatedRun = currentGeneratedParagraph.createRun();
         generatedRun.getCTR().set(srcRun.getCTR().copy());
         generatedRun.getCTR().getInstrTextList().clear();
