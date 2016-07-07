@@ -93,7 +93,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertEquals(2, ((StaticFragment) template.getSubConstructs().get(0)).getRuns().size());
@@ -106,7 +106,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Query);
@@ -122,7 +122,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Query);
@@ -138,7 +138,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Repetition);
@@ -158,7 +158,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
@@ -177,7 +177,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
@@ -198,7 +198,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
@@ -222,7 +222,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
@@ -250,7 +250,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
         assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);

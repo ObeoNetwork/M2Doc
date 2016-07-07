@@ -13,6 +13,7 @@
  */
 package org.obeonetwork.m2doc.template;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -29,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getHeaders <em>Headers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getFooters <em>Footers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate()
@@ -100,5 +102,31 @@ public interface DocumentTemplate extends EObject {
      * @generated
      */
 	void setBody(Template value);
+
+    /**
+     * Returns the value of the '<em><b>Document</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Document</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Document</em>' attribute.
+     * @see #setDocument(XWPFDocument)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Document()
+     * @model dataType="org.obeonetwork.m2doc.template.Document"
+     * @generated
+     */
+    XWPFDocument getDocument();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Document</em>' attribute.
+     * @see #getDocument()
+     * @generated
+     */
+    void setDocument(XWPFDocument value);
 
 } // DocumentTemplate
