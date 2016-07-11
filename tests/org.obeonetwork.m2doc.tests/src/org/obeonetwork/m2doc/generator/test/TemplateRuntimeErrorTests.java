@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator.test;
 
+//CHECKSTYLE:OFF
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class TemplateRuntimeErrorTests {
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(2, destinationDoc.getParagraphs().size());
@@ -95,7 +96,7 @@ public class TemplateRuntimeErrorTests {
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc);
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(4, destinationDoc.getParagraphs().size());
@@ -111,6 +112,81 @@ public class TemplateRuntimeErrorTests {
         assertNotNull(run.getCTR().getRPr().getB());
         assertEquals("Fin du gabarit", destinationDoc.getParagraphs().get(2).getText());
         assertEquals("", destinationDoc.getParagraphs().get(3).getText());
+    }
+
+    /**
+     * Tests that the proper error message is inserted in the result when an AQL Syntax error is detected in a repetition tag.
+     * 
+     * @throws IOException
+     *             if an I/O problem occurs
+     * @throws InvalidFormatException
+     *             if the test file format is invalid (which shouldn't be the case)
+     * @throws DocumentParserException
+     *             if a problem occurs during the parsing of the test file
+     */
+    @Test
+    public void syntaxErrorInRepetitionTest() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testRepetitionSyntaxError.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testRepetitionSyntaxError.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /**
+     * Tests that the proper error message is inserted in the result when an AQL Syntax error is detected in a {m:if} tag.
+     * 
+     * @throws IOException
+     *             if an I/O problem occurs
+     * @throws InvalidFormatException
+     *             if the test file format is invalid (which shouldn't be the case)
+     * @throws DocumentParserException
+     *             if a problem occurs during the parsing of the test file
+     */
+    @Test
+    public void syntaxErrorInConditional1Test() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testInvalidConditionnal1.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal1.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    /**
+     * Tests that the proper error message is inserted in the result when an AQL Syntax error is detected in a {m:elseif} tag.
+     * 
+     * @throws IOException
+     *             if an I/O problem occurs
+     * @throws InvalidFormatException
+     *             if the test file format is invalid (which shouldn't be the case)
+     * @throws DocumentParserException
+     *             if a problem occurs during the parsing of the test file
+     */
+    @Test
+    public void syntaxErrorInConditional2Test() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testInvalidConditionnal5.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal5.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
     }
 
 }

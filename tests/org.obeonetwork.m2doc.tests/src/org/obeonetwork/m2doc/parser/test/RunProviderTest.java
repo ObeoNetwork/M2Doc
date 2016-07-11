@@ -93,7 +93,9 @@ public class RunProviderTest {
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         TokenProvider iterator = new TokenProvider(document);
+        // CHECKSTYLE:OFF
         assertTrue(iterator.hasElements(7));
+        // CHECKSTYLE:ON
         XWPFRun run = iterator.next().getRun();
         assertTrue(iterator.hasElements(6));
         assertEquals("P1Run1 ", run.getText(run.getTextPosition()));
@@ -126,6 +128,7 @@ public class RunProviderTest {
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         TokenProvider iterator = new TokenProvider(document);
+        // CHECKSTYLE:OFF
         assertTrue(iterator.hasElements(7));
         XWPFRun run;
         run = iterator.lookAhead(1).getRun();
@@ -143,6 +146,7 @@ public class RunProviderTest {
         run = iterator.lookAhead(7).getRun();
         assertEquals("P2Run3", run.getText(run.getTextPosition()));
         assertTrue(iterator.hasElements(7));
+        // CHECKSTYLE:ON
     }
 
     @Test
@@ -151,7 +155,9 @@ public class RunProviderTest {
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         TokenProvider iterator = new TokenProvider(document);
+        // CHECKSTYLE:OFF
         assertTrue(iterator.hasElements(7));
+        // CHECKSTYLE:ON
         XWPFRun run;
         run = iterator.lookAhead(1).getRun();
         assertEquals("P1Run1 ", run.getText(run.getTextPosition()));

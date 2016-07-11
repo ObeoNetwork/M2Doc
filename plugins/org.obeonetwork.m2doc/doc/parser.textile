@@ -11,7 +11,7 @@ That is a tree of @Construct@ instances of various kinds. A @Construct@ instance
 
 h2. general structure of the parsing algorithm
 
-The parsing algorithme is a mutually recursive top down parser made of the following routines :
+The parsing algorithm is a mutually recursive top down parser made of the following routines :
 
 * @parseTemplate@
 * @parseQuery@

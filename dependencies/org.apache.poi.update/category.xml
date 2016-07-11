@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/org.apache.poi.feature_3.13.0.qualifier.jar" id="org.apache.poi.feature" version="3.13.0.qualifier">
-      <category name="POI"/>
-   </feature>
-   <category-def name="POI" label="Apache POI repackaged"/>
-</site>

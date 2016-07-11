@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" name="m2docconf" version="10.1.0.201507271600">
+  <ownedViewpoints name="genconf" modelFileExtension="*.genconf">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="diagram" domainClass="genconf.Generation" enablePopupBars="true">
+      <metamodel href="../../org.obeonetwork.m2doc.ui/model/m2docconf.ecore#/"/>
+      <defaultLayer name="Default">
+        <nodeMappings name="ModelDefinition" domainClass="genconf.ModelDefinition">
+          <style xsi:type="style:BundledImageDescription" labelExpression="feature:key" labelPosition="node" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="StringDefinition" domainClass="genconf.StringDefinition">
+          <style xsi:type="style:BundledImageDescription" labelExpression="feature:key" labelPosition="node" resizeKind="NSEW" shape="dot">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+      </defaultLayer>
+    </ownedRepresentations>
+  </ownedViewpoints>
+</description:Group>

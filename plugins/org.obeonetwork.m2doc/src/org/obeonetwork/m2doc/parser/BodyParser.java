@@ -15,12 +15,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -33,7 +32,13 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
+import org.obeonetwork.m2doc.provider.IProvider;
+import org.obeonetwork.m2doc.provider.OptionType;
+import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.AbstractImage;
+import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditionnal;
@@ -57,11 +62,13 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
  * DocumentParser reads a {@link XWPFDocument} and produces a abstract syntax
  * tree that represents the template in the document.
  * The parsing algorithm is an LL(k) like algorithm that uses look ahead to predict parsing decisions. Tokens are only read from fields so
- * that there's no ambiguïty with the rest of the text.
+ * that there's no ambiguity with the rest of the text.
  * 
  * @author Romain Guider
  */
+@SuppressWarnings("restriction")
 public class BodyParser {
+
     /**
      * Label modifier constant.
      */
@@ -78,6 +85,10 @@ public class BodyParser {
      * Image file name option name.
      */
     private static final String IMAGE_FILE_NAME_KEY = "file";
+    /**
+     * Diagram provider option name.
+     */
+    private static final String DIAGRAM_PROVIDER_KEY = "provider";
     /**
      * Image height option name.
      */
@@ -107,26 +118,23 @@ public class BodyParser {
      */
     private static final String[] IMAGE_OPTION_SET =
 
-            {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY};
+    {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
+    /**
+     * Array of representation's options name constants.
+     */
+    private static final String[] DIAGRAM_OPTION_SET =
 
-    /**
-     * Regex that allows to parse image options.
-     */
-    private static final Pattern IMAGE_TAG_PATTERN = Pattern
-            .compile("\\s*gd:image\\s*(([a-zA-Z]+)\\s*:\\s*'([^']*)')+\\s*");
-    /**
-     * Regex that allows to parse image options.
-     */
-    private static final Pattern IMAGE_OPTION_PATTERN = Pattern.compile("([a-zA-Z]+)\\s*:\\s*'([^']*)'*");
-    /**
-     * Rank of the option's name group in the matcher.
-     */
-    private static final int OPTION_VAL_GROUP_RANK = 2;
+    {DIAGRAM_PROVIDER_KEY, IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION,
+        IMAGE_WIDTH_KEY, };
+
     /**
      * Rank of the option's value group in the matcher.
      */
+    private static final int OPTION_VAL_GROUP_RANK = 2;
+    /**
+     * Rank of the option's name group in the matcher.
+     */
     private static final int OPTION_GROUP_RANK = 1;
-
     /**
      * Parsed template document.
      */
@@ -149,7 +157,6 @@ public class BodyParser {
      * @param queryEnvironment
      *            the query environment to used during parsing.
      */
-    @SuppressWarnings("restriction")
     public BodyParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
@@ -164,7 +171,6 @@ public class BodyParser {
      * @param queryParser
      *            the query parser to use during parsing
      */
-    @SuppressWarnings("restriction")
     BodyParser(IBody inputDocument, IQueryBuilderEngine queryParser) {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
@@ -254,6 +260,8 @@ public class BodyParser {
                     result = TokenType.ENDLET;
                 } else if (code.startsWith(TokenType.IMAGE.getValue())) {
                     result = TokenType.IMAGE;
+                } else if (code.startsWith(TokenType.DIAGRAM.getValue())) {
+                    result = TokenType.DIAGRAM;
                 } else if (code.startsWith(TokenType.AQL.getValue())) {
                     result = TokenType.AQL;
                 } else {
@@ -335,6 +343,10 @@ public class BodyParser {
                     break;
                 case WTABLE:
                     compound.getSubConstructs().add(parseTable(runIterator.next().getTable()));
+                    break;
+                case DIAGRAM:
+                    compound.getSubConstructs().add(parseRepresentation()); // XXX : change representation into diagram in the template
+                                                                            // model.
                     break;
                 default:
                     throw new UnsupportedOperationException("shouldn't reach here");
@@ -496,42 +508,22 @@ public class BodyParser {
     }
 
     /**
-     * parses the options of an image tag.
-     * 
-     * @param tag
-     *            the tag to parse
-     * @return the option map created.
-     */
-    Map<String, String> parseImageOptions(String tag) {
-        Map<String, String> result = new HashMap<String, String>();
-        // first match the tag:
-        String trimedTag = tag.trim();
-        if (tag.startsWith(TokenType.IMAGE.getValue())) {
-            int length = TokenType.IMAGE.getValue().length();
-            int tagLength = trimedTag.length();
-            trimedTag = trimedTag.substring(length, tagLength);
-            Matcher matcher = IMAGE_OPTION_PATTERN.matcher(trimedTag);
-            while (matcher.find()) {
-                String option = matcher.group(OPTION_GROUP_RANK);
-                String value = matcher.group(OPTION_VAL_GROUP_RANK);
-                result.put(option, value);
-            }
-        }
-        return result;
-    }
-
-    /**
      * Check that all options are known options.
      * 
      * @param options
      *            the option map
      * @param image
      *            the image
+     * @param imageOptionSet
+     *            the options set to take in consideration.
+     * @param providerOptions
+     *            the options handled by the provider.
      */
-    private void checkOptions(Map<String, String> options, Image image) {
-        Set optionSet = Sets.newHashSet(IMAGE_OPTION_SET);
+    private void checkImagesOptions(Map<String, String> options, AbstractImage image, String[] imageOptionSet,
+            Set<String> providerOptions) {
+        Set<String> optionSet = Sets.newHashSet(imageOptionSet);
         for (String key : options.keySet()) {
-            if (!optionSet.contains(key)) {
+            if (!optionSet.contains(key) && !providerOptions.contains(key)) {
                 image.getParsingErrors()
                         .add(new DocumentParsingError(
                                 message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"),
@@ -556,17 +548,34 @@ public class BodyParser {
      */
     private Image parseImage() throws DocumentParserException {
         Image image = (Image) EcoreUtil.create(TemplatePackage.Literals.IMAGE);
-        Map<String, String> options = parseImageOptions(readTag(image, image.getRuns()));
-        checkOptions(options, image);
+        OptionParser optionParser = new OptionParser();
+        Map<String, String> options = optionParser.parseOptions(readTag(image, image.getRuns()), TokenType.IMAGE,
+                OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK, image);
+        checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0));
         if (!options.containsKey(IMAGE_FILE_NAME_KEY)) {
             image.getParsingErrors().add(
                     new DocumentParsingError(message(ParsingErrorMessage.INVALID_IMAGE_TAG), image.getRuns().get(1)));
         } else {
             image.setFileName(options.get(IMAGE_FILE_NAME_KEY));
-            if (options.containsKey(IMAGE_LEGEND_KEY)) {
+            setImageOptions(image, options);
+        }
+        return image;
+    }
+
+    /**
+     * Sets all images options like legend, width and height if those are defined.
+     * 
+     * @param image
+     *            the image from which we want to set options.
+     * @param options
+     *            the options to set.
+     */
+    private void setImageOptions(AbstractImage image, Map<String, String> options) {
+        Set<Entry<String, String>> entrySet = options.entrySet();
+        for (Entry<String, String> entry : entrySet) {
+            if (IMAGE_LEGEND_KEY.equals(entry.getKey())) {
                 image.setLegend(options.get(IMAGE_LEGEND_KEY));
-            }
-            if (options.containsKey(IMAGE_HEIGHT_KEY)) {
+            } else if (IMAGE_HEIGHT_KEY.equals(entry.getKey())) {
                 String heightStr = options.get(IMAGE_HEIGHT_KEY);
                 try {
                     image.setHeight(Integer.parseInt(heightStr));
@@ -576,8 +585,7 @@ public class BodyParser {
                                     message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_HEIGHT_KEY, heightStr),
                                     image.getRuns().get(1)));
                 }
-            }
-            if (options.containsKey(IMAGE_WIDTH_KEY)) {
+            } else if (IMAGE_WIDTH_KEY.equals(entry.getKey())) {
                 String heightStr = options.get(IMAGE_WIDTH_KEY);
                 try {
                     image.setWidth(Integer.parseInt(options.get(IMAGE_WIDTH_KEY)));
@@ -587,8 +595,7 @@ public class BodyParser {
                                     message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_WIDTH_KEY, heightStr),
                                     image.getRuns().get(1)));
                 }
-            }
-            if (options.containsKey(IMAGE_LEGEND_POSITION)) {
+            } else if (IMAGE_LEGEND_POSITION.equals(entry.getKey())) {
                 String value = options.get(IMAGE_LEGEND_POSITION);
                 if (IMAGE_LEGEND_ABOVE.equals(value)) {
                     image.setLegendPOS(POSITION.ABOVE);
@@ -597,7 +604,60 @@ public class BodyParser {
                 }
             }
         }
-        return image;
+    }
+
+    /**
+     * Sets all generic options parsed from a tag to the given construct.
+     * 
+     * @param providerTemplate
+     *            the {@link AbstractProviderClient} template model element that will receive generic options.
+     * @param options
+     *            the options to set.
+     * @param optionToIgnore
+     *            all specific options that should not be in the generic map.
+     * @param provider
+     *            a provider used to get information for the given construct.
+     */
+    private void setGenericOptions(AbstractProviderClient providerTemplate, Map<String, String> options,
+            Set<String> optionToIgnore, IProvider provider) {
+        Map<String, OptionType> optionTypes = provider.getOptionTypes();
+        Set<Entry<String, String>> parsedOptions = options.entrySet();
+        for (Entry<String, String> parsedOption : parsedOptions) {
+            if (!optionToIgnore.contains(parsedOption.getKey())) {
+                OptionType optionType = optionTypes == null ? null : optionTypes.get(parsedOption.getKey());
+                if (optionType != null) {
+                    if (OptionType.AQL_EXPRESSION == optionType) {
+                        parseAqlOptions(providerTemplate, parsedOption);
+                    } else if (OptionType.STRING == optionType) {
+                        providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
+                    } else {
+                        throw new UnsupportedOperationException("All option types should be supported.");
+                    }
+                } else {
+                    providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
+                }
+            }
+        }
+    }
+
+    /**
+     * Parse an AQL options and produce an {@link AstResult} added to the options map of the given provider tempalte element.
+     * 
+     * @param providerTemplate
+     *            the element which will have its options map filled with the parse result of the AQL expression.
+     * @param aqlParsedOption
+     *            an option containing an AQL expression as map value.
+     */
+    private void parseAqlOptions(AbstractProviderClient providerTemplate, Entry<String, String> aqlParsedOption) {
+        String query = aqlParsedOption.getValue();
+        AstResult result = queryParser.build(query);
+        if (result.getErrors().size() == 0) {
+            providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), result);
+        } else {
+            providerTemplate.getParsingErrors().add(new DocumentParsingError(
+                    message(ParsingErrorMessage.INVALIDEXPR, query), providerTemplate.getRuns().get(1)));
+            providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), null);
+        }
     }
 
     /**
@@ -623,7 +683,42 @@ public class BodyParser {
      *             if something wrong happens during parsing
      */
     private Representation parseRepresentation() throws DocumentParserException {
-        throw new UnsupportedOperationException("not implemented yet");
+
+        Representation representation = (Representation) EcoreUtil.create(TemplatePackage.Literals.REPRESENTATION);
+        OptionParser optionParser = new OptionParser();
+        Map<String, String> options = optionParser.parseOptions(readTag(representation, representation.getRuns()),
+                TokenType.DIAGRAM, OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK, representation);
+        IProvider provider = null;
+        String providerQualifiedName = options.get(DIAGRAM_PROVIDER_KEY);
+        if (providerQualifiedName != null) {
+            provider = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
+        }
+
+        if (provider == null) {
+            representation.getParsingErrors().add(new DocumentParsingError(
+                    "The image tag is referencing an unknown diagram provider : '" + providerQualifiedName + "'",
+                    representation.getRuns().get(1)));
+        } else if (!(provider instanceof AbstractDiagramProvider)) {
+            representation.getParsingErrors()
+                    .add(new DocumentParsingError(
+                            "The image tag is referencing a provider that has not been made to handle diagram tags : '"
+                                + providerQualifiedName + "'",
+                            representation.getRuns().get(1)));
+        } else {
+            representation.setProvider(provider);
+            Set<String> providerOptions = provider.getOptionTypes() == null ? new HashSet<String>(0)
+                    : provider.getOptionTypes().keySet();
+            checkImagesOptions(options, representation, DIAGRAM_OPTION_SET, providerOptions);
+            setImageOptions(representation, options);
+            Set<String> optionToIgnore = new HashSet<String>();
+            optionToIgnore.add(IMAGE_LEGEND_KEY);
+            optionToIgnore.add(IMAGE_LEGEND_POSITION);
+            optionToIgnore.add(IMAGE_HEIGHT_KEY);
+            optionToIgnore.add(IMAGE_WIDTH_KEY);
+            optionToIgnore.add(DIAGRAM_PROVIDER_KEY);
+            setGenericOptions(representation, options, optionToIgnore, provider);
+        }
+        return representation;
     }
 
     /**
@@ -716,7 +811,6 @@ public class BodyParser {
                 repetition.getParsingErrors().add(new DocumentParsingError(
                         message(ParsingErrorMessage.INVALIDEXPR, query), repetition.getRuns().get(1)));
             }
-            repetition.setQuery(result);
         }
         // read up the tags until the "gd:endfor" tag is encountered.
         parseCompound(repetition, TokenType.ENDFOR);
