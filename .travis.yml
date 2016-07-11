@@ -1,28 +1,39 @@
 language: java
 env:
   global:
-      - DISPLAY=:99.0
-      - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"  
+  - DISPLAY=:99.0
+  - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"  
 jdk:
-  - oraclejdk7
+- oraclejdk7
 sudo: false
+install: true
 before_script:
- - export SWT_GTK3=0
- - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16
- - sh -e /etc/init.d/xvfb start
- - sleep 10
+- export SWT_GTK3=0
+- /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16
+- sh -e /etc/init.d/xvfb start
+- sleep 10
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
 - mvn clean verify 
 - cd ../..
+- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
+after_script:
+- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh; fi
 deploy:
-  provider: releases
-  api_key: "$GH_TOKEN"
-  file: 
-  - "releng/org.obeonetwork.m2doc.update/target/org.obeonetwork.m2doc.update-0.7.0-SNAPSHOT.zip"
-  - "dependencies/org.apache.poi.update/target/org.apache.poi.update-0.7.0-SNAPSHOT.zip"
+###### Release ######
+- provider: s3
+  access_key_id: AKIAJFIXOUR3SFD7OGMA
+  secret_access_key:
+    secure: bBkFeQDX2qtsdsm+r7wVuYGWQvGO+W5byjn8PS/Dh8FB2dF52biArFNVDsU5qHp9qNQjrZZkewbEAIUMXn6d/duHQ3FU7OjOKbHs6LKaNdFI8PE/MZF5EAYgpJhulyDzmNC+4t/2DaDv2ajMx4tI8IXnCHYx5zFyUfbH0gVEroRoUle+gC5roDIUo7cEV9E2cKibh773AyMGSnqIKz0h6iwypJN9PLACF7JR01wzT49irPTlYesnb+tVi0DNqHVmGGhf00gWZsSISBjJfbMzJFyCVcYcYRxRd+/bCaAUlUHU/LUPBqzN9D5fPS+PKev3fI+TnHXh/GHJhRCDpxd4DhbvWd7tSDwu5VGEupYqldqYwUnmiOMOavCWMiIcZNvu3HR/yJ0njpAkjVUQNZidGmNWIY2KRRaN2pckH9OBFizozYEPGj5flBn8OeBcaOHgZHRW9aPqebuz3PupqDMx9VAil+RpGL9Gf0ZzE8Us9o25hc36gNQwaZ6ezEmVKYWIYdpjiBxupf6EIcqS4zBV0yV1PrUR3QR3MFH4dUoNGiwuX4Tkn2L8zMmi5KMpovv/D7R8zK40NJR/74ubjSqgTjo5YsdncxzGDz1FnJG6DjHeu7+I3apdGWTbSS8PhsS7dvOjbhv5FH+rEC3jPut1BbHPjmylA4EEdKp/HIj2xxE=
+  bucket: obeo-m2doc-releases
+  local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
+  acl: public_read
   skip_cleanup: true
+  region: eu-west-1
+  upload-dir: ${TRAVIS_TAG}
   on:
     tags: true
-    
+    all_branches: true
+    repo: ModelWriter/Source
+
