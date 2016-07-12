@@ -33,415 +33,415 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import static org.junit.Assert.fail;
 
 public class DocumentGeneratorTest {
-	@Test
-	public void testFormsAndTextArea()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testTextAreaAndForms.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("self", EcorePackage.eINSTANCE);
-		DocumentGenerator generator = new DocumentGenerator("templates/testTextAreaAndForms.docx",
+    @Test
+    public void testFormsAndTextArea()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testTextAreaAndForms.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        DocumentGenerator generator = new DocumentGenerator("templates/testTextAreaAndForms.docx",
                 "results/testTextAreaAndForms.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testStaticFragmentWithFieldProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testStaticFragmentWithfields.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragmentWithfields.docx",
+    @Test
+    public void testStaticFragmentWithFieldProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testStaticFragmentWithfields.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragmentWithfields.docx",
                 "results/testStaticFragmentWithfields.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testStaticFragmentProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testStaticFragment.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragment.docx",
+    @Test
+    public void testStaticFragmentProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testStaticFragment.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testStaticFragment.docx",
                 "results/testStaticFragment.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testVarRefInHeaderProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testVarInHeader.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testVarInHeader.docx",
+    @Test
+    public void testVarRefInHeaderProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testVarInHeader.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testVarInHeader.docx",
                 "results/testVarInHeaderResult.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testVarRefInFooterProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testVarInFooter.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testVarInFooter.docx",
+    @Test
+    public void testVarRefInFooterProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testVarInFooter.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testVarInFooter.docx",
                 "results/testVarInFooterResult.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testVarRefProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testVar.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
+    @Test
+    public void testVarRefProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testVar.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
                 template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testVarRefErrorProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testVar.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
+    @Test
+    public void testVarRefErrorProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testVar.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        DocumentGenerator generator = new DocumentGenerator("templates/testVar.docx", "results/testVarResult.docx",
                 template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testVarRefStyledProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testVarStyle.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testVarStyle.docx",
+    @Test
+    public void testVarRefStyledProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testVarStyle.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testVarStyle.docx",
                 "results/testVarStyleResult.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testVarRefStyledMultipleParagraphsProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testVarStyleSpanning2Paragraphs.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testVarStyleSpanning2Paragraphs.docx",
+    @Test
+    public void testVarRefStyledMultipleParagraphsProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testVarStyleSpanning2Paragraphs.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testVarStyleSpanning2Paragraphs.docx",
                 "results/testVarStyleSpanning2ParagraphsResult.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testQueryStyledProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testAQL.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("self", EcorePackage.eINSTANCE);
-		DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
+    @Test
+    public void testQueryStyledProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testAQL.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
                 template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testQueryStyledErrorProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testAQL.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
+    @Test
+    public void testQueryStyledErrorProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testAQL.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        DocumentGenerator generator = new DocumentGenerator("templates/testAQL.docx", "results/testAQLResult.docx",
                 template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testGDFORProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testGDFOR.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("self", EcorePackage.eINSTANCE);
-		DocumentGenerator generator = new DocumentGenerator("templates/testGDFOR.docx", "results/testGDFOR.docx",
+    @Test
+    public void testGDFORProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testGDFOR.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        DocumentGenerator generator = new DocumentGenerator("templates/testGDFOR.docx", "results/testGDFOR.docx",
                 template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testGDFORWithTableProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testGDFORWithTable.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("self", EcorePackage.eINSTANCE);
-		DocumentGenerator generator = new DocumentGenerator("templates/testGDFORWithTable.docx",
+    @Test
+    public void testGDFORWithTableProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testGDFORWithTable.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        DocumentGenerator generator = new DocumentGenerator("templates/testGDFORWithTable.docx",
                 "results/testGDFORWithTable.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnal1trueProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal1.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "value1");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
+    @Test
+    public void testConditionnal1trueProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal1.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "value1");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
                 "results/testConditionnal1Result.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnal1falseProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal1.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
+    @Test
+    public void testConditionnal1falseProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal1.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal1.docx",
                 "results/testConditionnal1FalseResult.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnal2Processing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal2.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "value1");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
+    @Test
+    public void testConditionnal2Processing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal2.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "value1");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
                 "results/testConditionnal2Result.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnalFalseProcessing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal2.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
+    @Test
+    public void testConditionnalFalseProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal2.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal2.docx",
                 "results/testConditionnal2FalseResult.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	//
-	// @Test
-	// public void testConditionnal3Processing()
-	// throws InvalidFormatException, IOException, DocumentParserException,
-	// DocumentGenerationException {
-	// IQueryEnvironment queryEnvironment =
-	// org.eclipse.acceleo.query.runtime.Query
-	// .newEnvironmentWithDefaultServices(null);
-	// FileInputStream is = new
-	// FileInputStream("templates/testConditionnal3.docx");
-	// OPCPackage oPackage = OPCPackage.open(is);
-	// XWPFDocument document = new XWPFDocument(oPackage);
-	// BodyParser parser = new BodyParser(document, queryEnvironment);
-	// Template template = parser.parseTemplate();
-	// Map<String, Object> definitions = new HashMap<String, Object>();
-	// definitions.put("x", "valueofx");
-	// DocumentGenerator generator = new
-	// DocumentGenerator("templates/testConditionnal3.docx",
-	// "results/testConditionnal3Result.docx", template, definitions,
-	// queryEnvironment);
-	// generator.generate();
-	// }
-	//
-	@Test
-	public void testImagesAndFootersAndHeadersAndBullets()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
-		FileInputStream is = new FileInputStream("templates/test.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("self", EcorePackage.eINSTANCE);
-		DocumentGenerator generator = new DocumentGenerator("templates/test.docx", "results/testResult.docx", template,
+    //
+    // @Test
+    // public void testConditionnal3Processing()
+    // throws InvalidFormatException, IOException, DocumentParserException,
+    // DocumentGenerationException {
+    // IQueryEnvironment queryEnvironment =
+    // org.eclipse.acceleo.query.runtime.Query
+    // .newEnvironmentWithDefaultServices(null);
+    // FileInputStream is = new
+    // FileInputStream("templates/testConditionnal3.docx");
+    // OPCPackage oPackage = OPCPackage.open(is);
+    // XWPFDocument document = new XWPFDocument(oPackage);
+    // BodyParser parser = new BodyParser(document, queryEnvironment);
+    // Template template = parser.parseTemplate();
+    // Map<String, Object> definitions = new HashMap<String, Object>();
+    // definitions.put("x", "valueofx");
+    // DocumentGenerator generator = new
+    // DocumentGenerator("templates/testConditionnal3.docx",
+    // "results/testConditionnal3Result.docx", template, definitions,
+    // queryEnvironment);
+    // generator.generate();
+    // }
+    //
+    @Test
+    public void testImagesAndFootersAndHeadersAndBullets()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+        FileInputStream is = new FileInputStream("templates/test.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("self", EcorePackage.eINSTANCE);
+        DocumentGenerator generator = new DocumentGenerator("templates/test.docx", "results/testResult.docx", template,
                 definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnal5Processing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "value1");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
+    @Test
+    public void testConditionnal5Processing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "value1");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
                 "results/testConditionnal5Result.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnal6Processing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "value2");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
+    @Test
+    public void testConditionnal6Processing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "value2");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
                 "results/testConditionnal6Result.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnal7Processing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "value3");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
+    @Test
+    public void testConditionnal7Processing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "value3");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
                 "results/testConditionnal7Result.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testConditionnal8Processing()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
+    @Test
+    public void testConditionnal8Processing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testConditionnal5.docx",
                 "results/testConditionnal8Result.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
+        generator.generate();
+    }
 
-	@Test
-	public void testImageGeneration()
-			throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-		IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-				.newEnvironmentWithDefaultServices(null);
-		FileInputStream is = new FileInputStream("templates/testImageTag.docx");
-		OPCPackage oPackage = OPCPackage.open(is);
-		XWPFDocument document = new XWPFDocument(oPackage);
-		DocumentParser parser = new DocumentParser(document, queryEnvironment);
-		DocumentTemplate template = parser.parseDocument();
-		Map<String, Object> definitions = new HashMap<String, Object>();
-		definitions.put("x", "valueofx");
-		DocumentGenerator generator = new DocumentGenerator("templates/testImageTag.docx", "results/testImageTag.docx",
+    @Test
+    public void testImageGeneration()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testImageTag.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("x", "valueofx");
+        DocumentGenerator generator = new DocumentGenerator("templates/testImageTag.docx", "results/testImageTag.docx",
                 template, definitions, queryEnvironment, null);
         generator.generate();
     }
@@ -491,12 +491,13 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<String, Object>();
         DocumentGenerator generator = new DocumentGenerator("templates/dynamicHyperlink.docx",
                 "results/dynamicHyperlink.docx", template, definitions, queryEnvironment, null);
-		generator.generate();
-	}
-	
-	 /**
-	  * Generate document from template.
-     * @param templateFileName 
+        generator.generate();
+    }
+
+    /**
+     * Generate document from template.
+     * 
+     * @param templateFileName
      * @param resultFileName
      * @param definitions
      * @throws FileNotFoundException
@@ -515,12 +516,12 @@ public class DocumentGeneratorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentParser parser = new DocumentParser(document, queryEnvironment);
         DocumentTemplate template = parser.parseDocument();
-        DocumentGenerator generator = new DocumentGenerator(templateFileName,
-                resultFileName, template, definitions, queryEnvironment);
+        DocumentGenerator generator = new DocumentGenerator(templateFileName, resultFileName, template, definitions,
+                queryEnvironment, null);
         generator.generate();
     }
-	
-	@Test
+
+    @Test
     public void testStaticFragmentInFooterProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         String templateFileName = "templates/footer/testStaticFragmentInFooter.docx";
@@ -530,27 +531,27 @@ public class DocumentGeneratorTest {
         generateDocument(templateFileName, resultFileName, definitions);
     }
 
-	@Test
+    @Test
     public void testStaticFragmentWithFieldInFooterProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-	    String templateFileName = "templates/footer/testStaticFragmentWithFieldInFooter.docx";
+        String templateFileName = "templates/footer/testStaticFragmentWithFieldInFooter.docx";
         String resultFileName = "results/footer/testStaticFragmentWithFieldInFooter.docx";
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "valueofx");
         generateDocument(templateFileName, resultFileName, definitions);
     }
 
-	@Test
+    @Test
     public void testQueryStyledInFooterProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-	    String templateFileName = "templates/footer/testAQLInFooter.docx";
+        String templateFileName = "templates/footer/testAQLInFooter.docx";
         String resultFileName = "results/footer/testAQLInFooter.docx";
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("self", EcorePackage.eINSTANCE);
         generateDocument(templateFileName, resultFileName, definitions);
     }
-	
-	@Test
+
+    @Test
     public void testInvalidQueryStyledInFooterProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         String templateFileName = "templates/footer/testAQLInvalidInFooter.docx";
@@ -559,39 +560,39 @@ public class DocumentGeneratorTest {
         definitions.put("self", EcorePackage.eINSTANCE);
         generateDocument(templateFileName, resultFileName, definitions);
     }
-	
-	@Test
+
+    @Test
     public void testConditionnal1trueInFooterProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-	    String templateFileName = "templates/footer/testConditionalInFooter.docx";
+        String templateFileName = "templates/footer/testConditionalInFooter.docx";
         String resultFileName = "results/footer/testConditionalInFooter.docx";
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         generateDocument(templateFileName, resultFileName, definitions);
     }
-	
-	@Test
+
+    @Test
     public void testImageInFooterGeneration()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-	    String templateFileName = "templates/footer/testImageInFooter.docx";
+        String templateFileName = "templates/footer/testImageInFooter.docx";
         String resultFileName = "results/footer/testImageInFooter.docx";
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "valueofx");
         generateDocument(templateFileName, resultFileName, definitions);
     }
-	
-	@Test
+
+    @Test
     public void testFormsAndTextAreaInFooter()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-	    String templateFileName = "templates/footer/testTextAreaInFooter.docx";
+        String templateFileName = "templates/footer/testTextAreaInFooter.docx";
         String resultFileName = "results/footer/testTextAreaInFooter.docx";
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("self", EcorePackage.eINSTANCE);
         generateDocument(templateFileName, resultFileName, definitions);
         fail("query in text area does not work !");
     }
-	
-	@Test
+
+    @Test
     public void testVarRefStyledInFooterProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         String templateFileName = "templates/footer/testVarStyleInFooter.docx";
@@ -600,13 +601,12 @@ public class DocumentGeneratorTest {
         definitions.put("x", "valueofx");
         generateDocument(templateFileName, resultFileName, definitions);
     }
-	
-	   
+
     @Test
     public void testCommentInFooterProcessing() {
         // footer can not have comments
     }
-    
+
     @Test
     public void testStaticFragmentInColumnsProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
@@ -636,7 +636,7 @@ public class DocumentGeneratorTest {
         definitions.put("self", EcorePackage.eINSTANCE);
         generateDocument(templateFileName, resultFileName, definitions);
     }
-    
+
     @Test
     public void testInvalidQueryStyledInColumnsProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
@@ -646,7 +646,7 @@ public class DocumentGeneratorTest {
         definitions.put("self", EcorePackage.eINSTANCE);
         generateDocument(templateFileName, resultFileName, definitions);
     }
-    
+
     @Test
     public void testConditionnal1trueInColumnsProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
@@ -656,7 +656,7 @@ public class DocumentGeneratorTest {
         definitions.put("x", "value1");
         generateDocument(templateFileName, resultFileName, definitions);
     }
-    
+
     @Test
     public void testImageInColumnsGeneration()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
@@ -666,7 +666,7 @@ public class DocumentGeneratorTest {
         definitions.put("x", "valueofx");
         generateDocument(templateFileName, resultFileName, definitions);
     }
-    
+
     @Test
     public void testVarRefStyledInColumnsProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
@@ -676,5 +676,5 @@ public class DocumentGeneratorTest {
         definitions.put("x", "valueofx");
         generateDocument(templateFileName, resultFileName, definitions);
     }
-       
+
 }

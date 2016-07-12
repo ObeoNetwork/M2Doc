@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+     Copyright (c) 2016 Obeo. 
+     All rights reserved. This program and the accompanying materials
+     are made available under the terms of the Eclipse Public License v1.0
+     which accompanies this distribution, and is available at
+     http://www.eclipse.org/legal/epl-v10.html
+      
+      Contributors:
+          Obeo - initial API and implementation
+     
+ -->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated m2docconf -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.obeonetwork.m2doc.genconf.presentation.GenconfModelWizardID"
+            name="%_UI_GenconfModelWizard_label"
+            class="org.obeonetwork.m2doc.genconf.presentation.GenconfModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/GenconfModelFile.gif">
+         <description>%_UI_GenconfModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated m2docconf -->
+      <editor
+            id="org.obeonetwork.m2doc.genconf.presentation.GenconfEditorID"
+            name="%_UI_GenconfEditor_label"
+            icon="icons/full/obj16/GenconfModelFile.gif"
+            extensions="genconf"
+            class="org.obeonetwork.m2doc.genconf.presentation.GenconfEditor"
+            contributorClass="org.obeonetwork.m2doc.genconf.presentation.GenconfActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
