@@ -34,13 +34,13 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.generator.TemplateProcessor;
 import org.obeonetwork.m2doc.parser.BodyParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.ui.genconf.GenconfPackage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
