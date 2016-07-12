@@ -10,7 +10,8 @@ Require-Bundle: org.junit,
  org.obeonetwork.m2doc;bundle-version="0.7.1",
  org.obeonetwork.m2doc.ui,
  org.eclipse.sirius,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.obeonetwork.m2doc.genconf;bundle-version="0.7.1"
 Export-Package: org.obeonetwork.m2doc.sirius.tests
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.obeonetwork.m2doc.sirius.tests.M2DocSiriusTestPlugin

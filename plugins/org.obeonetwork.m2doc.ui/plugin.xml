@@ -38,12 +38,4 @@
       </objectContribution>
    </extension>
 
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated m2docconf -->
-      <package
-            uri="http://www.obeonetwork.org/m2doc/genconf/1.0"
-            class="org.obeonetwork.m2doc.ui.genconf.GenconfPackage"
-            genModel="model/m2docconf.genmodel"/>
-   </extension>
-
 </plugin>
