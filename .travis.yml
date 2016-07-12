@@ -35,5 +35,5 @@ deploy:
   on:
     tags: true
     all_branches: true
-    repo: ModelWriter/Source
+    repo: ObeoNetwork/M2Doc
 
