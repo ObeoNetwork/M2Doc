@@ -20,20 +20,18 @@ script:
 - if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
 after_script:
 - if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh; fi
-before_deploy:
-  - rvm 1.9.3 do gem install aws-sdk -v 2.2.37
 deploy:
 ###### Release ######
 - provider: s3
-  access_key_id: AKIAJEQDFZXLAICP6TNQ
+  access_key_id: AKIAI7GYGSUKTIBLAI6Q
   secret_access_key:
-   secure: MqoNagbJ5gBs/F+s50L0UF/ueZdGpQuTeITFtn8txlNUt5w1aa8AgnoZAL8eB/Ea7wlKMGckrBFDC6uHtPSsHtYGfs3BVD4ydsuXzP9H/WgS27c2L+z39C1M8vmBQtY8QsbQg1agFcg3JMbO4/esJfDI0NZYSU8+FeJv21CAcdswcgfSEAbr6G8x4ceuSxCHHgLosoaYo94kuL6Pt7fJ7AR1qMWut4AiUMuwwksJHV3ZJYyOAqve/lrzsn4A2CYjz1/WQIjZtsZDRKnUzqN+pV4xHUXBHGYUO/ekM1hRKCKBDisD6x2wYMlHRmJIfrknvdlSdXnW1sIq8rFlD54K8Yfns1ct5WBoN04nHNwjxxBl2dXPLZ0EMg5h+xc4p0T+rQyoov5QvhREybUEuaKqHaKhsuGA7UZzc1dh0Rdozp2goc3kGZSV/C+GwSAkPqvao5wY6+Ha9zj6FfJPnmps2T0UbMMmMg6PIhV7lJCzNSJJYHVGMyN7zsGal4xeFfF0TLE5mfbAhkNmt8x2qsV8issNu1zeTshE0r+MMWtEdAf4a9lTy1iSoRfWtsKibCCFPw/Uq+lwK5OJS7BLtmGQxV2/RvI8l4TMZYPHpyBGZHF/BZchVjpC+MdYMKzXnoRkFUpXcWEO2o3OCpFxu4E/B3z56yaMmw5jAXfsGZnmA9g=
+   secure: XGXlu5Fc9WFNG7qBGyo0f/jAL/dg42EN0X17H4Dbc9OyxtuMYXtyUPasX1AidnuIaem8zEncs/8I5DxqW9BoiEzWX9BTUAnx1b0xIFEUXcjFXPBAbyhCtGZ2RympXlt1o+elG9xD34MNBB6Nf7WW+eyP1w0jdS2VP/lS19/phhrX0RCvPPWMnlMX95o77NhFnbEY5+brubUXJxioM8W4/IecrcLS6COjC6UmdV1TsrgykGLOad5AQ4jbNSluXJ1gjCH3IX2BIN+hVfqHn/UJIcF5bLU7B1XFVKrjGociXAOabEdrCHOxH+hQ9F1XufT99eK4QfikU025vhCCyn7e+rCvJJPLzfuK8Ms5tmexPKWCUcaZGP+AA0laNu/htsb8zZZ8547N5yE4doDuHPJN7ZRiGTd49Jg4uJEf99NWqO1LVr6EM/fapY/pZMANfffRmJOc1pgV4uneL/HCS1lIIrHp7NgdgvGZfptWFMdCskmF/F6gkUg3UyakZZO+JmlvGRRl/B5Be+sn/+D4JrMwvihBFtr4ZzVLWAytmHbjIL/8dkHp5Wwd8+EBCdBqfbCzJkJX5OGANZ21yAHSqx+2lUHJaOECUh/kIFCO/ZnoLYRE7ZJqNkAgWjxPEX5SMyggwHhHLwjPtedjWPcnIPJtYxfuhDW5eLTxND/dQ2mt+b4=
   bucket: obeo-m2doc-releases
   local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
   acl: public_read
   skip_cleanup: true
   region: eu-west-1
-  upload-dir: ${TRAVIS_TAG}
+  upload-dir: m2doc/${TRAVIS_TAG}
   on:
     tags: true
     all_branches: true
