@@ -26,7 +26,7 @@ deploy:
   access_key_id: AKIAI7GYGSUKTIBLAI6Q
   secret_access_key:
    secure: XGXlu5Fc9WFNG7qBGyo0f/jAL/dg42EN0X17H4Dbc9OyxtuMYXtyUPasX1AidnuIaem8zEncs/8I5DxqW9BoiEzWX9BTUAnx1b0xIFEUXcjFXPBAbyhCtGZ2RympXlt1o+elG9xD34MNBB6Nf7WW+eyP1w0jdS2VP/lS19/phhrX0RCvPPWMnlMX95o77NhFnbEY5+brubUXJxioM8W4/IecrcLS6COjC6UmdV1TsrgykGLOad5AQ4jbNSluXJ1gjCH3IX2BIN+hVfqHn/UJIcF5bLU7B1XFVKrjGociXAOabEdrCHOxH+hQ9F1XufT99eK4QfikU025vhCCyn7e+rCvJJPLzfuK8Ms5tmexPKWCUcaZGP+AA0laNu/htsb8zZZ8547N5yE4doDuHPJN7ZRiGTd49Jg4uJEf99NWqO1LVr6EM/fapY/pZMANfffRmJOc1pgV4uneL/HCS1lIIrHp7NgdgvGZfptWFMdCskmF/F6gkUg3UyakZZO+JmlvGRRl/B5Be+sn/+D4JrMwvihBFtr4ZzVLWAytmHbjIL/8dkHp5Wwd8+EBCdBqfbCzJkJX5OGANZ21yAHSqx+2lUHJaOECUh/kIFCO/ZnoLYRE7ZJqNkAgWjxPEX5SMyggwHhHLwjPtedjWPcnIPJtYxfuhDW5eLTxND/dQ2mt+b4=
-  bucket: obeo-m2doc-releases
+  bucket: obeo-networkaggregation-releases
   local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
   acl: public_read
   skip_cleanup: true
