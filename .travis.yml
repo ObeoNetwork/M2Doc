@@ -2,7 +2,7 @@ language: java
 env:
   global:
   - DISPLAY=:99.0
-  - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"  
+  - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
 jdk:
 - oraclejdk7
 sudo: false
@@ -15,17 +15,19 @@ before_script:
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
-- mvn clean verify 
+- mvn clean verify
 - cd ../..
 - if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
 after_script:
 - if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh; fi
+before_deploy:
+  - rvm 1.9.3 do gem install aws-sdk -v 2.2.37
 deploy:
 ###### Release ######
 - provider: s3
   access_key_id: AKIAJEQDFZXLAICP6TNQ
   secret_access_key:
-    secure: OLXyEsCr6t2dxDIvvLVzmqezwPXin/WP629RlVmejgVA442T00uLp915KNOJ0vlXCEUdzvleIfE5+2E3BnpRq314DAHuU8ZkFcbiJ2xdUrNLk7WUxplS+uLslcamx8ypEEaq1xyF3jZSmZ83S9JGFFQqSzCNZ9wYOCb8kdS4td87d+xguAqrxYYDkCUIufGdmfayDHGXtt0O7JJYdorUcnvS4ZbbUNmEOL+n0PcKHDCRmEPvobTh/VkVJfk6LSM07IwaaKM39xFIq1t366jMphL/t7sGtIdvjPWTrkgnRg+uWBTWcU9Eybx3ziqMcaSdnZ1oxOLaxgOxqeSfT0s4Gx0EUPzLn/JL2+fF7N4+URRb47CrfZ4CLFbMOhAx1gbqhXCRbVwiOSlVcVN56WViC9ZbLvbFHL2/zYAyZoZLUmmU3e3+ZEBavHK1/E42XKH1D+U696o0Ah3ozZN+AMBwWfq8Wzp+m1Q/VURmDRd9PupTKjTPFYbmrY+oKTzwPU07OVhrZ2gIPlBE4BW4D0ItlEq0SkXSXajvGuh7lbY0T/XpSSbSvtJoUSauB6GAr9Yg8887Ze/lqTX7y8aZ9t1KwkGRZjp2aCf3veyVrhLS8oEylk5VI4vu8qC8sGr6BuKUN1N3NiHJ+/gDnao5hJ0wA4iAjXd8qtK628VGgzWg+3E=
+   secure: MqoNagbJ5gBs/F+s50L0UF/ueZdGpQuTeITFtn8txlNUt5w1aa8AgnoZAL8eB/Ea7wlKMGckrBFDC6uHtPSsHtYGfs3BVD4ydsuXzP9H/WgS27c2L+z39C1M8vmBQtY8QsbQg1agFcg3JMbO4/esJfDI0NZYSU8+FeJv21CAcdswcgfSEAbr6G8x4ceuSxCHHgLosoaYo94kuL6Pt7fJ7AR1qMWut4AiUMuwwksJHV3ZJYyOAqve/lrzsn4A2CYjz1/WQIjZtsZDRKnUzqN+pV4xHUXBHGYUO/ekM1hRKCKBDisD6x2wYMlHRmJIfrknvdlSdXnW1sIq8rFlD54K8Yfns1ct5WBoN04nHNwjxxBl2dXPLZ0EMg5h+xc4p0T+rQyoov5QvhREybUEuaKqHaKhsuGA7UZzc1dh0Rdozp2goc3kGZSV/C+GwSAkPqvao5wY6+Ha9zj6FfJPnmps2T0UbMMmMg6PIhV7lJCzNSJJYHVGMyN7zsGal4xeFfF0TLE5mfbAhkNmt8x2qsV8issNu1zeTshE0r+MMWtEdAf4a9lTy1iSoRfWtsKibCCFPw/Uq+lwK5OJS7BLtmGQxV2/RvI8l4TMZYPHpyBGZHF/BZchVjpC+MdYMKzXnoRkFUpXcWEO2o3OCpFxu4E/B3z56yaMmw5jAXfsGZnmA9g=
   bucket: obeo-m2doc-releases
   local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
   acl: public_read
