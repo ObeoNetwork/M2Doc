@@ -21,154 +21,154 @@ import org.obeonetwork.m2doc.genconf.*;
  */
 public class GenconfAdapterFactory extends AdapterFactoryImpl {
 	/**
-	 * The cached model package.
-	 * <!-- begin-user-doc -->
+     * The cached model package.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected static GenconfPackage modelPackage;
 
 	/**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc -->
+     * Creates an instance of the adapter factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public GenconfAdapterFactory() {
-		if (modelPackage == null) {
-			modelPackage = GenconfPackage.eINSTANCE;
-		}
-	}
+        if (modelPackage == null) {
+            modelPackage = GenconfPackage.eINSTANCE;
+        }
+    }
 
 	/**
-	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc -->
+     * Returns whether this factory is applicable for the type of the object.
+     * <!-- begin-user-doc -->
 	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
 	 * <!-- end-user-doc -->
-	 * @return whether this factory is applicable for the type of the object.
-	 * @generated
-	 */
+     * @return whether this factory is applicable for the type of the object.
+     * @generated
+     */
 	@Override
 	public boolean isFactoryForType(Object object) {
-		if (object == modelPackage) {
-			return true;
-		}
-		if (object instanceof EObject) {
-			return ((EObject)object).eClass().getEPackage() == modelPackage;
-		}
-		return false;
-	}
+        if (object == modelPackage) {
+            return true;
+        }
+        if (object instanceof EObject) {
+            return ((EObject)object).eClass().getEPackage() == modelPackage;
+        }
+        return false;
+    }
 
 	/**
-	 * The switch that delegates to the <code>createXXX</code> methods.
-	 * <!-- begin-user-doc -->
+     * The switch that delegates to the <code>createXXX</code> methods.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected GenconfSwitch<Adapter> modelSwitch =
 		new GenconfSwitch<Adapter>() {
-			@Override
-			public Adapter caseGeneration(Generation object) {
-				return createGenerationAdapter();
-			}
-			@Override
-			public Adapter caseDefinition(Definition object) {
-				return createDefinitionAdapter();
-			}
-			@Override
-			public Adapter caseModelDefinition(ModelDefinition object) {
-				return createModelDefinitionAdapter();
-			}
-			@Override
-			public Adapter caseStringDefinition(StringDefinition object) {
-				return createStringDefinitionAdapter();
-			}
-			@Override
-			public Adapter defaultCase(EObject object) {
-				return createEObjectAdapter();
-			}
-		};
+            @Override
+            public Adapter caseGeneration(Generation object) {
+                return createGenerationAdapter();
+            }
+            @Override
+            public Adapter caseDefinition(Definition object) {
+                return createDefinitionAdapter();
+            }
+            @Override
+            public Adapter caseModelDefinition(ModelDefinition object) {
+                return createModelDefinitionAdapter();
+            }
+            @Override
+            public Adapter caseStringDefinition(StringDefinition object) {
+                return createStringDefinitionAdapter();
+            }
+            @Override
+            public Adapter defaultCase(EObject object) {
+                return createEObjectAdapter();
+            }
+        };
 
 	/**
-	 * Creates an adapter for the <code>target</code>.
-	 * <!-- begin-user-doc -->
+     * Creates an adapter for the <code>target</code>.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param target the object to adapt.
-	 * @return the adapter for the <code>target</code>.
-	 * @generated
-	 */
+     * @param target the object to adapt.
+     * @return the adapter for the <code>target</code>.
+     * @generated
+     */
 	@Override
 	public Adapter createAdapter(Notifier target) {
-		return modelSwitch.doSwitch((EObject)target);
-	}
+        return modelSwitch.doSwitch((EObject)target);
+    }
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.Generation <em>Generation</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.Generation <em>Generation</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.obeonetwork.m2doc.genconf.Generation
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.genconf.Generation
+     * @generated
+     */
 	public Adapter createGenerationAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.Definition <em>Definition</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.Definition <em>Definition</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.obeonetwork.m2doc.genconf.Definition
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.genconf.Definition
+     * @generated
+     */
 	public Adapter createDefinitionAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.ModelDefinition <em>Model Definition</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.ModelDefinition <em>Model Definition</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.obeonetwork.m2doc.genconf.ModelDefinition
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.genconf.ModelDefinition
+     * @generated
+     */
 	public Adapter createModelDefinitionAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.StringDefinition <em>String Definition</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.genconf.StringDefinition <em>String Definition</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.obeonetwork.m2doc.genconf.StringDefinition
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.genconf.StringDefinition
+     * @generated
+     */
 	public Adapter createStringDefinitionAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for the default case.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for the default case.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @generated
+     */
 	public Adapter createEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 } //GenconfAdapterFactory

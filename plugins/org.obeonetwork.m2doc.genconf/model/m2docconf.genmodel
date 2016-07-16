@@ -4,7 +4,7 @@
     editorDirectory="/org.obeonetwork.m2doc.genconf.editor/src-gen" modelPluginID="org.obeonetwork.m2doc.genconf"
     modelName="M2docconf" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="/org.obeonetwork.m2doc.genconf.tests/src-gen" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="7.0" copyrightFields="false" runtimeVersion="2.11" operationReflection="true"
+    complianceLevel="7.0" copyrightFields="false" runtimeVersion="2.10" operationReflection="true"
     importOrganizing="true">
   <foreignModel>m2docconf.ecore</foreignModel>
   <genPackages prefix="Genconf" basePackage="org.obeonetwork.m2doc" disposableProviderFactory="true"
