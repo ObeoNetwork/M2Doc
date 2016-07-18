@@ -109,7 +109,7 @@ public class DocumentGenerator {
      *            a mapping of variables used during generation.
      * @param environment
      *            the {@link IQueryEnvironment} used to generate
-     * @param targetConfObject
+     * @param theTargetConfObject
      *            the root EObject of the gen conf model.
      * @throws DocumentGenerationException
      *             when a generation problem occurs.
@@ -194,7 +194,14 @@ public class DocumentGenerator {
     private XWPFDocument createDestinationDocument(String inputDocumentFileName)
             throws IOException, InvalidFormatException {
         FileInputStream is = new FileInputStream(inputDocumentFileName);
-        OPCPackage oPackage = OPCPackage.open(is);
+        OPCPackage oPackage;
+        try {
+            oPackage = OPCPackage.open(is);
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
         XWPFDocument document = new XWPFDocument(oPackage);
         int size = document.getBodyElements().size();
         for (int i = 0; i < size; i++) {

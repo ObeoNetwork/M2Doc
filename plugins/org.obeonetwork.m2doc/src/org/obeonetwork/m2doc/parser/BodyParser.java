@@ -283,7 +283,7 @@ public class BodyParser {
      */
     public Template parseTemplate() throws DocumentParserException {
         Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
-        template.setDocument(this.document);
+        template.setBody(this.document);
         parseCompound(template, TokenType.EOF);
         return template;
     }

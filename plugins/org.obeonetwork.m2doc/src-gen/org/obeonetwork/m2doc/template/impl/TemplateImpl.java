@@ -31,7 +31,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * </p>
  * <ul>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getTemplateName <em>Template Name</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getDocument <em>Document</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
@@ -65,26 +65,26 @@ public class TemplateImpl extends CompoundImpl implements Template {
 	protected String templateName = TEMPLATE_NAME_EDEFAULT;
 
 	/**
-     * The default value of the '{@link #getDocument() <em>Document</em>}' attribute.
+     * The default value of the '{@link #getBody() <em>Body</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see #getDocument()
+     * <!-- end-user-doc -->
+     * @see #getBody()
      * @generated
      * @ordered
      */
-	protected static final IBody DOCUMENT_EDEFAULT = null;
+    protected static final IBody BODY_EDEFAULT = null;
 
-	/**
-     * The cached value of the '{@link #getDocument() <em>Document</em>}' attribute.
+    /**
+     * The cached value of the '{@link #getBody() <em>Body</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see #getDocument()
+     * <!-- end-user-doc -->
+     * @see #getBody()
      * @generated
      * @ordered
      */
-	protected IBody document = DOCUMENT_EDEFAULT;
+    protected IBody body = BODY_EDEFAULT;
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -126,26 +126,26 @@ public class TemplateImpl extends CompoundImpl implements Template {
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public IBody getDocument() {
-        return document;
+    public IBody getBody() {
+        return body;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public void setDocument(IBody newDocument) {
-        IBody oldDocument = document;
-        document = newDocument;
+    public void setBody(IBody newBody) {
+        IBody oldBody = body;
+        body = newBody;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__DOCUMENT, oldDocument, document));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__BODY, oldBody, body));
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -155,8 +155,8 @@ public class TemplateImpl extends CompoundImpl implements Template {
         switch (featureID) {
             case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
                 return getTemplateName();
-            case TemplatePackage.TEMPLATE__DOCUMENT:
-                return getDocument();
+            case TemplatePackage.TEMPLATE__BODY:
+                return getBody();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -172,8 +172,8 @@ public class TemplateImpl extends CompoundImpl implements Template {
             case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
                 setTemplateName((String)newValue);
                 return;
-            case TemplatePackage.TEMPLATE__DOCUMENT:
-                setDocument((IBody)newValue);
+            case TemplatePackage.TEMPLATE__BODY:
+                setBody((IBody)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -190,8 +190,8 @@ public class TemplateImpl extends CompoundImpl implements Template {
             case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
                 setTemplateName(TEMPLATE_NAME_EDEFAULT);
                 return;
-            case TemplatePackage.TEMPLATE__DOCUMENT:
-                setDocument(DOCUMENT_EDEFAULT);
+            case TemplatePackage.TEMPLATE__BODY:
+                setBody(BODY_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -207,8 +207,8 @@ public class TemplateImpl extends CompoundImpl implements Template {
         switch (featureID) {
             case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
                 return TEMPLATE_NAME_EDEFAULT == null ? templateName != null : !TEMPLATE_NAME_EDEFAULT.equals(templateName);
-            case TemplatePackage.TEMPLATE__DOCUMENT:
-                return DOCUMENT_EDEFAULT == null ? document != null : !DOCUMENT_EDEFAULT.equals(document);
+            case TemplatePackage.TEMPLATE__BODY:
+                return BODY_EDEFAULT == null ? body != null : !BODY_EDEFAULT.equals(body);
         }
         return super.eIsSet(featureID);
     }
@@ -225,8 +225,8 @@ public class TemplateImpl extends CompoundImpl implements Template {
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (templateName: ");
         result.append(templateName);
-        result.append(", document: ");
-        result.append(document);
+        result.append(", body: ");
+        result.append(body);
         result.append(')');
         return result.toString();
     }

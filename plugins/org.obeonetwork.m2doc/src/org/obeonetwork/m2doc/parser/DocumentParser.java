@@ -25,6 +25,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * 
  * @author Romain Guider
  */
+@SuppressWarnings("restriction")
 public class DocumentParser {
     /**
      * The environment used to parse queries.
@@ -58,10 +59,10 @@ public class DocumentParser {
      *             if a problem occurs while parsing the document.
      */
     public DocumentTemplate parseDocument() throws DocumentParserException {
-        @SuppressWarnings("restriction")
         DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         BodyParser parser = new BodyParser(document, new QueryBuilderEngine(queryEnvironment));
         result.setBody(parser.parseTemplate());
+        result.setDocument(document);
         for (XWPFFooter footer : document.getFooterList()) {
             BodyParser footerParser = new BodyParser(footer, new QueryBuilderEngine(queryEnvironment));
             result.getFooters().add(footerParser.parseTemplate());

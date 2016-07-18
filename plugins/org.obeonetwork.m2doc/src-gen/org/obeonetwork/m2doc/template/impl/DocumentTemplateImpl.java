@@ -15,6 +15,7 @@ package org.obeonetwork.m2doc.template.impl;
 
 import java.util.Collection;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -43,6 +44,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getHeaders <em>Headers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getFooters <em>Footers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getDocument <em>Document</em>}</li>
  * </ul>
  *
  * @generated
@@ -86,6 +88,26 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
 	protected Template body;
 
 	/**
+     * The default value of the '{@link #getDocument() <em>Document</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getDocument()
+     * @generated
+     * @ordered
+     */
+    protected static final XWPFDocument DOCUMENT_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDocument() <em>Document</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getDocument()
+     * @generated
+     * @ordered
+     */
+    protected XWPFDocument document = DOCUMENT_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -173,6 +195,27 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public XWPFDocument getDocument() {
+        return document;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setDocument(XWPFDocument newDocument) {
+        XWPFDocument oldDocument = document;
+        document = newDocument;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT, oldDocument, document));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -203,6 +246,8 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return getFooters();
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 return getBody();
+            case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
+                return getDocument();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -227,6 +272,9 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 setBody((Template)newValue);
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
+                setDocument((XWPFDocument)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -248,6 +296,9 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 setBody((Template)null);
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
+                setDocument(DOCUMENT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -266,8 +317,26 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return footers != null && !footers.isEmpty();
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 return body != null;
+            case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
+                return DOCUMENT_EDEFAULT == null ? document != null : !DOCUMENT_EDEFAULT.equals(document);
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (eIsProxy()) return super.toString();
+
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (document: ");
+        result.append(document);
+        result.append(')');
+        return result.toString();
     }
 
 } //DocumentTemplateImpl

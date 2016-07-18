@@ -25,7 +25,7 @@ import org.apache.poi.xwpf.usermodel.IBody;
  * </p>
  * <ul>
  *   <li>{@link org.obeonetwork.m2doc.template.Template#getTemplateName <em>Template Name</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Template#getDocument <em>Document</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate()
@@ -67,29 +67,29 @@ public interface Template extends Compound {
 	void setTemplateName(String value);
 
 	/**
-     * Returns the value of the '<em><b>Document</b></em>' attribute.
+     * Returns the value of the '<em><b>Body</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Document</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Document</em>' attribute.
-     * @see #setDocument(IBody)
-     * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate_Document()
+     * <p>
+     * If the meaning of the '<em>Body</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Body</em>' attribute.
+     * @see #setBody(IBody)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate_Body()
      * @model dataType="org.obeonetwork.m2doc.template.Body"
      * @generated
      */
-	IBody getDocument();
+    IBody getBody();
 
-	/**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Template#getDocument <em>Document</em>}' attribute.
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Document</em>' attribute.
-     * @see #getDocument()
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Body</em>' attribute.
+     * @see #getBody()
      * @generated
      */
-	void setDocument(IBody value);
+    void setBody(IBody value);
 
 } // Template

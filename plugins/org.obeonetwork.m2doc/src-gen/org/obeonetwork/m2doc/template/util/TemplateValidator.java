@@ -14,8 +14,8 @@
 package org.obeonetwork.m2doc.template.util;
 
 import java.util.Map;
-
 import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -154,8 +154,8 @@ public class TemplateValidator extends EObjectValidator {
                 return validateQueryBehavior((QueryBehavior)value, diagnostics, context);
             case TemplatePackage.POSITION:
                 return validatePOSITION((POSITION)value, diagnostics, context);
-            case TemplatePackage.BODY:
-                return validateBody((IBody)value, diagnostics, context);
+            case TemplatePackage.DOCUMENT:
+                return validateDocument((XWPFDocument)value, diagnostics, context);
             case TemplatePackage.WTABLE:
                 return validateWTable((XWPFTable)value, diagnostics, context);
             case TemplatePackage.RUN:
@@ -170,6 +170,8 @@ public class TemplateValidator extends EObjectValidator {
                 return validateWTableCell((XWPFTableCell)value, diagnostics, context);
             case TemplatePackage.PROVIDER:
                 return validateProvider((IProvider)value, diagnostics, context);
+            case TemplatePackage.BODY:
+                return validateBody((IBody)value, diagnostics, context);
             default:
                 return true;
         }
@@ -395,14 +397,14 @@ public class TemplateValidator extends EObjectValidator {
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public boolean validateBody(IBody body, DiagnosticChain diagnostics, Map<Object, Object> context) {
+    public boolean validateDocument(XWPFDocument document, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return true;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -462,6 +464,15 @@ public class TemplateValidator extends EObjectValidator {
      * @generated
      */
     public boolean validateProvider(IProvider provider, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return true;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateBody(IBody body, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return true;
     }
 

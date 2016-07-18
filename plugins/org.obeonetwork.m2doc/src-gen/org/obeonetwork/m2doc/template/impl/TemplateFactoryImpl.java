@@ -15,6 +15,7 @@ package org.obeonetwork.m2doc.template.impl;
 
 import java.util.Map;
 import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -114,8 +115,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createQueryBehaviorFromString(eDataType, initialValue);
             case TemplatePackage.POSITION:
                 return createPOSITIONFromString(eDataType, initialValue);
-            case TemplatePackage.BODY:
-                return createBodyFromString(eDataType, initialValue);
+            case TemplatePackage.DOCUMENT:
+                return createDocumentFromString(eDataType, initialValue);
             case TemplatePackage.WTABLE:
                 return createWTableFromString(eDataType, initialValue);
             case TemplatePackage.RUN:
@@ -130,6 +131,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createWTableCellFromString(eDataType, initialValue);
             case TemplatePackage.PROVIDER:
                 return createProviderFromString(eDataType, initialValue);
+            case TemplatePackage.BODY:
+                return createBodyFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -147,8 +150,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return convertQueryBehaviorToString(eDataType, instanceValue);
             case TemplatePackage.POSITION:
                 return convertPOSITIONToString(eDataType, instanceValue);
-            case TemplatePackage.BODY:
-                return convertBodyToString(eDataType, instanceValue);
+            case TemplatePackage.DOCUMENT:
+                return convertDocumentToString(eDataType, instanceValue);
             case TemplatePackage.WTABLE:
                 return convertWTableToString(eDataType, instanceValue);
             case TemplatePackage.RUN:
@@ -163,6 +166,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return convertWTableCellToString(eDataType, instanceValue);
             case TemplatePackage.PROVIDER:
                 return convertProviderToString(eDataType, instanceValue);
+            case TemplatePackage.BODY:
+                return convertBodyToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -350,23 +355,23 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public IBody createBodyFromString(EDataType eDataType, String initialValue) {
-        return (IBody)super.createFromString(eDataType, initialValue);
+    public XWPFDocument createDocumentFromString(EDataType eDataType, String initialValue) {
+        return (XWPFDocument)super.createFromString(eDataType, initialValue);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public String convertBodyToString(EDataType eDataType, Object instanceValue) {
+    public String convertDocumentToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -489,6 +494,24 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * @generated
      */
     public String convertProviderToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public IBody createBodyFromString(EDataType eDataType, String initialValue) {
+        return (IBody)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertBodyToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 
