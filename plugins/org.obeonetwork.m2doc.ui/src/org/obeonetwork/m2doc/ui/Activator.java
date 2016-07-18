@@ -25,6 +25,9 @@ public class Activator extends AbstractUIPlugin {
      * The plug-in ID.
      */
     public static final String PLUGIN_ID = "org.obeonetwork.m2doc.ui"; //$NON-NLS-1$
+    public static final String GENCONF_EXTENSION_FILE = "genconf";
+    public static final String DOCX_EXTENSION_FILE = "docx";
+
     /**
      * The shared instance.
      */
