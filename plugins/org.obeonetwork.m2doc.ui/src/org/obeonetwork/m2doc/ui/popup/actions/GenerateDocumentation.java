@@ -39,6 +39,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.obeonetwork.m2doc.genconf.Definition;
+import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.ModelDefinition;
+import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParser;
@@ -46,10 +50,6 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.ui.Activator;
-import org.obeonetwork.m2doc.ui.genconf.Definition;
-import org.obeonetwork.m2doc.ui.genconf.Generation;
-import org.obeonetwork.m2doc.ui.genconf.ModelDefinition;
-import org.obeonetwork.m2doc.ui.genconf.StringDefinition;
 
 /**
  * Handlers for the document generation.
@@ -218,7 +218,8 @@ public class GenerateDocumentation implements IObjectActionDelegate {
         DocumentTemplate template = parser.parseDocument();
         DocumentGenerator generator = new DocumentGenerator(projectRoot,
                 templateFile.getLocation().toFile().getAbsolutePath(),
-                generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment,generation);
+                generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment,
+                generation);
         generator.generate();
         MessageDialog.openConfirm(shell, "M2Doc generation",
                 "document " + generatedFile.getLocation().toString() + " generated");

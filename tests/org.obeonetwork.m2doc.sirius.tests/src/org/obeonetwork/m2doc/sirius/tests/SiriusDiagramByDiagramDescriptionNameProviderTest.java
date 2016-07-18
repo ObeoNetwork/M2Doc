@@ -20,10 +20,10 @@ import junit.framework.AssertionFailedError;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.sirius.SiriusDiagramByDiagramDescriptionNameProvider;
-import org.obeonetwork.m2doc.ui.genconf.Generation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

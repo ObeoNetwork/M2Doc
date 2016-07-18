@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.obeonetwork.m2doc.genconf/src-gen" editDirectory="/org.obeonetwork.m2doc.genconf.edit/src-gen"
+    editorDirectory="/org.obeonetwork.m2doc.genconf.editor/src-gen" modelPluginID="org.obeonetwork.m2doc.genconf"
+    modelName="M2docconf" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="/org.obeonetwork.m2doc.genconf.tests/src-gen" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="7.0" copyrightFields="false" runtimeVersion="2.10" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>m2docconf.ecore</foreignModel>
+  <genPackages prefix="Genconf" basePackage="org.obeonetwork.m2doc" disposableProviderFactory="true"
+      ecorePackage="m2docconf.ecore#/">
+    <genClasses ecoreClass="m2docconf.ecore#//Generation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/templateFileName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/resultFileName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/timeStamped"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference m2docconf.ecore#//Generation/definitions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/packagesNSURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/servicesTokens"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="m2docconf.ecore#//Definition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Definition/key"/>
+    </genClasses>
+    <genClasses ecoreClass="m2docconf.ecore#//ModelDefinition">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference m2docconf.ecore#//ModelDefinition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="m2docconf.ecore#//StringDefinition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//StringDefinition/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
