@@ -4,8 +4,8 @@
     modelDirectory="/org.obeonetwork.m2doc/src-gen" editDirectory="/org.obeonetwork.m2doc.edit/src-gen"
     editorDirectory="/org.ecliplse.gendoc2.editor/src-gen" modelPluginID="org.obeonetwork.m2doc"
     modelName="Template" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" operationReflection="true"
-    importOrganizing="true">
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" runtimeVersion="2.10"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>Template.ecore</foreignModel>
   <genPackages prefix="Template" basePackage="org.obeonetwork.m2doc" disposableProviderFactory="true"
       ecorePackage="Template.ecore#/">
@@ -63,7 +63,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/query"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationId"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationTitle"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationProvider"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//StaticFragment"/>
     <genClasses ecoreClass="Template.ecore#//Table">
@@ -93,9 +92,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractImage/width"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractImage/legendPOS"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="Template.ecore#//AbstractProvider">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//AbstractProvider/optionValueMap"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractProvider/provider"/>
+    <genClasses image="false" ecoreClass="Template.ecore#//AbstractProviderClient">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//AbstractProviderClient/optionValueMap"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractProviderClient/provider"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

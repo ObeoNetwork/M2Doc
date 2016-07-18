@@ -11,5 +11,6 @@ Export-Package: org.obeonetwork.m2doc.genconf,
  org.obeonetwork.m2doc.genconf.impl,
  org.obeonetwork.m2doc.genconf.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.obeonetwork.m2doc;bundle-version="0.7.1"
 Bundle-ActivationPolicy: lazy
