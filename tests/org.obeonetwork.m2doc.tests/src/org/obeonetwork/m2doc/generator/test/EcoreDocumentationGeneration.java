@@ -21,7 +21,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -33,12 +33,13 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
 
 public class EcoreDocumentationGeneration {
     @Test
-    public void testStaticFragmentWithFieldProcessing() throws InvalidFormatException, IOException,
-            DocumentParserException, DocumentGenerationException, InvalidAcceleoPackageException {
+    public void testStaticFragmentWithFieldProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
         queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
-        queryEnvironment.registerServicePackage(EcoreDocumentationServices.class);
+        ServiceUtils.registerServices(queryEnvironment,
+                ServiceUtils.getServices(queryEnvironment, EcoreDocumentationServices.class));
         FileInputStream is = new FileInputStream("templates/ecoreDocumentationTemplate.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
