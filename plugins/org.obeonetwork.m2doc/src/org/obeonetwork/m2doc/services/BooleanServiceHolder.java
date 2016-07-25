@@ -9,21 +9,18 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.database.wgen.services;
-
-import org.obeonetwork.m2doc.services.IServiceHolder;
+package org.obeonetwork.m2doc.services;
 
 /**
- * Holder for the data base services.
+ * An {@link IServiceHolder} for {@link BooleanServices}.
  * 
- * @author Romain Guider
- *
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class DatabaseServiceHolder implements IServiceHolder {
+public class BooleanServiceHolder implements IServiceHolder {
 
-	@Override
-	public Class<?> getServiceClass() {
-		return DatabaseServices.class;
-	}
+    @Override
+    public Class<?> getServiceClass() {
+        return BooleanServices.class;
+    }
 
 }
