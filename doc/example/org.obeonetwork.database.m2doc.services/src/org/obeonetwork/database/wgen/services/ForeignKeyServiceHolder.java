@@ -14,16 +14,15 @@ package org.obeonetwork.database.wgen.services;
 import org.obeonetwork.m2doc.services.IServiceHolder;
 
 /**
- * Holder for the data base services.
+ * Holder for the {@link ForeignKeyServices}.
  * 
  * @author Romain Guider
- *
  */
-public class DatabaseServiceHolder implements IServiceHolder {
+public class ForeignKeyServiceHolder implements IServiceHolder {
 
-	@Override
-	public Class<?> getServiceClass() {
-		return DatabaseServices.class;
-	}
+    @Override
+    public Class<?> getServiceClass() {
+        return ForeignKeyServices.class;
+    }
 
 }
