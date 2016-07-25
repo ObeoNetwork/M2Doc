@@ -15,6 +15,7 @@ package org.obeonetwork.m2doc.template.impl;
 
 import java.util.Map;
 import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -209,12 +210,12 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	private EDataType bodyEDataType = null;
+    private EDataType documentEDataType = null;
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -262,6 +263,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EDataType providerEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType bodyEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -608,6 +616,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getDocumentTemplate_Document() {
+        return (EAttribute)documentTemplateEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getOptionValueMap() {
         return optionValueMapEClass;
     }
@@ -767,14 +784,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public EAttribute getTemplate_Document() {
+    public EAttribute getTemplate_Body() {
         return (EAttribute)templateEClass.getEStructuralFeatures().get(1);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -839,14 +856,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public EDataType getBody() {
-        return bodyEDataType;
+    public EDataType getDocument() {
+        return documentEDataType;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -911,6 +928,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
     /**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getBody() {
+        return bodyEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -969,7 +995,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         templateEClass = createEClass(TEMPLATE);
         createEAttribute(templateEClass, TEMPLATE__TEMPLATE_NAME);
-        createEAttribute(templateEClass, TEMPLATE__DOCUMENT);
+        createEAttribute(templateEClass, TEMPLATE__BODY);
 
         representationEClass = createEClass(REPRESENTATION);
         createEAttribute(representationEClass, REPRESENTATION__QUERY);
@@ -994,6 +1020,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__HEADERS);
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__FOOTERS);
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__BODY);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__DOCUMENT);
 
         optionValueMapEClass = createEClass(OPTION_VALUE_MAP);
         createEAttribute(optionValueMapEClass, OPTION_VALUE_MAP__KEY);
@@ -1014,7 +1041,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         positionEEnum = createEEnum(POSITION);
 
         // Create data types
-        bodyEDataType = createEDataType(BODY);
+        documentEDataType = createEDataType(DOCUMENT);
         wTableEDataType = createEDataType(WTABLE);
         runEDataType = createEDataType(RUN);
         astResultEDataType = createEDataType(AST_RESULT);
@@ -1022,6 +1049,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         wTableRowEDataType = createEDataType(WTABLE_ROW);
         wTableCellEDataType = createEDataType(WTABLE_CELL);
         providerEDataType = createEDataType(PROVIDER);
+        bodyEDataType = createEDataType(BODY);
     }
 
 	/**
@@ -1099,7 +1127,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getTemplate_TemplateName(), ecorePackage.getEString(), "templateName", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getTemplate_Document(), this.getBody(), "document", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getTemplate_Body(), this.getBody(), "body", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(representationEClass, Representation.class, "Representation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRepresentation_Query(), this.getAstResult(), "query", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1124,6 +1152,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEReference(getDocumentTemplate_Headers(), this.getTemplate(), null, "headers", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentTemplate_Footers(), this.getTemplate(), null, "footers", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentTemplate_Body(), this.getTemplate(), null, "body", null, 0, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_Document(), this.getDocument(), "document", null, 0, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(optionValueMapEClass, Map.Entry.class, "OptionValueMap", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getOptionValueMap_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1150,7 +1179,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         addEEnumLiteral(positionEEnum, org.obeonetwork.m2doc.template.POSITION.BELOW);
 
         // Initialize data types
-        initEDataType(bodyEDataType, IBody.class, "Body", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(documentEDataType, XWPFDocument.class, "Document", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(wTableEDataType, XWPFTable.class, "WTable", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(runEDataType, XWPFRun.class, "Run", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(astResultEDataType, AstResult.class, "AstResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
@@ -1158,6 +1187,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEDataType(wTableRowEDataType, XWPFTableRow.class, "WTableRow", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(wTableCellEDataType, XWPFTableCell.class, "WTableCell", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(providerEDataType, IProvider.class, "Provider", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(bodyEDataType, IBody.class, "Body", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

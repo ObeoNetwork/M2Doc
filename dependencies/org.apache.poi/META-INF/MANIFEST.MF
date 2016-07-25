@@ -221,6 +221,5 @@ Export-Package: org.apache.commons.logging,
  schemasMicrosoftComOfficeWord,
  schemasMicrosoftComOfficeWord.impl,
  schemasMicrosoftComVml,
- schemasMicrosoftComVml.impl,
- target.classes.org.apache.poi.xwpf.usermodel
+ schemasMicrosoftComVml.impl
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

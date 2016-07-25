@@ -2,7 +2,7 @@ language: java
 env:
   global:
   - DISPLAY=:99.0
-  - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"  
+  - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
 jdk:
 - oraclejdk7
 sudo: false
@@ -15,7 +15,7 @@ before_script:
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
-- mvn clean verify 
+- mvn clean verify
 - cd ../..
 - if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
 after_script:
@@ -23,17 +23,17 @@ after_script:
 deploy:
 ###### Release ######
 - provider: s3
-  access_key_id: AKIAJFIXOUR3SFD7OGMA
+  access_key_id: AKIAI7GYGSUKTIBLAI6Q
   secret_access_key:
-    secure: bBkFeQDX2qtsdsm+r7wVuYGWQvGO+W5byjn8PS/Dh8FB2dF52biArFNVDsU5qHp9qNQjrZZkewbEAIUMXn6d/duHQ3FU7OjOKbHs6LKaNdFI8PE/MZF5EAYgpJhulyDzmNC+4t/2DaDv2ajMx4tI8IXnCHYx5zFyUfbH0gVEroRoUle+gC5roDIUo7cEV9E2cKibh773AyMGSnqIKz0h6iwypJN9PLACF7JR01wzT49irPTlYesnb+tVi0DNqHVmGGhf00gWZsSISBjJfbMzJFyCVcYcYRxRd+/bCaAUlUHU/LUPBqzN9D5fPS+PKev3fI+TnHXh/GHJhRCDpxd4DhbvWd7tSDwu5VGEupYqldqYwUnmiOMOavCWMiIcZNvu3HR/yJ0njpAkjVUQNZidGmNWIY2KRRaN2pckH9OBFizozYEPGj5flBn8OeBcaOHgZHRW9aPqebuz3PupqDMx9VAil+RpGL9Gf0ZzE8Us9o25hc36gNQwaZ6ezEmVKYWIYdpjiBxupf6EIcqS4zBV0yV1PrUR3QR3MFH4dUoNGiwuX4Tkn2L8zMmi5KMpovv/D7R8zK40NJR/74ubjSqgTjo5YsdncxzGDz1FnJG6DjHeu7+I3apdGWTbSS8PhsS7dvOjbhv5FH+rEC3jPut1BbHPjmylA4EEdKp/HIj2xxE=
-  bucket: obeo-m2doc-releases
+   secure: XGXlu5Fc9WFNG7qBGyo0f/jAL/dg42EN0X17H4Dbc9OyxtuMYXtyUPasX1AidnuIaem8zEncs/8I5DxqW9BoiEzWX9BTUAnx1b0xIFEUXcjFXPBAbyhCtGZ2RympXlt1o+elG9xD34MNBB6Nf7WW+eyP1w0jdS2VP/lS19/phhrX0RCvPPWMnlMX95o77NhFnbEY5+brubUXJxioM8W4/IecrcLS6COjC6UmdV1TsrgykGLOad5AQ4jbNSluXJ1gjCH3IX2BIN+hVfqHn/UJIcF5bLU7B1XFVKrjGociXAOabEdrCHOxH+hQ9F1XufT99eK4QfikU025vhCCyn7e+rCvJJPLzfuK8Ms5tmexPKWCUcaZGP+AA0laNu/htsb8zZZ8547N5yE4doDuHPJN7ZRiGTd49Jg4uJEf99NWqO1LVr6EM/fapY/pZMANfffRmJOc1pgV4uneL/HCS1lIIrHp7NgdgvGZfptWFMdCskmF/F6gkUg3UyakZZO+JmlvGRRl/B5Be+sn/+D4JrMwvihBFtr4ZzVLWAytmHbjIL/8dkHp5Wwd8+EBCdBqfbCzJkJX5OGANZ21yAHSqx+2lUHJaOECUh/kIFCO/ZnoLYRE7ZJqNkAgWjxPEX5SMyggwHhHLwjPtedjWPcnIPJtYxfuhDW5eLTxND/dQ2mt+b4=
+  bucket: obeo-networkaggregation-releases
   local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
   acl: public_read
   skip_cleanup: true
   region: eu-west-1
-  upload-dir: ${TRAVIS_TAG}
+  upload-dir: m2doc/${TRAVIS_TAG}
   on:
     tags: true
     all_branches: true
-    repo: ModelWriter/Source
+    repo: ObeoNetwork/M2Doc
 

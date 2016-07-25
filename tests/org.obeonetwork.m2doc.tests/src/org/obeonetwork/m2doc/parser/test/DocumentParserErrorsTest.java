@@ -50,7 +50,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
@@ -73,7 +73,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
@@ -97,7 +97,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
@@ -120,7 +120,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
@@ -143,7 +143,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertEquals(1, template.getParsingErrors().size());
         assertEquals("Unexpected tag m:endfor at this location", template.getParsingErrors().get(0).getMessage());
@@ -163,7 +163,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(2, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(1) instanceof Query);
         Query query = (Query) template.getSubConstructs().get(1);
@@ -185,7 +185,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(0);
@@ -207,7 +207,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(0);
@@ -232,7 +232,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Default elseBranch = ((Conditionnal) template.getSubConstructs().get(0)).getElse();
@@ -256,7 +256,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal elseIfBranch = ((Conditionnal) template.getSubConstructs().get(0)).getAlternative();
@@ -282,7 +282,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal elseIfBranch = ((Conditionnal) template.getSubConstructs().get(0)).getAlternative();
@@ -306,7 +306,7 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getDocument());
+        assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Query);
         Query query = (Query) template.getSubConstructs().get(0);

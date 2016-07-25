@@ -1064,15 +1064,15 @@ public interface TemplatePackage extends EPackage {
 	int TEMPLATE__TEMPLATE_NAME = COMPOUND_FEATURE_COUNT + 0;
 
 	/**
-     * The feature id for the '<em><b>Document</b></em>' attribute.
+     * The feature id for the '<em><b>Body</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TEMPLATE__DOCUMENT = COMPOUND_FEATURE_COUNT + 1;
+    int TEMPLATE__BODY = COMPOUND_FEATURE_COUNT + 1;
 
-	/**
+    /**
      * The number of structural features of the '<em>Template</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1481,13 +1481,22 @@ public interface TemplatePackage extends EPackage {
 	int DOCUMENT_TEMPLATE__BODY = 2;
 
 	/**
+     * The feature id for the '<em><b>Document</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__DOCUMENT = 3;
+
+    /**
      * The number of structural features of the '<em>Document Template</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DOCUMENT_TEMPLATE_FEATURE_COUNT = 3;
+	int DOCUMENT_TEMPLATE_FEATURE_COUNT = 4;
 
 	/**
      * The number of operations of the '<em>Document Template</em>' class.
@@ -1565,16 +1574,16 @@ public interface TemplatePackage extends EPackage {
 	int POSITION = 19;
 
 	/**
-     * The meta object id for the '<em>Body</em>' data type.
+     * The meta object id for the '<em>Document</em>' data type.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.apache.poi.xwpf.usermodel.IBody
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
+     * <!-- end-user-doc -->
+     * @see org.apache.poi.xwpf.usermodel.XWPFDocument
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-	int BODY = 20;
+    int DOCUMENT = 20;
 
-	/**
+    /**
      * The meta object id for the '<em>WTable</em>' data type.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1644,6 +1653,16 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     int PROVIDER = 27;
+
+    /**
+     * The meta object id for the '<em>Body</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.apache.poi.xwpf.usermodel.IBody
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
+     * @generated
+     */
+    int BODY = 28;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractConstruct <em>Abstract Construct</em>}'.
@@ -1967,6 +1986,17 @@ public interface TemplatePackage extends EPackage {
 	EReference getDocumentTemplate_Body();
 
 	/**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Document</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getDocument()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_Document();
+
+    /**
      * Returns the meta object for class '{@link java.util.Map.Entry <em>Option Value Map</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2160,17 +2190,17 @@ public interface TemplatePackage extends EPackage {
 	EAttribute getTemplate_TemplateName();
 
 	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getDocument <em>Document</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Document</em>'.
-     * @see org.obeonetwork.m2doc.template.Template#getDocument()
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.Template#getBody()
      * @see #getTemplate()
      * @generated
      */
-	EAttribute getTemplate_Document();
+    EAttribute getTemplate_Body();
 
-	/**
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Representation <em>Representation</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2244,17 +2274,17 @@ public interface TemplatePackage extends EPackage {
 	EEnum getPOSITION();
 
 	/**
-     * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.IBody <em>Body</em>}'.
+     * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFDocument <em>Document</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Body</em>'.
-     * @see org.apache.poi.xwpf.usermodel.IBody
-     * @model instanceClass="org.apache.poi.xwpf.usermodel.IBody"
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Document</em>'.
+     * @see org.apache.poi.xwpf.usermodel.XWPFDocument
+     * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFDocument"
      * @generated
      */
-	EDataType getBody();
+    EDataType getDocument();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTable <em>WTable</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2330,6 +2360,17 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EDataType getProvider();
+
+    /**
+     * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.IBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Body</em>'.
+     * @see org.apache.poi.xwpf.usermodel.IBody
+     * @model instanceClass="org.apache.poi.xwpf.usermodel.IBody"
+     * @generated
+     */
+    EDataType getBody();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -2613,6 +2654,14 @@ public interface TemplatePackage extends EPackage {
 		EReference DOCUMENT_TEMPLATE__BODY = eINSTANCE.getDocumentTemplate_Body();
 
 		/**
+         * The meta object literal for the '<em><b>Document</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__DOCUMENT = eINSTANCE.getDocumentTemplate_Document();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.OptionValueMapImpl <em>Option Value Map</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -2771,14 +2820,14 @@ public interface TemplatePackage extends EPackage {
 		EAttribute TEMPLATE__TEMPLATE_NAME = eINSTANCE.getTemplate_TemplateName();
 
 		/**
-         * The meta object literal for the '<em><b>Document</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Body</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute TEMPLATE__DOCUMENT = eINSTANCE.getTemplate_Document();
+        EAttribute TEMPLATE__BODY = eINSTANCE.getTemplate_Body();
 
-		/**
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl <em>Representation</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2843,16 +2892,16 @@ public interface TemplatePackage extends EPackage {
 		EEnum POSITION = eINSTANCE.getPOSITION();
 
 		/**
-         * The meta object literal for the '<em>Body</em>' data type.
+         * The meta object literal for the '<em>Document</em>' data type.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.apache.poi.xwpf.usermodel.IBody
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
+         * <!-- end-user-doc -->
+         * @see org.apache.poi.xwpf.usermodel.XWPFDocument
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
          * @generated
          */
-		EDataType BODY = eINSTANCE.getBody();
+        EDataType DOCUMENT = eINSTANCE.getDocument();
 
-		/**
+        /**
          * The meta object literal for the '<em>WTable</em>' data type.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2921,6 +2970,16 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EDataType PROVIDER = eINSTANCE.getProvider();
+
+        /**
+         * The meta object literal for the '<em>Body</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.apache.poi.xwpf.usermodel.IBody
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
+         * @generated
+         */
+        EDataType BODY = eINSTANCE.getBody();
 
 	}
 

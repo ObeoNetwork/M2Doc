@@ -409,16 +409,8 @@ public class TemplateProcessorTest {
                 destinationDoc.getParagraphs().get(0).getText());
     }
 
-    /**
-     * Tests a gd:if with <code>false</code> expression evaluation and with an
-     * else.
-     * 
-     * @throws InvalidFormatException
-     * @throws IOException
-     * @throws DocumentParserException
-     */
     @Test
-    public void testCarryageReturnProcessing() throws InvalidFormatException, IOException, DocumentParserException {
+    public void testNewLineProcessing() throws InvalidFormatException, IOException, DocumentParserException {
         FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
@@ -429,17 +421,195 @@ public class TemplateProcessorTest {
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
         processor.doSwitch(template);
-        assertEquals(4, destinationDoc.getParagraphs().size());
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("part1\npart2\npart3\npart4", destinationDoc.getParagraphs().get(0).getText());
     }
 
-    /**
-     * Tests a gd:if with <code>false</code> expression evaluation and with an
-     * else.
-     * 
-     * @throws InvalidFormatException
-     * @throws IOException
-     * @throws DocumentParserException
-     */
+    @Test
+    public void testNewLineProcessingNoTextAround()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "\n\n\n");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("\n\n\n", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testNewLineProcessingNoTextBefore()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "\n\n\ntext");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("\n\n\ntext", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testNewLineProcessingNoTextAfter() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "text\n\n\n");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("text\n\n\n", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testCarryageReturnNewLineProcessing()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "part1\r\npart2\r\npart3\r\npart4");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("part1\npart2\npart3\npart4", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testCarryageReturnNewLineProcessingNoTextAround()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "\r\n\r\n\r\n");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("\n\n\n", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testCarryageReturnNewLineProcessingNoTextBefore()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "\r\n\r\n\r\ntext");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("\n\n\ntext", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testCarryageReturnNewLineProcessingNoTextAfter()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "text\r\n\r\n\r\n");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("text\n\n\n", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testTabulationProcessing() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testTabulation.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "part1\tpart2\tpart3\tpart4");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("part1\tpart2\tpart3\tpart4", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testTabulationProcessingNoTextAround()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testTabulation.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "\t\t\t");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("\t\t\t", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testTabulationProcessingNoTextBefore()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testTabulation.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "\t\t\ttext");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("\t\t\ttext", destinationDoc.getParagraphs().get(0).getText());
+    }
+
+    @Test
+    public void testTabulationProcessingNoTextAfter()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testTabulation.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyParser parser = new BodyParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        definitions.put("v", "text\t\t\t");
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", env, destinationDoc, null);
+        processor.doSwitch(template);
+        assertEquals(1, destinationDoc.getParagraphs().size());
+        assertEquals("text\t\t\t", destinationDoc.getParagraphs().get(0).getText());
+    }
+
     @Test
     public void testEmptyParagraphsProcessing() throws InvalidFormatException, IOException, DocumentParserException {
         FileInputStream is = new FileInputStream("templates/testEmptyParagraphs.docx");
