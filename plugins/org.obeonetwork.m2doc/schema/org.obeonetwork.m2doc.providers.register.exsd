@@ -60,6 +60,13 @@ Allows to declare providers that take M2Doc tag parameters to provide document&a
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="default" type="boolean">
+            <annotation>
+               <documentation>
+                  If the provider must be use by default
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

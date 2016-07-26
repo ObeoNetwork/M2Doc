@@ -87,9 +87,9 @@ public class DocumentGenerator {
      *             when a generation problem occurs.
      */
     public DocumentGenerator(String inputDocumentFileName, String destinationFileName, DocumentTemplate theTemplate,
-            Map<String, Object> variables, IQueryEnvironment environment, EObject theTargetConfObject)
+            Map<String, Object> variables, IQueryEnvironment environment, EObject targetConfObject)
                     throws DocumentGenerationException {
-        this("", inputDocumentFileName, destinationFileName, theTemplate, variables, environment, theTargetConfObject);
+        this("", inputDocumentFileName, destinationFileName, theTemplate, variables, environment, targetConfObject);
     }
 
     /**

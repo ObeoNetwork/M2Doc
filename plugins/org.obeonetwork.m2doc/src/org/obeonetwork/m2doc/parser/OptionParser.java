@@ -22,6 +22,7 @@ import org.obeonetwork.m2doc.template.AbstractConstruct;
  * @author pguilet<pierre.guilet@obeo.fr>
  */
 public class OptionParser {
+
     /**
      * The M2Doc escape character.
      */
@@ -34,6 +35,10 @@ public class OptionParser {
      * The character used to separate the key from the value.
      */
     public static final char KEY_VALUE_SEPARATOR = ':';
+    /**
+     * End string constant.
+     */
+    public static final String END_STRING = "'.";
     /**
      * Parsing index of the options string.
      */
@@ -112,14 +117,14 @@ public class OptionParser {
                     construct.getParsingErrors()
                             .add(new DocumentParsingError(
                                     "The start of an option's key has been read but the end of it and the value were missing : '"
-                                        + key + "'.",
+                                        + key + END_STRING,
                                     construct.getRuns().get(0)));
                     result.put(key.trim(), value);
                 }
             }
         } else {
             throw new UnsupportedOperationException("the given tag '" + tag
-                + "' should contains the given token type : '" + tokenType.getValue() + "'.");
+                + "' should contains the given token type : '" + tokenType.getValue() + END_STRING);
         }
         return result;
     }
@@ -228,7 +233,7 @@ public class OptionParser {
                     // we have a space between two key characters. So we log an error message.
                     construct.getParsingErrors()
                             .add(new DocumentParsingError("A forbidden space character is present at the index "
-                                + firstIndexOfSpace + " of the key definition '" + key + "'.",
+                                + firstIndexOfSpace + " of the key definition '" + key + END_STRING,
                             construct.getRuns().get(0)));
                 }
             } else {

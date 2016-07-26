@@ -8,7 +8,7 @@
  *     Contributors:
  *         Obeo - initial API and implementation
  *******************************************************************************/
-package org.obeonetwork.m2doc.sirius;
+package org.obeonetwork.m2doc.sirius.providers;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -124,4 +124,8 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
         return options;
     }
 
+    @Override
+    public boolean isDefault() {
+        return true;
+    }
 }

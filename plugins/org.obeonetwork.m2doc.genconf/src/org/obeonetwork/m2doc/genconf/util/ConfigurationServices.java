@@ -11,6 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -19,8 +22,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.genconf.ModelDefinition;
+import org.obeonetwork.m2doc.genconf.StringDefinition;
 
 /**
  * Services for genconf metamodels.
@@ -29,31 +32,7 @@ import org.obeonetwork.m2doc.properties.TemplateInfo;
  */
 public class ConfigurationServices {
 
-    /**
-     * @param generation
-     *            Generation
-     * @param templateInfo
-     *            TemplateInfo
-     * @return generation eObject with definitions template information.
-     */
-    public Generation addProperties(Generation generation, TemplateInfo templateInfo) {
-        for (String key : templateInfo.getVariables().keySet()) {
-            String value = templateInfo.getVariables().get(key);
-            Definition definition = null;
-            if (M2DocCustomProperties.INT_TYPE.equals(value) || M2DocCustomProperties.REAL_TYPE.equals(value)
-                || M2DocCustomProperties.STRING_TYPE.equals(value)) {
-                definition = GenconfFactory.eINSTANCE.createStringDefinition();
-            } else {
-                definition = GenconfFactory.eINSTANCE.createModelDefinition();
-            }
-            if (definition != null) {
-                definition.setKey(key);
-
-            }
-            generation.getDefinitions().add(definition);
-        }
-        return generation;
-    }
+    public static final String GENCONF_EXTENSION_FILE = "genconf";
 
     /**
      * Create generation eObject.
@@ -84,5 +63,26 @@ public class ConfigurationServices {
             }
         }
         return null;
+    }
+
+    /**
+     * Creates a definition map from a {@link Generation} instance.
+     * 
+     * @param generation
+     *            the instance holding the definitions.
+     * @return the created map.
+     */
+    public Map<String, Object> createDefinitions(Generation generation) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        for (Definition def : generation.getDefinitions()) {
+            if (def instanceof ModelDefinition) {
+                result.put(((ModelDefinition) def).getKey(), ((ModelDefinition) def).getValue());
+            } else if (def instanceof StringDefinition) {
+                result.put(((StringDefinition) def).getKey(), ((StringDefinition) def).getValue());
+            } else {
+                throw new UnsupportedOperationException();
+            }
+        }
+        return result;
     }
 }

@@ -34,8 +34,8 @@ import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
-import org.obeonetwork.m2doc.sirius.SiriusDiagramByDiagramDescriptionNameProvider;
-import org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider;
+import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider;
+import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.Image;
@@ -696,8 +696,8 @@ public class DocumentParserTest {
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertNull(representation.getProvider());
-        assertEquals(0, representation.getHeight());
-        assertEquals(0, representation.getWidth());
+        assertEquals(200, representation.getHeight());
+        assertEquals(200, representation.getWidth());
         assertNull(representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         EMap<String, Object> optionValueMap = representation.getOptionValueMap();
@@ -746,17 +746,14 @@ public class DocumentParserTest {
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
-        assertNull(representation.getProvider());
-        assertEquals(0, representation.getHeight());
-        assertEquals(0, representation.getWidth());
+        assertEquals(NoDiagramProvider.class, representation.getProvider().getClass());
+        assertEquals(200, representation.getHeight());
+        assertEquals(200, representation.getWidth());
         assertNull(representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         EMap<String, Object> optionValueMap = representation.getOptionValueMap();
-        assertEquals(0, optionValueMap.size());
-        assertEquals(1, representation.getParsingErrors().size());
-        assertEquals(
-                "The image tag is referencing a provider that has not been made to handle diagram tags : ' org.obeonetwork.m2doc.parser.test.DocumentParserTest$NoDiagramProvider'",
-                representation.getParsingErrors().get(0).getMessage());
+        assertEquals(1, optionValueMap.size());
+        assertEquals(0, representation.getParsingErrors().size());
     }
 
     /**

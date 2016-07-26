@@ -15,10 +15,10 @@
    <extension
          point="org.obeonetwork.m2doc.providers.register">
       <diagramProvider
-            diagramClass="org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider">
+            diagramClass="org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider">
       </diagramProvider>
       <diagramProvider
-            diagramClass="org.obeonetwork.m2doc.sirius.SiriusDiagramByDiagramDescriptionNameProvider">
+            diagramClass="org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider">
       </diagramProvider>
    </extension>
 

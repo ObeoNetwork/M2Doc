@@ -34,6 +34,13 @@ public class BooleanServices {
 //    )
     // @formatter:on
     // TODO activate documentation when changing AQL dependency
+    /**
+     * return X if true else empty.
+     * 
+     * @param value
+     *            boolean
+     * @return X if true else empty.
+     */
     public String check(boolean value) {
         final String res;
 
@@ -60,6 +67,13 @@ public class BooleanServices {
 //    )
     // @formatter:on
     // TODO activate documentation when changing AQL dependency
+    /**
+     * return yes if true else no.
+     * 
+     * @param value
+     *            boolean
+     * @return yes if true else no.
+     */
     public String yesNo(boolean value) {
         final String res;
 

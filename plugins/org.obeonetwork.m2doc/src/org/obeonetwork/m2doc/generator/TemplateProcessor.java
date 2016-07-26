@@ -624,11 +624,18 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                         imageRun.setText("");
                         imageRun.getCTR().getInstrTextList().clear();
 
-                        int heigth = Units.toEMU(object.getHeight());
+                        // get default image size if needed
+                        if (object.getHeight() == 0) {
+                            object.setHeight(((AbstractDiagramProvider) provider).getHeight());
+                        }
+                        if (object.getWidth() == 0) {
+                            object.setWidth(((AbstractDiagramProvider) provider).getWidth());
+                        }
+                        int height = Units.toEMU(object.getHeight());
                         int width = Units.toEMU(object.getWidth());
                         FileInputStream fileInputStream = new FileInputStream(imagePath);
                         try {
-                            imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePath, width, heigth);
+                            imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePath, width, height);
                         } finally {
                             if (fileInputStream != null) {
                                 fileInputStream.close();

@@ -9,23 +9,20 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport,
- org.eclipse.sirius;bundle-version="3.1.1",
- org.eclipse.sirius.diagram;bundle-version="3.1.1",
- org.eclipse.gmf,
- org.eclipse.emf.edit,
- org.eclipse.gmf.runtime.diagram.ui,
- org.eclipse.sirius.diagram.ui;bundle-version="3.1.1",
- org.eclipse.gmf.runtime.diagram.ui.render
+ org.obeonetwork.m2doc.genconf;bundle-version="0.7.0";visibility:=reexport,
+ org.eclipse.core.resources,
+ org.eclipse.emf.ecore.xmi
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc,
+ org.obeonetwork.m2doc.api,
  org.obeonetwork.m2doc.generator,
  org.obeonetwork.m2doc.parser,
  org.obeonetwork.m2doc.properties,
  org.obeonetwork.m2doc.provider,
  org.obeonetwork.m2doc.services,
  org.obeonetwork.m2doc.template,
- org.obeonetwork.m2doc.template.impl
+ org.obeonetwork.m2doc.template.impl,
+ org.obeonetwork.m2doc.template.util
 Import-Package: com.google.common.base;version="15.0.0",
  com.google.common.collect;version="15.0.0",
  org.apache.poi;version="3.13.0",

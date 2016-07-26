@@ -68,6 +68,11 @@ public class ProviderRegistryTest {
             return null;
         }
 
+        @Override
+        public boolean isDefault() {
+            return false;
+        }
+
     }
 
     /**

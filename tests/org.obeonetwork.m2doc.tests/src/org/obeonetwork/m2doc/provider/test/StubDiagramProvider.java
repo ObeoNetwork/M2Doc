@@ -88,4 +88,8 @@ public class StubDiagramProvider extends AbstractDiagramProvider {
         return imagesPaths;
     }
 
+    @Override
+    public boolean isDefault() {
+        return false;
+    }
 }

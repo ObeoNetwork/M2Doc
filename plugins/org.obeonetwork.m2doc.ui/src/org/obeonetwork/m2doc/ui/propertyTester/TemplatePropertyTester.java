@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IResource;
-import org.obeonetwork.m2doc.ui.Activator;
+import org.obeonetwork.m2doc.M2DocPlugin;
 
 /**
  * Test if handler is launched on docx file.
@@ -39,7 +39,7 @@ public class TemplatePropertyTester extends PropertyTester {
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         if (receiver instanceof IResource
-            && Activator.DOCX_EXTENSION_FILE.equals(((IResource) receiver).getFileExtension())) {
+            && M2DocPlugin.DOCX_EXTENSION_FILE.equals(((IResource) receiver).getFileExtension())) {
             return true;
         }
         if (receiver instanceof List) {
