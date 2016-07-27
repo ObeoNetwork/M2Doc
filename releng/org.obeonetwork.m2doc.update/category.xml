@@ -7,16 +7,11 @@
       <category name="M2Doc"/>
    </feature>
    <feature url="features/org.obeonetwork.m2doc.sirius.feature_0.9.0.qualifier.jar" id="org.obeonetwork.m2doc.sirius.feature" version="0.9.0.qualifier">
-      <category name="Sirius Provider"/>
+      <category name="M2Doc"/>
    </feature>
    <category-def name="M2Doc" label="M2Doc">
       <description>
          plug-ins for the M2Doc technology
-      </description>
-   </category-def>
-   <category-def name="Sirius Provider" label="Sirius Provider">
-      <description>
-         Plugins containing Sirius provider to provide diagram images.
       </description>
    </category-def>
 </site>
