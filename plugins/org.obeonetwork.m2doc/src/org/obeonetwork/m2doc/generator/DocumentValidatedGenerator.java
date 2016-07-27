@@ -29,7 +29,7 @@ public class DocumentValidatedGenerator {
      */
     private DocumentTemplate template;
     /**
-     * The file where the generation is stored.
+     * The file where the validation is stored.
      */
     private String destinationFileName;
 
@@ -37,17 +37,15 @@ public class DocumentValidatedGenerator {
      * Create a new {@link DocumentValidatedGenerator} instance given a template.
      * paths.
      * 
-     * @param inputDocumentFilePath
-     *            the template used for generation
      * @param destinationFileName
-     *            the destination file name of the generation
+     *            the destination file of the validation
      * @param theTemplate
      *            the template used to generate
      * @throws DocumentGenerationException
      *             when a generation problem occurs.
      */
-    public DocumentValidatedGenerator(String inputDocumentFilePath, String destinationFileName,
-            DocumentTemplate theTemplate) throws DocumentGenerationException {
+    public DocumentValidatedGenerator(String destinationFileName, DocumentTemplate theTemplate)
+            throws DocumentGenerationException {
         this.template = theTemplate;
         this.destinationFileName = destinationFileName;
     }
@@ -55,21 +53,30 @@ public class DocumentValidatedGenerator {
     /**
      * actually trigger the document generation process.
      * 
+     * @return if there are errors
      * @throws IOException
      *             if an I/O problem occurs during generation.
      */
-    public void generate() throws IOException {
+    public boolean generate() throws IOException {
+        boolean inError = false;
         TemplateParsingValidator templateValidator = new TemplateParsingValidator();
         templateValidator.doSwitch(this.template.getBody());
+        inError = templateValidator.isInError();
         for (Template footerTemplate : this.template.getFooters()) {
             TemplateParsingValidator footerValidator = new TemplateParsingValidator();
             footerValidator.doSwitch(footerTemplate);
+            inError = inError || footerValidator.isInError();
+
         }
         for (Template headerTemplate : this.template.getHeaders()) {
             TemplateParsingValidator headerValidator = new TemplateParsingValidator();
             headerValidator.doSwitch(headerTemplate);
+            inError = inError || headerValidator.isInError();
         }
-        saveFile(template.getDocument(), destinationFileName);
+        if (inError) {
+            saveFile(template.getDocument(), destinationFileName);
+        }
+        return inError;
     }
 
     /**

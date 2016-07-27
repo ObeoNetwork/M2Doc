@@ -52,12 +52,25 @@ public class TemplateParsingValidator extends TemplateSwitch<AbstractConstruct> 
      * Th separator between the tag were a parsing error has been detected and the start of the error message.
      */
     private static final String LOCATION_SEPARATOR = "<---";
+    /**
+     * Tells whether the template contains parsing errors or not.
+     */
+    private boolean inError;
 
     /**
      * Create a new {@link TemplateParsingValidator} instance given some definitions
      * and a query environment.
      */
     public TemplateParsingValidator() {
+    }
+
+    /**
+     * REturns <code>true</code> when the template contains at least one parsing error.
+     * 
+     * @return <code>true</code> when there are pasing errors.
+     */
+    public boolean isInError() {
+        return inError;
     }
 
     @Override
@@ -89,6 +102,7 @@ public class TemplateParsingValidator extends TemplateSwitch<AbstractConstruct> 
     @SuppressWarnings("deprecation")
     protected void insertErrorMessages(AbstractConstruct abstractConstruct) {
         EList<DocumentParsingError> parsingErrors = abstractConstruct.getParsingErrors();
+        inError = inError || parsingErrors.size() > 0;
         int lastOriginRunIndex = 0;
         if (abstractConstruct.getRuns().size() > 0) {
             lastOriginRunIndex = abstractConstruct.getRuns().get(0).getParagraph().getRuns()

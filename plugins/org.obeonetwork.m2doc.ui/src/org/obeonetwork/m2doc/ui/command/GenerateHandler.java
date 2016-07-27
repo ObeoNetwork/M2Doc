@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.ui.command;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -62,9 +63,17 @@ public class GenerateHandler extends AbstractHandler {
             if (generation != null) {
                 try {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    IFile generatedfile = generator.generate(generation);
-                    MessageDialog.openConfirm(shell, "M2Doc generation",
-                            "The document '" + generatedfile.getLocation().toString() + "' is generated.");
+                    List<IFile> generatedfiles = generator.generate(generation);
+                    if (generatedfiles.size() == 1) {
+                        MessageDialog.openConfirm(shell, "M2Doc generation",
+                                "The document '" + generatedfiles.get(0).getLocation().toString() + "' is generated.");
+                    } else if (generatedfiles.size() == 2) {
+                        MessageDialog.openConfirm(shell, "M2Doc generation",
+                                "The document '" + generatedfiles.get(0).getLocation().toString()
+                                    + "' is generated. \n\n The template file contains validation errors, please read '"
+                                    + generatedfiles.get(1).getLocation().toString() + "'.");
+                    }
+
                 } catch (IOException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));

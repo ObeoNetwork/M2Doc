@@ -11,9 +11,12 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.api;
 
+import com.google.common.collect.Lists;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -35,6 +38,7 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
+import org.obeonetwork.m2doc.generator.DocumentValidatedGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
@@ -61,7 +65,7 @@ public class GenconfToDocumentGenerator {
      * @throws IOException
      *             IOException
      */
-    public IFile generate(Generation generation)
+    public List<IFile> generate(Generation generation)
             throws DocumentGenerationException, IOException, DocumentParserException {
         if (generation == null) {
             throw new IllegalArgumentException("Null configuration object passed.");
@@ -87,12 +91,15 @@ public class GenconfToDocumentGenerator {
         // get template and result file
         IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
         IFile generatedFile = project.getFile(new Path(generation.getResultFileName()));
+        String validationPath = generatedFile.getProjectRelativePath().removeFileExtension().toString() + "-error."
+            + generatedFile.getFileExtension();
+        IFile validationFile = project.getFile(new Path(validationPath));
         if (!templateFile.exists()) {
             throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
         }
 
         // generate result file.
-        return generate(generation, project, templateFile, generatedFile);
+        return generate(generation, project, templateFile, generatedFile, validationFile);
     }
 
     /**
@@ -104,9 +111,11 @@ public class GenconfToDocumentGenerator {
      *            template file
      * @param generatedFile
      *            generated file
+     * @param validationFile
+     *            generated file
      * @param project
      *            IProject
-     * @return generated file
+     * @return generated file and validation file if exists
      * @throws IOException
      *             if an I/O problem occurs
      * @throws DocumentParserException
@@ -114,8 +123,8 @@ public class GenconfToDocumentGenerator {
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
      */
-    public IFile generate(Generation generation, IProject project, IFile templateFile, IFile generatedFile)
-            throws IOException, DocumentParserException, DocumentGenerationException {
+    public List<IFile> generate(Generation generation, IProject project, IFile templateFile, IFile generatedFile,
+            IFile validationFile) throws IOException, DocumentParserException, DocumentGenerationException {
         // get acceleo environment
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
@@ -147,12 +156,24 @@ public class GenconfToDocumentGenerator {
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentParser parser = new DocumentParser(document, queryEnvironment);
         DocumentTemplate template = parser.parseDocument();
+
+        // validate template
+        DocumentValidatedGenerator validator = new DocumentValidatedGenerator(
+                validationFile.getLocation().toFile().getAbsolutePath(), template);
+        boolean inError = validator.generate();
+
+        // lauch generation
         DocumentGenerator generator = new DocumentGenerator(project.getFullPath().toString(),
                 templateFile.getLocation().toFile().getAbsolutePath(),
                 generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment,
                 generation);
         generator.generate();
-        return generatedFile;
+
+        List<IFile> generatedFiles = Lists.newArrayList(generatedFile);
+        if (inError) {
+            generatedFiles.add(validationFile);
+        }
+        return generatedFiles;
     }
 
     /**
