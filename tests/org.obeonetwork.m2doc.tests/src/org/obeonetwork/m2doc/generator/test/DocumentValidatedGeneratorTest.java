@@ -53,8 +53,8 @@ public class DocumentValidatedGeneratorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentParser parser = new DocumentParser(document, queryEnvironment);
         DocumentTemplate template = parser.parseDocument();
-        DocumentValidatedGenerator generator = new DocumentValidatedGenerator(
-                "templates/testParsingErrorSimpleTag.docx", "results/testParsingErrorSimpleTag.docx", template);
+        DocumentValidatedGenerator generator = new DocumentValidatedGenerator("results/testParsingErrorSimpleTag.docx",
+                template);
         generator.generate();
         assertTrue(new File("results/testParsingErrorSimpleTag.docx").exists());
     }
