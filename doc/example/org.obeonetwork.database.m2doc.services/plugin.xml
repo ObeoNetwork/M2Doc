@@ -19,100 +19,58 @@
             serviceClass="org.obeonetwork.database.wgen.services.AbstractTableServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.ColumnServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.ConstraintServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.DataBaseElementServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.DataBaseServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.ForeignKeyElementServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.ForeignKeyServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.IndexElementServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.IndexServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.NamedElementServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.PrimaryKeyServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.SequenceServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.TableContainerServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.TableServiceHolder"
             serviceToken="default">
       </service>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.services.register">
       <service
             serviceClass="org.obeonetwork.database.wgen.services.ViewServiceHolder"
             serviceToken="default">
