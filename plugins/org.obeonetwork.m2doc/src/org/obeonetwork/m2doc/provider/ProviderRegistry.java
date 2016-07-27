@@ -11,15 +11,18 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.provider;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Status;
 import org.obeonetwork.m2doc.M2DocPlugin;
 
 /**
- * {@link ProviderRegistry} is used to register {@link IProvider} like {@link AbstractDiagramProvider}. All providers' instances are stored in a map
+ * {@link ProviderRegistry} is used to register {@link IProvider} like {@link AbstractDiagramProvider}. All providers' instances are stored
+ * in a map
  * with their class qualified name as key.
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
@@ -38,6 +41,11 @@ public final class ProviderRegistry {
      * instance.
      */
     private Map<String, IProvider> registry = Maps.newHashMap();
+
+    /**
+     * Diagram providers.
+     */
+    private List<IProvider> diagramProviderRegistry = Lists.newArrayList();
 
     /**
      * Private constructor to prevent creation of other instances.
@@ -67,7 +75,13 @@ public final class ProviderRegistry {
         } else {
             registry.put(classQualifiedName, provider);
         }
-
+        if (provider instanceof AbstractDiagramProvider) {
+            if (((AbstractDiagramProvider) provider).isDefault()) {
+                diagramProviderRegistry.add(0, provider);
+            } else {
+                diagramProviderRegistry.add(provider);
+            }
+        }
     }
 
     /**
@@ -82,6 +96,7 @@ public final class ProviderRegistry {
         IProvider providerToRemove = registry.get(classQualifiedName);
         if (providerToRemove != null) {
             registry.remove(classQualifiedName);
+            diagramProviderRegistry.remove(providerToRemove);
             return true;
         }
         return false;
@@ -100,5 +115,14 @@ public final class ProviderRegistry {
             return registry.get(providerFullQualifiedName.trim());
         }
         return null;
+    }
+
+    /**
+     * Return all diagram providers.
+     * 
+     * @return all diagram providers.
+     */
+    public List<IProvider> getDiagramProviders() {
+        return diagramProviderRegistry;
     }
 }

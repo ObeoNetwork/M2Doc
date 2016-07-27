@@ -20,6 +20,16 @@ import java.util.Map;
  * @author pguilet<pierre.guilet@obeo.fr>
  */
 public abstract class AbstractDiagramProvider implements IProvider {
+
+    /**
+     * Diagram default width.
+     */
+    private int width;
+    /**
+     * Diagram default height.
+     */
+    private int height;
+
     /**
      * Returns the path to the image file of the diagram.
      * 
@@ -34,4 +44,48 @@ public abstract class AbstractDiagramProvider implements IProvider {
      */
     public abstract List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException;
 
+    /**
+     * Return if the provider is a default one.
+     * 
+     * @return if the provider is a default one.
+     */
+    public abstract boolean isDefault();
+
+    /**
+     * return the default width.
+     * 
+     * @return the width
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * set the default width.
+     * 
+     * @param width
+     *            the width to set
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    /**
+     * return the default height.
+     * 
+     * @return the height
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * set the default height.
+     * 
+     * @param height
+     *            the height to set
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }

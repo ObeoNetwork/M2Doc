@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
-import org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider;
+import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -134,7 +134,7 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
             throw new AssertionFailedError("An exception should have been thrown");
         } catch (ProviderException e) {
             assertEquals(
-                    "Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider\"",
+                    "Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider\"",
                     e.getMessage());
         }
     }
@@ -159,7 +159,7 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
             throw new AssertionFailedError("An exception should have been thrown");
         } catch (ProviderException e) {
             assertEquals(
-                    "Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider\"",
+                    "Image cannot be computed because no representation title has been provided to the provider \"org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider\"",
                     e.getMessage());
         }
     }

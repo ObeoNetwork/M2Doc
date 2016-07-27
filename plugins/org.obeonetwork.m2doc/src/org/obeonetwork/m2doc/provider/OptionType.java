@@ -12,6 +12,8 @@
 package org.obeonetwork.m2doc.provider;
 
 /**
+ * M2Doc expression option type.
+ * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
 public enum OptionType {

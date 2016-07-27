@@ -8,7 +8,7 @@
  *     Contributors:
  *         Obeo - initial API and implementation
  *******************************************************************************/
-package org.obeonetwork.m2doc.sirius;
+package org.obeonetwork.m2doc.sirius.providers;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -152,6 +152,11 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
         optionsMap.put(TARGET_ROOT_OBJECT_KEY, OptionType.AQL_EXPRESSION);
         optionsMap.put(DIAGRAM_DESCRIPTION_NAME_KEY, OptionType.STRING);
         return optionsMap;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return false;
     }
 
 }

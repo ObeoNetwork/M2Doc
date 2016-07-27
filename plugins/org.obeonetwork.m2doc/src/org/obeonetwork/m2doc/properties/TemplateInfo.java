@@ -37,12 +37,24 @@ public class TemplateInfo {
      */
     private Map<String, String> variables;
 
+    /**
+     * Constructor.
+     * 
+     * @param document
+     *            XWPFDocument
+     */
     public TemplateInfo(XWPFDocument document) {
         this.serviceTokens = Lists.newArrayList();
         this.variables = Maps.newHashMap();
         extractMetaData(document);
     }
 
+    /**
+     * Extract meta datas.
+     * 
+     * @param document
+     *            XWPFDocument
+     */
     private void extractMetaData(XWPFDocument document) {
         CustomProperties props = document.getProperties().getCustomProperties();
         List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();

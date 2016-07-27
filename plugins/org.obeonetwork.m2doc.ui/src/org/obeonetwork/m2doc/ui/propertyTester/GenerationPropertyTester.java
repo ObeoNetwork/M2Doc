@@ -40,10 +40,6 @@ public class GenerationPropertyTester extends PropertyTester {
         if (receiver instanceof Generation) {
             return true;
         }
-        // if (receiver instanceof IResource
-        // && Activator.GENCONF_EXTENSION_FILE.equals(((IResource) receiver).getFileExtension())) {
-        // return true;
-        // }
         if (receiver instanceof List) {
             for (Object object : (List) receiver) {
                 if (!test(object, property, args, expectedValue)) {

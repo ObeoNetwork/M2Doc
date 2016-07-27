@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
-import org.obeonetwork.m2doc.sirius.SiriusDiagramByDiagramDescriptionNameProvider;
+import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -101,7 +101,7 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
             throw new AssertionFailedError("An exception should have been thrown");
         } catch (ProviderException e) {
             assertEquals(
-                    "Image cannot be computed because no root EObject has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByDiagramDescriptionNameProvider\"",
+                    "Image cannot be computed because no root EObject has been provided to the provider \"org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider\"",
                     e.getMessage());
         }
     }
@@ -154,7 +154,7 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
             throw new AssertionFailedError("An exception should have been thrown");
         } catch (ProviderException e) {
             assertEquals(
-                    "Image cannot be computed because no diagram description name has been provided to the provider \"org.obeonetwork.m2doc.sirius.SiriusDiagramByDiagramDescriptionNameProvider\"",
+                    "Image cannot be computed because no diagram description name has been provided to the provider \"org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider\"",
                     e.getMessage());
         }
     }

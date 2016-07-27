@@ -17,16 +17,34 @@ package org.obeonetwork.m2doc.parser;
  * @author Romain Guider
  */
 public enum TokenType {
+    /**
+     * Token type constants.
+     */
+    // CHECKSTYLE:OFF
     AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"),
     LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), STATIC("static"), IMAGE("m:image"), EOF("end of file."),
     WTABLE("table"), DIAGRAM("m:diagram");
-
+    // CHECKSTYLE:ON
+    /**
+     * Token type value.
+     */
     private String value;
 
+    /**
+     * Constructor.
+     * 
+     * @param theValue
+     *            String
+     */
     TokenType(String theValue) {
         this.value = theValue;
     }
 
+    /**
+     * return the token value.
+     * 
+     * @return the token value
+     */
     public String getValue() {
         return value;
     }

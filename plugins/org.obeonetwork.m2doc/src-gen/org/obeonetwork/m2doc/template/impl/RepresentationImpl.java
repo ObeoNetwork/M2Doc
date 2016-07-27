@@ -208,7 +208,6 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
 	 * <!-- end-user-doc -->
      * @generated
      */
-	@SuppressWarnings("unchecked")
     @Override
 	public void eSet(int featureID, Object newValue) {
         switch (featureID) {
