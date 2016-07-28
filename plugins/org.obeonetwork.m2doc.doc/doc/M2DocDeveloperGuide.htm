@@ -9,8 +9,8 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <meta name=ProgId content=Word.Document>
 <meta name=Generator content="Microsoft Word 14">
 <meta name=Originator content="Microsoft Word 14">
-<link rel=File-List href="m2DocUserGuide_fichiers/filelist.xml">
-<link rel=Edit-Time-Data href="m2DocUserGuide_fichiers/editdata.mso">
+<link rel=File-List href="M2DocDeveloperGuide_fichiers/filelist.xml">
+<link rel=Edit-Time-Data href="M2DocDeveloperGuide_fichiers/editdata.mso">
 <!--[if !mso]>
 <style>
 v\:* {behavior:url(#default#VML);}
@@ -23,15 +23,15 @@ w\:* {behavior:url(#default#VML);}
   <o:Author>Romain Guider</o:Author>
   <o:LastAuthor>NLEPINE</o:LastAuthor>
   <o:Revision>2</o:Revision>
-  <o:TotalTime>254</o:TotalTime>
-  <o:Created>2016-07-21T07:28:00Z</o:Created>
-  <o:LastSaved>2016-07-21T07:28:00Z</o:LastSaved>
-  <o:Pages>5</o:Pages>
-  <o:Words>1934</o:Words>
-  <o:Characters>10640</o:Characters>
-  <o:Lines>88</o:Lines>
-  <o:Paragraphs>25</o:Paragraphs>
-  <o:CharactersWithSpaces>12549</o:CharactersWithSpaces>
+  <o:TotalTime>203</o:TotalTime>
+  <o:Created>2016-07-28T07:41:00Z</o:Created>
+  <o:LastSaved>2016-07-28T07:41:00Z</o:LastSaved>
+  <o:Pages>4</o:Pages>
+  <o:Words>1258</o:Words>
+  <o:Characters>6924</o:Characters>
+  <o:Lines>57</o:Lines>
+  <o:Paragraphs>16</o:Paragraphs>
+  <o:CharactersWithSpaces>8166</o:CharactersWithSpaces>
   <o:Version>14.00</o:Version>
  </o:DocumentProperties>
  <o:OfficeDocumentSettings>
@@ -39,11 +39,11 @@ w\:* {behavior:url(#default#VML);}
   <o:AllowPNG/>
  </o:OfficeDocumentSettings>
 </xml><![endif]-->
-<link rel=dataStoreItem href="m2DocUserGuide_fichiers/item0001.xml"
-target="m2DocUserGuide_fichiers/props002.xml">
-<link rel=themeData href="m2DocUserGuide_fichiers/themedata.thmx">
+<link rel=dataStoreItem href="M2DocDeveloperGuide_fichiers/item0001.xml"
+target="M2DocDeveloperGuide_fichiers/props002.xml">
+<link rel=themeData href="M2DocDeveloperGuide_fichiers/themedata.thmx">
 <link rel=colorSchemeMapping
-href="m2DocUserGuide_fichiers/colorschememapping.xml">
+href="M2DocDeveloperGuide_fichiers/colorschememapping.xml">
 <!--[if gte mso 9]><xml>
  <w:WordDocument>
   <w:SpellingState>Clean</w:SpellingState>
@@ -379,6 +379,13 @@ href="m2DocUserGuide_fichiers/colorschememapping.xml">
 	mso-generic-font-family:swiss;
 	mso-font-pitch:variable;
 	mso-font-signature:-520081665 -1073717157 41 0 66047 0;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-520092929 1073806591 9 0 415 0;}
  /* Style Definitions */
  p.MsoNormal, li.MsoNormal, div.MsoNormal
 	{mso-style-unhide:no;
@@ -432,8 +439,7 @@ h1
 	mso-font-kerning:0pt;
 	mso-fareast-language:EN-US;}
 h2
-	{mso-style-noshow:yes;
-	mso-style-priority:9;
+	{mso-style-priority:9;
 	mso-style-qformat:yes;
 	mso-style-link:"Titre 2 Car";
 	mso-style-next:Normal;
@@ -460,8 +466,7 @@ h2
 	mso-themecolor:accent1;
 	mso-fareast-language:EN-US;}
 h3
-	{mso-style-noshow:yes;
-	mso-style-priority:9;
+	{mso-style-priority:9;
 	mso-style-qformat:yes;
 	mso-style-link:"Titre 3 Car";
 	mso-style-next:Normal;
@@ -643,7 +648,8 @@ p.MsoTitleCxSpLast, li.MsoTitleCxSpLast, div.MsoTitleCxSpLast
 	mso-font-kerning:14.0pt;
 	mso-fareast-language:EN-US;}
 a:link, span.MsoHyperlink
-	{mso-style-priority:99;
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
 	color:blue;
 	mso-themecolor:hyperlink;
 	text-decoration:underline;
@@ -783,7 +789,6 @@ span.Titre1Car
 	font-weight:bold;}
 span.Titre2Car
 	{mso-style-name:"Titre 2 Car";
-	mso-style-noshow:yes;
 	mso-style-priority:9;
 	mso-style-unhide:no;
 	mso-style-locked:yes;
@@ -804,7 +809,6 @@ span.Titre2Car
 	font-weight:bold;}
 span.Titre3Car
 	{mso-style-name:"Titre 3 Car";
-	mso-style-noshow:yes;
 	mso-style-priority:9;
 	mso-style-unhide:no;
 	mso-style-locked:yes;
@@ -888,9 +892,9 @@ div.WordSection1
 	{page:WordSection1;}
  /* List Definitions */
  @list l0
-	{mso-list-id:315493664;
+	{mso-list-id:239607113;
 	mso-list-type:hybrid;
-	mso-list-template-ids:1690483864 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+	mso-list-template-ids:1664138348 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
 @list l0:level1
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -955,9 +959,9 @@ div.WordSection1
 	text-indent:-18.0pt;
 	font-family:Wingdings;}
 @list l1
-	{mso-list-id:1000740747;
+	{mso-list-id:315493664;
 	mso-list-type:hybrid;
-	mso-list-template-ids:-1660525754 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+	mso-list-template-ids:1690483864 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
 @list l1:level1
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -1022,9 +1026,9 @@ div.WordSection1
 	text-indent:-18.0pt;
 	font-family:Wingdings;}
 @list l2
-	{mso-list-id:1116828553;
+	{mso-list-id:481625219;
 	mso-list-type:hybrid;
-	mso-list-template-ids:922236350 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+	mso-list-template-ids:1779309486 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
 @list l2:level1
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -1089,9 +1093,9 @@ div.WordSection1
 	text-indent:-18.0pt;
 	font-family:Wingdings;}
 @list l3
-	{mso-list-id:1717852301;
+	{mso-list-id:1000740747;
 	mso-list-type:hybrid;
-	mso-list-template-ids:-1934730512 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+	mso-list-template-ids:-1660525754 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
 @list l3:level1
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -1156,9 +1160,9 @@ div.WordSection1
 	text-indent:-18.0pt;
 	font-family:Wingdings;}
 @list l4
-	{mso-list-id:2025017109;
+	{mso-list-id:1116828553;
 	mso-list-type:hybrid;
-	mso-list-template-ids:-181115756 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+	mso-list-template-ids:922236350 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
 @list l4:level1
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -1216,6 +1220,207 @@ div.WordSection1
 	text-indent:-18.0pt;
 	font-family:"Courier New";}
 @list l4:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l5
+	{mso-list-id:1582594217;
+	mso-list-type:hybrid;
+	mso-list-template-ids:2077629448 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+@list l5:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l5:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l5:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l5:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l5:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l5:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l5:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l5:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l5:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l6
+	{mso-list-id:1717852301;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1934730512 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+@list l6:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l6:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l6:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l6:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l6:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l6:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l6:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l6:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l6:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l7
+	{mso-list-id:2025017109;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-181115756 67895297 67895299 67895301 67895297 67895299 67895301 67895297 67895299 67895301;}
+@list l7:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l7:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l7:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l7:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l7:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l7:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l7:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l7:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l7:level9
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0A7;
 	mso-level-tab-stop:none;
@@ -1286,61 +1491,30 @@ table.MsoTableGrid
 <div style='mso-element:para-border-div;border:none;border-bottom:solid #4F81BD 1.0pt;
 mso-border-bottom-themecolor:accent1;padding:0cm 0cm 4.0pt 0cm'>
 
-<p class=MsoTitle><span lang=EN-US style='mso-ansi-language:EN-US'>M2Doc User
+<p class=MsoTitle><span lang=EN-US style='mso-ansi-language:EN-US'>M2Doc Developer
 Guide<o:p></o:p></span></p>
 
 </div>
 
-<h1><span lang=EN-US style='mso-ansi-language:EN-US'>Template authoring<o:p></o:p></span></h1>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>M2Doc has
+been designed to be an extensible template language. <br>
+It means that some tags from template language used to retrieve information
+from the generation environment can be used in different manner with different
+options. It is up to anybody to provide a way to handle a tag thanks to an
+extension point. <o:p></o:p></span></p>
 
-<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
-style='mso-bidi-font-size:10.0pt;mso-bidi-font-family:Arial;color:black;
-mso-ansi-language:EN-US'>The M2Doc technology adopts an approach where the
-document authoring tools (<span class=SpellE><u>Libre</u></span> Office, Open
-Office, <span class=GramE>MS</span> Word) are leverage as much as possible.
-What other tool is more adapted to style and static part authoring? <o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>You also
+can <span class=GramE>provides</span> some services to extend the AQL language.<o:p></o:p></span></p>
 
-<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
-style='mso-bidi-font-size:10.0pt;mso-bidi-font-family:Arial;color:black;
-mso-ansi-language:EN-US'>Furthermore, these tools are quite common and widely
-adopted so that there's no <u>necessity</u> to learn yet another document
-authoring tool. Last but not least, there's a great deal of document models
-legacy all over the places that should be reused as easily as possible.</span><span
-lang=EN-US style='mso-bidi-font-size:10.0pt;mso-bidi-font-family:Arial;
-mso-ansi-language:EN-US'><o:p></o:p></span></p>
+<h1><span lang=EN-US style='mso-ansi-language:EN-US'>M2Doc Architecture<o:p></o:p></span></h1>
 
-<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
-style='mso-bidi-font-size:10.0pt;mso-bidi-font-family:Arial;color:black;
-mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
-style='mso-bidi-font-size:10.0pt;mso-bidi-font-family:Arial;color:black;
-mso-ansi-language:EN-US'>Templates are made of static parts and dynamic parts.
-Static parts are produced in the generated document as they are in the
-templates while dynamic parts are replaced by some text which depends on the
-provided input models. Dynamic parts are provided in fields so that there's
-always a clear separation between static and dynamic parts.<span
-style='mso-spacerun:yes'>   </span></span><span lang=EN-US style='mso-bidi-font-size:
-10.0pt;mso-bidi-font-family:Arial;mso-ansi-language:EN-US'><o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>To
+understand better how M2Doc is working and how you will have to contribute
+extensions, let's have a look at the architecture:<o:p></o:p></span></p>
 
-<h2><span lang=EN-US style='mso-ansi-language:EN-US'>How to cope with field
-codes<o:p></o:p></span></h2>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The edition
-of template must be made in a mode where field codes are visible. In MS Word,
-you can toggle this mode on/off by pressing Alt-F9. When the mode is on, you
-should see this </span><!--[if supportFields]><span style='mso-element:field-begin'></span><span
-lang=EN-US style='mso-ansi-language:EN-US'><span
-style='mso-spacerun:yes'> </span>field </span><span style='mso-element:field-separator'></span><![endif]--><b><span
-lang=EN-US style='mso-ansi-language:EN-US'>Erreur&nbsp;! Signet non défini.</span></b><!--[if supportFields]><span
-style='mso-element:field-end'></span><![endif]--><span lang=EN-US
-style='mso-ansi-language:EN-US'> like the next picture shows:</span><span
-lang=EN-US style='mso-ansi-language:EN-US;mso-fareast-language:FR;mso-no-proof:
-yes'> </span><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shapetype
+<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shapetype
  id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
  path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
  <v:stroke joinstyle="miter"/>
@@ -1360,662 +1534,480 @@ yes'> </span><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shapetype
  </v:formulas>
  <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
  <o:lock v:ext="edit" aspectratio="t"/>
-</v:shapetype><v:shape id="Image_x0020_3" o:spid="_x0000_i1039" type="#_x0000_t75"
- style='width:42pt;height:21.75pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image001.png" o:title=""/>
+</v:shapetype><v:shape id="Image_x0020_20" o:spid="_x0000_i1031" type="#_x0000_t75"
+ style='width:477pt;height:279.75pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="M2DocDeveloperGuide_fichiers/image001.png" o:title=""/>
 </v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>To insert a
-new field, press Ctrl-F9. You obtain an empty field like this:</span><span
-lang=EN-US style='mso-ansi-language:EN-US;mso-fareast-language:FR;mso-no-proof:
-yes'> </span><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_2" o:spid="_x0000_i1038" type="#_x0000_t75" style='width:36pt;
- height:33.75pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image002.png" o:title=""/>
-</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US;mso-fareast-language:
-FR;mso-no-proof:yes'>That you must edit to provide the code and instructions. <o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The M2Doc
+base depends on AQL to be able to retrieve information from models or even to get
+a value for tag options.<o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US;mso-fareast-language:
-FR;mso-no-proof:yes'>The next section gives all the details that are necessary
-to edit M2Doc generation tags. Alternatively, if you start you’re template from
-the provided model (templateModel.dotx),<span style='mso-spacerun:yes'> 
-</span>you can use the Insert&gt;QuickPart&gt;AutoText to insert M2Doc
-generation tags. Once you know the tag, it might be faster to just edit them.<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>It contains
+a unique extension point that allows <span class=GramE>to contribute</span> diagram
+providers to enhanced diagram tag capabilities. <o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US;mso-fareast-language:
-FR;mso-no-proof:yes'>You must toggle field codes on to read this document.<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Currently,
+this extension point allows <span class=GramE>to provide</span> only diagram
+provider. <span class=GramE>But in the future any extensible tag with the need
+of a different provider kind than the diagram one could be declared by this
+extension point (x and <span class=SpellE>yProvider</span>).</span><o:p></o:p></span></p>
 
-<h2><span lang=EN-US style='mso-ansi-language:EN-US;mso-fareast-language:FR;
-mso-no-proof:yes'>M2Doc static generation tags<o:p></o:p></span></h2>
+<h1><span lang=EN-US style='mso-ansi-language:EN-US'>Providing tag handling<o:p></o:p></span></h1>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US;mso-fareast-language:
-FR'>M2Doc provides right now 4 generation tags that have fixed formats. Those
-tags are described below:<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Thanks to the
+extension point, you can specify how some tag considered as extensible by M2Doc
+will be <span class=GramE>handle</span> to generate content and what options
+they will contain to achieve the handling. <o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l3 level1 lfo2'><![if !supportLists]><span
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>To extend
+the way the tag is used, we provide with M2Doc an extension point (org.obeonetwork.m2doc.providers.register)
+you will have to use: <o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
+ id="Image_x0020_1" o:spid="_x0000_i1030" type="#_x0000_t75" style='width:582.75pt;
+ height:267pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="M2DocDeveloperGuide_fichiers/image002.png" o:title=""/>
+</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>You can
+specify your diagram providers with this extension point. For the moment, only
+diagram providers can be registered. <br>
+If new extensible tags are created in the future with the need of a different
+kind of provider than the diagram one, then the extension point will be
+enriched. <o:p></o:p></span></p>
+
+<h2><span lang=EN-US style='mso-ansi-language:EN-US'>Extending the
+&quot;diagram&quot; tag<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The meaning
+of the diagram tag is to insert an image or images one after the other from
+Sirius diagrams in the produced document with the use of a provider.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The
+extensible part of this tag is the way that images to insert are created and
+provided.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>For example
+let's consider the M2Doc provider &quot;</span><span class=SpellE><span
+lang=EN-US style='font-size:10.0pt;line-height:115%;font-family:"Courier New";
+color:black;background:lightgrey;mso-highlight:lightgrey;mso-ansi-language:
+EN-US'>SiriusDiagramByTitleProvider</span></span><span lang=EN-US
+style='mso-ansi-language:EN-US'>&quot;. This provider handles tag with the
+following format (activate fields if you don't see it): <o:p></o:p></span></p>
+
+<p class=MsoNormal><span class=GramE><span lang=EN-US style='font-size:12.0pt;
+line-height:115%;mso-ansi-language:EN-US'>{ m:diagram</span></span><span
+lang=EN-US style='font-size:12.0pt;line-height:115%;mso-ansi-language:EN-US'> <span
+class=SpellE>title:&quot;Schema</span> Diagram&quot; provider:&quot;org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider&quot;
+}<o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>To compute
+images, the provider uses the title option.<br>
+To add a provider for diagram tag, just register your provider to the extension
+point like in the following picture:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
+ id="Image_x0020_21" o:spid="_x0000_i1029" type="#_x0000_t75" style='width:763.5pt;
+ height:249pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="M2DocDeveloperGuide_fichiers/image003.png" o:title=""/>
+</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:navy;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>   </span>&lt;extension</span><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:black;mso-ansi-language:
+EN-US'><span style='mso-spacerun:yes'>         </span></span><span class=GramE><span
+lang=EN-US style='font-size:10.0pt;font-family:Consolas;color:navy;mso-ansi-language:
+EN-US'>point</span></span><span lang=EN-US style='font-size:10.0pt;font-family:
+Consolas;color:navy;mso-ansi-language:EN-US'>=</span><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:green;mso-ansi-language:
+EN-US'>&quot;org.obeonetwork.m2doc.providers.register&quot;</span><span
+lang=EN-US style='font-size:10.0pt;font-family:Consolas;color:navy;mso-ansi-language:
+EN-US'>&gt;</span><span lang=EN-US style='font-size:10.0pt;font-family:Consolas;
+mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:black;mso-ansi-language:
+EN-US'><span style='mso-spacerun:yes'>      </span></span><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:navy;mso-ansi-language:EN-US'>&lt;<span
+class=SpellE>diagramProvider</span></span><span lang=EN-US style='font-size:
+10.0pt;font-family:Consolas;mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:black;mso-ansi-language:
+EN-US'><span style='mso-spacerun:yes'>            </span></span><span
+class=GramE><span lang=EN-US style='font-size:10.0pt;font-family:Consolas;
+color:navy;mso-ansi-language:EN-US'>diagramClass</span></span><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:navy;mso-ansi-language:EN-US'>=</span><span
+lang=EN-US style='font-size:10.0pt;font-family:Consolas;color:green;mso-ansi-language:
+EN-US'>&quot;org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider&quot;</span><span
+lang=EN-US style='font-size:10.0pt;font-family:Consolas;color:navy;mso-ansi-language:
+EN-US'>&gt;</span><span lang=EN-US style='font-size:10.0pt;font-family:Consolas;
+mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none'><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:black;mso-ansi-language:
+EN-US'><span style='mso-spacerun:yes'>      </span></span><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;color:navy;mso-ansi-language:EN-US'>&lt;/<span
+class=SpellE>diagramProvider</span>&gt;</span><span lang=EN-US
+style='font-size:10.0pt;font-family:Consolas;mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+Consolas;color:black'><span style='mso-spacerun:yes'>   </span></span><span
+style='font-size:10.0pt;line-height:115%;font-family:Consolas;color:navy'>&lt;/<span
+class=GramE>extension</span>&gt;</span><span lang=EN-US style='mso-ansi-language:
+EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Your
+provider to be fully functional must be an implementation of org.obeonetwork.m2doc.provider.DiagramProvider
+class:<o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
+ id="Image_x0020_4" o:spid="_x0000_i1028" type="#_x0000_t75" style='width:746.25pt;
+ height:323.25pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="M2DocDeveloperGuide_fichiers/image004.png" o:title=""/>
+</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>This class
+contains two methods <o:p></o:p></span></p>
+
+<p class=MsoListParagraph style='text-indent:-18.0pt;mso-list:l2 level1 lfo12'><![if !supportLists]><span
 lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
 Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>{m:&lt;query&gt;}&nbsp;:
-the directive is replaced with the string representation of the query’s
-evaluation result <o:p></o:p></span></p>
+</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>“<span
+class=SpellE><span class=GramE>getRepresentationImagePath</span></span>” that
+takes as entry a map of options parameters and returns the list of all images
+path to insert as replacement of the tag in the produced Word document. <br>
+The image behind the path must <span class=GramE>exists</span> on the file
+system when returned or no image will be inserted.<o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l3 level1 lfo2'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE><span lang=EN-US
-style='mso-ansi-language:EN-US'>{ m:for</span></span><span lang=EN-US
-style='mso-ansi-language:EN-US'> &lt;<span class=SpellE>var</span>&gt; |
-&lt;query&gt;} iterated body { m:endfor }&nbsp;: the directive is replaced by
-the iterated generation of the body over a collection of values. The specified variable
-is successively bound to the values of the evaluated collection so that it is
-accessible from queries inside the body.<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The options
+map will contains all options evaluated that were present in the diagram tag
+except the one handled by M2Doc that are “width”, “height”, “legend”, “<span
+class=SpellE>legendPos</span>” and “provider”.<o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l3 level1 lfo2'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>{
-m:if &lt;expression1&gt;} true branch { m:elseif &lt;expression2&gt; } … {
-m:elseif &lt;<span class=SpellE>expression_n</span>&gt;} … { m:else } … </span>{<span
-lang=EN-US style='mso-ansi-language:EN-US'>m:endif </span>}<span lang=EN-US
-style='mso-ansi-language:EN-US'>&nbsp;: conditional generation. The first
-branch among <span class=GramE>the if</span> and <span class=SpellE>elseif</span>
-directives which expression evaluates to true is processed. If no expression
-evaluates to true, the else branch is processed (if present).<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Options
+will be evaluated regarding their specified kind that must be provided with the
+method coming from the interface <span class=SpellE>IProvider</span> of all
+provider <span class=GramE>diagram</span> or not:<span
+style='mso-spacerun:yes'>  </span><o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l3 level1 lfo2'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE><span lang=EN-US
-style='mso-ansi-language:EN-US'>{ m:image</span></span><span lang=EN-US
-style='mso-ansi-language:EN-US'> file:&quot;image file path&quot; <span
-class=SpellE>width:&quot;image</span> insertion width&quot;<span
-style='mso-spacerun:yes'>  </span><span class=SpellE>heigth</span>:&quot;image
-insertion <span class=SpellE>heigth</span>&quot; <span class=SpellE>legend:&quot;image</span>
-legend&quot; <span class=SpellE>legendPos</span>:&quot;above/below&quot;}&nbsp;:
-inserts the image which file is specified (through a path relative to the
-eclipse project where the generation model is placed). The insertion will have
-the specified width, height and a legend will be inserted at the specified
-position if one is specified (default is below).<o:p></o:p></span></p>
+<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
+ id="Image_x0020_3" o:spid="_x0000_i1027" type="#_x0000_t75" style='width:747pt;
+ height:177pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="M2DocDeveloperGuide_fichiers/image005.png" o:title=""/>
+</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
 
-<h2><span lang=EN-US style='mso-ansi-language:EN-US'>M2Doc dynamic generation
-tags<o:p></o:p></span></h2>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>This method
+allows to <span class=GramE>specified</span> how each option will be parsed and
+provided by associating the option’s key and an evaluation kind.<o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>M2Doc
-provides a way to extend its information retrieval for a tag by registering a
-provider by an extension point. Each provider uses its own options in addition
-of the one generically provided par M2Doc core. Many providers can be
-associated to a same kind of tag and any one of those can be choose to retrieve
-information in a tag. <o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>For the
+moment, two kinds of evaluation can be done by M2Doc with option:<o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>To specify
-what provider to use with a tag, an option specified by M2Doc core is provided.
-Currently, M2Doc uses one dynamic tag &quot;diagram&quot; that don't have a
-default handling. The option for this tag used to specify the provider is
-&quot;<span class=SpellE>diagramProvider</span>&quot;. <br>
-A provider must be provided by the extension point so it can be used. M2Doc
-core comes with two providers handling the diagram tag in a different way:<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l3 level1 lfo2'><![if !supportLists]><span
+<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l0 level1 lfo11'><![if !supportLists]><span
 lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
 Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
 style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>The
-diagram tag has the following format: <span class=GramE>{ m:diagram</span> <span
-class=SpellE>width:&quot;image</span> insertion width&quot;<span
-style='mso-spacerun:yes'>  </span><span class=SpellE>heigth</span>:&quot;image
-insertion <span class=SpellE>heigth</span>&quot; <span class=SpellE>legend:&quot;image</span>
-legend&quot; <span class=SpellE>legendPos</span>:&quot;above/below&quot;
-providerOptionKey1:&quot;providerOptionValue1&quot;
-providerOptionKey2:&quot;providerOptionValue2&quot; etc…}: This tag allows
-insertion of images retrieved from Sirius diagrams. Width, height, legend and
-legend position are options handled by M2Doc. However, the image retrieval must
-be ensured by using provider options. Currently, M2Doc provides two ways of
-using this tag to get an image from a Sirius diagram with a different number of
-options :<o:p></o:p></span></p>
+STRING one that parse the option as a string and give it to the provider as the
+same exact string.<o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l3 level2 lfo2'><![if !supportLists]><span
-lang=EN-US style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
-mso-ansi-language:EN-US'><span style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>By
-Sirius representation title with the provider </span><span lang=EN-US
-style='font-size:12.0pt;line-height:115%;mso-ansi-language:EN-US'>&quot;org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider&quot;</span><span
-lang=EN-US style='mso-ansi-language:EN-US'>: in this case, the tag would have
-the following format </span><span class=GramE><span lang=EN-US
-style='font-size:12.0pt;line-height:115%;mso-ansi-language:EN-US'>{ m:diagram</span></span><span
-lang=EN-US style='font-size:12.0pt;line-height:115%;mso-ansi-language:EN-US'>
-diagramProvider:&quot;org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider&quot;
-width:&quot;200&quot; height:&quot;200&quot; <span class=SpellE>legend:&quot;plan</span>
-de <span class=SpellE>forme</span> du dingy <span class=SpellE>herbulot</span>&quot;
-<span class=SpellE>legendPos</span>:&quot;below&quot; <span class=SpellE>title:&quot;'RF</span>
-Schema'&quot;}. The option used by the provider is &quot;title&quot;. The title
-must correspond to an existing Sirius representation name. For example, in the
-previous tag, we use the title 'RF Schema' that we can see in the model of my
-generation project in the next picture: <br>
-</span><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape id="Image_x0020_8"
- o:spid="_x0000_i1037" type="#_x0000_t75" style='width:173.25pt;height:207pt;
- visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image003.png" o:title=""/>
+<p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l0 level1 lfo11'><![if !supportLists]><span
+lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>The
+AQL_EXPRESSION one that parse an option as a string and interpret it as an AQL
+expression and give to the provider the evaluated expression result that can be
+any JAVA object.<o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>A JAVA <span
+class=SpellE>enum</span> contains all the kind of evaluation that M2Doc
+provides (org.obeonetwork.m2doc.provider.OptionType).<o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>In our
+example, “title” is an AQL expression</span><span lang=EN-US style='font-size:
+12.0pt;line-height:115%;mso-ansi-language:EN-US'>. The <span class=GramE>method
+look</span> like this: <o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-size:12.0pt;line-height:115%;mso-fareast-language:
+FR;mso-no-proof:yes'><v:shape id="Image_x0020_5" o:spid="_x0000_i1026" type="#_x0000_t75"
+ style='width:411.75pt;height:135pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="M2DocDeveloperGuide_fichiers/image006.png" o:title=""/>
 </v:shape></span><span lang=EN-US style='font-size:12.0pt;line-height:115%;
-mso-ansi-language:EN-US'><br>
-The &quot;title&quot; option is an AQL expression. <br>
-This method is the easiest one to use. But it cannot be <span class=SpellE>use</span>
-if the same title is used for more than one representation. In this case, the <span
-class=GramE>provider retrieve</span> the first representation found with the
-given title. If this is a problem, then you will have to use the other method
-provided by M2Doc.<br style='mso-special-character:line-break'>
-<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
-<![endif]></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+mso-ansi-language:EN-US'><o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l3 level2 lfo2'><![if !supportLists]><span
-lang=EN-US style='font-family:"Courier New";mso-fareast-font-family:"Courier New";
-mso-ansi-language:EN-US'><span style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+<p class=MsoNormal><span lang=EN-US style='font-size:12.0pt;line-height:115%;
+mso-ansi-language:EN-US'>If no option type is provided for an option, then the
+default STRING one will be use.<o:p></o:p></span></p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l5 level1 lfo13'><![if !supportLists]><span
+lang=EN-US style='font-size:12.0pt;line-height:115%;font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol;mso-ansi-language:
+EN-US'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span lang=EN-US style='font-size:12.0pt;
-line-height:115%;mso-ansi-language:EN-US'>By Sirius diagram description name
-and a semantic model objet
-(&quot;org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider&quot;):
-</span><span lang=EN-US style='mso-ansi-language:EN-US'>in this case, the tag
-would have the following <span class=GramE>format<span
-style='mso-spacerun:yes'>  </span><span style='font-size:12.0pt;line-height:
-115%'>{</span></span></span><span lang=EN-US style='font-size:12.0pt;
-line-height:115%;mso-ansi-language:EN-US'> m:diagram
-diagramProvider:&quot;org.obeonetwork.m2doc.sirius.SiriusDiagramByRepresentationAndEObjectProvider&quot;
-width:&quot;200&quot; height:&quot;200&quot; <span class=SpellE>legend:&quot;plan</span>
-de <span class=SpellE>forme</span> du dingy <span class=SpellE>herbulot</span>&quot;
-<span class=SpellE>legendPos</span>:&quot;below&quot; <span class=SpellE>rootObject</span>:&quot;<span
-class=SpellE>db.schemas</span>-&gt;first()&quot; <span class=SpellE>diagramDescriptionName</span>:&quot;Schema
-Diagram&quot;}. <br>
-Provider's options are &quot;<span class=SpellE>rootObject</span>&quot; and
-&quot;<span class=SpellE>diagramDescriptionName</span>&quot;.</span><span
-lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+line-height:115%;mso-ansi-language:EN-US'>“<span class=SpellE><span
+class=GramE>isDefault</span></span>”: first, let’s explain how a provider is
+chosen. <o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l3 level3 lfo2'><![if !supportLists]><span
-lang=EN-US style='font-family:Wingdings;mso-fareast-font-family:Wingdings;
-mso-bidi-font-family:Wingdings;mso-ansi-language:EN-US'><span style='mso-list:
-Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp; </span></span></span><![endif]><span
-class=SpellE><span class=GramE><span lang=EN-US style='font-size:12.0pt;
-line-height:115%;mso-ansi-language:EN-US'>rootObject</span></span></span><span
-lang=EN-US style='font-size:12.0pt;line-height:115%;mso-ansi-language:EN-US'>
-is an AQL expression allowing to select the semantic objet that must be the
-root object of Sirius representations were to look for the one with the title
-provided by the other option. </span><span lang=EN-US style='mso-ansi-language:
-EN-US'><o:p></o:p></span></p>
+<p class=MsoListParagraphCxSpMiddle><span lang=EN-US style='font-size:12.0pt;
+line-height:115%;mso-ansi-language:EN-US'>If we have a provider tag, we try to
+get this provider. If it is not found, we get all the registered providers via
+the m2doc extension point, we iterate on them and the first provider witch have
+its mandatory option tags matching is chosen. If a provider is defined by
+default, it will be added at the beginning of this list, so it will have
+priority on the others. <o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:108.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l3 level3 lfo2'><![if !supportLists]><span
-lang=EN-US style='font-family:Wingdings;mso-fareast-font-family:Wingdings;
-mso-bidi-font-family:Wingdings;mso-ansi-language:EN-US'><span style='mso-list:
-Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp; </span></span></span><![endif]><span
-class=SpellE><span class=GramE><span lang=EN-US style='font-size:12.0pt;
-line-height:115%;mso-ansi-language:EN-US'>diagramDescriptionName</span></span></span><span
-lang=EN-US style='font-size:12.0pt;line-height:115%;mso-ansi-language:EN-US'>
-is a String corresponding to the diagram description name that the
-representation from which we want an image must have.</span><span lang=EN-US
-style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+<p class=MsoListParagraphCxSpLast><span lang=EN-US style='font-size:12.0pt;
+line-height:115%;mso-ansi-language:EN-US'>The provider tag is optional, if your
+provider is by default, it will be tested before the other ones. That allows to
+write &lt;<span class=SpellE>m<span class=GramE>:diagram</span></span> title=”<span
+class=SpellE>myDiagram</span>”&gt; instead of<span style='mso-spacerun:yes'>  
+</span>&lt;<span class=SpellE>m:diagram</span> title=”<span class=SpellE>myDiagram</span>”
+provider:&quot;org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider&quot;&gt;<o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
-auto'><span lang=EN-US style='mso-ansi-language:EN-US'>To retrieve the same
-representation image than the previous example, we will have to use the
-corresponding diagram description that we find in the design file (Schema
-Diagram<span class=GramE>) :</span> <o:p></o:p></span></p>
+<h3><span lang=EN-US style='mso-ansi-language:EN-US'>Error handling<o:p></o:p></span></h3>
 
-<p class=MsoListParagraphCxSpLast style='margin-left:72.0pt;mso-add-space:auto'><span
-style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape id="Image_x0020_14"
- o:spid="_x0000_i1036" type="#_x0000_t75" style='width:339.75pt;height:167.25pt;
- visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image004.png" o:title=""/>
-</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><br>
-To select the root object we use a variable &quot;<span class=SpellE>db</span>&quot;
-specified in the generation configuration model pointing at the semantic
-database root model element. Then we go through it until we find the root
-element from which we want an image of the representation using it as a root
-element.<br>
-If many representations are found for the given diagram description name and
-root object, then they are all shown in their retrieval order one after the
-other.<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>If some
+parameters are missing or are incorrect, you can warn M2Doc by throwing a <span
+class=SpellE>ProviderException</span> with the wanted message. <br>
+When M2Doc catch this exception it will insert your message at the tag
+position.<o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><span
-style='mso-tab-count:1'>                </span>No other providers are provided
-natively by M2Doc for diagram tag. But if you have install provider created by
-external sources, then use their documentation to know how to use it.<o:p></o:p></span></p>
+<h1><span lang=EN-US style='mso-ansi-language:EN-US'>Extending other tags<o:p></o:p></span></h1>
 
-<h2><span lang=EN-US style='mso-ansi-language:EN-US'>Document generation and
-style<o:p></o:p></span></h2>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Currently,
+only the tag &quot;diagram&quot; can be <span class=GramE>extend</span>. But
+any new tag that will be added and which will be considered as extensible could
+have providers attached to it.<span style='mso-spacerun:yes'>  </span><o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The style
-of the fragments of generated documents is determined by the style of the
-templates parts. <o:p></o:p></span></p>
+<h1><span lang=EN-US style='mso-ansi-language:EN-US'>Providing AQL services by
+services registry<br style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]><o:p></o:p></span></h1>
 
-<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l2 level1 lfo4'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE><span lang=EN-US
-style='mso-ansi-language:EN-US'>Iteration&nbsp;:</span></span><span lang=EN-US
-style='mso-ansi-language:EN-US'> there’s no text style in the tag itself. The
-style of the body is reproduced as is. The style of the paragraph holding the
-opening <b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:
-normal'>m<span class=GramE>:for</span></i></b> tag, however, is reproduced
-throughout the iterations.<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>One of the
+nice <span class=GramE>feature</span> of the AQL engine is that the set of
+services is extensible at will. In the field of document generation, it means
+that we may provide, for a given application, a set of services that are tailored
+to ease the development of templates against a given <span class=GramE>meta</span>
+model. <o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l2 level1 lfo4'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE><span lang=EN-US
-style='mso-ansi-language:EN-US'>Conditional&nbsp;:</span></span><span
-lang=EN-US style='mso-ansi-language:EN-US'> there’s no text style in the tag
-itself. The <span class=GramE>style of the branch's bodies are</span>
-reproduced as is.<o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>As the
+technology matures, we will also probably provide a set of services that are of
+general interest for model to document generation. <o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l2 level1 lfo4'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE><span lang=EN-US
-style='mso-ansi-language:EN-US'>Image&nbsp;:</span></span><span lang=EN-US
-style='mso-ansi-language:EN-US'> there’s no text style associated to this
-style. The paragraph style is reproduced thought. <o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Yet, how do
+we register AQL services? Here’s a step by step guide based on the example
+provided in the M2Doc repository. <o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l2 level1 lfo4'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE><span lang=EN-US
-style='mso-ansi-language:EN-US'>Queries&nbsp;:</span></span><span lang=EN-US
-style='mso-ansi-language:EN-US'> the style of the first run of the expression
-is used to generate the text that replaces the query’s field. For instance, {<span
-class=GramE>m&nbsp;:<span class=SpellE><span style='color:#E36C0A;mso-themecolor:
-accent6;mso-themeshade:191'>table</span>.comments</span></span>} will produce
-comments in orange while {m&nbsp;:<span class=SpellE>table.<span
-style='color:#E36C0A;mso-themecolor:accent6;mso-themeshade:191'>comments</span></span>}
-will produce comments in black.<o:p></o:p></span></p>
+<h2><span lang=EN-US style='mso-ansi-language:EN-US'>Writing AQL Services<o:p></o:p></span></h2>
 
-<h2><span lang=EN-US style='mso-ansi-language:EN-US'>How to create dynamic
-tables<o:p></o:p></span></h2>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>AQL
+Services are provided through simple Java classes with a no-argument
+constructor. Services are the method of the class. The values of the method
+parameters are provided through the arguments of the service call in the AQL
+queries (for that matter, the target of the service call is considered as the
+first argument of the service call). For instance, the next AQL expression <o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>There’s no
-specific tag required to create a dynamic table. Here is an example of a
-dynamic table description&nbsp;to provide a database table’s details:<span
-style='mso-tab-count:1'>              </span><o:p></o:p></span></p>
-
-<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
- style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
- mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
- <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
-  <td width=307 valign=top style='width:230.3pt;border:solid windowtext 1.0pt;
-  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Name</p>
-  </td>
-  <td width=307 valign=top style='width:230.3pt;border:solid windowtext 1.0pt;
-  border-left:none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:
-  solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Description</p>
-  </td>
- </tr>
-</table>
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span class=SpellE><span class=GramE><span
+lang=EN-US style='font-family:"Courier New";mso-ansi-language:EN-US'>db.allTables</span></span></span><span
+class=GramE><span lang=EN-US style='font-family:"Courier New";mso-ansi-language:
+EN-US'>()</span></span><span lang=EN-US style='font-family:"Courier New";
+mso-ansi-language:EN-US'><o:p></o:p></span></p>
 
 <p class=MsoNormal><span class=GramE><span lang=EN-US style='mso-ansi-language:
-EN-US'>{ m:for</span></span><span lang=EN-US style='mso-ansi-language:EN-US'>
-table | <span class=SpellE>db.tables</span> }<o:p></o:p></span></p>
+EN-US'>makes</span></span><span lang=EN-US style='mso-ansi-language:EN-US'> a
+call to the corresponding method in the Database service’s class&nbsp;:<o:p></o:p></span></p>
 
-<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
- style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
- mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
- <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes'>
-  <td width=307 valign=top style='width:230.3pt;border:solid windowtext 1.0pt;
-  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span class=GramE>{ m:<b style='mso-bidi-font-weight:normal'><span
-  style='color:#E36C0A;mso-themecolor:accent6;mso-themeshade:191'>table.name</span></b></span>
-  }</p>
-  </td>
-  <td width=307 valign=top style='width:230.3pt;border:solid windowtext 1.0pt;
-  border-left:none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:
-  solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span class=GramE>{ m:table.comments</span> }</p>
-  </td>
- </tr>
-</table>
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span class=GramE><span lang=EN-US
+style='font-family:"Courier New";mso-ansi-language:EN-US'>public</span></span><span
+lang=EN-US style='font-family:"Courier New";mso-ansi-language:EN-US'>
+List&lt;Table&gt; <span class=SpellE>allTables</span>(<span class=SpellE>DataBase</span>
+<span class=SpellE>db</span>)<o:p></o:p></span></p>
 
-<p class=MsoNormal><span class=GramE>{ m:endfor</span> }</p>
+<p class=MsoNormal style='background:white;mso-background-themecolor:background1'><span
+lang=EN-US style='mso-bidi-font-family:"Courier New";mso-ansi-language:EN-US'>In
+that example, there’s a single parameter which is filled with the service’s
+call target. <o:p></o:p></span></p>
 
-<p class=MsoNormal><b style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:
-normal'><span style='color:#548DD4;mso-themecolor:text2;mso-themetint:153'>Table
-<span class=GramE>{ SEQ</span> Tableau \* ARABIC } : tables description<o:p></o:p></span></i></b></p>
+<p class=MsoNormal style='background:white;mso-background-themecolor:background1'><span
+lang=EN-US style='mso-bidi-font-family:"Courier New";mso-ansi-language:EN-US'>Nothing
+prevents to pass on other arguments. <o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>It is
-sufficient to enclose the dynamic part in a generation tag. Here, we have a
-simple iteration tag. We could have a combination of iteration and conditional
-tags or whatever other combinations is necessary.<o:p></o:p></span></p>
+<p class=MsoNormal style='background:white;mso-background-themecolor:background1'><span
+lang=EN-US style='mso-bidi-font-family:"Courier New";mso-ansi-language:EN-US'>The
+service class looks like <span class=GramE>this&nbsp;:</span><o:p></o:p></span></p>
 
-<p class=MsoNormal><span class=GramE><span lang=EN-US style='mso-ansi-language:
-EN-US'>Note&nbsp;:</span></span><span lang=EN-US style='mso-ansi-language:EN-US'>
-invisible characters might sneak in between the two table fragments (the header
-and the iterated body). Toggle on the mode where these characters are shown and
-remove them, if there are any, after <span class=GramE>the for</span> tag. <o:p></o:p></span></p>
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span class=GramE><span lang=EN-US
+style='font-size:8.0pt;mso-bidi-font-size:11.0pt;line-height:115%;font-family:
+"Courier New";mso-ansi-language:EN-US'>public</span></span><span lang=EN-US
+style='font-size:8.0pt;mso-bidi-font-size:11.0pt;line-height:115%;font-family:
+"Courier New";mso-ansi-language:EN-US'> class <span class=SpellE>DatabaseServices</span>
+{<o:p></o:p></span></p>
 
-<h2><span lang=EN-US style='mso-ansi-language:EN-US'>How to create dynamic
-lists<o:p></o:p></span></h2>
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span>/**<o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Creation of
-dynamic lists is quite similar to dynamic <span class=GramE>tables&nbsp;:</span>
-there’s no specific tag required. As bulleted or numbered lists are style
-attributes the style is carried from the template to the generated doc as <span
-class=GramE>is&nbsp;:</span> <o:p></o:p></span></p>
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span>* No <span class=SpellE>arg</span> constructor
+required by the AQL runtime.<o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Tables for
-database <span class=GramE>{ m:db.name</span> }<o:p></o:p></span></p>
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span>*/<o:p></o:p></span></p>
 
-<p class=MsoNormal><span class=GramE><span lang=EN-US style='mso-ansi-language:
-EN-US'>{ m:for</span></span><span lang=EN-US style='mso-ansi-language:EN-US'>
-table | <span class=SpellE>db.tables</span> }<o:p></o:p></span></p>
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+class=GramE>public</span> <span class=SpellE>DatabaseServices</span>() {<o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span>/**<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span>* Returns the content of a table cell that is
+checked when the column is in<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span>* <span class=GramE>a</span> foreign key.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span>* <o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span><span class=GramE>* @<span class=SpellE>param</span>
+col the column.</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span><span class=GramE>* @return the character ‘X’
+when the column is a foreign key.</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+style='mso-spacerun:yes'> </span>*/<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span><span
+class=GramE>public</span> String <span class=SpellE>checkForeignKey</span>(Column
+col) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:2'>             </span><span
+class=GramE>return</span> <span class=SpellE>col.isInForeignKey</span>() ?
+&quot;X<span class=GramE>&quot; :</span> &quot;&quot;;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'><span style='mso-tab-count:1'>       </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:#F2F2F2;mso-background-themecolor:background1;
+mso-background-themeshade:242'><span lang=EN-US style='font-size:8.0pt;
+mso-bidi-font-size:11.0pt;line-height:115%;font-family:"Courier New";
+mso-ansi-language:EN-US'>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:white;mso-background-themecolor:background1'><span
+lang=EN-US style='mso-bidi-font-family:"Courier New";mso-ansi-language:EN-US'>We
+only left the first method to illustrate the way of writing services. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='background:white;mso-background-themecolor:background1'><span
+lang=EN-US style='mso-bidi-font-family:"Courier New";mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<h2><span lang=EN-US style='mso-ansi-language:EN-US'>AQL Service registration<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>For the
+M2Doc engine to be able to call services from AQL queries, it is necessary that
+those are registered in some way. To allow this, the M2Doc runtime provides an
+extension point. A plug-in that contribute services to the M2Doc runtime must
+then declare an extension to do <span class=GramE>so&nbsp;:</span><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
+ id="Image_x0020_7" o:spid="_x0000_i1025" type="#_x0000_t75" style='width:427.5pt;
+ height:161.25pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="M2DocDeveloperGuide_fichiers/image007.png" o:title=""/>
+</v:shape></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The
+extension has two <span class=GramE>attributes&nbsp;:</span><o:p></o:p></span></p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l7 level1 lfo9'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
 Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE>{ m:table.name</span> }&nbsp;:
-</p>
+</span></span></span><![endif]>The service class <span class=SpellE>itsefl</span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l1 level2 lfo6'><![if !supportLists]><span
-style='font-family:"Courier New";mso-fareast-font-family:"Courier New"'><span
-style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE>{ m:for</span> col | <span
-class=SpellE>table.columns</span> }<span class=GramE>{ m:col.name</span> }&nbsp;:
-{ m:col.comments }</p>
+<p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l7 level1 lfo9'><![if !supportLists]><span
+lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>A
+service token. This attribute is intended to isolate services dedicated to a
+given M2Doc application in a bundle. This feature is not complete yet and any
+registration must be made through the default token. When the feature is
+complete, it will be required to provide the set of service’s token required
+through the template’s custom properties. This will allow <span class=GramE>to
+have</span> several services with the same name for distinct applications
+without interference.<o:p></o:p></span></p>
 
-<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:
-auto;text-indent:-18.0pt;mso-list:l1 level2 lfo6'><![if !supportLists]><span
-style='font-family:"Courier New";mso-fareast-font-family:"Courier New"'><span
-style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE>{ m:endfor</span> }</p>
-
-<p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
-style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=GramE>{ m:endfor</span> }</p>
-
-<p class=MsoNormal style='margin-left:18.0pt'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='mso-ansi-language:EN-US'>Note</span></b><span
-lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;: for the bullets to be
-correctly spaced and so that there’s no spurious carriage return introduced,
-the <span class=SpellE>endfor</span> tags must be on bullets at the same level
-as the corresponding tag (as above).<o:p></o:p></span></p>
-
-<h2><span lang=EN-US style='mso-ansi-language:EN-US'>How to create dynamic
-hyperlinks<o:p></o:p></span></h2>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Hyperlinks
-are WORD fields looking like the following example {HYPERLINK &quot;http://www.obeo.fr&quot;}.<o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>If you want
-to dynamically retrieve the link with an AQL expression, it is possible. Just
-adds the request in a WORD field in the double quote like that:<o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>{HYPERLINK
-&quot;m:'' http://www.obeo.fr &quot;}<o:p></o:p></span></p>
-
-<p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
-lang=EN-US style='mso-ansi-language:EN-US'>Warning</span></b><span lang=EN-US
-style='mso-ansi-language:EN-US'> :</span></span><span lang=EN-US
-style='mso-ansi-language:EN-US'> This feature is currently an experimental one.
-In some context it may be not working.<o:p></o:p></span></p>
+<p class=MsoNormal style='margin-left:18.0pt'><span lang=EN-US
+style='mso-ansi-language:EN-US'>Alternatively, a given M2Doc integration is
+free to provide a set of standard services that will be registered in the
+integration code. In such a scenario, documentation generation will probably be
+made through integration’s specific actions that aren’t documented here.<o:p></o:p></span></p>
 
 <p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
 
-<h2><span lang=EN-US style='mso-ansi-language:EN-US'>Headings and tables of
-contents<o:p></o:p></span></h2>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Headings
-are just treated like tables and lists <span class=GramE>are&nbsp;:</span> the
-style makes it all. <o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Here’s how
-we would create headings that corresponds to a database tables:<o:p></o:p></span></p>
-
-<h2><span class=GramE><span lang=EN-US style='mso-ansi-language:EN-US'>{ m:for</span></span><span
-lang=EN-US style='mso-ansi-language:EN-US'> table |<span class=SpellE>db.tables</span>
-} Table <span class=GramE>{ m:table.name</span> }<o:p></o:p></span></h2>
-
-<p class=MsoNormal><span class=GramE><b style='mso-bidi-font-weight:normal'><span
-lang=EN-US style='mso-ansi-language:EN-US'>Description&nbsp;:</span></b></span><b
-style='mso-bidi-font-weight:normal'><span lang=EN-US style='mso-ansi-language:
-EN-US'> </span></b><span lang=EN-US style='mso-ansi-language:EN-US'>{
-m:table.comments }<o:p></o:p></span></p>
-
-<h3><span class=GramE><span lang=EN-US style='mso-ansi-language:EN-US'>{ m:for</span></span><span
-lang=EN-US style='mso-ansi-language:EN-US'> col |<span class=SpellE>table.columns</span>
-}Column <span class=GramE>{ m:col.name</span> }<o:p></o:p></span></h3>
-
-<p class=MsoNormal><span class=GramE><span lang=EN-US style='mso-ansi-language:
-EN-US'>Description&nbsp;:</span></span><span lang=EN-US style='mso-ansi-language:
-EN-US'> { m:col.comments }<o:p></o:p></span></p>
-
-<p class=MsoNormal><span class=GramE><span lang=EN-US style='mso-ansi-language:
-EN-US'>{ m:endfor</span></span><span lang=EN-US style='mso-ansi-language:EN-US'>
-}<o:p></o:p></span></p>
-
-<p class=MsoNormal><span class=GramE><span lang=EN-US style='mso-ansi-language:
-EN-US'>{ m:endfor</span></span><span lang=EN-US style='mso-ansi-language:EN-US'>
-}<o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Insertion
-of table of contents has no interactions with the <span class=SpellE>templating</span>.
-The table of content is just a field which is processed by Word which collects
-all the headings. The only requirement is to make an update of the field right
-after document generation. <o:p></o:p></span></p>
-
-<h2><span class=SpellE>Miscelaneous</span> points</h2>
-
-<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>Adding
-dynamic content in headers and footers is simply done by inserting generation
-tags in the header and footer. <o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l1 level1 lfo6'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>Dynamic
-content in text area isn’t supported yet. Any generation tag that appears in a
-text area will just be reproduced as is and won’t be processed as a generation
-tag.<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpLast style='margin-left:0cm;mso-add-space:auto'><span
-lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
-
-<h1><span lang=EN-US style='mso-ansi-language:EN-US'>Documentation generation<o:p></o:p></span></h1>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>As of now,
-custom properties are not implemented and a generation configuration model must
-be used to generate a document from a template. <o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Document
-generation is done in three <span class=GramE>steps&nbsp;:</span><o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l0 level1 lfo8'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>Template
-authoring (in a modeling project)<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l0 level1 lfo8'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>Generation
-configuration with the creation of a configuration model which binds values to
-variables<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt;mso-list:l0 level1 lfo8'><![if !supportLists]><span
-style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span class=SpellE>Generation</span> <span
-class=SpellE>itself</span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>We provide
-a step by step tutorial that explains how to generate a document from a database
-model. To start with, M2Doc and the database DSL must be installed in your
-bundle. Then, import the example modeling project
-(org.obeonetwork.m2doc.dbexample) in your workspace.
-(File&gt;Import&gt;General&gt;Existing Project into Workspace). Open the
-project. </span>You <span class=SpellE>should</span> have <span class=SpellE>this</span>
-<span class=SpellE>folder</span> <span class=SpellE>layout</span>&nbsp;:</p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_1" o:spid="_x0000_i1035" type="#_x0000_t75" style='width:189pt;
- height:154.5pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image005.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>We will
-keep the existing configuration model (.<span class=SpellE>genconf</span>) and
-create another one to document the procedure.<o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>First, initialize
-the configuration model: right click on the template file &gt;Initialize
-Documentation Configurations:<o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_19" o:spid="_x0000_i1034" type="#_x0000_t75" style='width:387pt;
- height:290.25pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image006.png" o:title=""/>
-</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The
-configuration model is created by default near the template.<o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="_x0000_i1033" type="#_x0000_t75" style='width:184.5pt;height:162.75pt;
- visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image007.png" o:title=""/>
-</v:shape></span><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>You will
-have to set those two URIs in the Package NSURI attribute: <o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l4 level1 lfo10'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>http://www.obeonetwork.org/dsl/database/1.0<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpMiddle style='text-indent:-18.0pt;mso-list:l4 level1 lfo10'><![if !supportLists]><span
-lang=EN-US style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol;mso-ansi-language:EN-US'><span style='mso-list:Ignore'>·<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='mso-ansi-language:EN-US'>http://www.obeonetwork.org/dsl/typeslibrary/1.0<o:p></o:p></span></p>
-
-<p class=MsoListParagraphCxSpLast style='margin-left:72.0pt;mso-add-space:auto'><span
-lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
-
-<p class=MsoNormal><span class=GramE><span lang=EN-US style='mso-ansi-language:
-EN-US'>and</span></span><span lang=EN-US style='mso-ansi-language:EN-US'> the
-result file name.<o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The
-resulting property sheet should look like this:<o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_18" o:spid="_x0000_i1032" type="#_x0000_t75" style='width:453.75pt;
- height:124.5pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image008.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Now, you
-have to configure the variables definitions. If these variables are set in the
-template file, they are automatically added to the configuration model and you
-just need to value them.<o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Otherwise,
-you have to create these variables definitions.<o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><span
-style='mso-spacerun:yes'> </span>First, you have to load the main database <span
-class=GramE>resource&nbsp;:</span> <o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_9" o:spid="_x0000_i1031" type="#_x0000_t75" style='width:254.25pt;
- height:422.25pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image009.png" o:title=""/>
-</v:shape></span><span style='mso-ansi-language:EN-US'><span
-style='mso-spacerun:yes'> </span><span lang=EN-US><o:p></o:p></span></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Select the
-database model that is in the model <span class=GramE>directory&nbsp;:</span><o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_10" o:spid="_x0000_i1030" type="#_x0000_t75" style='width:321.75pt;
- height:292.5pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image010.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Now that
-the database resource is loaded, we will be able to use model element in it as
-variable’s values. <o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>We first
-create a string <span class=GramE>variable&nbsp;:</span><o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_11" o:spid="_x0000_i1029" type="#_x0000_t75" style='width:326.25pt;
- height:152.25pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image011.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal>And a model variable&nbsp;:</p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_12" o:spid="_x0000_i1028" type="#_x0000_t75" style='width:375.75pt;
- height:117pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image012.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Set the
-values of the variables in the property view. The model variable must be
-defined like <span class=GramE>follows&nbsp;:</span><o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_13" o:spid="_x0000_i1027" type="#_x0000_t75" style='width:209.25pt;
- height:80.25pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image013.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Now, you
-just have to invoke the generation by right clicking on the generation model <span
-class=GramE>element&nbsp;:</span><o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_20" o:spid="_x0000_i1026" type="#_x0000_t75" style='width:447.75pt;
- height:193.5pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image014.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>A message
-indicates everything went <span class=GramE>well&nbsp;:</span><o:p></o:p></span></p>
-
-<p class=MsoNormal><span style='mso-fareast-language:FR;mso-no-proof:yes'><v:shape
- id="Image_x0020_21" o:spid="_x0000_i1025" type="#_x0000_t75" style='width:387pt;
- height:116.25pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="m2DocUserGuide_fichiers/image015.png" o:title=""/>
-</v:shape></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Refresh the
-‘doc’ directory if needed. The result should be in it. <o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
 
 </div>
 
