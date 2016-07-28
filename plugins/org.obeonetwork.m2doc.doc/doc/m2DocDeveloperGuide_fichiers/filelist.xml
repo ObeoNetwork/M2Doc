@@ -1,15 +1,5 @@
-<!--
-    Copyright (c) 2016 Obeo. 
-       All rights reserved. This program and the accompanying materials
-       are made available under the terms of the Eclipse Public License v1.0
-       which accompanies this distribution, and is available at
-       http://www.eclipse.org/legal/epl-v10.html
-        
-        Contributors:
-            Obeo - initial API and implementation
- -->
 <xml xmlns:o="urn:schemas-microsoft-com:office:office">
- <o:MainFile HRef="../m2DocDeveloperGuide.html"/>
+ <o:MainFile HRef="../M2DocDeveloperGuide.htm"/>
  <o:File HRef="item0001.xml"/>
  <o:File HRef="props002.xml"/>
  <o:File HRef="themedata.thmx"/>
@@ -20,5 +10,6 @@
  <o:File HRef="image004.png"/>
  <o:File HRef="image005.png"/>
  <o:File HRef="image006.png"/>
+ <o:File HRef="image007.png"/>
  <o:File HRef="filelist.xml"/>
 </xml>

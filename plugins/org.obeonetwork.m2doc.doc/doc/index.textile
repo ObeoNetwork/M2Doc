@@ -8,5 +8,5 @@ The M2Doc tool is the combination of the M2Doc template language and Eclipse UI 
 
 Index : 
 
-<a href="m2DocUserGuide.html">User guide</a>
-<a href="m2DocDeveloperGuide.html">Developer guide</a>
+<a href="m2DocUserGuide.htm">User guide</a>
+<a href="m2DocDeveloperGuide.htm">Developer guide</a>
