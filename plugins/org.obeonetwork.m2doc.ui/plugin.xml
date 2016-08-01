@@ -23,6 +23,10 @@
             name="Initialize Configurations Command"
             id="org.obeonetwork.m2doc.ui.initializeConfigurations">
       </command>
+      <command
+            name="Validate Template Command"
+            id="org.obeonetwork.m2doc.ui.validate">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -33,6 +37,10 @@
       <handler
             commandId="org.obeonetwork.m2doc.ui.initializeConfigurations"
             class="org.obeonetwork.m2doc.ui.command.InitializeConfigurationsHandler">
+      </handler>
+      <handler
+            commandId="org.obeonetwork.m2doc.ui.validate"
+            class="org.obeonetwork.m2doc.ui.command.ValidateHandler">
       </handler>
    </extension>
    
@@ -65,6 +73,26 @@
                commandId="org.obeonetwork.m2doc.ui.initializeConfigurations"
                icon="icons/m2doc_init.png"
                label="Initialize Documentation Configurations"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                         <test
+                               forcePluginActivation="true"
+                               property="org.obeonetwork.m2doc.ui.testTemplate">
+                        </test>
+                     </iterate>
+                  </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.obeonetwork.m2doc.ui.validate"
+               icon="icons/m2doc_validate.png"
+               label="Validate Documentation Template"
                style="push">
             <visibleWhen
                   checkEnabled="false">

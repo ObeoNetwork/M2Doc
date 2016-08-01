@@ -11,21 +11,19 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
+import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
@@ -162,7 +160,7 @@ public class DocumentGenerator {
         }
         // At this point, the documnet has been generated and just needs being
         // writen on disk.
-        saveFile();
+        POIServices.getInstance().saveFile(destinationDocument, destinationFileName);
     }
 
     /**
@@ -193,16 +191,7 @@ public class DocumentGenerator {
      */
     private XWPFDocument createDestinationDocument(String inputDocumentFileName)
             throws IOException, InvalidFormatException {
-        FileInputStream is = new FileInputStream(inputDocumentFileName);
-        OPCPackage oPackage;
-        try {
-            oPackage = OPCPackage.open(is);
-        } finally {
-            if (is != null) {
-                is.close();
-            }
-        }
-        XWPFDocument document = new XWPFDocument(oPackage);
+        XWPFDocument document = POIServices.getInstance().getXWPFDocument(inputDocumentFileName);
         int size = document.getBodyElements().size();
         for (int i = 0; i < size; i++) {
             document.removeBodyElement(0);
@@ -210,14 +199,4 @@ public class DocumentGenerator {
         return document;
     }
 
-    /**
-     * Saves the generated document.
-     * 
-     * @throws IOException
-     *             if an I/O problem occurs.
-     */
-    private void saveFile() throws IOException {
-        FileOutputStream os = new FileOutputStream(destinationFileName);
-        this.destinationDocument.write(os);
-    }
 }

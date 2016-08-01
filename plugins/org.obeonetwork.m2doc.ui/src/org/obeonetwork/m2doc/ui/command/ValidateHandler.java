@@ -25,6 +25,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.api.GenconfToDocumentGenerator;
+import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.ui.Activator;
 
 /**
@@ -32,11 +34,11 @@ import org.obeonetwork.m2doc.ui.Activator;
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
-public class InitializeConfigurationsHandler extends AbstractHandler {
+public class ValidateHandler extends AbstractHandler {
     /**
      * The constructor.
      */
-    public InitializeConfigurationsHandler() {
+    public ValidateHandler() {
     }
 
     /**
@@ -51,7 +53,14 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
             if (selected instanceof IFile) {
                 try {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    generator.createConfigurationModel((IFile) selected);
+                    boolean inError = generator.validate((IFile) selected);
+                    if (!inError) {
+                        MessageDialog.openConfirm(shell, "M2Doc validation",
+                                "The template validation has been performed successfully.");
+                    } else {
+                        MessageDialog.openConfirm(shell, "M2Doc validation",
+                                "Error(s) detected during validation. A log file has been generated next to the template.");
+                    }
                 } catch (FileNotFoundException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
@@ -60,6 +69,15 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
+                } catch (DocumentParserException e) {
+                    Activator.getDefault().getLog()
+                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    MessageDialog.openError(shell, "Template parsing problem, see the error log for details",
+                            e.getMessage());
+                } catch (DocumentGenerationException e) {
+                    Activator.getDefault().getLog()
+                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    MessageDialog.openError(shell, "Generation problem, see the error log for details", e.getMessage());
                 }
 
             } else {
@@ -69,7 +87,7 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
 
         } else {
             MessageDialog.openError(shell, "Bad selection",
-                    "Document generation action can only be triggered on docx files.");
+                    "Document validation action can only be triggered on docx files.");
         }
         return null;
 
