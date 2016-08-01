@@ -11,10 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
 
@@ -74,30 +73,9 @@ public class DocumentValidatedGenerator {
             inError = inError || headerValidator.isInError();
         }
         if (inError) {
-            saveFile(template.getDocument(), destinationFileName);
+            POIServices.getInstance().saveFile(template.getDocument(), destinationFileName);
         }
         return inError;
-    }
-
-    /**
-     * Save the document into the file pointing at the given path.
-     * 
-     * @param document
-     *            the validated document to save.
-     * @param theDestinationFileName
-     *            the file were to save the content of the validated document.
-     * @throws IOException
-     *             throws if the writing of the document on the file system fails.
-     */
-    private void saveFile(XWPFDocument document, String theDestinationFileName) throws IOException {
-        FileOutputStream os = new FileOutputStream(theDestinationFileName);
-        try {
-            document.write(os);
-        } finally {
-            if (os != null) {
-                os.close();
-            }
-        }
     }
 
 }
