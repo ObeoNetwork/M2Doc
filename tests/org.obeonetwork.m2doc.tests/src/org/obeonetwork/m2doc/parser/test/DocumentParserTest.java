@@ -13,6 +13,8 @@ package org.obeonetwork.m2doc.parser.test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -30,9 +32,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.parser.BodyParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
+import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
@@ -52,6 +56,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidationMessage;
 
 /**
  * Tests the {@link BodyParser} class.
@@ -433,9 +438,9 @@ public class DocumentParserTest {
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
-        assertEquals(
+        assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "A forbidden space character is present at the index 2 of the key definition 'du dingy herbulot\" legendPos'.",
-                im.getParsingErrors().get(0).getMessage());
+                im.getRuns().get(25));
     }
 
     /**
@@ -456,8 +461,9 @@ public class DocumentParserTest {
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
-        assertEquals("A forbidden space character is present at the index 5 of the key definition 'legen d'.",
-                im.getParsingErrors().get(0).getMessage());
+        assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "A forbidden space character is present at the index 5 of the key definition 'legen d'.",
+                im.getRuns().get(27));
     }
 
     /**
@@ -478,9 +484,9 @@ public class DocumentParserTest {
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
-        assertEquals(
+        assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "The start of an option's key has been read but the end of it and the value were missing : ' legendPos'.",
-                im.getParsingErrors().get(0).getMessage());
+                im.getRuns().get(22));
     }
 
     /**
@@ -520,7 +526,8 @@ public class DocumentParserTest {
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
-        assertEquals("Invalid image directive : no file name provided.", im.getParsingErrors().get(0).getMessage());
+        assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Invalid image directive : no file name provided.", im.getRuns().get(20));
     }
 
     @Test
@@ -533,7 +540,8 @@ public class DocumentParserTest {
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
-        assertEquals("Invalid image option (leg): unknown option name.", im.getParsingErrors().get(0).getMessage());
+        assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Invalid image option (leg): unknown option name.", im.getRuns().get(24));
     }
 
     /**
@@ -702,9 +710,9 @@ public class DocumentParserTest {
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         EMap<String, Object> optionValueMap = representation.getOptionValueMap();
         assertEquals(0, optionValueMap.size());
-        assertEquals(1, representation.getParsingErrors().size());
-        assertEquals("The image tag is referencing an unknown diagram provider : 'wrong'",
-                representation.getParsingErrors().get(0).getMessage());
+        assertEquals(1, representation.getValidationMessages().size());
+        assertTemplateValidationMessage(representation.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "The image tag is referencing an unknown diagram provider : 'wrong'", representation.getRuns().get(1));
     }
 
     /**
@@ -722,6 +730,11 @@ public class DocumentParserTest {
         @Override
         public Map<String, OptionType> getOptionTypes() {
             return null;
+        }
+
+        @Override
+        public List<ProviderValidationMessage> validate(Map<String, Object> options) {
+            return Collections.emptyList();
         }
 
     }
@@ -753,7 +766,7 @@ public class DocumentParserTest {
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         EMap<String, Object> optionValueMap = representation.getOptionValueMap();
         assertEquals(1, optionValueMap.size());
-        assertEquals(0, representation.getParsingErrors().size());
+        assertEquals(0, representation.getValidationMessages().size());
     }
 
     /**
@@ -785,7 +798,7 @@ public class DocumentParserTest {
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         EMap<String, Object> optionValueMap = representation.getOptionValueMap();
         assertEquals(0, optionValueMap.size());
-        assertEquals(0, representation.getParsingErrors().size());
+        assertEquals(0, representation.getValidationMessages().size());
     }
 
     /**
@@ -816,8 +829,13 @@ public class DocumentParserTest {
         assertEquals("plan de forme du dingy herbulot", representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         assertEquals(1, representation.getOptionValueMap().size());
-        assertEquals(1, representation.getParsingErrors().size());
-        assertEquals("Expression wrong.-> is invalid", representation.getParsingErrors().get(0).getMessage());
+        assertEquals(2, representation.getValidationMessages().size());
+        assertTemplateValidationMessage(representation.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Expression \"wrong.->\" is invalid: missing feature access or service call",
+                representation.getRuns().get(34));
+        assertTemplateValidationMessage(representation.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
+                "Expression \"wrong.->\" is invalid: missing collection service call",
+                representation.getRuns().get(34));
     }
 
 }

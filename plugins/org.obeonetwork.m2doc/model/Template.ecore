@@ -10,8 +10,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="runs" upperBound="-1" eType="#//Run"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="closingRuns" upperBound="-1"
         eType="#//Run"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parsingErrors" upperBound="-1"
-        eType="#//DocumentParsingError"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="validationMessages" upperBound="-1"
+        eType="#//TemplateValidationMessage"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conditionnal" eSuperTypes="#//Compound">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
@@ -72,7 +72,7 @@
     <eLiterals name="TEXT" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="AstResult" instanceClassName="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="DocumentParsingError" instanceClassName="org.obeonetwork.m2doc.parser.DocumentParsingError"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="TemplateValidationMessage" instanceClassName="org.obeonetwork.m2doc.parser.TemplateValidationMessage"/>
   <eClassifiers xsi:type="ecore:EClass" name="Table" eSuperTypes="#//AbstractConstruct">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rows" upperBound="-1" eType="#//Row"
         containment="true"/>

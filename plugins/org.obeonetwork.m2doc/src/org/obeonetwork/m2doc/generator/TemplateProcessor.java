@@ -363,7 +363,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         String strResult;
         EvaluationResult result = null;
         if (object.getQuery() == null) {
-            strResult = QUERY_SYNTAX_ERROR_MESSAGE + ":" + object.getParsingErrors().get(0).getMessage();
+            strResult = QUERY_SYNTAX_ERROR_MESSAGE + ":" + object.getValidationMessages().get(0).getMessage();
         } else {
             IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             result = evaluator.eval(object.getQuery(), definitions.getCurrentDefinitions());
@@ -613,7 +613,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         XWPFRun imageRun = insertRun(object.getStyleRun());
         IProvider provider = object.getProvider();
         if (provider == null) {
-            setErrorMessageToRun(object.getParsingErrors().get(0).getMessage(), imageRun);
+            setErrorMessageToRun(object.getValidationMessages().get(0).getMessage(), imageRun);
         } else {
             Map<String, Object> parameters;
             try {
@@ -748,7 +748,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             Entry<String, Object> aqlEntry) {
         if (aqlEntry.getValue() == null) {
             throw new IllegalArgumentException(
-                    QUERY_SYNTAX_ERROR_MESSAGE + ":" + templateProvider.getParsingErrors().get(0).getMessage());
+                    QUERY_SYNTAX_ERROR_MESSAGE + ":" + templateProvider.getValidationMessages().get(0).getMessage());
         } else {
             EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval((AstResult) aqlEntry.getValue(),
                     definitions.getCurrentDefinitions());

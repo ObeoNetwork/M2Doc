@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.EObjectValidator;
-import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.template.*;
 
@@ -162,8 +162,8 @@ public class TemplateValidator extends EObjectValidator {
                 return validateRun((XWPFRun)value, diagnostics, context);
             case TemplatePackage.AST_RESULT:
                 return validateAstResult((AstResult)value, diagnostics, context);
-            case TemplatePackage.DOCUMENT_PARSING_ERROR:
-                return validateDocumentParsingError((DocumentParsingError)value, diagnostics, context);
+            case TemplatePackage.TEMPLATE_VALIDATION_MESSAGE:
+                return validateTemplateValidationMessage((TemplateValidationMessage)value, diagnostics, context);
             case TemplatePackage.WTABLE_ROW:
                 return validateWTableRow((XWPFTableRow)value, diagnostics, context);
             case TemplatePackage.WTABLE_CELL:
@@ -433,14 +433,14 @@ public class TemplateValidator extends EObjectValidator {
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public boolean validateDocumentParsingError(DocumentParsingError documentParsingError, DiagnosticChain diagnostics, Map<Object, Object> context) {
+    public boolean validateTemplateValidationMessage(TemplateValidationMessage templateValidationMessage, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return true;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
