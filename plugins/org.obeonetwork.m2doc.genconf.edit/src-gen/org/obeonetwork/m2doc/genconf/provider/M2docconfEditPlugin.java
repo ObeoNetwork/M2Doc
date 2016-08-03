@@ -5,6 +5,7 @@ package org.obeonetwork.m2doc.genconf.provider;
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
  * This is the central singleton for the M2docconf edit plugin.
@@ -38,6 +39,7 @@ public final class M2docconfEditPlugin extends EMFPlugin {
 	public M2docconfEditPlugin() {
         super
           (new ResourceLocator [] {
+             EcoreEditPlugin.INSTANCE,
            });
     }
 

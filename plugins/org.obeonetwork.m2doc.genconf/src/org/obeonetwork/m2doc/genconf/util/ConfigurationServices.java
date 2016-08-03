@@ -85,4 +85,30 @@ public class ConfigurationServices {
         }
         return result;
     }
+
+    /**
+     * Create ModelDefinition.
+     * 
+     * @param generation
+     *            Generation
+     * @return ModelDefinition
+     */
+    public ModelDefinition createModelDefinition(Generation generation) {
+        ModelDefinition modelDefinition = GenconfFactory.eINSTANCE.createModelDefinition();
+        generation.getDefinitions().add(modelDefinition);
+        return modelDefinition;
+    }
+
+    /**
+     * Create StringDefinition.
+     * 
+     * @param generation
+     *            Generation
+     * @return StringDefinition
+     */
+    public StringDefinition createStringDefinition(Generation generation) {
+        StringDefinition stringDefinition = GenconfFactory.eINSTANCE.createStringDefinition();
+        generation.getDefinitions().add(stringDefinition);
+        return stringDefinition;
+    }
 }
