@@ -103,7 +103,7 @@
                            operator="or">
                          <test
                                forcePluginActivation="true"
-                               property="org.obeonetwork.m2doc.ui.testTemplate">
+                               property="org.obeonetwork.m2doc.ui.testGeneration">
                         </test>
                      </iterate>
                   </with>
