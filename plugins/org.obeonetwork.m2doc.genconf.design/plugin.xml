@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+  <extension point="org.eclipse.sirius.componentization">
+    <component class="org.obeonetwork.m2doc.genconf.design.Activator"
+               id="org.obeonetwork.m2doc.genconf.design"
+	       name="genconf">
+    </component>
+  </extension>
+</plugin>

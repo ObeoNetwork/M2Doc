@@ -213,13 +213,22 @@ public interface GenconfPackage extends EPackage {
 	int MODEL_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
 
 	/**
+     * The feature id for the '<em><b>Type</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MODEL_DEFINITION__TYPE = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Model Definition</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int MODEL_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+	int MODEL_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 2;
 
 	/**
      * The number of operations of the '<em>Model Definition</em>' class.
@@ -407,6 +416,17 @@ public interface GenconfPackage extends EPackage {
 	EReference getModelDefinition_Value();
 
 	/**
+     * Returns the meta object for the reference '{@link org.obeonetwork.m2doc.genconf.ModelDefinition#getType <em>Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Type</em>'.
+     * @see org.obeonetwork.m2doc.genconf.ModelDefinition#getType()
+     * @see #getModelDefinition()
+     * @generated
+     */
+    EReference getModelDefinition_Type();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.StringDefinition <em>String Definition</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -553,6 +573,14 @@ public interface GenconfPackage extends EPackage {
 		EReference MODEL_DEFINITION__VALUE = eINSTANCE.getModelDefinition_Value();
 
 		/**
+         * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference MODEL_DEFINITION__TYPE = eINSTANCE.getModelDefinition_Type();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl <em>String Definition</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->

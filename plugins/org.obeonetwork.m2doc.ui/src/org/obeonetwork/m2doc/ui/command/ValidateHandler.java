@@ -17,7 +17,6 @@ import java.io.IOException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -25,6 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.api.GenconfToDocumentGenerator;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.ui.Activator;
@@ -50,16 +50,25 @@ public class ValidateHandler extends AbstractHandler {
         Shell shell = HandlerUtil.getActiveShell(event);
         if (selection instanceof IStructuredSelection) {
             Object selected = ((IStructuredSelection) selection).getFirstElement();
-            if (selected instanceof IFile) {
+            Generation generation = null;
+            if (selected instanceof Generation) {
+                generation = (Generation) selected;
+            } else {
+                MessageDialog.openError(shell, "Bad selection",
+                        "Document generation action can only be triggered on Generation object.");
+                return null;
+            }
+
+            if (generation != null) {
                 try {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    boolean inError = generator.validate((IFile) selected);
+                    boolean inError = generator.validate(generation);
                     if (!inError) {
                         MessageDialog.openConfirm(shell, "M2Doc validation",
                                 "The template validation has been performed successfully.");
                     } else {
                         MessageDialog.openConfirm(shell, "M2Doc validation",
-                                "Error(s) detected during validation. A log file has been generated next to the template.");
+                                "Error(s) detected during validation. A log file has been generated next to the configuration file.");
                     }
                 } catch (FileNotFoundException e) {
                     Activator.getDefault().getLog()
@@ -80,14 +89,11 @@ public class ValidateHandler extends AbstractHandler {
                     MessageDialog.openError(shell, "Generation problem, see the error log for details", e.getMessage());
                 }
 
-            } else {
-                MessageDialog.openError(shell, "Bad selection",
-                        "Configuration action can only be triggered on docx files.");
             }
 
         } else {
             MessageDialog.openError(shell, "Bad selection",
-                    "Document validation action can only be triggered on docx files.");
+                    "Document validation action can only be triggered on generation files.");
         }
         return null;
 

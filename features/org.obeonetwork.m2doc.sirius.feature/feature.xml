@@ -30,7 +30,7 @@ Contributors:
 Obeo - initial API and implementation
    </copyright>
 
-     <license url="https://www.eclipse.org/org/documents/epl-v10.php">
+   <license url="https://www.eclipse.org/org/documents/epl-v10.php">
       Eclipse Public License - v 1.0
 THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS
 ECLIPSE PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR
@@ -235,5 +235,11 @@ litigation.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.obeonetwork.m2doc.genconf.design"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>

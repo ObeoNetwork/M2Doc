@@ -5,6 +5,7 @@ package org.obeonetwork.m2doc.genconf.impl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -22,6 +23,7 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
  * </p>
  * <ul>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.ModelDefinitionImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.genconf.impl.ModelDefinitionImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,6 +40,16 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
 	protected EObject value;
 
 	/**
+     * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getType()
+     * @generated
+     * @ordered
+     */
+    protected EClassifier type;
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -96,6 +108,44 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClassifier getType() {
+        if (type != null && type.eIsProxy()) {
+            InternalEObject oldType = (InternalEObject)type;
+            type = (EClassifier)eResolveProxy(oldType);
+            if (type != oldType) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, GenconfPackage.MODEL_DEFINITION__TYPE, oldType, type));
+            }
+        }
+        return type;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClassifier basicGetType() {
+        return type;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setType(EClassifier newType) {
+        EClassifier oldType = type;
+        type = newType;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.MODEL_DEFINITION__TYPE, oldType, type));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -105,6 +155,9 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
             case GenconfPackage.MODEL_DEFINITION__VALUE:
                 if (resolve) return getValue();
                 return basicGetValue();
+            case GenconfPackage.MODEL_DEFINITION__TYPE:
+                if (resolve) return getType();
+                return basicGetType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -119,6 +172,9 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
         switch (featureID) {
             case GenconfPackage.MODEL_DEFINITION__VALUE:
                 setValue((EObject)newValue);
+                return;
+            case GenconfPackage.MODEL_DEFINITION__TYPE:
+                setType((EClassifier)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -135,6 +191,9 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
             case GenconfPackage.MODEL_DEFINITION__VALUE:
                 setValue((EObject)null);
                 return;
+            case GenconfPackage.MODEL_DEFINITION__TYPE:
+                setType((EClassifier)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -149,6 +208,8 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
         switch (featureID) {
             case GenconfPackage.MODEL_DEFINITION__VALUE:
                 return value != null;
+            case GenconfPackage.MODEL_DEFINITION__TYPE:
+                return type != null;
         }
         return super.eIsSet(featureID);
     }

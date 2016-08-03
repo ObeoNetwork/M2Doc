@@ -24,11 +24,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -36,7 +33,6 @@ import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
-import org.obeonetwork.m2doc.services.M2DocServices;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -116,21 +112,7 @@ public class GenconfToDocumentGenerator {
      */
     public List<IFile> generate(Generation generation, IProject project, IFile templateFile, IFile generatedFile)
             throws IOException, DocumentParserException, DocumentGenerationException {
-        // get acceleo environment
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
-        M2DocUtils.registerServices(queryEnvironment);
-
-        // register packages
-        for (String nsURI : generation.getPackagesNSURI()) {
-            EPackage p = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-            if (p == null) {
-                M2DocPlugin.getDefault().getLog().log(
-                        new Status(Status.WARNING, M2DocPlugin.PLUGIN_ID, "Couldn't find package with nsURI " + nsURI));
-            } else {
-                queryEnvironment.registerEPackage(p);
-            }
-        }
+        IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
 
         // create definitions
         ConfigurationServices configurationServices = new ConfigurationServices();
@@ -200,8 +182,7 @@ public class GenconfToDocumentGenerator {
         Generation rootObject = configurationServices.createInitialModel(genConfURI.trimFileExtension().lastSegment(),
                 templateFile.getProjectRelativePath().toString());
         // add docx properties
-        M2DocServices m2DocServices = new M2DocServices();
-        m2DocServices.addProperties(rootObject, templateInfo);
+        TemplateConfigurationServices.getInstance().addProperties(rootObject, templateInfo);
         if (rootObject != null) {
             resource.getContents().add(rootObject);
         }
@@ -214,8 +195,8 @@ public class GenconfToDocumentGenerator {
     /**
      * Validate templateInfo information.
      * 
-     * @param templateFile
-     *            IFile
+     * @param generation
+     *            Generation
      * @return if template contains errors.
      * @throws IOException
      *             IOException
@@ -224,12 +205,26 @@ public class GenconfToDocumentGenerator {
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      */
-    public boolean validate(IFile templateFile)
+    public boolean validate(Generation generation)
             throws IOException, DocumentParserException, DocumentGenerationException {
+        // get the template path and parses it.
+        String templateFilePath = generation.getTemplateFileName();
+        if (templateFilePath == null) {
+            throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
+        }
+
+        // get project container
+        IResource configurationFile = ResourcesPlugin.getWorkspace().getRoot()
+                .findMember(generation.eResource().getURI().toPlatformString(true));
+        IProject project = configurationFile.getProject();
+
+        // get template and result file
+        IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
+        if (!templateFile.exists()) {
+            throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
+        }
         // get acceleo environment
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
-        M2DocUtils.registerServices(queryEnvironment);
+        IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
 
         // parse template
         DocumentTemplate template = POIServices.getInstance().parseTemplate(templateFile, queryEnvironment);
