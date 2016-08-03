@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.provider.test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
+import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -71,6 +73,11 @@ public class ProviderRegistryTest {
         @Override
         public boolean isDefault() {
             return false;
+        }
+
+        @Override
+        public List<ProviderValidationMessage> validate(Map<String, Object> options) {
+            return Collections.emptyList();
         }
 
     }

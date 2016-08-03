@@ -12,6 +12,7 @@ package org.obeonetwork.m2doc.sirius.providers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
+import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 
 /**
  * {@link SiriusDiagramByDiagramDescriptionNameProvider} are used to get Sirius diagrams images from all representations using a given root
@@ -157,6 +159,12 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
     @Override
     public boolean isDefault() {
         return false;
+    }
+
+    @Override
+    public List<ProviderValidationMessage> validate(Map<String, Object> options) {
+        // TODO validate
+        return Collections.emptyList();
     }
 
 }

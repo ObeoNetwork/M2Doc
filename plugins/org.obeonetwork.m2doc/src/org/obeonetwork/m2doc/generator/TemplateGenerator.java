@@ -18,11 +18,11 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
 
 /**
- * Class that orchestrates the generation of the template with parsing errors only and no evaluation..
+ * Class that orchestrates the generation of the template with validation messages only and no evaluation.
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
-public class DocumentValidatedGenerator {
+public class TemplateGenerator {
     /**
      * The template against which generation is done.
      */
@@ -33,7 +33,7 @@ public class DocumentValidatedGenerator {
     private String destinationFileName;
 
     /**
-     * Create a new {@link DocumentValidatedGenerator} instance given a template.
+     * Create a new {@link TemplateGenerator} instance given a template.
      * paths.
      * 
      * @param destinationFileName
@@ -43,7 +43,7 @@ public class DocumentValidatedGenerator {
      * @throws DocumentGenerationException
      *             when a generation problem occurs.
      */
-    public DocumentValidatedGenerator(String destinationFileName, DocumentTemplate theTemplate)
+    public TemplateGenerator(String destinationFileName, DocumentTemplate theTemplate)
             throws DocumentGenerationException {
         this.template = theTemplate;
         this.destinationFileName = destinationFileName;
@@ -58,17 +58,17 @@ public class DocumentValidatedGenerator {
      */
     public boolean generate() throws IOException {
         boolean inError = false;
-        TemplateParsingValidator templateValidator = new TemplateParsingValidator();
+        TemplateValidationGenerator templateValidator = new TemplateValidationGenerator();
         templateValidator.doSwitch(this.template.getBody());
         inError = templateValidator.isInError();
         for (Template footerTemplate : this.template.getFooters()) {
-            TemplateParsingValidator footerValidator = new TemplateParsingValidator();
+            TemplateValidationGenerator footerValidator = new TemplateValidationGenerator();
             footerValidator.doSwitch(footerTemplate);
             inError = inError || footerValidator.isInError();
 
         }
         for (Template headerTemplate : this.template.getHeaders()) {
-            TemplateParsingValidator headerValidator = new TemplateParsingValidator();
+            TemplateValidationGenerator headerValidator = new TemplateValidationGenerator();
             headerValidator.doSwitch(headerTemplate);
             inError = inError || headerValidator.isInError();
         }

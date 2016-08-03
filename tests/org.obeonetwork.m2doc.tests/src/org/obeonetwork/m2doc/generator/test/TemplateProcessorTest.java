@@ -782,7 +782,8 @@ public class TemplateProcessorTest {
         TemplateProcessor processor = new TemplateProcessor(definitions, "results", env, destinationDoc, rootObject);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
-        assertEquals("Syntax error in AQL expression.:Expression wrong.-> is invalid",
+        assertEquals(
+                "Syntax error in AQL expression.:Expression \"wrong.->\" is invalid: missing feature access or service call",
                 destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
     }
 

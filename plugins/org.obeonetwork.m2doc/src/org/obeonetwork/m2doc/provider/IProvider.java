@@ -11,7 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.provider;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * Interface used by any provider that extends the capabilities of information retrieval of a tag like diagram tag.
@@ -26,4 +30,15 @@ public interface IProvider {
      * @return a map of option key to the {@link OptionType} corresponding for each new option handled by the provider.
      */
     Map<String, OptionType> getOptionTypes();
+
+    /**
+     * Validates the given options. When the expected option is an {@link OptionType#AQL_EXPRESSION AQL expression} the {@link Set} of
+     * possible {@link IType} is given.
+     * 
+     * @param options
+     *            the mapping of options
+     * @return {@link List} of {@link ProviderValidationMessage}
+     */
+    List<ProviderValidationMessage> validate(Map<String, Object> options);
+
 }

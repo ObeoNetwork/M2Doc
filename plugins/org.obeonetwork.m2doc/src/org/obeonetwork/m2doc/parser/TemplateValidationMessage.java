@@ -14,49 +14,67 @@ package org.obeonetwork.m2doc.parser;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 /**
- * Parsing error stored in the template during parsing.
+ * Template validation message.
  * 
  * @author Romain Guider
  */
-public class DocumentParsingError {
+public class TemplateValidationMessage {
+
+    /**
+     * The {@link ValidationMessageLevel}.
+     */
+    private final ValidationMessageLevel level;
+
     /**
      * The error message.
      */
-    private String message;
+    private final String message;
     /**
      * The run where the error has been located.
      */
-    private XWPFRun location;
+    private final XWPFRun location;
 
     /**
-     * Creates a new {@link DocumentParsingError} instance provided a message
+     * Creates a new {@link TemplateValidationMessage} instance provided a message
      * and a location.
      * 
-     * @param theMessage
+     * @param level
+     *            the {@link ValidationMessageLevel}
+     * @param message
      *            the message explaining the error
-     * @param theLocation
+     * @param location
      *            the location where the error has been detected. When the error
      *            occurs at the end of the document (unexpected EOF
-     *            encountered), the <code>null</code> value is used.
+     *            encountered), the <code>null</code> value is used
      */
-    public DocumentParsingError(String theMessage, XWPFRun theLocation) {
-        this.location = theLocation;
-        this.message = theMessage;
+    public TemplateValidationMessage(ValidationMessageLevel level, String message, XWPFRun location) {
+        this.level = level;
+        this.location = location;
+        this.message = message;
     }
 
     /**
-     * Returns the location of the error.
+     * Gets the {@link ValidationMessageLevel}.
      * 
-     * @return the location of the error.
+     * @return the {@link ValidationMessageLevel}
+     */
+    public ValidationMessageLevel getLevel() {
+        return level;
+    }
+
+    /**
+     * Gets the location of the error.
+     * 
+     * @return the location of the error
      */
     public XWPFRun getLocation() {
         return location;
     }
 
     /**
-     * The error message.
+     * Gets the error message.
      * 
-     * @return the error message.
+     * @return the error message
      */
     public String getMessage() {
         return message;

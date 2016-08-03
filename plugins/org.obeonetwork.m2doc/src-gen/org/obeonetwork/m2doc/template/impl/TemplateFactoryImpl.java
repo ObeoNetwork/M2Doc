@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.template.*;
 
@@ -123,8 +123,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createRunFromString(eDataType, initialValue);
             case TemplatePackage.AST_RESULT:
                 return createAstResultFromString(eDataType, initialValue);
-            case TemplatePackage.DOCUMENT_PARSING_ERROR:
-                return createDocumentParsingErrorFromString(eDataType, initialValue);
+            case TemplatePackage.TEMPLATE_VALIDATION_MESSAGE:
+                return createTemplateValidationMessageFromString(eDataType, initialValue);
             case TemplatePackage.WTABLE_ROW:
                 return createWTableRowFromString(eDataType, initialValue);
             case TemplatePackage.WTABLE_CELL:
@@ -158,8 +158,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return convertRunToString(eDataType, instanceValue);
             case TemplatePackage.AST_RESULT:
                 return convertAstResultToString(eDataType, instanceValue);
-            case TemplatePackage.DOCUMENT_PARSING_ERROR:
-                return convertDocumentParsingErrorToString(eDataType, instanceValue);
+            case TemplatePackage.TEMPLATE_VALIDATION_MESSAGE:
+                return convertTemplateValidationMessageToString(eDataType, instanceValue);
             case TemplatePackage.WTABLE_ROW:
                 return convertWTableRowToString(eDataType, instanceValue);
             case TemplatePackage.WTABLE_CELL:
@@ -427,23 +427,23 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public DocumentParsingError createDocumentParsingErrorFromString(EDataType eDataType, String initialValue) {
-        return (DocumentParsingError)super.createFromString(eDataType, initialValue);
+    public TemplateValidationMessage createTemplateValidationMessageFromString(EDataType eDataType, String initialValue) {
+        return (TemplateValidationMessage)super.createFromString(eDataType, initialValue);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public String convertDocumentParsingErrorToString(EDataType eDataType, Object instanceValue) {
+    public String convertTemplateValidationMessageToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated

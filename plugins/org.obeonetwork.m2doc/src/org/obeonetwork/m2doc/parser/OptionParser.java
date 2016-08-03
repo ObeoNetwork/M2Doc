@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.parser;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 
 /**
@@ -100,12 +101,12 @@ public class OptionParser {
                         result.put(key, value);
                         // CHECKSTYLE:OFF
                         if (!valueParsedCompletely) {
-
-                            construct.getParsingErrors()
-                                    .add(new DocumentParsingError(
+                            final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
+                            construct.getValidationMessages()
+                                    .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                                             "The end delimiter for the option's value has not been reached. The option '"
                                                 + key + "' may be invalid.",
-                                            construct.getRuns().get(0)));
+                                            lastRun));
                             // CHECKSTYLE:ON
                         }
                         key = "";
@@ -114,11 +115,12 @@ public class OptionParser {
                         result.put(key, value);
                     }
                 } else if (!keyParsed && keyDetected) {
-                    construct.getParsingErrors()
-                            .add(new DocumentParsingError(
+                    final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
+                    construct.getValidationMessages()
+                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                                     "The start of an option's key has been read but the end of it and the value were missing : '"
                                         + key + END_STRING,
-                                    construct.getRuns().get(0)));
+                                    lastRun));
                     result.put(key.trim(), value);
                 }
             }
@@ -160,10 +162,13 @@ public class OptionParser {
             finished = index >= maxIndex;
             if (!(!finished && !valueEnclosingQuoteReached) && !forbiddenCharacters.isEmpty()) {
                 // We have finished the consuming but forbidden characters were present so we log an error message
-                construct.getParsingErrors().add(new DocumentParsingError(
-                        "Forbidden characters are present after the key value separator (\"" + forbiddenCharacters
-                            + "\") of the key : '" + key + "'. Expected character is \"'\"",
-                        construct.getRuns().get(0)));
+                final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
+                construct.getValidationMessages()
+                        .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                "Forbidden characters are present after the key value separator (\""
+                                    + forbiddenCharacters + "\") of the key : '" + key
+                                    + "'. Expected character is \"'\"",
+                                lastRun));
             }
         }
     }
@@ -231,10 +236,12 @@ public class OptionParser {
                 if (firstIndexOfSpace < key.length() && -1 != firstIndexOfSpace) {
                     // CHECKSTYLE:ON
                     // we have a space between two key characters. So we log an error message.
-                    construct.getParsingErrors()
-                            .add(new DocumentParsingError("A forbidden space character is present at the index "
+                    final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
+                    construct.getValidationMessages()
+                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                            "A forbidden space character is present at the index "
                                 + firstIndexOfSpace + " of the key definition '" + key + END_STRING,
-                            construct.getRuns().get(0)));
+                            lastRun));
                 }
             } else {
                 // we keep the spaces that we remove when the end key character is detected.

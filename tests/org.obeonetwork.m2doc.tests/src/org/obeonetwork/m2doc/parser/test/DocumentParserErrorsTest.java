@@ -17,10 +17,13 @@ import java.io.IOException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.junit.Test;
 import org.obeonetwork.m2doc.parser.BodyParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.Query;
@@ -30,6 +33,7 @@ import org.obeonetwork.m2doc.template.Template;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidationMessage;
 
 public class DocumentParserErrorsTest {
 
@@ -54,8 +58,9 @@ public class DocumentParserErrorsTest {
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
-        assertEquals(1, repetition.getParsingErrors().size());
-        assertEquals("Expression self. is invalid", repetition.getParsingErrors().get(0).getMessage());
+        assertEquals(1, repetition.getValidationMessages().size());
+        assertEquals("Expression \"self.\" is invalid: missing feature access or service call",
+                repetition.getValidationMessages().get(0).getMessage());
     }
 
     /**
@@ -77,9 +82,9 @@ public class DocumentParserErrorsTest {
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
-        assertEquals(1, repetition.getParsingErrors().size());
+        assertEquals(1, repetition.getValidationMessages().size());
         assertEquals("Malformed tag gd:for : no iteration variable specified.",
-                repetition.getParsingErrors().get(0).getMessage());
+                repetition.getValidationMessages().get(0).getMessage());
     }
 
     /**
@@ -101,8 +106,8 @@ public class DocumentParserErrorsTest {
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
-        assertEquals(1, repetition.getParsingErrors().size());
-        assertEquals("Malformed tag gd:for, no '|' found.", repetition.getParsingErrors().get(0).getMessage());
+        assertEquals(1, repetition.getValidationMessages().size());
+        assertEquals("Malformed tag gd:for, no '|' found.", repetition.getValidationMessages().get(0).getMessage());
     }
 
     /**
@@ -124,8 +129,8 @@ public class DocumentParserErrorsTest {
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Repetition);
         Repetition repetition = (Repetition) template.getSubConstructs().get(0);
-        assertEquals(1, repetition.getParsingErrors().size());
-        assertEquals("Unexpected tag EOF at this location", repetition.getParsingErrors().get(0).getMessage());
+        assertEquals(1, repetition.getValidationMessages().size());
+        assertEquals("Unexpected tag EOF at this location", repetition.getValidationMessages().get(0).getMessage());
     }
 
     /**
@@ -145,8 +150,8 @@ public class DocumentParserErrorsTest {
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
-        assertEquals(1, template.getParsingErrors().size());
-        assertEquals("Unexpected tag m:endfor at this location", template.getParsingErrors().get(0).getMessage());
+        assertEquals(1, template.getValidationMessages().size());
+        assertEquals("Unexpected tag m:endfor at this location", template.getValidationMessages().get(0).getMessage());
     }
 
     /**
@@ -167,7 +172,8 @@ public class DocumentParserErrorsTest {
         assertEquals(2, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(1) instanceof Query);
         Query query = (Query) template.getSubConstructs().get(1);
-        assertEquals("Expression self. is invalid", query.getParsingErrors().get(0).getMessage());
+        assertEquals("Expression \"self.\" is invalid: missing feature access or service call",
+                query.getValidationMessages().get(0).getMessage());
     }
 
     /**
@@ -189,8 +195,9 @@ public class DocumentParserErrorsTest {
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(0);
-        assertEquals(1, conditionnal.getParsingErrors().size());
-        assertEquals("Expression x= is invalid", conditionnal.getParsingErrors().get(0).getMessage());
+        assertEquals(1, conditionnal.getValidationMessages().size());
+        assertTemplateValidationMessage(conditionnal.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Expression \"x=\" is invalid: missing expression", conditionnal.getRuns().get(6));
     }
 
     /**
@@ -211,10 +218,13 @@ public class DocumentParserErrorsTest {
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(0);
-        assertEquals(2, conditionnal.getParsingErrors().size());
-        assertEquals("Unexpected tag EOF at this location", conditionnal.getParsingErrors().get(0).getMessage());
-        assertEquals("gd:elseif, gd:else or gd:endif expected here.",
-                conditionnal.getParsingErrors().get(1).getMessage());
+        assertEquals(2, conditionnal.getValidationMessages().size());
+        final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
+        final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
+        assertTemplateValidationMessage(conditionnal.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Unexpected tag EOF at this location", lastRun);
+        assertTemplateValidationMessage(conditionnal.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
+                "gd:elseif, gd:else or gd:endif expected here.", conditionnal.getRuns().get(3));
     }
 
     /**
@@ -237,12 +247,15 @@ public class DocumentParserErrorsTest {
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Default elseBranch = ((Conditionnal) template.getSubConstructs().get(0)).getElse();
         assertNotNull(elseBranch);
-        assertEquals(1, elseBranch.getParsingErrors().size());
-        assertEquals("Unexpected tag EOF at this location", elseBranch.getParsingErrors().get(0).getMessage());
+        assertEquals(1, elseBranch.getValidationMessages().size());
+        final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
+        final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
+        assertTemplateValidationMessage(elseBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Unexpected tag EOF at this location", lastRun);
     }
 
     /**
-     * Tests the error reporting on a conditionnal tag with a syntactically
+     * Tests the error reporting on a conditional tag with a syntactically
      * invalid expression
      * 
      * @throws InvalidFormatException
@@ -261,10 +274,13 @@ public class DocumentParserErrorsTest {
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal elseIfBranch = ((Conditionnal) template.getSubConstructs().get(0)).getAlternative();
         assertNotNull(elseIfBranch);
-        assertEquals(2, elseIfBranch.getParsingErrors().size());
-        assertEquals("Unexpected tag EOF at this location", elseIfBranch.getParsingErrors().get(0).getMessage());
-        assertEquals("gd:elseif, gd:else or gd:endif expected here.",
-                elseIfBranch.getParsingErrors().get(1).getMessage());
+        assertEquals(2, elseIfBranch.getValidationMessages().size());
+        final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
+        final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
+        assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Unexpected tag EOF at this location", lastRun);
+        assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
+                "gd:elseif, gd:else or gd:endif expected here.", elseIfBranch.getRuns().get(3));
     }
 
     /**
@@ -287,8 +303,9 @@ public class DocumentParserErrorsTest {
         assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
         Conditionnal elseIfBranch = ((Conditionnal) template.getSubConstructs().get(0)).getAlternative();
         assertNotNull(elseIfBranch);
-        assertEquals(1, elseIfBranch.getParsingErrors().size());
-        assertEquals("Expression x= is invalid", elseIfBranch.getParsingErrors().get(0).getMessage());
+        assertEquals(1, elseIfBranch.getValidationMessages().size());
+        assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Expression \"x=\" is invalid: missing expression", elseIfBranch.getRuns().get(4));
     }
 
     /**
@@ -310,8 +327,9 @@ public class DocumentParserErrorsTest {
         assertEquals(1, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Query);
         Query query = (Query) template.getSubConstructs().get(0);
-        assertEquals(1, query.getParsingErrors().size());
-        assertEquals("Expression  is invalid", query.getParsingErrors().get(0).getMessage());
+        assertEquals(1, query.getValidationMessages().size());
+        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Expression \"\" is invalid: null or empty string.", query.getRuns().get(4));
     }
 
 }
