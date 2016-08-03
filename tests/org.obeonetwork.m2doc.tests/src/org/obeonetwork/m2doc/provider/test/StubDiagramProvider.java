@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.provider.test;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.Map;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderException;
+import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 
 /**
  * A stub {@link AbstractDiagramProvider} used to test generic providers' options usage.
@@ -92,4 +94,10 @@ public class StubDiagramProvider extends AbstractDiagramProvider {
     public boolean isDefault() {
         return false;
     }
+
+    @Override
+    public List<ProviderValidationMessage> validate(Map<String, Object> options) {
+        return Collections.emptyList();
+    }
+
 }

@@ -22,14 +22,13 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.generator.TemplateParsingValidator;
+import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
 import org.obeonetwork.m2doc.parser.BodyParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.Template;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STHighlightColor;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class TemplateParsingValidatorTest {
     /**
@@ -74,28 +73,30 @@ public class TemplateParsingValidatorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        TemplateParsingValidator validator = new TemplateParsingValidator();
+        TemplateValidationGenerator validator = new TemplateValidationGenerator();
         validator.doSwitch(template);
         createDestinationDocument(document, "results/testParsingErrorStartTag.docx");
+
         // scan the destination document
         assertEquals(2, document.getParagraphs().size());
-        assertEquals(12, document.getParagraphs().get(0).getRuns().size());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().size());
         assertEquals(1, document.getParagraphs().get(1).getRuns().size());
-        assertTrue(
-                document.getParagraphs().get(0).getRuns().get(3).getCTR().toString().contains("w:fldCharType=\"end\""));
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(4).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(5).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(5).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(5).getFontSize());
-        assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(5).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("Expression wrong->. is invalid", document.getParagraphs().get(0).getRuns().get(6).getText(0));
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(5).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(6).getText(0));
         assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(6).getColor());
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(6).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(6).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(7).getText(0));
-        assertEquals("ajout de value1", document.getParagraphs().get(0).getRuns().get(8).getText(0));
+                document.getParagraphs().get(0).getRuns().get(7).getCTR().getRPr().getHighlight().getVal());
+        assertEquals("Expression \"wrong->.\" is invalid: missing collection service call",
+                document.getParagraphs().get(0).getRuns().get(7).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(7).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(7).getFontSize());
+        assertEquals(STHighlightColor.LIGHT_GRAY,
+                document.getParagraphs().get(0).getRuns().get(7).getCTR().getRPr().getHighlight().getVal());
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(8).getText(0));
+        assertEquals("ajout de value1", document.getParagraphs().get(0).getRuns().get(9).getText(0));
+        assertEquals("Unexpected tag m:endif at this location",
+                document.getParagraphs().get(0).getRuns().get(13).getText(0));
     }
 
     /**
@@ -123,28 +124,25 @@ public class TemplateParsingValidatorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        TemplateParsingValidator validator = new TemplateParsingValidator();
+        TemplateValidationGenerator validator = new TemplateValidationGenerator();
         validator.doSwitch(template);
         createDestinationDocument(document, "results/testParsingErrorSimpleTag.docx");
         // scan the destination document
         assertEquals(2, document.getParagraphs().size());
         assertEquals(11, document.getParagraphs().get(0).getRuns().size());
         assertEquals(1, document.getParagraphs().get(1).getRuns().size());
-        assertTrue(
-                document.getParagraphs().get(0).getRuns().get(5).getCTR().toString().contains("w:fldCharType=\"end\""));
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(6).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(7).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(7).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(7).getFontSize());
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(2).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(3).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(3).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(3).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(7).getCTR().getRPr().getHighlight().getVal());
+                document.getParagraphs().get(0).getRuns().get(5).getCTR().getRPr().getHighlight().getVal());
         assertEquals("The image tag is referencing an unknown diagram provider : 'noExistingProvider'",
-                document.getParagraphs().get(0).getRuns().get(8).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(8).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(8).getFontSize());
+                document.getParagraphs().get(0).getRuns().get(5).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(5).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(5).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(8).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(9).getText(0));
+                document.getParagraphs().get(0).getRuns().get(5).getCTR().getRPr().getHighlight().getVal());
         assertEquals("Some text", document.getParagraphs().get(0).getRuns().get(10).getText(0));
     }
 
@@ -174,43 +172,40 @@ public class TemplateParsingValidatorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        TemplateParsingValidator validator = new TemplateParsingValidator();
+        TemplateValidationGenerator validator = new TemplateValidationGenerator();
         validator.doSwitch(template);
         createDestinationDocument(document, "results/testMultiParsingErrorSimpleTag.docx");
         // scan the destination document
         assertEquals(1, document.getParagraphs().size());
-        assertEquals(13, document.getParagraphs().get(0).getRuns().size());
-        assertTrue(
-                document.getParagraphs().get(0).getRuns().get(4).getCTR().toString().contains("w:fldCharType=\"end\""));
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(5).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(6).getText(0));
+        assertEquals(14, document.getParagraphs().get(0).getRuns().size());
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(2).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(3).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(3).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(3).getFontSize());
+        assertEquals(STHighlightColor.LIGHT_GRAY,
+                document.getParagraphs().get(0).getRuns().get(3).getCTR().getRPr().getHighlight().getVal());
+        assertEquals("The image tag is referencing an unknown diagram provider : 'noExistingProvider'",
+                document.getParagraphs().get(0).getRuns().get(6).getText(0));
         assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(6).getColor());
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(6).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
                 document.getParagraphs().get(0).getRuns().get(6).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("The image tag is referencing an unknown diagram provider : 'noExistingProvider'",
-                document.getParagraphs().get(0).getRuns().get(7).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(7).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(7).getFontSize());
-        assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(7).getCTR().getRPr().getHighlight().getVal());
 
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(8).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(9).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(9).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(9).getFontSize());
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(10).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(11).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(11).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(11).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(9).getCTR().getRPr().getHighlight().getVal());
+                document.getParagraphs().get(0).getRuns().get(11).getCTR().getRPr().getHighlight().getVal());
         assertEquals(
                 "The start of an option's key has been read but the end of it and the value were missing : ' title=\"representationTitle\"'.",
-                document.getParagraphs().get(0).getRuns().get(10).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(10).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(10).getFontSize());
+                document.getParagraphs().get(0).getRuns().get(12).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(12).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(12).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(10).getCTR().getRPr().getHighlight().getVal());
+                document.getParagraphs().get(0).getRuns().get(11).getCTR().getRPr().getHighlight().getVal());
 
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(11).getText(0));
-        assertEquals("Some text", document.getParagraphs().get(0).getRuns().get(12).getText(0));
+        assertEquals("Some text", document.getParagraphs().get(0).getRuns().get(13).getText(0));
     }
 
     /**
@@ -238,39 +233,36 @@ public class TemplateParsingValidatorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        TemplateParsingValidator validator = new TemplateParsingValidator();
+        TemplateValidationGenerator validator = new TemplateValidationGenerator();
         validator.doSwitch(template);
         createDestinationDocument(document, "results/testParsingErrorEndTag.docx");
         // scan the destination document
         assertEquals(1, document.getParagraphs().size());
-        assertEquals(22, document.getParagraphs().get(0).getRuns().size());
-        assertTrue(
-                document.getParagraphs().get(0).getRuns().get(8).getCTR().toString().contains("w:fldCharType=\"end\""));
+        assertEquals(24, document.getParagraphs().get(0).getRuns().size());
         assertEquals("    ", document.getParagraphs().get(0).getRuns().get(9).getText(0));
         assertEquals("<---", document.getParagraphs().get(0).getRuns().get(10).getText(0));
         assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(10).getColor());
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(10).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
                 document.getParagraphs().get(0).getRuns().get(10).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("gd:elseif, gd:else or gd:endif expected here.",
+        assertEquals("Unexpected tag m:endlet at this location",
                 document.getParagraphs().get(0).getRuns().get(11).getText(0));
         assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(11).getColor());
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(11).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
                 document.getParagraphs().get(0).getRuns().get(11).getCTR().getRPr().getHighlight().getVal());
 
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(12).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(13).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(13).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(13).getFontSize());
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(10).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(10).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(10).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(13).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("Unexpected tag EOF at this location",
-                document.getParagraphs().get(0).getRuns().get(14).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(14).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(14).getFontSize());
+                document.getParagraphs().get(0).getRuns().get(10).getCTR().getRPr().getHighlight().getVal());
+        assertEquals("Unexpected tag m:endlet at this location",
+                document.getParagraphs().get(0).getRuns().get(11).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(11).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(11).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(14).getCTR().getRPr().getHighlight().getVal());
+                document.getParagraphs().get(0).getRuns().get(11).getCTR().getRPr().getHighlight().getVal());
 
         assertEquals("    ", document.getParagraphs().get(0).getRuns().get(15).getText(0));
         assertEquals("<---", document.getParagraphs().get(0).getRuns().get(16).getText(0));
@@ -278,17 +270,19 @@ public class TemplateParsingValidatorTest {
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(16).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
                 document.getParagraphs().get(0).getRuns().get(16).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("Unexpected tag m:endlet at this location",
+        assertEquals("gd:elseif, gd:else or gd:endif expected here.",
                 document.getParagraphs().get(0).getRuns().get(17).getText(0));
         assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(17).getColor());
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(17).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
                 document.getParagraphs().get(0).getRuns().get(17).getCTR().getRPr().getHighlight().getVal());
 
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(18).getText(0));
-        assertEquals("Some", document.getParagraphs().get(0).getRuns().get(19).getText(0));
-        assertEquals(" t", document.getParagraphs().get(0).getRuns().get(20).getText(0));
-        assertEquals("ext", document.getParagraphs().get(0).getRuns().get(21).getText(0));
+        assertEquals("Some", document.getParagraphs().get(0).getRuns().get(18).getText(0));
+        assertEquals(" t", document.getParagraphs().get(0).getRuns().get(19).getText(0));
+        assertEquals("ext", document.getParagraphs().get(0).getRuns().get(20).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(22).getText(0));
+        assertEquals("Unexpected tag EOF at this location",
+                document.getParagraphs().get(0).getRuns().get(23).getText(0));
     }
 
     /**
@@ -316,27 +310,24 @@ public class TemplateParsingValidatorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        TemplateParsingValidator validator = new TemplateParsingValidator();
+        TemplateValidationGenerator validator = new TemplateValidationGenerator();
         validator.doSwitch(template);
         createDestinationDocument(document, "results/testParsingErrorSimpleTagWithoutFollowingText.docx");
         // scan the destination document
         assertEquals(1, document.getParagraphs().size());
         assertEquals(11, document.getParagraphs().get(0).getRuns().size());
-        assertTrue(
-                document.getParagraphs().get(0).getRuns().get(6).getCTR().toString().contains("w:fldCharType=\"end\""));
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(7).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(8).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(8).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(8).getFontSize());
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(2).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(3).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(3).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(3).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(8).getCTR().getRPr().getHighlight().getVal());
+                document.getParagraphs().get(0).getRuns().get(5).getCTR().getRPr().getHighlight().getVal());
         assertEquals("The image tag is referencing an unknown diagram provider : 'noExistingProvider'",
-                document.getParagraphs().get(0).getRuns().get(9).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(9).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(9).getFontSize());
+                document.getParagraphs().get(0).getRuns().get(5).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(5).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(5).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(9).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(10).getText(0));
+                document.getParagraphs().get(0).getRuns().get(5).getCTR().getRPr().getHighlight().getVal());
     }
 
 }

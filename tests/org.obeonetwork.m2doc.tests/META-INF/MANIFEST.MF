@@ -12,7 +12,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.sirius.diagram,
  org.eclipse.core.resources,
  org.obeonetwork.m2doc.ui;bundle-version="0.9.0",
- org.obeonetwork.m2doc.genconf;bundle-version="0.9.0"
+ org.obeonetwork.m2doc.genconf;bundle-version="0.9.0",
+ org.eclipse.acceleo.query;bundle-version="[5.0.0,6.0.0)",
+ org.antlr.runtime;bundle-version="4.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.poi,
@@ -20,9 +22,6 @@ Import-Package: org.apache.poi,
  org.apache.poi.openxml4j.opc,
  org.apache.poi.xwpf.usermodel,
  org.apache.xmlbeans,
- org.eclipse.acceleo.query.ast,
- org.eclipse.acceleo.query.ast.impl,
- org.eclipse.acceleo.query.runtime;version="[0.0.0,4.2.0)",
  org.openxmlformats.schemas.officeDocument.x2006.customProperties,
  org.openxmlformats.schemas.wordprocessingml.x2006.main
 Bundle-Vendor: %providerName

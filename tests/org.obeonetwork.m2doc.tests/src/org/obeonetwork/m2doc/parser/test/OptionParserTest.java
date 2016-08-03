@@ -24,10 +24,12 @@ import org.junit.Test;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.OptionParser;
 import org.obeonetwork.m2doc.parser.TokenType;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.TemplateFactory;
 
 import static org.junit.Assert.assertEquals;
+import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidationMessage;
 
 /**
  * Tests the {@link OptionParser} class.
@@ -92,7 +94,7 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" option1:\"value1\" option2:\"value2\"", TokenType.DIAGRAM, 1, 2,
                 construct);
-        assertEquals(0, construct.getParsingErrors().size());
+        assertEquals(0, construct.getValidationMessages().size());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1", parsedOptions.get("option1"));
         assertEquals("value2", parsedOptions.get("option2"));
@@ -111,7 +113,7 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" option1:\"value1Escaped\\\"\" option2:\"value2\"",
                 TokenType.DIAGRAM, 1, 2, construct);
-        assertEquals(0, construct.getParsingErrors().size());
+        assertEquals(0, construct.getValidationMessages().size());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1Escaped\"", parsedOptions.get("option1"));
         assertEquals("value2", parsedOptions.get("option2"));
@@ -130,7 +132,7 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "    m:diagram provider   :    \"my provider\"     option1:\"value1\" option2  :  \"  value2  \"     ",
                 TokenType.DIAGRAM, 1, 2, construct);
-        assertEquals(0, construct.getParsingErrors().size());
+        assertEquals(0, construct.getValidationMessages().size());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1", parsedOptions.get("option1"));
         assertEquals("  value2  ", parsedOptions.get("option2"));
@@ -150,9 +152,10 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" opt ion1:\"value1\" option2:\"value2\"", TokenType.DIAGRAM, 1, 2,
                 construct);
-        assertEquals(1, construct.getParsingErrors().size());
-        assertEquals("A forbidden space character is present at the index 3 of the key definition 'opt ion1'.",
-                construct.getParsingErrors().get(0).getMessage());
+        assertEquals(1, construct.getValidationMessages().size());
+        assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "A forbidden space character is present at the index 3 of the key definition 'opt ion1'.",
+                construct.getStyleRun());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1", parsedOptions.get("opt ion1"));
         assertEquals("value2", parsedOptions.get("option2"));
@@ -176,10 +179,10 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" option1:\"value1\" option2:\"value2", TokenType.DIAGRAM, 1, 2,
                 construct);
-        assertEquals(1, construct.getParsingErrors().size());
-        assertEquals(
+        assertEquals(1, construct.getValidationMessages().size());
+        assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "The end delimiter for the option's value has not been reached. The option 'option2' may be invalid.",
-                construct.getParsingErrors().get(0).getMessage());
+                construct.getStyleRun());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1", parsedOptions.get("option1"));
         assertEquals("value2", parsedOptions.get("option2"));
@@ -205,10 +208,10 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" option1:\"value1 option2:\"value2\"", TokenType.DIAGRAM, 1, 2,
                 construct);
-        assertEquals(1, construct.getParsingErrors().size());
-        assertEquals(
+        assertEquals(1, construct.getValidationMessages().size());
+        assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "The start of an option's key has been read but the end of it and the value were missing : 'value2\"'.",
-                construct.getParsingErrors().get(0).getMessage());
+                construct.getStyleRun());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1 option2:", parsedOptions.get("option1"));
         assertEquals("", parsedOptions.get("value2\""));
@@ -231,10 +234,10 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" option1:\"value1\" option2\"value\"", TokenType.DIAGRAM, 1, 2,
                 construct);
-        assertEquals(1, construct.getParsingErrors().size());
-        assertEquals(
+        assertEquals(1, construct.getValidationMessages().size());
+        assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "The start of an option's key has been read but the end of it and the value were missing : ' option2\"value\"'.",
-                construct.getParsingErrors().get(0).getMessage());
+                construct.getStyleRun());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1", parsedOptions.get("option1"));
         assertEquals("", parsedOptions.get("option2\"value\""));
@@ -258,10 +261,10 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" option1:\"value1\" option2:value2\"", TokenType.DIAGRAM, 1, 2,
                 construct);
-        assertEquals(1, construct.getParsingErrors().size());
-        assertEquals(
+        assertEquals(1, construct.getValidationMessages().size());
+        assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Forbidden characters are present after the key value separator (\"value2\") of the key : 'option2'. Expected character is \"'\"",
-                construct.getParsingErrors().get(0).getMessage());
+                construct.getStyleRun());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1", parsedOptions.get("option1"));
         assertEquals("", parsedOptions.get("option2"));
@@ -286,13 +289,13 @@ public class OptionParserTest {
         Map<String, String> parsedOptions = optionParser.parseOptions(
                 "m:diagram provider:\"my provider\" option1:value1\" option2:\"value2\"", TokenType.DIAGRAM, 1, 2,
                 construct);
-        assertEquals(2, construct.getParsingErrors().size());
-        assertEquals(
+        assertEquals(2, construct.getValidationMessages().size());
+        assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Forbidden characters are present after the key value separator (\"value1\") of the key : 'option1'. Expected character is \"'\"",
-                construct.getParsingErrors().get(0).getMessage());
-        assertEquals(
+                construct.getStyleRun());
+        assertTemplateValidationMessage(construct.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "The start of an option's key has been read but the end of it and the value were missing : 'value2\"'.",
-                construct.getParsingErrors().get(1).getMessage());
+                construct.getStyleRun());
         assertEquals(3, parsedOptions.size());
         assertEquals(" option2:", parsedOptions.get("option1"));
         assertEquals("", parsedOptions.get("value2\""));

@@ -16,7 +16,7 @@ package org.obeonetwork.m2doc.template;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +30,7 @@ import org.obeonetwork.m2doc.parser.DocumentParsingError;
  *   <li>{@link org.obeonetwork.m2doc.template.AbstractConstruct#getStyleRun <em>Style Run</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.AbstractConstruct#getRuns <em>Runs</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.AbstractConstruct#getClosingRuns <em>Closing Runs</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.AbstractConstruct#getParsingErrors <em>Parsing Errors</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.AbstractConstruct#getValidationMessages <em>Validation Messages</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getAbstractConstruct()
@@ -105,18 +105,18 @@ public interface AbstractConstruct extends EObject {
 	EList<XWPFRun> getClosingRuns();
 
 	/**
-     * Returns the value of the '<em><b>Parsing Errors</b></em>' attribute list.
-     * The list contents are of type {@link org.obeonetwork.m2doc.parser.DocumentParsingError}.
+     * Returns the value of the '<em><b>Validation Messages</b></em>' attribute list.
+     * The list contents are of type {@link org.obeonetwork.m2doc.parser.TemplateValidationMessage}.
      * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Parsing Errors</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Parsing Errors</em>' attribute list.
-     * @see org.obeonetwork.m2doc.template.TemplatePackage#getAbstractConstruct_ParsingErrors()
-     * @model dataType="org.obeonetwork.m2doc.template.DocumentParsingError"
+     * <p>
+     * If the meaning of the '<em>Validation Messages</em>' attribute list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Validation Messages</em>' attribute list.
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getAbstractConstruct_ValidationMessages()
+     * @model dataType="org.obeonetwork.m2doc.template.TemplateValidationMessage"
      * @generated
      */
-	EList<DocumentParsingError> getParsingErrors();
+    EList<TemplateValidationMessage> getValidationMessages();
 } // AbstractConstruct

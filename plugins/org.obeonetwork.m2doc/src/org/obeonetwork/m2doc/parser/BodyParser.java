@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -31,6 +33,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -118,13 +121,13 @@ public class BodyParser {
      */
     private static final String[] IMAGE_OPTION_SET =
 
-    {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
+            {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
     /**
      * Array of representation's options name constants.
      */
     private static final String[] DIAGRAM_OPTION_SET =
 
-    {DIAGRAM_PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY, };
+            {DIAGRAM_PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY, };
 
     /**
      * Rank of the option's value group in the matcher.
@@ -179,14 +182,14 @@ public class BodyParser {
     /**
      * Creates an error message.
      * 
-     * @param error
+     * @param message
      *            the error to create a message from
      * @param objects
      *            the list of the message arguments
      * @return the formated error message
      */
-    private String message(ParsingErrorMessage error, Object... objects) {
-        return MessageFormat.format(error.getMessage(), objects);
+    private String message(ParsingErrorMessage message, Object... objects) {
+        return MessageFormat.format(message.getMessage(), objects);
     }
 
     /**
@@ -323,13 +326,16 @@ public class BodyParser {
                         throw new IllegalStateException(
                                 "Token of type " + type + " detected. Run shouldn't be null at this place.");
                     }
-                    compound.getParsingErrors().add(
-                            new DocumentParsingError(message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                    compound.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                            message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
                     readTag(compound, compound.getRuns());
                     break;
                 case EOF:
-                    compound.getParsingErrors()
-                            .add(new DocumentParsingError(message(ParsingErrorMessage.UNEXPECTEDTAG, type), null));
+                    final XWPFParagraph lastParagraph = document.getParagraphs()
+                            .get(document.getParagraphs().size() - 1);
+                    final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
+                    compound.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                            message(ParsingErrorMessage.UNEXPECTEDTAG, type), lastRun));
                     return;
                 case LET:
                     compound.getSubConstructs().add(parseLet());
@@ -496,14 +502,56 @@ public class BodyParser {
             queryText = queryText.substring(0, tagLength - TEXT_MODIFIER.length());
         }
         queryText = queryText.trim();
-        AstResult result = queryParser.build(queryText.trim());
+        AstResult result = queryParser.build(queryText);
         if (result.getErrors().size() == 0) {
             query.setQuery(result);
         } else {
-            query.getParsingErrors().add(
-                    new DocumentParsingError(message(ParsingErrorMessage.INVALIDEXPR, queryText), query.getStyleRun()));
+            final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
+            query.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryText, lastRun));
         }
         return query;
+    }
+
+    /**
+     * Gets the {@link List} of {@link TemplateValidationMessage} from the given {@link Diagnostic}.
+     * 
+     * @param diagnostic
+     *            the {@link Diagnostic}
+     * @param queryText
+     *            the query text
+     * @param location
+     *            the location of the {@link TemplateValidationMessage}
+     * @return the {@link List} of {@link TemplateValidationMessage} from the given {@link Diagnostic}
+     */
+    private List<TemplateValidationMessage> getValidationMessage(Diagnostic diagnostic, String queryText,
+            XWPFRun location) {
+        final List<TemplateValidationMessage> res = new ArrayList<TemplateValidationMessage>();
+
+        for (Diagnostic child : diagnostic.getChildren()) {
+            final ValidationMessageLevel level;
+            switch (diagnostic.getSeverity()) {
+                case Diagnostic.INFO:
+                    level = ValidationMessageLevel.INFO;
+                    break;
+
+                case Diagnostic.WARNING:
+                    level = ValidationMessageLevel.WARNING;
+                    break;
+
+                case Diagnostic.ERROR:
+                    level = ValidationMessageLevel.ERROR;
+                    break;
+
+                default:
+                    level = ValidationMessageLevel.INFO;
+                    break;
+            }
+            res.add(new TemplateValidationMessage(level,
+                    message(ParsingErrorMessage.INVALIDEXPR, queryText, child.getMessage()), location));
+            res.addAll(getValidationMessage(child, queryText, location));
+        }
+
+        return res;
     }
 
     /**
@@ -523,19 +571,20 @@ public class BodyParser {
             Set<String> providerOptions) {
         boolean check = true;
         Set<String> optionSet = Sets.newHashSet(imageOptionSet);
+        final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
         for (String key : options.keySet()) {
             if (!optionSet.contains(key) && !providerOptions.contains(key)) {
-                image.getParsingErrors()
-                        .add(new DocumentParsingError(
-                                message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"),
-                                image.getRuns().get(1)));
+                image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"), lastRun));
                 check = false;
             } else if (IMAGE_LEGEND_POSITION.equals(key)) {
                 String value = options.get(key);
                 if (!IMAGE_LEGEND_ABOVE.equals(value) && !IMAGE_LEGEND_BELOW.equals(value)) {
-                    image.getParsingErrors()
-                            .add(new DocumentParsingError(message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key,
-                                    "unknown option value (" + value + ")."), image.getRuns().get(1)));
+                    image.getValidationMessages()
+                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                    message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key,
+                                            "unknown option value (" + value + ")."),
+                                    lastRun));
                 }
             }
         }
@@ -556,8 +605,9 @@ public class BodyParser {
                 OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK, image);
         checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0));
         if (!options.containsKey(IMAGE_FILE_NAME_KEY)) {
-            image.getParsingErrors().add(
-                    new DocumentParsingError(message(ParsingErrorMessage.INVALID_IMAGE_TAG), image.getRuns().get(1)));
+            final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
+            image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                    message(ParsingErrorMessage.INVALID_IMAGE_TAG), lastRun));
         } else {
             image.setFileName(options.get(IMAGE_FILE_NAME_KEY));
             setImageOptions(image, options);
@@ -583,20 +633,18 @@ public class BodyParser {
                 try {
                     image.setHeight(Integer.parseInt(heightStr));
                 } catch (NumberFormatException e) {
-                    image.getParsingErrors()
-                            .add(new DocumentParsingError(
-                                    message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_HEIGHT_KEY, heightStr),
-                                    image.getRuns().get(1)));
+                    final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
+                    image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_HEIGHT_KEY, heightStr), lastRun));
                 }
             } else if (IMAGE_WIDTH_KEY.equals(entry.getKey())) {
                 String heightStr = options.get(IMAGE_WIDTH_KEY);
                 try {
                     image.setWidth(Integer.parseInt(options.get(IMAGE_WIDTH_KEY)));
                 } catch (NumberFormatException e) {
-                    image.getParsingErrors()
-                            .add(new DocumentParsingError(
-                                    message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_WIDTH_KEY, heightStr),
-                                    image.getRuns().get(1)));
+                    final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
+                    image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_WIDTH_KEY, heightStr), lastRun));
                 }
             } else if (IMAGE_LEGEND_POSITION.equals(entry.getKey())) {
                 String value = options.get(IMAGE_LEGEND_POSITION);
@@ -657,8 +705,9 @@ public class BodyParser {
         if (result.getErrors().size() == 0) {
             providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), result);
         } else {
-            providerTemplate.getParsingErrors().add(new DocumentParsingError(
-                    message(ParsingErrorMessage.INVALIDEXPR, query), providerTemplate.getRuns().get(1)));
+            final XWPFRun lastRun = providerTemplate.getRuns().get(providerTemplate.getRuns().size() - 1);
+            providerTemplate.getValidationMessages()
+                    .addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
             providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), null);
         }
     }
@@ -725,7 +774,7 @@ public class BodyParser {
         if (providerQualifiedName != null) {
             result = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
             if (result == null) {
-                representation.getParsingErrors().add(new DocumentParsingError(
+                representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                         "The image tag is referencing an unknown diagram provider : '" + providerQualifiedName + "'",
                         representation.getRuns().get(1)));
                 return null;
@@ -737,10 +786,9 @@ public class BodyParser {
             List<IProvider> providers = ProviderRegistry.INSTANCE.getDiagramProviders();
             // no registered providers
             if (providers.isEmpty()) {
-                representation.getParsingErrors()
-                        .add(new DocumentParsingError(
-                                "No image tag provider is found. Please add one with diagramProvider extension.",
-                                representation.getRuns().get(1)));
+                final XWPFRun lastRun = representation.getRuns().get(representation.getRuns().size() - 1);
+                representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        "No image tag provider is found. Please add one with diagramProvider extension.", lastRun));
             }
 
             // search best provider
@@ -748,13 +796,15 @@ public class BodyParser {
 
             // check errors
             if (result == null) {
-                representation.getParsingErrors().add(new DocumentParsingError(
-                        "No diagram provider found for the image tag", representation.getRuns().get(1)));
+                final XWPFRun lastRun = representation.getRuns().get(representation.getRuns().size() - 1);
+                representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        "No diagram provider found for the image tag", lastRun));
             } else if (!(result instanceof AbstractDiagramProvider)) {
-                representation.getParsingErrors()
-                        .add(new DocumentParsingError(
+                final XWPFRun lastRun = representation.getRuns().get(representation.getRuns().size() - 1);
+                representation.getValidationMessages()
+                        .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                                 "The image tag is referencing a provider that has not been made to handle diagram tags.",
-                                representation.getRuns().get(1)));
+                                lastRun));
             }
         }
 
@@ -804,8 +854,8 @@ public class BodyParser {
         if (result.getErrors().size() == 0) {
             conditionnal.setQuery(result);
         } else {
-            conditionnal.getParsingErrors().add(new DocumentParsingError(
-                    message(ParsingErrorMessage.INVALIDEXPR, query), conditionnal.getRuns().get(1)));
+            final XWPFRun lastRun = conditionnal.getRuns().get(conditionnal.getRuns().size() - 1);
+            conditionnal.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
         }
         parseCompound(conditionnal, TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
         TokenType nextRunType = getNextTokenType();
@@ -828,8 +878,9 @@ public class BodyParser {
                 readTag(conditionnal, conditionnal.getClosingRuns());
                 break; // we just finish the current conditionnal.
             default:
-                conditionnal.getParsingErrors().add(new DocumentParsingError(
-                        message(ParsingErrorMessage.CONDTAGEXPEXTED), conditionnal.getRuns().get(1)));
+                final XWPFRun lastRun = conditionnal.getRuns().get(conditionnal.getRuns().size() - 1);
+                conditionnal.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        message(ParsingErrorMessage.CONDTAGEXPEXTED), lastRun));
         }
         return conditionnal;
     }
@@ -851,29 +902,29 @@ public class BodyParser {
         // extract the variable;
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
-            repetition.getParsingErrors()
-                    .add(new DocumentParsingError("Malformed tag gd:for, no '|' found.", repetition.getRuns().get(1)));
+            final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
+            repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                    "Malformed tag gd:for, no '|' found.", lastRun));
         } else {
             String iterationVariable = tagText.substring(0, indexOfPipe).trim();
             if ("".equals(iterationVariable)) {
-                repetition.getParsingErrors().add(new DocumentParsingError(
-                        "Malformed tag gd:for : no iteration variable specified.", repetition.getRuns().get(1)));
+                final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
+                repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        "Malformed tag gd:for : no iteration variable specified.", lastRun));
             }
             repetition.setIterationVar(iterationVariable);
             if (tagText.length() == indexOfPipe + 1) {
-                repetition.getParsingErrors()
-                        .add(new DocumentParsingError("Malformed tag gd:for : no query expression specified." + tagText,
-                                repetition.getRuns().get(1)));
+                final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
+                repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        "Malformed tag gd:for : no query expression specified." + tagText, lastRun));
             }
             String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
             AstResult result = queryParser.build(query);
             if (result.getErrors().size() == 0) {
                 repetition.setQuery(result);
             } else {
-                // TODO : build an error message that contains the query parsing
-                // message.
-                repetition.getParsingErrors().add(new DocumentParsingError(
-                        message(ParsingErrorMessage.INVALIDEXPR, query), repetition.getRuns().get(1)));
+                final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
+                repetition.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
             }
         }
         // read up the tags until the "gd:endfor" tag is encountered.

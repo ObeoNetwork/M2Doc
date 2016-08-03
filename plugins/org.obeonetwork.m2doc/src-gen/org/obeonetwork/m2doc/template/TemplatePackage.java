@@ -115,15 +115,15 @@ public interface TemplatePackage extends EPackage {
 	int ABSTRACT_CONSTRUCT__CLOSING_RUNS = 2;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ABSTRACT_CONSTRUCT__PARSING_ERRORS = 3;
+    int ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES = 3;
 
-	/**
+    /**
      * The number of structural features of the '<em>Abstract Construct</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -179,15 +179,15 @@ public interface TemplatePackage extends EPackage {
 	int COMPOUND__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int COMPOUND__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+    int COMPOUND__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -252,15 +252,15 @@ public interface TemplatePackage extends EPackage {
 	int CONDITIONNAL__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int CONDITIONNAL__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+    int CONDITIONNAL__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -352,15 +352,15 @@ public interface TemplatePackage extends EPackage {
 	int REPETITION__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+    int REPETITION__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -443,15 +443,15 @@ public interface TemplatePackage extends EPackage {
 	int QUERY__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+    int QUERY__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Behavior</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -525,15 +525,15 @@ public interface TemplatePackage extends EPackage {
 	int TABLE_MERGE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_MERGE__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+    int TABLE_MERGE__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -607,13 +607,13 @@ public interface TemplatePackage extends EPackage {
     int ABSTRACT_PROVIDER_CLIENT__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
     /**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+    int ABSTRACT_PROVIDER_CLIENT__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Option Value Map</b></em>' map.
@@ -689,13 +689,13 @@ public interface TemplatePackage extends EPackage {
     int ABSTRACT_IMAGE__CLOSING_RUNS = ABSTRACT_PROVIDER_CLIENT__CLOSING_RUNS;
 
     /**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ABSTRACT_IMAGE__PARSING_ERRORS = ABSTRACT_PROVIDER_CLIENT__PARSING_ERRORS;
+    int ABSTRACT_IMAGE__VALIDATION_MESSAGES = ABSTRACT_PROVIDER_CLIENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Option Value Map</b></em>' map.
@@ -837,15 +837,15 @@ public interface TemplatePackage extends EPackage {
 	int IMAGE__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__PARSING_ERRORS = ABSTRACT_IMAGE__PARSING_ERRORS;
+    int IMAGE__VALIDATION_MESSAGES = ABSTRACT_IMAGE__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Option Value Map</b></em>' map.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -964,15 +964,15 @@ public interface TemplatePackage extends EPackage {
 	int DEFAULT__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DEFAULT__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+    int DEFAULT__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1037,15 +1037,15 @@ public interface TemplatePackage extends EPackage {
 	int TEMPLATE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TEMPLATE__PARSING_ERRORS = COMPOUND__PARSING_ERRORS;
+    int TEMPLATE__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1128,15 +1128,15 @@ public interface TemplatePackage extends EPackage {
 	int REPRESENTATION__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__PARSING_ERRORS = ABSTRACT_IMAGE__PARSING_ERRORS;
+    int REPRESENTATION__VALIDATION_MESSAGES = ABSTRACT_IMAGE__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Option Value Map</b></em>' map.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1273,15 +1273,15 @@ public interface TemplatePackage extends EPackage {
 	int STATIC_FRAGMENT__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int STATIC_FRAGMENT__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+    int STATIC_FRAGMENT__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The number of structural features of the '<em>Static Fragment</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1327,15 +1327,15 @@ public interface TemplatePackage extends EPackage {
 	int TABLE__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
 
 	/**
-     * The feature id for the '<em><b>Parsing Errors</b></em>' attribute list.
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE__PARSING_ERRORS = ABSTRACT_CONSTRUCT__PARSING_ERRORS;
+    int TABLE__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Rows</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1615,16 +1615,16 @@ public interface TemplatePackage extends EPackage {
 	int AST_RESULT = 23;
 
 	/**
-     * The meta object id for the '<em>Document Parsing Error</em>' data type.
+     * The meta object id for the '<em>Validation Message</em>' data type.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.parser.DocumentParsingError
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocumentParsingError()
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.parser.TemplateValidationMessage
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-	int DOCUMENT_PARSING_ERROR = 24;
+    int TEMPLATE_VALIDATION_MESSAGE = 24;
 
-	/**
+    /**
      * The meta object id for the '<em>WTable Row</em>' data type.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1708,17 +1708,17 @@ public interface TemplatePackage extends EPackage {
 	EAttribute getAbstractConstruct_ClosingRuns();
 
 	/**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.AbstractConstruct#getParsingErrors <em>Parsing Errors</em>}'.
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.AbstractConstruct#getValidationMessages <em>Validation Messages</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Parsing Errors</em>'.
-     * @see org.obeonetwork.m2doc.template.AbstractConstruct#getParsingErrors()
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Validation Messages</em>'.
+     * @see org.obeonetwork.m2doc.template.AbstractConstruct#getValidationMessages()
      * @see #getAbstractConstruct()
      * @generated
      */
-	EAttribute getAbstractConstruct_ParsingErrors();
+    EAttribute getAbstractConstruct_ValidationMessages();
 
-	/**
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Conditionnal <em>Conditionnal</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2318,17 +2318,17 @@ public interface TemplatePackage extends EPackage {
 	EDataType getAstResult();
 
 	/**
-     * Returns the meta object for data type '{@link org.obeonetwork.m2doc.parser.DocumentParsingError <em>Document Parsing Error</em>}'.
+     * Returns the meta object for data type '{@link org.obeonetwork.m2doc.parser.TemplateValidationMessage <em>Validation Message</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Document Parsing Error</em>'.
-     * @see org.obeonetwork.m2doc.parser.DocumentParsingError
-     * @model instanceClass="org.obeonetwork.m2doc.parser.DocumentParsingError"
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Validation Message</em>'.
+     * @see org.obeonetwork.m2doc.parser.TemplateValidationMessage
+     * @model instanceClass="org.obeonetwork.m2doc.parser.TemplateValidationMessage"
      * @generated
      */
-	EDataType getDocumentParsingError();
+    EDataType getTemplateValidationMessage();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTableRow <em>WTable Row</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2430,14 +2430,14 @@ public interface TemplatePackage extends EPackage {
 		EAttribute ABSTRACT_CONSTRUCT__CLOSING_RUNS = eINSTANCE.getAbstractConstruct_ClosingRuns();
 
 		/**
-         * The meta object literal for the '<em><b>Parsing Errors</b></em>' attribute list feature.
+         * The meta object literal for the '<em><b>Validation Messages</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute ABSTRACT_CONSTRUCT__PARSING_ERRORS = eINSTANCE.getAbstractConstruct_ParsingErrors();
+        EAttribute ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES = eINSTANCE.getAbstractConstruct_ValidationMessages();
 
-		/**
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ConditionnalImpl <em>Conditionnal</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2932,16 +2932,16 @@ public interface TemplatePackage extends EPackage {
 		EDataType AST_RESULT = eINSTANCE.getAstResult();
 
 		/**
-         * The meta object literal for the '<em>Document Parsing Error</em>' data type.
+         * The meta object literal for the '<em>Validation Message</em>' data type.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.parser.DocumentParsingError
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocumentParsingError()
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.parser.TemplateValidationMessage
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
          * @generated
          */
-		EDataType DOCUMENT_PARSING_ERROR = eINSTANCE.getDocumentParsingError();
+        EDataType TEMPLATE_VALIDATION_MESSAGE = eINSTANCE.getTemplateValidationMessage();
 
-		/**
+        /**
          * The meta object literal for the '<em>WTable Row</em>' data type.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->

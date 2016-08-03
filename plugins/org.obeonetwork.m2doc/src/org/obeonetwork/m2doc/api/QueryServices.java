@@ -12,9 +12,11 @@
 package org.obeonetwork.m2doc.api;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
@@ -88,15 +90,8 @@ public final class QueryServices {
     public void registerServices(IQueryEnvironment env) {
         List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
         for (Class<?> cls : services) {
-            try {
-                env.registerServicePackage(cls);
-            } catch (InvalidAcceleoPackageException e) {
-                M2DocPlugin.getDefault().getLog()
-                        .log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
-                                "Invalid Service Pacakge registered under token " + ServiceRegistry.DEFAULT_TOKEN
-                                    + " : " + e.getMessage(),
-                                e));
-            }
+            final Set<IService> iServices = ServiceUtils.getServices(env, cls);
+            ServiceUtils.registerServices(env, iServices);
         }
     }
 

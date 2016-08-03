@@ -625,3 +625,4 @@ public class GenconfModelWizard extends Wizard implements INewWizard {
     }
 
 }
+

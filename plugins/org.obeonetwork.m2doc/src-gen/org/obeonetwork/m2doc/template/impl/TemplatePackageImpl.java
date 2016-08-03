@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractImage;
@@ -238,12 +238,12 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	private EDataType documentParsingErrorEDataType = null;
+    private EDataType templateValidationMessageEDataType = null;
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -379,14 +379,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public EAttribute getAbstractConstruct_ParsingErrors() {
+    public EAttribute getAbstractConstruct_ValidationMessages() {
         return (EAttribute)abstractConstructEClass.getEStructuralFeatures().get(3);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -892,14 +892,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public EDataType getDocumentParsingError() {
-        return documentParsingErrorEDataType;
+    public EDataType getTemplateValidationMessage() {
+        return templateValidationMessageEDataType;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -967,7 +967,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__STYLE_RUN);
         createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__RUNS);
         createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__CLOSING_RUNS);
-        createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__PARSING_ERRORS);
+        createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES);
 
         conditionnalEClass = createEClass(CONDITIONNAL);
         createEReference(conditionnalEClass, CONDITIONNAL__ALTERNATIVE);
@@ -1045,7 +1045,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         wTableEDataType = createEDataType(WTABLE);
         runEDataType = createEDataType(RUN);
         astResultEDataType = createEDataType(AST_RESULT);
-        documentParsingErrorEDataType = createEDataType(DOCUMENT_PARSING_ERROR);
+        templateValidationMessageEDataType = createEDataType(TEMPLATE_VALIDATION_MESSAGE);
         wTableRowEDataType = createEDataType(WTABLE_ROW);
         wTableCellEDataType = createEDataType(WTABLE_CELL);
         providerEDataType = createEDataType(PROVIDER);
@@ -1099,7 +1099,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEAttribute(getAbstractConstruct_StyleRun(), this.getRun(), "styleRun", null, 0, 1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getAbstractConstruct_Runs(), this.getRun(), "runs", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getAbstractConstruct_ClosingRuns(), this.getRun(), "closingRuns", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getAbstractConstruct_ParsingErrors(), this.getDocumentParsingError(), "parsingErrors", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAbstractConstruct_ValidationMessages(), this.getTemplateValidationMessage(), "validationMessages", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(conditionnalEClass, Conditionnal.class, "Conditionnal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getConditionnal_Alternative(), this.getConditionnal(), null, "alternative", null, 0, 1, Conditionnal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1183,7 +1183,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEDataType(wTableEDataType, XWPFTable.class, "WTable", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(runEDataType, XWPFRun.class, "Run", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(astResultEDataType, AstResult.class, "AstResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-        initEDataType(documentParsingErrorEDataType, DocumentParsingError.class, "DocumentParsingError", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(templateValidationMessageEDataType, TemplateValidationMessage.class, "TemplateValidationMessage", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(wTableRowEDataType, XWPFTableRow.class, "WTableRow", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(wTableCellEDataType, XWPFTableCell.class, "WTableCell", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(providerEDataType, IProvider.class, "Provider", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

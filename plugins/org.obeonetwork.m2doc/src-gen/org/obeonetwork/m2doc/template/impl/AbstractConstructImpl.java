@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
-import org.obeonetwork.m2doc.parser.DocumentParsingError;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
@@ -37,7 +37,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *   <li>{@link org.obeonetwork.m2doc.template.impl.AbstractConstructImpl#getStyleRun <em>Style Run</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.AbstractConstructImpl#getRuns <em>Runs</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.AbstractConstructImpl#getClosingRuns <em>Closing Runs</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.AbstractConstructImpl#getParsingErrors <em>Parsing Errors</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.AbstractConstructImpl#getValidationMessages <em>Validation Messages</em>}</li>
  * </ul>
  *
  * @generated
@@ -89,16 +89,15 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 	protected EList<XWPFRun> closingRuns;
 
 	/**
-     * The cached value of the '{@link #getParsingErrors() <em>Parsing Errors</em>}' attribute list.
+     * The cached value of the '{@link #getValidationMessages() <em>Validation Messages</em>}' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see #getParsingErrors()
+     * <!-- end-user-doc -->
+     * @see #getValidationMessages()
      * @generated
      * @ordered
      */
-	protected EList<DocumentParsingError> parsingErrors;
-
-	/**
+    protected EList<TemplateValidationMessage> validationMessages;
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -164,17 +163,17 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public EList<DocumentParsingError> getParsingErrors() {
-        if (parsingErrors == null) {
-            parsingErrors = new EDataTypeUniqueEList<DocumentParsingError>(DocumentParsingError.class, this, TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS);
+    public EList<TemplateValidationMessage> getValidationMessages() {
+        if (validationMessages == null) {
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class, this, TemplatePackage.ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES);
         }
-        return parsingErrors;
+        return validationMessages;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -188,8 +187,8 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
                 return getRuns();
             case TemplatePackage.ABSTRACT_CONSTRUCT__CLOSING_RUNS:
                 return getClosingRuns();
-            case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
-                return getParsingErrors();
+            case TemplatePackage.ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES:
+                return getValidationMessages();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -214,9 +213,9 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
                 getClosingRuns().clear();
                 getClosingRuns().addAll((Collection<? extends XWPFRun>)newValue);
                 return;
-            case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
-                getParsingErrors().clear();
-                getParsingErrors().addAll((Collection<? extends DocumentParsingError>)newValue);
+            case TemplatePackage.ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES:
+                getValidationMessages().clear();
+                getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -239,8 +238,8 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
             case TemplatePackage.ABSTRACT_CONSTRUCT__CLOSING_RUNS:
                 getClosingRuns().clear();
                 return;
-            case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
-                getParsingErrors().clear();
+            case TemplatePackage.ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES:
+                getValidationMessages().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -260,8 +259,8 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
                 return runs != null && !runs.isEmpty();
             case TemplatePackage.ABSTRACT_CONSTRUCT__CLOSING_RUNS:
                 return closingRuns != null && !closingRuns.isEmpty();
-            case TemplatePackage.ABSTRACT_CONSTRUCT__PARSING_ERRORS:
-                return parsingErrors != null && !parsingErrors.isEmpty();
+            case TemplatePackage.ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES:
+                return validationMessages != null && !validationMessages.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -282,8 +281,8 @@ public abstract class AbstractConstructImpl extends MinimalEObjectImpl.Container
         result.append(runs);
         result.append(", closingRuns: ");
         result.append(closingRuns);
-        result.append(", parsingErrors: ");
-        result.append(parsingErrors);
+        result.append(", validationMessages: ");
+        result.append(validationMessages);
         result.append(')');
         return result.toString();
     }

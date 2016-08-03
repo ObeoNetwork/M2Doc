@@ -1,0 +1,8 @@
+target "common"
+
+with source requirements
+
+location Acceleo "http://download.eclipse.org/acceleo/updates/releases/3.6/" {
+	org.eclipse.acceleo.query lazy
+	org.eclipse.acceleo.annotations lazy
+}

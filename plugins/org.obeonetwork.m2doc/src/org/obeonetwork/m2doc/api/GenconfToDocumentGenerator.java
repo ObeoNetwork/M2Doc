@@ -30,7 +30,7 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.generator.DocumentValidatedGenerator;
+import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -252,8 +252,8 @@ public class GenconfToDocumentGenerator {
     public boolean validate(IFile templateFile, DocumentTemplate template)
             throws DocumentGenerationException, IOException {
         IFile validationFile = getValidationLogFile(templateFile);
-        DocumentValidatedGenerator validator = new DocumentValidatedGenerator(
-                validationFile.getLocation().toFile().getAbsolutePath(), template);
+        TemplateGenerator validator = new TemplateGenerator(validationFile.getLocation().toFile().getAbsolutePath(),
+                template);
         return validator.generate();
     }
 
