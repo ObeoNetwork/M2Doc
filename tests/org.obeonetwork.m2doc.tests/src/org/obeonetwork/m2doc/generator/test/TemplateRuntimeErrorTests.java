@@ -102,7 +102,7 @@ public class TemplateRuntimeErrorTests {
         assertEquals(3, destinationDoc.getParagraphs().size());
         System.out.println(destinationDoc.getParagraphs().get(0).getText());
         assertEquals(
-                "Template de test pour les balises de query aql : Couldn't find the self variable\nAttempt to access feature (name) on a non ModelObject value (org.eclipse.acceleo.query.runtime.impl.Nothing).",
+                "Template de test pour les balises de query aql : Couldn't find the self variable\nCouldn't find the aqlFeatureAccess(org.eclipse.acceleo.query.runtime.impl.Nothing,java.lang.String) service",
                 destinationDoc.getParagraphs().get(0).getText());
         XWPFRun run = destinationDoc.getParagraphs().get(0).getRuns()
                 .get(destinationDoc.getParagraphs().get(0).getRuns().size() - 1);

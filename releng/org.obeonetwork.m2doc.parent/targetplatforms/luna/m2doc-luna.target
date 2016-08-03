@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde?>
+<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
+<target name="M2Doc Luna Target Platform" sequenceNumber="1469112796">
+  <locations>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.acceleo.query" version="0.0.0"/>
+      <unit id="org.eclipse.acceleo.annotations" version="0.0.0"/>
+      <repository id="Acceleo" location="http://download.eclipse.org/acceleo/updates/releases/3.6/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
+      <unit id="org.eclipse.core.runtime" version="0.0.0"/>
+      <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.junit" version="4.11.0.v201303080030"/>
+      <unit id="org.eclipse.gmf" version="0.0.0"/>
+      <unit id="org.eclipse.gmf.runtime.diagram.ui" version="0.0.0"/>
+      <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
+      <repository id="Eclipse" location="http://download.eclipse.org/releases/luna"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.sirius" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram.ui" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.tests.junit.support" version="0.0.0"/>
+      <repository id="Sirius" location="http://download.eclipse.org/sirius/updates/releases/3.1.1/luna"/>
+    </location>
+  </locations>
+</target>
