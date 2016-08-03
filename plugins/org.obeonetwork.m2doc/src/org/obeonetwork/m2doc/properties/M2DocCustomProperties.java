@@ -34,6 +34,14 @@ public interface M2DocCustomProperties {
      */
     String STRING_TYPE = "string";
     /**
+     * id of the boolean type to use in variable declaration properties.
+     */
+    String BOOLEAN_TYPE = "boolean";
+    /**
+     * id of the date type to use in variable declaration properties.
+     */
+    String DATE_TYPE = "date";
+    /**
      * id of the object type to use in variable declaration properties.
      */
     String OBJECT_TYPE = "object";
@@ -41,6 +49,10 @@ public interface M2DocCustomProperties {
      * Prefix of the variable declaration custom properties.
      */
     String VAR_PROPERTY_PREFIX = "m:var";
+    /**
+     * Prefix of the uri declaration custom properties.
+     */
+    String URI_PROPERTY_PREFIX = "m:uri";
     /**
      * Prefix of the service declaration custom properties.
      */

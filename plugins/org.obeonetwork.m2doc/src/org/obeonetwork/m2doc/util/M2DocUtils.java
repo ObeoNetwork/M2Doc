@@ -13,11 +13,8 @@ package org.obeonetwork.m2doc.util;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
@@ -26,7 +23,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.M2DocPlugin;
-import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
  * Util class for M2Doc.
@@ -36,31 +32,15 @@ import org.obeonetwork.m2doc.services.ServiceRegistry;
 public final class M2DocUtils {
 
     /**
+     * Constants.
+     */
+    public static final String DOCX_EXTENSION_FILE = "docx";
+
+    /**
      * Constructor.
      */
     private M2DocUtils() {
         super();
-    }
-
-    /**
-     * Registers services for use by the AQL evaluation engine.
-     * 
-     * @param env
-     *            registers the services
-     */
-    public static void registerServices(IQueryEnvironment env) {
-        List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
-        for (Class<?> cls : services) {
-            try {
-                env.registerServicePackage(cls);
-            } catch (InvalidAcceleoPackageException e) {
-                M2DocPlugin.getDefault().getLog()
-                        .log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
-                                "Invalid Service Pacakge registered under token " + ServiceRegistry.DEFAULT_TOKEN
-                                    + " : " + e.getMessage(),
-                                e));
-            }
-        }
     }
 
     /**

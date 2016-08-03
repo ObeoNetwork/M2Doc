@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.properties;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -36,6 +37,10 @@ public class TemplateInfo {
      * A map that associates variables declared in the template with their intended type.
      */
     private Map<String, String> variables;
+    /**
+     * The list of nsURIs declared in the template.
+     */
+    private List<String> packageURIs;
 
     /**
      * Constructor.
@@ -46,6 +51,7 @@ public class TemplateInfo {
     public TemplateInfo(XWPFDocument document) {
         this.serviceTokens = Lists.newArrayList();
         this.variables = Maps.newHashMap();
+        this.packageURIs = Lists.newArrayList();
         extractMetaData(document);
     }
 
@@ -69,7 +75,12 @@ public class TemplateInfo {
                     && name.length() > variablePrefixLength) {
                     String variableName = name.substring(variablePrefixLength + 1);
                     String type = property.getLpwstr();
-                    variables.put(variableName, type);
+                    if (!Strings.isNullOrEmpty(variableName)) {
+                        variables.put(variableName, type);
+                    }
+                } else if (name.startsWith(M2DocCustomProperties.URI_PROPERTY_PREFIX)) {
+                    String uri = property.getLpwstr().trim();
+                    packageURIs.add(uri);
                 }
             }
         }
@@ -82,6 +93,15 @@ public class TemplateInfo {
      */
     public List<String> getServiceTokens() {
         return Collections.unmodifiableList(serviceTokens);
+    }
+
+    /**
+     * Returns a non modifiable copy of the uris.
+     * 
+     * @return the list of service tokens.
+     */
+    public List<String> getPackagesURIs() {
+        return Collections.unmodifiableList(packageURIs);
     }
 
     /**
