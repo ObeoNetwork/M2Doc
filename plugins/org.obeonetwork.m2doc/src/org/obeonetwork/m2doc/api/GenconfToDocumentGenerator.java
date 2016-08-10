@@ -14,10 +14,20 @@ package org.obeonetwork.m2doc.api;
 import com.google.common.collect.Lists;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
+import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -25,12 +35,14 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.generator.TemplateGenerator;
+import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -122,7 +134,7 @@ public class GenconfToDocumentGenerator {
         DocumentTemplate template = POIServices.getInstance().parseTemplate(templateFile, queryEnvironment);
 
         // validate template
-        boolean inError = validate(generatedFile, template);
+        boolean inError = validate(generatedFile, template, queryEnvironment, getTypes(queryEnvironment, definitions));
 
         // launch generation
         DocumentGenerator generator = new DocumentGenerator(project.getFullPath().toString(),
@@ -226,14 +238,52 @@ public class GenconfToDocumentGenerator {
         // get acceleo environment
         IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
 
+        // create definitions
+        ConfigurationServices configurationServices = new ConfigurationServices();
+        Map<String, Object> definitions = configurationServices.createDefinitions(generation);
+
         // parse template
         DocumentTemplate template = POIServices.getInstance().parseTemplate(templateFile, queryEnvironment);
 
         // validate template
         if (template != null) {
-            return validate(templateFile, template);
+            return validate(templateFile, template, queryEnvironment, getTypes(queryEnvironment, definitions));
         }
         return true;
+    }
+
+    /**
+     * Gets the {@link IType} from variables.
+     * 
+     * @param environment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param definitions
+     *            variable definitions
+     * @return the {@link IType} from variables
+     */
+    private Map<String, Set<IType>> getTypes(IReadOnlyQueryEnvironment environment, Map<String, Object> definitions) {
+        final Map<String, Set<IType>> res = new HashMap<String, Set<IType>>();
+
+        for (Entry<String, Object> entry : definitions.entrySet()) {
+            final Set<IType> types = new LinkedHashSet<IType>();
+
+            final Object value = entry.getValue();
+            if (value instanceof EObject) {
+                types.add(new EClassifierType(environment, ((EObject) value).eClass()));
+            } else if (value instanceof List) {
+                types.add(new SequenceType(environment, new ClassType(environment, Object.class)));
+            } else if (value instanceof Set) {
+                types.add(new SetType(environment, new ClassType(environment, Object.class)));
+            } else if (value == null) {
+                types.add(new ClassType(environment, null));
+            } else {
+                types.add(new ClassType(environment, value.getClass()));
+            }
+
+            res.put(entry.getKey(), types);
+        }
+
+        return res;
     }
 
     /**
@@ -243,18 +293,25 @@ public class GenconfToDocumentGenerator {
      *            IFile
      * @param template
      *            DocumentTemplate
+     * @param env
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param varTypes
+     *            variable {@link IType} mapping
      * @return if template contains errors
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      * @throws IOException
      *             IOException
      */
-    public boolean validate(IFile templateFile, DocumentTemplate template)
-            throws DocumentGenerationException, IOException {
+    public boolean validate(IFile templateFile, DocumentTemplate template, IReadOnlyQueryEnvironment env,
+            Map<String, Set<IType>> varTypes) throws DocumentGenerationException, IOException {
         IFile validationFile = getValidationLogFile(templateFile);
-        TemplateGenerator validator = new TemplateGenerator(validationFile.getLocation().toFile().getAbsolutePath(),
+        final TemplateValidator validator = new TemplateValidator();
+
+        validator.validate(template, env, varTypes);
+        TemplateGenerator generator = new TemplateGenerator(validationFile.getLocation().toFile().getAbsolutePath(),
                 template);
-        return validator.generate();
+        return generator.generate();
     }
 
     /**

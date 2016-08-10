@@ -65,7 +65,6 @@ public class TemplateGenerator {
             TemplateValidationGenerator footerValidator = new TemplateValidationGenerator();
             footerValidator.doSwitch(footerTemplate);
             inError = inError || footerValidator.isInError();
-
         }
         for (Template headerTemplate : this.template.getHeaders()) {
             TemplateValidationGenerator headerValidator = new TemplateValidationGenerator();
