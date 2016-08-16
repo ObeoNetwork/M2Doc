@@ -31,6 +31,8 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.obeonetwork.m2doc.api.QueryServices;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.OptionType;
@@ -54,6 +56,7 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class TemplateValidator extends TemplateSwitch<Void> {
 
     /**
@@ -81,13 +84,44 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      * 
      * @param documentTemplate
      *            the {@link DocumentTemplate}
+     * @param generation
+     *            Generation
+     */
+    public void validate(DocumentTemplate documentTemplate, Generation generation) {
+        IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
+        validate(documentTemplate, generation, queryEnvironment);
+    }
+
+    /**
+     * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param generation
+     *            Generation
+     */
+    public void validate(DocumentTemplate documentTemplate, Generation generation,
+            IReadOnlyQueryEnvironment queryEnvironment) {
+        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
+        validate(documentTemplate, generation, queryEnvironment, types);
+    }
+
+    /**
+     * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
      * @param types
      *            the variables types
+     * @param generation
+     *            Generation
      */
-    public void validate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment,
-            Map<String, Set<IType>> types) {
+    public void validate(DocumentTemplate documentTemplate, Generation generation,
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
         validator = new AstValidator(queryEnvironment);
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
         booleanType = new ClassType(queryEnvironment, boolean.class);
