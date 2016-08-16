@@ -18,6 +18,10 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.genconf.Generation;
@@ -58,13 +62,20 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
      *
      * @throws ProviderException
      *             if a problem occurs.
+     * @throws CoreException
      */
     @Test
-    public void testAllOptionPresentAndCorrect() throws ProviderException {
+    public void testAllOptionPresentAndCorrect() throws ProviderException, CoreException {
         Map<String, Object> options = new HashMap<String, Object>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
+        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "/org.obeonetwork.m2doc.sirius.tests");
+        final IProject project = ResourcesPlugin.getWorkspace().getRoot()
+                .getProject("org.obeonetwork.m2doc.sirius.tests");
+        if (!project.exists()) {
+            project.create(new NullProgressMonitor());
+            project.open(new NullProgressMonitor());
+        }
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);

@@ -12,10 +12,12 @@
 package org.obeonetwork.m2doc.sirius.providers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -124,9 +126,21 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
             if (dRepresentation instanceof DSemanticDiagram) {
                 DSemanticDiagram dsd = (DSemanticDiagram) dRepresentation;
                 String filePath = getDiagramImageFilename(dsd, rootPath);
-                File file = new File(filePath);
-                file.getParentFile().mkdirs();
-                final IPath path = new Path(filePath);
+                final IPath path = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath)).getLocation();
+                File file = path.toFile();
+                if (!file.getParentFile().exists()) {
+                    if (!file.getParentFile().mkdirs()) {
+                        throw new ProviderException("can't create folder " + file.getParentFile().getAbsolutePath());
+                    }
+                }
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        throw new ProviderException(
+                                "can't create file " + file.getAbsolutePath() + ": " + e.getMessage(), e);
+                    }
+                }
                 final Diagram gmfDiagram = getGmfDiagram(dsd);
 
                 // Use the DiagramEditPartService to use the figure validation
@@ -181,10 +195,10 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
                 try {
                     imageUtility.copyToImage(realOne, path, ImageFileFormat.JPEG, new NullProgressMonitor(),
                             PreferencesHint.USE_DEFAULTS);
-                    resultList.add(filePath);
+                    resultList.add(file.getAbsolutePath());
                 } catch (CoreException e) {
                     throw new ProviderException("Image creation from diagram '" + dRepresentation.getName()
-                        + "' to the file '" + filePath + "' failed.", e);
+                        + "' to the file '" + file.getAbsolutePath() + "' failed: " + e.getMessage(), e);
                 }
             }
         }
