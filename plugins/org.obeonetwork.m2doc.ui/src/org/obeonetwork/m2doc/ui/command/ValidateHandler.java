@@ -68,7 +68,7 @@ public class ValidateHandler extends AbstractHandler {
                                 "The template validation has been performed successfully.");
                     } else {
                         MessageDialog.openConfirm(shell, "M2Doc validation",
-                                "Error(s) detected during validation. A log file has been generated next to the configuration file.");
+                                "Error(s) detected during validation. A log file has been generated next to the template file.");
                     }
                 } catch (FileNotFoundException e) {
                     Activator.getDefault().getLog()
