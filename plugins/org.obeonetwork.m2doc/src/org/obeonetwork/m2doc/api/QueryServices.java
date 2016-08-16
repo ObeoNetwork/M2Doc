@@ -11,18 +11,29 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.api;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
+import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -115,32 +126,95 @@ public final class QueryServices {
         }
     }
 
+    // /**
+    // * return eclassifier from string using aql.
+    // *
+    // * @param generation
+    // * Generation
+    // * @param type
+    // * string
+    // * @return eclassifier from string
+    // */
+    // public EClassifier getEClassifier(Generation generation, String type) {
+    // IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
+    // EClassifier eClassifier = queryEnvironment.getEPackageProvider().getType(type);
+    // return eClassifier;
+    // }
+    //
+    // /**
+    // * return eclassifier from string using aql.
+    // *
+    // * @param queryEnvironment
+    // * IQueryEnvironment
+    // * @param type
+    // * string
+    // * @return eclassifier from string
+    // */
+    // public EClassifier getEClassifier(IQueryEnvironment queryEnvironment, String type) {
+    // EClassifier eClassifier = queryEnvironment.getEPackageProvider().getType(type);
+    // return eClassifier;
+    // }
+
     /**
-     * return eclassifier from string using aql.
+     * Gets the {@link IType} from variables.
      * 
      * @param generation
      *            Generation
-     * @param type
-     *            string
-     * @return eclassifier from string
+     * @return the {@link IType} from variables
      */
-    public EClassifier getEClassifier(Generation generation, String type) {
-        IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
-        EClassifier eClassifier = queryEnvironment.getEPackageProvider().getType(type);
-        return eClassifier;
+    public Map<String, Set<IType>> getTypes(Generation generation) {
+        return getTypes(getAcceleoEnvironment(), generation);
     }
 
     /**
-     * return eclassifier from string using aql.
+     * Gets the {@link IType} from variables.
      * 
-     * @param queryEnvironment
-     *            IQueryEnvironment
-     * @param type
-     *            string
-     * @return eclassifier from string
+     * @param environment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param generation
+     *            Generation
+     * @return the {@link IType} from variables
      */
-    public EClassifier getEClassifier(IQueryEnvironment queryEnvironment, String type) {
-        EClassifier eClassifier = queryEnvironment.getEPackageProvider().getType(type);
-        return eClassifier;
+    public Map<String, Set<IType>> getTypes(IReadOnlyQueryEnvironment environment, Generation generation) {
+        final Map<String, Set<IType>> res = new HashMap<String, Set<IType>>();
+
+        // create definitions
+        ConfigurationServices configurationServices = new ConfigurationServices();
+        Map<String, Object> definitions = configurationServices.createDefinitions(generation);
+
+        // get types.
+        for (Entry<String, Object> entry : definitions.entrySet()) {
+            final Object value = entry.getValue();
+            final Set<IType> types = getTypes(environment, value);
+            res.put(entry.getKey(), types);
+        }
+
+        return res;
     }
+
+    /**
+     * Gets the {@link IType} from object.
+     * 
+     * @param environment
+     *            IReadOnlyQueryEnvironment
+     * @param value
+     *            Object
+     * @return the {@link IType} from variables
+     */
+    public Set<IType> getTypes(IReadOnlyQueryEnvironment environment, Object value) {
+        final Set<IType> types = new LinkedHashSet<IType>();
+        if (value instanceof EObject) {
+            types.add(new EClassifierType(environment, ((EObject) value).eClass()));
+        } else if (value instanceof List) {
+            types.add(new SequenceType(environment, new ClassType(environment, Object.class)));
+        } else if (value instanceof Set) {
+            types.add(new SetType(environment, new ClassType(environment, Object.class)));
+        } else if (value == null) {
+            types.add(new ClassType(environment, null));
+        } else {
+            types.add(new ClassType(environment, value.getClass()));
+        }
+        return types;
+    }
+
 }

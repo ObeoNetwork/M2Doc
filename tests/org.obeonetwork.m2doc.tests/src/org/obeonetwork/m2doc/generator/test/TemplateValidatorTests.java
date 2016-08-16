@@ -29,6 +29,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
+import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -69,7 +70,7 @@ public class TemplateValidatorTests {
         documentTemplate.getHeaders().add(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -87,7 +88,7 @@ public class TemplateValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -106,7 +107,7 @@ public class TemplateValidatorTests {
         documentTemplate.getFooters().add(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -124,7 +125,7 @@ public class TemplateValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -148,7 +149,7 @@ public class TemplateValidatorTests {
         types.put("self", selfTypes);
         selfTypes.add(new ClassType(queryEnvironment, String.class));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(1, conditional.getValidationMessages().size());
         assertTemplateValidationMessage(conditional.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -173,7 +174,7 @@ public class TemplateValidatorTests {
         selfTypes.add(new ClassType(queryEnvironment, String.class));
         selfTypes.add(new ClassType(queryEnvironment, Boolean.class));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(1, conditional.getValidationMessages().size());
         assertTemplateValidationMessage(conditional.getValidationMessages().get(0), ValidationMessageLevel.WARNING,
@@ -198,7 +199,7 @@ public class TemplateValidatorTests {
         types.put("self", selfTypes);
         selfTypes.add(new ClassType(queryEnvironment, String.class));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(1, conditional.getValidationMessages().size());
         assertTemplateValidationMessage(conditional.getValidationMessages().get(0), ValidationMessageLevel.INFO,
@@ -226,7 +227,7 @@ public class TemplateValidatorTests {
         types.put("self", selfTypes);
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(0, conditional.getValidationMessages().size());
 
@@ -257,7 +258,7 @@ public class TemplateValidatorTests {
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(0, conditional.getValidationMessages().size());
 
@@ -290,7 +291,7 @@ public class TemplateValidatorTests {
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(0, conditional.getValidationMessages().size());
 
@@ -313,7 +314,7 @@ public class TemplateValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -338,7 +339,7 @@ public class TemplateValidatorTests {
         types.put("self", selfTypes);
         selfTypes.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, String.class)));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(1, repetition.getValidationMessages().size());
         assertTemplateValidationMessage(repetition.getValidationMessages().get(0), ValidationMessageLevel.WARNING,
@@ -363,7 +364,7 @@ public class TemplateValidatorTests {
         types.put("self", selfTypes);
         selfTypes.add(new ClassType(queryEnvironment, String.class));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(1, repetition.getValidationMessages().size());
         assertTemplateValidationMessage(repetition.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -391,7 +392,7 @@ public class TemplateValidatorTests {
         types.put("self", selfTypes);
         selfTypes.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, String.class)));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
 
         assertEquals(0, repetition.getValidationMessages().size());
 
@@ -414,7 +415,7 @@ public class TemplateValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -432,7 +433,7 @@ public class TemplateValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -458,7 +459,7 @@ public class TemplateValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -499,7 +500,7 @@ public class TemplateValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, queryEnvironment, new HashMap<String, Set<IType>>());
+        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment);
 
         assertEquals(2, image.getValidationMessages().size());
         assertTemplateValidationMessage(image.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
