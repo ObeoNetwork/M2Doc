@@ -14,67 +14,73 @@ import org.obeonetwork.m2doc.genconf.provider.GenconfItemProviderAdapterFactory;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  */
 public class Activator extends AbstractUIPlugin {
-    // The plug-in ID
+    /** The plug-in ID. */
     public static final String PLUGIN_ID = "org.obeonetwork.m2doc.genconf.design";
 
-    // The shared instance
+    /** The shared instance. */
     private static Activator plugin;
 
-    private static Set<Viewpoint> viewpoints; 
+    /**
+     * Viewpoints.
+     */
+    private static Set<Viewpoint> viewpoints;
 
     /**
-     * The constructor
+     * The constructor.
      */
     public Activator() {
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
      */
     public void start(BundleContext context) throws Exception {
-      super.start(context);
-	  plugin = this;
-	  viewpoints = new HashSet<Viewpoint>();
-	  viewpoints.addAll(ViewpointRegistry.getInstance().registerFromPlugin(PLUGIN_ID + "/description/genconf.odesign")); 
+        super.start(context);
+        plugin = this;
+        viewpoints = new HashSet<Viewpoint>();
+        viewpoints
+                .addAll(ViewpointRegistry.getInstance().registerFromPlugin(PLUGIN_ID + "/description/genconf.odesign"));
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     public void stop(BundleContext context) throws Exception {
-	plugin = null;
-	if (viewpoints != null) {
-	    for (final Viewpoint viewpoint: viewpoints) {
-		ViewpointRegistry.getInstance().disposeFromPlugin(viewpoint);
-	    }
-	    viewpoints.clear();
-	    viewpoints = null; 
-	}
-	super.stop(context);
+        plugin = null;
+        if (viewpoints != null) {
+            for (final Viewpoint viewpoint : viewpoints) {
+                ViewpointRegistry.getInstance().disposeFromPlugin(viewpoint);
+            }
+            viewpoints.clear();
+            viewpoints = null;
+        }
+        super.stop(context);
     }
 
     /**
-     * Returns the shared instance
+     * Returns the shared instance.
      * 
      * @return the shared instance
      */
     public static Activator getDefault() {
-	return plugin;
+        return plugin;
     }
-    
+
     /**
      * return genconf AdapterFactory.
+     * 
      * @return AdapterFactory
      */
     public AdapterFactory getAdapterFactory() {
-        ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+        ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+                ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
         adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
         adapterFactory.addAdapterFactory(new GenconfItemProviderAdapterFactory());
         adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
