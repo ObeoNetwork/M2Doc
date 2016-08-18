@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:database="http://www.obeonetwork.org/dsl/database/1.0" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_SbzRQPBMEeW9ULtwZoIWnA" selectedViews="_ncfc0PBMEeW9ULtwZoIWnA" version="10.1.0.201509162000">
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:database="http://www.obeonetwork.org/dsl/database/1.0" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_SbzRQPBMEeW9ULtwZoIWnA" selectedViews="_yxHm0GU8EeaeUusqtDZG_w" version="10.1.0.201509162000">
   <semanticResources>models/My.database</semanticResources>
   <semanticResources>pathmap://NativeDBTypes/MySQL-5</semanticResources>
   <semanticResources>pathmap://LogicalDBTypes</semanticResources>
   <semanticResources>models/MPDGenConf.genconf</semanticResources>
-  <semanticResources>models/MPDGenConf2.genconf</semanticResources>
-  <semanticResources>models/My.genconf</semanticResources>
   <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_ncfc0PBMEeW9ULtwZoIWnA">
     <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_o2k1MPBMEeW9ULtwZoIWnA" name="My Database">
       <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_o2k1MfBMEeW9ULtwZoIWnA" source="DANNOTATION_CUSTOMIZATION_KEY">
@@ -445,5 +443,61 @@
       <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']/@ownedRepresentations[name='Schema%20Diagram']/@additionalLayers[name='Index']"/>
     </ownedRepresentations>
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.dsl.database.design/description/database.odesign#//@ownedViewpoints[name='Database']"/>
+  </ownedViews>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_yxHm0GU8EeaeUusqtDZG_w">
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_yxfaQGU8EeaeUusqtDZG_w" name="Configuration Diagram">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_yxfaQWU8EeaeUusqtDZG_w" source="DANNOTATION_CUSTOMIZATION_KEY">
+        <data xmi:type="diagram:ComputedStyleDescriptionRegistry" xmi:id="_yxfaQmU8EeaeUusqtDZG_w"/>
+      </ownedAnnotationEntries>
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_yx5C4GU8EeaeUusqtDZG_w" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_yx5C4WU8EeaeUusqtDZG_w" type="Sirius" element="_yxfaQGU8EeaeUusqtDZG_w" measurementUnit="Pixel">
+          <children xmi:type="notation:Node" xmi:id="_yx8tQGU8EeaeUusqtDZG_w" type="2002" element="_yxfaQ2U8EeaeUusqtDZG_w">
+            <children xmi:type="notation:Node" xmi:id="_yyA-sGU8EeaeUusqtDZG_w" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_yyBlwGU8EeaeUusqtDZG_w" type="7001">
+              <styles xmi:type="notation:SortingStyle" xmi:id="_yyBlwWU8EeaeUusqtDZG_w"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_yyBlwmU8EeaeUusqtDZG_w"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_yx8tQWU8EeaeUusqtDZG_w" fontColor="16777215" fontName="Segoe UI" fontHeight="8" bold="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yx8tQmU8EeaeUusqtDZG_w"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_yyCM0GU8EeaeUusqtDZG_w" type="2002" element="_yxfaRWU8EeaeUusqtDZG_w">
+            <children xmi:type="notation:Node" xmi:id="_yyCz4GU8EeaeUusqtDZG_w" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_yyCz4WU8EeaeUusqtDZG_w" type="7001">
+              <styles xmi:type="notation:SortingStyle" xmi:id="_yyCz4mU8EeaeUusqtDZG_w"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_yyCz42U8EeaeUusqtDZG_w"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_yyCM0WU8EeaeUusqtDZG_w" fontColor="16777215" fontName="Segoe UI" fontHeight="8" bold="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yyCM0mU8EeaeUusqtDZG_w" x="220"/>
+          </children>
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_yx5C4mU8EeaeUusqtDZG_w"/>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_yxfaQ2U8EeaeUusqtDZG_w" name="db: DataBase[TRANSIENT]">
+        <target xmi:type="genconf:ModelDefinition" href="models/MPDGenConf.genconf#//@definitions.1"/>
+        <semanticElements xmi:type="genconf:ModelDefinition" href="models/MPDGenConf.genconf#//@definitions.1"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_yxfaRGU8EeaeUusqtDZG_w" labelColor="255,255,255" borderSize="2" borderSizeComputationExpression="2" borderColor="42,62,86" backgroundStyle="GradientTopToBottom" backgroundColor="79,117,162" foregroundColor="167,188,214">
+          <labelFormat>bold</labelFormat>
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.obeonetwork.m2doc.genconf.design/description/genconf.odesign#//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer/@containerMappings[name='CD_ModelDefinition']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.obeonetwork.m2doc.genconf.design/description/genconf.odesign#//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer/@containerMappings[name='CD_ModelDefinition']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_yxfaRWU8EeaeUusqtDZG_w" name="author: John Doe">
+        <target xmi:type="genconf:StringDefinition" href="models/MPDGenConf.genconf#//@definitions.0"/>
+        <semanticElements xmi:type="genconf:StringDefinition" href="models/MPDGenConf.genconf#//@definitions.0"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_yxfaRmU8EeaeUusqtDZG_w" labelColor="255,255,255" borderSize="2" borderSizeComputationExpression="2" borderColor="118,147,182" backgroundStyle="GradientTopToBottom" backgroundColor="167,188,214" foregroundColor="215,226,239">
+          <labelFormat>bold</labelFormat>
+          <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.obeonetwork.m2doc.genconf.design/description/genconf.odesign#//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer/@containerMappings[name='CD_StringDefinition']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.obeonetwork.m2doc.genconf.design/description/genconf.odesign#//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer/@containerMappings[name='CD_StringDefinition']"/>
+      </ownedDiagramElements>
+      <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.obeonetwork.m2doc.genconf.design/description/genconf.odesign#//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_yxfaR2U8EeaeUusqtDZG_w"/>
+      <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.obeonetwork.m2doc.genconf.design/description/genconf.odesign#//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer"/>
+      <target xmi:type="genconf:Generation" href="models/MPDGenConf.genconf#/"/>
+    </ownedRepresentations>
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.m2doc.genconf.design/description/genconf.odesign#//@ownedViewpoints[name='M2Doc']"/>
+  </ownedViews>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_anxy0GU9EeaeUusqtDZG_w">
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.m2doc.sirius.tests/description/genconf.odesign#//@ownedViewpoints[name='genconf']"/>
   </ownedViews>
 </viewpoint:DAnalysis>
