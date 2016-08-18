@@ -4,12 +4,12 @@
     <ownedRepresentations xsi:type="description_1:DiagramDescription" dropDescriptions="//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='CD_DropModelDefinition']" name="M2D_Configuration_Diagram" label="Configuration Diagram" initialisation="true" domainClass="genconf.Generation" enablePopupBars="true">
       <metamodel href="../../org.obeonetwork.m2doc.genconf/model/m2docconf.ecore#/"/>
       <defaultLayer name="Default">
-        <containerMappings name="CD_ModelDefinition" semanticCandidatesExpression="feature:definitions" domainClass="genconf.ModelDefinition">
+        <containerMappings name="CD_ModelDefinition" labelDirectEdit="//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='CD_DirectEditKey']" semanticCandidatesExpression="feature:definitions" domainClass="genconf.ModelDefinition">
           <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="2" borderColor="//@userColorsPalettes[name=null]/@entries[name='DarkBlueBorder']" labelExpression="service:getLabel" labelColor="//@userColorsPalettes[name=null]/@entries[name='DarkBlueLabel']" roundedCorner="true" backgroundStyle="GradientTopToBottom" backgroundColor="//@userColorsPalettes[name=null]/@entries[name='DarkBlueBG']" foregroundColor="//@userColorsPalettes[name=null]/@entries[name='DarkBlueFG']">
             <labelFormat>bold</labelFormat>
           </style>
         </containerMappings>
-        <containerMappings name="CD_StringDefinition" semanticCandidatesExpression="feature:definitions" domainClass="genconf.StringDefinition">
+        <containerMappings name="CD_StringDefinition" labelDirectEdit="//@ownedViewpoints[name='M2Doc']/@ownedRepresentations[name='M2D_Configuration_Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='CD_DirectEditKey']" semanticCandidatesExpression="feature:definitions" domainClass="genconf.StringDefinition">
           <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="2" borderColor="//@userColorsPalettes[name=null]/@entries[name='BlueBorder']" labelExpression="service:getLabel" labelColor="//@userColorsPalettes[name=null]/@entries[name='BlueLabel']" roundedCorner="true" backgroundStyle="GradientTopToBottom" backgroundColor="//@userColorsPalettes[name=null]/@entries[name='BlueBG']" foregroundColor="//@userColorsPalettes[name=null]/@entries[name='BlueFG']">
             <labelFormat>bold</labelFormat>
           </style>
@@ -38,6 +38,12 @@
             <viewVariable name="containerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="service:createModelDefinition(selectedElement)"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DirectEditLabel" name="CD_DirectEditKey" inputLabelExpression="feature:key">
+            <mask mask="{0}"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:SetValue" featureName="key" valueExpression="var:arg0"/>
             </initialOperation>
           </ownedTools>
         </toolSections>
