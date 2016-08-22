@@ -54,7 +54,7 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
                     Resource configurationModel = generator.createConfigurationModel((IFile) selected);
                     MessageDialog.openInformation(shell, "M2Doc generation",
-                            "The configuration file '" + configurationModel.getURI().toString() + "' is created.");
+                            "The configuration file '" + configurationModel.getURI().toPlatformString(true) + "' is created.");
                 } catch (FileNotFoundException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
