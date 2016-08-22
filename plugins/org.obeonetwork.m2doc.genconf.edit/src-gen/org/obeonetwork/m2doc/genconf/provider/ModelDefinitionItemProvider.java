@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
  * This is the item provider adapter for a {@link org.obeonetwork.m2doc.genconf.ModelDefinition} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
+ * 
  * @generated
  */
 public class ModelDefinitionItemProvider extends DefinitionItemProvider {
@@ -30,6 +31,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public ModelDefinitionItemProvider(AdapterFactory adapterFactory) {
@@ -40,6 +42,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
      * This returns the property descriptors for the adapted class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -86,7 +89,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                              */
                             @Override
                             public boolean apply(Object arg0) {
-                                return arg0 == null
+                                return arg0 == null || ((ModelDefinition) object).getType() == null
                                     || (arg0 != null && ((ModelDefinition) object) != null && arg0 instanceof EObject
                                         && ((ModelDefinition) object).getType().getEPackage().getNsURI()
                                                 .equals(((EObject) arg0).eClass().getEPackage().getNsURI())
@@ -104,28 +107,23 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
      * This adds a property descriptor for the Type feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected void addTypePropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_ModelDefinition_type_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_ModelDefinition_type_feature", "_UI_ModelDefinition_type"),
-                 GenconfPackage.Literals.MODEL_DEFINITION__TYPE,
-                 true,
-                 false,
-                 false,
-                 null,
-                 null,
-                 null));
+        itemPropertyDescriptors
+                .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+                        getResourceLocator(), getString("_UI_ModelDefinition_type_feature"),
+                        getString("_UI_PropertyDescriptor_description", "_UI_ModelDefinition_type_feature",
+                                "_UI_ModelDefinition_type"),
+                        GenconfPackage.Literals.MODEL_DEFINITION__TYPE, true, false, false, null, null, null));
     }
 
     /**
      * This returns ModelDefinition.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -136,6 +134,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -165,6 +164,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -184,6 +184,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
      * that can be created under this object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override

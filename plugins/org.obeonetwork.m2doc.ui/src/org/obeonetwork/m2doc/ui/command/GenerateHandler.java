@@ -65,10 +65,10 @@ public class GenerateHandler extends AbstractHandler {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
                     List<IFile> generatedfiles = generator.generate(generation);
                     if (generatedfiles.size() == 1) {
-                        MessageDialog.openConfirm(shell, "M2Doc generation",
+                        MessageDialog.openInformation(shell, "M2Doc generation",
                                 "The document '" + generatedfiles.get(0).getLocation().toString() + "' is generated.");
                     } else if (generatedfiles.size() == 2) {
-                        MessageDialog.openConfirm(shell, "M2Doc generation",
+                        MessageDialog.openInformation(shell, "M2Doc generation",
                                 "The document '" + generatedfiles.get(0).getLocation().toString()
                                     + "' is generated. \n\n The template file contains validation errors, please read '"
                                     + generatedfiles.get(1).getLocation().toString() + "'.");

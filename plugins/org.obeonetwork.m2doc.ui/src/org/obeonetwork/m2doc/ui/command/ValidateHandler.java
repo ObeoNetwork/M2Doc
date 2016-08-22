@@ -64,10 +64,10 @@ public class ValidateHandler extends AbstractHandler {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
                     boolean inError = generator.validate(generation);
                     if (!inError) {
-                        MessageDialog.openConfirm(shell, "M2Doc validation",
+                        MessageDialog.openInformation(shell, "M2Doc validation",
                                 "The template validation has been performed successfully.");
                     } else {
-                        MessageDialog.openConfirm(shell, "M2Doc validation",
+                        MessageDialog.openInformation(shell, "M2Doc validation",
                                 "Error(s) detected during validation. A log file has been generated next to the template file.");
                     }
                 } catch (FileNotFoundException e) {
