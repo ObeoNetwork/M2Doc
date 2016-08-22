@@ -127,7 +127,7 @@ public class GenconfToDocumentGenerator {
         boolean inError = validate(generatedFile, template, generation);
 
         // launch generation
-        DocumentGenerator generator = new DocumentGenerator(project.getFullPath().toString(),
+        DocumentGenerator generator = new DocumentGenerator(project.getLocation().toOSString(),
                 templateFile.getLocation().toFile().getAbsolutePath(),
                 generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment,
                 generation);
