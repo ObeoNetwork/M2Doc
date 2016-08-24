@@ -11,8 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.obeonetwork.m2doc.genconf;bundle-version="0.9.1",
  org.eclipse.emf.edit,
  org.obeonetwork.m2doc.genconf.edit,
- org.eclipse.emf.ecore.editor,
- org.eclipse.sirius.ext.emf.ui
+ org.eclipse.emf.ecore.editor
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %providerName

@@ -7,10 +7,4 @@
 	       name="genconf">
     </component>
   </extension>
-  <extension
-        point="org.eclipse.sirius.ui.siriuspropertiescelleditor">
-     <provider
-           class="org.obeonetwork.m2doc.genconf.design.celleditor.URIDialogCellEditorProvider">
-     </provider>
-  </extension>
 </plugin>
