@@ -10,8 +10,8 @@
             Obeo - initial API and implementation
  -->
 <feature
-      id="org.obeonetwork.m2doc.sirius.feature"
-      label="Sirius provider"
+      id="org.obeonetwork.m2doc.sirius.addon.feature"
+      label="Sirius provider [3.0.0)"
       version="0.9.1.qualifier"
       provider-name="Obeonetwork">
 
@@ -230,16 +230,10 @@ litigation.
    </license>
 
    <plugin
-         id="org.obeonetwork.m2doc.sirius"
+         id="org.obeonetwork.m2doc.genconf.emf.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.obeonetwork.m2doc.genconf.design"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
 </feature>
