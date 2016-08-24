@@ -9,6 +9,9 @@
    <feature url="features/org.obeonetwork.m2doc.sirius.feature_0.9.1.qualifier.jar" id="org.obeonetwork.m2doc.sirius.feature" version="0.9.1.qualifier">
       <category name="M2Doc"/>
    </feature>
+   <feature url="features/org.obeonetwork.m2doc.sirius.addon.feature_0.9.1.qualifier.jar" id="org.obeonetwork.m2doc.sirius.addon.feature" version="0.9.1.qualifier">
+      <category name="M2Doc"/>
+   </feature>
    <category-def name="M2Doc" label="M2Doc">
       <description>
          plug-ins for the M2Doc technology

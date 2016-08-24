@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.obeonetwork.m2doc.genconf.emf.ui;singleton:=true
+Bundle-Version: 0.9.1.qualifier
+Bundle-Activator: org.obeonetwork.m2doc.genconf.emf.ui.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.obeonetwork.m2doc.genconf;bundle-version="0.9.1",
+ org.eclipse.emf.edit,
+ org.eclipse.emf.ecore.editor,
+ org.eclipse.sirius.ext.emf.ui;bundle-version="3.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: %providerName
+Export-Package: org.obeonetwork.m2doc.genconf.emf.ui,
+ org.obeonetwork.m2doc.genconf.emf.ui.celleditor
