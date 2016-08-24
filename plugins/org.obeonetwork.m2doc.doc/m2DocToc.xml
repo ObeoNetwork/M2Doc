@@ -13,8 +13,8 @@
  -->
 
 <toc label="M2Doc" topic="doc/index.html">
-   <topic href="doc/m2DocUserGuide.htm" label="M2Doc User Guide">
+   <topic href="doc/user/M2Doc User Guide.html" label="M2Doc User Guide">
    </topic>
-   <topic href="doc/m2DocDeveloperGuide.htm" label="M2Doc Developer Guide">
+   <topic href="doc/developer/M2Doc Developer Guide.html" label="M2Doc Developer Guide">
    </topic>
 </toc>

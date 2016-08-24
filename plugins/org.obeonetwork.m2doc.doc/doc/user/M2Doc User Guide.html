@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="M2DocUserGuide">M2Doc User Guide</h1>
+		<h2 id="Templateauthoring">Template authoring</h2>
+		<p>The M2Doc technology adopts an approach where the document authoring tools (Libre Office, Open Office, MS Word) are leverage as much as possible. What other tool is more adapted to style and static part authoring? </p>
+		<p>Furthermore, these tools are quite common and widely adopted so that there&#8217;s no 
+			<strong>
+				<em>necessity</em>
+			</strong>   to learn yet another document authoring tool. Last but not least, there&#8217;s a great deal of document models legacy all over the places that should be reused as easily as possible.
+		</p>
+		<p>Templates are made of static parts and dynamic parts. Static parts are produced in the generated document as they are in the templates while dynamic parts are replaced by some text which depends on the provided input models. Dynamic parts are provided in fields so that there&#8217;s always a clear separation between static and dynamic parts.   </p>
+		<h3 id="Howtocopewithfieldcodes">How to cope with field codes</h3>
+		<p>The edition of template must be made in a mode where field codes are visible. In MS Word, you can toggle this mode on/off by pressing Alt-F9. When the mode is on, you should see {field} like the next picture shows:  
+			<img border="0" src="images/image001.png"/>    
+		</p>
+		<p>To insert a new field, press Ctrl-F9. You obtain an empty field like this: 
+			<img border="0" src="images/image002.png"/>  That you must edit to provide the code and instructions. 
+		</p>
+		<p>The next section gives all the details that are necessary to edit M2Doc generation tags. Alternatively, if you start you’re template from the provided model (templateModel.dotx),  you can use the Insert &gt; QuickPart &gt; AutoText to insert M2Doc generation tags. Once you know the tag, it might be faster to just edit them.</p>
+		<p>You must toggle field codes on to read this document.</p>
+		<h3 id="M2Docstaticgenerationtags">M2Doc static generation tags</h3>
+		<p>M2Doc provides right now 4 generation tags that have fixed formats. Those tags are described below:</p>
+		<ul>
+			<li>
+				<code>{m:&lt;query&gt;}</code> : the directive is replaced with the string representation of the query’s evaluation result 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<code>{m:for &lt;var&gt; | &lt;query&gt;} iterated body { m:endfor }</code> : the directive is replaced by the iterated generation of the body over a collection of values. The specified variable is successively bound to the values of the evaluated collection so that it is accessible from queries inside the body.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<code>{m:if &lt;expression1&gt;} true branch { m:elseif &lt;expression2&gt; } … { m:elseif &lt;expression_n&gt;} … { m:else } … {m:endif }</code> : conditional generation. The first branch among the if and elseif directives which expression evaluates to true is processed. If no expression evaluates to true, the else branch is processed (if present).
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<code>{m:image file:"image file path" width:"image insertion width"  heigth:"image insertion heigth" legend:"image legend" legendPos:"above/below"}</code> : inserts the image which file is specified (through a path relative to the eclipse project where the generation model is placed). The insertion will have the specified width, height and a legend will be inserted at the specified position if one is specified (default is below).
+			</li>
+		</ul>
+		<h3 id="M2Docdynamicgenerationtags">M2Doc dynamic generation tags</h3>
+		<p>M2Doc provides a way to extend its information retrieval for a tag by registering a provider by an extension point. Each provider uses its own options in addition of the one generically provided par M2Doc core. Many providers can be associated to a same kind of tag and any one of those can be choose to retrieve information in a tag. </p>
+		<h4 id="Siriusdiagramprovider">Sirius diagram provider</h4>
+		<p>M2doc gives a way to insert Sirius diagrams: you have to install the Sirius provider feature coming with M2Doc installation.</p>
+		<p>The diagram tag has the following tag: 
+			<code>{m:diagram}</code>, here the different options:
+		</p>
+		<ul>
+			<li>
+				<i>title</i> : AQL expression, mandatory if you want to get a diagram by its name. Be careful, as it is an AQL expression, if you just want to put a string, you have to add some’’ around the string: title:”’diagram name’”,
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<i>width</i> : integer, optional, by default the diagram export real width,
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<i>height</i> : integer, optional, by default the diagram export real height,
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<i>provider</i> : Java class qualified name, optional. Use to define your own way to get a Sirius diagram.
+			</li>
+		</ul>
+		<p>The default way to get a diagram is by its name. If several diagrams have the same name, it will get the first.</p>
+		<p>However, if the behavior is not enough, you can define your own diagram provider and refers it in “provider” option tag. See the developer guide to add one.</p>
+		<p>Some examples:</p>
+		<ul>
+			<li>
+				<code>m:diagram title:"'Diagram name'"</code>: get the first diagram named “Diagram name” in the modeling project. The diagram size is the export image size. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<code>m:diagram title:"self.name"</code>: if “self.name” is “My Diagram”, get the first diagram named “My Diagram” in the modeling project. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<code>m:diagram title:"'Diagram name'" width:"200" height:"200"</code>:  get the first diagram named “Diagram name” in the modeling project. The diagram picture will be resize to 200x200.
+			</li>
+		</ul>
+		<p>
+			<b>Warning</b>: do not forget the ' around the string in an AQL Expression: 
+			<code>title:"'Diagram name'"</code>
+		</p>
+		<h3 id="Documentgenerationandstyle">Document generation and style</h3>
+		<p>The style of the fragments of generated documents is determined by the style of the templates parts. </p>
+		<ul>
+			<li>Iteration: there’s no text style in the tag itself. The style of the body is reproduced as is. The style of the paragraph holding the opening 
+				<i>m:for</i>  tag, however, is reproduced throughout the iterations.
+			</li>
+		</ul>
+		<ul>
+			<li>Conditional: there’s no text style in the tag itself. The style of the branch&#8217;s bodies are reproduced as is.</li>
+		</ul>
+		<ul>
+			<li>Image: there’s no text style associated to this style. The paragraph style is reproduced thought. </li>
+		</ul>
+		<ul>
+			<li>Queries: the style of the first run of the expression is used to generate the text that replaces the query’s field. For instance, 
+				<code>{m:table.comments}</code>  will produce comments in orange while <code>{m:table.comments}</code> will produce comments in black.
+			</li>
+		</ul>
+		<h3 id="Howtocreatedynamictables">How to create dynamic tables</h3>
+		<p>There’s no specific tag required to create a dynamic table. Here is an example of a dynamic table description to provide a database table’s details:              </p>
+		<p>
+			<img border="0" src="images/image018.png"/> 
+		</p>
+		<pre><code>Table { SEQ Tableau \* ARABIC } : tables description
+</code></pre>
+		<p>It is sufficient to enclose the dynamic part in a generation tag. Here, we have a simple iteration tag. We could have a combination of iteration and conditional tags or whatever other combinations is necessary.</p>
+		<p>Note: invisible characters might sneak in between the two table fragments (the header and the iterated body). Toggle on the mode where these characters are shown and remove them, if there are any, after the for tag. </p>
+		<h3 id="Howtocreatedynamiclists">How to create dynamic lists</h3>
+		<p>Creation of dynamic lists is quite similar to dynamic tables: there’s no specific tag required. As bulleted or numbered lists are style attributes the style is carried from the template to the generated doc as is: </p>
+		<p>Tables for database { m:db.name }</p>
+		<p>{ m:for table | db.tables }</p>
+		<ul>
+			<li>{ m:table.name } : 
+				<ul>
+					<li>{ m:for col | table.columns }{ m:col.name } : { m:col.comments }</li>
+					<li>{ m:endfor }</li>
+				</ul>
+			</li>
+			<li>{ m:endfor }</li>
+		</ul>
+		<p>Note: for the bullets to be correctly spaced and so that there’s no spurious carriage return introduced, the endfor tags must be on bullets at the same level as the corresponding tag (as above).</p>
+		<h3 id="Howtocreatedynamichyperlinks">How to create dynamic hyperlinks</h3>
+		<p>Hyperlinks are WORD fields looking like the following example {HYPERLINK &#171;http://www.obeo.fr&#187;}.</p>
+		<p>If you want to dynamically retrieve the link with an AQL expression, it is possible. Just adds the request in a WORD field in the double quote like that:</p>
+		<p>
+			<code>{HYPERLINK "m:" http://www.obeo.fr "}</code>
+		</p>
+		<p>
+			<b>Warning</b>  : This feature is currently an experimental one. In some context it may be not working.
+		</p>
+		<h3 id="Headingsandtablesofcontents">Headings and tables of contents</h3>
+		<p>Headings are just treated like tables and lists are: the style makes it all. </p>
+		<p>Here’s how we would create headings that corresponds to a database tables:</p>
+		<p>
+			<code>{ m:for table |db.tables }</code> Table <code>{ m:table.name }</code>
+			<br/>Description: 
+			<code>{ m:table.comments }</code>
+			<br/>
+			<code>{ m:for col |table.columns }</code> Column <code>{ m:col.name }</code>
+			<br/>Description : 
+			<code>{ m:col.comments }</code>
+			<br/>
+			<code>{ m:endfor }</code>
+			<br/>
+			<code>{ m:endfor }</code>
+		</p>
+		<p>Insertion of table of contents has no interactions with the templating. The table of content is just a field which is processed by Word which collects all the headings. The only requirement is to make an update of the field right after document generation. </p>
+		<h3 id="Definevariables">Define variables</h3>
+		<p>To write AQL expressions, variables are useful to simplify the syntax and to have an easy access to model elements.</p>
+		<p>Variables can be defined in the template document with template properties:</p>
+		<p>
+			<img border="0" src="images/image003.png"/> 
+		</p>
+		<p>With this example, we can write AQL expressions like 
+			<code>m:author</code> or <code>m:db.name</code>.
+		</p>
+		<p>The variables names have to be set with 
+			<code>m:var:</code> prefix: 
+			<code>m:var:author</code> will define ‘author’ variable. The variables values defines the variable type (author is a string and db a model element database::Database). The possible basic types are ‘int’, ‘real’, ‘string’, ’boolean’, ‘date’. To type an object, you have to set its domain class like in AQL syntax: 
+			<code>prefix::ClassName</code> (database::Database).
+		</p>
+		<p>These variables are automatically imported in the configuration model where you can value them. If you do not define the variable in the template document, you will have to do it in the configuration model (see Configure variables definitions paragraph) .</p>
+		<h3 id="Miscelaneouspoints">Miscelaneous points</h3>
+		<ul>
+			<li>Adding dynamic content in headers and footers is simply done by inserting generation tags in the header and footer. </li>
+		</ul>
+		<ul>
+			<li>Dynamic content in text area isn’t supported yet. Any generation tag that appears in a text area will just be reproduced as is and won’t be processed as a generation tag.</li>
+		</ul>
+		<h2 id="Documentationgeneration">Documentation generation</h2>
+		<p>As of now, custom properties are not implemented and a generation configuration model must be used to generate a document from a template. </p>
+		<p>Document generation is done in three steps:</p>
+		<ul>
+			<li>Template authoring (in a modeling project)</li>
+		</ul>
+		<ul>
+			<li>Generation configuration with the creation of a configuration model which binds values to variables</li>
+		</ul>
+		<ul>
+			<li>Generation itself</li>
+		</ul>
+		<p>We provide a step by step tutorial that explains how to generate a document from a database model. To start with, M2Doc and the database DSL must be installed in your bundle. Then, import the example modeling project (org.obeonetwork.m2doc.dbexample) in your workspace. (File&gt;Import&gt;General&gt;Existing Project into Workspace). The example project in on github: 
+			<i>https://github.com/ObeoNetwork/M2Doc/tree/master/doc/example/org.obeonetwork.m2doc.dbexample</i> .
+		</p>
+		<p>Open the project. You should have this folder layout:
+			<br/>
+			<img border="0" src="images/image004.png"/>
+		</p>
+		<p>We will keep the existing configuration model (.genconf) and create another one to document the procedure.</p>
+		<h3 id="Initializetheconfigurationmodel">Initialize the configuration model</h3>
+		<p>First, initialize the configuration model: right click on the template file &gt;Initialize Documentation Configurations:</p>
+		<p>
+			<img border="0" src="images/image005.png"/>
+		</p>
+		<p>The configuration model is created by default near the template.</p>
+		<p>
+			<img border="0" src="images/image006.png"/>
+		</p>
+		<p>You will have to set those two URIs in the Package NSURI attribute: </p>
+		<ul>
+			<li>http://www.obeonetwork.org/dsl/database/1.0</li>
+		</ul>
+		<ul>
+			<li>http://www.obeonetwork.org/dsl/typeslibrary/1.0</li>
+		</ul>
+		<p>and the result file name.</p>
+		<p>The resulting property sheet should look like this:</p>
+		<p>
+			<img border="0" src="images/image007.png"/>
+		</p>
+		<h3 id="Configurevariablesdefinitions">Configure variables definitions</h3>
+		<p>Now, you have to configure the variables definitions. If these variables are set in the template file, they are automatically added to the configuration model and you just need to value them.</p>
+		<p>Otherwise, you have to create these variables definitions.</p>
+		<h4 id="ManagevariableswithM2DocSiriusviewpoint">Manage variables with M2Doc Sirius viewpoint</h4>A Sirius viewpoint 
+		<i>M2Doc</i>  is activated on the 
+		<i>org.obeonetwork.m2doc.dbexample</i>  example project.  In the configuration diagram on Generation element, you can manage the variables definitions.
+		<p>Two kind of variable definitions can be created:</p>
+		<ul>
+			<li>string definition: to add one, use the palette tool and set the key and the value (direct edit or properties view)</li>
+		</ul>
+		<p>
+			<img border="0" src="images/image008.png"/>
+		</p>
+		<ul>
+			<li> model definition: to add one, select the model element value in the model explorer and drag n drop it into the diagram and set the key name (direct edit or property view).</li>
+		</ul>
+		<p>You can also use the palette tool and select the model element value.</p>
+		<p>
+			<img border="0" src="images/image009.png"/>
+		</p>
+		<h4 id="CreatevariablewithEMFEditor">Create variable with EMF Editor</h4>
+		<p>If you do not have Sirius, you have to set the variable via the genconf EMF Editor:</p>
+		<p>First, you have to load the main database resource: </p>
+		<img border="0" src="images/image010.png"/>
+		<p>Select the database model that is in the model directory:</p>
+		<p>
+			<img border="0" src="images/image011.png"/>
+		</p>
+		<p>Now that the database resource is loaded, we will be able to use model element in it as variable’s values. </p>
+		<p>We first create a string variable, key=’author’, value=’John Doe’:</p>
+		<p>
+			<img border="0" src="images/image012.png"/>
+		</p>
+		<p>And a model variable:</p>
+		<p>
+			<img border="0" src="images/image013.png"/>
+		</p>
+		<p>Set the values of the variables in the property view. The model variable must be defined like follows:</p>
+		<p>
+			<img border="0" src="images/image014.png"/>
+		</p>
+		<h3 id="Generatedocumentation">Generate documentation</h3>
+		<p>You just have to invoke the generation by right clicking on the generation model element:</p>
+		<p>
+			<img border="0" src="images/image015.png"/>
+		</p>
+		<p>A message indicates everything went well:</p>
+		<p>
+			<img border="0" src="images/image016.png"/>
+		</p>
+		<p>Refresh the ‘doc’ directory if needed. The result should be in it. </p>
+		<h3 id="Templatevalidation">Template validation</h3>
+		<p>When the generation is launched, we first run a template validation. If this validation gets errors, an error file will be generated near the generated result file.</p>
+		<p>The template validation can also be started alone, if it gets errors, an error file will be generated near the template file.</p>
+		<p>
+			<img border="0" src="images/image017.png"/>
+		</p>
+		<p>The template validation checks:</p>
+		<ul>
+			<li> M2Doc syntax,</li>
+		</ul>
+		<ul>
+			<li> AQL expression syntax and and typing,</li>
+		</ul>
+		<ul>
+			<li>Feature and services called in AQL expressions exist,</li>
+		</ul>
+		<ul>
+			<li>Variables syntax and typing.</li>
+		</ul>
+	</body>
+</html>
