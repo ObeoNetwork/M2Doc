@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="M2DocDeveloperGuide">M2Doc Developer Guide</h1>
+		<p>M2Doc has been designed to be an extensible template language. 
+			<br/> It means that some tags from template language used to retrieve information from the generation environment can be used in different manner with different options. It is up to anybody to provide a way to handle a tag thanks to an extension point. 
+		</p>
+		<p>You also can provide some services to extend the AQL language.</p>
+		<h2 id="M2DocArchitecture">M2Doc Architecture</h2>
+		<p>To understand better how M2Doc is working and how you will have to contribute extensions, let&#8217;s have a look at the architecture:</p> 
+		<img border="0" src="images/image001.png"/> 
+		<p>The M2Doc base depends on AQL to be able to retrieve information from models or even to get a value for tag options.</p>
+		<p>It contains a unique extension point that allows to contribute diagram providers to enhanced diagram tag capabilities. </p>
+		<p>Currently, this extension point allows to provide only diagram provider. But in the future any extensible tag with the need of a different provider kind than the diagram one could be declared by this extension point (x and yProvider).</p>
+		<h2 id="Providingtaghandling">Providing tag handling</h2>
+		<p>Thanks to the extension point, you can specify how some tag considered as extensible by M2Doc will be handle to generate content and what options they will contain to achieve the handling. </p>
+		<p>To extend the way the tag is used, we provide with M2Doc an extension point (org.obeonetwork.m2doc.providers.register) you will have to use: </p>
+		<p>
+			<img border="0" src="images/image002.png"/>
+		</p>
+		<p>You can specify your diagram providers with this extension point. For the moment, only diagram providers can be registered. 
+			<br/> If new extensible tags are created in the future with the need of a different kind of provider than the diagram one, then the extension point will be enriched. 
+		</p>
+		<h3 id="Extendingthediagramtag">Extending the &#171;diagram&#187; tag</h3>
+		<p>The meaning of the diagram tag is to insert an image or images one after the other from Sirius diagrams in the produced document with the use of a provider.</p>
+		<p>The extensible part of this tag is the way that images to insert are created and provided.</p>
+		<p>For example let&#8217;s consider the M2Doc provider 
+			<i>SiriusDiagramByTitleProvider</i>. This provider handles tag with the following format (activate fields if you don&#8217;t see it):  
+		</p>
+		<p>
+			<code>{ m:diagram title:"Schema Diagram" provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider" }</code> 
+		</p>
+		<p>To compute images, the provider uses the title option.
+			<br/> To add a provider for diagram tag, just register your provider to the extension point like in the following picture:
+		</p>
+		<p>
+			<img border="0" src="images/image003.png"/>
+		</p>
+		<pre>   &lt;extension point="org.obeonetwork.m2doc.providers.register"&gt;
+      &lt;diagramProvider
+            diagramClass="org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider"&gt;
+      &lt;/diagramProvider&gt;
+   &lt;/extension&gt;
+</pre>
+		<p>Your provider to be fully functional must be an implementation of org.obeonetwork.m2doc.provider.DiagramProvider class:</p>
+		<p>
+			<img border="0" src="images/image004.png"/>
+		</p>
+		<p>This class contains two methods: </p>
+		<ul>
+			<li> 
+				<i>getRepresentationImagePath</i>  that takes as entry a map of options parameters and returns the list of all images path to insert as replacement of the tag in the produced Word document. 
+			</li>
+		</ul>The image behind the path must exist on the file system when returned or no image will be inserted.
+		<p>The options map will contains all options evaluated that were present in the diagram tag except the one handled by M2Doc that are “width”, “height”, “legend”, “legendPos” and “provider”.</p>
+		<p>Options will be evaluated regarding their specified kind that must be provided with the method coming from the interface IProvider of all diagram providers or not:  </p>
+		<p>
+			<img border="0" src="images/image005.png"/>
+		</p>
+		<p>This method allows to specify how each option will be parsed and provided by associating the option’s key and an evaluation kind.</p>
+		<p>For the moment, two kinds of evaluation can be done by M2Doc with option:</p>
+		<ul>
+			<li>The STRING one that parse the option as a string and give it to the provider as the same exact string.</li>
+		</ul>
+		<ul>
+			<li>The AQL_EXPRESSION one that parse an option as a string and interpret it as an AQL expression and give to the provider the evaluated expression result that can be any JAVA object.</li>
+		</ul>
+		<p>A JAVA enum contains all the kind of evaluation that M2Doc provides (org.obeonetwork.m2doc.provider.OptionType).</p>
+		<p>In our example, “title” is an AQL expression. The method looks like this: </p>
+		<p>
+			<img border="0" src="images/image006.png"/>
+		</p>
+		<p>If no option type is provided for an option, then the default STRING one will be use.</p>
+		<ul>
+			<li>
+				<i>isDefault</i> : first, let’s explain how a provider is chosen. 
+			</li>
+		</ul>
+		<p>If we have a provider tag, we try to get this provider. If it is not found, we get all the registered providers via the m2doc extension point, we iterate on them and the first provider witch have its mandatory option tags matching is chosen. If a provider is defined by default, it will be added at the beginning of this list, so it will have priority on the others. </p>
+		<p>The provider tag is optional, if your provider is by default, it will be tested before the other ones. That allows to write 
+			<code>&lt;m:diagram title=”myDiagram”&gt;</code> instead of   
+			<code>&lt;m:diagram title=”myDiagram” provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider"&gt;</code>
+		</p>
+		<h4 id="Errorhandling">Error handling</h4>
+		<p>If some parameters are missing or are incorrect, you can warn M2Doc by throwing a ProviderException with the wanted message. 
+			<br/> When M2Doc catch this exception it will insert your message at the tag position.
+		</p>
+		<h2 id="Extendingothertags">Extending other tags</h2>
+		<p>Currently, only the tag &#171;diagram&#187; can be extended. But any new tag that will be added and which will be considered as extensible could have providers attached to it.  </p>
+		<h2 id="ProvidingAQLservicesbyservicesregistry">Providing AQL services by services registry</h2>
+		<p>One of the nice feature of the AQL engine is that the set of services is extensible at will. In the field of document generation, it means that we may provide, for a given application, a set of services that are tailored to ease the development of templates against a given meta model. </p>
+		<p>As the technology matures, we will also probably provide a set of services that are of general interest for model to document generation. </p>
+		<p>Yet, how do we register AQL services? Here’s a step by step guide based on the example provided in the M2Doc repository. </p>
+		<h3 id="WritingAQLServices">Writing AQL Services</h3>
+		<p>AQL Services are provided through simple Java classes with a no-argument constructor. Services are the method of the class. The values of the method parameters are provided through the arguments of the service call in the AQL queries (for that matter, the target of the service call is considered as the first argument of the service call). For instance, the next AQL expression </p>
+		<p>
+			<code>db.allTables()</code>
+		</p>
+		<p>makes a call to the corresponding method in the Database service’s class:</p>
+		<p>
+			<code>public List&lt;Table&gt; allTables(DataBase db)</code>
+		</p>
+		<p>In that example, there’s a single parameter which is filled with the service’s call target. </p>
+		<p>Nothing prevents to pass on other arguments. </p>
+		<p>The service class looks like this:</p>
+		<pre>public class DatabaseServices {
+
+       /**
+        * No arg constructor required by the AQL runtime.
+        */
+       public DatabaseServices() {
+       }
+       
+       /**
+        * Returns the content of a table cell that is checked when the column is in
+        * a foreign key.
+        * 
+        * @param col the column.
+        * @return the character ‘X’ when the column is a foreign key.
+        */
+
+       public String checkForeignKey(Column col) {
+             return col.isInForeignKey() ? "X" : "";
+       }
+}
+
+</pre>
+		<p></p>
+		<p>We only left the first method to illustrate the way of writing services. </p>
+		<h3 id="AQLServiceregistration">AQL Service registration</h3>
+		<p>For the M2Doc engine to be able to call services from AQL queries, it is necessary that those are registered in some way. To allow this, the M2Doc runtime provides an extension point. A plug-in that contribute services to the M2Doc runtime must then declare an extension to do so:</p>
+		<p>
+			<img border="0" src="images/image007.png"/>
+		</p>
+		<p>The extension has two attributes:</p>
+		<ul>
+			<li>The service class itself</li>
+		</ul>
+		<ul>
+			<li>A service token. This attribute is intended to isolate services dedicated to a given M2Doc application in a bundle. This feature is not complete yet and any registration must be made through the default token. When the feature is complete, it will be required to provide the set of service’s token required through the template’s custom properties. This will allow having several services with the same name for distinct applications without interference.</li>
+		</ul>
+		<p>Alternatively, a given M2Doc integration is free to provide a set of standard services that will be registered in the integration code. In such a scenario, documentation generation will probably be made through integration’s specific actions that aren’t documented here.</p>
+	</body>
+</html>
