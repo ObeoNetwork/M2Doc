@@ -18,8 +18,6 @@ The following set of functionalities is currently supported :
   * insertion of an image from a file
   * insertion of the evaluation result of an AQL query (as of now, a string representation of the result is inserted)
 
-A complete documentation can be found [here](doc/doc/M2DocUserGuide.docx)
-
 As a preview here follows a screen shot of a template's fragment and the corresponding generation result for a database. 
 
 ![DB Template](doc/doc/DBTemplate.png)
