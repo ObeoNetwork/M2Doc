@@ -64,6 +64,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/query"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationId"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationTitle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/activatedLayers"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//StaticFragment"/>
     <genClasses ecoreClass="Template.ecore#//Table">

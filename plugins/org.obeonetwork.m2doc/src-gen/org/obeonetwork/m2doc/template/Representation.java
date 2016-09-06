@@ -14,6 +14,7 @@
 package org.obeonetwork.m2doc.template;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.emf.common.util.EList;
 
 
 /**
@@ -28,6 +29,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getQuery <em>Query</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getRepresentationId <em>Representation Id</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.Representation#getRepresentationTitle <em>Representation Title</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.Representation#getActivatedLayers <em>Activated Layers</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation()
@@ -119,5 +121,21 @@ public interface Representation extends AbstractImage {
      * @generated
      */
     void setRepresentationTitle(String value);
+
+    /**
+     * Returns the value of the '<em><b>Activated Layers</b></em>' attribute list.
+     * The list contents are of type {@link java.lang.String}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Activated Layers</em>' attribute list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Activated Layers</em>' attribute list.
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation_ActivatedLayers()
+     * @model
+     * @generated
+     */
+    EList<String> getActivatedLayers();
 
 } // Representation

@@ -1218,13 +1218,22 @@ public interface TemplatePackage extends EPackage {
     int REPRESENTATION__REPRESENTATION_TITLE = ABSTRACT_IMAGE_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Activated Layers</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION__ACTIVATED_LAYERS = ABSTRACT_IMAGE_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Representation</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 3;
+	int REPRESENTATION_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 4;
 
 	/**
      * The number of operations of the '<em>Representation</em>' class.
@@ -2244,6 +2253,17 @@ public interface TemplatePackage extends EPackage {
     EAttribute getRepresentation_RepresentationTitle();
 
     /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.Representation#getActivatedLayers <em>Activated Layers</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Activated Layers</em>'.
+     * @see org.obeonetwork.m2doc.template.Representation#getActivatedLayers()
+     * @see #getRepresentation()
+     * @generated
+     */
+    EAttribute getRepresentation_ActivatedLayers();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2860,6 +2880,14 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute REPRESENTATION__REPRESENTATION_TITLE = eINSTANCE.getRepresentation_RepresentationTitle();
+
+        /**
+         * The meta object literal for the '<em><b>Activated Layers</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REPRESENTATION__ACTIVATED_LAYERS = eINSTANCE.getRepresentation_ActivatedLayers();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.StaticFragmentImpl <em>Static Fragment</em>}' class.
