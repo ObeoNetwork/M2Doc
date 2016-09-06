@@ -696,7 +696,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, object.getHeight());
         parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, object.getWidth());
-        parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, object.getActivatedLayers());
         setGenericParameters(object, provider.getOptionTypes(), parameters);
         return parameters;
     }

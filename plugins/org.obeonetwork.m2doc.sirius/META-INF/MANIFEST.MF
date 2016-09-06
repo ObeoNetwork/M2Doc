@@ -10,10 +10,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.sirius.diagram,
  org.eclipse.gmf.runtime.diagram.ui,
  org.eclipse.gmf.runtime.diagram.ui.render,
- org.eclipse.sirius.diagram.ui,
- com.google.guava
+ org.eclipse.sirius.diagram.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.sirius,
+ org.obeonetwork.m2doc.sirius.commands,
  org.obeonetwork.m2doc.sirius.providers
 Bundle-Vendor: %providerName
