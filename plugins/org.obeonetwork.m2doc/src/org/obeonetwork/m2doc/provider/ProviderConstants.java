@@ -33,5 +33,9 @@ public interface ProviderConstants {
      * The key used in the map passed to {@link IProvider} to define the width the image should have. Value associated is of type int.
      */
     String IMAGE_WIDTH_KEY = "imageWidth";
+    /**
+     * The key used in the map passed to {@link IProvider} to define the activated layers the image should have.
+     */
+    String DIAGRAM_ACTIVATED_LAYERS_KEY = "layers";
 
 }
