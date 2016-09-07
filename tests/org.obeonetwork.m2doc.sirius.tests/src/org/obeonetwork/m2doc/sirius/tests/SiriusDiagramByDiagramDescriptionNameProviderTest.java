@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.sirius.tests;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +69,9 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
-        options.put("diagramDescriptionName", "diagram");
-        options.put("rootObject", generation);
+        options.put("descriptionId", "TestGenerationDiagram");
+        options.put("object", generation);
+        options.put("layers", Collections.EMPTY_LIST);
         // CHECKSTYLE:ON
         List<String> representationImagePaths = siriusDiagramProvider.getRepresentationImagePath(options);
         assertEquals(2, representationImagePaths.size());
@@ -95,7 +97,7 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
         // CHECKSTYLE:ON
-        options.put("diagramDescriptionName", "diagram");
+        options.put("descriptionId", "GenerationDiagram");
         try {
             siriusDiagramProvider.getRepresentationImagePath(options);
             throw new AssertionFailedError("An exception should have been thrown");
@@ -122,8 +124,8 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
         // CHECKSTYLE:ON
-        options.put("diagramDescriptionName", "wrongDiagramDescription");
-        options.put("rootObject", generation);
+        options.put("descriptionId", "wrongDiagramDescription");
+        options.put("object", generation);
         try {
             siriusDiagramProvider.getRepresentationImagePath(options);
             throw new AssertionFailedError("An exception should have been thrown");
@@ -177,8 +179,8 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
         // CHECKSTYLE:ON
-        options.put("diagramDescriptionName", "diagram");
-        options.put("rootObject", generation.getDefinitions().get(0));
+        options.put("descriptionId", "TestGenerationDiagram");
+        options.put("object", generation.getDefinitions().get(0));
         List<String> representationImagePaths = siriusDiagramProvider.getRepresentationImagePath(options);
         assertEquals(0, representationImagePaths.size());
     }

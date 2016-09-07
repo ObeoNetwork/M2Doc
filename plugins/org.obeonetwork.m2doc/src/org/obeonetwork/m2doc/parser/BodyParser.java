@@ -11,13 +11,13 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -777,8 +777,8 @@ public class BodyParser {
     protected void setLayersOption(Representation representation, Map<String, String> options) {
         String layers = options.get(DIAGRAM_LAYERS_KEY);
         if (!Strings.isNullOrEmpty(layers)) {
-            String[] split = layers.split(",");
-            representation.getActivatedLayers().addAll(Arrays.asList(split));
+            Iterable<String> split = Splitter.on(',').trimResults().split(layers);
+            representation.getActivatedLayers().addAll(Lists.newArrayList(split));
         }
     }
 

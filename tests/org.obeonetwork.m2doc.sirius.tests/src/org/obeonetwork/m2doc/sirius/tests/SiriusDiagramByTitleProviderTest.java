@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.sirius.tests;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,8 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
         // CHECKSTYLE:ON
-        options.put("title", "RF Schema");
+        options.put("title", "new GenerationDiagram");
+        options.put("layers", Collections.EMPTY_LIST);
         List<String> representationImagePaths = siriusDiagramByTitleProvider.getRepresentationImagePath(options);
         assertEquals(1, representationImagePaths.size());
         File imageFile = new File(representationImagePaths.get(0));

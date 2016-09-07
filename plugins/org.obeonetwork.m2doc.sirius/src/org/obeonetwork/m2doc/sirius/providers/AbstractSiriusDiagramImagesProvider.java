@@ -44,6 +44,7 @@ import org.eclipse.gmf.runtime.diagram.ui.util.DiagramEditorUtil;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.sirius.business.api.session.CustomDataConstants;
 import org.eclipse.sirius.business.api.session.Session;
+import org.eclipse.sirius.business.api.session.SessionStatus;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.business.api.query.DDiagramQuery;
 import org.eclipse.sirius.diagram.description.DescriptionPackage;
@@ -52,6 +53,7 @@ import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.ui.tools.api.part.DiagramEditPartService;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.ProviderException;
@@ -156,6 +158,7 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
     protected List<String> generateAndReturnDiagramImages(String rootPath, final Session session,
             List<DRepresentation> representations, List<Layer> layers) throws ProviderException {
         List<String> resultList = new ArrayList<String>();
+        boolean isSessionDirtyBeforeExport = SessionStatus.DIRTY.equals(session.getStatus());
         for (DRepresentation dRepresentation : representations) {
             if (dRepresentation instanceof DDiagram) {
                 final DDiagram dsd = (DDiagram) dRepresentation;
@@ -185,6 +188,12 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
                             DiagramGenerator generator = copyToImage(openedDiagramEditor.getDiagramEditPart(),
                                     destination, format, monitor);
                             partInfo = generator.getDiagramPartInfo(openedDiagramEditor.getDiagramEditPart());
+                            // begin added code
+                            Rectangle rectangle = generator.calculateImageRectangle(
+                                    openedDiagramEditor.getDiagramEditPart().getPrimaryEditParts());
+                            setHeight(rectangle.height);
+                            setWidth(rectangle.width);
+                            // end added code
                         } else {
 
                             Shell shell = new Shell();
@@ -224,12 +233,15 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
                     if (!diagramtoExport.equals(dsd)) {
                         session.getTransactionalEditingDomain().getCommandStack().undo();
                     }
-
                 } catch (CoreException e) {
                     throw new ProviderException("Image creation from diagram '" + dRepresentation.getName()
                         + "' to the file '" + filePath + "' failed.", e);
                 }
             }
+        }
+        // save session if not dirty before diagram export
+        if (!isSessionDirtyBeforeExport) {
+            session.save(new NullProgressMonitor());
         }
         return resultList;
     }
@@ -247,7 +259,10 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
         List<Layer> layers = Lists.newArrayList();
         List<Layer> allLayers = getAllLayers(diagram.getDescription());
         for (Object layerName : diagramActivatedLayers) {
-            layers.add(getLayer(allLayers, layerName));
+            Layer layer = getLayer(allLayers, layerName);
+            if (layer != null) {
+                layers.add(layer);
+            }
         }
         return layers;
     }
