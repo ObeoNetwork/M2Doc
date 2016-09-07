@@ -54,6 +54,8 @@ The diagram tag has the following tag: @{m:diagram}@, here the different options
 
 * __height__ : integer, optional, by default the diagram export real height,
 
+* __layers__ : string list, optional, to define the layers to display (the default layer is always displayed),
+
 * __provider__ : Java class qualified name, optional. Use to define your own way to get a Sirius diagram.
 
 The default way to get a diagram is by its name. If several diagrams have the same name, it will get the first.
@@ -67,6 +69,8 @@ Some examples:
 * @m:diagram title:"self.name"@: if “self.name” is “My Diagram”, get the first diagram named “My Diagram” in the modeling project. 
 
 * @m:diagram title:"'Diagram name'" width:"200" height:"200"@:  get the first diagram named “Diagram name” in the modeling project. The diagram picture will be resize to 200x200.
+
+* @m:diagram title:"'Diagram name'" layers:"layer1, layer2"@: get the first diagram named “Diagram name” in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
 
 **Warning**: do not forget the ' around the string in an AQL Expression: @title:"'Diagram name'"@
 
