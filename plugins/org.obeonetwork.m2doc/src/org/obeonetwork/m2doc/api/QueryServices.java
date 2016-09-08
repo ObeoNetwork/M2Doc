@@ -20,8 +20,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -101,8 +99,7 @@ public final class QueryServices {
     public void registerServices(IQueryEnvironment env) {
         List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
         for (Class<?> cls : services) {
-            final Set<IService> iServices = ServiceUtils.getServices(env, cls);
-            ServiceUtils.registerServices(env, iServices);
+            AQL4Compat.register(env, cls);
         }
     }
 
