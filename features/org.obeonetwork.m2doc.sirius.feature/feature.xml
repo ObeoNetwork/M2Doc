@@ -11,8 +11,8 @@
  -->
 <feature
       id="org.obeonetwork.m2doc.sirius.feature"
-      label="Sirius provider"
-      version="0.9.1.qualifier"
+      label="M2Doc Sirius provider"
+      version="0.9.2.qualifier"
       provider-name="Obeonetwork">
 
    <description url="http://www.obeonetwork.com/">
