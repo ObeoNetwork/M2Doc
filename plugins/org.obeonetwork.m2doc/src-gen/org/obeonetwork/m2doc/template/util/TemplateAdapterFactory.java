@@ -157,6 +157,14 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
                 return createAbstractProviderClientAdapter();
             }
             @Override
+            public Adapter caseBookmark(Bookmark object) {
+                return createBookmarkAdapter();
+            }
+            @Override
+            public Adapter caseLink(Link object) {
+                return createLinkAdapter();
+            }
+            @Override
             public Adapter defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -341,6 +349,34 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createAbstractProviderClientAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Bookmark <em>Bookmark</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Bookmark
+     * @generated
+     */
+    public Adapter createBookmarkAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Link <em>Link</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Link
+     * @generated
+     */
+    public Adapter createLinkAdapter() {
         return null;
     }
 

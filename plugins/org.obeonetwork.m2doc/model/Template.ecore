@@ -122,4 +122,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="provider" eType="#//Provider"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Body" instanceClassName="org.apache.poi.xwpf.usermodel.IBody"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Bookmark" eSuperTypes="#//Compound">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//AstResult"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//AstResult"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="#//AstResult"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -1554,6 +1554,170 @@ public interface TemplatePackage extends EPackage {
     int OPTION_VALUE_MAP_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl <em>Bookmark</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.BookmarkImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBookmark()
+     * @generated
+     */
+    int BOOKMARK = 18;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK__STYLE_RUN = COMPOUND__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK__RUNS = COMPOUND__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
+
+    /**
+     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK__NAME = COMPOUND_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Bookmark</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Bookmark</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.LinkImpl <em>Link</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.LinkImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLink()
+     * @generated
+     */
+    int LINK = 19;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK__NAME = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Text</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK__TEXT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Link</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Link</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LINK_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}' enum.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1561,7 +1725,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-	int QUERY_BEHAVIOR = 18;
+	int QUERY_BEHAVIOR = 20;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
@@ -1571,7 +1735,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-	int POSITION = 19;
+	int POSITION = 21;
 
 	/**
      * The meta object id for the '<em>Document</em>' data type.
@@ -1581,7 +1745,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 20;
+    int DOCUMENT = 22;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -1591,7 +1755,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-	int WTABLE = 21;
+	int WTABLE = 23;
 
 	/**
      * The meta object id for the '<em>Run</em>' data type.
@@ -1601,7 +1765,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-	int RUN = 22;
+	int RUN = 24;
 
 
 	/**
@@ -1612,7 +1776,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-	int AST_RESULT = 23;
+	int AST_RESULT = 25;
 
 	/**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -1622,7 +1786,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 24;
+    int TEMPLATE_VALIDATION_MESSAGE = 26;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -1632,7 +1796,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-	int WTABLE_ROW = 25;
+	int WTABLE_ROW = 27;
 
 	/**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -1642,7 +1806,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-	int WTABLE_CELL = 26;
+	int WTABLE_CELL = 28;
 
 	/**
      * The meta object id for the '<em>Provider</em>' data type.
@@ -1652,7 +1816,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
      * @generated
      */
-    int PROVIDER = 27;
+    int PROVIDER = 29;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -1662,7 +1826,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 28;
+    int BODY = 30;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractConstruct <em>Abstract Construct</em>}'.
@@ -2115,6 +2279,59 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EAttribute getAbstractProviderClient_Provider();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Bookmark <em>Bookmark</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Bookmark</em>'.
+     * @see org.obeonetwork.m2doc.template.Bookmark
+     * @generated
+     */
+    EClass getBookmark();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Bookmark#getName <em>Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.obeonetwork.m2doc.template.Bookmark#getName()
+     * @see #getBookmark()
+     * @generated
+     */
+    EAttribute getBookmark_Name();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Link <em>Link</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Link</em>'.
+     * @see org.obeonetwork.m2doc.template.Link
+     * @generated
+     */
+    EClass getLink();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Link#getName <em>Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.obeonetwork.m2doc.template.Link#getName()
+     * @see #getLink()
+     * @generated
+     */
+    EAttribute getLink_Name();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Link#getText <em>Text</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Text</em>'.
+     * @see org.obeonetwork.m2doc.template.Link#getText()
+     * @see #getLink()
+     * @generated
+     */
+    EAttribute getLink_Text();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
@@ -2754,6 +2971,50 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute ABSTRACT_PROVIDER_CLIENT__PROVIDER = eINSTANCE.getAbstractProviderClient_Provider();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl <em>Bookmark</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.BookmarkImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBookmark()
+         * @generated
+         */
+        EClass BOOKMARK = eINSTANCE.getBookmark();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute BOOKMARK__NAME = eINSTANCE.getBookmark_Name();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.LinkImpl <em>Link</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.LinkImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLink()
+         * @generated
+         */
+        EClass LINK = eINSTANCE.getLink();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute LINK__NAME = eINSTANCE.getLink_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Text</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute LINK__TEXT = eINSTANCE.getLink_Text();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.

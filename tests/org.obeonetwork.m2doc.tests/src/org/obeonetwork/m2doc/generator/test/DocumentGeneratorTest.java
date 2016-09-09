@@ -14,12 +14,15 @@ package org.obeonetwork.m2doc.generator.test;
 //CHECKSTYLE:OFF
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
@@ -28,6 +31,10 @@ import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DocumentGeneratorTest {
     @Test
@@ -489,6 +496,126 @@ public class DocumentGeneratorTest {
         DocumentGenerator generator = new DocumentGenerator("templates/dynamicHyperlink.docx",
                 "results/dynamicHyperlink.docx", template, definitions, queryEnvironment, null);
         generator.generate();
+    }
+
+    @Test
+    public void testBookmarkNominal()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testBookmarkNominal.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        DocumentGenerator generator = new DocumentGenerator("templates/testBookmarkNominal.docx",
+                "results/testBookmarkNominal.docx", template, definitions, queryEnvironment, null);
+        generator.generate();
+
+        FileInputStream resIs = new FileInputStream("results/testBookmarkNominal.docx");
+        OPCPackage resOPackage = OPCPackage.open(resIs);
+        XWPFDocument resDocument = new XWPFDocument(resOPackage);
+
+        assertEquals(4, resDocument.getBodyElements().size());
+        assertTrue(resDocument.getBodyElements().get(0) instanceof XWPFParagraph);
+        XWPFParagraph paragraph = (XWPFParagraph) resDocument.getBodyElements().get(0);
+        assertEquals(6, paragraph.getRuns().size());
+        assertEquals("Test link before bookmark : ", paragraph.getRuns().get(0).text());
+
+        final BigInteger id = new BigInteger(paragraph.getRuns().get(1).getCTR().getRsidR());
+
+        assertTrue(id != BigInteger.ZERO);
+        assertEquals(1, paragraph.getRuns().get(1).getCTR().getFldCharList().size());
+        assertEquals(STFldCharType.BEGIN, paragraph.getRuns().get(1).getCTR().getFldCharList().get(0).getFldCharType());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(2).getCTR().getRsidR()));
+        assertEquals(1, paragraph.getRuns().get(2).getCTR().getInstrTextList().size());
+        assertEquals(Space.PRESERVE, paragraph.getRuns().get(2).getCTR().getInstrTextList().get(0).getSpace());
+        assertEquals(" REF bookmark1 \\h ",
+                paragraph.getRuns().get(2).getCTR().getInstrTextList().get(0).getStringValue());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(3).getCTR().getRsidR()));
+        assertEquals(1, paragraph.getRuns().get(3).getCTR().getFldCharList().size());
+        assertEquals(STFldCharType.SEPARATE,
+                paragraph.getRuns().get(3).getCTR().getFldCharList().get(0).getFldCharType());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(4).getCTR().getRsidR()));
+        assertEquals("a reference to bookmark1", paragraph.getRuns().get(4).text());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(5).getCTR().getRsidR()));
+        assertEquals(1, paragraph.getRuns().get(5).getCTR().getFldCharList().size());
+        assertEquals(STFldCharType.END, paragraph.getRuns().get(5).getCTR().getFldCharList().get(0).getFldCharType());
+
+        assertTrue(resDocument.getBodyElements().get(1) instanceof XWPFParagraph);
+        paragraph = (XWPFParagraph) resDocument.getBodyElements().get(1);
+
+        assertEquals(1, paragraph.getCTP().getBookmarkStartList().size());
+        assertEquals("bookmark1", paragraph.getCTP().getBookmarkStartList().get(0).getName());
+        assertEquals(1, paragraph.getCTP().getBookmarkEndList().size());
+
+        assertTrue(resDocument.getBodyElements().get(2) instanceof XWPFParagraph);
+        paragraph = (XWPFParagraph) resDocument.getBodyElements().get(2);
+        assertEquals(7, paragraph.getRuns().size());
+        assertEquals("Test link after bookmark : ", paragraph.getRuns().get(0).text());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(1).getCTR().getRsidR()));
+        assertEquals(1, paragraph.getRuns().get(1).getCTR().getFldCharList().size());
+        assertEquals(STFldCharType.BEGIN, paragraph.getRuns().get(1).getCTR().getFldCharList().get(0).getFldCharType());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(2).getCTR().getRsidR()));
+        assertEquals(1, paragraph.getRuns().get(2).getCTR().getInstrTextList().size());
+        assertEquals(Space.PRESERVE, paragraph.getRuns().get(2).getCTR().getInstrTextList().get(0).getSpace());
+        assertEquals(" REF bookmark1 \\h ",
+                paragraph.getRuns().get(2).getCTR().getInstrTextList().get(0).getStringValue());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(3).getCTR().getRsidR()));
+        assertEquals(1, paragraph.getRuns().get(3).getCTR().getFldCharList().size());
+        assertEquals(STFldCharType.SEPARATE,
+                paragraph.getRuns().get(3).getCTR().getFldCharList().get(0).getFldCharType());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(4).getCTR().getRsidR()));
+        assertEquals("a reference to bookmark1", paragraph.getRuns().get(4).text());
+
+        assertEquals(id, new BigInteger(paragraph.getRuns().get(5).getCTR().getRsidR()));
+        assertEquals(1, paragraph.getRuns().get(5).getCTR().getFldCharList().size());
+        assertEquals(STFldCharType.END, paragraph.getRuns().get(5).getCTR().getFldCharList().get(0).getFldCharType());
+
+        resIs.close();
+        resOPackage.close();
+        resDocument.close();
+    }
+
+    @Test
+    public void testBookmarkNoBookmark()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        FileInputStream is = new FileInputStream("templates/testBookmarkNoBookmark.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplate template = parser.parseDocument();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        DocumentGenerator generator = new DocumentGenerator("templates/testBookmarkNoBookmark.docx",
+                "results/testBookmarkNoBookmark.docx", template, definitions, queryEnvironment, null);
+        generator.generate();
+
+        FileInputStream resIs = new FileInputStream("results/testBookmarkNoBookmark.docx");
+        OPCPackage resOPackage = OPCPackage.open(resIs);
+        XWPFDocument resDocument = new XWPFDocument(resOPackage);
+
+        assertEquals(2, resDocument.getBodyElements().size());
+        assertTrue(resDocument.getBodyElements().get(0) instanceof XWPFParagraph);
+        XWPFParagraph paragraph = (XWPFParagraph) resDocument.getBodyElements().get(0);
+        assertEquals(10, paragraph.getRuns().size());
+        assertEquals("Test link ", paragraph.getRuns().get(0).text());
+        assertEquals("without", paragraph.getRuns().get(1).text());
+        assertEquals(" bookmark : ", paragraph.getRuns().get(2).text());
+
+        resIs.close();
+        resOPackage.close();
+        resDocument.close();
     }
 
 }
