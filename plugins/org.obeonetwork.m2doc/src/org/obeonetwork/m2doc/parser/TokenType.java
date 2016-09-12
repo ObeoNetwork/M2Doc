@@ -12,19 +12,17 @@
 package org.obeonetwork.m2doc.parser;
 
 /**
- * Token types are used to caracterise tokens during parsing and guide the parsing algorithm.
+ * Token types are used to characterize tokens during parsing and guide the parsing algorithm.
  * 
  * @author Romain Guider
  */
 public enum TokenType {
+
     /**
      * Token type constants.
      */
-    // CHECKSTYLE:OFF
-    AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"),
-    LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), STATIC("static"), IMAGE("m:image"), EOF("end of file."),
-    WTABLE("table"), DIAGRAM("m:diagram");
-    // CHECKSTYLE:ON
+    AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"), LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), STATIC("static"), IMAGE("m:image"), EOF("end of file."), WTABLE("table"), DIAGRAM("m:diagram"), BOOKMARK("m:bookmark"), ENDBOOKMARK("m:endbookmark"), LINK("m:link");
+
     /**
      * Token type value.
      */

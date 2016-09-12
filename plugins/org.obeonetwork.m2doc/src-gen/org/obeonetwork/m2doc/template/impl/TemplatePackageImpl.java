@@ -35,12 +35,14 @@ import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractImage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Image;
+import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -151,6 +153,20 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EClass abstractProviderClientEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass bookmarkEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass linkEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -721,6 +737,51 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
     /**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getBookmark() {
+        return bookmarkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getBookmark_Name() {
+        return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getLink() {
+        return linkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getLink_Name() {
+        return (EAttribute)linkEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getLink_Text() {
+        return (EAttribute)linkEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -1046,6 +1107,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEReference(abstractProviderClientEClass, ABSTRACT_PROVIDER_CLIENT__OPTION_VALUE_MAP);
         createEAttribute(abstractProviderClientEClass, ABSTRACT_PROVIDER_CLIENT__PROVIDER);
 
+        bookmarkEClass = createEClass(BOOKMARK);
+        createEAttribute(bookmarkEClass, BOOKMARK__NAME);
+
+        linkEClass = createEClass(LINK);
+        createEAttribute(linkEClass, LINK__NAME);
+        createEAttribute(linkEClass, LINK__TEXT);
+
         // Create enums
         queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
         positionEEnum = createEEnum(POSITION);
@@ -1103,6 +1171,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         tableEClass.getESuperTypes().add(this.getAbstractConstruct());
         abstractImageEClass.getESuperTypes().add(this.getAbstractProviderClient());
         abstractProviderClientEClass.getESuperTypes().add(this.getAbstractConstruct());
+        bookmarkEClass.getESuperTypes().add(this.getCompound());
+        linkEClass.getESuperTypes().add(this.getAbstractConstruct());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(abstractConstructEClass, AbstractConstruct.class, "AbstractConstruct", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1178,6 +1248,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEClass(abstractProviderClientEClass, AbstractProviderClient.class, "AbstractProviderClient", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getAbstractProviderClient_OptionValueMap(), this.getOptionValueMap(), null, "optionValueMap", null, 0, -1, AbstractProviderClient.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getAbstractProviderClient_Provider(), this.getProvider(), "provider", null, 0, 1, AbstractProviderClient.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getBookmark_Name(), this.getAstResult(), "name", null, 0, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getLink_Name(), this.getAstResult(), "name", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getLink_Text(), this.getAstResult(), "text", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(queryBehaviorEEnum, QueryBehavior.class, "QueryBehavior");
