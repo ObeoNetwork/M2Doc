@@ -14,8 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.obeonetwork.m2doc;bundle-version="0.9.2",
  org.eclipse.core.expressions,
  org.eclipse.emf.ecore.xmi,
- org.obeonetwork.m2doc.genconf,
- org.eclipse.acceleo.query;bundle-version="5.0.0"
+ org.obeonetwork.m2doc.genconf
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.poi.openxml4j.exceptions,
