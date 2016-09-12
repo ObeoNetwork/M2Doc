@@ -98,6 +98,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
             case TemplatePackage.CELL: return createCell();
             case TemplatePackage.DOCUMENT_TEMPLATE: return createDocumentTemplate();
             case TemplatePackage.OPTION_VALUE_MAP: return (EObject)createOptionValueMap();
+            case TemplatePackage.BOOKMARK: return createBookmark();
+            case TemplatePackage.LINK: return createLink();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -261,6 +263,26 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     public Map.Entry<String, Object> createOptionValueMap() {
         OptionValueMapImpl optionValueMap = new OptionValueMapImpl();
         return optionValueMap;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Bookmark createBookmark() {
+        BookmarkImpl bookmark = new BookmarkImpl();
+        return bookmark;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Link createLink() {
+        LinkImpl link = new LinkImpl();
+        return link;
     }
 
     /**

@@ -150,6 +150,10 @@ public class TemplateValidator extends EObjectValidator {
                 return validateAbstractImage((AbstractImage)value, diagnostics, context);
             case TemplatePackage.ABSTRACT_PROVIDER_CLIENT:
                 return validateAbstractProviderClient((AbstractProviderClient)value, diagnostics, context);
+            case TemplatePackage.BOOKMARK:
+                return validateBookmark((Bookmark)value, diagnostics, context);
+            case TemplatePackage.LINK:
+                return validateLink((Link)value, diagnostics, context);
             case TemplatePackage.QUERY_BEHAVIOR:
                 return validateQueryBehavior((QueryBehavior)value, diagnostics, context);
             case TemplatePackage.POSITION:
@@ -321,6 +325,24 @@ public class TemplateValidator extends EObjectValidator {
      */
     public boolean validateAbstractProviderClient(AbstractProviderClient abstractProviderClient, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint(abstractProviderClient, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateBookmark(Bookmark bookmark, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(bookmark, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateLink(Link link, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(link, diagnostics, context);
     }
 
     /**

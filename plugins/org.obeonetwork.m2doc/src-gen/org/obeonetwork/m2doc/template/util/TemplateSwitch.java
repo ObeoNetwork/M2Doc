@@ -214,6 +214,21 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case TemplatePackage.BOOKMARK: {
+                Bookmark bookmark = (Bookmark)theEObject;
+                T result = caseBookmark(bookmark);
+                if (result == null) result = caseCompound(bookmark);
+                if (result == null) result = caseAbstractConstruct(bookmark);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.LINK: {
+                Link link = (Link)theEObject;
+                T result = caseLink(link);
+                if (result == null) result = caseAbstractConstruct(link);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -395,6 +410,36 @@ public class TemplateSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseAbstractProviderClient(AbstractProviderClient object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Bookmark</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Bookmark</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseBookmark(Bookmark object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Link</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Link</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLink(Link object) {
         return null;
     }
 
