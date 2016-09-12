@@ -68,6 +68,11 @@
 		</ul>
 		<ul>
 			<li>
+				<i>layers</i> : string list, optional, to define the layers to display (the default layer is always displayed),
+			</li>
+		</ul>
+		<ul>
+			<li>
 				<i>provider</i> : Java class qualified name, optional. Use to define your own way to get a Sirius diagram.
 			</li>
 		</ul>
@@ -87,6 +92,11 @@
 		<ul>
 			<li>
 				<code>m:diagram title:"'Diagram name'" width:"200" height:"200"</code>:  get the first diagram named “Diagram name” in the modeling project. The diagram picture will be resize to 200x200.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<code>m:diagram title:"'Diagram name'" layers:"layer1, layer2"</code>: get the first diagram named “Diagram name” in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
 			</li>
 		</ul>
 		<p>
@@ -171,7 +181,9 @@
 		</p>
 		<p>The variables names have to be set with 
 			<code>m:var:</code> prefix: 
-			<code>m:var:author</code> will define ‘author’ variable. The variables values defines the variable type (author is a string and db a model element database::Database). The possible basic types are ‘int’, ‘real’, ‘string’, ’boolean’, ‘date’. To type an object, you have to set its domain class like in AQL syntax: 
+			<code>m:var:author</code> will define ‘author’ variable. The variables values defines the variable type (author is a string and db a model element database::Database). 
+		</p>
+		<p>The possible basic types are ‘int’, ‘real’, ‘string’, ’boolean’, ‘date’. To type an object, you have to set its domain class like in AQL syntax: 
 			<code>prefix::ClassName</code> (database::Database).
 		</p>
 		<p>These variables are automatically imported in the configuration model where you can value them. If you do not define the variable in the template document, you will have to do it in the configuration model (see Configure variables definitions paragraph) .</p>

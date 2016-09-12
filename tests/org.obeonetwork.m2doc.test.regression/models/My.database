@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database:DataBase xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:database="http://www.obeonetwork.org/dsl/database/1.0" xmlns:typeslibrary="http://www.obeonetwork.org/dsl/typeslibrary/1.0" xmi:id="_jT0-UPBMEeW9ULtwZoIWnA" techID="_jT0XQPBMEeW9ULtwZoIWnA" name="EM_DB">
+  <tables xsi:type="database:Table" xmi:id="_qAIeQfBMEeW9ULtwZoIWnA" techID="_qAIeQPBMEeW9ULtwZoIWnA" name="Person">
+    <columns xmi:id="_qp6bEfBMEeW9ULtwZoIWnA" techID="_qp6bEPBMEeW9ULtwZoIWnA" name="Name">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_qp6bEvBMEeW9ULtwZoIWnA">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8ygxEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <columns xmi:id="_rp9i0fBMEeW9ULtwZoIWnA" techID="_rp9i0PBMEeW9ULtwZoIWnA" name="FirstName">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_rp9i0vBMEeW9ULtwZoIWnA">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8ygxEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <columns xmi:id="_xrOhsfBMEeW9ULtwZoIWnA" techID="_xrOhsPBMEeW9ULtwZoIWnA" name="age">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_xrOhsvBMEeW9ULtwZoIWnA">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8LdxEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <columns xmi:id="_4r2EwfBMEeW9ULtwZoIWnA" techID="_4r2EwPBMEeW9ULtwZoIWnA" name="UID" indexElements="_7QcvgfBMEeW9ULtwZoIWnA" primaryKey="_2ltesfBMEeW9ULtwZoIWnA">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_4r2EwvBMEeW9ULtwZoIWnA">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8ygxEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <primaryKey xmi:id="_2ltesfBMEeW9ULtwZoIWnA" techID="_2ltesPBMEeW9ULtwZoIWnA" name="PK_Personne" columns="_4r2EwfBMEeW9ULtwZoIWnA"/>
+    <indexes xmi:id="_7QbhYfBMEeW9ULtwZoIWnA" techID="_7QbhYPBMEeW9ULtwZoIWnA" name="Personne_UNIQUE_INDEX" unique="true">
+      <elements xmi:id="_7QcvgfBMEeW9ULtwZoIWnA" techID="_7QcvgPBMEeW9ULtwZoIWnA" column="_4r2EwfBMEeW9ULtwZoIWnA" asc="true"/>
+    </indexes>
+  </tables>
+  <tables xsi:type="database:Table" xmi:id="_L6VgwPE7EeWKQ7KaCe0CIg" techID="_L6U5sPE7EeWKQ7KaCe0CIg" name="Emploi">
+    <columns xmi:id="_a4PqgvE7EeWKQ7KaCe0CIg" techID="_a4PqgfE7EeWKQ7KaCe0CIg" name="UID" foreignKeyElements="_a4VxIfE7EeWKQ7KaCe0CIg">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_a4QRkPE7EeWKQ7KaCe0CIg">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8ygxEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <columns xmi:id="_etgr4_E7EeWKQ7KaCe0CIg" techID="_etgr4vE7EeWKQ7KaCe0CIg" name="jobCode" foreignKeyElements="_ethS8vE7EeWKQ7KaCe0CIg">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_ethS8PE7EeWKQ7KaCe0CIg">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8yihEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <columns xmi:id="_gYPIUPE7EeWKQ7KaCe0CIg" techID="_gYOhQPE7EeWKQ7KaCe0CIg" name="startDate">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_gYPIUfE7EeWKQ7KaCe0CIg">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj7kZREnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <columns xmi:id="_janUMfE7EeWKQ7KaCe0CIg" techID="_janUMPE7EeWKQ7KaCe0CIg" name="grade">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_janUMvE7EeWKQ7KaCe0CIg">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8LdhEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <primaryKey xmi:id="_nRNLQfE7EeWKQ7KaCe0CIg" techID="_nRNLQPE7EeWKQ7KaCe0CIg" name="Emploi_PK"/>
+    <foreignKeys xmi:id="_a4PqgPE7EeWKQ7KaCe0CIg" techID="_a4PDcPE7EeWKQ7KaCe0CIg" name="FK_1" target="_qAIeQfBMEeW9ULtwZoIWnA">
+      <elements xmi:id="_a4VxIfE7EeWKQ7KaCe0CIg" techID="_a4VxIPE7EeWKQ7KaCe0CIg" fkColumn="_a4PqgvE7EeWKQ7KaCe0CIg" pkColumn="_4r2EwfBMEeW9ULtwZoIWnA"/>
+    </foreignKeys>
+    <foreignKeys xmi:id="_etgr4fE7EeWKQ7KaCe0CIg" techID="_etgr4PE7EeWKQ7KaCe0CIg" name="FK_2" target="_OEMJMfE7EeWKQ7KaCe0CIg">
+      <elements xmi:id="_ethS8vE7EeWKQ7KaCe0CIg" techID="_ethS8fE7EeWKQ7KaCe0CIg" fkColumn="_etgr4_E7EeWKQ7KaCe0CIg" pkColumn="_PhTAYfE7EeWKQ7KaCe0CIg"/>
+    </foreignKeys>
+  </tables>
+  <tables xsi:type="database:Table" xmi:id="_OEMJMfE7EeWKQ7KaCe0CIg" techID="_OEMJMPE7EeWKQ7KaCe0CIg" name="Mission">
+    <columns xmi:id="_PhTAYfE7EeWKQ7KaCe0CIg" techID="_PhTAYPE7EeWKQ7KaCe0CIg" name="jobCode" primaryKey="_Phqz0fE7EeWKQ7KaCe0CIg">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_PhTAYvE7EeWKQ7KaCe0CIg">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8yihEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <columns xmi:id="_VKEmwfE7EeWKQ7KaCe0CIg" techID="_VKEmwPE7EeWKQ7KaCe0CIg" name="description">
+      <type xsi:type="typeslibrary:TypeInstance" xmi:id="_VKEmwvE7EeWKQ7KaCe0CIg">
+        <nativeType href="pathmap://NativeDBTypes/MySQL-5#_Zj8ygxEnEeGTa_JlZYBw1A"/>
+      </type>
+    </columns>
+    <primaryKey xmi:id="_Phqz0fE7EeWKQ7KaCe0CIg" techID="_Phqz0PE7EeWKQ7KaCe0CIg" name="Mission_PK" columns="_PhTAYfE7EeWKQ7KaCe0CIg"/>
+  </tables>
+  <usedLibraries xsi:type="typeslibrary:NativeTypesLibrary" href="pathmap://NativeDBTypes/MySQL-5#_Zj69UBEnEeGTa_JlZYBw1A"/>
+</database:DataBase>

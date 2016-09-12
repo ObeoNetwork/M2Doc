@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -93,6 +95,10 @@ public class BodyParser {
      */
     private static final String DIAGRAM_PROVIDER_KEY = "provider";
     /**
+     * Diagram layers option name.
+     */
+    private static final String DIAGRAM_LAYERS_KEY = "layers";
+    /**
      * Image height option name.
      */
     private static final String IMAGE_HEIGHT_KEY = "height";
@@ -121,13 +127,14 @@ public class BodyParser {
      */
     private static final String[] IMAGE_OPTION_SET =
 
-            {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
+    {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
     /**
      * Array of representation's options name constants.
      */
     private static final String[] DIAGRAM_OPTION_SET =
 
-            {DIAGRAM_PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY, };
+    {DIAGRAM_PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY,
+        DIAGRAM_LAYERS_KEY, };
 
     /**
      * Rank of the option's value group in the matcher.
@@ -745,16 +752,34 @@ public class BodyParser {
 
         representation.setProvider(getRepresentationProvider(representation, options));
         setImageOptions(representation, options);
+        setLayersOption(representation, options);
         Set<String> optionToIgnore = new HashSet<String>();
         optionToIgnore.add(IMAGE_LEGEND_KEY);
         optionToIgnore.add(IMAGE_LEGEND_POSITION);
         optionToIgnore.add(IMAGE_HEIGHT_KEY);
         optionToIgnore.add(IMAGE_WIDTH_KEY);
         optionToIgnore.add(DIAGRAM_PROVIDER_KEY);
+        optionToIgnore.add(DIAGRAM_LAYERS_KEY);
         if (representation.getProvider() != null) {
             setGenericOptions(representation, options, optionToIgnore, representation.getProvider());
         }
         return representation;
+    }
+
+    /**
+     * Set layers option.
+     * 
+     * @param representation
+     *            Representation
+     * @param options
+     *            the options to set.
+     */
+    protected void setLayersOption(Representation representation, Map<String, String> options) {
+        String layers = options.get(DIAGRAM_LAYERS_KEY);
+        if (!Strings.isNullOrEmpty(layers)) {
+            Iterable<String> split = Splitter.on(',').trimResults().split(layers);
+            representation.getActivatedLayers().addAll(Lists.newArrayList(split));
+        }
     }
 
     /**

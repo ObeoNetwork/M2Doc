@@ -38,8 +38,6 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
-import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider;
-import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.Image;
