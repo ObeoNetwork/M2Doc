@@ -16,14 +16,22 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import java.io.StringReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.CommonTokenFactory;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.UnbufferedCharStream;
+import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -31,10 +39,16 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.ErrorExpression;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.QueryLexer;
+import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
@@ -44,11 +58,13 @@ import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractImage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.Image;
+import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.POSITION;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.QueryBehavior;
@@ -159,6 +175,11 @@ public class BodyParser {
     private IQueryBuilderEngine queryParser;
 
     /**
+     * The {@link IQueryEnvironment}.
+     */
+    private final IQueryEnvironment queryEnvironment;
+
+    /**
      * Creates a new {@link BodyParser} instance.
      * 
      * @param inputDocument
@@ -170,6 +191,7 @@ public class BodyParser {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
         this.queryParser = new QueryBuilderEngine(queryEnvironment);
+        this.queryEnvironment = queryEnvironment;
     }
 
     /**
@@ -179,11 +201,14 @@ public class BodyParser {
      *            the input template to parser
      * @param queryParser
      *            the query parser to use during parsing
+     * @param queryEnvironment
+     *            The {@link IQueryEnvironment}
      */
-    BodyParser(IBody inputDocument, IQueryBuilderEngine queryParser) {
+    BodyParser(IBody inputDocument, IQueryBuilderEngine queryParser, IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
         this.queryParser = queryParser;
+        this.queryEnvironment = queryEnvironment;
     }
 
     /**
@@ -271,6 +296,12 @@ public class BodyParser {
                     result = TokenType.IMAGE;
                 } else if (code.startsWith(TokenType.DIAGRAM.getValue())) {
                     result = TokenType.DIAGRAM;
+                } else if (code.startsWith(TokenType.BOOKMARK.getValue())) {
+                    result = TokenType.BOOKMARK;
+                } else if (code.startsWith(TokenType.ENDBOOKMARK.getValue())) {
+                    result = TokenType.ENDBOOKMARK;
+                } else if (code.startsWith(TokenType.LINK.getValue())) {
+                    result = TokenType.LINK;
                 } else if (code.startsWith(TokenType.AQL.getValue())) {
                     result = TokenType.AQL;
                 } else {
@@ -326,6 +357,7 @@ public class BodyParser {
                 case ENDFOR:
                 case ENDIF:
                 case ENDLET:
+                case ENDBOOKMARK:
                     // report the error and ignore the problem so that parsing
                     // continues in other parts of the document.
                     XWPFRun run = runIterator.lookAhead(1).getRun();
@@ -352,6 +384,12 @@ public class BodyParser {
                     break;
                 case STATIC:
                     compound.getSubConstructs().add(parseStaticFragment());
+                    break;
+                case BOOKMARK:
+                    compound.getSubConstructs().add(parseBookmark());
+                    break;
+                case LINK:
+                    compound.getSubConstructs().add(parseLink());
                     break;
                 case WTABLE:
                     compound.getSubConstructs().add(parseTable(runIterator.next().getTable()));
@@ -983,10 +1021,122 @@ public class BodyParser {
                 Cell cell = (Cell) EcoreUtil.create(TemplatePackage.Literals.CELL);
                 row.getCells().add(cell);
                 cell.setTableCell(tableCell);
-                BodyParser parser = new BodyParser(tableCell, this.queryParser);
+                BodyParser parser = new BodyParser(tableCell, this.queryParser, queryEnvironment);
                 cell.setTemplate(parser.parseTemplate());
             }
         }
         return table;
     }
+
+    /**
+     * Parse a bookmark construct. Bookmark are of the form
+     * <code>{gd:bookmark 'bookmark name'} runs {gd:endbookmark}</code>
+     * 
+     * @return the created object
+     * @throws DocumentParserException
+     *             if something wrong happens during parsing.
+     */
+    private Bookmark parseBookmark() throws DocumentParserException {
+        // first read the tag that opens the bookmark
+        final Bookmark bookmark = (Bookmark) EcoreUtil.create(TemplatePackage.Literals.BOOKMARK);
+
+        String tagText = readTag(bookmark, bookmark.getRuns()).trim();
+        // remove the prefix
+        tagText = tagText.substring(TokenType.BOOKMARK.getValue().length()).trim();
+        AstResult result = queryParser.build(tagText);
+        if (result.getErrors().size() == 0) {
+            bookmark.setName(result);
+        } else {
+            final XWPFRun lastRun = bookmark.getRuns().get(bookmark.getRuns().size() - 1);
+            bookmark.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), tagText, lastRun));
+        }
+        // read up the tags until the "gd:endbookmark" tag is encountered.
+        parseCompound(bookmark, TokenType.ENDBOOKMARK);
+        if (getNextTokenType() != TokenType.EOF) {
+            readTag(bookmark, bookmark.getClosingRuns());
+        }
+
+        return bookmark;
+    }
+
+    /**
+     * Parse a link construct. Link are of the form
+     * <code>{gd:link 'bookmark name' 'link text'}</code>
+     * 
+     * @return the created object
+     * @throws DocumentParserException
+     *             if something wrong happens during parsing.
+     */
+    private Link parseLink() throws DocumentParserException {
+        // first read the tag that opens the link
+        final Link link = (Link) EcoreUtil.create(TemplatePackage.Literals.LINK);
+
+        String tagText = readTag(link, link.getRuns()).trim();
+        // remove the prefix
+        tagText = tagText.substring(TokenType.LINK.getValue().length()).trim();
+        AstResult nameResult = parseWhileAqlExpression(queryEnvironment, tagText);
+        if (nameResult.getErrors().size() == 0) {
+            link.setName(nameResult);
+        } else {
+            final XWPFRun lastRun = link.getRuns().get(link.getRuns().size() - 1);
+            link.getValidationMessages().addAll(getValidationMessage(nameResult.getDiagnostic(), tagText, lastRun));
+        }
+
+        tagText = tagText.substring(nameResult.getEndPosition(nameResult.getAst()));
+        AstResult textResult = parseWhileAqlExpression(queryEnvironment, tagText);
+        if (textResult.getErrors().size() == 0) {
+            link.setText(textResult);
+        } else {
+            final XWPFRun lastRun = link.getRuns().get(link.getRuns().size() - 1);
+            link.getValidationMessages().addAll(getValidationMessage(textResult.getDiagnostic(), tagText, lastRun));
+        }
+
+        return link;
+    }
+
+    /**
+     * Parses while matching an AQL expression.
+     * 
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment}
+     * @param expression
+     *            the expression to parse
+     * @return the corresponding {@link AstResult}
+     */
+    private AstResult parseWhileAqlExpression(IQueryEnvironment queryEnvironment, String expression) {
+        final IQueryBuilderEngine.AstResult result;
+
+        if (expression != null && expression.length() > 0) {
+            AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+            CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
+            QueryLexer lexer = new QueryLexer(input);
+            lexer.setTokenFactory(new CommonTokenFactory(true));
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(astBuilder.getErrorListener());
+            TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
+            QueryParser parser = new QueryParser(tokens);
+            parser.addParseListener(astBuilder);
+            parser.removeErrorListeners();
+            parser.addErrorListener(astBuilder.getErrorListener());
+            // parser.setTrace(true);
+            parser.expression();
+            result = astBuilder.getAstResult();
+        } else {
+            ErrorExpression errorExpression = (ErrorExpression) EcoreUtil
+                    .create(AstPackage.eINSTANCE.getErrorExpression());
+            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
+            errors.add(errorExpression);
+            final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+            if (expression != null) {
+                positions.put(errorExpression, Integer.valueOf(0));
+            }
+            final BasicDiagnostic diagnostic = new BasicDiagnostic();
+            diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
+                    "null or empty string.", new Object[] {errorExpression }));
+            result = new AstResult(errorExpression, positions, positions, errors, diagnostic);
+        }
+
+        return result;
+    }
+
 }

@@ -37,7 +37,7 @@ public class DocumentParser {
     private XWPFDocument document;
 
     /**
-     * Creates a new {@link DocumentParser} isntance.
+     * Creates a new {@link DocumentParser} instance.
      * 
      * @param document
      *            the document to parse.
@@ -60,15 +60,15 @@ public class DocumentParser {
      */
     public DocumentTemplate parseDocument() throws DocumentParserException {
         DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
-        BodyParser parser = new BodyParser(document, new QueryBuilderEngine(queryEnvironment));
+        BodyParser parser = new BodyParser(document, new QueryBuilderEngine(queryEnvironment), queryEnvironment);
         result.setBody(parser.parseTemplate());
         result.setDocument(document);
         for (XWPFFooter footer : document.getFooterList()) {
-            BodyParser footerParser = new BodyParser(footer, new QueryBuilderEngine(queryEnvironment));
+            BodyParser footerParser = new BodyParser(footer, new QueryBuilderEngine(queryEnvironment), queryEnvironment);
             result.getFooters().add(footerParser.parseTemplate());
         }
         for (XWPFHeader header : document.getHeaderList()) {
-            BodyParser headerParser = new BodyParser(header, new QueryBuilderEngine(queryEnvironment));
+            BodyParser headerParser = new BodyParser(header, new QueryBuilderEngine(queryEnvironment), queryEnvironment);
             result.getHeaders().add(headerParser.parseTemplate());
         }
         return result;

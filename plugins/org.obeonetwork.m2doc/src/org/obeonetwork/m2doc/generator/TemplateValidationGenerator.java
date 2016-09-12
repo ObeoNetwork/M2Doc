@@ -34,6 +34,7 @@ import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHighlight;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STHighlightColor;
 
@@ -48,21 +49,6 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
      * The font size of error messages.
      */
     private static final int ERROR_MESSAGE_FONT_SIZE = 16;
-
-    /**
-     * constant defining the color of info messages.
-     */
-    private static final String INFO_COLOR = "0000FF";
-
-    /**
-     * constant defining the color of warning messages.
-     */
-    private static final String WARNING_COLOR = "FFFF00";
-
-    /**
-     * constant defining the color of error messages.
-     */
-    private static final String ERROR_COLOR = "FF0000";
 
     /**
      * Separator between the text of a M2DOC template element and a corresponding parsing error and between two parsing error.
@@ -253,7 +239,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
 
             // separation run.
             res++;
-            final String color = getColor(message);
+            final String color = M2DocUtils.getColor(message.getLevel());
             XWPFRun newBlankRun = paragraph.insertNewRun(basePosition + res);
             newBlankRun.setText(BLANK_SEPARATOR);
 
@@ -272,37 +258,6 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
             messageRun.setFontSize(ERROR_MESSAGE_FONT_SIZE);
             final CTHighlight messageHighlight = messageRun.getCTR().getRPr().addNewHighlight();
             messageHighlight.setVal(STHighlightColor.LIGHT_GRAY);
-        }
-
-        return res;
-    }
-
-    /**
-     * Gets the color to use for the given {@link TemplateValidationMessage}.
-     * 
-     * @param message
-     *            the {@link TemplateValidationMessage}
-     * @return the color to use for the given {@link TemplateValidationMessage}
-     */
-    private String getColor(TemplateValidationMessage message) {
-        final String res;
-
-        switch (message.getLevel()) {
-            case INFO:
-                res = INFO_COLOR;
-                break;
-
-            case WARNING:
-                res = WARNING_COLOR;
-                break;
-
-            case ERROR:
-                res = ERROR_COLOR;
-                break;
-
-            default:
-                res = INFO_COLOR;
-                break;
         }
 
         return res;
