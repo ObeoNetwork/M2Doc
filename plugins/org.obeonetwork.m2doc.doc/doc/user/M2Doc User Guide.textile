@@ -32,11 +32,21 @@ M2Doc provides right now 4 generation tags that have fixed formats. Those tags a
 
 * @{m:for <var> | <query>} iterated body { m:endfor }@ : the directive is replaced by the iterated generation of the body over a collection of values. The specified variable is successively bound to the values of the evaluated collection so that it is accessible from queries inside the body.
 
-* @{m:if <expression1>} true branch { m:elseif <expression2> } … { m:elseif <expression_n>} … { m:else } … {m:endif }@ : conditional generation. The first branch among the if and elseif directives which expression evaluates to true is processed. If no expression evaluates to true, the else branch is processed (if present).
+* <code>{m:if <expression1>} true branch { m:elseif <expression2> } … { m:elseif <expression-n>} … { m:else } … {m:endif }</code> : conditional generation. The first branch among the if and elseif directives which expression evaluates to true is processed. If no expression evaluates to true, the else branch is processed (if present).
 
-* @{m:image file:"image file path" width:"image insertion width"  heigth:"image insertion heigth" legend:"image legend" legendPos:"above/below"}@ : inserts the image which file is specified (through a path relative to the eclipse project where the generation model is placed). The insertion will have the specified width, height and a legend will be inserted at the specified position if one is specified (default is below).
+* @{m:image file:"image file path" width:"image insertion width"  height:"image insertion height" legend:"image legend" legendPos:"above/below"}@ : inserts the image which file is specified (through a path relative to the eclipse project where the generation model is placed). The insertion will have the specified width, height and a legend will be inserted at the specified position if one is specified (default is below).
 
+* @{m:bookmark <name query>} book marked content { m:endbookmark }@ : creates a book mark with a name (name query) and a content (book marked content).
 
+* @{m:link <book mark name query> <text query>}@ : creates a link to a book mark. The "book mark name query" is the same name as the one defines in {m:bookmark <name query>}. "text query" is the text used for the reference.
+		
+pre.. 
+		Example:
+			{m:bookmark 'myBookmark'} my bookmark content { m:endbookmark }
+			{m:link 'myBookmark' 'reference to myBookmark'}
+		will produce: 
+			my bookmark content { REF myBookmark \h }
+		
 h3. M2Doc dynamic generation tags
 
 M2Doc provides a way to extend its information retrieval for a tag by registering a provider by an extension point. Each provider uses its own options in addition of the one generically provided par M2Doc core. Many providers can be associated to a same kind of tag and any one of those can be choose to retrieve information in a tag. 
