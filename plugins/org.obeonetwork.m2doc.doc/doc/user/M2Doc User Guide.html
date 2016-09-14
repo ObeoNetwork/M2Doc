@@ -42,14 +42,21 @@
 		</ul>
 		<ul>
 			<li>
-				<code>{m:bookmark &lt;name query&gt;} book marked content { m:endbookmark }</code> : creates a book mark with a name (name query result result) and a content.
+				<code>{m:bookmark &lt;name query&gt;} book marked content { m:endbookmark }</code> : creates a book mark with a name (name query) and a content (book marked content).
 			</li>
 		</ul>
 		<ul>
 			<li>
-				<code>{m:link &lt;book mark name query&gt; &lt;text query&gt;}</code> : creates a link to a book mark. The &#171;book mark name query&#187; is the same as the one defines in {m:bookmark &lt;name query&gt;}. The text used for the reference is the result of the &#171;text query&#187;.
+				<code>{m:link &lt;book mark name query&gt; &lt;text query&gt;}</code> : creates a link to a book mark. The &#171;book mark name query&#187; is the same name as the one defines in {m:bookmark &lt;name query&gt;}. &#171;text query&#187; is the text used for the reference.
 			</li>
 		</ul>
+		<pre>		Example:
+			{m:bookmark 'myBookmark'} my bookmark content { m:endbookmark }
+			{m:link 'myBookmark' 'reference to myBookmark'}
+		will produce: 
+			my bookmark content { REF myBookmark \h }
+		
+</pre>
 		<h3 id="M2Docdynamicgenerationtags">M2Doc dynamic generation tags</h3>
 		<p>M2Doc provides a way to extend its information retrieval for a tag by registering a provider by an extension point. Each provider uses its own options in addition of the one generically provided par M2Doc core. Many providers can be associated to a same kind of tag and any one of those can be choose to retrieve information in a tag. </p>
 		<h4 id="Siriusdiagramprovider">Sirius diagram provider</h4>
