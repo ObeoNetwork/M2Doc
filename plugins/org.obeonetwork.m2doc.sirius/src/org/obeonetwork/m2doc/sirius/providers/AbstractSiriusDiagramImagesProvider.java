@@ -51,6 +51,9 @@ import org.eclipse.sirius.diagram.description.DescriptionPackage;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.ui.tools.api.part.DiagramEditPartService;
+import org.eclipse.sirius.ui.business.api.dialect.DialectEditor;
+import org.eclipse.sirius.ui.business.api.session.IEditingSession;
+import org.eclipse.sirius.ui.business.api.session.SessionUIManager;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.swt.graphics.Rectangle;
@@ -125,9 +128,12 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
      *            List<Layer>
      * @param session
      *            Session
+     * @param isDiagramOpened
+     *            boolean
      * @return DDiagram
      */
-    protected DDiagram getDDiagramToExport(final DDiagram diagram, final List<Layer> layers, final Session session) {
+    protected DDiagram getDDiagramToExport(final DDiagram diagram, final List<Layer> layers, final Session session,
+            boolean isDiagramOpened) {
         // if layers list is empty return the current diagram
         if (layers.isEmpty()) {
             return diagram;
@@ -135,7 +141,7 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
         // else copy diagram and apply all listed layers
         // Warning: modify the sirius session
         ExportRepresentationCommand exportRepresentationCommand = new ExportRepresentationCommand(
-                session.getTransactionalEditingDomain(), layers, diagram, session);
+                session.getTransactionalEditingDomain(), layers, diagram, session, isDiagramOpened);
         session.getTransactionalEditingDomain().getCommandStack().execute(exportRepresentationCommand);
         return exportRepresentationCommand.getExportedDiagram();
     }
@@ -162,7 +168,7 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
         for (DRepresentation dRepresentation : representations) {
             if (dRepresentation instanceof DDiagram) {
                 final DDiagram dsd = (DDiagram) dRepresentation;
-                DDiagram diagramtoExport = getDDiagramToExport(dsd, layers, session);
+                DDiagram diagramtoExport = getDDiagramToExport(dsd, layers, session, getEditor(session, dsd) != null);
                 String filePath = getDiagramImageFilename(diagramtoExport, rootPath);
                 File file = new File(filePath);
                 file.getParentFile().mkdirs();
@@ -244,6 +250,23 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
             session.save(new NullProgressMonitor());
         }
         return resultList;
+    }
+
+    /**
+     * Return opened representation.
+     * 
+     * @param session
+     *            Session
+     * @param representation
+     *            DRepresentation
+     * @return opened representation.
+     */
+    protected DialectEditor getEditor(final Session session, final DRepresentation representation) {
+        IEditingSession ui = SessionUIManager.INSTANCE.getUISession(session);
+        if (ui != null) {
+            return ui.getEditor(representation);
+        }
+        return null;
     }
 
     /**
