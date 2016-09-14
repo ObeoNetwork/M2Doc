@@ -25,6 +25,7 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.tools.api.command.ChangeLayerActivationCommand;
+import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 
 /**
@@ -32,6 +33,7 @@ import org.eclipse.sirius.viewpoint.DRepresentation;
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
+@SuppressWarnings("restriction")
 public class ExportRepresentationCommand extends RecordingCommand {
 
     /**
@@ -62,6 +64,10 @@ public class ExportRepresentationCommand extends RecordingCommand {
      * TransactionalEditingDomain.
      */
     private TransactionalEditingDomain editingDomain;
+    /**
+     * Is representation opened.
+     */
+    private boolean isRepresentationOpened;
 
     /**
      * Export diagram.
@@ -74,14 +80,17 @@ public class ExportRepresentationCommand extends RecordingCommand {
      *            DDiagram to export
      * @param session
      *            Session
+     * @param isDiagramOpened
+     *            boolean
      */
     public ExportRepresentationCommand(TransactionalEditingDomain domain, List<Layer> layers, DDiagram diagram,
-            Session session) {
+            Session session, boolean isDiagramOpened) {
         super(domain);
         this.editingDomain = domain;
         this.layers = layers;
         this.representation = diagram;
         this.session = session;
+        this.isRepresentationOpened = isDiagramOpened;
     }
 
     /**
@@ -98,9 +107,11 @@ public class ExportRepresentationCommand extends RecordingCommand {
             // copy representation
             this.exportedDiagram = (DDiagram) DialectManager.INSTANCE.copyRepresentation(this.representation,
                     this.representation.getName() + SUFFIXE_COPY, session, MONITOR);
-
             // activate layers list.
             compoundCmd.append(activateLayers(this.exportedDiagram));
+            if (!isRepresentationOpened) {
+                new GMFDiagramUpdater(session, (DDiagram) representation);
+            }
             session.getTransactionalEditingDomain().getCommandStack().execute(compoundCmd);
         }
     }
@@ -136,6 +147,6 @@ public class ExportRepresentationCommand extends RecordingCommand {
      * @return exported DDiagram
      */
     public DDiagram getExportedDiagram() {
-        return exportedDiagram;
+        return this.exportedDiagram;
     }
 }
