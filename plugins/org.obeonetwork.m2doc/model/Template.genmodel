@@ -64,6 +64,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/query"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationId"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationTitle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/activatedLayers"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//StaticFragment"/>
     <genClasses ecoreClass="Template.ecore#//Table">
@@ -97,6 +98,13 @@
     <genClasses image="false" ecoreClass="Template.ecore#//AbstractProviderClient">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//AbstractProviderClient/optionValueMap"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractProviderClient/provider"/>
+    </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Bookmark">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Bookmark/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Link">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Link/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Link/text"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -49,9 +49,11 @@ import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Image;
+import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Representation;
@@ -60,6 +62,7 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
@@ -82,13 +85,15 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      */
     private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression.";
     /**
-     * constant defining the color of error messages.
-     */
-    private static final String ERROR_COLOR = "FF0000";
-    /**
      * The path to the root project where the template is located.
      */
     private String rootProjectPath;
+
+    /**
+     * The {@link BookmarkManager}.
+     */
+    private final BookmarkManager bookmarkManager;
+
     /**
      * The {@link IQueryEnvironment} instance used for evaluating all the AQL
      * queries found in the template.
@@ -129,6 +134,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            the definitions used in queries and variable tags
      * @param projectPath
      *            the path to the project where the template is located.
+     * @param bookmarkManager
+     *            the {@link BookmarkManager}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
      * @param destinationDocument
@@ -136,10 +143,11 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * @param theTargetConfObject
      *            the root EObject of the gen conf model.
      */
-    public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, IQueryEnvironment queryEnvironment,
-            IBody destinationDocument, EObject theTargetConfObject) {
+    public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, BookmarkManager bookmarkManager,
+            IQueryEnvironment queryEnvironment, IBody destinationDocument, EObject theTargetConfObject) {
         this.rootProjectPath = projectPath;
         this.definitions = new GenerationEnvironment(initialDefs);
+        this.bookmarkManager = bookmarkManager;
         this.queryEnvironment = queryEnvironment;
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
@@ -151,6 +159,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * 
      * @param defs
      *            the definitions used in queries and variable tags
+     * @param bookmarkManager
+     *            the {@link BookmarkManager}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
      *            template.
@@ -159,9 +169,10 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * @param theTargetConfObject
      *            the root EObject of the gen conf model.
      */
-    public TemplateProcessor(GenerationEnvironment defs, IQueryEnvironment queryEnvironment, IBody destinationDocument,
-            EObject theTargetConfObject) {
+    public TemplateProcessor(GenerationEnvironment defs, BookmarkManager bookmarkManager,
+            IQueryEnvironment queryEnvironment, IBody destinationDocument, EObject theTargetConfObject) {
         this.definitions = defs;
+        this.bookmarkManager = bookmarkManager;
         this.queryEnvironment = queryEnvironment;
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
@@ -380,7 +391,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), strResult);
         if (object.getQuery() == null || result == null || result.getResult() == null) {
             run.setBold(true);
-            run.setColor(ERROR_COLOR);
+            run.setColor(M2DocUtils.ERROR_COLOR);
         }
         return object;
     }
@@ -408,7 +419,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             }
             if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
                 run.setBold(true);
-                run.setColor(ERROR_COLOR);
+                run.setColor(M2DocUtils.ERROR_COLOR);
             }
 
             for (XWPFRun tagRun : object.getClosingRuns()) {
@@ -427,7 +438,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                     doSwitch(construct);
                 }
                 // if the {gd:endfor} lies on a distinct paragraph, insert a new
-                // paragraph there to take this into acount.
+                // paragraph there to take this into account.
                 int bodySize = object.getSubConstructs().size();
                 if (bodySize > 0 && object.getSubConstructs().get(bodySize - 1).getRuns().size() > 0) {
                     AbstractConstruct lastBodyPart = object.getSubConstructs().get(bodySize - 1);
@@ -477,7 +488,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             run.setText(message);
             if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
                 run.setBold(true);
-                run.setColor(ERROR_COLOR);
+                run.setColor(M2DocUtils.ERROR_COLOR);
             }
             for (XWPFRun tagRun : object.getClosingRuns()) {
                 insertRun(tagRun);
@@ -524,8 +535,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 ctCell.getTblList().clear();
                 newCell.getCTTc().set(ctCell);
                 // process the cell :
-                TemplateProcessor processor = new TemplateProcessor(definitions, queryEnvironment, newCell,
-                        targetConfObject);
+                TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, queryEnvironment,
+                        newCell, targetConfObject);
                 processor.doSwitch(cell.getTemplate());
             }
         }
@@ -662,6 +673,72 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         return super.caseRepresentation(object);
     }
 
+    @Override
+    public AbstractConstruct caseBookmark(Bookmark bookmark) {
+        if (bookmark.getName() == null) {
+            XWPFRun run = insertRun(bookmark.getStyleRun());
+            setErrorMessageToRun(
+                    QUERY_SYNTAX_ERROR_MESSAGE + ":" + bookmark.getValidationMessages().get(0).getMessage(), run);
+        } else {
+            IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
+            final EvaluationResult result = evaluator.eval(bookmark.getName(), definitions.getCurrentDefinitions());
+            if (result == null) {
+                XWPFRun run = insertRun(bookmark.getStyleRun());
+                setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
+            } else if (result.getResult() == null) {
+                StringBuilder builder = new StringBuilder();
+                getDiagnostic(result.getDiagnostic(), builder);
+                XWPFRun run = insertRun(bookmark.getStyleRun());
+                setErrorMessageToRun(builder.toString(), run);
+            } else {
+                bookmarkManager.startBookmark(currentGeneratedParagraph, result.getResult().toString());
+                for (AbstractConstruct construct : bookmark.getSubConstructs()) {
+                    doSwitch(construct);
+                }
+                bookmarkManager.endBookmark(currentGeneratedParagraph, result.getResult().toString());
+            }
+        }
+
+        return super.caseBookmark(bookmark);
+    }
+
+    @Override
+    public AbstractConstruct caseLink(Link link) {
+        if (link.getName() == null) {
+            XWPFRun run = insertRun(link.getStyleRun());
+            setErrorMessageToRun(QUERY_SYNTAX_ERROR_MESSAGE + ":" + link.getValidationMessages().get(0).getMessage(),
+                    run);
+        } else {
+            IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
+            final EvaluationResult nameResult = evaluator.eval(link.getName(), definitions.getCurrentDefinitions());
+            if (nameResult == null) {
+                XWPFRun run = insertRun(link.getStyleRun());
+                setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
+            } else if (nameResult.getResult() == null) {
+                StringBuilder builder = new StringBuilder();
+                getDiagnostic(nameResult.getDiagnostic(), builder);
+                XWPFRun run = insertRun(link.getStyleRun());
+                setErrorMessageToRun(builder.toString(), run);
+            } else {
+                final EvaluationResult textResult = evaluator.eval(link.getText(), definitions.getCurrentDefinitions());
+                if (textResult == null) {
+                    XWPFRun run = insertRun(link.getStyleRun());
+                    setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
+                } else if (textResult.getResult() == null) {
+                    StringBuilder builder = new StringBuilder();
+                    getDiagnostic(textResult.getDiagnostic(), builder);
+                    XWPFRun run = insertRun(link.getStyleRun());
+                    setErrorMessageToRun(builder.toString(), run);
+                } else {
+                    bookmarkManager.insertReference(currentGeneratedParagraph, nameResult.getResult().toString(),
+                            textResult.getResult().toString());
+                }
+            }
+        }
+
+        return super.caseLink(link);
+    }
+
     /**
      * Sets an error message into the given run.
      * 
@@ -673,7 +750,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     private void setErrorMessageToRun(String errorMessage, XWPFRun imageRun) {
         imageRun.setText(errorMessage);
         imageRun.setBold(true);
-        imageRun.setColor(ERROR_COLOR);
+        imageRun.setColor(M2DocUtils.ERROR_COLOR);
     }
 
     /**
@@ -696,6 +773,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, object.getHeight());
         parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, object.getWidth());
+        parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, object.getActivatedLayers());
         setGenericParameters(object, provider.getOptionTypes(), parameters);
         return parameters;
     }

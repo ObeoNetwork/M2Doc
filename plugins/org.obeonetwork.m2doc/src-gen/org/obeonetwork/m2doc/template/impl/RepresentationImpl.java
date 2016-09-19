@@ -13,10 +13,13 @@
  */
 package org.obeonetwork.m2doc.template.impl;
 
+import java.util.Collection;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
@@ -31,6 +34,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getQuery <em>Query</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getRepresentationId <em>Representation Id</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getRepresentationTitle <em>Representation Title</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl#getActivatedLayers <em>Activated Layers</em>}</li>
  * </ul>
  *
  * @generated
@@ -102,6 +106,16 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
      * @ordered
      */
     protected String representationTitle = REPRESENTATION_TITLE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getActivatedLayers() <em>Activated Layers</em>}' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getActivatedLayers()
+     * @generated
+     * @ordered
+     */
+    protected EList<String> activatedLayers;
 
     /**
      * <!-- begin-user-doc -->
@@ -187,6 +201,18 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
 
     /**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EList<String> getActivatedLayers() {
+        if (activatedLayers == null) {
+            activatedLayers = new EDataTypeUniqueEList<String>(String.class, this, TemplatePackage.REPRESENTATION__ACTIVATED_LAYERS);
+        }
+        return activatedLayers;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -199,6 +225,8 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
                 return getRepresentationId();
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 return getRepresentationTitle();
+            case TemplatePackage.REPRESENTATION__ACTIVATED_LAYERS:
+                return getActivatedLayers();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -208,6 +236,7 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
 	 * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
 	public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -219,6 +248,10 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
                 return;
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 setRepresentationTitle((String)newValue);
+                return;
+            case TemplatePackage.REPRESENTATION__ACTIVATED_LAYERS:
+                getActivatedLayers().clear();
+                getActivatedLayers().addAll((Collection<? extends String>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -241,6 +274,9 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 setRepresentationTitle(REPRESENTATION_TITLE_EDEFAULT);
                 return;
+            case TemplatePackage.REPRESENTATION__ACTIVATED_LAYERS:
+                getActivatedLayers().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -259,6 +295,8 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
                 return REPRESENTATION_ID_EDEFAULT == null ? representationId != null : !REPRESENTATION_ID_EDEFAULT.equals(representationId);
             case TemplatePackage.REPRESENTATION__REPRESENTATION_TITLE:
                 return REPRESENTATION_TITLE_EDEFAULT == null ? representationTitle != null : !REPRESENTATION_TITLE_EDEFAULT.equals(representationTitle);
+            case TemplatePackage.REPRESENTATION__ACTIVATED_LAYERS:
+                return activatedLayers != null && !activatedLayers.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -279,6 +317,8 @@ public class RepresentationImpl extends AbstractImageImpl implements Representat
         result.append(representationId);
         result.append(", representationTitle: ");
         result.append(representationTitle);
+        result.append(", activatedLayers: ");
+        result.append(activatedLayers);
         result.append(')');
         return result.toString();
     }

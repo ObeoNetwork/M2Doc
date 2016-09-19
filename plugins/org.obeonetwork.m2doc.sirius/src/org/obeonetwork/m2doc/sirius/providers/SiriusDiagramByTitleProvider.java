@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
-import org.eclipse.sirius.diagram.DSemanticDiagram;
+import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DView;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
@@ -92,10 +92,13 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
         String rootPath = (String) parameters.get(ProviderConstants.PROJECT_ROOT_PATH_KEY);
+        List<String> diagramActivatedLayers = (List<String>) parameters
+                .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
         Session session = SessionManager.INSTANCE.getSession(rootObject);
         if (session == null) {
             throw new ProviderException("Cannot find session associated to the conf model root element.");
@@ -107,11 +110,12 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
                         + this.getClass().getName() + "\"");
         } else {
             DRepresentation representation = getAssociatedRepresentationByName((String) representationTitle, session);
-            if (representation instanceof DSemanticDiagram) {
-                DSemanticDiagram dsd = (DSemanticDiagram) representation;
+            if (representation instanceof DDiagram) {
+                DDiagram dsd = (DDiagram) representation;
                 List<DRepresentation> representations = new ArrayList<DRepresentation>(1);
                 representations.add(dsd);
-                List<String> resultList = generateAndReturnDiagramImages(rootPath, session, representations);
+                List<String> resultList = generateAndReturnDiagramImages(rootPath, session, representations,
+                        getLayers(dsd, diagramActivatedLayers));
                 return resultList;
             } else {
                 throw new ProviderException("Representation with title '" + representationTitle + "' not found");

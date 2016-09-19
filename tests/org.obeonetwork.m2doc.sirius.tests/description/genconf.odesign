@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" name="m2docconf" version="10.1.0.201507271600">
-  <ownedViewpoints name="genconf" modelFileExtension="*.genconf">
-    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="diagram" domainClass="genconf.Generation" enablePopupBars="true">
-      <metamodel href="../../org.obeonetwork.m2doc.ui/model/m2docconf.ecore#/"/>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" name="test m2Doc" version="10.1.3.201511131800">
+  <ownedViewpoints name="testM2DocGenConf" modelFileExtension="genconf">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="TestGenerationDiagram" domainClass="genconf.Generation" enablePopupBars="true">
+      <metamodel href="http://www.obeonetwork.org/m2doc/genconf/1.0#/"/>
       <defaultLayer name="Default">
         <nodeMappings name="ModelDefinition" domainClass="genconf.ModelDefinition">
           <style xsi:type="style:BundledImageDescription" labelExpression="feature:key" labelPosition="node" resizeKind="NSEW">
@@ -19,6 +19,38 @@
           </style>
         </nodeMappings>
       </defaultLayer>
+      <additionalLayers name="layer2">
+        <nodeMappings name="ModelDefinition" domainClass="genconf.ModelDefinition">
+          <style xsi:type="style:BundledImageDescription" labelExpression="feature:key" labelPosition="node" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="StringDefinition" domainClass="genconf.StringDefinition">
+          <style xsi:type="style:BundledImageDescription" labelExpression="feature:key" labelPosition="node" resizeKind="NSEW" shape="dot">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+          </style>
+        </nodeMappings>
+      </additionalLayers>
+      <additionalLayers name="layer3" activeByDefault="true">
+        <nodeMappings name="ModelDefinition" domainClass="genconf.ModelDefinition">
+          <style xsi:type="style:BundledImageDescription" labelExpression="feature:key" labelPosition="node" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="StringDefinition" domainClass="genconf.StringDefinition">
+          <style xsi:type="style:BundledImageDescription" labelExpression="feature:key" labelPosition="node" resizeKind="NSEW" shape="dot">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+          </style>
+        </nodeMappings>
+      </additionalLayers>
     </ownedRepresentations>
   </ownedViewpoints>
 </description:Group>

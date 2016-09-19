@@ -12,7 +12,7 @@
 <feature
       id="org.obeonetwork.m2doc.sirius.addon.feature"
       label="M2Doc Sirius [3.0.0) provider"
-      version="0.9.2.qualifier"
+      version="0.9.3.qualifier"
       provider-name="Obeonetwork">
 
    <description url="http://www.obeonetwork.com/">

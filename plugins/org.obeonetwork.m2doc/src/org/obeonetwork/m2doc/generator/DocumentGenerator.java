@@ -86,7 +86,7 @@ public class DocumentGenerator {
      */
     public DocumentGenerator(String inputDocumentFileName, String destinationFileName, DocumentTemplate theTemplate,
             Map<String, Object> variables, IQueryEnvironment environment, EObject targetConfObject)
-                    throws DocumentGenerationException {
+            throws DocumentGenerationException {
         this("", inputDocumentFileName, destinationFileName, theTemplate, variables, environment, targetConfObject);
     }
 
@@ -139,25 +139,29 @@ public class DocumentGenerator {
     public void generate() throws IOException {
         // The output document is created from the input so as to get the styles
         // and definitions in the original template.
-        TemplateProcessor processor = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
-                destinationDocument, targetConfObject);
+        final BookmarkManager bookmarkManager = new BookmarkManager();
+        TemplateProcessor processor = new TemplateProcessor(definitions, this.projectPath, bookmarkManager,
+                queryEnvironment, destinationDocument, targetConfObject);
         processor.doSwitch(this.template.getBody());
         Iterator<XWPFFooter> footers = destinationDocument.getFooterList().iterator();
         for (Template footerTemplate : this.template.getFooters()) {
             XWPFFooter footer = footers.next();
             cleanHeaderFooter(footer);
-            TemplateProcessor footerProc = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
-                    footer, targetConfObject);
+            TemplateProcessor footerProc = new TemplateProcessor(definitions, this.projectPath, bookmarkManager,
+                    queryEnvironment, footer, targetConfObject);
             footerProc.doSwitch(footerTemplate);
         }
         Iterator<XWPFHeader> headers = destinationDocument.getHeaderList().iterator();
         for (Template headerTemplate : this.template.getHeaders()) {
             XWPFHeader header = headers.next();
             cleanHeaderFooter(header);
-            TemplateProcessor headerProc = new TemplateProcessor(definitions, this.projectPath, queryEnvironment,
-                    header, targetConfObject);
+            TemplateProcessor headerProc = new TemplateProcessor(definitions, this.projectPath, bookmarkManager,
+                    queryEnvironment, header, targetConfObject);
             headerProc.doSwitch(headerTemplate);
         }
+
+        bookmarkManager.markDanglingReferences();
+        bookmarkManager.markOpenBookmarks();
         // At this point, the documnet has been generated and just needs being
         // writen on disk.
         POIServices.getInstance().saveFile(destinationDocument, destinationFileName);

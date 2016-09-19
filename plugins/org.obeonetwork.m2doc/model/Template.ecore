@@ -64,6 +64,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationTitle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="activatedLayers" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//AbstractConstruct"/>
   <eClassifiers xsi:type="ecore:EEnum" name="QueryBehavior">
@@ -122,4 +124,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="provider" eType="#//Provider"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Body" instanceClassName="org.apache.poi.xwpf.usermodel.IBody"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Bookmark" eSuperTypes="#//Compound">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//AstResult"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//AbstractConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//AstResult"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="#//AstResult"/>
+  </eClassifiers>
 </ecore:EPackage>

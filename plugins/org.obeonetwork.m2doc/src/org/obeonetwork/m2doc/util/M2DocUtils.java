@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.xwpf.usermodel.IRunBody;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
@@ -23,6 +26,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 
 /**
  * Util class for M2Doc.
@@ -32,7 +36,22 @@ import org.obeonetwork.m2doc.M2DocPlugin;
 public final class M2DocUtils {
 
     /**
-     * Constants.
+     * constant defining the color of info messages.
+     */
+    public static final String INFO_COLOR = "0000FF";
+
+    /**
+     * constant defining the color of warning messages.
+     */
+    public static final String WARNING_COLOR = "FFFF00";
+
+    /**
+     * constant defining the color of error messages.
+     */
+    public static final String ERROR_COLOR = "FF0000";
+
+    /**
+     * Docx extension file.
      */
     public static final String DOCX_EXTENSION_FILE = "docx";
 
@@ -78,4 +97,97 @@ public final class M2DocUtils {
         Resource resource = resourceSet.createResource(genConfURI);
         return resource;
     }
+
+    /**
+     * Appends the given error message at the end of the given {@link XWPFParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param level
+     *            the {@link ValidationMessageLevel}
+     * @param message
+     *            the message
+     * @return the created {@link XWPFRun}
+     */
+    public static XWPFRun appendMessageRun(XWPFParagraph paragraph, ValidationMessageLevel level, String message) {
+        final XWPFRun res = paragraph.createRun();
+
+        setRunMessage(res, level, message);
+
+        return res;
+    }
+
+    /**
+     * Inserts a new message {@link XWPFRun} after the given {@link XWPFRun}.
+     * 
+     * @param run
+     *            the {@link XWPFRun} used as reference.
+     * @param level
+     *            the {@link ValidationMessageLevel}
+     * @param message
+     *            the message
+     * @return the created {@link XWPFRun}
+     */
+    public static XWPFRun insertMessageAfter(XWPFRun run, ValidationMessageLevel level, String message) {
+        final XWPFRun res;
+
+        final IRunBody parent = run.getParent();
+        if (parent instanceof XWPFParagraph) {
+            final XWPFParagraph paragraph = (XWPFParagraph) parent;
+            res = paragraph.insertNewRun(paragraph.getRuns().indexOf(run));
+            setRunMessage(res, level, message);
+        } else {
+            throw new IllegalStateException("this should not happend");
+        }
+
+        return res;
+    }
+
+    /**
+     * Set the given message to the given {@link XWPFRun}.
+     * 
+     * @param run
+     *            the {@link XWPFRun}
+     * @param level
+     *            the {@link ValidationMessageLevel}
+     * @param message
+     *            the message
+     */
+    public static void setRunMessage(XWPFRun run, ValidationMessageLevel level, String message) {
+        run.setText(message);
+        run.setBold(true);
+        run.setColor(getColor(level));
+    }
+
+    /**
+     * Gets the color to use for the given {@link ValidationMessageLevel}.
+     * 
+     * @param level
+     *            the {@link ValidationMessageLevel}
+     * @return the color to use for the given {@link ValidationMessageLevel}
+     */
+    public static String getColor(ValidationMessageLevel level) {
+        final String res;
+
+        switch (level) {
+            case INFO:
+                res = M2DocUtils.INFO_COLOR;
+                break;
+
+            case WARNING:
+                res = M2DocUtils.WARNING_COLOR;
+                break;
+
+            case ERROR:
+                res = M2DocUtils.ERROR_COLOR;
+                break;
+
+            default:
+                res = M2DocUtils.INFO_COLOR;
+                break;
+        }
+
+        return res;
+    }
+
 }

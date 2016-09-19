@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.providers;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +25,7 @@ import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DView;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
@@ -43,12 +46,12 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
     /**
      * The option key used to retrieve the {@link EObject} root of some diagram representations.
      */
-    private static final String TARGET_ROOT_OBJECT_KEY = "rootObject";
+    private static final String TARGET_ROOT_OBJECT_KEY = "object";
     /**
      * The key used in the map passed to {@link IProvider} to define the Sirius
      * representation title from which image will be computed.
      */
-    private static final String DIAGRAM_DESCRIPTION_NAME_KEY = "diagramDescriptionName";
+    private static final String DIAGRAM_DESCRIPTION_ID_KEY = "descriptionId";
 
     /**
      * Default constructor.
@@ -93,11 +96,14 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         String rootPath = (String) parameters.get(ProviderConstants.PROJECT_ROOT_PATH_KEY);
-        Object diagramDescriptionName = parameters.get(DIAGRAM_DESCRIPTION_NAME_KEY);
+        Object diagramDescriptionName = parameters.get(DIAGRAM_DESCRIPTION_ID_KEY);
         Object targetRootObject = parameters.get(TARGET_ROOT_OBJECT_KEY);
+        List<String> diagramActivatedLayers = (List<String>) parameters
+                .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
         if (!(diagramDescriptionName instanceof String)) {
             throw new ProviderException(
                     "Image cannot be computed because no diagram description name has been provided to the provider \""
@@ -115,8 +121,11 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
             List<DRepresentation> representations = getAssociatedRepresentationByDiagramDescriptionAndName(
                     targetRootEObject, (String) diagramDescriptionName, session);
-            List<String> resultList = generateAndReturnDiagramImages(rootPath, session, representations);
-            return resultList;
+            if (!representations.isEmpty() && representations.get(0) instanceof DDiagram) {
+                return generateAndReturnDiagramImages(rootPath, session, representations,
+                        getLayers((DDiagram) representations.get(0), diagramActivatedLayers));
+            }
+            return generateAndReturnDiagramImages(rootPath, session, representations, Lists.<Layer> newArrayList());
         }
     }
 
@@ -152,7 +161,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
     public Map<String, OptionType> getOptionTypes() {
         Map<String, OptionType> optionsMap = new HashMap<String, OptionType>();
         optionsMap.put(TARGET_ROOT_OBJECT_KEY, OptionType.AQL_EXPRESSION);
-        optionsMap.put(DIAGRAM_DESCRIPTION_NAME_KEY, OptionType.STRING);
+        optionsMap.put(DIAGRAM_DESCRIPTION_ID_KEY, OptionType.STRING);
         return optionsMap;
     }
 
