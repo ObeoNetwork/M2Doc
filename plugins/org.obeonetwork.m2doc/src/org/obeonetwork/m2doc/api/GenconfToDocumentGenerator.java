@@ -35,6 +35,8 @@ import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.provider.configuration.ConfigurationProviderService;
+import org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -114,6 +116,9 @@ public class GenconfToDocumentGenerator {
      */
     public List<IFile> generate(Generation generation, IProject project, IFile templateFile, IFile generatedFile)
             throws IOException, DocumentParserException, DocumentGenerationException {
+        // pre generation
+        preGenerate(generation, project, templateFile, generatedFile);
+
         IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
 
         // create definitions
@@ -138,7 +143,59 @@ public class GenconfToDocumentGenerator {
             IFile validationFile = getValidationLogFile(generatedFile);
             generatedFiles.add(validationFile);
         }
+
+        // post generation
+        generatedFiles.addAll(postGenerate(generation, project, templateFile, generatedFile, template, generator));
+
         return generatedFiles;
+    }
+
+    /**
+     * Pre generation.
+     * 
+     * @param generation
+     *            Generation
+     * @param project
+     *            IProject
+     * @param templateFile
+     *            IFile
+     * @param generatedFile
+     *            IFile
+     */
+    public void preGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile) {
+        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
+            configurationProvider.preGenerate(generation, project, templateFile, generatedFile);
+        }
+    }
+
+    /**
+     * Post generation.
+     * 
+     * @param generation
+     *            Generation
+     * @param project
+     *            IProject
+     * @param templateFile
+     *            IFile
+     * @param generatedFile
+     *            IFile
+     * @param template
+     *            DocumentTemplate
+     * @param generator
+     *            DocumentGenerator
+     * @return IFile list to return after the generation. Generation result and validation log are already in there.
+     */
+    public List<IFile> postGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile,
+            DocumentTemplate template, DocumentGenerator generator) {
+        List<IFile> files = Lists.newArrayList();
+        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
+            List<IFile> postGenerateFiles = configurationProvider.postGenerate(generation, project, templateFile,
+                    generatedFile, template, generator);
+            if (postGenerateFiles != null) {
+                files.addAll(postGenerateFiles);
+            }
+        }
+        return files;
     }
 
     /**
@@ -173,6 +230,9 @@ public class GenconfToDocumentGenerator {
      * @return configuration model
      */
     public Resource createConfigurationModel(TemplateInfo templateInfo, final IFile templateFile) {
+        // pre model creation: by default nothing.
+        preCreateConfigurationModel(templateInfo, templateFile);
+
         // create genconf resource.
         URI templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
         URI genConfURI = templateURI.trimFileExtension()
@@ -189,9 +249,42 @@ public class GenconfToDocumentGenerator {
             resource.getContents().add(rootObject);
         }
 
+        // post model creation: by default nothing.
+        postCreateConfigurationModel(templateInfo, templateFile, rootObject);
+
         // Save the contents of the resource to the file system.
         M2DocUtils.saveResource(resource);
         return resource;
+    }
+
+    /**
+     * Post configuration model creation.
+     * 
+     * @param templateInfo
+     *            TemplateInfo
+     * @param templateFile
+     *            IFile
+     * @param generation
+     *            Generation
+     */
+    public void postCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile, Generation generation) {
+        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
+            configurationProvider.postCreateConfigurationModel(templateInfo, templateFile, generation);
+        }
+    }
+
+    /**
+     * Pre configuration model creation.
+     * 
+     * @param templateInfo
+     *            TemplateInfo
+     * @param templateFile
+     *            IFile
+     */
+    public void preCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile) {
+        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
+            configurationProvider.preCreateConfigurationModel(templateInfo, templateFile);
+        }
     }
 
     /**
@@ -255,6 +348,8 @@ public class GenconfToDocumentGenerator {
      */
     public boolean validate(IFile templateFile, DocumentTemplate template, Generation generation)
             throws DocumentGenerationException, IOException {
+        // pre template validation
+        preValidateTemplate(templateFile, template, generation);
         IFile validationFile = getValidationLogFile(templateFile);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -262,7 +357,47 @@ public class GenconfToDocumentGenerator {
         validator.validate(template, generation);
         TemplateGenerator generator = new TemplateGenerator(validationFile.getLocation().toFile().getAbsolutePath(),
                 template);
-        return generator.generate();
+        boolean validationResult = generator.generate();
+        return validationResult && postValidateTemplate(templateFile, template, generation, generator);
+    }
+
+    /**
+     * Post template validation.
+     * 
+     * @param templateFile
+     *            IFile
+     * @param template
+     *            DocumentTemplate
+     * @param generation
+     *            Generation
+     * @param generator
+     *            TemplateGenerator
+     * @return validation result.
+     */
+    public boolean postValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation,
+            TemplateGenerator generator) {
+        boolean validate = true;
+        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
+            validate = validate
+                && configurationProvider.postValidateTemplate(templateFile, template, generation, generator);
+        }
+        return validate;
+    }
+
+    /**
+     * Pre template validation.
+     * 
+     * @param templateFile
+     *            IFile
+     * @param template
+     *            DocumentTemplate
+     * @param generation
+     *            Generation
+     */
+    public void preValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation) {
+        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
+            configurationProvider.preValidateTemplate(templateFile, template, generation);
+        }
     }
 
     /**
