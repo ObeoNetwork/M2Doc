@@ -65,13 +65,13 @@ This class contains two methods:
 *  __getRepresentationImagePath__  that takes as entry a map of options parameters and returns the list of all images path to insert as replacement of the tag in the produced Word document. 
  The image behind the path must exist on the file system when returned or no image will be inserted.
 
-The options map will contains all options evaluated that were present in the diagram tag except the one handled by M2Doc that are “width”, “height”, “legend”, “legendPos” and “provider”.
+The options map will contains all options evaluated that were present in the diagram tag except the one handled by M2Doc that are "width", "height", "legend", "legendPos" and "provider".
 
 Options will be evaluated regarding their specified kind that must be provided with the method coming from the interface IProvider of all diagram providers or not:  
 
 !images/image005.png!
 
-This method allows to specify how each option will be parsed and provided by associating the option’s key and an evaluation kind.
+This method allows to specify how each option will be parsed and provided by associating the option's key and an evaluation kind.
 
 For the moment, two kinds of evaluation can be done by M2Doc with option:
 
@@ -81,17 +81,17 @@ For the moment, two kinds of evaluation can be done by M2Doc with option:
 
 A JAVA enum contains all the kind of evaluation that M2Doc provides (org.obeonetwork.m2doc.provider.OptionType).
 
-In our example, “title” is an AQL expression. The method looks like this: 
+In our example, "title" is an AQL expression. The method looks like this: 
 
 !images/image006.png!
 
 If no option type is provided for an option, then the default STRING one will be use.
 
-* __isDefault__ : first, let’s explain how a provider is chosen. 
+* __isDefault__ : first, let's explain how a provider is chosen. 
 
 If we have a provider tag, we try to get this provider. If it is not found, we get all the registered providers via the m2doc extension point, we iterate on them and the first provider witch have its mandatory option tags matching is chosen. If a provider is defined by default, it will be added at the beginning of this list, so it will have priority on the others. 
 
-The provider tag is optional, if your provider is by default, it will be tested before the other ones. That allows to write @<m:diagram title=”myDiagram”>@ instead of   @<m:diagram title=”myDiagram” provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider">@
+The provider tag is optional, if your provider is by default, it will be tested before the other ones. That allows to write @<m:diagram title="'myDiagram'">@ instead of   @<m:diagram title="'myDiagram'" provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider">@
 
 
 h4. Error handling
@@ -113,7 +113,7 @@ One of the nice feature of the AQL engine is that the set of services is extensi
 
 As the technology matures, we will also probably provide a set of services that are of general interest for model to document generation. 
 
-Yet, how do we register AQL services? Here’s a step by step guide based on the example provided in the M2Doc repository. 
+Yet, how do we register AQL services? Here's a step by step guide based on the example provided in the M2Doc repository. 
 
 
 h3. Writing AQL Services
@@ -122,11 +122,11 @@ AQL Services are provided through simple Java classes with a no-argument constru
 
 @db.allTables()@
 
-makes a call to the corresponding method in the Database service’s class:
+makes a call to the corresponding method in the Database service's class:
 
 @public List<Table> allTables(DataBase db)@
 
-In that example, there’s a single parameter which is filled with the service’s call target. 
+In that example, there's a single parameter which is filled with the service's call target. 
 
 Nothing prevents to pass on other arguments. 
 
@@ -146,7 +146,7 @@ public class DatabaseServices {
         * a foreign key.
         * 
         * @param col the column.
-        * @return the character ‘X’ when the column is a foreign key.
+        * @return the character 'X' when the column is a foreign key.
         */
 
        public String checkForeignKey(Column col) {
@@ -169,6 +169,38 @@ The extension has two attributes:
 
 * The service class itself
 
-* A service token. This attribute is intended to isolate services dedicated to a given M2Doc application in a bundle. This feature is not complete yet and any registration must be made through the default token. When the feature is complete, it will be required to provide the set of service’s token required through the template’s custom properties. This will allow having several services with the same name for distinct applications without interference.
+* A service token. This attribute is intended to isolate services dedicated to a given M2Doc application in a bundle. This feature is not complete yet and any registration must be made through the default token. When the feature is complete, it will be required to provide the set of service's token required through the template's custom properties. This will allow having several services with the same name for distinct applications without interference.
 
-Alternatively, a given M2Doc integration is free to provide a set of standard services that will be registered in the integration code. In such a scenario, documentation generation will probably be made through integration’s specific actions that aren’t documented here.
+Alternatively, a given M2Doc integration is free to provide a set of standard services that will be registered in the integration code. In such a scenario, documentation generation will probably be made through integration's specific actions that aren't documented here.
+
+
+h2. Providing configuration
+
+An extension point **org.obeonetwork.m2doc.configuration**  is given by M2Doc to specify operations before and/or after the 3 actions:
+
+* initialize the configuration model,
+* launch template validation,
+* launch template generation.
+
+This extension point defines a provider Java class. This provider implements the interface **org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider** and defines methods for:
+
+* configuration model initialization
+	!images/image008.png!  
+
+* template validation
+	!images/image009.png!  
+	
+	__Warning : postValidateTemplate must return **TRUE**  by default.__ 
+
+* template generation
+	!images/image010.png! 
+	
+	__The postTemplateGeneration must return an empty list by default.__ 
+
+The extension point looks like this:
+	!images/image011.png!
+
+An example of post configuration model is done in __org.obeometwork.m2doc.sirius__: if the configuration model initialization is done in a modeling project, the modeling project registered packages URIs are automatically added to the configuration model.
+
+	!images/image012.png!
+

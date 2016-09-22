@@ -55,12 +55,12 @@
 				<i>getRepresentationImagePath</i>  that takes as entry a map of options parameters and returns the list of all images path to insert as replacement of the tag in the produced Word document. 
 			</li>
 		</ul>The image behind the path must exist on the file system when returned or no image will be inserted.
-		<p>The options map will contains all options evaluated that were present in the diagram tag except the one handled by M2Doc that are “width”, “height”, “legend”, “legendPos” and “provider”.</p>
+		<p>The options map will contains all options evaluated that were present in the diagram tag except the one handled by M2Doc that are &#171;width&#187;, &#171;height&#187;, &#171;legend&#187;, &#171;legendPos&#187; and &#171;provider&#187;.</p>
 		<p>Options will be evaluated regarding their specified kind that must be provided with the method coming from the interface IProvider of all diagram providers or not:  </p>
 		<p>
 			<img border="0" src="images/image005.png"/>
 		</p>
-		<p>This method allows to specify how each option will be parsed and provided by associating the option’s key and an evaluation kind.</p>
+		<p>This method allows to specify how each option will be parsed and provided by associating the option&#8217;s key and an evaluation kind.</p>
 		<p>For the moment, two kinds of evaluation can be done by M2Doc with option:</p>
 		<ul>
 			<li>The STRING one that parse the option as a string and give it to the provider as the same exact string.</li>
@@ -69,20 +69,20 @@
 			<li>The AQL_EXPRESSION one that parse an option as a string and interpret it as an AQL expression and give to the provider the evaluated expression result that can be any JAVA object.</li>
 		</ul>
 		<p>A JAVA enum contains all the kind of evaluation that M2Doc provides (org.obeonetwork.m2doc.provider.OptionType).</p>
-		<p>In our example, “title” is an AQL expression. The method looks like this: </p>
+		<p>In our example, &#171;title&#187; is an AQL expression. The method looks like this: </p>
 		<p>
 			<img border="0" src="images/image006.png"/>
 		</p>
 		<p>If no option type is provided for an option, then the default STRING one will be use.</p>
 		<ul>
 			<li>
-				<i>isDefault</i> : first, let’s explain how a provider is chosen. 
+				<i>isDefault</i> : first, let&#8217;s explain how a provider is chosen. 
 			</li>
 		</ul>
 		<p>If we have a provider tag, we try to get this provider. If it is not found, we get all the registered providers via the m2doc extension point, we iterate on them and the first provider witch have its mandatory option tags matching is chosen. If a provider is defined by default, it will be added at the beginning of this list, so it will have priority on the others. </p>
 		<p>The provider tag is optional, if your provider is by default, it will be tested before the other ones. That allows to write 
-			<code>&lt;m:diagram title=”myDiagram”&gt;</code> instead of   
-			<code>&lt;m:diagram title=”myDiagram” provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider"&gt;</code>
+			<code>&lt;m:diagram title="'myDiagram'"&gt;</code> instead of   
+			<code>&lt;m:diagram title="'myDiagram'" provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider"&gt;</code>
 		</p>
 		<h4 id="Errorhandling">Error handling</h4>
 		<p>If some parameters are missing or are incorrect, you can warn M2Doc by throwing a ProviderException with the wanted message. 
@@ -93,17 +93,17 @@
 		<h2 id="ProvidingAQLservicesbyservicesregistry">Providing AQL services by services registry</h2>
 		<p>One of the nice feature of the AQL engine is that the set of services is extensible at will. In the field of document generation, it means that we may provide, for a given application, a set of services that are tailored to ease the development of templates against a given meta model. </p>
 		<p>As the technology matures, we will also probably provide a set of services that are of general interest for model to document generation. </p>
-		<p>Yet, how do we register AQL services? Here’s a step by step guide based on the example provided in the M2Doc repository. </p>
+		<p>Yet, how do we register AQL services? Here&#8217;s a step by step guide based on the example provided in the M2Doc repository. </p>
 		<h3 id="WritingAQLServices">Writing AQL Services</h3>
 		<p>AQL Services are provided through simple Java classes with a no-argument constructor. Services are the method of the class. The values of the method parameters are provided through the arguments of the service call in the AQL queries (for that matter, the target of the service call is considered as the first argument of the service call). For instance, the next AQL expression </p>
 		<p>
 			<code>db.allTables()</code>
 		</p>
-		<p>makes a call to the corresponding method in the Database service’s class:</p>
+		<p>makes a call to the corresponding method in the Database service&#8217;s class:</p>
 		<p>
 			<code>public List&lt;Table&gt; allTables(DataBase db)</code>
 		</p>
-		<p>In that example, there’s a single parameter which is filled with the service’s call target. </p>
+		<p>In that example, there&#8217;s a single parameter which is filled with the service&#8217;s call target. </p>
 		<p>Nothing prevents to pass on other arguments. </p>
 		<p>The service class looks like this:</p>
 		<pre>public class DatabaseServices {
@@ -119,7 +119,7 @@
         * a foreign key.
         * 
         * @param col the column.
-        * @return the character ‘X’ when the column is a foreign key.
+        * @return the character 'X' when the column is a foreign key.
         */
 
        public String checkForeignKey(Column col) {
@@ -140,8 +140,56 @@
 			<li>The service class itself</li>
 		</ul>
 		<ul>
-			<li>A service token. This attribute is intended to isolate services dedicated to a given M2Doc application in a bundle. This feature is not complete yet and any registration must be made through the default token. When the feature is complete, it will be required to provide the set of service’s token required through the template’s custom properties. This will allow having several services with the same name for distinct applications without interference.</li>
+			<li>A service token. This attribute is intended to isolate services dedicated to a given M2Doc application in a bundle. This feature is not complete yet and any registration must be made through the default token. When the feature is complete, it will be required to provide the set of service&#8217;s token required through the template&#8217;s custom properties. This will allow having several services with the same name for distinct applications without interference.</li>
 		</ul>
-		<p>Alternatively, a given M2Doc integration is free to provide a set of standard services that will be registered in the integration code. In such a scenario, documentation generation will probably be made through integration’s specific actions that aren’t documented here.</p>
+		<p>Alternatively, a given M2Doc integration is free to provide a set of standard services that will be registered in the integration code. In such a scenario, documentation generation will probably be made through integration&#8217;s specific actions that aren&#8217;t documented here.</p>
+		<h2 id="Providingconfiguration">Providing configuration</h2>
+		<p>An extension point 
+			<b>org.obeonetwork.m2doc.configuration</b>  is given by M2Doc to specify operations before and/or after the 3 actions:
+		</p>
+		<ul>
+			<li>initialize the configuration model,</li>
+			<li>launch template validation,</li>
+			<li>launch template generation.</li>
+		</ul>
+		<p>This extension point defines a provider Java class. This provider implements the interface 
+			<b>org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider</b> and defines methods for:
+		</p>
+		<ul>
+			<li>configuration model initialization</li>
+		</ul>
+		<p>	
+			<img border="0" src="images/image008.png"/>  
+		</p>
+		<ul>
+			<li>template validation</li>
+		</ul>
+		<p>	
+			<img border="0" src="images/image009.png"/>  
+		</p>
+		<p>	
+			<i>Warning : postValidateTemplate must return 
+				<b>TRUE</b>  by default.
+			</i> 
+		</p>
+		<ul>
+			<li>template generation</li>
+		</ul>
+		<p>	
+			<img border="0" src="images/image010.png"/> 
+		</p>
+		<p>	
+			<i>The postTemplateGeneration must return an empty list by default.</i> 
+		</p>
+		<p>The extension point looks like this:
+			<br/>	
+			<img border="0" src="images/image011.png"/>
+		</p>
+		<p>An example of post configuration model is done in 
+			<i>org.obeometwork.m2doc.sirius</i>: if the configuration model initialization is done in a modeling project, the modeling project registered packages URIs are automatically added to the configuration model.
+		</p>
+		<p>	
+			<img border="0" src="images/image012.png"/>
+		</p>
 	</body>
 </html>
