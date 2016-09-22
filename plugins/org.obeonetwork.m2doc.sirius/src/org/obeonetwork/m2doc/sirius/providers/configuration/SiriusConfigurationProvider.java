@@ -35,6 +35,7 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
  * Configuration provider for Sirius.
+ * Automatically add session registered EPackage URIs in configuration model.
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
@@ -50,35 +51,88 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
     @Override
     public void postCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile, Generation generation) {
         // add generation resource in session
+        ModelingProject modelingProject = getModelingProject(templateFile);
+        if (modelingProject != null) {
+            Session session = modelingProject.getSession();
+            if (session != null) {
+                // add semantic resource to session
+                addConfigurationModelToSession(generation, session);
+
+                // add EPackage URIs to configuration.
+                addURIsToGeneration(generation, session);
+            }
+        }
+
+    }
+
+    /**
+     * Add uris to Generation.
+     * 
+     * @param generation
+     *            Generation
+     * @param session
+     *            Session
+     */
+    protected void addURIsToGeneration(Generation generation, Session session) {
+        List<String> uris = addURIs(session);
+        // add found uris to generation.
+        if (!uris.isEmpty()) {
+            generation.getPackagesNSURI().addAll(uris);
+        }
+    }
+
+    /**
+     * Add generation resource to session.
+     * 
+     * @param generation
+     *            Generation
+     * @param session
+     *            Session
+     */
+    protected void addConfigurationModelToSession(Generation generation, Session session) {
         URI uri = generation.eResource().getURI();
+        AddSemanticResourceCommand cmd = new AddSemanticResourceCommand(session, uri, new NullProgressMonitor());
+        session.getTransactionalEditingDomain().getCommandStack().execute(cmd);
+    }
+
+    /**
+     * Return template file project if it is a modeling project.
+     * 
+     * @param templateFile
+     *            IFile
+     * @return modeling project
+     */
+    protected ModelingProject getModelingProject(IFile templateFile) {
         IProject project = templateFile.getProject();
         ModelingProject.hasModelingProjectNature(project);
         Option<ModelingProject> optionalModelingProject = ModelingProject.asModelingProject(project);
         if (optionalModelingProject.some()) {
-            ModelingProject modelingProject = optionalModelingProject.get();
-            Session session = modelingProject.getSession();
-            if (session != null) {
-                // add semantic resources
-                AddSemanticResourceCommand cmd = new AddSemanticResourceCommand(session, uri,
-                        new NullProgressMonitor());
-                session.getTransactionalEditingDomain().getCommandStack().execute(cmd);
+            optionalModelingProject.get();
+        }
+        return null;
+    }
 
-                // add semantic resource URI to generation uris packages.
-                List<String> uris = Lists.newArrayList();
-                for (Resource resource : session.getSemanticResources()) {
-                    if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof EObject
-                        && resource.getContents().get(0).eClass() != null
-                        && resource.getContents().get(0).eClass().getEPackage() != null
-                        && !Strings.isNullOrEmpty(resource.getContents().get(0).eClass().getEPackage().getNsURI())) {
-                        uris.add(resource.getContents().get(0).eClass().getEPackage().getNsURI());
-                    }
-                }
-                if (!uris.isEmpty()) {
-                    generation.getPackagesNSURI().addAll(uris);
+    /**
+     * Get ePackage nsuri from all session resources.
+     * 
+     * @param session
+     *            Session
+     * @return uris list
+     */
+    protected List<String> addURIs(Session session) {
+        List<String> uris = Lists.newArrayList();
+        for (Resource resource : session.getSemanticResources()) {
+            if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof EObject
+                && resource.getContents().get(0).eClass() != null
+                && resource.getContents().get(0).eClass().getEPackage() != null
+                && !Strings.isNullOrEmpty(resource.getContents().get(0).eClass().getEPackage().getNsURI())) {
+                String nsURI = resource.getContents().get(0).eClass().getEPackage().getNsURI();
+                if (!uris.contains(nsURI)) {
+                    uris.add(nsURI);
                 }
             }
         }
-
+        return uris;
     }
 
     /**

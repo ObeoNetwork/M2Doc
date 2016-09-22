@@ -28,15 +28,11 @@ import org.obeonetwork.m2doc.M2DocPlugin;
  */
 public final class ConfigurationProviderService {
     /**
-     * Unique ID of the extension point.
-     */
-    private static final String EXTENSION_ID = "org.obeonetwork.m2doc.configuration";
-    /**
-     * Name of the service element.
+     * Name of the configuration element.
      */
     private static final String CONFIGURATION_ELEMENT_NAME = "configuration";
     /**
-     * Name of the attribute used to declare the service's class name.
+     * Name of the attribute used to declare the provider class name.
      */
     private static final String PROVIDER_CLASS_ATTR_NAME = "providerClass";
 
@@ -91,23 +87,26 @@ public final class ConfigurationProviderService {
      */
     private void configureService() {
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(M2DocPlugin.PLUGIN_ID,
-                EXTENSION_ID);
+                CONFIGURATION_ELEMENT_NAME);
 
-        IExtension[] extensions = extensionPoint.getExtensions();
-        for (int extensionIndex = 0; extensionIndex < extensions.length; extensionIndex++) {
-            IExtension extension = extensions[extensionIndex];
-            IConfigurationElement[] configurationElements = extension.getConfigurationElements();
-            for (int i = 0; i < configurationElements.length; i++) {
-                IConfigurationElement cfg = configurationElements[i];
+        if (extensionPoint != null) {
+            IExtension[] extensions = extensionPoint.getExtensions();
+            for (int extensionIndex = 0; extensionIndex < extensions.length; extensionIndex++) {
+                IExtension extension = extensions[extensionIndex];
+                IConfigurationElement[] configurationElements = extension.getConfigurationElements();
+                for (int i = 0; i < configurationElements.length; i++) {
+                    IConfigurationElement cfg = configurationElements[i];
 
-                if (CONFIGURATION_ELEMENT_NAME.equals(cfg.getName())) {
-                    try {
-                        register((IConfigurationProvider) cfg.createExecutableExtension(PROVIDER_CLASS_ATTR_NAME));
-                    } catch (CoreException e) {
-                        e.printStackTrace();
+                    if (CONFIGURATION_ELEMENT_NAME.equals(cfg.getName())) {
+                        try {
+                            register((IConfigurationProvider) cfg.createExecutableExtension(PROVIDER_CLASS_ATTR_NAME));
+                        } catch (CoreException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
+
         }
 
     }

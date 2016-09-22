@@ -25,7 +25,8 @@ Export-Package: org.obeonetwork.m2doc,
  org.obeonetwork.m2doc.services,
  org.obeonetwork.m2doc.template,
  org.obeonetwork.m2doc.template.impl,
- org.obeonetwork.m2doc.template.util
+ org.obeonetwork.m2doc.template.util,
+ org.obeonetwork.m2doc.util
 Import-Package: com.google.common.base;version="15.0.0",
  com.google.common.collect;version="15.0.0",
  org.apache.poi;version="3.13.0",

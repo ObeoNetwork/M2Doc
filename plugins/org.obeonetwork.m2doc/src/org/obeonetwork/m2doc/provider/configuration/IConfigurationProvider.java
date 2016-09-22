@@ -22,8 +22,10 @@ import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
- * Provider for pre and post.
+ * Provider for pre and post configuration operations.
  * - configuration model creation
+ * - template validation
+ * - template generation
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */

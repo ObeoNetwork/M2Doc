@@ -248,6 +248,8 @@ public class GenconfToDocumentGenerator {
         if (rootObject != null) {
             resource.getContents().add(rootObject);
         }
+        // Save the contents of the resource to the file system.
+        M2DocUtils.saveResource(resource);
 
         // post model creation: by default nothing.
         postCreateConfigurationModel(templateInfo, templateFile, rootObject);

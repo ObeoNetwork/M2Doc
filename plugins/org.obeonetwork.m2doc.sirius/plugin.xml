@@ -21,5 +21,11 @@
             diagramClass="org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider">
       </diagramProvider>
    </extension>
+   <extension
+         point="org.obeonetwork.m2doc.configuration">
+      <configuration
+            providerClass="org.obeonetwork.m2doc.sirius.providers.configuration.SiriusConfigurationProvider">
+      </configuration>
+   </extension>
 
 </plugin>
