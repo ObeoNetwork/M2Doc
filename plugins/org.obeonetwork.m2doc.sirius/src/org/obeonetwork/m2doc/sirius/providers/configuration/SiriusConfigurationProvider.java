@@ -104,10 +104,9 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      */
     protected ModelingProject getModelingProject(IFile templateFile) {
         IProject project = templateFile.getProject();
-        ModelingProject.hasModelingProjectNature(project);
         Option<ModelingProject> optionalModelingProject = ModelingProject.asModelingProject(project);
         if (optionalModelingProject.some()) {
-            optionalModelingProject.get();
+            return optionalModelingProject.get();
         }
         return null;
     }

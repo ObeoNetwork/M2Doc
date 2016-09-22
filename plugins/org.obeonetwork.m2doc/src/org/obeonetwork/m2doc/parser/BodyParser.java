@@ -1074,7 +1074,7 @@ public class BodyParser {
         String tagText = readTag(link, link.getRuns()).trim();
         // remove the prefix
         tagText = tagText.substring(TokenType.LINK.getValue().length()).trim();
-        AstResult nameResult = parseWhileAqlExpression(queryEnvironment, tagText);
+        AstResult nameResult = parseWhileAqlExpression(tagText);
         if (nameResult.getErrors().size() == 0) {
             link.setName(nameResult);
         } else {
@@ -1083,7 +1083,7 @@ public class BodyParser {
         }
 
         tagText = tagText.substring(nameResult.getEndPosition(nameResult.getAst()));
-        AstResult textResult = parseWhileAqlExpression(queryEnvironment, tagText);
+        AstResult textResult = parseWhileAqlExpression(tagText);
         if (textResult.getErrors().size() == 0) {
             link.setText(textResult);
         } else {
@@ -1097,13 +1097,11 @@ public class BodyParser {
     /**
      * Parses while matching an AQL expression.
      * 
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
      * @param expression
      *            the expression to parse
      * @return the corresponding {@link AstResult}
      */
-    private AstResult parseWhileAqlExpression(IQueryEnvironment queryEnvironment, String expression) {
+    private AstResult parseWhileAqlExpression(String expression) {
         final IQueryBuilderEngine.AstResult result;
 
         if (expression != null && expression.length() > 0) {

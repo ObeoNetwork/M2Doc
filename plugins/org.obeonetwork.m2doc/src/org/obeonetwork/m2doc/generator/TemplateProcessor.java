@@ -77,6 +77,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 @SuppressWarnings("restriction")
 public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     /**
+     * Colon.
+     */
+    private static final String COLON = ":";
+    /**
      * Error message when AQL query could not be evaluated.
      */
     private static final String QUERY_EVALERROR_MESSAGE = "Couldn't evaluate query.";
@@ -303,12 +307,14 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                     fragmentStart = i + 1;
                     break;
                 case '\r':
+                    // CHECKSTYLE:OFF TODO update i++ to make cs happy !
                     if (i + 1 < text.length() && text.charAt(i + 1) == '\n') {
                         inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
                         inserted.addBreak();
                         i++;
                         fragmentStart = i + 1;
                     }
+                    // CHECKSTYLE:ON
                     break;
 
                 default:
@@ -374,7 +380,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         String strResult;
         EvaluationResult result = null;
         if (object.getQuery() == null) {
-            strResult = QUERY_SYNTAX_ERROR_MESSAGE + ":" + object.getValidationMessages().get(0).getMessage();
+            strResult = QUERY_SYNTAX_ERROR_MESSAGE + COLON + object.getValidationMessages().get(0).getMessage();
         } else {
             IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             result = evaluator.eval(object.getQuery(), definitions.getCurrentDefinitions());
@@ -678,7 +684,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         if (bookmark.getName() == null) {
             XWPFRun run = insertRun(bookmark.getStyleRun());
             setErrorMessageToRun(
-                    QUERY_SYNTAX_ERROR_MESSAGE + ":" + bookmark.getValidationMessages().get(0).getMessage(), run);
+                    QUERY_SYNTAX_ERROR_MESSAGE + COLON + bookmark.getValidationMessages().get(0).getMessage(), run);
         } else {
             IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult result = evaluator.eval(bookmark.getName(), definitions.getCurrentDefinitions());
@@ -706,7 +712,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     public AbstractConstruct caseLink(Link link) {
         if (link.getName() == null) {
             XWPFRun run = insertRun(link.getStyleRun());
-            setErrorMessageToRun(QUERY_SYNTAX_ERROR_MESSAGE + ":" + link.getValidationMessages().get(0).getMessage(),
+            setErrorMessageToRun(QUERY_SYNTAX_ERROR_MESSAGE + COLON + link.getValidationMessages().get(0).getMessage(),
                     run);
         } else {
             IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
@@ -826,7 +832,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             Entry<String, Object> aqlEntry) {
         if (aqlEntry.getValue() == null) {
             throw new IllegalArgumentException(
-                    QUERY_SYNTAX_ERROR_MESSAGE + ":" + templateProvider.getValidationMessages().get(0).getMessage());
+                    QUERY_SYNTAX_ERROR_MESSAGE + COLON + templateProvider.getValidationMessages().get(0).getMessage());
         } else {
             EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval((AstResult) aqlEntry.getValue(),
                     definitions.getCurrentDefinitions());
