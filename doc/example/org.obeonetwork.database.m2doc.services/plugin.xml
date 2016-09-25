@@ -16,64 +16,71 @@
    <extension
          point="org.obeonetwork.m2doc.services.register">
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.AbstractTableServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.AbstractTableServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.ColumnServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.ColumnServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.ConstraintServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.ConstraintServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.DataBaseElementServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.DataBaseElementServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.DataBaseServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.DataBaseServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.ForeignKeyElementServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.ForeignKeyElementServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.ForeignKeyServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.ForeignKeyServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.IndexElementServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.IndexElementServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.IndexServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.IndexServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.NamedElementServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.NamedElementServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.PrimaryKeyServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.PrimaryKeyServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.SequenceServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.SequenceServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.TableContainerServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.TableContainerServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.TableServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.TableServiceHolder"
             serviceToken="default">
       </service>
       <service
-            serviceClass="org.obeonetwork.database.wgen.services.ViewServiceHolder"
+            serviceClass="org.obeonetwork.database.m2doc.services.ViewServiceHolder"
             serviceToken="default">
       </service>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="doc/toc.xml"
+            primary="true">
+      </toc>
    </extension>
 </plugin>

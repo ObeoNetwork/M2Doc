@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+/********************************************************************************
+** Copyright (c) 2015 Obeo.
+** All rights reserved. This program and the accompanying materials
+** are made available under the terms of the Eclipse Public License v1.0
+** which accompanies this distribution, and is available at
+** http://www.eclipse.org/legal/epl-v10.html
+**
+** Contributors:
+**    Stephane Begaudeau (Obeo) - initial API and implementation
+*********************************************************************************/
+-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="St&eacute;phane B&eacute;gaudeau">
+    <!-- IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/css/docs.css" rel="stylesheet">
+    <title>Acceleo</title>
+  </head>
+
+  <body>
+    <div class="container">
+   <header class="jumbotron subhead" id="overview">
+    <h1>Acceleo Query Language Documentation</h1>
+    <!--<div class="subnav">
+       <ul class="nav nav-pills">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#language">Language</a></li>
+        <li><a href="#operations">Operations</a></li>
+        <li><a href="#standalone">Stand Alone</a></li>
+        <li><a href="#migration">Migration</a></li>
+        <li><a href="#textproductionrules">Text Production Rules</a></li>
+        <li><a href="#onlineresources">Online Resources</a></li>
+      </ul>
+    </div>-->
+  </header>
+
+  <section id="services">
+    <div class="page-header">
+      <h1>Services available for Columns.</h1>
+    </div>
+
+        <h3>checkForeignKey(column: org.obeonetwork.dsl.database.Column) = String</h3>
+        <p>
+          Returns the content of a table cell that is checked when the column is in a foreign key.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.checkForeignKey()</td>
+              <td>"X"</td>
+            </tr>
+            <tr>
+              <td>column.checkForeignKey()</td>
+              <td>""</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>checkPrimaryKey(column: org.obeonetwork.dsl.database.Column) = String</h3>
+        <p>
+          Returns the content of a table cell that is checked when the column is in a primary key.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.checkPrimaryKey()</td>
+              <td>"X"</td>
+            </tr>
+            <tr>
+              <td>column.checkPrimaryKey()</td>
+              <td>""</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>defaultValue(column: org.obeonetwork.dsl.database.Column) = String</h3>
+        <p>
+          Gets the Column default value.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.defaultValue()</td>
+              <td>"default"</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>foreignKeyElements(column: org.obeonetwork.dsl.database.Column) = List</h3>
+        <p>
+          Gets the List of ForeinKeyElement for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.foreignKeyElements()</td>
+              <td>{fke1, fke2}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>foreignKeys(column: org.obeonetwork.dsl.database.Column) = List</h3>
+        <p>
+          Gets the List of ForeinKey for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.foreignKeys()</td>
+              <td>{fk1, fk2}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>indexElements(column: org.obeonetwork.dsl.database.Column) = List</h3>
+        <p>
+          Gets the List of IndexEmement for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.indexElements()</td>
+              <td>{indexElement1, indexElement2}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>indexes(column: org.obeonetwork.dsl.database.Column) = List</h3>
+        <p>
+          Gets the List of Index for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.indexes()</td>
+              <td>{index1, index2}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isAutoincrement(column: org.obeonetwork.dsl.database.Column) = boolean</h3>
+        <p>
+          Tells if the Column is automatically incremented.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isAutoincrement()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isForeignKey(column: org.obeonetwork.dsl.database.Column) = String</h3>
+        <p>
+          Returns the content of a table cell that is checked when the column is foreign key.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isPrimaryKey()</td>
+              <td>"Oui"</td>
+            </tr>
+            <tr>
+              <td>column.isPrimaryKey()</td>
+              <td>"Non"</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isInForeignKey(column: org.obeonetwork.dsl.database.Column) = boolean</h3>
+        <p>
+          Tells if the Column is in the foreign key.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isInForeignKey()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isInPrimaryKey(column: org.obeonetwork.dsl.database.Column) = boolean</h3>
+        <p>
+          Tells if the Column is in the primary key.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isInPrimaryKey()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isMandatory(column: org.obeonetwork.dsl.database.Column) = String</h3>
+        <p>
+          Returns the content of a table cell that is checked when the column is mandatory.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isMandatory()</td>
+              <td>"Oui"</td>
+            </tr>
+            <tr>
+              <td>column.isMandatory()</td>
+              <td>"Non"</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isNullable(column: org.obeonetwork.dsl.database.Column) = boolean</h3>
+        <p>
+          Tells if the Columns can contain null values.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isNullable()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isPrimaryKey(column: org.obeonetwork.dsl.database.Column) = String</h3>
+        <p>
+          Returns the content of a table cell that is checked when the column is primary key.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isPrimaryKey()</td>
+              <td>"Oui"</td>
+            </tr>
+            <tr>
+              <td>column.isPrimaryKey()</td>
+              <td>"Non"</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>isUnique(column: org.obeonetwork.dsl.database.Column) = boolean</h3>
+        <p>
+          Tells if the Column contains unique values.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.isUnique()</td>
+              <td>true</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>owner(column: org.obeonetwork.dsl.database.Column) = AbstractTable</h3>
+        <p>
+          Gets the containing AbstractTable for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.owner()</td>
+              <td>abstractTable</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>primaryKey(column: org.obeonetwork.dsl.database.Column) = PrimaryKey</h3>
+        <p>
+          Gets the PrimaryKey for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.primaryKey()</td>
+              <td>pk</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>recordNumber(column: org.obeonetwork.dsl.database.Column) = int</h3>
+        <p>
+          Returns the number of record.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.recordNumber()</td>
+              <td>5000</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>sequence(column: org.obeonetwork.dsl.database.Column) = Sequence</h3>
+        <p>
+          Gets the Sequence for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.sequence()</td>
+              <td>sequence</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>type(column: org.obeonetwork.dsl.database.Column) = Type</h3>
+        <p>
+          Gets the Type for the given Column.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.type()</td>
+              <td>type</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+
+        <h3>typeName(column: org.obeonetwork.dsl.database.Column) = String</h3>
+        <p>
+          Returns the Column type name.
+        </p>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Result</th>
+            </tr>
+          </thead><colgroup><col width="60%" /><col width="40%" /></colgroup>
+          <tbody>
+            <tr>
+              <td>column.typeName()</td>
+              <td>"varchar"</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          
+        </p>
+        <hr />
+  </section>
+
+    </div>
+  </body>
+
+</html>
