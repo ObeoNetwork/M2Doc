@@ -21,6 +21,7 @@ The following set of functionalities is currently supported :
 * generation of dynamic content in the document's header and footer,
 * definition of an arbitrary number of model entries through a configuration model which allows to define the values of variables used in the template
 * definition and registration of AQL services to be used in the template's queries,
+* static parts in the templates are produced as is in the generated documents. 
 
 The sirius features are not mandatory and require a specific feature to be installed. 
 
