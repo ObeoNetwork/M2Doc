@@ -8,20 +8,21 @@ The template language makes an extensive use of the [Acceleo Query Language](htt
 ## Functionalities
 The following set of functionalities is currently supported :
 
-* definition of an arbitrary number of model entries through a configuration model which allows to define the values of variables used in the template
-* definition and registration of AQL services to be used in the template's queries,
-* generation of dynamic content in the document's header and footer,
-* generation of dynamic tables (which number of rows varies depending on the input model),
-* generation of bookmarks and references to document parts,
-* a number of generation directives are available :
+* [Sirius](https://eclipse.org/sirius/) diagrams generation. With M2Doc, you can
+  * insert a diagram into a document by specifying it's title through an AQL expression
+  * select a subset of the layers defined in the diagram
+* a number of generation directives are available to build documents from models:
   * iteration over a collection (obtained through an AQL query)
   * conditional generation (if/elseif/else/endif)
   * insertion of an image from a file
   * insertion of the evaluation result of an AQL query (as of now, a string representation of the result is inserted)
-* An integration with the [Sirius](https://eclipse.org/sirius/) framework is provided. It allows to
-  * insert a diagram into a document by specifying it's title through an AQL expression
-  * select a subset of the layers defined in the diagram
-The sirius integration is not mandatory and requires a specific feature to be installed. 
+* generation of dynamic tables (which number of rows varies depending on the input model),
+* generation of bookmarks and references to document parts,
+* generation of dynamic content in the document's header and footer,
+* definition of an arbitrary number of model entries through a configuration model which allows to define the values of variables used in the template
+* definition and registration of AQL services to be used in the template's queries,
+
+The sirius features are not mandatory and require a specific feature to be installed. 
 
 ## Documentation
 
