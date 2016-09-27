@@ -32,7 +32,7 @@ M2Doc provides right now 4 generation tags that have fixed formats. Those tags a
 
 * @{m:for <var> | <query>} iterated body { m:endfor }@ : the directive is replaced by the iterated generation of the body over a collection of values. The specified variable is successively bound to the values of the evaluated collection so that it is accessible from queries inside the body.
 
-* <code>{m:if <expression1>} true branch { m:elseif <expression2> }  { m:elseif <expression-n>} { m:else } {m:endif }</code> : conditional generation. The first branch among the if and elseif directives which expression evaluates to true is processed. If no expression evaluates to true, the else branch is processed (if present).
+* @{m:if <expression1>} true branch { m:elseif <expression2> }  { m:elseif <expression-n>} { m:else } {m:endif }@ : conditional generation. The first branch among the if and elseif directives which expression evaluates to true is processed. If no expression evaluates to true, the else branch is processed (if present).
 
 * @{m:image file:"image file path" width:"image insertion width"  height:"image insertion height" legend:"image legend" legendPos:"above/below"}@ : inserts the image which file is specified (through a path relative to the eclipse project where the generation model is placed). The insertion will have the specified width, height and a legend will be inserted at the specified position if one is specified (default is below).
 
