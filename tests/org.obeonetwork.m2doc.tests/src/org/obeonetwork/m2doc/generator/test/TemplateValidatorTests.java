@@ -74,7 +74,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -129,7 +129,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -318,7 +318,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -419,7 +419,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -437,7 +437,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -463,7 +463,7 @@ public class TemplateValidatorTests {
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", query.getStyleRun());
+                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test
@@ -504,7 +504,7 @@ public class TemplateValidatorTests {
 
         assertEquals(2, image.getValidationMessages().size());
         assertTemplateValidationMessage(image.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the self variable", image.getStyleRun());
+                "Couldn't find the 'self' variable", image.getStyleRun());
         assertTemplateValidationMessage(image.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "option variable: error with ...", image.getStyleRun());
     }

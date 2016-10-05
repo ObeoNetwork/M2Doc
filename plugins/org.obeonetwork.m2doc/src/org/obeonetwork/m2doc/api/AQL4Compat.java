@@ -16,25 +16,45 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
-import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.obeonetwork.m2doc.M2DocPlugin;
 
 /**
- * Compatibility class for AQL 4.0.0.
+ * Compatibility class for AQL 4.0.0 and 4.1.0.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-// TODO remove when AQL 4.0.0 will not be supported anymore
-final class AQL4Compat {
+// TODO remove when AQL 4.0.0 and 4.1.0 will not be supported anymore
+@SuppressWarnings({"unchecked", "restriction" })
+public final class AQL4Compat {
+
+    /**
+     * "unable to instantiate AstValidator" message.
+     */
+    private static final String UNABLE_TO_INSTANTIATE_AST_VALIDATOR = "unable to instantiate AstValidator";
+
+    /**
+     * "unable to get service name" message.
+     */
+    private static final String UNABLE_TO_GET_SERVICE_NAME = "unable to get service name";
+
+    /**
+     * "unable to instantiate IService for method: "message.
+     */
+    private static final String UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD = "unable to instantiate IService for method: ";
 
     /**
      * "unable to register services " message.
@@ -50,6 +70,23 @@ final class AQL4Compat {
      * The method to register an {@link IService} (AQL 5) or a {@link Class} (AQL 4).
      */
     private static final Method REGISTER_METHOD;
+
+    /**
+     * The Java service {@link Constructor}.
+     */
+    private static final Constructor<? extends IService> JAVA_SERVICE_CONSTRUCTOR;
+
+    /**
+     * {@link AstValidator} constructor.
+     */
+    private static final Constructor<? extends AstValidator> AST_VALIDATOR_CONSTRUCTOR;
+
+    /**
+     * Tells if we should only pass the {@link IQueryEnvironment} to the constructor.
+     */
+    private static final boolean AST_VALIDATOR_CONSTRUCTOR_ONLY_ENV;
+
+    private static final Method VALIDATION_METHOD;
 
     static {
         Method methodAQL4 = null;
@@ -74,6 +111,80 @@ final class AQL4Compat {
         } else {
             REGISTER_METHOD = methodAQL4;
         }
+
+        Class<? extends IService> javaServiceClass;
+        try {
+            javaServiceClass = (Class<? extends IService>) AQL4Compat.class.getClassLoader()
+                    .loadClass("org.eclipse.acceleo.query.runtime.impl.JavaMethodService");
+        } catch (ClassNotFoundException e) {
+            try {
+                javaServiceClass = (Class<? extends IService>) AQL4Compat.class.getClassLoader()
+                        .loadClass("org.eclipse.acceleo.query.runtime.lookup.basic.Service");
+            } catch (ClassNotFoundException e1) {
+                M2DocPlugin.log(
+                        new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to load Java service class.", e1));
+                javaServiceClass = null;
+            }
+        }
+
+        Constructor<? extends IService> javaServiceConstuctor;
+        try {
+            javaServiceConstuctor = javaServiceClass.getConstructor(Method.class, Object.class);
+        } catch (NoSuchMethodException e) {
+            M2DocPlugin.log(
+                    new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find Java service contructor.", e));
+            javaServiceConstuctor = null;
+        } catch (SecurityException e) {
+            M2DocPlugin.log(
+                    new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find Java service contructor.", e));
+            javaServiceConstuctor = null;
+        }
+        JAVA_SERVICE_CONSTRUCTOR = javaServiceConstuctor;
+
+        Constructor<? extends AstValidator> astValidatorConstuctor;
+        boolean envOnly;
+        try {
+            astValidatorConstuctor = AstValidator.class.getConstructor(IQueryEnvironment.class, Map.class);
+            envOnly = false;
+            // CHECKSTYLE:OFF
+        } catch (Exception e) {
+            // CHECKSTYLE:ON
+            try {
+                astValidatorConstuctor = AstValidator.class.getConstructor(IReadOnlyQueryEnvironment.class);
+                envOnly = true;
+            } catch (NoSuchMethodException e1) {
+                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                        "unable to find AstValidator contructor.", e1));
+                astValidatorConstuctor = null;
+                envOnly = false;
+            } catch (SecurityException e1) {
+                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                        "unable to find AstValidator contructor.", e1));
+                astValidatorConstuctor = null;
+                envOnly = false;
+            }
+        }
+
+        AST_VALIDATOR_CONSTRUCTOR = astValidatorConstuctor;
+        AST_VALIDATOR_CONSTRUCTOR_ONLY_ENV = envOnly;
+
+        Method validationMethod;
+
+        try {
+            if (AST_VALIDATOR_CONSTRUCTOR_ONLY_ENV) {
+                validationMethod = AstValidator.class.getDeclaredMethod("validate", Map.class, AstResult.class);
+            } else {
+                validationMethod = AstValidator.class.getDeclaredMethod("validate", AstResult.class);
+            }
+        } catch (NoSuchMethodException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find validation method.", e));
+            validationMethod = null;
+        } catch (SecurityException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find validation method.", e));
+            validationMethod = null;
+        }
+
+        VALIDATION_METHOD = validationMethod;
     }
 
     /**
@@ -101,14 +212,45 @@ final class AQL4Compat {
                 result.merge((ServiceRegistrationResult) REGISTER_METHOD.invoke(queryEnvironment, service));
             } catch (IllegalAccessException e) {
                 M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
-                        UNABLE_TO_REGISTER_SERVICES + service.getName(), e));
+                        UNABLE_TO_REGISTER_SERVICES + getServiceName(service), e));
             } catch (IllegalArgumentException e) {
                 M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
-                        UNABLE_TO_REGISTER_SERVICES + service.getName(), e));
+                        UNABLE_TO_REGISTER_SERVICES + getServiceName(service), e));
             } catch (InvocationTargetException e) {
                 M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
-                        UNABLE_TO_REGISTER_SERVICES + service.getName(), e));
+                        UNABLE_TO_REGISTER_SERVICES + getServiceName(service), e));
             }
+        }
+
+        return result;
+    }
+
+    /**
+     * Gets the given {@link IService} name.
+     * 
+     * @param service
+     *            the {@link IService}
+     * @return the given {@link IService} name
+     */
+    private static String getServiceName(IService service) {
+        String result = null;
+
+        try {
+            if ("org.eclipse.acceleo.query.runtime.lookup.basic.Service".equals(service.getClass().getName())) {
+                result = ((Method) service.getClass().getMethod("getServiceMethod").invoke(service)).getName();
+            } else {
+                result = (String) service.getClass().getMethod("getName").invoke(service);
+            }
+        } catch (IllegalAccessException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+        } catch (IllegalArgumentException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+        } catch (InvocationTargetException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+        } catch (NoSuchMethodException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+        } catch (SecurityException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
         }
 
         return result;
@@ -178,8 +320,22 @@ final class AQL4Compat {
             Method[] methods = cls.getMethods();
             for (Method method : methods) {
                 if (isServiceMethod(instance, method)) {
-                    final IService service = new JavaMethodService(method, instance);
-                    result.add(service);
+                    try {
+                        final IService service = JAVA_SERVICE_CONSTRUCTOR.newInstance(method, instance);
+                        result.add(service);
+                    } catch (InstantiationException e) {
+                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                                UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
+                    } catch (IllegalAccessException e) {
+                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                                UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
+                    } catch (IllegalArgumentException e) {
+                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                                UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
+                    } catch (InvocationTargetException e) {
+                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                                UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
+                    }
                 }
             }
         }
@@ -244,6 +400,77 @@ final class AQL4Compat {
                         UNABLE_TO_REGISTER_SERVICES + cls.getName(), e));
             }
         }
+    }
+
+    /**
+     * Creates an {@link AstValidator}.
+     * 
+     * @param environment
+     *            the {@link IReadOnlyQueryEnvironment} used to validate
+     * @param variableTypes
+     *            the set of defined variables
+     * @return the created {@link AstValidator}
+     */
+    public static AstValidator getValidator(IReadOnlyQueryEnvironment environment,
+            Map<String, Set<IType>> variableTypes) {
+        AstValidator result;
+
+        try {
+            if (AST_VALIDATOR_CONSTRUCTOR_ONLY_ENV) {
+                result = AST_VALIDATOR_CONSTRUCTOR.newInstance(environment);
+            } else {
+                result = AST_VALIDATOR_CONSTRUCTOR.newInstance(environment, variableTypes);
+            }
+        } catch (InstantiationException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            result = null;
+        } catch (IllegalAccessException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            result = null;
+        } catch (IllegalArgumentException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            result = null;
+        } catch (InvocationTargetException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            result = null;
+        }
+
+        return result;
+    }
+
+    /**
+     * Validates using the given {@link AstValidator} and {@link AstResult}.
+     * 
+     * @param validator
+     *            the {@link AstValidator}
+     * @param astResult
+     *            the {@link AstResult}
+     * @param variableTypes
+     *            the variable types
+     * @return the {@link IValidationResult}
+     */
+    public static IValidationResult validate(AstValidator validator, AstResult astResult,
+            Map<String, Set<IType>> variableTypes) {
+        IValidationResult result;
+
+        try {
+            if (AST_VALIDATOR_CONSTRUCTOR_ONLY_ENV) {
+                result = (IValidationResult) VALIDATION_METHOD.invoke(validator, variableTypes, astResult);
+            } else {
+                result = (IValidationResult) VALIDATION_METHOD.invoke(validator, astResult);
+            }
+        } catch (IllegalAccessException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
+            result = null;
+        } catch (IllegalArgumentException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
+            result = null;
+        } catch (InvocationTargetException e) {
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
+            result = null;
+        }
+
+        return result;
     }
 
 }
