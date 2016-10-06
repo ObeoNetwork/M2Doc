@@ -31,6 +31,7 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
@@ -122,7 +123,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      */
     public void validate(DocumentTemplate documentTemplate, Generation generation,
             IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
-        validator = new AstValidator(queryEnvironment);
+        validator = AQL4Compat.getValidator(queryEnvironment, types);
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
         booleanType = new ClassType(queryEnvironment, boolean.class);
         stack.clear();
@@ -156,7 +157,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseConditionnal(Conditionnal conditional) {
-        final IValidationResult validationResult = validator.validate(stack.peek(), conditional.getQuery());
+        final IValidationResult validationResult = AQL4Compat.validate(validator, conditional.getQuery(), stack.peek());
         final XWPFRun run = conditional.getRuns().get(1);
         addValidationMessages(conditional, run, validationResult);
 
@@ -182,8 +183,8 @@ public class TemplateValidator extends TemplateSwitch<Void> {
             if (conditional.getAlternative() != null) {
                 doSwitch(conditional.getAlternative());
                 // TODO remove this when the AST for Conditional will be fixed
-                final IValidationResult alternativeValidationResult = validator.validate(stack.peek(),
-                        conditional.getAlternative().getQuery());
+                final IValidationResult alternativeValidationResult = AQL4Compat.validate(validator,
+                        conditional.getAlternative().getQuery(), stack.peek());
                 elseVariables.putAll(alternativeValidationResult
                         .getInferredVariableTypes(conditional.getAlternative().getQuery().getAst(), Boolean.FALSE));
             }
@@ -251,7 +252,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseRepetition(Repetition repetition) {
-        final IValidationResult validationResult = validator.validate(stack.peek(), repetition.getQuery());
+        final IValidationResult validationResult = AQL4Compat.validate(validator, repetition.getQuery(), stack.peek());
         final XWPFRun run = repetition.getRuns().get(1);
         addValidationMessages(repetition, run, validationResult);
 
@@ -306,7 +307,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseQuery(Query query) {
-        final IValidationResult validationResult = validator.validate(stack.peek(), query.getQuery());
+        final IValidationResult validationResult = AQL4Compat.validate(validator, query.getQuery(), stack.peek());
         final XWPFRun run = query.getStyleRun();
         addValidationMessages(query, run, validationResult);
 
@@ -346,7 +347,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
             for (Entry<String, Object> entry : providerClient.getOptionValueMap()) {
                 if (providerClient.getProvider().getOptionTypes().get(entry.getKey()) == OptionType.AQL_EXPRESSION) {
                     final AstResult astResult = (AstResult) entry.getValue();
-                    final IValidationResult validationResult = validator.validate(stack.peek(), astResult);
+                    final IValidationResult validationResult = AQL4Compat.validate(validator, astResult, stack.peek());
                     addValidationMessages(providerClient, run, validationResult);
                     options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));
                 } else {
