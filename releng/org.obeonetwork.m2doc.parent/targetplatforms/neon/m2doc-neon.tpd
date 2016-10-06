@@ -1,10 +1,10 @@
-target "M2Doc Mars Target Platform"
+target "M2Doc Neon Target Platform"
 
 include "../common/common.tpd"
 
 with source requirements
 
-location Eclipse "http://download.eclipse.org/releases/mars" {
+location Eclipse "http://download.eclipse.org/releases/neon" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.core.runtime lazy
 	org.eclipse.emf.sdk.feature.group lazy
@@ -14,11 +14,11 @@ location Eclipse "http://download.eclipse.org/releases/mars" {
 	org.eclipse.gmf lazy
 	org.eclipse.gmf.runtime.diagram.ui lazy
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
-
+	
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy
 	org.eclipse.sirius.diagram.ui lazy
-	
+
 	org.eclipse.acceleo.query lazy
 	org.eclipse.acceleo.annotations lazy
 }

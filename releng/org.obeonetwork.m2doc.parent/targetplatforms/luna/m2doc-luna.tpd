@@ -20,6 +20,9 @@ location Sirius "http://download.eclipse.org/sirius/updates/releases/3.1.1/luna"
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy
 	org.eclipse.sirius.diagram.ui lazy
-	
-	org.eclipse.sirius.tests.junit.support lazy
+}
+
+location AQL.4.0.0 "http://download.eclipse.org/acceleo/updates/releases/3.6/R201510121214" {
+	org.eclipse.acceleo.query lazy
+	org.eclipse.acceleo.annotations lazy
 }

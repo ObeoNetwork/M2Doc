@@ -2,7 +2,6 @@ target "common"
 
 with source requirements
 
-location Acceleo "http://download.eclipse.org/acceleo/updates/releases/3.6/" {
-	org.eclipse.acceleo.query lazy
-	org.eclipse.acceleo.annotations lazy
+location Sirius "http://download.eclipse.org/sirius/updates/releases/3.1.1/luna" {
+	org.eclipse.sirius.tests.junit.support lazy
 }
