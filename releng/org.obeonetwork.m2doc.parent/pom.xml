@@ -2,11 +2,11 @@
     Copyright (c) 2016 Obeo. 
        All rights reserved. This program and the accompanying materials
        are made available under the terms of the Eclipse Public License v1.0
-       which accompanies this distribution, and is available at
+       which accompanies this distribution, and is a	vailable at
        http://www.eclipse.org/legal/epl-v10.html
         
         Contributors:
-            Obeo - initial API and implementation
+            Obeo - initial API annd implementation
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -16,7 +16,7 @@
 	</prerequisites>
 	<groupId>org.obeonetwork.m2doc</groupId>
 	<artifactId>org.obeonetwork.m2doc.parent</artifactId>
-	<version>0.9.3-SNAPSHOT</version>
+	<version>0.9.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -267,7 +267,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-neon</artifactId>
-                  <version>0.9.3-SNAPSHOT</version>
+                  <version>0.9.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -294,7 +294,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-mars</artifactId>
-                  <version>0.9.3-SNAPSHOT</version>
+                  <version>0.9.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -321,7 +321,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-luna</artifactId>
-                  <version>0.9.3-SNAPSHOT</version>
+                  <version>0.9.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>

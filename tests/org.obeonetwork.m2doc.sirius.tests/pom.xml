@@ -17,11 +17,11 @@
 		<groupId>org.obeonetwork.m2doc</groupId>
 		<artifactId>org.obeonetwork.m2doc.parent</artifactId>
 		<relativePath>../../releng/org.obeonetwork.m2doc.parent</relativePath>
-		<version>0.9.3-SNAPSHOT</version>
+		<version>0.9.4-SNAPSHOT</version>
 	</parent>
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>org.obeonetwork.m2doc.sirius.tests</artifactId>
-  <version>0.9.3-SNAPSHOT</version>
+  <version>0.9.4-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
   <build>
   <plugins>
