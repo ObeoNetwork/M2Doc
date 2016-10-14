@@ -57,7 +57,7 @@ public class ForeignKeyServices {
     )
     // @formatter:on
     public Table targetTable(ForeignKey foreignKey) {
-        return foreignKey.getSourceTable();
+        return foreignKey.getTarget();
     }
 
     // @formatter:off

@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.database.m2doc.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
@@ -136,7 +137,11 @@ public class SequenceServices {
     )
     // @formatter:on
     public List<Column> columns(Sequence sequence) {
-        return sequence.getColumns();
+        if (sequence == null) {
+            return Collections.emptyList();
+        } else {
+            return sequence.getColumns();
+        }
     }
 
 }

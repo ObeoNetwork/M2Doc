@@ -45,22 +45,6 @@ public class ColumnServices {
 
     // @formatter:off
     @Documentation(
-        value = "Tells if the Columns can contain null values.",
-        params = {
-            @Param(name = "column", value = "The Column"),
-        },
-        result = "true if the Columns can contain null values, false otherwise",
-        examples = {
-            @Example(expression = "column.isNullable()", result = "true")
-        }
-    )
-    // @formatter:on
-    public boolean isNullable(Column column) {
-        return column.isNullable();
-    }
-
-    // @formatter:off
-    @Documentation(
         value = "Gets the Column default value.",
         params = {
             @Param(name = "column", value = "The Column"),
@@ -214,9 +198,35 @@ public class ColumnServices {
             @Example(expression = "column.isAutoincrement()", result = "true")
         }
     )
+    /**
+     * Returns the string "Oui" when the parameter is </code>true<code> and "Non" otherwise.
+     * @param b 
+     * @return a yes/no string representation of the parameter.
+     */
+    private String yesNo(boolean b){
+        return b? "Oui" : "Non";
+    }
     // @formatter:on
-    public boolean isAutoincrement(Column column) {
-        return column.isAutoincrement();
+    public String isAutoincrement(Column column) {
+        if (column != null) {
+            return yesNo(column.isAutoincrement());
+        } else {
+            return "No";
+        }
+    }
+
+    /**
+     * Returns "X" when the column is autoincrement and "" if the column is not unique or is <code>null</code/
+     * 
+     * @param column
+     * @return
+     */
+    public String checkAutoincrement(Column column) {
+        if (column != null) {
+            return column.isAutoincrement() ? "X" : "";
+        } else {
+            return "";
+        }
     }
 
     // @formatter:off
@@ -231,8 +241,12 @@ public class ColumnServices {
         }
     )
     // @formatter:on
-    public boolean isInPrimaryKey(Column column) {
-        return column.isInPrimaryKey();
+    public String isInPrimaryKey(Column column) {
+        if (column != null) {
+            return yesNo(column.isAutoincrement());
+        } else {
+            return "No";
+        }
     }
 
     // @formatter:off
@@ -247,8 +261,12 @@ public class ColumnServices {
         }
     )
     // @formatter:on
-    public boolean isInForeignKey(Column column) {
-        return column.isInForeignKey();
+    public String isInForeignKey(Column column) {
+        if (column != null) {
+            return yesNo(column.isInForeignKey());
+        } else {
+            return "No";
+        }
     }
 
     // @formatter:off
@@ -263,59 +281,88 @@ public class ColumnServices {
         }
     )
     // @formatter:on
-    public boolean isUnique(Column column) {
-        return column.isUnique();
+    public String isUnique(Column column) {
+        if (column != null) {
+            return yesNo(column.isUnique());
+        } else {
+            return "No";
+        }
     }
 
     // @formatter:off
     @Documentation(
-        value = "Returns the content of a table cell that is checked when the column is in a foreign key.",
+        value = "returns a X when the colonne is nullable, an empty string otherwise.",
         params = {
             @Param(name = "column", value = "The Column"),
         },
-        result = "the content of a table cell that is checked when the column is in a foreign key",
+        result = "returns a X when the colonne is nullable, an empty string otherwise.",
         examples = {
-            @Example(expression = "column.checkForeignKey()", result = "\"X\""),
-            @Example(expression = "column.checkForeignKey()", result = "\"\"")
+            @Example(expression = "column.checkNullable()", result = "true")
         }
     )
     // @formatter:on
+    public String checkNullable(Column column) {
+        if (column != null) {
+            return column.isNullable() ? "X" : "";
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * Returns "Yes" when the column is nullable and "No" otherwise or if it is <code>null</code>.
+     * 
+     * @param column
+     * @return
+     */
+    public String isNullable(Column column) {
+        if (column != null) {
+            return yesNo(column.isNullable());
+        } else {
+            return "No";
+        }
+    }
+
+    /**
+     * Returns "X" when the column is in a foreign key and "" otherwise or if the column is <code>null</code/
+     * 
+     * @param column
+     * @return
+     */
     public String checkForeignKey(Column column) {
-        return column.isInForeignKey() ? "X" : "";
+        if (column != null) {
+            return column.isInForeignKey() ? "X" : "";
+        } else {
+            return "";
+        }
     }
 
-    // @formatter:off
-    @Documentation(
-        value = "Returns the content of a table cell that is checked when the column is in a primary key.",
-        params = {
-            @Param(name = "column", value = "The Column"),
-        },
-        result = "the content of a table cell that is checked when the column is in a primary key",
-        examples = {
-            @Example(expression = "column.checkPrimaryKey()", result = "\"X\""),
-            @Example(expression = "column.checkPrimaryKey()", result = "\"\"")
+    /**
+     * Returns "X" when the column is unique and "" if the column is not unique or is <code>null</code/
+     * 
+     * @param column
+     * @return
+     */
+    public String checkUnique(Column column) {
+        if (column != null) {
+            return column.isUnique() ? "X" : "";
+        } else {
+            return "";
         }
-    )
-    // @formatter:on
+    }
+
+    /**
+     * Returns "X" when the column is in a primary key and "" otherwise or if the column is <code>null</code/
+     * 
+     * @param column
+     * @return
+     */
     public String checkPrimaryKey(Column col) {
-        return col.isInPrimaryKey() ? "X" : "";
-    }
-
-    // @formatter:off
-    @Documentation(
-        value = "Returns the content of a table cell that is checked when the column is mandatory.",
-        params = {
-            @Param(name = "column", value = "The Column"),
-        },
-        result = "the content of a table cell that is checked when the column is mandatory",
-        examples = {
-            @Example(expression = "column.isMandatory()", result = "\"Oui\""),
-            @Example(expression = "column.isMandatory()", result = "\"Non\"")
+        if (col != null) {
+            return col.isInPrimaryKey() ? "X" : "";
+        } else {
+            return "";
         }
-    )
-    // @formatter:on
-    public String isMandatory(Column col) {
-        return col.isNullable() ? "Non" : "Oui";
     }
 
     // @formatter:off
@@ -332,7 +379,11 @@ public class ColumnServices {
     )
     // @formatter:on
     public String isPrimaryKey(Column col) {
-        return col.isInPrimaryKey() ? "Oui" : "Non";
+        if (col != null) {
+            return yesNo(col.isInPrimaryKey());
+        } else {
+            return "No";
+        }
     }
 
     // @formatter:off
@@ -349,7 +400,11 @@ public class ColumnServices {
     )
     // @formatter:on
     public String isForeignKey(Column col) {
-        return col.isInForeignKey() ? "Oui" : "Non";
+        if (col != null) {
+            return yesNo(col.isInForeignKey());
+        } else {
+            return "No";
+        }
     }
 
     // @formatter:off

@@ -23,9 +23,13 @@ import org.obeonetwork.dsl.database.AbstractTable;
 import org.obeonetwork.dsl.database.DataBase;
 import org.obeonetwork.dsl.database.ForeignKey;
 import org.obeonetwork.dsl.database.Schema;
+import org.obeonetwork.dsl.database.Sequence;
 import org.obeonetwork.dsl.database.Table;
+import org.obeonetwork.dsl.database.TableContainer;
 import org.obeonetwork.dsl.database.View;
 import org.obeonetwork.dsl.database.util.DatabaseSwitch;
+import org.obeonetwork.dsl.typeslibrary.NativeTypesLibrary;
+import org.obeonetwork.dsl.typeslibrary.TypesLibrary;
 import org.obeonetwork.dsl.typeslibrary.UserDefinedTypesLibrary;
 
 //@formatter:off
@@ -84,25 +88,36 @@ public class DataBaseServices {
         return dataBase.getDefines();
     }
 
+    /**
+     * Returns the name of the used library or the empty string if it's not known.
+     * 
+     * @param db
+     * @return
+     */
+    public String typeLibraryName(DataBase db) {
+        List<TypesLibrary> libs = db.getUsedLibraries();
+        if (libs.size() > 0 && libs.get(0) instanceof NativeTypesLibrary) {
+            return ((NativeTypesLibrary) libs.get(0)).getName();
+        } else {
+            return "";
+        }
+    }
+
     // @formatter:off
     @Documentation(
-        value = "Gets the used library of the DataBase.",
+        value = "Returns the type libraries the database uses.",
         params = {
             @Param(name = "database", value = "The DataBase"),
         },
-        result = "the used library of the DataBase",
+        result = "the type libraries the database uses.",
         examples = {
-            @Example(expression = "dataBase.DBLibrary()", result = "\"userLibrary1\""),
-            @Example(expression = "dataBase.DBLibrary()", result = "\"Inconnu\"")
+            @Example(expression = "dataBase.usedLibraries()", result = "\"userLibrary1\""),
+            @Example(expression = "dataBase.usedLibraries()", result = "\"Inconnu\"")
         }
     )
     // @formatter:on
-    public String DBLibrary(DataBase database) {
-        if (database.getUsedLibraries().size() > 0) {
-            return database.getUsedLibraries().get(0).getKind().getName();
-        } else {
-            return "Inconnu";
-        }
+    public List<TypesLibrary> usedLibrary(DataBase database) {
+        return database.getUsedLibraries();
     }
 
     // @formatter:off
@@ -139,6 +154,29 @@ public class DataBaseServices {
         ViewCollector collector = new ViewCollector();
         collector.doSwitch(database);
         return collector.tables;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Gets the Set of all sequences defined in the specified database.",
+        params = {
+            @Param(name = "database", value = "The DataBase"),
+        },
+        result = "the Set of all sequences defined in the specified database",
+        examples = {
+            @Example(expression = "dataBase.allSequence()", result = "{seq1, seq2, seq3}")
+        }
+    )
+    // @formatter:on
+    public Set<Sequence> allSequences(DataBase database) {
+        Set<Sequence> result = new HashSet<Sequence>();
+        Set<Table> tables = allTables(database);
+        for (Table table : tables) {
+            if (table.eContainer() instanceof TableContainer) {
+                result.addAll(((TableContainer) table.eContainer()).getSequences());
+            }
+        }
+        return result;
     }
 
     /**

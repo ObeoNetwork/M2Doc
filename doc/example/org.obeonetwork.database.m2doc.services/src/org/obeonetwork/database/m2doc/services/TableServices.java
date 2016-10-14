@@ -54,14 +54,19 @@ public class TableServices {
         params = {
             @Param(name = "table", value = "The Table"),
         },
-        result = "the PrimaryKey name of the Table",
+        result = "the PrimaryKey name of the Table. The empty string if there's no primary key.",
         examples = {
             @Example(expression = "table.primaryKey()", result = "\"pk1\"")
         }
     )
     // @formatter:on
     public String primaryKeyName(Table table) {
-        return table.getPrimaryKey().getName();
+        PrimaryKey key = table.getPrimaryKey();
+        String result = null;
+        if (key != null) {
+            result = key.getName();
+        }
+        return result == null ? "" : result;
     }
 
     // @formatter:off
@@ -160,6 +165,42 @@ public class TableServices {
 
     // @formatter:off
     @Documentation(
+            value = "Gets the List of all columns of the specified table.",
+            params = {
+                @Param(name = "table", value = "The Table"),
+            },
+            result = "the List of columns of the specified table",
+            examples = {
+                @Example(expression = "table.columns()", result = "{\"column1\", \"column2\"}")
+            }
+        )
+    // @formatter:on
+    public List<Column> allColumns(Table table) {
+        return table.getColumns();
+    }
+
+    // @formatter:off
+    @Documentation(
+            value = "Gets the List of names of all columns of the specified table.",
+            params = {
+                @Param(name = "table", value = "The Table"),
+            },
+            result = "the List of names of all columns of the specified table",
+            examples = {
+                @Example(expression = "table.columns()", result = "{\"column1\", \"column2\"}")
+            }
+        )
+    // @formatter:on
+    public List<String> allColumnNames(Table table) {
+        List<String> result = new ArrayList<String>();
+        for (Column column : table.getColumns()) {
+            result.add(column.getName());
+        }
+        return result;
+    }
+
+    // @formatter:off
+    @Documentation(
         value = "Gets the List of Column name that are not primary key or foreign key of the Table.",
         params = {
             @Param(name = "table", value = "The Table"),
@@ -172,9 +213,8 @@ public class TableServices {
     // @formatter:on
     public List<String> columnNames(Table table) {
         final List<String> res = new ArrayList<String>();
-
         for (Column column : table.getColumns()) {
-            if (!column.isInForeignKey() && column.isInPrimaryKey()) {
+            if (!column.isInForeignKey() && !column.isInPrimaryKey()) {
                 res.add(column.getName());
             }
         }
