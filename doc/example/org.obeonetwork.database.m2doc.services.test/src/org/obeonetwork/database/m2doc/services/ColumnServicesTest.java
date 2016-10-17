@@ -59,14 +59,14 @@ public class ColumnServicesTest extends AbstractTest {
 	public void isUniqueOuiTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_NOM");
-		assertEquals("Oui", new ColumnServices().isUnique(col));
+		assertEquals("Oui", new ColumnServices().isUnic(col));
 	}
 
 	@Test
 	public void isUniqueNonTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_ID");
-		assertEquals("Non", new ColumnServices().isUnique(col));
+		assertEquals("Non", new ColumnServices().isUnic(col));
 	}
 
 	@Test
@@ -87,56 +87,56 @@ public class ColumnServicesTest extends AbstractTest {
 	public void isPrimaryKeyOuiTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_ID");
-		assertEquals("Oui", new ColumnServices().isPrimaryKey(col));
+		assertEquals("Oui", new ColumnServices().isInPrimaryKey(col));
 	}
 
 	@Test
 	public void isPrimaryKeyNonTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_NOM");
-		assertEquals("Non", new ColumnServices().isPrimaryKey(col));
+		assertEquals("Non", new ColumnServices().isInPrimaryKey(col));
 	}
 
 	@Test
 	public void isPrimaryKeyCheckTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_ID");
-		assertEquals("X", new ColumnServices().checkPrimaryKey(col));
+		assertEquals("X", new ColumnServices().checkInPrimaryKey(col));
 	}
 
 	@Test
 	public void isPrimaryKeyCheckNotTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_NOM");
-		assertEquals("", new ColumnServices().checkPrimaryKey(col));
+		assertEquals("", new ColumnServices().checkInPrimaryKey(col));
 	}
 
 	@Test
 	public void isForeignKeyOuiTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "RF_GENRE_ID");
-		assertEquals("Oui", new ColumnServices().isForeignKey(col));
+		assertEquals("Oui", new ColumnServices().isInForeignKey(col));
 	}
 
 	@Test
 	public void isForeignKeyNonTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_NOM");
-		assertEquals("Non", new ColumnServices().isForeignKey(col));
+		assertEquals("Non", new ColumnServices().isInForeignKey(col));
 	}
 
 	@Test
 	public void isForeignKeyCheckTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "RF_GENRE_ID");
-		assertEquals("X", new ColumnServices().checkForeignKey(col));
+		assertEquals("X", new ColumnServices().checkInForeignKey(col));
 	}
 
 	@Test
 	public void isForeignKeyCheckNotTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_NOM");
-		assertEquals("", new ColumnServices().checkForeignKey(col));
+		assertEquals("", new ColumnServices().checkInForeignKey(col));
 	}
 	// @Test
 	// public void isAutoIncrementTest() {
@@ -149,7 +149,7 @@ public class ColumnServicesTest extends AbstractTest {
 	public void isAutoIncrementNonTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_NOM");
-		assertEquals("Non", new ColumnServices().isForeignKey(col));
+		assertEquals("Non", new ColumnServices().isInForeignKey(col));
 	}
 
 	// @Test
@@ -163,21 +163,21 @@ public class ColumnServicesTest extends AbstractTest {
 	public void isAutoIncrementCheckNotTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "GS_SERIE_NOM");
-		assertEquals("", new ColumnServices().checkForeignKey(col));
+		assertEquals("", new ColumnServices().checkInForeignKey(col));
 	}
 
 	@Test
 	public void isForeignKeyNullTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "No table");
-		assertEquals("No", new ColumnServices().isForeignKey(col));
+		assertEquals("No", new ColumnServices().isInForeignKey(col));
 	}
 
 	@Test
 	public void isPrimaryKeyNullTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "No table");
-		assertEquals("No", new ColumnServices().isPrimaryKey(col));
+		assertEquals("No", new ColumnServices().isInPrimaryKey(col));
 	}
 
 	@Test
@@ -205,21 +205,21 @@ public class ColumnServicesTest extends AbstractTest {
 	public void isUniqueNullTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "No table");
-		assertEquals("No", new ColumnServices().isUnique(col));
+		assertEquals("No", new ColumnServices().isUnic(col));
 	}
 
 	@Test
 	public void checkForeignKeyNullTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "No table");
-		assertEquals("", new ColumnServices().checkForeignKey(col));
+		assertEquals("", new ColumnServices().checkInForeignKey(col));
 	}
 
 	@Test
 	public void checkPrimaryKeyNullTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "No table");
-		assertEquals("", new ColumnServices().checkPrimaryKey(col));
+		assertEquals("", new ColumnServices().checkInPrimaryKey(col));
 	}
 
 	@Test

@@ -116,12 +116,36 @@ public class SequenceServices {
         },
         result = "true if the Sequence is cyclic, false otherwise",
         examples = {
-            @Example(expression = "sequence.cacheSize()", result = "10")
+            @Example(expression = "sequence.isCycle()", result = "Oui")
         }
     )
     // @formatter:on
-    public boolean isCyclic(Sequence sequence) {
-        return sequence.isCycle();
+    public String isCycle(Sequence sequence) {
+        if (sequence != null) {
+            return sequence.isCycle() ? "Oui" : "Non";
+        } else {
+            return "Non";
+        }
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Tells if the Sequence is cyclic.",
+        params = {
+            @Param(name = "sequence", value = "The Sequence"),
+        },
+        result = "true if the Sequence is cyclic, false otherwise",
+        examples = {
+            @Example(expression = "sequence.isCycle()", result = "X")
+        }
+    )
+    // @formatter:on
+    public String checkCycle(Sequence sequence) {
+        if (sequence != null) {
+            return sequence.isCycle() ? "X" : "";
+        } else {
+            return "";
+        }
     }
 
     // @formatter:off

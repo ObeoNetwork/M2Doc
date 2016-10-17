@@ -68,12 +68,36 @@ public class IndexServices {
         },
         result = "true if the Index is unique, false otherwise",
         examples = {
-            @Example(expression = "index.isUnique()", result = "true")
+            @Example(expression = "index.isUnique()", result = "Oui")
         }
     )
     // @formatter:on
-    public boolean isUnique(Index index) {
-        return index.isUnique();
+    public String isUnic(Index index) {
+        if (index != null) {
+            return index.isUnique() ? "Oui" : "Non";
+        } else {
+            return "Non";
+        }
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Tells if the Index is unique.",
+        params = {
+            @Param(name = "index", value = "The Index"),
+        },
+        result = "true if the Index is unique, false otherwise",
+        examples = {
+            @Example(expression = "index.isUnique()", result = "X")
+        }
+    )
+    // @formatter:on
+    public String checkUnique(Index index) {
+        if (index != null) {
+            return index.isUnique() ? "X" : "";
+        } else {
+            return "";
+        }
     }
 
     // @formatter:off

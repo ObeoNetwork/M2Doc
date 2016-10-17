@@ -242,7 +242,7 @@ public class ColumnServices {
     // @formatter:on
     public String isInPrimaryKey(Column column) {
         if (column != null) {
-            return yesNo(column.isAutoincrement());
+            return yesNo(column.isInPrimaryKey());
         } else {
             return "No";
         }
@@ -280,7 +280,7 @@ public class ColumnServices {
         }
     )
     // @formatter:on
-    public String isUnique(Column column) {
+    public String isUnic(Column column) {
         if (column != null) {
             return yesNo(column.isUnique());
         } else {
@@ -362,7 +362,7 @@ public class ColumnServices {
      * @param column
      * @return
      */
-    public String checkForeignKey(Column column) {
+    public String checkInForeignKey(Column column) {
         if (column != null) {
             return column.isInForeignKey() ? "X" : "";
         } else {
@@ -390,53 +390,11 @@ public class ColumnServices {
      * @param column
      * @return
      */
-    public String checkPrimaryKey(Column col) {
+    public String checkInPrimaryKey(Column col) {
         if (col != null) {
             return col.isInPrimaryKey() ? "X" : "";
         } else {
             return "";
-        }
-    }
-
-    // @formatter:off
-    @Documentation(
-        value = "Returns the content of a table cell that is checked when the column is primary key.",
-        params = {
-            @Param(name = "column", value = "The Column"),
-        },
-        result = "the content of a table cell that is checked when the column is primary key",
-        examples = {
-            @Example(expression = "column.isPrimaryKey()", result = "\"Oui\""),
-            @Example(expression = "column.isPrimaryKey()", result = "\"Non\"")
-        }
-    )
-    // @formatter:on
-    public String isPrimaryKey(Column col) {
-        if (col != null) {
-            return yesNo(col.isInPrimaryKey());
-        } else {
-            return "No";
-        }
-    }
-
-    // @formatter:off
-    @Documentation(
-        value = "Returns the content of a table cell that is checked when the column is foreign key.",
-        params = {
-            @Param(name = "column", value = "The Column"),
-        },
-        result = "the content of a table cell that is checked when the column is foreign key",
-        examples = {
-            @Example(expression = "column.isPrimaryKey()", result = "\"Oui\""),
-            @Example(expression = "column.isPrimaryKey()", result = "\"Non\"")
-        }
-    )
-    // @formatter:on
-    public String isForeignKey(Column col) {
-        if (col != null) {
-            return yesNo(col.isInForeignKey());
-        } else {
-            return "No";
         }
     }
 
