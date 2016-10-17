@@ -315,6 +315,47 @@
 				<td>returns the string 'X' when when the column may not have duplicate values and the empty string otherwise</td>
 				<td></td>
 			</tr>
+			<tr>
+				<td>
+					<strong>type name</strong>
+				</td>
+				<td></td>
+				<td>{m:col.typeName()}</td>
+				<td>Returns the name of the column's type.</td>
+				<td>The column has type {m:col.typeName()}</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>type length</strong>
+				</td>
+				<td></td>
+				<td>{m:col.typeLength()}</td>
+				<td>Returns the length of the column's type:
+<ul>
+<li>if the type has a length, the result is it's length</li>
+<li>if the type has a length and a precision, the result is the length and the precision separated by a comma (e.g. "255,8").</li>
+<li>returns the empty string in any other case</li>
+</ul></td>
+				<td>The column has type {m:col.typeName()}</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>isMandatory</strong>
+				</td>
+				<td>String</td>
+				<td>{m:col.isMandatory()}</td>
+				<td>returns the string 'Oui' when when the column is mandatory (i.e. is not nullable).</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					<strong>checkMandatory</strong>
+				</td>
+				<td>String</td>
+				<td>{m:col.checkMandatory()}</td>
+				<td>returns the string 'X' when when the column is mandatory (not nullable)</td>
+				<td></td>
+			</tr>
 	   </tbody>
 		</table>
 	</body>

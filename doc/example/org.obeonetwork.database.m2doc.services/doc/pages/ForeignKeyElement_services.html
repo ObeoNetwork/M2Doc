@@ -89,10 +89,44 @@
 				</td>
 				<td>Column</td>
 				<td>{m:fke.pkColumn}</td>
-				<td></td>
+				<td>Returns the column associated with the primary key.</td>
 				<td></td>
 			</tr>
 	</tbody>
+		</table>
+  	<div class="page-header">
+		<h2 id="Services">Services</h2>
+	</div>
+		<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Returned type</th>
+				<th>M2Doc Syntaxe</th>
+				<th>Description</th>
+				<th>Example</th>
+			</tr>
+	    </thead>
+		<tbody>
+			<tr>
+				<td>
+					<strong>primaryKeyColumn</strong>
+				</td>
+				<td>Column</td>
+				<td>{m:fke.primaryKeyColumn()}</td>
+				<td>Returns the column associated with the primary key.</td>
+				<td>The primary key column is {m:fke.primaryKeyColumn()}</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>foreignKeyColumn</strong>
+				</td>
+				<td>Column</td>
+				<td>{m:fke.foreignKeyColumn()}</td>
+				<td>Returns the column associated with the foreign key element.</td>
+				<td>The primary key column is {m:fke.primaryKeyColumn()}</td>
+			</tr>
+	   </tbody>
 		</table>
 	</body>
 </html>

@@ -25,7 +25,6 @@ import org.obeonetwork.dsl.database.Index;
 import org.obeonetwork.dsl.database.IndexElement;
 import org.obeonetwork.dsl.database.PrimaryKey;
 import org.obeonetwork.dsl.database.Sequence;
-import org.obeonetwork.dsl.typeslibrary.NativeType;
 import org.obeonetwork.dsl.typeslibrary.Type;
 import org.obeonetwork.dsl.typeslibrary.TypeInstance;
 import org.obeonetwork.dsl.typeslibrary.UserDefinedTypeRef;
@@ -323,6 +322,40 @@ public class ColumnServices {
         }
     }
 
+    // @formatter:off
+    @Documentation(
+        value = "returns a X when the colonne is nullable, an empty string otherwise.",
+        params = {
+            @Param(name = "column", value = "The Column"),
+        },
+        result = "returns a X when the colonne is nullable, an empty string otherwise.",
+        examples = {
+            @Example(expression = "column.checkNullable()", result = "true")
+        }
+    )
+    // @formatter:on
+    public String checkMandatory(Column column) {
+        if (column != null) {
+            return column.isNullable() ? "" : "X";
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * Returns "Yes" when the column is nullable and "No" otherwise or if it is <code>null</code>.
+     * 
+     * @param column
+     * @return
+     */
+    public String isMandatory(Column column) {
+        if (column != null) {
+            return yesNo(!column.isNullable());
+        } else {
+            return "No";
+        }
+    }
+
     /**
      * Returns "X" when the column is in a foreign key and "" otherwise or if the column is <code>null</code/
      * 
@@ -438,9 +471,7 @@ public class ColumnServices {
     public String typeName(Column column) {
         final String res;
         Type type = column.getType();
-        if (type instanceof NativeType) {
-            res = ((NativeType) type).getName();
-        } else if (type instanceof UserDefinedTypeRef) {
+        if (type instanceof UserDefinedTypeRef) {
             res = ((UserDefinedTypeRef) type).getType().getName();
         } else if (type instanceof TypeInstance) {
             res = ((TypeInstance) type).getNativeType().getName();
@@ -451,4 +482,35 @@ public class ColumnServices {
         return res;
     }
 
+    /**
+     * Returns the length and the precision of the type associated to the column.
+     * Result is like follows :
+     * <ul>
+     * <li>&lt;length&gt; if the type has the NativeKind.LENGTH attribute</li>
+     * <li>&lt;length,precision&gt; if the type has the NativeKind.LENGTH_AND_PRECISION attribute</li>
+     * 
+     * @param col
+     *            the column
+     * @return a description of the length of the column's type.
+     */
+    public String typeLength(Column col) {
+        final String res;
+        Type type = col.getType();
+        if (type instanceof TypeInstance) {
+            TypeInstance instance = (TypeInstance) type;
+            switch (instance.getNativeType().getSpec()) {
+                case LENGTH:
+                    res = instance.getLength().toString();
+                    break;
+                case LENGTH_AND_PRECISION:
+                    res = instance.getLength() + "," + instance.getPrecision();
+                    break;
+                default:
+                    res = "";
+            }
+        } else {
+            res = "";
+        }
+        return res;
+    }
 }

@@ -53,8 +53,21 @@ public class IndexElementServices {
         }
     )
     // @formatter:on
-    public boolean ascendant(IndexElement element) {
-        return element.isAsc();
+    public String checkAscending(IndexElement element) {
+        if (element != null) {
+            return element.isAsc() ? "X" : "";
+        } else {
+            return "";
+        }
+    }
+
+    // @formatter:on
+    public String isAscending(IndexElement element) {
+        if (element != null) {
+            return element.isAsc() ? "Oui" : "Non";
+        } else {
+            return "";
+        }
     }
 
 }

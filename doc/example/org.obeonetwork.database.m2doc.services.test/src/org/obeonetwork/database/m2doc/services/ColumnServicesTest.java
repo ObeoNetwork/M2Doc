@@ -5,12 +5,18 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.database.m2doc.services.common.AbstractTest;
 import org.obeonetwork.dsl.database.Column;
 import org.obeonetwork.dsl.database.DataBase;
+import org.obeonetwork.dsl.database.DatabasePackage;
 import org.obeonetwork.dsl.database.Table;
+import org.obeonetwork.dsl.typeslibrary.NativeType;
+import org.obeonetwork.dsl.typeslibrary.NativeTypeKind;
+import org.obeonetwork.dsl.typeslibrary.TypeInstance;
+import org.obeonetwork.dsl.typeslibrary.TypesLibraryPackage;
 
 public class ColumnServicesTest extends AbstractTest {
 	/**
@@ -182,6 +188,13 @@ public class ColumnServicesTest extends AbstractTest {
 	}
 
 	@Test
+	public void isMandatoryNullTest() {
+		Table table = getGSSerieTable();
+		Column col = getColumn(table, "No table");
+		assertEquals("No", new ColumnServices().isMandatory(col));
+	}
+
+	@Test
 	public void isAutoincrementNullTest() {
 		Table table = getGSSerieTable();
 		Column col = getColumn(table, "No table");
@@ -230,4 +243,50 @@ public class ColumnServicesTest extends AbstractTest {
 		assertEquals("", new ColumnServices().checkUnique(col));
 	}
 
+	@Test
+	public void testColumnLengthSIMPLE() {
+		Column col = (Column) EcoreUtil.create(DatabasePackage.Literals.COLUMN);
+		TypeInstance type = (TypeInstance) EcoreUtil.create(TypesLibraryPackage.Literals.TYPE_INSTANCE);
+		NativeType nType = (NativeType) EcoreUtil.create(TypesLibraryPackage.Literals.NATIVE_TYPE);
+		col.setType(type);
+		type.setNativeType(nType);
+		nType.setSpec(NativeTypeKind.SIMPLE);
+		assertEquals("", new ColumnServices().typeLength(col));
+	}
+
+	@Test
+	public void testColumnLengthENUM() {
+		Column col = (Column) EcoreUtil.create(DatabasePackage.Literals.COLUMN);
+		TypeInstance type = (TypeInstance) EcoreUtil.create(TypesLibraryPackage.Literals.TYPE_INSTANCE);
+		NativeType nType = (NativeType) EcoreUtil.create(TypesLibraryPackage.Literals.NATIVE_TYPE);
+		col.setType(type);
+		type.setNativeType(nType);
+		nType.setSpec(NativeTypeKind.ENUM);
+		assertEquals("", new ColumnServices().typeLength(col));
+	}
+
+	@Test
+	public void testColumnLengthLENGTH() {
+		Column col = (Column) EcoreUtil.create(DatabasePackage.Literals.COLUMN);
+		TypeInstance type = (TypeInstance) EcoreUtil.create(TypesLibraryPackage.Literals.TYPE_INSTANCE);
+		NativeType nType = (NativeType) EcoreUtil.create(TypesLibraryPackage.Literals.NATIVE_TYPE);
+		col.setType(type);
+		type.setNativeType(nType);
+		nType.setSpec(NativeTypeKind.LENGTH);
+		type.setLength(255);
+		assertEquals("255", new ColumnServices().typeLength(col));
+	}
+
+	@Test
+	public void testColumnLengthLENGTHANDPRECISION() {
+		Column col = (Column) EcoreUtil.create(DatabasePackage.Literals.COLUMN);
+		TypeInstance type = (TypeInstance) EcoreUtil.create(TypesLibraryPackage.Literals.TYPE_INSTANCE);
+		NativeType nType = (NativeType) EcoreUtil.create(TypesLibraryPackage.Literals.NATIVE_TYPE);
+		col.setType(type);
+		type.setNativeType(nType);
+		nType.setSpec(NativeTypeKind.LENGTH_AND_PRECISION);
+		type.setLength(255);
+		type.setPrecision(8);
+		assertEquals("255,8", new ColumnServices().typeLength(col));
+	}
 }
