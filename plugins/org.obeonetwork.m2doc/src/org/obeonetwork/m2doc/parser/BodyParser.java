@@ -613,23 +613,27 @@ public class BodyParser {
      * @return if provider provide the image option.
      */
     private boolean checkImagesOptions(Map<String, String> options, AbstractImage image, String[] imageOptionSet,
-            Set<String> providerOptions) {
+            Set<String> providerOptions, boolean logError) {
         boolean check = true;
         Set<String> optionSet = Sets.newHashSet(imageOptionSet);
         final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
         for (String key : options.keySet()) {
             if (!optionSet.contains(key) && !providerOptions.contains(key)) {
-                image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"), lastRun));
+                if (logError) {
+                    image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"), lastRun));
+                }
                 check = false;
             } else if (IMAGE_LEGEND_POSITION.equals(key)) {
                 String value = options.get(key);
-                if (!IMAGE_LEGEND_ABOVE.equals(value) && !IMAGE_LEGEND_BELOW.equals(value)) {
-                    image.getValidationMessages()
-                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                    message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key,
-                                            "unknown option value (" + value + ")."),
-                                    lastRun));
+                if (logError) {
+                    if (!IMAGE_LEGEND_ABOVE.equals(value) && !IMAGE_LEGEND_BELOW.equals(value)) {
+                        image.getValidationMessages()
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                        message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key,
+                                                "unknown option value (" + value + ")."),
+                                        lastRun));
+                    }
                 }
             }
         }
@@ -648,7 +652,7 @@ public class BodyParser {
         OptionParser optionParser = new OptionParser();
         Map<String, String> options = optionParser.parseOptions(readTag(image, image.getRuns()), TokenType.IMAGE,
                 OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK, image);
-        checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0));
+        checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0), true);
         if (!options.containsKey(IMAGE_FILE_NAME_KEY)) {
             final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
             image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
@@ -890,7 +894,7 @@ public class BodyParser {
         for (IProvider provider : providers) {
             Set<String> providerOptions = provider.getOptionTypes() == null ? new HashSet<String>(0)
                     : provider.getOptionTypes().keySet();
-            if (checkImagesOptions(options, representation, DIAGRAM_OPTION_SET, providerOptions)) {
+            if (checkImagesOptions(options, representation, DIAGRAM_OPTION_SET, providerOptions, false)) {
                 return provider;
             }
 
