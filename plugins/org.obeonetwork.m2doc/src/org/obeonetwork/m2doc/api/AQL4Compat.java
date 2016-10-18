@@ -452,7 +452,12 @@ public final class AQL4Compat {
     public static IValidationResult validate(AstValidator validator, AstResult astResult,
             Map<String, Set<IType>> variableTypes) {
         IValidationResult result;
+        if (astResult == null) {
+            M2DocPlugin.log(new Status(IStatus.WARNING, M2DocPlugin.PLUGIN_ID,
+                    "null ast result passed to the validate method"));
+            return null;
 
+        }
         try {
             if (AST_VALIDATOR_CONSTRUCTOR_ONLY_ENV) {
                 result = (IValidationResult) VALIDATION_METHOD.invoke(validator, variableTypes, astResult);

@@ -160,41 +160,42 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         final IValidationResult validationResult = AQL4Compat.validate(validator, conditional.getQuery(), stack.peek());
         final XWPFRun run = conditional.getRuns().get(1);
         addValidationMessages(conditional, run, validationResult);
+        if (validationResult != null) {// FIXME : we might check why we may have a null validation result in AQL.
+            final Set<IType> types = validationResult.getPossibleTypes(conditional.getQuery().getAst());
+            checkConditionalSelectorTypes(conditional, run, types);
 
-        final Set<IType> types = validationResult.getPossibleTypes(conditional.getQuery().getAst());
-        checkConditionalSelectorTypes(conditional, run, types);
-
-        final Map<String, Set<IType>> thenVariables = new HashMap<String, Set<IType>>(stack.peek());
-        thenVariables.putAll(validationResult.getInferredVariableTypes(conditional.getQuery().getAst(), Boolean.TRUE));
-        stack.push(thenVariables);
-        try {
-            for (AbstractConstruct construct : conditional.getSubConstructs()) {
-                doSwitch(construct);
+            final Map<String, Set<IType>> thenVariables = new HashMap<String, Set<IType>>(stack.peek());
+            thenVariables
+                    .putAll(validationResult.getInferredVariableTypes(conditional.getQuery().getAst(), Boolean.TRUE));
+            stack.push(thenVariables);
+            try {
+                for (AbstractConstruct construct : conditional.getSubConstructs()) {
+                    doSwitch(construct);
+                }
+            } finally {
+                stack.pop();
             }
-        } finally {
-            stack.pop();
+
+            try {
+                final Map<String, Set<IType>> elseVariables = new HashMap<String, Set<IType>>(stack.peek());
+                elseVariables.putAll(
+                        validationResult.getInferredVariableTypes(conditional.getQuery().getAst(), Boolean.FALSE));
+                stack.push(elseVariables);
+                if (conditional.getAlternative() != null) {
+                    doSwitch(conditional.getAlternative());
+                    // TODO remove this when the AST for Conditional will be fixed
+                    final IValidationResult alternativeValidationResult = AQL4Compat.validate(validator,
+                            conditional.getAlternative().getQuery(), stack.peek());
+                    elseVariables.putAll(alternativeValidationResult
+                            .getInferredVariableTypes(conditional.getAlternative().getQuery().getAst(), Boolean.FALSE));
+                }
+                if (conditional.getElse() != null) {
+                    doSwitch(conditional.getElse());
+                }
+            } finally {
+                stack.pop();
+            }
         }
-
-        try {
-            final Map<String, Set<IType>> elseVariables = new HashMap<String, Set<IType>>(stack.peek());
-            elseVariables
-                    .putAll(validationResult.getInferredVariableTypes(conditional.getQuery().getAst(), Boolean.FALSE));
-            stack.push(elseVariables);
-            if (conditional.getAlternative() != null) {
-                doSwitch(conditional.getAlternative());
-                // TODO remove this when the AST for Conditional will be fixed
-                final IValidationResult alternativeValidationResult = AQL4Compat.validate(validator,
-                        conditional.getAlternative().getQuery(), stack.peek());
-                elseVariables.putAll(alternativeValidationResult
-                        .getInferredVariableTypes(conditional.getAlternative().getQuery().getAst(), Boolean.FALSE));
-            }
-            if (conditional.getElse() != null) {
-                doSwitch(conditional.getElse());
-            }
-        } finally {
-            stack.pop();
-        }
-
         return null;
     }
 
@@ -263,36 +264,36 @@ public class TemplateValidator extends TemplateSwitch<Void> {
                                     repetition.getIterationVar()),
                             run));
         }
-
-        final Set<IType> types = validationResult.getPossibleTypes(repetition.getQuery().getAst());
-        for (IType type : types) {
-            if (!(type instanceof ICollectionType)) {
-                repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        String.format("The iteration variable types must be collections (%s).", types), run));
-                break;
+        if (validationResult != null) {
+            final Set<IType> types = validationResult.getPossibleTypes(repetition.getQuery().getAst());
+            for (IType type : types) {
+                if (!(type instanceof ICollectionType)) {
+                    repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                            String.format("The iteration variable types must be collections (%s).", types), run));
+                    break;
+                }
+            }
+            final Set<IType> iteratorTypes = new LinkedHashSet<IType>();
+            for (IType type : types) {
+                if (type instanceof ICollectionType) {
+                    iteratorTypes.add(((ICollectionType) type).getCollectionType());
+                }
+            }
+            if (iteratorTypes.isEmpty()) {
+                iteratorTypes
+                        .add(new NothingType("No collection type for the iterator " + repetition.getIterationVar()));
+            }
+            final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
+            iterationVariables.put(repetition.getIterationVar(), iteratorTypes);
+            stack.push(iterationVariables);
+            try {
+                for (AbstractConstruct construct : repetition.getSubConstructs()) {
+                    doSwitch(construct);
+                }
+            } finally {
+                stack.pop();
             }
         }
-
-        final Set<IType> iteratorTypes = new LinkedHashSet<IType>();
-        for (IType type : types) {
-            if (type instanceof ICollectionType) {
-                iteratorTypes.add(((ICollectionType) type).getCollectionType());
-            }
-        }
-        if (iteratorTypes.isEmpty()) {
-            iteratorTypes.add(new NothingType("No collection type for the iterator " + repetition.getIterationVar()));
-        }
-        final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
-        iterationVariables.put(repetition.getIterationVar(), iteratorTypes);
-        stack.push(iterationVariables);
-        try {
-            for (AbstractConstruct construct : repetition.getSubConstructs()) {
-                doSwitch(construct);
-            }
-        } finally {
-            stack.pop();
-        }
-
         return null;
     }
 
@@ -349,7 +350,9 @@ public class TemplateValidator extends TemplateSwitch<Void> {
                     final AstResult astResult = (AstResult) entry.getValue();
                     final IValidationResult validationResult = AQL4Compat.validate(validator, astResult, stack.peek());
                     addValidationMessages(providerClient, run, validationResult);
-                    options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));
+                    if (validationResult != null) {
+                        options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));
+                    }
                 } else {
                     options.put(entry.getKey(), entry.getValue());
                 }
@@ -363,7 +366,6 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         } else {
             // This case seems to be checked at parsing time
         }
-
         return null;
     }
 
@@ -378,9 +380,15 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      *            the {@link IValidationResult}
      */
     private void addValidationMessages(AbstractConstruct construct, XWPFRun run, IValidationResult validationResult) {
-        for (IValidationMessage message : validationResult.getMessages()) {
-            construct.getValidationMessages()
-                    .add(new TemplateValidationMessage(getLevel(message), message.getMessage(), run));
+        if (validationResult != null) {
+            for (IValidationMessage message : validationResult.getMessages()) {
+                construct.getValidationMessages()
+                        .add(new TemplateValidationMessage(getLevel(message), message.getMessage(), run));
+            }
+        } else {
+            construct.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
+                    "Couldn't validate the expression", run));
+
         }
     }
 
