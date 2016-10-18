@@ -21,6 +21,6 @@
 	</parent>
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>org.obeonetwork.m2doc.update</artifactId>
-  <version>0.9.4-SNAPSHOT</version>
+  <version>0.9.5-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
 </project>
