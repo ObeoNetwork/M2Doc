@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -40,6 +41,16 @@ public class DeclaredProviderListener implements IRegistryEventListener {
      * Name of the attribute used to declare the diagram provider's class name.
      */
     private static final String DIAGRAM_PROVIDER_CLASS_ATTR_NAME = "diagramClass";
+
+    /**
+     * Name of the extension element describing a table provider.
+     */
+    private static final String TABLE_PROVIDER_EXTENSION_ELEMENT = "tableProvider";
+
+    /**
+     * Name of the attribute used to declare the table provider's class name.
+     */
+    private static final String TABLE_PROVIDER_CLASS_ATTR_NAME = "class";
 
     /**
      * Creates and initializes the service registry listener.
@@ -74,6 +85,26 @@ public class DeclaredProviderListener implements IRegistryEventListener {
                 } catch (InvalidRegistryObjectException e) {
                     M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                             "Problem while registering M2Doc Providers : " + e.getMessage(), e));
+                } catch (ClassCastException e) {
+                    M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                            "The registered table provider does not extend AbstractDiagramProvider.", e));
+                }
+            } else if (TABLE_PROVIDER_EXTENSION_ELEMENT.equals(confElt.getName())) {
+                try {
+                    AbstractTableProvider provider = (AbstractTableProvider) confElt
+                            .createExecutableExtension(TABLE_PROVIDER_CLASS_ATTR_NAME);
+                    ProviderRegistry.INSTANCE.registerTableProvider(provider);
+                } catch (CoreException e) {
+                    // CHECKSTYLE:OFF
+                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+                            "Problem while registering M2Doc Providers : " + e.getMessage(), e));
+                    // CHECKSTYLE:ON
+                } catch (InvalidRegistryObjectException e) {
+                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+                            "Problem while registering M2Doc Providers : " + e.getMessage(), e));
+                } catch (ClassCastException e) {
+                    M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                            "The registered table provider does not extend AbstractTableProvider.", e));
                 }
             }
         }

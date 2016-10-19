@@ -154,6 +154,8 @@ public class TemplateValidator extends EObjectValidator {
                 return validateBookmark((Bookmark)value, diagnostics, context);
             case TemplatePackage.LINK:
                 return validateLink((Link)value, diagnostics, context);
+            case TemplatePackage.TABLE_CLIENT:
+                return validateTableClient((TableClient)value, diagnostics, context);
             case TemplatePackage.QUERY_BEHAVIOR:
                 return validateQueryBehavior((QueryBehavior)value, diagnostics, context);
             case TemplatePackage.POSITION:
@@ -343,6 +345,15 @@ public class TemplateValidator extends EObjectValidator {
      */
     public boolean validateLink(Link link, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint(link, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateTableClient(TableClient tableClient, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(tableClient, diagnostics, context);
     }
 
     /**

@@ -19,7 +19,10 @@ Allows to declare providers that take M2Doc tag parameters to provide document&a
       </annotation>
       <complexType>
          <sequence>
-            <element ref="diagramProvider" minOccurs="1" maxOccurs="unbounded"/>
+            <choice minOccurs="1" maxOccurs="unbounded">
+               <element ref="diagramProvider"/>
+               <element ref="tableProvider"/>
+            </choice>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -56,7 +59,7 @@ Allows to declare providers that take M2Doc tag parameters to provide document&a
                   Diagram provider class computing images from M2Doc tag options.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.obeonetwork.m2doc.provider.DiagramProvider:"/>
+                  <meta.attribute kind="java" basedOn="org.obeonetwork.m2doc.provider.AbstractDiagramProvider:"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -65,6 +68,21 @@ Allows to declare providers that take M2Doc tag parameters to provide document&a
                <documentation>
                   If the provider must be use by default
                </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="tableProvider">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Implementation of IProvider that handles tables from M2Doc table options.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.obeonetwork.m2doc.provider.AbstractTableProvider:"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>

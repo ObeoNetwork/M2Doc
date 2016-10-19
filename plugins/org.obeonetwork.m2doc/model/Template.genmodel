@@ -106,5 +106,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Link/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Link/text"/>
     </genClasses>
+    <genClasses ecoreClass="Template.ecore#//TableClient"/>
   </genPackages>
 </genmodel:GenModel>

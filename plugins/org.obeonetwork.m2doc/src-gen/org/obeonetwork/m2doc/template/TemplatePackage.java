@@ -1727,6 +1727,88 @@ public interface TemplatePackage extends EPackage {
     int LINK_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableClientImpl <em>Table Client</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.TableClientImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableClient()
+     * @generated
+     */
+    int TABLE_CLIENT = 20;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT__STYLE_RUN = ABSTRACT_PROVIDER_CLIENT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT__RUNS = ABSTRACT_PROVIDER_CLIENT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT__CLOSING_RUNS = ABSTRACT_PROVIDER_CLIENT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT__VALIDATION_MESSAGES = ABSTRACT_PROVIDER_CLIENT__VALIDATION_MESSAGES;
+
+    /**
+     * The feature id for the '<em><b>Option Value Map</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT__OPTION_VALUE_MAP = ABSTRACT_PROVIDER_CLIENT__OPTION_VALUE_MAP;
+
+    /**
+     * The feature id for the '<em><b>Provider</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT__PROVIDER = ABSTRACT_PROVIDER_CLIENT__PROVIDER;
+
+    /**
+     * The number of structural features of the '<em>Table Client</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT_FEATURE_COUNT = ABSTRACT_PROVIDER_CLIENT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Table Client</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_CLIENT_OPERATION_COUNT = ABSTRACT_PROVIDER_CLIENT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}' enum.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1734,7 +1816,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-	int QUERY_BEHAVIOR = 20;
+	int QUERY_BEHAVIOR = 21;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
@@ -1744,7 +1826,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-	int POSITION = 21;
+	int POSITION = 22;
 
 	/**
      * The meta object id for the '<em>Document</em>' data type.
@@ -1754,7 +1836,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 22;
+    int DOCUMENT = 23;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -1764,7 +1846,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-	int WTABLE = 23;
+	int WTABLE = 24;
 
 	/**
      * The meta object id for the '<em>Run</em>' data type.
@@ -1774,7 +1856,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-	int RUN = 24;
+	int RUN = 25;
 
 
 	/**
@@ -1785,7 +1867,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-	int AST_RESULT = 25;
+	int AST_RESULT = 26;
 
 	/**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -1795,7 +1877,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 26;
+    int TEMPLATE_VALIDATION_MESSAGE = 27;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -1805,7 +1887,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-	int WTABLE_ROW = 27;
+	int WTABLE_ROW = 28;
 
 	/**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -1815,7 +1897,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-	int WTABLE_CELL = 28;
+	int WTABLE_CELL = 29;
 
 	/**
      * The meta object id for the '<em>Provider</em>' data type.
@@ -1825,7 +1907,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
      * @generated
      */
-    int PROVIDER = 29;
+    int PROVIDER = 30;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -1835,7 +1917,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 30;
+    int BODY = 31;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractConstruct <em>Abstract Construct</em>}'.
@@ -2341,6 +2423,16 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EAttribute getLink_Text();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.TableClient <em>Table Client</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Table Client</em>'.
+     * @see org.obeonetwork.m2doc.template.TableClient
+     * @generated
+     */
+    EClass getTableClient();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
@@ -3035,6 +3127,16 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute LINK__TEXT = eINSTANCE.getLink_Text();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.TableClientImpl <em>Table Client</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.TableClientImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableClient()
+         * @generated
+         */
+        EClass TABLE_CLIENT = eINSTANCE.getTableClient();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.

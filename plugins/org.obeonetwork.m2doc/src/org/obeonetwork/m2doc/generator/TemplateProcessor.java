@@ -11,6 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,6 +29,8 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.IRunBody;
+import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
@@ -43,6 +48,12 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider.MCell;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider.MRow;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider.MTable;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
@@ -60,6 +71,7 @@ import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
+import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -68,6 +80,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import static org.obeonetwork.m2doc.provider.ProviderConstants.HIDE_TITLE_KEY;
 
 /**
  * The {@link TemplateProcessor} class implements a switch over template that generates the doc.
@@ -680,6 +696,342 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
+    public AbstractConstruct caseTableClient(TableClient object) {
+        XWPFRun tableRun = insertRun(object.getStyleRun());
+        tableRun.getCTR().getInstrTextList().clear();
+        AbstractTableProvider provider = (AbstractTableProvider) object.getProvider();
+        if (provider == null) {
+            setErrorMessageToRun(object.getValidationMessages().get(0).getMessage(), tableRun);
+        } else {
+            Map<String, Object> parameters;
+            try {
+                parameters = setupParametersMap(object, provider);
+                TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters);
+                tableProcessor.generate(tableRun);
+            } catch (IllegalArgumentException e) {
+                setErrorMessageToRun(e.getMessage(), tableRun);
+            } catch (ProviderException e) {
+                setErrorMessageToRun("A problem occured while creating table from a table provider : " + e.getMessage(),
+                        tableRun);
+            }
+        }
+        return super.caseTableClient(object);
+    }
+
+    /**
+     * Class that inserts a table in a document for a m:wtable tag.
+     * 
+     * @author ldelaigue
+     */
+    private static final class TableClientProcessor {
+        /** The current generated document. */
+        private final IBody body;
+        /** Arguments of the m:wtable tag. */
+        private final Map<String, Object> parameters;
+        /** The table provider. */
+        private final AbstractTableProvider provider;
+
+        /**
+         * Constructor.
+         * 
+         * @param body
+         *            The current generated document, must not be <code>null</code>
+         * @param provider
+         *            The table provider, must not be <code>null</code>
+         * @param arguments
+         *            The map of arguments, cannot be <code>null</code>
+         */
+        private TableClientProcessor(IBody body, AbstractTableProvider provider, Map<String, Object> arguments) {
+            this.body = checkNotNull(body);
+            this.provider = checkNotNull(provider);
+            this.parameters = checkNotNull(arguments);
+        }
+
+        /**
+         * Generate the table(s) in the document.
+         * 
+         * @param run
+         *            The run where the tables must be output
+         * @throws ProviderException
+         *             If the retrieval of the tables from the provider goes wrong.
+         */
+        public void generate(XWPFRun run) throws ProviderException {
+            List<MTable> tables = provider.getTables(parameters);
+            boolean first = true;
+            for (MTable mtable : tables) {
+                XWPFTable table = createTable(run, first, mtable);
+                if (table != null) {
+                    fillTable(table, mtable);
+                    first = false;
+                }
+            }
+        }
+
+        /**
+         * Do we output the table title.
+         * 
+         * @return Whether the table must have a title or not.
+         */
+        private boolean showTitle() {
+            if (parameters.containsKey(HIDE_TITLE_KEY)) {
+                Object hide = parameters.get(HIDE_TITLE_KEY);
+                if (hide instanceof String) {
+                    return !Boolean.valueOf((String) hide).booleanValue();
+                }
+            }
+            return true;
+        }
+
+        /**
+         * Create a table justa after a given run.
+         * 
+         * @param tableRun
+         *            The run
+         * @param first
+         *            Whether it's the 1st table to create or not
+         * @param mtable
+         *            The table description
+         * @return The newly created table, can be <code>null</code> if the tag was used in an unsupported context.
+         */
+        private XWPFTable createTable(XWPFRun tableRun, boolean first, MTable mtable) {
+            XWPFTable table = null;
+            if (body instanceof XWPFDocument) {
+                table = createTableInDocument(tableRun, first, mtable);
+            } else if (body instanceof XWPFTableCell) {
+                XWPFTableCell tcell = (XWPFTableCell) body;
+                table = createTableInCell(tableRun, first, mtable, tcell);
+            } else {
+                setErrorMessageToRun("m:table is not supported in headers, footers, or footnotes.", tableRun);
+            }
+            return table;
+        }
+
+        /**
+         * Create a table in a document.
+         * 
+         * @param tableRun
+         *            the run after which the table must be created
+         * @param first
+         *            Whether it's the first table to insert or not
+         * @param mtable
+         *            The table description
+         * @return The newly created table.
+         */
+        private XWPFTable createTableInDocument(XWPFRun tableRun, boolean first, MTable mtable) {
+            XWPFTable table;
+            if (!first) {
+                ((XWPFDocument) body).createParagraph();
+            }
+            if (showTitle() && mtable.getLabel() != null) {
+                XWPFRun captionRun;
+                if (first) {
+                    captionRun = tableRun;
+                    IRunBody runBody = captionRun.getParent();
+                    if (runBody instanceof XWPFParagraph) {
+                        ((XWPFParagraph) runBody).setSpacingAfter(0);
+                    }
+                } else {
+                    XWPFParagraph captionParagraph = ((XWPFDocument) body).createParagraph();
+                    captionParagraph.setSpacingAfter(0);
+                    captionRun = captionParagraph.createRun();
+                }
+                captionRun.setText(mtable.getLabel());
+                captionRun.setBold(true);
+            }
+            table = ((XWPFDocument) body).createTable();
+            return table;
+        }
+
+        /**
+         * Create a table in a table cell.
+         * 
+         * @param tableRun
+         *            The table run
+         * @param first
+         *            whether it's the 1st table created in this cell
+         * @param mtable
+         *            The table description
+         * @param tcell
+         *            The cell in which to create a new table
+         * @return The newly creatted table, located in the given cell.
+         */
+        private XWPFTable createTableInCell(XWPFRun tableRun, boolean first, MTable mtable, XWPFTableCell tcell) {
+            XWPFTable table;
+            if (showTitle() && mtable.getLabel() != null) {
+                XWPFRun captionRun;
+                if (first) {
+                    captionRun = tableRun;
+                    IRunBody runBody = captionRun.getParent();
+                    if (runBody instanceof XWPFParagraph) {
+                        ((XWPFParagraph) runBody).setSpacingAfter(0);
+                    }
+                } else {
+                    XWPFParagraph captionParagraph = tcell.addParagraph();
+                    captionParagraph.setSpacingAfter(0);
+                    captionRun = captionParagraph.createRun();
+                }
+                captionRun.setText(mtable.getLabel());
+                captionRun.setBold(true);
+            }
+            CTTbl ctTbl = tcell.getCTTc().addNewTbl();
+            table = new XWPFTable(ctTbl, tcell);
+            int tableRank = tcell.getTables().size();
+            tcell.insertTable(tableRank, table);
+            // A paragraph is mandatory at the end of a cell, so let's always add one.
+            tcell.addParagraph();
+            return table;
+        }
+
+        /**
+         * Fill a newly created word table with the data from an MTable.
+         * 
+         * @param table
+         *            The newly created word table
+         * @param mtable
+         *            The MTable that describes the data and styles to insert
+         */
+        private void fillTable(XWPFTable table, MTable mtable) {
+            XWPFTableRow headerRow = table.getRow(0);
+            initializeEmptyTableCell(headerRow.getCell(0), null, null);
+            Iterable<? extends MColumn> mcolumns = mtable.getColumns();
+            for (MColumn mcol : mcolumns) {
+                XWPFTableCell cell;
+                cell = headerRow.addNewTableCell();
+                initializeEmptyTableCell(cell, null, null);
+                setCellContent(cell, mcol.getLabel(), null);
+            }
+            for (MRow mrow : mtable.getRows()) {
+                XWPFTableRow row = table.createRow();
+                List<XWPFTableCell> cells = row.getTableCells();
+                for (int i = 0; i < cells.size(); i++) {
+                    XWPFTableCell cell = cells.get(i);
+                    // Make sure empty cells are empty and have the right style
+                    if (i > 0) {
+                        initializeEmptyTableCell(cell, mrow, Iterables.get(mtable.getColumns(), i - 1));
+                    } else {
+                        initializeEmptyTableCell(cell, null, null);
+                    }
+                }
+                XWPFTableCell cell0 = row.getCell(0);
+                setCellContent(cell0, mrow.getLabel(), null);
+                for (MCell mcell : mrow.getCells()) {
+                    MColumn mcol = mcell.getColumn();
+                    if (mcol != null) {
+                        XWPFTableCell cell = row.getCell(Iterables.indexOf(mcolumns, Predicates.equalTo(mcol)) + 1);
+                        setCellContent(cell, mcell.getLabel(), mcell.getStyle());
+                    }
+                }
+            }
+        }
+
+        /**
+         * Initialize properrly a new table cell to make it easy to insert the data in this cell. Deals with the style to apply to this cell
+         * depending on the row and column it belongs to.
+         * 
+         * @param cell
+         *            Newly created cell to initialize
+         * @param row
+         *            The row the cell belongs to, the style of which will be used for the cell if defined.
+         * @param column
+         *            The column the cell belongs to, the style of which will be used for the cell if defined and the row's style is
+         *            <code>null</code>.
+         * @return The paragraph of the cell after initialization.
+         */
+        private XWPFParagraph initializeEmptyTableCell(XWPFTableCell cell, MRow row, MColumn column) {
+            XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
+            cellParagraph.setSpacingBefore(0);
+            cellParagraph.setSpacingAfter(0);
+            MStyle style = row == null ? null : row.getStyle();
+            if (style == null) {
+                style = column == null ? null : column.getStyle();
+            }
+            if (style != null) {
+                cell.setColor(hexColor(style.getBackgroundColor()));
+            }
+            return cellParagraph;
+        }
+
+        /**
+         * Create a new run in the cell's paragraph and set this run's text, and apply the given style to the cell and its paragraph.
+         * 
+         * @param cell
+         *            Cell to fill in
+         * @param text
+         *            Text to set in the cell
+         * @param style
+         *            Style to use, can be <code>null</code>
+         */
+        private void setCellContent(XWPFTableCell cell, String text, MStyle style) {
+            XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
+            XWPFRun cellRun = cellParagraph.createRun();
+            cellRun.setText(text);
+            if (style != null) {
+                cell.setColor(hexColor(style.getBackgroundColor()));
+                applyTableClientStyle(cellRun, style);
+            }
+        }
+
+        /**
+         * Apply the given style to the given run. Background color is not taken into account here since it does not apply to runs.
+         * 
+         * @param run
+         *            The run to style
+         * @param style
+         *            The style to apply, can be <code>null</code>
+         */
+        private void applyTableClientStyle(XWPFRun run, MStyle style) {
+            run.setFontSize(style.getFontSize());
+            run.setBold((style.getFontModifiers() & MStyle.FONT_BOLD) != 0);
+            run.setItalic((style.getFontModifiers() & MStyle.FONT_ITALIC) != 0);
+            if ((style.getFontModifiers() & MStyle.FONT_UNDERLINE) != 0) {
+                run.setUnderline(UnderlinePatterns.SINGLE);
+            }
+            run.setStrikeThrough((style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH) != 0);
+            run.setColor(hexColor(style.getForegroundColor()));
+        }
+
+        /**
+         * Translate an int color from the {@link MStyle} format to the word format.
+         * 
+         * @param color
+         *            The color, as an int
+         * @return The color as a 6-digits string.
+         */
+        private static String hexColor(int color) {
+            String result = Integer.toHexString(color);
+            while (result.length() < 6) {
+                result = "0" + result;
+            }
+            if (result.length() > 6) {
+                result = result.substring(result.length() - 6);
+            }
+            return result;
+        }
+    }
+
+    /**
+     * Returns a map containing all parameters coming from the table tag
+     * and global variables available.
+     * 
+     * @param object
+     *            the {@link TableClient} object from which we extracts needed parameters.
+     * @param provider
+     *            the provider providing information regarding tag options.
+     * @return a map containing all parameters coming from the representation tag
+     *         and global variables available.
+     * @throws IllegalArgumentException
+     *             if the evaluation fails because error were present during parse time or evaluation time.
+     */
+    private Map<String, Object> setupParametersMap(TableClient object, IProvider provider)
+            throws IllegalArgumentException {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
+        parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
+        setGenericParameters(object, provider.getOptionTypes(), parameters);
+        return parameters;
+    }
+
+    @Override
     public AbstractConstruct caseBookmark(Bookmark bookmark) {
         if (bookmark.getName() == null) {
             XWPFRun run = insertRun(bookmark.getStyleRun());
@@ -750,13 +1102,13 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * 
      * @param errorMessage
      *            the error message to set.
-     * @param imageRun
+     * @param run
      *            the run were to insert the error message.
      */
-    private void setErrorMessageToRun(String errorMessage, XWPFRun imageRun) {
-        imageRun.setText(errorMessage);
-        imageRun.setBold(true);
-        imageRun.setColor(M2DocUtils.ERROR_COLOR);
+    private static void setErrorMessageToRun(String errorMessage, XWPFRun run) {
+        run.setText(errorMessage);
+        run.setBold(true);
+        run.setColor(M2DocUtils.ERROR_COLOR);
     }
 
     /**
@@ -801,13 +1153,12 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         EMap<String, Object> optionsMap = templateProvider.getOptionValueMap();
         Set<Entry<String, Object>> optionsMapEntries = optionsMap.entrySet();
         for (Entry<String, Object> optionsMapEntry : optionsMapEntries) {
-            if ((optionTypes != null && optionTypes.get(optionsMapEntry.getKey()) == null) || optionTypes == null) {
+            if (optionTypes == null || optionTypes.get(optionsMapEntry.getKey()) == null) {
                 parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
             } else if (optionTypes != null) {
                 OptionType optionType = optionTypes.get(optionsMapEntry.getKey());
                 if (OptionType.AQL_EXPRESSION == optionType) {
                     evaluateAqlExpression(templateProvider, parameters, optionsMapEntry);
-
                 } else if (OptionType.STRING == optionType) {
                     parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
                 } else {

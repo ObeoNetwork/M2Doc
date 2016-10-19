@@ -50,6 +50,7 @@ import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
+import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplateFactory;
@@ -167,6 +168,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EClass linkEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass tableClientEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -782,6 +790,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
     /**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getTableClient() {
+        return tableClientEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -1114,6 +1131,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(linkEClass, LINK__NAME);
         createEAttribute(linkEClass, LINK__TEXT);
 
+        tableClientEClass = createEClass(TABLE_CLIENT);
+
         // Create enums
         queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
         positionEEnum = createEEnum(POSITION);
@@ -1173,6 +1192,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         abstractProviderClientEClass.getESuperTypes().add(this.getAbstractConstruct());
         bookmarkEClass.getESuperTypes().add(this.getCompound());
         linkEClass.getESuperTypes().add(this.getAbstractConstruct());
+        tableClientEClass.getESuperTypes().add(this.getAbstractProviderClient());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(abstractConstructEClass, AbstractConstruct.class, "AbstractConstruct", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1255,6 +1275,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getLink_Name(), this.getAstResult(), "name", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getLink_Text(), this.getAstResult(), "text", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(tableClientEClass, TableClient.class, "TableClient", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals
         initEEnum(queryBehaviorEEnum, QueryBehavior.class, "QueryBehavior");
