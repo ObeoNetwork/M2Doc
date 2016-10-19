@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.provider;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,10 @@ public final class ProviderRegistry {
     /**
      * Diagram providers.
      */
-    private List<IProvider> diagramProviderRegistry = Lists.newArrayList();
+    private List<IProvider> diagramProviders = Lists.newArrayList();
+
+    /** The table providers. */
+    private List<AbstractTableProvider> tableProviders = Lists.newArrayList();
 
     /**
      * Private constructor to prevent creation of other instances.
@@ -77,11 +81,29 @@ public final class ProviderRegistry {
         }
         if (provider instanceof AbstractDiagramProvider) {
             if (((AbstractDiagramProvider) provider).isDefault()) {
-                diagramProviderRegistry.add(0, provider);
+                diagramProviders.add(0, provider);
             } else {
-                diagramProviderRegistry.add(provider);
+                diagramProviders.add(provider);
             }
         }
+    }
+
+    /**
+     * Registers the given table provider in the cache map with its fully qualified name.
+     * 
+     * @param provider
+     *            The table provider to register.
+     */
+    public void registerTableProvider(AbstractTableProvider provider) {
+        String classQualifiedName = provider.getClass().getName();
+        if (registry.get(classQualifiedName) != null) {
+            M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+                    "Problem while registering M2Doc Providers : the provider \"" + classQualifiedName
+                        + "\" is already registered. The current implementation will not be used."));
+        } else {
+            registry.put(classQualifiedName, provider);
+        }
+        tableProviders.add(provider);
     }
 
     /**
@@ -96,7 +118,7 @@ public final class ProviderRegistry {
         IProvider providerToRemove = registry.get(classQualifiedName);
         if (providerToRemove != null) {
             registry.remove(classQualifiedName);
-            diagramProviderRegistry.remove(providerToRemove);
+            diagramProviders.remove(providerToRemove);
             return true;
         }
         return false;
@@ -118,11 +140,20 @@ public final class ProviderRegistry {
     }
 
     /**
-     * Return all diagram providers.
+     * Diagram providers.
      * 
-     * @return all diagram providers.
+     * @return an unmodifiable view the registered diagram providers.
      */
     public List<IProvider> getDiagramProviders() {
-        return diagramProviderRegistry;
+        return Collections.unmodifiableList(diagramProviders);
+    }
+
+    /**
+     * Table providers.
+     * 
+     * @return An unmodifiable view of the registered table providers.
+     */
+    public List<AbstractTableProvider> getTableProviders() {
+        return Collections.unmodifiableList(tableProviders);
     }
 }

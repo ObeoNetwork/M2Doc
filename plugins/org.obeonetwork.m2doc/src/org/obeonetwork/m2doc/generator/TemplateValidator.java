@@ -160,7 +160,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         final IValidationResult validationResult = AQL4Compat.validate(validator, conditional.getQuery(), stack.peek());
         final XWPFRun run = conditional.getRuns().get(1);
         addValidationMessages(conditional, run, validationResult);
-        if (validationResult != null) {// FIXME : we might check why we may have a null validation result in AQL.
+        if (validationResult != null) { // FIXME : we might check why we may have a null validation result in AQL.
             final Set<IType> types = validationResult.getPossibleTypes(conditional.getQuery().getAst());
             checkConditionalSelectorTypes(conditional, run, types);
 

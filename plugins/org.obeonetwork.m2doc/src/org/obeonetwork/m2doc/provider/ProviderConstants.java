@@ -37,5 +37,8 @@ public interface ProviderConstants {
      * The key used in the map passed to {@link IProvider} to define the activated layers the image should have.
      */
     String DIAGRAM_ACTIVATED_LAYERS_KEY = "layers";
-
+    /**
+     * The key of the 'hide title' parameter for the m:wtable tag.
+     */
+    String HIDE_TITLE_KEY = "hideTitle";
 }

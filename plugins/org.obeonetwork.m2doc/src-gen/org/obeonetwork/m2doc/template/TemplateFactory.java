@@ -129,6 +129,15 @@ public interface TemplateFactory extends EFactory {
     Link createLink();
 
     /**
+     * Returns a new object of class '<em>Table Client</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Table Client</em>'.
+     * @generated
+     */
+    TableClient createTableClient();
+
+    /**
      * Returns a new object of class '<em>Image</em>'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

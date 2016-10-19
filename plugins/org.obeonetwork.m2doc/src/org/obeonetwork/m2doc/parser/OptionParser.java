@@ -14,11 +14,19 @@ package org.obeonetwork.m2doc.parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
+
+import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
 
 /**
  * This class handle parsing of generic tag options used by providers but not by the M2Doc core engine.
+ * The syntax is the following:
+ * 
+ * <pre>
+ * m:xxx key1:"Value for key1" key2:"Value for key2"
+ * </pre>
+ * 
+ * The parsing will return a map <code>{"key1":"Value for key1", "key2":"Value for key2"}</code>
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
@@ -36,10 +44,6 @@ public class OptionParser {
      * The character used to separate the key from the value.
      */
     public static final char KEY_VALUE_SEPARATOR = ':';
-    /**
-     * End string constant.
-     */
-    public static final String END_STRING = "'.";
     /**
      * Parsing index of the options string.
      */
@@ -73,7 +77,7 @@ public class OptionParser {
      * @param optionValGroupRank
      *            the rank of the option's value in the tag.
      * @param construct
-     *            the result image were to put error messages.
+     *            the result image where to put error messages.
      * @return the option map created.
      * @throws DocumentParserException
      *             if tag is syntactically invalid.
@@ -101,12 +105,9 @@ public class OptionParser {
                         result.put(key, value);
                         // CHECKSTYLE:OFF
                         if (!valueParsedCompletely) {
-                            final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
-                            construct.getValidationMessages()
-                                    .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                            "The end delimiter for the option's value has not been reached. The option '"
-                                                + key + "' may be invalid.",
-                                            lastRun));
+                            validationError(construct,
+                                    "The end delimiter for the option's value has not been reached. The option '" + key
+                                        + "' may be invalid.");
                             // CHECKSTYLE:ON
                         }
                         key = "";
@@ -115,24 +116,22 @@ public class OptionParser {
                         result.put(key, value);
                     }
                 } else if (!keyParsed && keyDetected) {
-                    final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
-                    construct.getValidationMessages()
-                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                    "The start of an option's key has been read but the end of it and the value were missing : '"
-                                        + key + END_STRING,
-                                    lastRun));
+                    validationError(construct,
+                            String.format(
+                                    "The start of an option's key has been read but the end of it and the value were missing : '%s'",
+                                    key));
                     result.put(key.trim(), value);
                 }
             }
         } else {
-            throw new UnsupportedOperationException("the given tag '" + tag
-                + "' should contains the given token type : '" + tokenType.getValue() + END_STRING);
+            throw new UnsupportedOperationException(String.format(
+                    "the given tag '%s' should contains the given token type : '%s'", tag, tokenType.getValue()));
         }
         return result;
     }
 
     /**
-     * Consume characters until we find the start value delimiter "'". This method can adds parsing error message to the given construct if
+     * Consume characters until we find the start value delimiter '"'. This method can adds parsing error message to the given construct if
      * some forbidden characters are present.
      * 
      * @param construct
@@ -162,13 +161,10 @@ public class OptionParser {
             finished = index >= maxIndex;
             if (!(!finished && !valueEnclosingQuoteReached) && !forbiddenCharacters.isEmpty()) {
                 // We have finished the consuming but forbidden characters were present so we log an error message
-                final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
-                construct.getValidationMessages()
-                        .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                "Forbidden characters are present after the key value separator (\""
-                                    + forbiddenCharacters + "\") of the key : '" + key
-                                    + "'. Expected character is \"'\"",
-                                lastRun));
+                validationError(construct,
+                        String.format(
+                                "Forbidden characters (\"%s\") are present after the key value separator of the key : '%s'. Expected character is \"'\"",
+                                forbiddenCharacters, key));
             }
         }
     }
@@ -236,12 +232,10 @@ public class OptionParser {
                 if (firstIndexOfSpace < key.length() && -1 != firstIndexOfSpace) {
                     // CHECKSTYLE:ON
                     // we have a space between two key characters. So we log an error message.
-                    final XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
-                    construct.getValidationMessages()
-                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            "A forbidden space character is present at the index "
-                                + firstIndexOfSpace + " of the key definition '" + key + END_STRING,
-                            lastRun));
+                    validationError(construct,
+                            String.format(
+                                    "A forbidden space character is present at the index %d of the key definition '%s'",
+                                    firstIndexOfSpace, key));
                 }
             } else {
                 // we keep the spaces that we remove when the end key character is detected.

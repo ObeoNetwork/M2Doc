@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.parser;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -21,6 +22,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -52,6 +54,7 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
@@ -73,11 +76,18 @@ import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
+import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFldChar;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Sets.difference;
+
+import static org.obeonetwork.m2doc.provider.ProviderConstants.HIDE_TITLE_KEY;
+import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
 
 /**
  * DocumentParser reads a {@link XWPFDocument} and produces a abstract syntax
@@ -107,9 +117,9 @@ public class BodyParser {
      */
     private static final String IMAGE_FILE_NAME_KEY = "file";
     /**
-     * Diagram provider option name.
+     * Diagram or table provider option name.
      */
-    private static final String DIAGRAM_PROVIDER_KEY = "provider";
+    private static final String PROVIDER_KEY = "provider";
     /**
      * Diagram layers option name.
      */
@@ -143,14 +153,14 @@ public class BodyParser {
      */
     private static final String[] IMAGE_OPTION_SET =
 
-    {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
+            {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
     /**
      * Array of representation's options name constants.
      */
     private static final String[] DIAGRAM_OPTION_SET =
 
-    {DIAGRAM_PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY,
-        DIAGRAM_LAYERS_KEY, };
+            {PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY,
+                DIAGRAM_LAYERS_KEY, };
 
     /**
      * Rank of the option's value group in the matcher.
@@ -296,6 +306,8 @@ public class BodyParser {
                     result = TokenType.IMAGE;
                 } else if (code.startsWith(TokenType.DIAGRAM.getValue())) {
                     result = TokenType.DIAGRAM;
+                } else if (code.startsWith(TokenType.TABLE.getValue())) {
+                    result = TokenType.TABLE;
                 } else if (code.startsWith(TokenType.BOOKMARK.getValue())) {
                     result = TokenType.BOOKMARK;
                 } else if (code.startsWith(TokenType.ENDBOOKMARK.getValue())) {
@@ -398,8 +410,12 @@ public class BodyParser {
                     compound.getSubConstructs().add(parseRepresentation()); // XXX : change representation into diagram in the template
                                                                             // model.
                     break;
+                case TABLE:
+                    compound.getSubConstructs().add(parseTableClient());
+                    break;
                 default:
-                    throw new UnsupportedOperationException("shouldn't reach here");
+                    throw new UnsupportedOperationException(
+                            String.format("Developer error: TokenType %s is not supported", type));
             }
             type = getNextTokenType();
         }
@@ -610,29 +626,27 @@ public class BodyParser {
      *            the options set to take in consideration.
      * @param providerOptions
      *            the options handled by the provider.
+     * @param logError
+     *            Whether or not errors must be logged
      * @return if provider provide the image option.
      */
     private boolean checkImagesOptions(Map<String, String> options, AbstractImage image, String[] imageOptionSet,
             Set<String> providerOptions, boolean logError) {
         boolean check = true;
         Set<String> optionSet = Sets.newHashSet(imageOptionSet);
-        final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
         for (String key : options.keySet()) {
             if (!optionSet.contains(key) && !providerOptions.contains(key)) {
                 if (logError) {
-                    image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"), lastRun));
+                    validationError(image,
+                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"));
                 }
                 check = false;
             } else if (IMAGE_LEGEND_POSITION.equals(key)) {
                 String value = options.get(key);
                 if (logError) {
                     if (!IMAGE_LEGEND_ABOVE.equals(value) && !IMAGE_LEGEND_BELOW.equals(value)) {
-                        image.getValidationMessages()
-                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                        message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key,
-                                                "unknown option value (" + value + ")."),
-                                        lastRun));
+                        validationError(image, message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key,
+                                "unknown option value (" + value + ")."));
                     }
                 }
             }
@@ -654,9 +668,7 @@ public class BodyParser {
                 OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK, image);
         checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0), true);
         if (!options.containsKey(IMAGE_FILE_NAME_KEY)) {
-            final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
-            image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                    message(ParsingErrorMessage.INVALID_IMAGE_TAG), lastRun));
+            validationError(image, message(ParsingErrorMessage.INVALID_IMAGE_TAG));
         } else {
             image.setFileName(options.get(IMAGE_FILE_NAME_KEY));
             setImageOptions(image, options);
@@ -682,18 +694,16 @@ public class BodyParser {
                 try {
                     image.setHeight(Integer.parseInt(heightStr));
                 } catch (NumberFormatException e) {
-                    final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
-                    image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_HEIGHT_KEY, heightStr), lastRun));
+                    validationError(image,
+                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_HEIGHT_KEY, heightStr));
                 }
             } else if (IMAGE_WIDTH_KEY.equals(entry.getKey())) {
                 String heightStr = options.get(IMAGE_WIDTH_KEY);
                 try {
                     image.setWidth(Integer.parseInt(options.get(IMAGE_WIDTH_KEY)));
                 } catch (NumberFormatException e) {
-                    final XWPFRun lastRun = image.getRuns().get(image.getRuns().size() - 1);
-                    image.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_WIDTH_KEY, heightStr), lastRun));
+                    validationError(image,
+                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_WIDTH_KEY, heightStr));
                 }
             } else if (IMAGE_LEGEND_POSITION.equals(entry.getKey())) {
                 String value = options.get(IMAGE_LEGEND_POSITION);
@@ -800,12 +810,31 @@ public class BodyParser {
         optionToIgnore.add(IMAGE_LEGEND_POSITION);
         optionToIgnore.add(IMAGE_HEIGHT_KEY);
         optionToIgnore.add(IMAGE_WIDTH_KEY);
-        optionToIgnore.add(DIAGRAM_PROVIDER_KEY);
+        optionToIgnore.add(PROVIDER_KEY);
         optionToIgnore.add(DIAGRAM_LAYERS_KEY);
         if (representation.getProvider() != null) {
             setGenericOptions(representation, options, optionToIgnore, representation.getProvider());
         }
         return representation;
+    }
+
+    /**
+     * Parses a m:table tag.
+     * 
+     * @return the created {@link TableClient} object
+     * @throws DocumentParserException
+     *             if something wrong happens during parsing
+     */
+    private TableClient parseTableClient() throws DocumentParserException {
+        TableClient tableClient = (TableClient) EcoreUtil.create(TemplatePackage.Literals.TABLE_CLIENT);
+        OptionParser optionParser = new OptionParser();
+        String tag = readTag(tableClient, tableClient.getRuns());
+
+        Map<String, String> options = optionParser.parseOptions(tag, TokenType.TABLE, OPTION_GROUP_RANK,
+                OPTION_VAL_GROUP_RANK, tableClient);
+
+        assignTableProvider(tableClient, options);
+        return tableClient;
     }
 
     /**
@@ -837,13 +866,12 @@ public class BodyParser {
         IProvider result = null;
 
         // first if provider option exists, set this one
-        String providerQualifiedName = options.get(DIAGRAM_PROVIDER_KEY);
+        String providerQualifiedName = options.get(PROVIDER_KEY);
         if (providerQualifiedName != null) {
             result = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
             if (result == null) {
-                representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        "The image tag is referencing an unknown diagram provider : '" + providerQualifiedName + "'",
-                        representation.getRuns().get(1)));
+                validationError(representation, String.format(
+                        "The image tag is referencing an unknown diagram provider : '%s'", providerQualifiedName));
                 return null;
             }
         }
@@ -853,9 +881,8 @@ public class BodyParser {
             List<IProvider> providers = ProviderRegistry.INSTANCE.getDiagramProviders();
             // no registered providers
             if (providers.isEmpty()) {
-                final XWPFRun lastRun = representation.getRuns().get(representation.getRuns().size() - 1);
-                representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        "No image tag provider is found. Please add one with diagramProvider extension.", lastRun));
+                validationError(representation,
+                        "No image tag provider has been found. Please add one with diagramProvider extension.");
             }
 
             // search best provider
@@ -863,19 +890,65 @@ public class BodyParser {
 
             // check errors
             if (result == null) {
-                final XWPFRun lastRun = representation.getRuns().get(representation.getRuns().size() - 1);
-                representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        "No diagram provider found for the image tag", lastRun));
+                validationError(representation, "No diagram provider found for the image tag");
             } else if (!(result instanceof AbstractDiagramProvider)) {
-                final XWPFRun lastRun = representation.getRuns().get(representation.getRuns().size() - 1);
-                representation.getValidationMessages()
-                        .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                "The image tag is referencing a provider that has not been made to handle diagram tags.",
-                                lastRun));
+                validationError(representation,
+                        "The image tag is referencing a provider that has not been made to handle diagram tags.");
             }
         }
 
         return result;
+    }
+
+    /**
+     * Get diagram provider matching options and set it to the given {@link TableClient}.
+     * 
+     * @param tableClient
+     *            Representation
+     * @param options
+     *            Map
+     */
+    private void assignTableProvider(TableClient tableClient, Map<String, String> options) {
+        // if provider option exists, set this one
+        String providerQualifiedName = options.get(PROVIDER_KEY);
+        if (providerQualifiedName != null) {
+            IProvider provider = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
+            if (!(provider instanceof AbstractTableProvider)) {
+                validationError(tableClient,
+                        String.format(
+                                "The table tag is referencing an unknown or invalid table provider in the 'provider' argument : '%s'",
+                                providerQualifiedName));
+                provider = null;
+            } else if (OptionChecker.check(provider.getOptionTypes()).ignore(PROVIDER_KEY, HIDE_TITLE_KEY)
+                    .against(options)) {
+                validationError(tableClient,
+                        String.format(
+                                "The table tag is referencing a provider that doesn't support the other arguments provided in the tag : '%s'",
+                                providerQualifiedName));
+                provider = null;
+            }
+        } else {
+            List<AbstractTableProvider> providers = ProviderRegistry.INSTANCE.getTableProviders();
+            if (providers.isEmpty()) {
+                validationError(tableClient,
+                        "No table tag provider has been found. Please add one with tableProvider extension.");
+            } else {
+                // let's find the best provider
+                for (AbstractTableProvider provider : providers) {
+                    if (OptionChecker.check(provider.getOptionTypes()).ignore(PROVIDER_KEY, HIDE_TITLE_KEY)
+                            .against(options)) {
+                        tableClient.setProvider(provider);
+                        setGenericOptions(tableClient, options, ImmutableSet.of(PROVIDER_KEY), provider);
+                        break;
+                    }
+                }
+                if (tableClient.getProvider() == null) {
+                    // No relevant provider has been found
+                    validationError(tableClient,
+                            "No table tag provider matching the tag arguments has been found. Please use arguments compatible with the table providers in use.");
+                }
+            }
+        }
     }
 
     /**
@@ -945,9 +1018,7 @@ public class BodyParser {
                 readTag(conditionnal, conditionnal.getClosingRuns());
                 break; // we just finish the current conditionnal.
             default:
-                final XWPFRun lastRun = conditionnal.getRuns().get(conditionnal.getRuns().size() - 1);
-                conditionnal.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        message(ParsingErrorMessage.CONDTAGEXPEXTED), lastRun));
+                validationError(conditionnal, message(ParsingErrorMessage.CONDTAGEXPEXTED));
         }
         return conditionnal;
     }
@@ -969,21 +1040,15 @@ public class BodyParser {
         // extract the variable;
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
-            final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
-            repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                    "Malformed tag gd:for, no '|' found.", lastRun));
+            validationError(repetition, "Malformed tag gd:for, no '|' found.");
         } else {
             String iterationVariable = tagText.substring(0, indexOfPipe).trim();
             if ("".equals(iterationVariable)) {
-                final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
-                repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        "Malformed tag gd:for : no iteration variable specified.", lastRun));
+                validationError(repetition, "Malformed tag gd:for : no iteration variable specified.");
             }
             repetition.setIterationVar(iterationVariable);
             if (tagText.length() == indexOfPipe + 1) {
-                final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
-                repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        "Malformed tag gd:for : no query expression specified." + tagText, lastRun));
+                validationError(repetition, "Malformed tag gd:for : no query expression specified." + tagText);
             }
             String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
             AstResult result = queryParser.build(query);
@@ -1139,6 +1204,75 @@ public class BodyParser {
         }
 
         return result;
+    }
+
+    /**
+     * Class to easily validate a list of options against options declared by a provider.
+     * 
+     * @author ldelaigue
+     */
+    private static final class OptionChecker {
+        /** The provider options, considered mandatory. */
+        private final Map<String, OptionType> providerOptions;
+        /** The options to ignore. */
+        private Set<String> optionsToIgnore;
+
+        /**
+         * Constructor.
+         * 
+         * @param providerOptions
+         *            The map opf provider options, cannot be <code>null</code>
+         */
+        private OptionChecker(Map<String, OptionType> providerOptions) {
+            this.providerOptions = checkNotNull(providerOptions);
+            optionsToIgnore = new LinkedHashSet<String>();
+        }
+
+        /**
+         * Static method to instantiate an OptionChecker more easily.
+         * 
+         * @param providerOptions
+         *            The provider options, cannot be <code>null</code>
+         * @return A new instance of OptionChecker.
+         */
+        public static OptionChecker check(Map<String, OptionType> providerOptions) {
+            return new OptionChecker(providerOptions);
+        }
+
+        /**
+         * Register the given option names as options to ignore. If these options are provided but are not present in the provider options,
+         * they won't cause the candidate to be rejected.
+         * 
+         * @param options
+         *            The options to ignore
+         * @return this, for a fluent API.
+         */
+        public OptionChecker ignore(String... options) {
+            for (String option : options) {
+                if (option != null) {
+                    optionsToIgnore.add(option);
+                }
+            }
+            return this;
+        }
+
+        /**
+         * Check whether the given map of options is compatible with the provider options, taking into account the options to ignore and the
+         * rejectAdditionalOptions flag.
+         * 
+         * @param options
+         *            Options to check
+         * @return <code>true</code> if the given options are compatible with the provider options, taking the checker configuration into
+         *         account (options to ignore, reject additinoal options).
+         */
+        public boolean against(Map<String, String> options) {
+            for (Entry<String, OptionType> entry : providerOptions.entrySet()) {
+                if (!options.containsKey(entry.getKey())) {
+                    return false;
+                }
+            }
+            return difference(difference(options.keySet(), providerOptions.keySet()), optionsToIgnore).isEmpty();
+        }
     }
 
 }

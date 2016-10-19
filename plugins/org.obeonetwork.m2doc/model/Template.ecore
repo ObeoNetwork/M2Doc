@@ -131,4 +131,5 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//AstResult"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="#//AstResult"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TableClient" eSuperTypes="#//AbstractProviderClient"/>
 </ecore:EPackage>
