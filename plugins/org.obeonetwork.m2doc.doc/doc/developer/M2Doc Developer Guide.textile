@@ -93,16 +93,23 @@ If we have a provider tag, we try to get this provider. If it is not found, we g
 
 The provider tag is optional, if your provider is by default, it will be tested before the other ones. That allows to write @<m:diagram title="'myDiagram'">@ instead of   @<m:diagram title="'myDiagram'" provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider">@
 
+h3. Registering a table provider
 
-h4. Error handling
+In order to handle the @{m:wtable}@ tag, an extension mechanism must be used.
 
-If some parameters are missing or are incorrect, you can warn M2Doc by throwing a ProviderException with the wanted message. 
- When M2Doc catch this exception it will insert your message at the tag position.
+The extension point simply requires a qualified class name, and the provided class _must_ extend @org.obeonetwork.m2doc.provider.AbstractTableProvider@.
 
+The implementation is responsible for providing a table model defined by the classes @MTable@, @MColumn@, @MRow@, @MCell@, and @MStyle@. These classes are declared in @AbstractTableProvider@.
+
+h3. Error handling in providers
+
+Error management in providers (diagram, table, or whatever kind of provider may appear in the future), uses @ProviderException@.
+If some parameters are missing or are incorrect, you can warn M2Doc by throwing a @ProviderException@ with the desired message. 
+ When M2Doc catches this exception it will insert the exception message at the tag position in the output document.
 
 h2. Extending other tags
 
-Currently, only the tag "diagram" can be extended. But any new tag that will be added and which will be considered as extensible could have providers attached to it.  
+Currently, only the tags 'diagram' and 'wtable' can be extended. But any new tag that will be added and which will be considered as extensible could have providers attached to it.  
 
 
 h2. Providing AQL services by services registry

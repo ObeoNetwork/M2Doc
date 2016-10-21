@@ -56,7 +56,7 @@ h4. Sirius diagram provider
 
 M2doc gives a way to insert Sirius diagrams: you have to install the Sirius provider feature coming with M2Doc installation.
 
-The diagram tag has the following tag: @{m:diagram}@, here the different options:
+The diagram tag has the following syntax: @{m:diagram}@, with the following options:
 
 * __title__ : AQL expression, mandatory if you want to get a diagram by its name. Be careful, as it is an AQL expression, if you just want to put a string, you have to add some'' around the string: title:"'diagram name'",
 
@@ -83,6 +83,30 @@ Some examples:
 * @m:diagram title:"'Diagram name'" layers:"layer1, layer2"@: get the first diagram named 'Diagram name' in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
 
 **Warning**: do not forget the ' around the string in an AQL Expression: @title:"'Diagram name'"@
+
+h4. Sirius table providers
+
+M2Doc provides a way to insert tables in a word document that will reproduce sirius table representations.
+
+The table tag has the following syntax: @{m:wtable}@. We chose to use 'wtable' instead of 'table' to avoid as much as possible name conflicts with existing M2Doc templates in which 'table' could have been used as a variable name.
+
+M2Doc provides two implementations of table providers, one based on the table title, the other based on a representation ID and a model object.
+
+* By title:
+** __title__ AQL expression, used to identify the table(s) to output in the document. The AQL expression is evaluated, and only those tables that have this __title__ are output in the document.
+* By ID of representation and model object:
+** __descriptionId__ String, represents the ID of the table description in the Sirius design model (*.odesign file)
+** __object__ AQL Expression, used to identify the object on which to retrieve the table(s). All the table representations described by __descriptionId__ and attached to this __object__ will be output in the document.
+* Generic options:
+** __hideTitle__: boolean, defaults to @false@. Can be used to not insert a title above the table in the output document.
+** __provider__: String, can be used to explicitly use a registered table provider. The option must then contain the qualified name of the provider class to use. This class must however be registered by the extension point mechanism.
+
+Some examples:
+
+* @m:wtable title:"'Table name'" hideTitle:"true"@: Generate all the table representations named 'Table name' in the modeling project into the output document, without preceding these tables by their title.
+* @m:wtable descriptionId:"<Technical ID of table description, as declared in odesign>" object:"myVariable"@: Generate all the table representations attached to the object referred by @myVariable@ (which could be a more complex AQL expression) and whose representation ID is '<Technical ID of table description, as declared in odesign>' into the output document.
+
+**Warning**: do not forget the single quotes ' around the string in an AQL Expression: @title:"'Table name'"@. The description ID does not need such quotes because it is of type String.
 
 h3. Document generation and style
 

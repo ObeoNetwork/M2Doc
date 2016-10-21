@@ -84,12 +84,31 @@
 			<code>&lt;m:diagram title="'myDiagram'"&gt;</code> instead of   
 			<code>&lt;m:diagram title="'myDiagram'" provider:"org.obeonetwork.m2doc.sirius.SiriusDiagramByTitleProvider"&gt;</code>
 		</p>
-		<h4 id="Errorhandling">Error handling</h4>
-		<p>If some parameters are missing or are incorrect, you can warn M2Doc by throwing a ProviderException with the wanted message. 
-			<br/> When M2Doc catch this exception it will insert your message at the tag position.
+		<h3 id="Registeringatableprovider">Registering a table provider</h3>
+		<p>In order to handle the 
+			<code>{m:wtable}</code> tag, an extension mechanism must be used.
+		</p>
+		<p>The extension point simply requires a qualified class name, and the provided class 
+			<em>must</em> extend 
+			<code>org.obeonetwork.m2doc.provider.AbstractTableProvider</code>.
+		</p>
+		<p>The implementation is responsible for providing a table model defined by the classes 
+			<code>MTable</code>, 
+			<code>MColumn</code>, 
+			<code>MRow</code>, 
+			<code>MCell</code>, and 
+			<code>MStyle</code>. These classes are declared in 
+			<code>AbstractTableProvider</code>.
+		</p>
+		<h3 id="Errorhandlinginproviders">Error handling in providers</h3>
+		<p>Error management in providers (diagram, table, or whatever kind of provider may appear in the future), uses 
+			<code>ProviderException</code>.
+			<br/>If some parameters are missing or are incorrect, you can warn M2Doc by throwing a 
+			<code>ProviderException</code> with the desired message. 
+			<br/> When M2Doc catches this exception it will insert the exception message at the tag position in the output document.
 		</p>
 		<h2 id="Extendingothertags">Extending other tags</h2>
-		<p>Currently, only the tag &#171;diagram&#187; can be extended. But any new tag that will be added and which will be considered as extensible could have providers attached to it.  </p>
+		<p>Currently, only the tags &#8249;diagram&#8250; and &#8249;wtable&#8250; can be extended. But any new tag that will be added and which will be considered as extensible could have providers attached to it.  </p>
 		<h2 id="ProvidingAQLservicesbyservicesregistry">Providing AQL services by services registry</h2>
 		<p>One of the nice feature of the AQL engine is that the set of services is extensible at will. In the field of document generation, it means that we may provide, for a given application, a set of services that are tailored to ease the development of templates against a given meta model. </p>
 		<p>As the technology matures, we will also probably provide a set of services that are of general interest for model to document generation. </p>

@@ -65,8 +65,8 @@
 		<p>M2Doc provides a way to extend its information retrieval for a tag by registering a provider by an extension point. Each provider uses its own options in addition of the one generically provided par M2Doc core. Many providers can be associated to a same kind of tag and any one of those can be choose to retrieve information in a tag. </p>
 		<h4 id="Siriusdiagramprovider">Sirius diagram provider</h4>
 		<p>M2doc gives a way to insert Sirius diagrams: you have to install the Sirius provider feature coming with M2Doc installation.</p>
-		<p>The diagram tag has the following tag: 
-			<code>{m:diagram}</code>, here the different options:
+		<p>The diagram tag has the following syntax: 
+			<code>{m:diagram}</code>, with the following options:
 		</p>
 		<ul>
 			<li>
@@ -119,6 +119,59 @@
 		<p>
 			<b>Warning</b>: do not forget the ' around the string in an AQL Expression: 
 			<code>title:"'Diagram name'"</code>
+		</p>
+		<h4 id="Siriustableproviders">Sirius table providers</h4>
+		<p>M2Doc provides a way to insert tables in a word document that will reproduce sirius table representations.</p>
+		<p>The table tag has the following syntax: 
+			<code>{m:wtable}</code>. We chose to use &#8249;wtable&#8250; instead of &#8249;table&#8250; to avoid as much as possible name conflicts with existing M2Doc templates in which &#8249;table&#8250; could have been used as a variable name.
+		</p>
+		<p>M2Doc provides two implementations of table providers, one based on the table title, the other based on a representation ID and a model object.</p>
+		<ul>
+			<li>By title:
+				<ul>
+					<li>
+						<i>title</i> AQL expression, used to identify the table(s) to output in the document. The AQL expression is evaluated, and only those tables that have this 
+						<i>title</i> are output in the document.
+					</li>
+				</ul>
+			</li>
+			<li>By ID of representation and model object:
+				<ul>
+					<li>
+						<i>descriptionId</i> String, represents the ID of the table description in the Sirius design model (*.odesign file)
+					</li>
+					<li>
+						<i>object</i> AQL Expression, used to identify the object on which to retrieve the table(s). All the table representations described by 
+						<i>descriptionId</i> and attached to this 
+						<i>object</i> will be output in the document.
+					</li>
+				</ul>
+			</li>
+			<li>Generic options:
+				<ul>
+					<li>
+						<i>hideTitle</i>: boolean, defaults to 
+						<code>false</code>. Can be used to not insert a title above the table in the output document.
+					</li>
+					<li>
+						<i>provider</i>: String, can be used to explicitly use a registered table provider. The option must then contain the qualified name of the provider class to use. This class must however be registered by the extension point mechanism.
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<p>Some examples:</p>
+		<ul>
+			<li>
+				<code>m:wtable title:"'Table name'" hideTitle:"true"</code>: Generate all the table representations named &#8249;Table name&#8250; in the modeling project into the output document, without preceding these tables by their title.
+			</li>
+			<li>
+				<code>m:wtable descriptionId:"&lt;Technical ID of table description, as declared in odesign&gt;" object:"myVariable"</code>: Generate all the table representations attached to the object referred by 
+				<code>myVariable</code> (which could be a more complex AQL expression) and whose representation ID is &#8249;&lt;Technical ID of table description, as declared in odesign&gt;&#8250; into the output document.
+			</li>
+		</ul>
+		<p>
+			<b>Warning</b>: do not forget the single quotes ' around the string in an AQL Expression: 
+			<code>title:"'Table name'"</code>. The description ID does not need such quotes because it is of type String.
 		</p>
 		<h3 id="Documentgenerationandstyle">Document generation and style</h3>
 		<p>The style of the fragments of generated documents is determined by the style of the templates parts. </p>
