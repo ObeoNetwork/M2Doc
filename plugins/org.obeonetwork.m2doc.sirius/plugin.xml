@@ -20,6 +20,12 @@
       <diagramProvider
             diagramClass="org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider">
       </diagramProvider>
+      <tableProvider
+            class="org.obeonetwork.m2doc.sirius.providers.tables.SiriusTableByDescriptionIdProvider">
+      </tableProvider>
+      <tableProvider
+            class="org.obeonetwork.m2doc.sirius.providers.tables.SiriusTableByTitleProvider">
+      </tableProvider>
    </extension>
    <extension
          point="org.obeonetwork.m2doc.configuration">

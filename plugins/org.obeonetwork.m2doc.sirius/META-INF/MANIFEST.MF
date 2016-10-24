@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.gmf.runtime.diagram.ui,
  org.eclipse.gmf.runtime.diagram.ui.render,
  org.eclipse.sirius.diagram.ui,
- org.eclipse.sirius.ext.base
+ org.eclipse.sirius.ext.base,
+ org.eclipse.sirius.table
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.sirius,
