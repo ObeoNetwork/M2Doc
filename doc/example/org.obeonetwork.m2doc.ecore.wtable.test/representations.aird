@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:table="http://www.eclipse.org/sirius/table/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/table/description/1.1.0 http://www.eclipse.org/sirius/table/1.1.0#//description" xmi:id="_BxgucJdyEeaD9NNzTI2fKw" selectedViews="_CNJhkJdyEeaD9NNzTI2fKw" version="11.0.0.201604141600">
+  <semanticResources>My.ecore</semanticResources>
+  <semanticResources>templateTest.genconf</semanticResources>
+  <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
+  <ownedViews xmi:type="viewpoint:DView" xmi:id="_CNJhkJdyEeaD9NNzTI2fKw">
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']"/>
+    <ownedRepresentations xmi:type="table:DTable" xmi:id="_DFiiIJdyEeaD9NNzTI2fKw" name="new Classes and Interfaces" headerColumnWidth="80">
+      <target xmi:type="ecore:EPackage" href="My.ecore#/"/>
+      <lines xmi:type="table:DLine" xmi:id="_DFiiIZdyEeaD9NNzTI2fKw" label="ClassA">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassA"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassA"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiIpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_DFiiI5dyEeaD9NNzTI2fKw" label="ClassB">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_DFiiJJdyEeaD9NNzTI2fKw" label="X" column="_DFiiO5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_DFiiJZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiJpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_DFiiJ5dyEeaD9NNzTI2fKw" label="ClassC">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_DFiiKJdyEeaD9NNzTI2fKw" label="X" column="_DFiiO5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_DFiiKZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiKpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_DFiiK5dyEeaD9NNzTI2fKw" label="ClassD">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_DFiiLJdyEeaD9NNzTI2fKw" label="X" column="_DFiiO5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_DFiiLZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <cells xmi:type="table:DCell" xmi:id="_DFiiLpdyEeaD9NNzTI2fKw" label="X" column="_DFiiPZdyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_DFiiL5dyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <cells xmi:type="table:DCell" xmi:id="_DFiiMJdyEeaD9NNzTI2fKw" label="X" column="_DFiiP5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_DFiiMZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiMpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_DFiiM5dyEeaD9NNzTI2fKw" label="ClassE">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_DFiiNJdyEeaD9NNzTI2fKw" label="X" column="_DFiiO5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_DFiiNZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <cells xmi:type="table:DCell" xmi:id="_DFiiNpdyEeaD9NNzTI2fKw" label="X" column="_DFiiP5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_DFiiN5dyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiOJdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_DFiiOZdyEeaD9NNzTI2fKw" label="ClassF">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassF"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassF"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiOpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_DFiiO5dyEeaD9NNzTI2fKw" label="Itf1" cells="_DFiiJJdyEeaD9NNzTI2fKw _DFiiKJdyEeaD9NNzTI2fKw _DFiiLJdyEeaD9NNzTI2fKw _DFiiNJdyEeaD9NNzTI2fKw" width="60">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Itf1"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Itf1"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiPJdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_DFiiPZdyEeaD9NNzTI2fKw" label="Itf2" cells="_DFiiLpdyEeaD9NNzTI2fKw" width="60">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Itf2"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Itf2"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiPpdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_DFiiP5dyEeaD9NNzTI2fKw" label="Interface3" cells="_DFiiMJdyEeaD9NNzTI2fKw _DFiiNpdyEeaD9NNzTI2fKw" width="95">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Interface3"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Interface3"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiQJdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_DFiiQZdyEeaD9NNzTI2fKw" label="Interface4" width="95">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Interface4"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Interface4"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_DFiiQpdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <description xmi:type="description_1:CrossTableDescription" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']"/>
+    </ownedRepresentations>
+    <ownedRepresentations xmi:type="table:DTable" xmi:id="_ERD6EJdyEeaD9NNzTI2fKw" name="Other table" headerColumnWidth="80">
+      <target xmi:type="ecore:EPackage" href="My.ecore#/"/>
+      <lines xmi:type="table:DLine" xmi:id="_ERD6EZdyEeaD9NNzTI2fKw" label="ClassA">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassA"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassA"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6EpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_ERD6E5dyEeaD9NNzTI2fKw" label="ClassB">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_ERD6FJdyEeaD9NNzTI2fKw" label="X" column="_ERD6K5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassB"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_ERD6FZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6FpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_ERD6F5dyEeaD9NNzTI2fKw" label="ClassC">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_ERD6GJdyEeaD9NNzTI2fKw" label="X" column="_ERD6K5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassC"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_ERD6GZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6GpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_ERD6G5dyEeaD9NNzTI2fKw" label="ClassD">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_ERD6HJdyEeaD9NNzTI2fKw" label="X" column="_ERD6K5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_ERD6HZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <cells xmi:type="table:DCell" xmi:id="_ERD6HpdyEeaD9NNzTI2fKw" label="X" column="_ERD6LZdyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_ERD6H5dyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <cells xmi:type="table:DCell" xmi:id="_ERD6IJdyEeaD9NNzTI2fKw" label="X" column="_ERD6L5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassD"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_ERD6IZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6IpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_ERD6I5dyEeaD9NNzTI2fKw" label="ClassE">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <cells xmi:type="table:DCell" xmi:id="_ERD6JJdyEeaD9NNzTI2fKw" label="X" column="_ERD6K5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_ERD6JZdyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <cells xmi:type="table:DCell" xmi:id="_ERD6JpdyEeaD9NNzTI2fKw" label="X" column="_ERD6L5dyEeaD9NNzTI2fKw">
+          <target xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassE"/>
+          <currentStyle xmi:type="table:DCellStyle" xmi:id="_ERD6J5dyEeaD9NNzTI2fKw" labelSize="14" defaultBackgroundStyle="true" foregroundColor="224,133,3" backgroundColor="204,242,166">
+            <labelFormat>italic</labelFormat>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>underline</labelFormat>
+            <labelFormat>strike_through</labelFormat>
+            <foregroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+            <backgroundStyleOrigin xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+          </currentStyle>
+          <intersectionMapping xmi:type="description_1:IntersectionMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@intersection.0"/>
+        </cells>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6KJdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_ERD6KZdyEeaD9NNzTI2fKw" label="ClassF">
+        <target xmi:type="ecore:EClass" href="My.ecore#//ClassF"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//ClassF"/>
+        <originMapping xmi:type="description_1:LineMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedLineMappings[name='CT_ClassInt_Class_Line']"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6KpdyEeaD9NNzTI2fKw" labelSize="10" defaultForegroundStyle="true" defaultBackgroundStyle="true" foregroundColor="233,185,110" backgroundColor="194,239,255">
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </lines>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_ERD6K5dyEeaD9NNzTI2fKw" label="Itf1" cells="_ERD6FJdyEeaD9NNzTI2fKw _ERD6GJdyEeaD9NNzTI2fKw _ERD6HJdyEeaD9NNzTI2fKw _ERD6JJdyEeaD9NNzTI2fKw" width="60">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Itf1"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Itf1"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6LJdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_ERD6LZdyEeaD9NNzTI2fKw" label="Itf2" cells="_ERD6HpdyEeaD9NNzTI2fKw" width="60">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Itf2"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Itf2"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6LpdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_ERD6L5dyEeaD9NNzTI2fKw" label="Interface3" cells="_ERD6IJdyEeaD9NNzTI2fKw _ERD6JpdyEeaD9NNzTI2fKw" width="95">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Interface3"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Interface3"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6MJdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <columns xmi:type="table:DTargetColumn" xmi:id="_ERD6MZdyEeaD9NNzTI2fKw" label="Interface4" width="95">
+        <target xmi:type="ecore:EClass" href="My.ecore#//Interface4"/>
+        <semanticElements xmi:type="ecore:EClass" href="My.ecore#//Interface4"/>
+        <originMapping xmi:type="description_1:ElementColumnMapping" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']/@ownedColumnMappings.0"/>
+        <currentStyle xmi:type="table:DTableElementStyle" xmi:id="_ERD6MpdyEeaD9NNzTI2fKw" labelSize="12" defaultForegroundStyle="true">
+          <labelFormat>italic</labelFormat>
+          <labelFormat>bold</labelFormat>
+        </currentStyle>
+      </columns>
+      <description xmi:type="description_1:CrossTableDescription" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']/@ownedRepresentations[name='CT_Itf_Classes']"/>
+    </ownedRepresentations>
+  </ownedViews>
+</viewpoint:DAnalysis>
