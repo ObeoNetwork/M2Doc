@@ -870,8 +870,9 @@ public class BodyParser {
         if (providerQualifiedName != null) {
             result = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
             if (result == null) {
-                validationError(representation, String.format(
-                        "The image tag is referencing an unknown diagram provider : '%s'", providerQualifiedName));
+            	representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        String.format("The image tag is referencing an unknown diagram provider : '%s'", providerQualifiedName),
+                        representation.getRuns().get(1)));
                 return null;
             }
         }

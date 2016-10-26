@@ -18,6 +18,8 @@ location Eclipse "http://download.eclipse.org/releases/neon" {
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy
 	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
 
 	org.eclipse.acceleo.query lazy
 	org.eclipse.acceleo.annotations lazy
