@@ -263,7 +263,7 @@ public class OptionParserTest {
                 construct);
         assertEquals(1, construct.getValidationMessages().size());
         assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Forbidden characters are present after the key value separator (\"value2\") of the key : 'option2'. Expected character is \"'\"",
+                "Forbidden characters (\"value2\") are present after the key value separator of the key : 'option2'. Expected character is \"'\"",
                 construct.getStyleRun());
         assertEquals(3, parsedOptions.size());
         assertEquals("value1", parsedOptions.get("option1"));
@@ -291,7 +291,7 @@ public class OptionParserTest {
                 construct);
         assertEquals(2, construct.getValidationMessages().size());
         assertTemplateValidationMessage(construct.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Forbidden characters are present after the key value separator (\"value1\") of the key : 'option1'. Expected character is \"'\"",
+                "Forbidden characters (\"value1\") are present after the key value separator of the key : 'option1'. Expected character is \"'\"",
                 construct.getStyleRun());
         assertTemplateValidationMessage(construct.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "The start of an option's key has been read but the end of it and the value were missing : 'value2\"'.",

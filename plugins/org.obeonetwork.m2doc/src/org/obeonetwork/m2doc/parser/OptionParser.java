@@ -118,7 +118,7 @@ public class OptionParser {
                 } else if (!keyParsed && keyDetected) {
                     validationError(construct,
                             String.format(
-                                    "The start of an option's key has been read but the end of it and the value were missing : '%s'",
+                                    "The start of an option's key has been read but the end of it and the value were missing : '%s'.",
                                     key));
                     result.put(key.trim(), value);
                 }
@@ -234,7 +234,7 @@ public class OptionParser {
                     // we have a space between two key characters. So we log an error message.
                     validationError(construct,
                             String.format(
-                                    "A forbidden space character is present at the index %d of the key definition '%s'",
+                                    "A forbidden space character is present at the index %d of the key definition '%s'.",
                                     firstIndexOfSpace, key));
                 }
             } else {
