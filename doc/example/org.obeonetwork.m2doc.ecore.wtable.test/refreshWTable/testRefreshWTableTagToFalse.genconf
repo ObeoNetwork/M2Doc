@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="templateTest" templateFileName="refreshWTable/templateWTable.docx" resultFileName="refreshWTable/resultWTable.docx">
+  <definitions xsi:type="genconf:ModelDefinition" key="ePackage">
+    <value href="../My.ecore#/"/>
+    <type xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+  </definitions>
+  <packagesNSURI>http://www.eclipse.org/emf/2002/Ecore</packagesNSURI>
+  <packagesNSURI>http://www.obeonetwork.org/m2doc/genconf/1.0</packagesNSURI>
+  <servicesTokens>default</servicesTokens>
+</genconf:Generation>

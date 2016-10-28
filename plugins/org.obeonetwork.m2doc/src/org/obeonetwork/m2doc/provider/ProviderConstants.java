@@ -38,6 +38,11 @@ public interface ProviderConstants {
      */
     String DIAGRAM_ACTIVATED_LAYERS_KEY = "layers";
     /**
+     * The key used in the map passed to {@link IProvider} to indicate if representations (Sirius diagram or table) should be
+     * refreshed before M2Doc generation.
+     */
+    String REFRESH_REPRESENTATIONS_KEY = "refreshRepresentations";
+    /**
      * The key of the 'hide title' parameter for the m:wtable tag.
      */
     String HIDE_TITLE_KEY = "hideTitle";

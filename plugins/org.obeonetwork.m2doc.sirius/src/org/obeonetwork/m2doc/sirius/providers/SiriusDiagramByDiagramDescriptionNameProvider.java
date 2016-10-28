@@ -35,6 +35,7 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
+import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
  * {@link SiriusDiagramByDiagramDescriptionNameProvider} are used to get Sirius diagrams images from all representations using a given root
@@ -104,6 +105,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
         Object targetRootObject = parameters.get(TARGET_ROOT_OBJECT_KEY);
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
+        refreshRepresentations = OptionUtil.mustRefreshRepresentation(parameters);
         if (!(diagramDescriptionName instanceof String)) {
             throw new ProviderException(
                     "Image cannot be computed because no diagram description name has been provided to the provider \""

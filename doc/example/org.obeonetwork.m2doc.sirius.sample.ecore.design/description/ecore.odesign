@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/table/description/1.1.0" name="ecore" version="11.0.0.201601261200">
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:description_2="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" name="ecore" version="11.0.0.201601261200">
   <ownedViewpoints name="VP_Ecore" label="M2Doc Test" modelFileExtension="ecore">
     <ownedRepresentations xsi:type="description_1:CrossTableDescription" documentation="This is a test representation to validate the behaviour of cross-tables in M2Doc.&#xD;&#xA;The viewpoint declares a cross-table that relates interfaces to classes, where cells are checked if the class implements the interface." name="CT_Itf_Classes" label="Classes and Interfaces" domainClass="ecore.EPackage">
       <metamodel href="http://www.eclipse.org/emf/2002/Ecore#/"/>
@@ -33,6 +33,17 @@
           <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
         </defaultBackground>
       </intersection>
+    </ownedRepresentations>
+    <ownedRepresentations xsi:type="description_2:DiagramDescription" name="AllClasses" domainClass="EPackage" enablePopupBars="true">
+      <defaultLayer name="Default">
+        <nodeMappings name="class" semanticCandidatesExpression="feature:eClassifiers" domainClass="EClass">
+          <style xsi:type="style:EllipseNodeDescription" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+          </style>
+        </nodeMappings>
+      </defaultLayer>
     </ownedRepresentations>
   </ownedViewpoints>
 </description:Group>

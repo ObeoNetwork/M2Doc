@@ -50,6 +50,7 @@ import org.eclipse.sirius.diagram.business.api.query.DDiagramQuery;
 import org.eclipse.sirius.diagram.description.DescriptionPackage;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
+import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
 import org.eclipse.sirius.diagram.ui.tools.api.part.DiagramEditPartService;
 import org.eclipse.sirius.ui.business.api.dialect.DialectEditor;
 import org.eclipse.sirius.ui.business.api.session.IEditingSession;
@@ -67,7 +68,14 @@ import org.obeonetwork.m2doc.sirius.commands.ExportRepresentationCommand;
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagramProvider {
+
+    /**
+     * Boolean to know if diagram should be refresh before M2Doc generation.
+     * True mean refresh, and default value is false.
+     */
+    protected boolean refreshRepresentations;
 
     /**
      * Replace forbidden characters with "_" in a filename.
@@ -134,15 +142,25 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
      */
     protected DDiagram getDDiagramToExport(final DDiagram diagram, final List<Layer> layers, final Session session,
             boolean isDiagramOpened) {
-        // if layers list is empty return the current diagram
-        if (layers.isEmpty()) {
+        // No refresh if no layers case and no boolean refresh at true
+        if (layers.isEmpty() && !refreshRepresentations) {
             return diagram;
         }
-        // else copy diagram and apply all listed layers
-        // Warning: modify the sirius session
+
+        // create GMFDiagramUpdater
+        GMFDiagramUpdater gmfDiagramUpdater = null;
+        if (!isDiagramOpened) {
+            gmfDiagramUpdater = new GMFDiagramUpdater(session, diagram);
+        }
+
         ExportRepresentationCommand exportRepresentationCommand = new ExportRepresentationCommand(
                 session.getTransactionalEditingDomain(), layers, diagram, session, isDiagramOpened);
         session.getTransactionalEditingDomain().getCommandStack().execute(exportRepresentationCommand);
+
+        // remove GMFDiagramUpdater
+        if (gmfDiagramUpdater != null) {
+            gmfDiagramUpdater.dispose();
+        }
         return exportRepresentationCommand.getExportedDiagram();
     }
 
@@ -206,6 +224,8 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
                             try {
                                 DiagramEditPart diagramEditPart = createDiagramEditPart(diagram, shell,
                                         preferencesHint);
+                                SiriusCanonicalLayoutHandler.launchSynchroneArrangeCommand(diagramEditPart);
+                                diagramEditPart.getViewer().flush();
                                 Assert.isNotNull(diagramEditPart);
                                 DiagramGenerator generator = copyToImage(diagramEditPart, destination, format, monitor);
                                 partInfo = generator.getDiagramPartInfo(diagramEditPart);
