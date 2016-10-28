@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:table="http://www.eclipse.org/sirius/table/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/table/description/1.1.0 http://www.eclipse.org/sirius/table/1.1.0#//description" xmi:id="_BxgucJdyEeaD9NNzTI2fKw" selectedViews="_CNJhkJdyEeaD9NNzTI2fKw" version="11.0.0.201604141600">
   <semanticResources>My.ecore</semanticResources>
-  <semanticResources>templateTest.genconf</semanticResources>
   <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
+  <semanticResources>testInvalidTables.genconf</semanticResources>
+  <semanticResources>testValidTables.genconf</semanticResources>
   <ownedViews xmi:type="viewpoint:DView" xmi:id="_CNJhkJdyEeaD9NNzTI2fKw">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/resource/org.obeonetwork.m2doc.sirius.sample.ecore.design/description/ecore.odesign#//@ownedViewpoints[name='VP_Ecore']"/>
     <ownedRepresentations xmi:type="table:DTable" xmi:id="_DFiiIJdyEeaD9NNzTI2fKw" name="new Classes and Interfaces" headerColumnWidth="80">

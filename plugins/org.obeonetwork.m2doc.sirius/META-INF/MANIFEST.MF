@@ -18,5 +18,6 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.sirius,
  org.obeonetwork.m2doc.sirius.commands,
  org.obeonetwork.m2doc.sirius.providers,
- org.obeonetwork.m2doc.sirius.providers.configuration
+ org.obeonetwork.m2doc.sirius.providers.configuration,
+ org.obeonetwork.m2doc.sirius.providers.tables
 Bundle-Vendor: %providerName
