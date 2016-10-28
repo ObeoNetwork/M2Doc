@@ -30,6 +30,7 @@ import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderException;
+import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
  * {@link SiriusTableByDescriptionIdProvider} are used to get Sirius table representations using a given root
@@ -58,18 +59,18 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
      *            the diagram description from which we want to retrieve representations.
      * @param session
      *            the Sirius session from which we want to find the representation with the given name.
+     * @param refreshTables
+     *            boolean indicate if tables must be refreshed.
      * @return all representations whose target is the specified EObject
      */
     private List<DTable> getAssociatedTablesByDiagramDescriptionAndName(EObject targetRootObject,
-            String diagramDescriptionName, Session session) {
+            String diagramDescriptionName, Session session, Boolean refreshTables) {
         List<DTable> result = new ArrayList<DTable>();
         if (diagramDescriptionName != null) {
             Collection<DRepresentation> representations = DialectManager.INSTANCE.getRepresentations(targetRootObject,
                     session);
-
             // Filter representations to keep only those in a selected viewpoint
             Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-
             for (DRepresentation representation : representations) {
                 if (representation instanceof DTable
                     && diagramDescriptionName.equals(((DTable) representation).getDescription().getName())
@@ -77,6 +78,7 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
                     DView dView = (DView) representation.eContainer();
                     Viewpoint vp = dView.getViewpoint();
                     if (selectedViewpoints.contains(vp)) {
+                        refreshTable(representation, session, refreshTables);
                         result.add((DTable) representation);
                     }
                 }
@@ -90,6 +92,7 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
     public List<MTable> getTables(Map<String, Object> parameters) throws ProviderException {
         Object tableId = parameters.get(DESCRIPTION_ID_KEY);
         Object target = parameters.get(TARGET_ROOT_OBJECT_KEY);
+        boolean refreshTables = OptionUtil.mustRefreshRepresentation(parameters);
         if (!(tableId instanceof String)) {
             throw new ProviderException(
                     "Table cannot be computed because no table name has been declared in a 'tableId' parameter ("
@@ -106,7 +109,8 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
             throw new ProviderException("Cannot find the session associated to the model root element.");
         }
         checkDiagramDescriptionExist(session, (String) tableId);
-        List<DTable> tables = getAssociatedTablesByDiagramDescriptionAndName(eTarget, (String) tableId, session);
+        List<DTable> tables = getAssociatedTablesByDiagramDescriptionAndName(eTarget, (String) tableId, session,
+                refreshTables);
         if (!tables.isEmpty()) {
             return extractTables(tables);
         }

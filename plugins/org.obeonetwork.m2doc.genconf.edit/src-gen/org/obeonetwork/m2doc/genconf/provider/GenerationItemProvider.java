@@ -67,6 +67,7 @@ public class GenerationItemProvider
             addTemplateFileNamePropertyDescriptor(object);
             addResultFileNamePropertyDescriptor(object);
             addTimeStampedPropertyDescriptor(object);
+            addRefreshRepresentationsPropertyDescriptor(object);
             addPackagesNSURIPropertyDescriptor(object);
             addServicesTokensPropertyDescriptor(object);
         }
@@ -162,6 +163,28 @@ public class GenerationItemProvider
     }
 
 	/**
+     * This adds a property descriptor for the Refresh Representations feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected void addRefreshRepresentationsPropertyDescriptor(Object object) {
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_Generation_refreshRepresentations_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_refreshRepresentations_feature", "_UI_Generation_type"),
+                 GenconfPackage.Literals.GENERATION__REFRESH_REPRESENTATIONS,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                 null,
+                 null));
+    }
+
+    /**
      * This adds a property descriptor for the Packages NSURI feature.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -287,6 +310,7 @@ public class GenerationItemProvider
             case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
             case GenconfPackage.GENERATION__TIME_STAMPED:
+            case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
             case GenconfPackage.GENERATION__PACKAGES_NSURI:
             case GenconfPackage.GENERATION__SERVICES_TOKENS:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

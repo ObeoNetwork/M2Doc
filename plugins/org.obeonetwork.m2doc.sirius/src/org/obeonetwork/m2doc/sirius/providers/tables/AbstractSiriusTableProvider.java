@@ -15,7 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.table.metamodel.table.DTable;
+import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 
@@ -49,6 +52,28 @@ public abstract class AbstractSiriusTableProvider extends AbstractTableProvider 
     @Override
     public List<ProviderValidationMessage> validate(Map<String, Object> options) {
         return Collections.emptyList();
+    }
+
+    /**
+     * Refresh representation before produce table in documentation.
+     * 
+     * @param table
+     *            sirius table representation
+     * @param session
+     *            session
+     * @param refreshTables
+     *            refresh Tables
+     */
+    protected void refreshTable(final DRepresentation table, Session session, Boolean refreshTables) {
+        if (refreshTables) {
+            RecordingCommand recordCommand = new RecordingCommand(session.getTransactionalEditingDomain()) {
+                @Override
+                protected void doExecute() {
+                    table.refresh();
+                }
+            };
+            session.getTransactionalEditingDomain().getCommandStack().execute(recordCommand);
+        }
     }
 
 }

@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -722,6 +723,12 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
         parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
+        if (targetConfObject instanceof Generation) {
+            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
+                    ((Generation) targetConfObject).isRefreshRepresentations());
+        } else {
+            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, false);
+        }
         setGenericParameters(object, provider.getOptionTypes(), parameters);
         return parameters;
     }
@@ -827,6 +834,12 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, object.getHeight());
         parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, object.getWidth());
         parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, object.getActivatedLayers());
+        if (targetConfObject instanceof Generation) {
+            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
+                    ((Generation) targetConfObject).isRefreshRepresentations());
+        } else {
+            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, false);
+        }
         setGenericParameters(object, provider.getOptionTypes(), parameters);
         return parameters;
     }
@@ -848,7 +861,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         EMap<String, Object> optionsMap = templateProvider.getOptionValueMap();
         Set<Entry<String, Object>> optionsMapEntries = optionsMap.entrySet();
         for (Entry<String, Object> optionsMapEntry : optionsMapEntries) {
-            if (optionTypes == null || optionTypes.get(optionsMapEntry.getKey()) == null) {
+            if ((optionTypes != null && optionTypes.get(optionsMapEntry.getKey()) == null) || optionTypes == null) {
                 parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
             } else if (optionTypes != null) {
                 OptionType optionType = optionTypes.get(optionsMapEntry.getKey());

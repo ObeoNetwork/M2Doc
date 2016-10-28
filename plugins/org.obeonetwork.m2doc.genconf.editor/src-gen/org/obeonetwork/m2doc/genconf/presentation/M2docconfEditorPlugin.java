@@ -7,6 +7,7 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.ui.EclipseUIPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
  * This is the central singleton for the M2docconf editor plugin.
@@ -40,6 +41,7 @@ public final class M2docconfEditorPlugin extends EMFPlugin {
 	public M2docconfEditorPlugin() {
         super
             (new ResourceLocator [] {
+                EcoreEditPlugin.INSTANCE,
             });
     }
 

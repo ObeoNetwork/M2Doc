@@ -30,6 +30,7 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
+import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
  * {@link SiriusDiagramByTitleProvider} are used to get sirius diagrams from an
@@ -104,6 +105,7 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
             throw new ProviderException("Cannot find session associated to the conf model root element.");
         }
         Object representationTitle = parameters.get(REPRESENTATION_TITLE_KEY);
+        refreshRepresentations = OptionUtil.mustRefreshRepresentation(parameters);
         if (!(representationTitle instanceof String)) {
             throw new ProviderException(
                     "Image cannot be computed because no representation title has been provided to the provider \""
