@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.obeonetwork.database.m2doc.feature_0.9.1.201609261108.jar" id="org.obeonetwork.database.m2doc.feature" version="0.9.1.201609261108">
+   <feature url="features/org.obeonetwork.database.m2doc.feature_0.9.2.201611040958.jar" id="org.obeonetwork.database.m2doc.feature" version="0.9.2.201611040958">
       <category name="M2Doc Services"/>
    </feature>
    <category-def name="M2Doc Services" label="M2Doc Services"/>

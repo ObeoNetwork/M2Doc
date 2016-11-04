@@ -32,9 +32,21 @@ public class DatabaseServicesTest extends AbstractTest {
 	}
 
 	@Test
+	public void tablesTest() {
+		List<Table> tables = new DataBaseServices().tables(dataBase);
+		assertEquals(8, tables.size());
+	}
+
+	@Test
 	public void testDefines() {
 		List<UserDefinedTypesLibrary> libs = new DataBaseServices().defines(dataBase);
 		assertEquals(0, libs.size());
+	}
+
+	@Test
+	public void sequencesTest() {
+		List<Sequence> sequences = new DataBaseServices().sequences(dataBase);
+		assertEquals(8, sequences.size());
 	}
 
 	@Test

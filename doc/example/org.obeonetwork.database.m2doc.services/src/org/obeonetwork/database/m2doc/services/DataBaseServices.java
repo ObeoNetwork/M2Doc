@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.database.m2doc.services;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -174,6 +175,50 @@ public class DataBaseServices {
         for (Table table : tables) {
             if (table.eContainer() instanceof TableContainer) {
                 result.addAll(((TableContainer) table.eContainer()).getSequences());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the list of local tables including tables in schemas.
+     * 
+     * @param db
+     *            the database
+     * @return the list of local tables.
+     */
+    public List<Table> tables(DataBase db) {
+        List<Table> result = new ArrayList<Table>();
+        for (AbstractTable table : db.getTables()) {
+            if (table instanceof Table) {
+                result.add((Table) table);
+            }
+        }
+        for (Schema schema : db.getSchemas()) {
+            for (AbstractTable table : schema.getTables()) {
+                if (table instanceof Table) {
+                    result.add((Table) table);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the list of local sequences including sequences in schemas.
+     * 
+     * @param db
+     *            the database
+     * @return the list of local sequences.
+     */
+    public List<Sequence> sequences(DataBase db) {
+        List<Sequence> result = new ArrayList<Sequence>();
+        for (Sequence seq : db.getSequences()) {
+            result.add(seq);
+        }
+        for (Schema schema : db.getSchemas()) {
+            for (Sequence seq : schema.getSequences()) {
+                result.add(seq);
             }
         }
         return result;

@@ -44,22 +44,6 @@ public class ColumnServices {
 
     // @formatter:off
     @Documentation(
-        value = "Gets the Column default value.",
-        params = {
-            @Param(name = "column", value = "The Column"),
-        },
-        result = "the Column default value",
-        examples = {
-            @Example(expression = "column.defaultValue()", result = "\"default\"")
-        }
-    )
-    // @formatter:on
-    public String defaultValue(Column column) {
-        return column.getDefaultValue();
-    }
-
-    // @formatter:off
-    @Documentation(
         value = "Gets the List of Index for the given Column.",
         params = {
             @Param(name = "column", value = "The Column"),
@@ -470,5 +454,20 @@ public class ColumnServices {
             res = "";
         }
         return res;
+    }
+
+    /**
+     * Returns the default value of the column if one is specified and the empty string otherwise.
+     * 
+     * @param col
+     *            the column
+     * @return the default value
+     */
+    public String defaultValue(Column col) {
+        if (col.getDefaultValue() != null) {
+            return col.getDefaultValue();
+        } else {
+            return "";
+        }
     }
 }

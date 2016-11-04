@@ -289,4 +289,17 @@ public class ColumnServicesTest extends AbstractTest {
 		type.setPrecision(8);
 		assertEquals("255,8", new ColumnServices().typeLength(col));
 	}
+
+	@Test
+	public void testDefaultValueService() {
+		Column col = (Column) EcoreUtil.create(DatabasePackage.Literals.COLUMN);
+		col.setDefaultValue("defaultValue");
+		assertEquals("defaultValue", new ColumnServices().defaultValue(col));
+	}
+
+	@Test
+	public void testNoDefaultValueService() {
+		Column col = (Column) EcoreUtil.create(DatabasePackage.Literals.COLUMN);
+		assertEquals("", new ColumnServices().defaultValue(col));
+	}
 }
