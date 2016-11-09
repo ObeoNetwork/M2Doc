@@ -42,6 +42,11 @@ import org.obeonetwork.m2doc.M2DocPlugin;
 public final class AQL4Compat {
 
     /**
+     * UNABLE_TO_INVOKE_VALIDATION_METHOD.
+     */
+    private static final String UNABLE_TO_INVOKE_VALIDATION_METHOD = "unable to invoke validation method";
+
+    /**
      * "unable to instantiate AstValidator" message.
      */
     private static final String UNABLE_TO_INSTANTIATE_AST_VALIDATOR = "unable to instantiate AstValidator";
@@ -86,6 +91,9 @@ public final class AQL4Compat {
      */
     private static final boolean AST_VALIDATOR_CONSTRUCTOR_ONLY_ENV;
 
+    /**
+     * VALIDATION METHOD.
+     */
     private static final Method VALIDATION_METHOD;
 
     static {
@@ -441,17 +449,18 @@ public final class AQL4Compat {
     /**
      * Validates using the given {@link AstValidator} and {@link AstResult}.
      * 
-     * @param validator
-     *            the {@link AstValidator}
      * @param astResult
      *            the {@link AstResult}
      * @param variableTypes
      *            the variable types
+     * @param environment
+     *            the {@link IQueryEnvironment}
      * @return the {@link IValidationResult}
      */
-    public static IValidationResult validate(AstValidator validator, AstResult astResult,
-            Map<String, Set<IType>> variableTypes) {
+    public static IValidationResult validate(AstResult astResult, Map<String, Set<IType>> variableTypes,
+            IQueryEnvironment environment) {
         IValidationResult result;
+        AstValidator validator = getValidator(environment, variableTypes);
         if (astResult == null) {
             M2DocPlugin.log(new Status(IStatus.WARNING, M2DocPlugin.PLUGIN_ID,
                     "null ast result passed to the validate method"));
@@ -465,13 +474,13 @@ public final class AQL4Compat {
                 result = (IValidationResult) VALIDATION_METHOD.invoke(validator, astResult);
             }
         } catch (IllegalAccessException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INVOKE_VALIDATION_METHOD, e));
             result = null;
         } catch (IllegalArgumentException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INVOKE_VALIDATION_METHOD, e));
             result = null;
         } catch (InvocationTargetException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
+            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INVOKE_VALIDATION_METHOD, e));
             result = null;
         }
 
