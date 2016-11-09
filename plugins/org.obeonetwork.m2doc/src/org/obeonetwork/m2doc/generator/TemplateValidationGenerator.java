@@ -33,6 +33,7 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHighlight;
@@ -122,6 +123,16 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseDefault(Default object) {
+        insertErrorMessages(object);
+        for (AbstractConstruct construct : object.getSubConstructs()) {
+            doSwitch(construct);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Void caseUserDoc(UserDoc object) {
         insertErrorMessages(object);
         for (AbstractConstruct construct : object.getSubConstructs()) {
             doSwitch(construct);

@@ -24,8 +24,9 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
+import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.generator.TemplateProcessor;
-import org.obeonetwork.m2doc.parser.BodyParser;
+import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.Template;
 
@@ -60,13 +61,15 @@ public class TemplateRuntimeErrorTests {
         FileInputStream is = new FileInputStream("templates/testVar.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
-                null);
+        final UserContentManager lastDestinationUserContentManager = new UserContentManager(
+                "noResult");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
+                lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(2, destinationDoc.getParagraphs().size());
@@ -94,13 +97,15 @@ public class TemplateRuntimeErrorTests {
         FileInputStream is = new FileInputStream("templates/testAQL.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
-                null);
+        final UserContentManager lastDestinationUserContentManager = new UserContentManager(
+                "noResult");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
+                lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
         assertEquals(3, destinationDoc.getParagraphs().size());
@@ -131,13 +136,15 @@ public class TemplateRuntimeErrorTests {
         FileInputStream is = new FileInputStream("templates/testRepetitionSyntaxError.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testRepetitionSyntaxError.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
-                null);
+        final UserContentManager lastDestinationUserContentManager = new UserContentManager(
+                "noResult");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
+                lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
@@ -158,13 +165,15 @@ public class TemplateRuntimeErrorTests {
         FileInputStream is = new FileInputStream("templates/testInvalidConditionnal1.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal1.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
-                null);
+        final UserContentManager lastDestinationUserContentManager = new UserContentManager(
+                "noResult");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
+                lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
@@ -185,13 +194,15 @@ public class TemplateRuntimeErrorTests {
         FileInputStream is = new FileInputStream("templates/testInvalidConditionnal5.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal5.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
-                null);
+        final UserContentManager lastDestinationUserContentManager = new UserContentManager(
+                "noResult");
+        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
+                lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());

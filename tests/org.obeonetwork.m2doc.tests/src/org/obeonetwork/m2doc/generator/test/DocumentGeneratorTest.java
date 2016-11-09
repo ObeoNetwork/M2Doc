@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -36,6 +37,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -43,8 +45,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.parser.DocumentParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
@@ -70,7 +72,7 @@ public class DocumentGeneratorTest {
         try (FileInputStream is = new FileInputStream(templatePath)) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            DocumentParser parser = new DocumentParser(document, queryEnvironment);
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
             DocumentTemplate template = parser.parseDocument();
             out = File.createTempFile(resultPath, "generated-test");
             String outputPath = out.getAbsolutePath();
@@ -392,7 +394,8 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testImageTag.docx", "results/testImageTag.docx", definitions, false);
+        doGenerateDocAndCheckText("templates/testImageTag.docx", "results/expected/testImageTag.docx", definitions,
+                false);
     }
 
     @Test
@@ -401,7 +404,7 @@ public class DocumentGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
 
         Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/allDiagram.docx", "results/allDiagram.docx", definitions, false);
+        doGenerateDocAndCheckText("templates/allDiagram.docx", "results/expected/allDiagram.docx", definitions, false);
     }
 
     @Test
@@ -501,8 +504,9 @@ public class DocumentGeneratorTest {
             assertEquals(1, paragraph.getRuns().get(5).getCTR().getFldCharList().size());
             assertEquals(STFldCharType.END,
                     paragraph.getRuns().get(5).getCTR().getFldCharList().get(0).getFldCharType());
-            resOPackage.close();
             resDocument.close();
+            resOPackage.close();
+            resIs.close();
         }
     }
 
@@ -526,9 +530,420 @@ public class DocumentGeneratorTest {
             assertEquals("without", paragraph.getRuns().get(1).text());
             assertEquals(" bookmark : ", paragraph.getRuns().get(2).text());
 
-            resOPackage.close();
             resDocument.close();
+            resOPackage.close();
+            resIs.close();
         }
     }
 
+    /**
+     * Test UserDoc with no previous result.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     */
+    @Test
+    public void testUserDoc()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        // Remove previous generated file
+        String resultPath = "results/generated/testUserDoc1.docx";
+        File oldResult = new File(resultPath);
+        if (oldResult.exists()) {
+            oldResult.delete();
+        }
+
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        try (FileInputStream is = new FileInputStream("templates/testUserDoc1.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
+            DocumentTemplate template = parser.parseDocument();
+            Map<String, Object> definitions = new HashMap<>();
+            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc1.docx",
+                    "results/generated/testUserDoc1.docx", template, definitions, queryEnvironment, null);
+            generator.generate();
+            document.close();
+            oPackage.close();
+            is.close();
+        }
+
+        try (FileInputStream resIs = new FileInputStream(resultPath);
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
+
+            assertEquals(8, resDocument.getParagraphs().size());
+            assertEquals("User document part Texte 1", resDocument.getParagraphs().get(2).getText());
+
+            resDocument.close();
+            resOPackage.close();
+            resIs.close();
+        }
+    }
+
+    /**
+     * Test UserDoc In Header and Footer with no previous result.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     */
+    @Test
+    public void testUserDocInHeaderFooter()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        // Remove previous generated file
+        String resultPath = "results/generated/testUserDoc9.docx";
+        File oldResult = new File(resultPath);
+        if (oldResult.exists()) {
+            oldResult.delete();
+        }
+
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        try (FileInputStream is = new FileInputStream("templates/testUserDoc9.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
+            DocumentTemplate template = parser.parseDocument();
+            Map<String, Object> definitions = new HashMap<>();
+            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc9.docx", resultPath, template,
+                    definitions, queryEnvironment, null);
+            generator.generate();
+            document.close();
+            oPackage.close();
+            is.close();
+        }
+
+        try (FileInputStream resIs = new FileInputStream(resultPath);
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
+            assertEquals(1, resDocument.getHeaderList().size());
+            assertEquals(1, resDocument.getHeaderList().get(0).getParagraphs().size());
+            assertEquals(" User document part Texte 1",
+                    resDocument.getHeaderList().get(0).getParagraphs().get(0).getText());
+
+            assertEquals(6, resDocument.getParagraphs().size());
+            assertEquals("User document part Texte 2", resDocument.getParagraphs().get(2).getText());
+
+            assertEquals(1, resDocument.getFooterList().size());
+            assertEquals(1, resDocument.getFooterList().get(0).getParagraphs().size());
+            assertEquals(" User document part Texte 3",
+                    resDocument.getFooterList().get(0).getParagraphs().get(0).getText());
+
+            resDocument.close();
+            resOPackage.close();
+            resIs.close();
+        }
+    }
+
+    /**
+     * Test UserDoc with previous result.
+     * There is a picture in previous result userCode.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     */
+    @Test
+    public void testUserDocWithPreviousResult()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        // Remove previous generated file
+        String resultPath = "results/generated/testUserContent1Custom1Result.docx";
+        File oldResult = new File(resultPath);
+        if (oldResult.exists()) {
+            oldResult.delete();
+        }
+
+        // Copy result in right place
+        Files.copy(new File("userContent/testUserContent1Custom1.docx").toPath(), new File(resultPath).toPath());
+
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        try (FileInputStream is = new FileInputStream("templates/testUserDoc1.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
+            DocumentTemplate template = parser.parseDocument();
+            Map<String, Object> definitions = new HashMap<>();
+            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc1.docx", resultPath, template,
+                    definitions, queryEnvironment, null);
+            generator.generate();
+            document.close();
+            oPackage.close();
+            is.close();
+        }
+
+        try (FileInputStream resIs = new FileInputStream(resultPath);
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
+            assertEquals(6, resDocument.getParagraphs().size());
+            assertEquals(1, resDocument.getParagraphs().get(2).getRuns().get(1).getEmbeddedPictures().size());
+            assertEquals(new Long("3355498452"), resDocument.getParagraphs().get(2).getRuns().get(1)
+                    .getEmbeddedPictures().get(0).getPictureData().getChecksum());
+
+            resDocument.close();
+            resOPackage.close();
+            resIs.close();
+        }
+    }
+
+    /**
+     * Test UserDoc In Header and Footer with previous result.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     */
+    @Test
+    public void testUserDocInHeaderFooterWithPreviousResult()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        // Remove previous generated file
+        String resultPath = "results/generated/testUserDoc9Custom1Resultat.docx";
+        File oldResult = new File(resultPath);
+        if (oldResult.exists()) {
+            oldResult.delete();
+        }
+        // Copy result in right place
+        Files.copy(new File("userContent/testUserContent9Custom1.docx").toPath(), new File(resultPath).toPath());
+
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+
+        try (FileInputStream is = new FileInputStream("templates/testUserDoc9.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
+            DocumentTemplate template = parser.parseDocument();
+            Map<String, Object> definitions = new HashMap<>();
+            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc9.docx", resultPath, template,
+                    definitions, queryEnvironment, null);
+            generator.generate();
+            document.close();
+            oPackage.close();
+            is.close();
+        }
+
+        try (FileInputStream resIs = new FileInputStream(resultPath);
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
+
+            // FileInputStream resIs = new FileInputStream(resultPath);
+            // OPCPackage resOPackage = OPCPackage.open(resIs);
+            // XWPFDocument resDocument = new XWPFDocument(resOPackage);
+
+            assertEquals(1, resDocument.getHeaderList().size());
+            assertEquals(1, resDocument.getHeaderList().get(0).getParagraphs().size());
+            assertEquals("Custom 1", resDocument.getHeaderList().get(0).getParagraphs().get(0).getText());
+
+            assertEquals(6, resDocument.getParagraphs().size());
+            assertEquals("Custom 2", resDocument.getParagraphs().get(2).getText());
+
+            assertEquals(1, resDocument.getFooterList().size());
+            assertEquals(1, resDocument.getFooterList().get(0).getParagraphs().size());
+            assertEquals(" Custom 3", resDocument.getFooterList().get(0).getParagraphs().get(0).getText());
+
+            resDocument.close();
+            resOPackage.close();
+            resIs.close();
+        }
+    }
+
+    /**
+     * Test UserDoc In Table with no previous result.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     */
+    @Test
+    public void testUserDocInTable()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        // Remove previous generated file
+        String resultPath = "results/generated/testUserDoc10.docx";
+        File oldResult = new File(resultPath);
+        if (oldResult.exists()) {
+            oldResult.delete();
+        }
+
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        try (FileInputStream is = new FileInputStream("templates/testUserDoc10.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
+            DocumentTemplate template = parser.parseDocument();
+            Map<String, Object> definitions = new HashMap<>();
+            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc10.docx", resultPath, template,
+                    definitions, queryEnvironment, null);
+            generator.generate();
+            document.close();
+            oPackage.close();
+            is.close();
+        }
+        try (FileInputStream resIs = new FileInputStream("results/generated/testUserDoc10.docx");
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
+
+            assertEquals(5, resDocument.getBodyElements().size());
+            assertTrue(resDocument.getBodyElements().get(1) instanceof XWPFTable);
+            XWPFTable table = (XWPFTable) resDocument.getBodyElements().get(1);
+            assertEquals(" OrigText1 ", table.getRow(0).getCell(0).getParagraphs().get(0).getText());
+            assertEquals(" OrigText3 ", table.getRow(0).getCell(1).getParagraphs().get(0).getText());
+            assertEquals(" OrigText2 ", table.getRow(1).getCell(0).getParagraphs().get(0).getText());
+            assertEquals(" OrigText4 ", table.getRow(1).getCell(1).getParagraphs().get(0).getText());
+
+            resDocument.close();
+            resOPackage.close();
+            resIs.close();
+        }
+    }
+
+    /**
+     * Test UserDoc In Table with simple previous result.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     */
+    @Test
+    public void testUserDocInTableWithSimplePreviousResult()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        // Remove previous generated file
+        String resultPath = "results/generated/testUserDoc10Custom1.docx";
+        File oldResult = new File(resultPath);
+        if (oldResult.exists()) {
+            oldResult.delete();
+        }
+        // Copy result in right place
+        Files.copy(new File("userContent/testUserDoc10Custom1.docx").toPath(), new File(resultPath).toPath());
+
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        try (FileInputStream is = new FileInputStream("templates/testUserDoc10.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
+            DocumentTemplate template = parser.parseDocument();
+            Map<String, Object> definitions = new HashMap<>();
+            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc10.docx", resultPath, template,
+                    definitions, queryEnvironment, null);
+            generator.generate();
+            document.close();
+            oPackage.close();
+            is.close();
+        }
+        try (FileInputStream resIs = new FileInputStream(resultPath);
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
+
+            assertEquals(5, resDocument.getBodyElements().size());
+            assertTrue(resDocument.getBodyElements().get(1) instanceof XWPFTable);
+            XWPFTable table = (XWPFTable) resDocument.getBodyElements().get(1);
+            assertEquals(" Custom1 ", table.getRow(0).getCell(0).getParagraphs().get(0).getText());
+            assertEquals(" Custom3 ", table.getRow(0).getCell(1).getParagraphs().get(0).getText());
+            assertEquals(" Custom2 ", table.getRow(1).getCell(0).getParagraphs().get(0).getText());
+            assertEquals(" Custom4 ", table.getRow(1).getCell(1).getParagraphs().get(0).getText());
+
+            resDocument.close();
+            resOPackage.close();
+            resIs.close();
+        }
+
+    }
+
+    /**
+     * Test UserDoc In Table with complex previous result (picture in cell 1 and table in cell 2).
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     */
+    @Test
+    public void testUserDocInTableWithPreviousResult()
+            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+        // Remove previous generated file
+        String resultPath = "results/generated/testUserDoc10Custom2.docx";
+        File oldResult = new File(resultPath);
+        if (oldResult.exists()) {
+            oldResult.delete();
+        }
+        // Copy result in right place
+        Files.copy(new File("userContent/testUserDoc10Custom2.docx").toPath(), new File(resultPath).toPath());
+
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+        try (FileInputStream is = new FileInputStream("templates/testUserDoc10.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
+            DocumentTemplate template = parser.parseDocument();
+            Map<String, Object> definitions = new HashMap<>();
+            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc10.docx", resultPath, template,
+                    definitions, queryEnvironment, null);
+            generator.generate();
+            document.close();
+            oPackage.close();
+            is.close();
+        }
+        try (FileInputStream resIs = new FileInputStream(resultPath);
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
+
+            assertEquals(5, resDocument.getBodyElements().size());
+            assertTrue(resDocument.getBodyElements().get(1) instanceof XWPFTable);
+            XWPFTable table = (XWPFTable) resDocument.getBodyElements().get(1);
+            assertEquals(1,
+                    table.getRow(0).getCell(0).getParagraphs().get(2).getRuns().get(0).getEmbeddedPictures().size());
+            assertEquals(new Long("1120175150"), table.getRow(0).getCell(0).getParagraphs().get(2).getRuns().get(0)
+                    .getEmbeddedPictures().get(0).getPictureData().getChecksum());
+            assertEquals("", table.getRow(1).getCell(0).getParagraphs().get(0).getText());
+            assertEquals(" Custom2 ", table.getRow(1).getCell(0).getParagraphs().get(1).getText());
+
+            // TODO OHA fix bug in nested table on usercontent and add asset
+
+            resDocument.close();
+            resOPackage.close();
+            resIs.close();
+        }
+
+    }
 }

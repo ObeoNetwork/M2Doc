@@ -42,6 +42,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Repetition/iterationVar"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Repetition/query"/>
     </genClasses>
+    <genClasses ecoreClass="Template.ecore#//UserDoc">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//UserDoc/id"/>
+    </genClasses>
+    <genClasses ecoreClass="Template.ecore#//UserContent">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//UserContent/id"/>
+    </genClasses>
     <genClasses ecoreClass="Template.ecore#//Query">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/behavior"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/query"/>

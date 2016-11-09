@@ -49,6 +49,7 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 
 /**
@@ -151,6 +152,21 @@ public class TemplateValidator extends TemplateSwitch<Void> {
     }
 
     @Override
+    public Void caseUserDoc(UserDoc userDoc) {
+        final IValidationResult validationResult = AQL4Compat.validate(userDoc.getId(), stack.peek(), environment);
+        final XWPFRun run = userDoc.getRuns().get(1);
+        addValidationMessages(userDoc, run, validationResult);
+        if (validationResult != null) { // FIXME : we might check why we may have a null validation result in AQL.
+            checkUserDocSelectorTypes(userDoc, run, validationResult);
+            for (AbstractConstruct construct : userDoc.getSubConstructs()) {
+                doSwitch(construct);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public Void caseConditionnal(Conditionnal conditional) {
         final IValidationResult validationResult = AQL4Compat.validate(conditional.getQuery(), stack.peek(),
                 environment);
@@ -235,6 +251,27 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         } else {
             conditional.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                     String.format("The predicate never evaluates to a boolean type (%s).", selectorTypes), run));
+        }
+    }
+
+    /**
+     * Checks if the given types are assignable to no a {@link ICollectionType}.
+     * 
+     * @param userDoc
+     *            the {@link UserDoc}
+     * @param run
+     *            the {@link XWPFRun}
+     * @param validationResult
+     *            validation Result
+     */
+    private void checkUserDocSelectorTypes(UserDoc userDoc, XWPFRun run, IValidationResult validationResult) {
+        final Set<IType> types = validationResult.getPossibleTypes(userDoc.getId().getAst());
+        for (IType type : types) {
+            if (type instanceof ICollectionType) {
+                userDoc.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        String.format("The id type must not be a collection (%s).", type), run));
+                break;
+            }
         }
     }
 

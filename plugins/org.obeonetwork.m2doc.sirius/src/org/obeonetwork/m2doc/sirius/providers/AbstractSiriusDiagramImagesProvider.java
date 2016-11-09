@@ -187,7 +187,7 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
      */
     protected List<String> generateAndReturnDiagramImages(String rootPath, final Session session,
             List<DRepresentation> representations, List<Layer> layers) throws ProviderException {
-        List<String> resultList = new ArrayList<String>();
+        List<String> resultList = new ArrayList<>();
         boolean isSessionDirtyBeforeExport = SessionStatus.DIRTY.equals(session.getStatus());
         for (DRepresentation dRepresentation : representations) {
             if (dRepresentation instanceof DDiagram) {
@@ -325,12 +325,12 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
      */
     public EList<Layer> getAllLayers(final DiagramDescription description) {
 
-        final Collection<Layer> layers = new ArrayList<Layer>();
+        final Collection<Layer> layers = new ArrayList<>();
         if (description.getDefaultLayer() != null) {
             layers.add(description.getDefaultLayer());
         }
         layers.addAll(description.getAdditionalLayers());
-        return new EcoreEList.UnmodifiableEList<Layer>((InternalEObject) description,
+        return new EcoreEList.UnmodifiableEList<>((InternalEObject) description,
                 DescriptionPackage.eINSTANCE.getDiagramDescription_AllLayers(), layers.size(), layers.toArray());
     }
 
