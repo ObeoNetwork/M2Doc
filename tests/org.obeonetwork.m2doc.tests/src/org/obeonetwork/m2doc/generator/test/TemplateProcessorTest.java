@@ -135,7 +135,7 @@ public class TemplateProcessorTest {
         // scan the destination document
         assertEquals(2, destinationDoc.getParagraphs().size());
         System.out.println(destinationDoc.getParagraphs().get(0).getText());
-        assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
+        assertEquals("Template de test pour les balises de référence à une variable : valueofx",
                 destinationDoc.getParagraphs().get(0).getText());
         assertEquals("Fin du gabarit", destinationDoc.getParagraphs().get(1).getText());
     }
@@ -154,7 +154,7 @@ public class TemplateProcessorTest {
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
                 null);
         processor.doSwitch(template);
-        assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
+        assertEquals("Template de test pour les balises de référence à une variable : valueofx",
                 destinationDoc.getParagraphs().get(0).getText());
         XWPFParagraph paragraph = destinationDoc.getParagraphs().get(0);
         XWPFRun run = paragraph.getRuns().get(paragraph.getRuns().size() - 1);
@@ -200,7 +200,7 @@ public class TemplateProcessorTest {
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
                 null);
         processor.doSwitch(template);
-        assertEquals("Template de test pour les balises de référence à une variable\u00a0: valueofx",
+        assertEquals("Template de test pour les balises de référence à une variable : valueofx",
                 destinationDoc.getParagraphs().get(0).getText());
         XWPFParagraph paragraph = destinationDoc.getParagraphs().get(0);
         XWPFRun run = paragraph.getRuns().get(paragraph.getRuns().size() - 1);

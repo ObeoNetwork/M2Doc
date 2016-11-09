@@ -67,6 +67,38 @@ import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidation
  */
 public class DocumentParserTest {
     /**
+     * Number constant.
+     */
+    private static final int SEVEN = 7;
+    /**
+     * Number constant.
+     */
+    private static final int THIRTY_FOUR = 34;
+    /**
+     * Number constant.
+     */
+    private static final int TWENTY_SEVEN = 27;
+    /**
+     * Number constant.
+     */
+    private static final int TWENTY_FIVE = 25;
+    /**
+     * Number constant.
+     */
+    private static final int TWENTY_FOUR = 24;
+    /**
+     * Number constant.
+     */
+    private static final int TWENTY_TWO = 22;
+    /**
+     * Number constant.
+     */
+    private static final int TWENTY = 20;
+    /**
+     * Number constant.
+     */
+    private static final int TWO_HUNDRED = 200;
+    /**
      * AQL query environment.
      */
     private IQueryEnvironment env = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
@@ -442,7 +474,7 @@ public class DocumentParserTest {
         Image im = (Image) template.getSubConstructs().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "A forbidden space character is present at the index 2 of the key definition 'du dingy herbulot\" legendPos'.",
-                im.getRuns().get(25));
+                im.getRuns().get(TWENTY_FIVE));
     }
 
     /**
@@ -465,7 +497,7 @@ public class DocumentParserTest {
         Image im = (Image) template.getSubConstructs().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "A forbidden space character is present at the index 5 of the key definition 'legen d'.",
-                im.getRuns().get(27));
+                im.getRuns().get(TWENTY_SEVEN));
     }
 
     /**
@@ -488,7 +520,7 @@ public class DocumentParserTest {
         Image im = (Image) template.getSubConstructs().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "The start of an option's key has been read but the end of it and the value were missing : ' legendPos'.",
-                im.getRuns().get(22));
+                im.getRuns().get(TWENTY_TWO));
     }
 
     /**
@@ -529,7 +561,7 @@ public class DocumentParserTest {
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Invalid image directive : no file name provided.", im.getRuns().get(20));
+                "Invalid image directive : no file name provided.", im.getRuns().get(TWENTY));
     }
 
     @Test
@@ -543,7 +575,7 @@ public class DocumentParserTest {
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Invalid image option (leg): unknown option name.", im.getRuns().get(24));
+                "Invalid image option (leg): unknown option name.", im.getRuns().get(TWENTY_FOUR));
     }
 
     /**
@@ -567,8 +599,8 @@ public class DocumentParserTest {
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         // CHECKSTYLE:ON
         assertEquals("plan de forme du dingy herbulot", representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
@@ -599,8 +631,8 @@ public class DocumentParserTest {
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         // CHECKSTYLE:ON
         assertEquals("plan de forme du dingy herbulot", representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
@@ -630,8 +662,8 @@ public class DocumentParserTest {
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         // CHECKSTYLE:ON
         assertEquals("plan de forme du dingy herbulot", representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
@@ -669,8 +701,8 @@ public class DocumentParserTest {
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         // CHECKSTYLE:ON
         assertEquals("plan de forme du dingy herbulot", representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
@@ -706,8 +738,8 @@ public class DocumentParserTest {
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertNull(representation.getProvider());
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         assertNull(representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         EMap<String, Object> optionValueMap = representation.getOptionValueMap();
@@ -762,8 +794,8 @@ public class DocumentParserTest {
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertEquals(NoDiagramProvider.class, representation.getProvider().getClass());
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         assertNull(representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
         EMap<String, Object> optionValueMap = representation.getOptionValueMap();
@@ -793,8 +825,8 @@ public class DocumentParserTest {
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         // CHECKSTYLE:ON
         assertEquals("plan de forme du dingy herbulot", representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
@@ -825,8 +857,8 @@ public class DocumentParserTest {
         Representation representation = (Representation) template.getSubConstructs().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
-        assertEquals(200, representation.getHeight());
-        assertEquals(200, representation.getWidth());
+        assertEquals(TWO_HUNDRED, representation.getHeight());
+        assertEquals(TWO_HUNDRED, representation.getWidth());
         // CHECKSTYLE:ON
         assertEquals("plan de forme du dingy herbulot", representation.getLegend());
         assertEquals(POSITION.BELOW, representation.getLegendPOS());
@@ -834,10 +866,10 @@ public class DocumentParserTest {
         assertEquals(2, representation.getValidationMessages().size());
         assertTemplateValidationMessage(representation.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Expression \"wrong.->\" is invalid: missing feature access or service call",
-                representation.getRuns().get(34));
+                representation.getRuns().get(THIRTY_FOUR));
         assertTemplateValidationMessage(representation.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "Expression \"wrong.->\" is invalid: missing collection service call",
-                representation.getRuns().get(34));
+                representation.getRuns().get(THIRTY_FOUR));
     }
 
     @Test
@@ -847,7 +879,7 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(7, template.getSubConstructs().size());
+        assertEquals(SEVEN, template.getSubConstructs().size());
 
         assertTrue(template.getSubConstructs().get(1) instanceof Link);
         final Link linkBefore = (Link) template.getSubConstructs().get(1);
