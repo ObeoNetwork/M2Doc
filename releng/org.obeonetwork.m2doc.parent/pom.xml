@@ -284,6 +284,9 @@
           <value>mars</value>
         </property>
       </activation>
+      <properties>
+          <maven.test.skip>true</maven.test.skip>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -311,6 +314,9 @@
           <value>luna</value>
         </property>
       </activation>
+      <properties>
+          <maven.test.skip>true</maven.test.skip>
+      </properties>
       <build>
         <plugins>
           <plugin>

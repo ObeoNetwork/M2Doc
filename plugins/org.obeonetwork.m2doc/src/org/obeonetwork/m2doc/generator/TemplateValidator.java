@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -57,7 +56,6 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class TemplateValidator extends TemplateSwitch<Void> {
 
     /**
@@ -70,15 +68,20 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      */
     private IType booleanType;
 
-    /**
-     * The {@link AstValidator}.
-     */
-    private AstValidator validator;
+    // /**
+    // * The {@link AstValidator}.
+    // */
+    // private AstValidator validator;
 
     /**
      * The {@link Stack} of variables types.
      */
     private final Stack<Map<String, Set<IType>>> stack = new Stack<Map<String, Set<IType>>>();
+
+    /**
+     * AQL environment used to validate queries.
+     */
+    private IQueryEnvironment environment;
 
     /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
@@ -89,8 +92,8 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      *            Generation
      */
     public void validate(DocumentTemplate documentTemplate, Generation generation) {
-        IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
-        validate(documentTemplate, generation, queryEnvironment);
+        environment = QueryServices.getInstance().initAcceleoEnvironment(generation);
+        internalValidate(documentTemplate, generation);
     }
 
     /**
@@ -98,15 +101,12 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      * 
      * @param documentTemplate
      *            the {@link DocumentTemplate}
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
      * @param generation
      *            Generation
      */
-    public void validate(DocumentTemplate documentTemplate, Generation generation,
-            IReadOnlyQueryEnvironment queryEnvironment) {
-        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
-        validate(documentTemplate, generation, queryEnvironment, types);
+    public void internalValidate(DocumentTemplate documentTemplate, Generation generation) {
+        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(environment, generation);
+        validate(documentTemplate, generation, environment, types);
     }
 
     /**
@@ -123,7 +123,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      */
     public void validate(DocumentTemplate documentTemplate, Generation generation,
             IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
-        validator = AQL4Compat.getValidator(queryEnvironment, types);
+        environment = QueryServices.getInstance().initAcceleoEnvironment(generation);
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
         booleanType = new ClassType(queryEnvironment, boolean.class);
         stack.clear();
@@ -157,7 +157,8 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseConditionnal(Conditionnal conditional) {
-        final IValidationResult validationResult = AQL4Compat.validate(validator, conditional.getQuery(), stack.peek());
+        final IValidationResult validationResult = AQL4Compat.validate(conditional.getQuery(), stack.peek(),
+                environment);
         final XWPFRun run = conditional.getRuns().get(1);
         addValidationMessages(conditional, run, validationResult);
         if (validationResult != null) { // FIXME : we might check why we may have a null validation result in AQL.
@@ -184,8 +185,8 @@ public class TemplateValidator extends TemplateSwitch<Void> {
                 if (conditional.getAlternative() != null) {
                     doSwitch(conditional.getAlternative());
                     // TODO remove this when the AST for Conditional will be fixed
-                    final IValidationResult alternativeValidationResult = AQL4Compat.validate(validator,
-                            conditional.getAlternative().getQuery(), stack.peek());
+                    final IValidationResult alternativeValidationResult = AQL4Compat
+                            .validate(conditional.getAlternative().getQuery(), stack.peek(), environment);
                     elseVariables.putAll(alternativeValidationResult
                             .getInferredVariableTypes(conditional.getAlternative().getQuery().getAst(), Boolean.FALSE));
                 }
@@ -253,7 +254,8 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseRepetition(Repetition repetition) {
-        final IValidationResult validationResult = AQL4Compat.validate(validator, repetition.getQuery(), stack.peek());
+        final IValidationResult validationResult = AQL4Compat.validate(repetition.getQuery(), stack.peek(),
+                environment);
         final XWPFRun run = repetition.getRuns().get(1);
         addValidationMessages(repetition, run, validationResult);
 
@@ -308,7 +310,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseQuery(Query query) {
-        final IValidationResult validationResult = AQL4Compat.validate(validator, query.getQuery(), stack.peek());
+        final IValidationResult validationResult = AQL4Compat.validate(query.getQuery(), stack.peek(), environment);
         final XWPFRun run = query.getStyleRun();
         addValidationMessages(query, run, validationResult);
 
@@ -348,7 +350,8 @@ public class TemplateValidator extends TemplateSwitch<Void> {
             for (Entry<String, Object> entry : providerClient.getOptionValueMap()) {
                 if (providerClient.getProvider().getOptionTypes().get(entry.getKey()) == OptionType.AQL_EXPRESSION) {
                     final AstResult astResult = (AstResult) entry.getValue();
-                    final IValidationResult validationResult = AQL4Compat.validate(validator, astResult, stack.peek());
+                    final IValidationResult validationResult = AQL4Compat.validate(astResult, stack.peek(),
+                            environment);
                     addValidationMessages(providerClient, run, validationResult);
                     if (validationResult != null) {
                         options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));

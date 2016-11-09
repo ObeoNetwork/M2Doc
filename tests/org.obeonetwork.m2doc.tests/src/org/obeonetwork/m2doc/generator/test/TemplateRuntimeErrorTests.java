@@ -71,8 +71,7 @@ public class TemplateRuntimeErrorTests {
         // scan the destination document
         assertEquals(2, destinationDoc.getParagraphs().size());
         System.out.println(destinationDoc.getParagraphs().get(0).getText());
-        assertEquals(
-                "Template de test pour les balises de référence à une variable\u00a0: Couldn't find the 'x' variable",
+        assertEquals("Template de test pour les balises de référence à une variable : Couldn't find the 'x' variable",
                 destinationDoc.getParagraphs().get(0).getText());
         XWPFRun run = destinationDoc.getParagraphs().get(0).getRuns()
                 .get(destinationDoc.getParagraphs().get(0).getRuns().size() - 1);
