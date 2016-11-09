@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.util;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
@@ -204,6 +206,19 @@ public final class M2DocUtils {
         XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
         construct.getValidationMessages()
                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, msg, lastRun));
+    }
+
+    /**
+     * Creates an error message.
+     * 
+     * @param message
+     *            the error to create a message from
+     * @param objects
+     *            the list of the message arguments
+     * @return the formated error message
+     */
+    public static String message(ParsingErrorMessage message, Object... objects) {
+        return MessageFormat.format(message.getMessage(), objects);
     }
 
 }

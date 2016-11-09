@@ -105,6 +105,22 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case TemplatePackage.USER_DOC: {
+                UserDoc userDoc = (UserDoc)theEObject;
+                T result = caseUserDoc(userDoc);
+                if (result == null) result = caseCompound(userDoc);
+                if (result == null) result = caseAbstractConstruct(userDoc);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.USER_CONTENT: {
+                UserContent userContent = (UserContent)theEObject;
+                T result = caseUserContent(userContent);
+                if (result == null) result = caseCompound(userContent);
+                if (result == null) result = caseAbstractConstruct(userContent);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case TemplatePackage.QUERY: {
                 Query query = (Query)theEObject;
                 T result = caseQuery(query);
@@ -287,6 +303,36 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
 	/**
+     * Returns the result of interpreting the object as an instance of '<em>User Doc</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>User Doc</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseUserDoc(UserDoc object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>User Content</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>User Content</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseUserContent(UserContent object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Query</em>'.
      * <!-- begin-user-doc -->
 	 * This implementation returns null;

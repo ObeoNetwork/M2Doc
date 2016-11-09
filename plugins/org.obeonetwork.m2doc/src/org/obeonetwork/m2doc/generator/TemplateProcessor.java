@@ -34,6 +34,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -43,6 +44,8 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -53,6 +56,7 @@ import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
@@ -64,6 +68,8 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.UserContent;
+import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
@@ -134,6 +140,17 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     private EObject targetConfObject;
 
     /**
+     * Last Destination UserContent Manager.
+     */
+    private UserContentManager userContentManager;
+
+    /**
+     * User Doc Ids list.
+     * Used for uniqueness test.
+     */
+    private List<String> userDocIds = new ArrayList<String>();
+
+    /**
      * Create a new {@link TemplateProcessor} instance given some definitions
      * and a query environment.
      * 
@@ -143,6 +160,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            the path to the project where the template is located.
      * @param bookmarkManager
      *            the {@link BookmarkManager}
+     * @param userContentManager
+     *            the {@link UserContentManager}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
      * @param destinationDocument
@@ -151,10 +170,12 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            the root EObject of the gen conf model.
      */
     public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, BookmarkManager bookmarkManager,
-            IQueryEnvironment queryEnvironment, IBody destinationDocument, EObject theTargetConfObject) {
+            UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
+            EObject theTargetConfObject) {
         this.rootProjectPath = projectPath;
         this.definitions = new GenerationEnvironment(initialDefs);
         this.bookmarkManager = bookmarkManager;
+        this.userContentManager = userContentManager;
         this.queryEnvironment = queryEnvironment;
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
@@ -168,6 +189,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            the definitions used in queries and variable tags
      * @param bookmarkManager
      *            the {@link BookmarkManager}
+     * @param userContentManager
+     *            the {@link UserContentManager}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
      *            template.
@@ -177,9 +200,11 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            the root EObject of the gen conf model.
      */
     public TemplateProcessor(GenerationEnvironment defs, BookmarkManager bookmarkManager,
-            IQueryEnvironment queryEnvironment, IBody destinationDocument, EObject theTargetConfObject) {
+            UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
+            EObject theTargetConfObject) {
         this.definitions = defs;
         this.bookmarkManager = bookmarkManager;
+        this.userContentManager = userContentManager;
         this.queryEnvironment = queryEnvironment;
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
@@ -446,22 +471,182 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 for (AbstractConstruct construct : object.getSubConstructs()) {
                     doSwitch(construct);
                 }
-                // if the {gd:endfor} lies on a distinct paragraph, insert a new
-                // paragraph there to take this into account.
-                int bodySize = object.getSubConstructs().size();
-                if (bodySize > 0 && object.getSubConstructs().get(bodySize - 1).getRuns().size() > 0) {
-                    AbstractConstruct lastBodyPart = object.getSubConstructs().get(bodySize - 1);
-                    int runNumber = lastBodyPart.getRuns().size();
-                    XWPFRun lastRun = lastBodyPart.getRuns().get(runNumber - 1);
-                    int closingRunNumber = object.getClosingRuns().size();
-                    if (closingRunNumber > 0 && object.getClosingRuns().get(0).getParent() != lastRun.getParent()) {
-                        forceNewParagraph = true;
-                    }
-                }
+
+                closingCompound(object);
             }
         }
         return object;
 
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseUserDoc(org.obeonetwork.m2doc.template.UserDoc)
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public AbstractConstruct caseUserDoc(UserDoc object) {
+        // first : evaluate the query
+        boolean validQuery = object.getId() != null;
+        EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getId(),
+                definitions.getCurrentDefinitions());
+        if (!validQuery || result == null || result.getResult() == null
+            || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
+            // insert the tag runs as is.
+            for (XWPFRun tagRun : object.getRuns()) {
+                insertRun(tagRun);
+            }
+            // insert the error message.
+            XWPFRun run = currentGeneratedParagraph.createRun();
+            if (!validQuery) {
+                setErrorMessageToRun(QUERY_SYNTAX_ERROR_MESSAGE, run);
+            } else if (result != null) {
+                setErrorMessageToRun(result.getDiagnostic().getMessage(), run);
+            } else {
+                setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
+            }
+        } else {
+            // compute userdoc id
+            String id = result.getResult().toString();
+
+            // Tag UserContent with evaluated id
+            addStartUserDocField(object, id);
+            // manage user Doc Id Uniqueness
+            manageUserDocIdUniqueness(id, object);
+            // Copy userdoc content
+            UserContent userContent = userContentManager.getUserContent(id);
+            boolean needNewParagraphBeforeEndTag = true;
+            if (userContent == null) {
+                for (AbstractConstruct construct : object.getSubConstructs()) {
+                    doSwitch(construct);
+                }
+                needNewParagraphBeforeEndTag = needNewParagraph(object);
+            } else {
+                UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
+                try {
+                    currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph);
+                    needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
+                    // Affect currentTemplateParagraph after Raw copy
+                    if (object.getClosingRuns().size() != 0) {
+                        currentTemplateParagraph = object.getClosingRuns().get(object.getClosingRuns().size() - 1)
+                                .getParagraph();
+                    }
+                } catch (InvalidFormatException e) {
+                    XWPFRun run = currentGeneratedParagraph.createRun();
+                    setErrorMessageToRun("userdoc copy error : " + e.getMessage(), run);
+                } catch (XmlException e) {
+                    XWPFRun run = currentGeneratedParagraph.createRun();
+                    setErrorMessageToRun("userdoc copy error : " + e.getMessage(), run);
+                }
+            }
+
+            // Tag m:enduserContent
+            addEndUserDocField(object, needNewParagraphBeforeEndTag);
+            // Closing compound
+            closingCompound(object);
+            // }
+        }
+        return object;
+    }
+
+    /**
+     * Test if compound need new paragraph before end tag.
+     * 
+     * @param compound
+     *            compound
+     * @return true if need new paragraph
+     */
+    @SuppressWarnings("deprecation")
+    private boolean needNewParagraph(Compound compound) {
+        boolean needNewParagraph = true;
+        if (compound.getClosingRuns().size() != 0) {
+            if (compound.getClosingRuns().get(0).getParagraph() == currentTemplateParagraph) {
+                needNewParagraph = false;
+            }
+        }
+        return needNewParagraph;
+    }
+
+    /**
+     * userDoc Id Uniqueness test.
+     * 
+     * @param id
+     *            id
+     * @param userdoc
+     *            userdoc EObject
+     */
+    private void manageUserDocIdUniqueness(String id, UserDoc userdoc) {
+        if (userDocIds.contains(id)) {
+            // insert the error message.
+            XWPFRun run = currentGeneratedParagraph.createRun();
+            String msgError = "The id '" + id
+                + "' is already used in generated document. Ids must be unique otherwise document part contained userContent could be lost at next generation.";
+            setErrorMessageToRun(msgError, run);
+
+            TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
+                    ValidationMessageLevel.ERROR, msgError, userdoc.getRuns().get(userdoc.getRuns().size() - 1));
+            userdoc.getValidationMessages().add(templateValidationMessage);
+        } else {
+            userDocIds.add(id);
+        }
+
+    }
+
+    /**
+     * Add Start UserContent word Document Field.
+     * 
+     * @param object
+     *            AbstractConstruct where add field
+     * @param id
+     *            UserDoc Id
+     */
+    @SuppressWarnings("deprecation")
+    private void addStartUserDocField(AbstractConstruct object, String id) {
+        if (currentTemplateParagraph == null
+            || object.getRuns().size() != 0 && object.getRuns().get(0).getParagraph() != currentTemplateParagraph) {
+            createNewParagraph(object.getRuns().get(0).getParagraph());
+        }
+        currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr("m:userContent " + id);
+    }
+
+    /**
+     * Add End UserContent word Document Field.
+     * 
+     * @param object
+     *            AbstractConstruct where add field
+     * @param needNewParagraph
+     *            need New Paragraph boolean
+     */
+    @SuppressWarnings("deprecation")
+    private void addEndUserDocField(AbstractConstruct object, boolean needNewParagraph) {
+        if (object.getClosingRuns().size() != 0) {
+            if (needNewParagraph) {
+                createNewParagraph(object.getClosingRuns().get(0).getParagraph());
+            }
+            currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr("m:enduserContent");
+        }
+    }
+
+    /**
+     * Closing Compound.
+     * if the end of compound lies on a distinct paragraph, insert a new
+     * paragraph there to take this into account.
+     * 
+     * @param object
+     *            Compound to close
+     */
+    private void closingCompound(Compound object) {
+        int bodySize = object.getSubConstructs().size();
+        if (bodySize > 0 && object.getSubConstructs().get(bodySize - 1).getRuns().size() > 0) {
+            AbstractConstruct lastBodyPart = object.getSubConstructs().get(bodySize - 1);
+            int runNumber = lastBodyPart.getRuns().size();
+            XWPFRun lastRun = lastBodyPart.getRuns().get(runNumber - 1);
+            int closingRunNumber = object.getClosingRuns().size();
+            if (closingRunNumber > 0 && object.getClosingRuns().get(0).getParent() != lastRun.getParent()) {
+                forceNewParagraph = true;
+            }
+        }
     }
 
     @Override
@@ -544,8 +729,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 ctCell.getTblList().clear();
                 newCell.getCTTc().set(ctCell);
                 // process the cell :
-                TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, queryEnvironment,
-                        newCell, targetConfObject);
+                TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager,
+                        queryEnvironment, newCell, targetConfObject);
                 processor.doSwitch(cell.getTemplate());
             }
         }

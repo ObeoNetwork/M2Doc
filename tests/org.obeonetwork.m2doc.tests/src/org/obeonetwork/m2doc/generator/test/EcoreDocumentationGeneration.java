@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.parser.DocumentParser;
+import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -42,12 +42,12 @@ public class EcoreDocumentationGeneration {
         FileInputStream is = new FileInputStream("templates/ecoreDocumentationTemplate.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
         DocumentTemplate template = parser.parseDocument();
         Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("self", TemplatePackage.eINSTANCE);
         DocumentGenerator generator = new DocumentGenerator("templates/ecoreDocumentationTemplate.docx",
-                "results/ecoreDocumentationTemplateResults.docx", template, definitions, queryEnvironment, null);
+                "results/generated/ecoreDocumentationTemplateResults.docx", template, definitions, queryEnvironment, null);
         generator.generate();
     }
 

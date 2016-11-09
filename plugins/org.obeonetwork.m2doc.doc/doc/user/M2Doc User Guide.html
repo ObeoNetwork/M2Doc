@@ -23,7 +23,7 @@
 		<p>The next section gives all the details that are necessary to edit M2Doc generation tags. Alternatively, if you start you&#8217;re template from the provided model (templateModel.dotx),  you can use the Insert &gt; QuickPart &gt; AutoText to insert M2Doc generation tags. Once you know the tag, it might be faster to just edit them.</p>
 		<p>You must toggle field codes on to read this document.</p>
 		<h3 id="M2Docstaticgenerationtags">M2Doc static generation tags</h3>
-		<p>M2Doc provides right now 4 generation tags that have fixed formats. Those tags are described below:</p>
+		<p>M2Doc provides some generation tags that have fixed formats. Those tags are described below:</p>
 		<ul>
 			<li>
 				<code>{m:&lt;query&gt;}</code> : the directive is replaced with the string representation of the query&#8217;s evaluation result 
@@ -47,6 +47,12 @@
 		<ul>
 			<li>
 				<code>{m:bookmark &lt;name query&gt;} book marked content { m:endbookmark }</code> : creates a book mark with a name (name query) and a content (book marked content).
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<code>{m:userdoc &lt;query&gt;} user document part body {enduserdoc}</code> : This tag in template produces following document part  
+				<code>{m:userContent &lt;id&gt;} Generated user document part body {endContent}</code> in generated document if generated document doesn&#8217;t already exist. If it already exists the usercontent part with good id of old document is copied in the new generated document. Be careful, if in old generated document a usercontent with an id whose never been produced by template generation, the old usercontent will be lost. 
 			</li>
 		</ul>
 		<ul>
@@ -178,13 +184,13 @@
 		<p>
 			<img border="0" src="images/image019.png"/>
 		</p>
-		<p>The boolean parameter &#171;refreshRepresentation&#187; can be used to define following update strategy : 
+		<p>The boolean parameter &#171;refreshRepresentations&#187; can be used to define following update strategy : 
 			<br/>- if it is set to false, the M2Doc generation take the state of graphical model without update it
 			<br/>- if it is set to true, the M2Doc generation take the updated with semantic model and arranged model like if we open diagram or table in Sirius representation view.
 			<br/>By default, the parameter is set to false.
 		</p>
 		<p>Be careful, enabling the automatic update of representations can be time-consuming and could have a high impact on the generation time, especially on large models.</p>
-		<p>In case of enabling the automatic update of representations, if SIRIUS view is not open, the update and arrange effect is automatically save on graphical model. On the other hand, if SIRIUS view is open, the arrange and update is done by view. Your representation was dirty until you save your graphical diagram and the M2Doc Generation is done with update whatever the value of the &#171;RefreshRepresentation&#187; parameter.</p>
+		<p>In case of enabling the automatic update of representations, if SIRIUS view is not open, the update and arrange effect is automatically save on graphical model. On the other hand, if SIRIUS view is open, the arrange and update is done by view. Your representation was dirty until you save your graphical diagram and the M2Doc Generation is done with update whatever the value of the &#171;refreshRepresentations&#187; parameter.</p>
 		<h3 id="Documentgenerationandstyle">Document generation and style</h3>
 		<p>The style of the fragments of generated documents is determined by the style of the templates parts. </p>
 		<ul>

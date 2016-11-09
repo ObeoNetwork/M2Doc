@@ -56,7 +56,7 @@ public class VariousTest {
         range.setId(new BigInteger("66"));
         document.createParagraph().createRun().setText("another static part that will not contain any link");
         // save the document in another file
-        FileOutputStream fos = new FileOutputStream("results/bookmarkTest.docx");
+        FileOutputStream fos = new FileOutputStream("results/generated/bookmarkTest.docx");
         document.write(fos);
         document.close();
         fos.close();
