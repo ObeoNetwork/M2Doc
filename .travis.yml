@@ -9,33 +9,34 @@ sudo: false
 install: true
 before_script:
 - export SWT_GTK3=0
-- /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16
+- "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile
+  --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16"
 - sh -e /etc/init.d/xvfb start
 - sleep 10
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
-- mvn -P platform-luna clean verify
-- mvn -P platform-mars clean verify
 - mvn clean verify
 - cd ../..
-- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
+- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
+  $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
 after_script:
-- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh; fi
+- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh;
+  fi
 deploy:
-###### Release ######
-- provider: s3
-  access_key_id: AKIAI7GYGSUKTIBLAI6Q
-  secret_access_key:
-   secure: XGXlu5Fc9WFNG7qBGyo0f/jAL/dg42EN0X17H4Dbc9OyxtuMYXtyUPasX1AidnuIaem8zEncs/8I5DxqW9BoiEzWX9BTUAnx1b0xIFEUXcjFXPBAbyhCtGZ2RympXlt1o+elG9xD34MNBB6Nf7WW+eyP1w0jdS2VP/lS19/phhrX0RCvPPWMnlMX95o77NhFnbEY5+brubUXJxioM8W4/IecrcLS6COjC6UmdV1TsrgykGLOad5AQ4jbNSluXJ1gjCH3IX2BIN+hVfqHn/UJIcF5bLU7B1XFVKrjGociXAOabEdrCHOxH+hQ9F1XufT99eK4QfikU025vhCCyn7e+rCvJJPLzfuK8Ms5tmexPKWCUcaZGP+AA0laNu/htsb8zZZ8547N5yE4doDuHPJN7ZRiGTd49Jg4uJEf99NWqO1LVr6EM/fapY/pZMANfffRmJOc1pgV4uneL/HCS1lIIrHp7NgdgvGZfptWFMdCskmF/F6gkUg3UyakZZO+JmlvGRRl/B5Be+sn/+D4JrMwvihBFtr4ZzVLWAytmHbjIL/8dkHp5Wwd8+EBCdBqfbCzJkJX5OGANZ21yAHSqx+2lUHJaOECUh/kIFCO/ZnoLYRE7ZJqNkAgWjxPEX5SMyggwHhHLwjPtedjWPcnIPJtYxfuhDW5eLTxND/dQ2mt+b4=
-  bucket: obeo-networkaggregation-releases
-  local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
-  acl: public_read
-  skip_cleanup: true
-  region: eu-west-1
-  upload-dir: m2doc/${TRAVIS_TAG}
-  on:
-    tags: true
-    all_branches: true
-    repo: ObeoNetwork/M2Doc
+  matrix:
+  - provider: s3
+    access_key_id: AKIAI7GYGSUKTIBLAI6Q
+    secret_access_key:
+      secure: A2AARWNQrm5bddsfzArzH8miOVvoTjT/Y1P6CMUHqiwKRE46mYEPqVxy+CIPtVa8SmvFTL/IRxb8zQ8FPBSTasB0vzz94yxtVJvwn+kkPM+z0YdzOfonJo4BjKO+NHzgncOpvBngMqboU5RzS+pqQ6xUhALhHEATCARsYF0NUgsEjGZ8JJJSzAbfQ7oaL6xbuon/72ABJOIQbg9sesq7YFl+/9bHcOl1SU5owF9hIa/b6IB3iEmg1L2vzYP2L/x+BGPwpMkDfRGMUBJByf3e8q6mvPYU/5XVQrqo2WnD9JGQB62OOi/DlRQ0cHxXP9x5iRd1hVqMJZMduAAa5ymK8UOV5h1+xkBFJMQZ3UQbZ3FEG/0rYFEVZ/ynj8H05/nO1DxqTiGSaCIlbF8hEWvcqfoK/cT+v+9i4GJ3jael03Um90U7L2fI098VYJmAuWqcYyNTqDVb5hwD77ULvT2b13vtVAGEJO1h3UoAy4xOMuOCCw3JezAA0UOL3mw2+F9syZ68Sm5yUXRZHuajSzAdpeD3X7tOO4cC6YCvUVkBXRLWozWmI64/6WL/FhNdux/GMlRqWGbxQPg43pZfGs6VQD/p1BGpZTFk9zuQix0UMLPxfvjwkLYt97KK6KmbCv1YE8IedhkdBeVDh9OETPFa5/N9lGxocpraVivYYzmyHDg=
+    bucket: obeo-m2doc-releases
+    local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
+    acl: public_read
+    skip_cleanup: true
+    region: eu-west-1
+    upload-dir: m2doc/${TRAVIS_TAG}
+    on:
+      tags: true
+      all_branches: true
+      repo: ObeoNetwork/M2Doc
 
