@@ -31,6 +31,8 @@
 		<module>../../plugins/org.obeonetwork.m2doc.genconf.editor</module>
 		<module>../../plugins/org.obeonetwork.m2doc.genconf.design</module>
 		<module>../../plugins/org.obeonetwork.m2doc.genconf.emf.ui</module>
+		<module>../../plugins/org.obeonetwork.m2doc.tplconf</module>
+		<module>../../plugins/org.obeonetwork.m2doc.tplconf.edit</module>
 		<module>../../plugins/org.obeonetwork.m2doc.sirius</module>
 		<module>../../plugins/org.obeonetwork.m2doc.doc</module>
 		<module>../../features/org.obeonetwork.m2doc.feature</module>

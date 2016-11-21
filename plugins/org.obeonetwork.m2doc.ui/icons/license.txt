@@ -1,4 +1,4 @@
-These followings icons are made available under the terms of the Eclipse Public License v1.0
+These following icons are made available under the terms of the Eclipse Public License v1.0
  which accompanies this distribution, and is available at
  http://www.eclipse.org/legal/epl-v10.html
 
@@ -8,3 +8,5 @@ icons/m2doc_init.png - org.eclipse.platform.doc.user - org.eclipse.platform.doc.
 icons/m2doc.gif - org.eclipse.pde.ua.ui - org.eclipse.pde.ua.ui/icons/obj16/toc_link_obj.gif
 icons/m2doc.png - org.eclipse.pde.ua.ui - org.eclipse.pde.ua.ui/icons/obj16/toc_link_obj.png
 icons/m2doc_validate.png - org.eclipse.jdt.ui - org.eclipse.jdt.ui/icons/obj16/translate.png
+icons/add.gif - org.eclipse.ui - org.eclipse.ui/icons/full/obj16/add_obj.png
+icons/delete.gif - org.eclipse.ui - org.eclipse.ui/icons/full/obj16/delete_obj.png

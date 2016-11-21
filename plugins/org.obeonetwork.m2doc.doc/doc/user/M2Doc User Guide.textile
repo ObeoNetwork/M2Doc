@@ -210,18 +210,56 @@ Variables can be defined in the template document with template properties:
   
 With this example, we can write AQL expressions like @m:author@ or <code>m:db.name</code>.
 
-The variables names have to be set with @m:var:@ prefix: @m:var:author@ will define 'author' variable. The variables values defines the variable type (author is a string and db a model element database::Database). 
+The variables names have to be set with @m:var:@ prefix: @m:var:author@ will define 'author' variable. The variable values defines the variable type (author is a string and db a model element database::DataBase). 
 
-The possible basic types are 'int', 'real', 'string', 'boolean', 'date'. To type an object, you have to set its domain class like in AQL syntax: @prefix::ClassName@ (database::Database).
+The only scalar type supported is 'string'. To declare the complex type of an object, you have to set its domain class like in AQL syntax: @prefix::ClassName@ (database::DataBase).
+
+
+These variables are automatically imported in the configuration model where you can set their values. If you do not define the variable in the template document, you will have to do it in the configuration model (see Configure variables definitions paragraph) .
 
  
+h4. Dedicated pop-up editor
 
-These variables are automatically imported in the configuration model where you can value them. If you do not define the variable in the template document, you will have to do it in the configuration model (see Configure variables definitions paragraph) .
+A small editor is available to make it easier to define the template's variables. This editor is accessible within eclipse and avoids the need to use the impractical dialog to enter custom properties in MS Word.
 
+To open this editor, right-clicki on the template (after copy/pasting it into a project in an eclipse instance with M2Doc installed):
+
+!images/configure_variables.png!
+
+h5. Configuring the meta-model URIs
+
+The first tab of this editor allows users to define the meta-models used by the template (this is useful to then set the types of the template's variables, such as @database::DataBase@ and to validate the template).
  
+To set the meta-model(s) used by the template, click on the Add button and select the meta-model.
 
+!images/config_var_mm.png!
 
-h3. Miscelaneous points
+A meta-model URI can be added by clicking on the add button. A meta-model can be removed by selecting its line and clicking on the delete button.
+The URI of a meta-model can be edited in place by directly cliking on it in the table.
+
+When adding a new meta-model URI, the following pop-up will open to display the registered meta-models. It is possible to filter the list to find the right one more quickly. '*' is used as a wildcard character.
+
+!images/config_var_mm_select.png!
+
+h5. Configuring the variables
+
+The second tab of the dialog allows the declaration of template variables.
+
+!images/config_var_var.png!
+
+* The name of a variable can be edited directly by clicking on it in the table
+* The type (and name) of an existing variable can be edited by click on it in the table, and then clicking on the '...' button that appears in the table cell. This will open a dialog to edit the variable.
+* A new variable can be added by clicking on the add button. This will open a dialog to edit the new variable
+* An existing variable can be removed by selecting it and then clicking on the delete button
+
+When editing an existing variable or a new one, the following dialog is used:
+
+!images/config_var_var_edit.png!
+
+This dialog allows to set the variable's name and type.
+The variable's type can be either entered directly by hand in the lowest field, using the usual syntax @database::DataBase@. Or it can be manually selected by first selecting the meta-model (either 'Scalar Types' for the 'string' type or any meta-model registered in the first tab) and then selecting the relevant EClassifier in the table.
+
+h3. Miscellaneous
 
 * Adding dynamic content in headers and footers is simply done by inserting generation tags in the header and footer. 
 

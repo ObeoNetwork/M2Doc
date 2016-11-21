@@ -14,9 +14,17 @@ Require-Bundle: org.eclipse.ui,
  org.obeonetwork.m2doc;bundle-version="0.9.3",
  org.eclipse.core.expressions,
  org.eclipse.emf.ecore.xmi,
- org.obeonetwork.m2doc.genconf
+ org.obeonetwork.m2doc.genconf,
+ org.obeonetwork.m2doc.tplconf;bundle-version="0.9.4",
+ org.eclipse.emf.edit.ui,
+ org.obeonetwork.m2doc.genconf.emf.ui;bundle-version="0.9.4",
+ org.eclipse.emf.ecore.editor,
+ org.eclipse.emf.transaction,
+ org.obeonetwork.m2doc.tplconf.edit;bundle-version="0.9.4",
+ org.eclipse.draw2d
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: org.apache.poi.openxml4j.exceptions,
+Import-Package: org.apache.poi;version="3.13.0",
+ org.apache.poi.openxml4j.exceptions,
  org.apache.poi.openxml4j.opc,
  org.apache.poi.xwpf.usermodel

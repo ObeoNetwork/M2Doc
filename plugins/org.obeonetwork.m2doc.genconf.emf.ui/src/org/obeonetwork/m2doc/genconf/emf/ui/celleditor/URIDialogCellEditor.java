@@ -12,8 +12,10 @@
 package org.obeonetwork.m2doc.genconf.emf.ui.celleditor;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.eclipse.emf.ecore.presentation.EcoreActionBarContributor.ExtendedLoadResourceAction.RegisteredPackageDialog;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -27,26 +29,28 @@ import org.eclipse.swt.widgets.Display;
  */
 public class URIDialogCellEditor extends DialogCellEditor {
 
-    /**
-     * Constructor.
-     * 
-     * @param parent
-     *            Composite
-     */
-    public URIDialogCellEditor(Composite parent) {
-        super(parent, SWT.NONE);
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param parent
+	 *            Composite
+	 */
+	public URIDialogCellEditor(Composite parent) {
+		super(parent, SWT.NONE);
+	}
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
-     */
-    @Override
-    protected Object openDialogBox(Control cellEditorWindow) {
-        RegisteredPackageDialog dialog = new RegisteredPackageDialog(Display.getCurrent().getActiveShell());
-        dialog.open();
-        return Arrays.asList(dialog.getResult());
-    }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
+	 */
+	@Override
+	protected Object openDialogBox(Control cellEditorWindow) {
+		RegisteredPackageDialog dialog = new RegisteredPackageDialog(Display.getCurrent().getActiveShell());
+		if (dialog.open() == Dialog.OK && dialog.getResult() != null) {
+			return Arrays.asList(dialog.getResult());
+		}
+		return Collections.emptyList();
+	}
 
 }

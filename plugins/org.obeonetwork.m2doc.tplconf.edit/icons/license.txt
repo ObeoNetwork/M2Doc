@@ -1,0 +1,11 @@
+These following icons are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+<icon file path> - <original eclipse plug-in> - <original file path>
+
+icons/full/obj16/EPackageMapping.gif - org.eclipse.emf.ecore.edit - org.eclipse.emf.ecore.edit/icons/full/obj16/EPackage.gif
+icons/full/obj16/EClassifierType.gif - org.eclipse.emf.ecore.edit - org.eclipse.emf.ecore.edit/icons/full/obj16/EClass.gif
+icons/full/obj16/ScalarType.gif - org.eclipse.emf.ecore.edit - org.eclipse.emf.ecore.edit/icons/full/obj16/EDataType.gif
+icons/full/obj16/TemplateConfig.gif - org.eclipse.platform.doc.user - org.eclipse.platform.doc.user/images/help_icon_capabilities.png
+icons/full/obj16/TemplateVariable.gif - org.eclipse.emf.ecore.edit - org.eclipse.emf.ecore.edit/icons/full/obj16/EParameter.gif
