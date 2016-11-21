@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc.ui;bundle-version="0.9.4",
  org.obeonetwork.m2doc.genconf;bundle-version="0.9.4",
  org.eclipse.acceleo.query;bundle-version="[4.0.0,6.0.0)",
- org.antlr.runtime;bundle-version="4.3.0"
+ org.antlr.runtime;bundle-version="4.3.0",
+ org.obeonetwork.m2doc.tplconf;bundle-version="0.9.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.poi,

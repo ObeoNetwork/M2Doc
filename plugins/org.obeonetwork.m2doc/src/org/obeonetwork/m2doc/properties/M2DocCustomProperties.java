@@ -22,11 +22,11 @@ public interface M2DocCustomProperties {
      */
     String SERVICETOKEN_SEPARATOR = ",";
     /**
-     * id of the integer type to use in variable declaration properties.
+     * id of the integer type to use in variable declaration properties (not supported yet).
      */
     String INT_TYPE = "int";
     /**
-     * id of the real type to use in variable declaration properties.
+     * id of the real type to use in variable declaration properties (not supported yet).
      */
     String REAL_TYPE = "real";
     /**
@@ -34,15 +34,15 @@ public interface M2DocCustomProperties {
      */
     String STRING_TYPE = "string";
     /**
-     * id of the boolean type to use in variable declaration properties.
+     * id of the boolean type to use in variable declaration properties (not supported yet).
      */
     String BOOLEAN_TYPE = "boolean";
     /**
-     * id of the date type to use in variable declaration properties.
+     * id of the date type to use in variable declaration properties (not supported yet).
      */
     String DATE_TYPE = "date";
     /**
-     * id of the object type to use in variable declaration properties.
+     * id of the object type to use in variable declaration properties (not supported yet).
      */
     String OBJECT_TYPE = "object";
     /**

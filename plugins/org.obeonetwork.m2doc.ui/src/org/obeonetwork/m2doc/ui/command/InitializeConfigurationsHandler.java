@@ -44,6 +44,7 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
      * the command has been executed, so extract extract the needed information
      * from the application context.
      */
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getCurrentSelection(event);
         Shell shell = HandlerUtil.getActiveShell(event);
@@ -53,8 +54,8 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
                 try {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
                     Resource configurationModel = generator.createConfigurationModel((IFile) selected);
-                    MessageDialog.openInformation(shell, "M2Doc generation",
-                            "The configuration file '" + configurationModel.getURI().toPlatformString(true) + "' is created.");
+                    MessageDialog.openInformation(shell, "M2Doc generation", "The configuration file '"
+                        + configurationModel.getURI().toPlatformString(true) + "' has been created.");
                 } catch (FileNotFoundException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));

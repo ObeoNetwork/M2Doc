@@ -15,6 +15,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +70,8 @@ public class TemplateInfo {
             int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length();
             if (name != null) {
                 if (name.startsWith(M2DocCustomProperties.SERVICE_PROPERTY_PREFIX)) {
-                    String[] tokens = property.getLpwstr().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
-                    serviceTokens.addAll(Lists.newArrayList(tokens));
+                    String[] tokens = property.getLpwstr().trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+                    serviceTokens.addAll(Arrays.asList(tokens));
                 } else if (name.startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)
                     && name.length() > variablePrefixLength) {
                     String variableName = name.substring(variablePrefixLength + 1);
@@ -79,8 +80,8 @@ public class TemplateInfo {
                         variables.put(variableName, type);
                     }
                 } else if (name.startsWith(M2DocCustomProperties.URI_PROPERTY_PREFIX)) {
-                    String uri = property.getLpwstr().trim();
-                    packageURIs.add(uri);
+                    String[] uris = property.getLpwstr().trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+                    packageURIs.addAll(Arrays.asList(uris));
                 }
             }
         }

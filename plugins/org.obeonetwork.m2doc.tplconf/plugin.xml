@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated tplconf -->
+      <package
+            uri="http://www.obeonetwork.org/m2doc/template/config/1.0"
+            class="org.obeonetwork.m2doc.tplconf.TplconfPackage"
+            genModel="model/tplconf.genmodel"/>
+   </extension>
+
+</plugin>

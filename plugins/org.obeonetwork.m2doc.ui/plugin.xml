@@ -27,6 +27,11 @@
             name="Validate Template Command"
             id="org.obeonetwork.m2doc.ui.validate">
       </command>
+      <command
+            description="Configure variables and meta-model URIs in an M2Doc template"
+            id="org.obeonetwork.m2doc.ui.configure.template"
+            name="Configure Variables and URIs">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -41,6 +46,10 @@
       <handler
             commandId="org.obeonetwork.m2doc.ui.validate"
             class="org.obeonetwork.m2doc.ui.command.ValidateHandler">
+      </handler>
+      <handler
+            class="org.obeonetwork.m2doc.ui.command.ConfigureTemplateHandler"
+            commandId="org.obeonetwork.m2doc.ui.configure.template">
       </handler>
    </extension>
    
@@ -107,6 +116,26 @@
                         </test>
                      </iterate>
                   </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.obeonetwork.m2doc.ui.configure.template"
+               icon="icons/m2doc_init.png"
+               label="Configure Variables and Meta-Model URIs"
+               style="push"
+               tooltip="Configure variables and meta-model URIs in an M2Doc template">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        operator="or">
+                     <test
+                           forcePluginActivation="true"
+                           property="org.obeonetwork.m2doc.ui.testTemplate">
+                     </test>
+                  </iterate>
+               </with>
             </visibleWhen>
          </command>
       </menuContribution>
