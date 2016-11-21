@@ -11,6 +11,7 @@
 package org.obeonetwork.m2doc.sirius.providers;
 
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -67,7 +68,8 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         Generation generation = (Generation) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
-        String rootPath = (String) parameters.get(ProviderConstants.PROJECT_ROOT_PATH_KEY);
+
+        String rootPath = Files.createTempDir().getAbsolutePath();
         Object diagramDescriptionName = parameters.get(DIAGRAM_DESCRIPTION_ID_KEY);
         Object targetRootObject = parameters.get(TARGET_ROOT_OBJECT_KEY);
         boolean createIfAbsent = CREATE_VALUE.equals(parameters.get(CREATE_ID_KEY));
@@ -120,7 +122,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
 
     @Override
     public Map<String, OptionType> getOptionTypes() {
-        Map<String, OptionType> optionsMap = new HashMap<String, OptionType>();
+        Map<String, OptionType> optionsMap = new HashMap<>();
         optionsMap.put(TARGET_ROOT_OBJECT_KEY, OptionType.AQL_EXPRESSION);
         optionsMap.put(DIAGRAM_DESCRIPTION_ID_KEY, OptionType.STRING);
         return optionsMap;

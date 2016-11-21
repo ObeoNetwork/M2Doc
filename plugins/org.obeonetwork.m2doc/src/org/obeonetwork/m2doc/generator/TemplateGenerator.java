@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.generator;
 
 import java.io.IOException;
 
+import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
@@ -30,7 +31,7 @@ public class TemplateGenerator {
     /**
      * The file where the validation is stored.
      */
-    private String destinationFileName;
+    private URI destinationFileName;
 
     /**
      * Create a new {@link TemplateGenerator} instance given a template.
@@ -45,6 +46,21 @@ public class TemplateGenerator {
      */
     public TemplateGenerator(String destinationFileName, DocumentTemplate theTemplate)
             throws DocumentGenerationException {
+        this(URI.createFileURI(destinationFileName), theTemplate);
+    }
+
+    /**
+     * Create a new {@link TemplateGenerator} instance given a template.
+     * paths.
+     * 
+     * @param destinationFileName
+     *            the destination resource URI validation
+     * @param theTemplate
+     *            the template used to generate
+     * @throws DocumentGenerationException
+     *             when a generation problem occurs.
+     */
+    public TemplateGenerator(URI destinationFileName, DocumentTemplate theTemplate) throws DocumentGenerationException {
         this.template = theTemplate;
         this.destinationFileName = destinationFileName;
     }

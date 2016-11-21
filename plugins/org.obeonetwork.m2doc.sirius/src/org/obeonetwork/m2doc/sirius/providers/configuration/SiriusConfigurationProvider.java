@@ -16,8 +16,9 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -46,10 +47,10 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * 
      * @see
      *      org.obeonetwork.m2doc.provider.configuration.IProviderConfiguration#postCreateConfigurationModel(org.obeonetwork.m2doc.properties.
-     *      TemplateInfo, org.eclipse.core.resources.IFile, org.obeonetwork.m2doc.genconf.Generation)
+     *      TemplateInfo, org.eclipse.core.resources.File, org.obeonetwork.m2doc.genconf.Generation)
      */
     @Override
-    public void postCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile, Generation generation) {
+    public void postCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile, Generation generation) {
         // add generation resource in session
         ModelingProject modelingProject = getModelingProject(templateFile);
         if (modelingProject != null) {
@@ -99,14 +100,19 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * Return template file project if it is a modeling project.
      * 
      * @param templateFile
-     *            IFile
+     *            File
      * @return modeling project
      */
-    protected ModelingProject getModelingProject(IFile templateFile) {
-        IProject project = templateFile.getProject();
-        Option<ModelingProject> optionalModelingProject = ModelingProject.asModelingProject(project);
-        if (optionalModelingProject.some()) {
-            return optionalModelingProject.get();
+    protected ModelingProject getModelingProject(URI templateFile) {
+        if (templateFile.isPlatformResource()) {
+            IResource r = ResourcesPlugin.getWorkspace().getRoot().findMember(templateFile.toPlatformString(true));
+            if (r != null) {
+                IProject project = r.getProject();
+                Option<ModelingProject> optionalModelingProject = ModelingProject.asModelingProject(project);
+                if (optionalModelingProject.some()) {
+                    return optionalModelingProject.get();
+                }
+            }
         }
         return null;
     }
@@ -139,22 +145,22 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * 
      * @see
      *      org.obeonetwork.m2doc.provider.configuration.IProviderConfiguration#preCreateConfigurationModel(org.obeonetwork.m2doc.properties.
-     *      TemplateInfo, org.eclipse.core.resources.IFile)
+     *      TemplateInfo, org.eclipse.core.resources.File)
      */
     @Override
-    public void preCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile) {
+    public void preCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile) {
         // do nothing.
     }
 
     /**
      * {@inheritDoc}
      * 
-     * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#postValidateTemplate(org.eclipse.core.resources.IFile,
+     * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#postValidateTemplate(org.eclipse.core.resources.File,
      *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.genconf.Generation,
      *      org.obeonetwork.m2doc.generator.TemplateGenerator)
      */
     @Override
-    public boolean postValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation,
+    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation,
             TemplateGenerator generator) {
         // do nothing.
         return true;
@@ -163,11 +169,11 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
     /**
      * {@inheritDoc}
      * 
-     * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#preValidateTemplate(org.eclipse.core.resources.IFile,
+     * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#preValidateTemplate(org.eclipse.core.resources.File,
      *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.genconf.Generation)
      */
     @Override
-    public void preValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation) {
+    public void preValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
         // do nothing.
     }
 
@@ -175,10 +181,10 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * {@inheritDoc}
      * 
      * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#preGenerate(org.obeonetwork.m2doc.genconf.Generation,
-     *      org.eclipse.core.resources.IProject, org.eclipse.core.resources.IFile, org.eclipse.core.resources.IFile)
+     *      org.eclipse.core.resources.IProject, org.eclipse.core.resources.File, org.eclipse.core.resources.File)
      */
     @Override
-    public void preGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile) {
+    public void preGenerate(Generation generation, URI templateFile, URI generatedFile) {
         // do nothing.
     }
 
@@ -186,12 +192,12 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * {@inheritDoc}
      * 
      * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#postGenerate(org.obeonetwork.m2doc.genconf.Generation,
-     *      org.eclipse.core.resources.IProject, org.eclipse.core.resources.IFile, org.eclipse.core.resources.IFile,
+     *      org.eclipse.core.resources.IProject, org.eclipse.core.resources.File, org.eclipse.core.resources.File,
      *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.generator.DocumentGenerator)
      */
     @Override
-    public List<IFile> postGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile,
-            DocumentTemplate template, DocumentGenerator generator) {
+    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
+            DocumentGenerator generator) {
         // do nothing.
         return Lists.newArrayList();
     }

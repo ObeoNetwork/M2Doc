@@ -98,10 +98,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * Error message when an AQL query contains syntax errors.
      */
     private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression.";
-    /**
-     * The path to the root project where the template is located.
-     */
-    private String rootProjectPath;
 
     /**
      * The {@link BookmarkManager}.
@@ -149,7 +145,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * User Doc Ids list.
      * Used for uniqueness test.
      */
-    private List<String> userDocIds = new ArrayList<String>();
+    private List<String> userDocIds = new ArrayList<>();
 
     /**
      * Create a new {@link TemplateProcessor} instance given some definitions
@@ -158,7 +154,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * @param initialDefs
      *            the definitions used in queries and variable tags
      * @param projectPath
-     *            the path to the project where the template is located.
+     *            deprecated, should not be used anymore.
      * @param bookmarkManager
      *            the {@link BookmarkManager}
      * @param userContentManager
@@ -170,10 +166,34 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * @param theTargetConfObject
      *            the root EObject of the gen conf model.
      */
+    @Deprecated
     public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, BookmarkManager bookmarkManager,
             UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
             EObject theTargetConfObject) {
-        this.rootProjectPath = projectPath;
+        this(initialDefs, bookmarkManager, userContentManager, queryEnvironment, destinationDocument,
+                theTargetConfObject);
+    }
+
+    /**
+     * Create a new {@link TemplateProcessor} instance given some definitions
+     * and a query environment.
+     * 
+     * @param initialDefs
+     *            the definitions used in queries and variable tags
+     * @param bookmarkManager
+     *            the {@link BookmarkManager}
+     * @param userContentManager
+     *            the {@link UserContentManager}
+     * @param queryEnvironment
+     *            the query environment used to evaluate queries in the
+     * @param destinationDocument
+     *            the path to the destination document.
+     * @param theTargetConfObject
+     *            the root EObject of the gen conf model.
+     */
+    public TemplateProcessor(Map<String, Object> initialDefs, BookmarkManager bookmarkManager,
+            UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
+            EObject theTargetConfObject) {
         this.definitions = new GenerationEnvironment(initialDefs);
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
@@ -788,11 +808,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         imageRun.setText("");
         imageRun.getCTR().getInstrTextList().clear();
         String filePath;
-        if ("".equals(this.rootProjectPath) || this.rootProjectPath == null) {
-            filePath = object.getFileName();
-        } else {
-            filePath = this.rootProjectPath + "/" + object.getFileName();
-        }
+        filePath = object.getFileName(); // TODO removed some logic there which might need to be adapted to resolve the URI properly
         try {
             int heigth = Units.toEMU(object.getHeight());
             int width = Units.toEMU(object.getWidth());
@@ -901,7 +917,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             throws IllegalArgumentException {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
-        parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         if (targetConfObject instanceof Generation) {
             parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
                     ((Generation) targetConfObject).isRefreshRepresentations());
@@ -1009,7 +1024,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             throws IllegalArgumentException {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
-        parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, object.getHeight());
         parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, object.getWidth());
         parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, object.getActivatedLayers());

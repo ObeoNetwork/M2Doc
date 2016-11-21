@@ -65,7 +65,6 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         Map<String, Object> options = new HashMap<String, Object>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -92,7 +91,6 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         Map<String, Object> options = new HashMap<String, Object>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -119,7 +117,6 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         Map<String, Object> options = new HashMap<String, Object>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -145,7 +142,6 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         Map<String, Object> options = new HashMap<String, Object>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -174,7 +170,6 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         Map<String, Object> options = new HashMap<String, Object>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);

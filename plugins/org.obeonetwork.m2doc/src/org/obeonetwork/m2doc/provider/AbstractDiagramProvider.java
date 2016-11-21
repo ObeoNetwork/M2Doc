@@ -36,8 +36,7 @@ public abstract class AbstractDiagramProvider implements IProvider {
      * @param parameters
      *            a map of all parameter name to the corresponding object the provider can use. Global parameters always available are
      *            {@link ProviderConstants#CONF_ROOT_OBJECT_KEY} which give the EObject of the Genconf model from which the generation has
-     *            been launched and{@link ProviderConstants#PROJECT_ROOT_PATH_KEY} that give the workspace project path from which the
-     *            generation has been launched.
+     *            been launched
      * @return the image file of the diagram.
      * @throws ProviderException
      *             if a problem occurs during retrieving.

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.providers;
 
+import com.google.common.io.Files;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,7 +65,7 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
-        String rootPath = (String) parameters.get(ProviderConstants.PROJECT_ROOT_PATH_KEY);
+        String rootPath = Files.createTempDir().getAbsolutePath();
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
         Session session = SessionManager.INSTANCE.getSession(rootObject);

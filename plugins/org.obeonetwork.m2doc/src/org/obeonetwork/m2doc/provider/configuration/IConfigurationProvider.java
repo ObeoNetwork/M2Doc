@@ -13,8 +13,7 @@ package org.obeonetwork.m2doc.provider.configuration;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.generator.TemplateGenerator;
@@ -41,7 +40,7 @@ public interface IConfigurationProvider {
      * @param generation
      *            Generation
      */
-    void postCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile, Generation generation);
+    void postCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile, Generation generation);
 
     /**
      * Pre operation before configuration model creation.
@@ -51,7 +50,7 @@ public interface IConfigurationProvider {
      * @param templateFile
      *            IFile
      */
-    void preCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile);
+    void preCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile);
 
     /**
      * Post operation after template validation.
@@ -66,7 +65,7 @@ public interface IConfigurationProvider {
      *            TemplateGenerator
      * @return validation result, must return true by default.
      */
-    boolean postValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation,
+    boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation,
             TemplateGenerator generator);
 
     /**
@@ -79,29 +78,25 @@ public interface IConfigurationProvider {
      * @param generation
      *            Generation
      */
-    void preValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation);
+    void preValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation);
 
     /**
      * Pre operation before generation.
      * 
      * @param generation
      *            Generation
-     * @param project
-     *            IProject
      * @param templateFile
      *            IFile
      * @param generatedFile
      *            IFile
      */
-    void preGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile);
+    void preGenerate(Generation generation, URI templateFile, URI generatedFile);
 
     /**
      * Post operation after generation.
      * 
      * @param generation
      *            Generation
-     * @param project
-     *            IProject
      * @param templateFile
      *            IFile
      * @param generatedFile
@@ -110,9 +105,9 @@ public interface IConfigurationProvider {
      *            DocumentTemplate
      * @param generator
      *            DocumentGenerator
-     * @return IFile list to return after the generation. Generation result and validation log are already in there.
+     * @return URI list to return after the generation. Generation result and validation log are already in there.
      */
-    List<IFile> postGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile,
-            DocumentTemplate template, DocumentGenerator generator);
+    List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
+            DocumentGenerator generator);
 
 }

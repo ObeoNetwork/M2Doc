@@ -19,7 +19,6 @@ import java.util.Map;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -74,7 +73,7 @@ public final class M2DocUtils {
      * @throws IOException
      */
     public static void saveResource(Resource resource) {
-        Map<Object, Object> options = new HashMap<Object, Object>();
+        Map<Object, Object> options = new HashMap<>();
         options.put(XMLResource.OPTION_ENCODING, "UTF-8");
         try {
             resource.save(options);
@@ -94,7 +93,7 @@ public final class M2DocUtils {
      *            URI
      * @return new resource.
      */
-    public static Resource createResource(IFile templateFile, URI genConfURI) {
+    public static Resource createResource(URI templateFile, URI genConfURI) {
         // Create a resource set
         ResourceSet resourceSet = new ResourceSetImpl();
         // Create a resource for this file.
