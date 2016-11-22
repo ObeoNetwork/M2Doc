@@ -95,130 +95,137 @@ public class DocumentParserTest {
 
     @Test
     public void testTemplateParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testTemplate.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertEquals(2, ((StaticFragment) template.getSubConstructs().get(0)).getRuns().size());
+        try (FileInputStream is = new FileInputStream("templates/testTemplate.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(document, template.getBody());
+            assertEquals(1, template.getSubConstructs().size());
+            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+            assertEquals(2, ((StaticFragment) template.getSubConstructs().get(0)).getRuns().size());
+        }
     }
 
     @Test
     public void testVarParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testVar.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Query);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Query varRef = (Query) template.getSubConstructs().get(1);
-        assertNotNull(varRef.getQuery());
+        try (FileInputStream is = new FileInputStream("templates/testVar.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(document, template.getBody());
+            assertEquals(3, template.getSubConstructs().size());
+            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(template.getSubConstructs().get(1) instanceof Query);
+            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+            Query varRef = (Query) template.getSubConstructs().get(1);
+            assertNotNull(varRef.getQuery());
+        }
     }
 
     @Test
     public void testQueryParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testAQL.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Query);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Query query = (Query) template.getSubConstructs().get(1);
-        assertNotNull(query.getQuery());
+        try (FileInputStream is = new FileInputStream("templates/testAQL.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(document, template.getBody());
+            assertEquals(3, template.getSubConstructs().size());
+            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(template.getSubConstructs().get(1) instanceof Query);
+            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+            Query query = (Query) template.getSubConstructs().get(1);
+            assertNotNull(query.getQuery());
+        }
     }
 
     @Test
     public void testRepetitionParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testGDFOR.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Repetition);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Repetition repetition = (Repetition) template.getSubConstructs().get(1);
-        assertNotNull(repetition.getQuery());
-        assertEquals("v", repetition.getIterationVar());
-        assertTrue(repetition.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(repetition.getSubConstructs().get(1) instanceof Query);
-        assertTrue(repetition.getSubConstructs().get(0) instanceof StaticFragment);
+        try (FileInputStream is = new FileInputStream("templates/testGDFOR.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(document, template.getBody());
+            assertEquals(3, template.getSubConstructs().size());
+            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(template.getSubConstructs().get(1) instanceof Repetition);
+            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+            Repetition repetition = (Repetition) template.getSubConstructs().get(1);
+            assertNotNull(repetition.getQuery());
+            assertEquals("v", repetition.getIterationVar());
+            assertTrue(repetition.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(repetition.getSubConstructs().get(1) instanceof Query);
+            assertTrue(repetition.getSubConstructs().get(0) instanceof StaticFragment);
+        }
     }
 
     @Test
     public void testSimpleConditionnalParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testConditionnal1.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-        assertNotNull(conditionnal.getQuery());
-        assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
-        assertNull(conditionnal.getElse());
-        assertNull(conditionnal.getAlternative());
+        try (FileInputStream is = new FileInputStream("templates/testConditionnal1.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(document, template.getBody());
+            assertEquals(3, template.getSubConstructs().size());
+            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+            Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
+            assertNotNull(conditionnal.getQuery());
+            assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
+            assertNull(conditionnal.getElse());
+            assertNull(conditionnal.getAlternative());
+        }
     }
 
     @Test
     public void testConditionnalWithElseParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testConditionnal2.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-        assertNotNull(conditionnal.getQuery());
-        assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
-        assertNull(conditionnal.getAlternative());
-        assertEquals(1, conditionnal.getElse().getSubConstructs().size());
-        assertTrue(conditionnal.getElse().getSubConstructs().get(0) instanceof StaticFragment);
+        try (FileInputStream is = new FileInputStream("templates/testConditionnal2.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(document, template.getBody());
+            assertEquals(3, template.getSubConstructs().size());
+            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+            Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
+            assertNotNull(conditionnal.getQuery());
+            assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
+            assertNull(conditionnal.getAlternative());
+            assertEquals(1, conditionnal.getElse().getSubConstructs().size());
+            assertTrue(conditionnal.getElse().getSubConstructs().get(0) instanceof StaticFragment);
+        }
     }
 
     @Test
     public void testConditionnalWithElseIfParsing()
             throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testConditionnal3.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-        assertNotNull(conditionnal.getQuery());
-        assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(conditionnal.getAlternative() instanceof Conditionnal);
-        assertNull(conditionnal.getElse());
-        assertTrue(conditionnal.getAlternative().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(conditionnal.getAlternative().getQuery());
-        assertNull(conditionnal.getAlternative().getAlternative());
-        assertNull(conditionnal.getAlternative().getElse());
+        try (FileInputStream is = new FileInputStream("templates/testConditionnal3.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(document, template.getBody());
+            assertEquals(3, template.getSubConstructs().size());
+            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+            Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
+            assertNotNull(conditionnal.getQuery());
+            assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(conditionnal.getAlternative() instanceof Conditionnal);
+            assertNull(conditionnal.getElse());
+            assertTrue(conditionnal.getAlternative().getSubConstructs().get(0) instanceof StaticFragment);
+            assertNotNull(conditionnal.getAlternative().getQuery());
+            assertNull(conditionnal.getAlternative().getAlternative());
+            assertNull(conditionnal.getAlternative().getElse());
+        }
     }
 
     @Test
@@ -328,22 +335,22 @@ public class DocumentParserTest {
         assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof Query);
         assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
     }
-
-    @Test
-    public void imageParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testImageTag.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
-        assertEquals("images/dh1.gif", im.getFileName());
-        assertEquals(100, im.getHeight());
-        assertEquals(100, im.getWidth());
-        assertEquals("plan de forme du dingy herbulot", im.getLegend());
-        assertEquals(POSITION.BELOW, im.getLegendPOS());
-    }
+    //
+    // @Test
+    // public void imageParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
+    // FileInputStream is = new FileInputStream("templates/testImageTag.docx");
+    // OPCPackage oPackage = OPCPackage.open(is);
+    // XWPFDocument document = new XWPFDocument(oPackage);
+    // BodyParser parser = new BodyParser(document, env);
+    // Template template = parser.parseTemplate();
+    // assertEquals(1, template.getSubConstructs().size());
+    // Image im = (Image) template.getSubConstructs().get(0);
+    // assertEquals("images/dh1.gif", im.getFileName());
+    // assertEquals(100, im.getHeight());
+    // assertEquals(100, im.getWidth());
+    // assertEquals("plan de forme du dingy herbulot", im.getLegend());
+    // assertEquals(POSITION.BELOW, im.getLegendPOS());
+    // }
 
     /**
      * Tests that the escaping character {@link BodyParser#M2DOC_ESCAPE_CHARACTER} does escape the value delimiter character
