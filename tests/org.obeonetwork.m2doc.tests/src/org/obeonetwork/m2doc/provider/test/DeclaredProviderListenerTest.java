@@ -36,6 +36,7 @@ public class DeclaredProviderListenerTest {
 
     @Before
     public void setUp() {
+        org.junit.Assume.assumeTrue(Platform.isRunning());
         errorLogListener = M2DocTestPlugin.getDefault().getErrorLogListener();
         Platform.addLogListener(errorLogListener);
     }

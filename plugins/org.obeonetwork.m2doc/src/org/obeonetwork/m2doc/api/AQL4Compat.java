@@ -129,7 +129,7 @@ public final class AQL4Compat {
                 javaServiceClass = (Class<? extends IService>) AQL4Compat.class.getClassLoader()
                         .loadClass("org.eclipse.acceleo.query.runtime.lookup.basic.Service");
             } catch (ClassNotFoundException e1) {
-                M2DocPlugin.log(
+                M2DocPlugin.INSTANCE.log(
                         new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to load Java service class.", e1));
                 javaServiceClass = null;
             }
@@ -139,11 +139,11 @@ public final class AQL4Compat {
         try {
             javaServiceConstuctor = javaServiceClass.getConstructor(Method.class, Object.class);
         } catch (NoSuchMethodException e) {
-            M2DocPlugin.log(
+            M2DocPlugin.INSTANCE.log(
                     new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find Java service contructor.", e));
             javaServiceConstuctor = null;
         } catch (SecurityException e) {
-            M2DocPlugin.log(
+            M2DocPlugin.INSTANCE.log(
                     new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find Java service contructor.", e));
             javaServiceConstuctor = null;
         }
@@ -161,12 +161,12 @@ public final class AQL4Compat {
                 astValidatorConstuctor = AstValidator.class.getConstructor(IReadOnlyQueryEnvironment.class);
                 envOnly = true;
             } catch (NoSuchMethodException e1) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         "unable to find AstValidator contructor.", e1));
                 astValidatorConstuctor = null;
                 envOnly = false;
             } catch (SecurityException e1) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         "unable to find AstValidator contructor.", e1));
                 astValidatorConstuctor = null;
                 envOnly = false;
@@ -185,10 +185,12 @@ public final class AQL4Compat {
                 validationMethod = AstValidator.class.getDeclaredMethod("validate", AstResult.class);
             }
         } catch (NoSuchMethodException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find validation method.", e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find validation method.", e));
             validationMethod = null;
         } catch (SecurityException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find validation method.", e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to find validation method.", e));
             validationMethod = null;
         }
 
@@ -219,13 +221,13 @@ public final class AQL4Compat {
             try {
                 result.merge((ServiceRegistrationResult) REGISTER_METHOD.invoke(queryEnvironment, service));
             } catch (IllegalAccessException e) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         UNABLE_TO_REGISTER_SERVICES + getServiceName(service), e));
             } catch (IllegalArgumentException e) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         UNABLE_TO_REGISTER_SERVICES + getServiceName(service), e));
             } catch (InvocationTargetException e) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         UNABLE_TO_REGISTER_SERVICES + getServiceName(service), e));
             }
         }
@@ -250,15 +252,15 @@ public final class AQL4Compat {
                 result = (String) service.getClass().getMethod("getName").invoke(service);
             }
         } catch (IllegalAccessException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+            M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
         } catch (IllegalArgumentException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+            M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
         } catch (InvocationTargetException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+            M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
         } catch (NoSuchMethodException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+            M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
         } catch (SecurityException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
+            M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_GET_SERVICE_NAME, e));
         }
 
         return result;
@@ -275,7 +277,7 @@ public final class AQL4Compat {
      * @return the {@link Set} of {@link IService} for the given {@link Class}
      */
     private static Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
-        final Set<IService> result = new LinkedHashSet<IService>();
+        final Set<IService> result = new LinkedHashSet<>();
 
         Object instance = null;
         try {
@@ -313,7 +315,7 @@ public final class AQL4Compat {
      */
     private static Set<IService> getServicesFromInstance(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls,
             Object instance) {
-        final Set<IService> result = new LinkedHashSet<IService>();
+        final Set<IService> result = new LinkedHashSet<>();
 
         if (instance instanceof IServiceProvider) {
             try {
@@ -321,7 +323,7 @@ public final class AQL4Compat {
                 // CHECKSTYLE:OFF
             } catch (Exception e) {
                 // CHECKSTYLE:ON
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         UNABLE_TO_REGISTER_SERVICES + cls.getName(), e));
             }
         } else {
@@ -332,16 +334,16 @@ public final class AQL4Compat {
                         final IService service = JAVA_SERVICE_CONSTRUCTOR.newInstance(method, instance);
                         result.add(service);
                     } catch (InstantiationException e) {
-                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                        M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                                 UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
                     } catch (IllegalAccessException e) {
-                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                        M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                                 UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
                     } catch (IllegalArgumentException e) {
-                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                        M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                                 UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
                     } catch (InvocationTargetException e) {
-                        M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                        M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                                 UNABLE_TO_INSTANTIATE_I_SERVICE_FOR_METHOD + method.getName(), e));
                     }
                 }
@@ -398,13 +400,13 @@ public final class AQL4Compat {
             try {
                 REGISTER_METHOD.invoke(env, cls);
             } catch (IllegalAccessException e) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         UNABLE_TO_REGISTER_SERVICES + cls.getName(), e));
             } catch (IllegalArgumentException e) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         UNABLE_TO_REGISTER_SERVICES + cls.getName(), e));
             } catch (InvocationTargetException e) {
-                M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                         UNABLE_TO_REGISTER_SERVICES + cls.getName(), e));
             }
         }
@@ -430,16 +432,20 @@ public final class AQL4Compat {
                 result = AST_VALIDATOR_CONSTRUCTOR.newInstance(environment, variableTypes);
             }
         } catch (InstantiationException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
             result = null;
         } catch (IllegalAccessException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
             result = null;
         } catch (IllegalArgumentException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
             result = null;
         } catch (InvocationTargetException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INSTANTIATE_AST_VALIDATOR, e));
             result = null;
         }
 
@@ -462,7 +468,7 @@ public final class AQL4Compat {
         IValidationResult result;
         AstValidator validator = getValidator(environment, variableTypes);
         if (astResult == null) {
-            M2DocPlugin.log(new Status(IStatus.WARNING, M2DocPlugin.PLUGIN_ID,
+            M2DocPlugin.INSTANCE.log(new Status(IStatus.WARNING, M2DocPlugin.PLUGIN_ID,
                     "null ast result passed to the validate method"));
             return null;
 
@@ -474,13 +480,16 @@ public final class AQL4Compat {
                 result = (IValidationResult) VALIDATION_METHOD.invoke(validator, astResult);
             }
         } catch (IllegalAccessException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INVOKE_VALIDATION_METHOD, e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
             result = null;
         } catch (IllegalArgumentException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INVOKE_VALIDATION_METHOD, e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
             result = null;
         } catch (InvocationTargetException e) {
-            M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, UNABLE_TO_INVOKE_VALIDATION_METHOD, e));
+            M2DocPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID, "unable to invoke validation method", e));
             result = null;
         }
 

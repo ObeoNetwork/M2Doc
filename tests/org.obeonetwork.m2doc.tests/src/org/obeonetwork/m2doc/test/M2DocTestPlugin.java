@@ -1,9 +1,3 @@
-package org.obeonetwork.m2doc.test;
-
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
-import org.osgi.framework.BundleContext;
-
 /*******************************************************************************
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
@@ -15,19 +9,34 @@ import org.osgi.framework.BundleContext;
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
+package org.obeonetwork.m2doc.test;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.ResourceLocator;
+import org.osgi.framework.BundleContext;
 
 /**
  * Plugin's activator class.
  * 
  * @author PGUILET_OBEO
  */
-public class M2DocTestPlugin extends Plugin {
+public class M2DocTestPlugin extends EMFPlugin {
 
-    // The plug-in ID
+    /**
+     * The plug-in ID.
+     */
     public static final String PLUGIN_ID = "org.obeonetwork.m2doc.tests"; //$NON-NLS-1$
 
-    // The shared instance
-    private static M2DocTestPlugin plugin;
+    /**
+     * The shared instance.
+     */
+    public static final M2DocTestPlugin INSTANCE = new M2DocTestPlugin();
+
+    /**
+     * The implementation plugin for Eclipse.
+     */
+    private static Implementation plugin;
 
     /**
      * Listener that catch exception that would be put in the error log.
@@ -35,10 +44,19 @@ public class M2DocTestPlugin extends Plugin {
     private ErrorLogListener errorLogListener = new ErrorLogListener();
 
     /**
-     * The constructor
+     * The constructor.
      */
     public M2DocTestPlugin() {
-        // not used
+        super(new ResourceLocator[] {});
+    }
+
+    @Override
+    public ResourceLocator getPluginResourceLocator() {
+        return plugin;
+    }
+
+    public static Implementation getPlugin() {
+        return plugin;
     }
 
     /**
@@ -50,36 +68,53 @@ public class M2DocTestPlugin extends Plugin {
         return errorLogListener;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Class implementing the EclipsePlugin instance, instanciated when the code is run in an OSGi context.
      * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+     * @author cedric
      */
-    @Override
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
-        plugin = this;
-        Platform.addLogListener(errorLogListener);
-    }
+    public static class Implementation extends EclipsePlugin {
+        /**
+         * Create the Eclipse Implementation.
+         */
+        public Implementation() {
+            super();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        plugin = null;
-        super.stop(context);
+            // Remember the static instance.
+            //
+            plugin = this;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
+         */
+        @Override
+        public void start(BundleContext context) throws Exception {
+            super.start(context);
+            Platform.addLogListener(INSTANCE.errorLogListener);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+         */
+        @Override
+        public void stop(BundleContext context) throws Exception {
+            super.stop(context);
+            Platform.removeLogListener(INSTANCE.errorLogListener);
+        }
     }
 
     /**
-     * Returns the shared instance;
+     * Returns the shared instance.
      *
      * @return the shared instance;
      */
     public static M2DocTestPlugin getDefault() {
-        return plugin;
+        return INSTANCE;
     }
 
 }

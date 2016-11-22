@@ -41,4 +41,4 @@ Import-Package: com.google.common.base;version="15.0.0",
  org.openxmlformats.schemas.officeDocument.x2006.customProperties;version="1.1.0",
  org.openxmlformats.schemas.wordprocessingml.x2006.main;version="1.1.0",
  org.openxmlformats.schemas.wordprocessingml.x2006.main.impl;version="1.1.0"
-Bundle-Activator: org.obeonetwork.m2doc.M2DocPlugin
+Bundle-Activator: org.obeonetwork.m2doc.M2DocPlugin$Implementation

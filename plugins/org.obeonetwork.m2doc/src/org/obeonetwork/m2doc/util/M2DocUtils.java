@@ -78,7 +78,7 @@ public final class M2DocUtils {
         try {
             resource.save(options);
         } catch (IOException exception) {
-            M2DocPlugin.getDefault().getLog().log(
+            M2DocPlugin.INSTANCE.log(
                     new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR, exception.getMessage(), exception));
         }
 
