@@ -60,13 +60,14 @@ public class OptionParserTest {
     @Before
     public void setUp() throws InvalidFormatException, IOException {
         optionParser = new OptionParser();
-        FileInputStream is = new FileInputStream("templates/allDiagram.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        document = new XWPFDocument(oPackage);
-        XWPFParagraph paragraph = document.getParagraphs().get(0);
-        construct = TemplateFactory.eINSTANCE.createRepresentation();
-        construct.getRuns().add(paragraph.getRuns().get(0));
-        construct.setStyleRun(paragraph.getRuns().get(0));
+        try (FileInputStream is = new FileInputStream("templates/allDiagram.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            document = new XWPFDocument(oPackage);
+            XWPFParagraph paragraph = document.getParagraphs().get(0);
+            construct = TemplateFactory.eINSTANCE.createRepresentation();
+            construct.getRuns().add(paragraph.getRuns().get(0));
+            construct.setStyleRun(paragraph.getRuns().get(0));
+        }
 
     }
 
