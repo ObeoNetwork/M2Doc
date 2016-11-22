@@ -6,7 +6,7 @@ Bundle-Version: 0.9.4.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.genconf,
  org.obeonetwork.m2doc.genconf.impl,
  org.obeonetwork.m2doc.genconf.util

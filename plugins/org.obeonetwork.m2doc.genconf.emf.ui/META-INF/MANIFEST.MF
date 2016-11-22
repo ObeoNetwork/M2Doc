@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.editor,
  org.eclipse.sirius.ext.emf.ui;bundle-version="3.0.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %providerName
 Export-Package: org.obeonetwork.m2doc.genconf.emf.ui,
  org.obeonetwork.m2doc.genconf.emf.ui.celleditor

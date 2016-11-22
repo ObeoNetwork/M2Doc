@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.expressions,
  org.eclipse.emf.ecore.xmi,
  org.obeonetwork.m2doc.genconf
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.poi.openxml4j.exceptions,
  org.apache.poi.openxml4j.opc,

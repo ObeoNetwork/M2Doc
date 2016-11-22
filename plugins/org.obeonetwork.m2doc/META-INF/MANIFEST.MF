@@ -6,7 +6,7 @@ Bundle-Version: 0.9.5.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.obeonetwork.m2doc.genconf;bundle-version="0.9.3";visibility:=reexport,
