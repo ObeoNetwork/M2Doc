@@ -355,4 +355,17 @@ public final class TemplateConfigUtil {
         return true;
     }
     // @CHECKSTYLE:ON
+
+    /**
+     * Check that the given type name is a (syntactically) valid classifier type name, i.e with a prfix followed by "::" followed by a
+     * suffix.
+     * 
+     * @param typeName
+     *            The type name
+     * @return <code>true</code> if the given type name is a syntactically valid classifier type name. This does NOT mean that the
+     *         classifier is actually recognized!
+     */
+    public static boolean isValidClassifierTypeName(String typeName) {
+        return isValidTypeName(typeName) && typeName.indexOf(METAMODEL_TYPE_SEPARATOR) > 0;
+    }
 }
