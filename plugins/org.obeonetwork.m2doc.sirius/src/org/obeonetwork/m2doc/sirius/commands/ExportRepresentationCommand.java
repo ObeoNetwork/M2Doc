@@ -66,6 +66,10 @@ public class ExportRepresentationCommand extends RecordingCommand {
      * Is representation opened.
      */
     private boolean isRepresentationOpened;
+    /**
+     * Refresh Representations.
+     */
+    private boolean refreshRepresentations;
 
     /**
      * Export diagram.
@@ -80,15 +84,18 @@ public class ExportRepresentationCommand extends RecordingCommand {
      *            Session
      * @param isDiagramOpened
      *            boolean
+     * @param refreshRepresentations
+     *            refresh Representations
      */
     public ExportRepresentationCommand(TransactionalEditingDomain domain, List<Layer> layers, DDiagram diagram,
-            Session session, boolean isDiagramOpened) {
+            Session session, boolean isDiagramOpened, boolean refreshRepresentations) {
         super(domain);
         this.editingDomain = domain;
         this.layers = layers;
         this.representation = diagram;
         this.session = session;
         this.isRepresentationOpened = isDiagramOpened;
+        this.refreshRepresentations = refreshRepresentations;
     }
 
     /**
@@ -100,11 +107,12 @@ public class ExportRepresentationCommand extends RecordingCommand {
     protected void doExecute() {
         if (this.layers.isEmpty() && this.representation instanceof DDiagram) {
             this.exportedDiagram = (DDiagram) this.representation;
-            if (!isRepresentationOpened) {
+            if (!isRepresentationOpened && refreshRepresentations) {
                 // Force a refresh of the representation
                 DialectManager.INSTANCE.refresh(exportedDiagram, new NullProgressMonitor());
             }
         } else {
+            // In this case, we are in layers mode and we refresh whatever refreshRepresentations status
             CompoundCommand compoundCmd = new CompoundCommand();
             // copy representation
             this.exportedDiagram = (DDiagram) DialectManager.INSTANCE.copyRepresentation(this.representation,

@@ -861,7 +861,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         EMap<String, Object> optionsMap = templateProvider.getOptionValueMap();
         Set<Entry<String, Object>> optionsMapEntries = optionsMap.entrySet();
         for (Entry<String, Object> optionsMapEntry : optionsMapEntries) {
-            if ((optionTypes != null && optionTypes.get(optionsMapEntry.getKey()) == null) || optionTypes == null) {
+            if (optionTypes == null || optionTypes.get(optionsMapEntry.getKey()) == null) {
                 parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
             } else if (optionTypes != null) {
                 OptionType optionType = optionTypes.get(optionsMapEntry.getKey());

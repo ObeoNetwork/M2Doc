@@ -50,6 +50,7 @@ import org.eclipse.sirius.diagram.business.api.query.DDiagramQuery;
 import org.eclipse.sirius.diagram.description.DescriptionPackage;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
+import org.eclipse.sirius.diagram.ui.internal.refresh.SiriusDiagramSessionEventBroker;
 import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
 import org.eclipse.sirius.diagram.ui.tools.api.part.DiagramEditPartService;
 import org.eclipse.sirius.ui.business.api.dialect.DialectEditor;
@@ -147,6 +148,10 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
             return diagram;
         }
 
+        // Enable GMF notation model canonical refresh in pre-commit
+        // called here to be notified before the DiagramEventBroker
+        SiriusDiagramSessionEventBroker.getInstance(session);
+
         // create GMFDiagramUpdater
         GMFDiagramUpdater gmfDiagramUpdater = null;
         if (!isDiagramOpened) {
@@ -154,7 +159,8 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
         }
 
         ExportRepresentationCommand exportRepresentationCommand = new ExportRepresentationCommand(
-                session.getTransactionalEditingDomain(), layers, diagram, session, isDiagramOpened);
+                session.getTransactionalEditingDomain(), layers, diagram, session, isDiagramOpened,
+                refreshRepresentations);
         session.getTransactionalEditingDomain().getCommandStack().execute(exportRepresentationCommand);
 
         // remove GMFDiagramUpdater
