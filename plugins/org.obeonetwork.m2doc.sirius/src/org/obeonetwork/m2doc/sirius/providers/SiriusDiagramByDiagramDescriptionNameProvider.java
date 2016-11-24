@@ -12,21 +12,18 @@ package org.obeonetwork.m2doc.sirius.providers;
 
 import com.google.common.collect.Lists;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.viewpoint.DRepresentation;
-import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
-import org.eclipse.sirius.viewpoint.description.Viewpoint;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
@@ -51,6 +48,14 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
      * representation title from which image will be computed.
      */
     private static final String DIAGRAM_DESCRIPTION_ID_KEY = "descriptionId";
+    /**
+     * the key used in the map passed to {@link IProvider} to define the value of the create option.
+     */
+    private static final String CREATE_ID_KEY = "create";
+    /**
+     * Value used to assert absent representation must be created.
+     */
+    private static final Object CREATE_VALUE = "true";
 
     /**
      * Default constructor.
@@ -61,9 +66,11 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
     @SuppressWarnings("unchecked")
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
+        Generation generation = (Generation) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
         String rootPath = (String) parameters.get(ProviderConstants.PROJECT_ROOT_PATH_KEY);
         Object diagramDescriptionName = parameters.get(DIAGRAM_DESCRIPTION_ID_KEY);
         Object targetRootObject = parameters.get(TARGET_ROOT_OBJECT_KEY);
+        boolean createIfAbsent = CREATE_VALUE.equals(parameters.get(CREATE_ID_KEY));
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
         refreshRepresentations = OptionUtil.mustRefreshRepresentation(parameters);
@@ -83,8 +90,8 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
             }
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
             List<DRepresentation> representations = new SiriusServices()
-                    .getAssociatedRepresentationByDiagramDescriptionAndName(targetRootEObject,
-                            (String) diagramDescriptionName, session);
+                    .getAssociatedRepresentationByDiagramDescriptionAndName(generation, targetRootEObject,
+                            (String) diagramDescriptionName, session, createIfAbsent);
             if (!representations.isEmpty() && representations.get(0) instanceof DDiagram) {
                 return generateAndReturnDiagramImages(rootPath, session, representations,
                         getLayers((DDiagram) representations.get(0), diagramActivatedLayers));
@@ -104,17 +111,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
      *             if the diagram description does not exist in the session.
      */
     private void checkDiagramDescriptionExist(Session session, String diagramDescriptionName) throws ProviderException {
-        boolean diagramDescriptionExist = false;
-        Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-        for (Viewpoint viewpoint : selectedViewpoints) {
-            EList<RepresentationDescription> ownedRepresentations = viewpoint.getOwnedRepresentations();
-            for (RepresentationDescription representationDescription : ownedRepresentations) {
-                if (diagramDescriptionName.equals(representationDescription.getName())) {
-                    diagramDescriptionExist = true;
-                }
-            }
-        }
-        if (!diagramDescriptionExist) {
+        if (new SiriusServices().findDiagramDescription(session, diagramDescriptionName) == null) {
             throw new ProviderException("The provided diagram description '" + diagramDescriptionName
                 + "' does not exist in the loaded aird");
         }
