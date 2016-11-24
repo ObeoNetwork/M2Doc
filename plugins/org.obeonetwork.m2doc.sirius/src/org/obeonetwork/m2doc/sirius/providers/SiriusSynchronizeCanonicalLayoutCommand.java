@@ -81,18 +81,11 @@ public class SiriusSynchronizeCanonicalLayoutCommand extends RecordingCommand im
      */
     @Override
     protected void doExecute() {
-        // Display.getDefault().asyncExec(new Runnable() {
-        //
-        // @Override
-        // public void run() {
         if (childViewsAdapters == null && childViewsAdaptersForCenterLayout == null) {
             executeLayoutOnDiagramOpening();
         } else {
             executeLayoutDueToExternalChanges();
         }
-        // }
-        // });
-
     }
 
     private void executeLayoutOnDiagramOpening() {
