@@ -1,5 +1,6 @@
 package org.obeonetwork.m2doc.sirius.session;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -21,40 +22,37 @@ public class SessionCleaner implements IConfigurationProvider {
 
     @Override
     public void postCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile, Generation generation) {
-        // TODO Auto-generated method stub
+        // unused.
 
     }
 
     @Override
     public void preCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile) {
-        // TODO Auto-generated method stub
-
+        // unused.
     }
 
     @Override
     public boolean postValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation,
             TemplateGenerator generator) {
-        // TODO Auto-generated method stub
+        // unused.
         return false;
     }
 
     @Override
     public void preValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation) {
-        // TODO Auto-generated method stub
-
+        // unused.
     }
 
     @Override
     public void preGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile) {
-        // TODO Auto-generated method stub
-
+        // unused.
     }
 
     @Override
     public List<IFile> postGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile,
             DocumentTemplate template, DocumentGenerator generator) {
         CleaningJobRegistry.INSTANCE.clean(generation);
-        return null;
+        return Collections.emptyList();
     }
 
 }

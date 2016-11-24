@@ -1,15 +1,14 @@
 package org.obeonetwork.m2doc.sirius.session;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 
 import org.obeonetwork.m2doc.genconf.Generation;
 
 /**
- * Register of cleaning jobs.
+ * Registry of cleaning jobs.
  * 
  * @author Romain Guider
  */
@@ -19,15 +18,15 @@ public class CleaningJobRegistry {
      */
     public static final CleaningJobRegistry INSTANCE = new CleaningJobRegistry();
     /**
-     * The map where jobs are stored.
+     * The multi map that contains the cleaning jobs executed post generation.
      */
-    private Map<Generation, List<ICleaningJob>> jobs;
+
+    private Multimap<Generation, Runnable> jobs = ArrayListMultimap.create();
 
     /**
-     * hiden constructor.
+     * hidden constructor.
      */
     protected CleaningJobRegistry() {
-        jobs = Maps.newHashMap();
     }
 
     /**
@@ -38,13 +37,8 @@ public class CleaningJobRegistry {
      * @param job
      *            the job
      */
-    public void registerJob(Generation generation, ICleaningJob job) {
-        List<ICleaningJob> genJobs = jobs.get(generation);
-        if (genJobs == null) {
-            genJobs = Lists.newArrayList();
-            jobs.put(generation, genJobs);
-        }
-        genJobs.add(job);
+    public void registerJob(Generation generation, Runnable job) {
+        jobs.put(generation, job);
     }
 
     /**
@@ -54,11 +48,15 @@ public class CleaningJobRegistry {
      *            the generation.
      */
     public void clean(Generation generation) {
-        List<ICleaningJob> genJobs = jobs.get(generation);
-        if (genJobs != null) {
-            for (ICleaningJob job : genJobs) {
-                job.doClean();
+        try {
+            Collection<Runnable> genJobs = jobs.get(generation);
+            if (genJobs != null) {
+                for (Runnable job : genJobs) {
+                    job.run();
+                }
             }
+        } finally {
+            jobs.removeAll(generation);
         }
     }
 

@@ -83,10 +83,10 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
      *            the Sirius session from which we want to find the representation with the given name.
      * @return all representations whose target is the specified EObject
      */
-    private List<DRepresentation> getAssociatedRepresentationByDiagramDescriptionAndName(Generation generation,
-            EObject targetRootObject, String diagramId, Session session, boolean createIfAbsent) {
+    private List<DRepresentation> getAssociatedRepresentationByDiagramDescriptionName(Generation generation,
+            EObject targetRootObject, String diagramDescriptionName, Session session, boolean createIfAbsent) {
         List<DRepresentation> result = new ArrayList<DRepresentation>();
-        if (diagramId != null) {
+        if (diagramDescriptionName != null) {
             Collection<DRepresentation> representations = DialectManager.INSTANCE.getRepresentations(targetRootObject,
                     session);
             // Filter representations to keep only those in a selected viewpoint
@@ -94,7 +94,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
 
             for (DRepresentation representation : representations) {
                 if (representation instanceof DDiagram
-                    && diagramId.equals(((DDiagram) representation).getDescription().getName())
+                    && diagramDescriptionName.equals(((DDiagram) representation).getDescription().getName())
                     && representation.eContainer() instanceof DView) {
                     DView dView = (DView) representation.eContainer();
                     Viewpoint vp = dView.getViewpoint();
@@ -105,9 +105,9 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
             }
         }
         if (result.isEmpty() && createIfAbsent) {
-            RepresentationDescription description = findDiagramDescription(session, diagramId);
+            RepresentationDescription description = findDiagramDescription(session, diagramDescriptionName);
             session.getTransactionalEditingDomain().getCommandStack().execute(new CreateRepresentationCommand(session,
-                    description, targetRootObject, diagramId, new NullProgressMonitor()));
+                    description, targetRootObject, diagramDescriptionName, new NullProgressMonitor()));
             for (DRepresentation representation : DialectManager.INSTANCE.getRepresentations(targetRootObject,
                     session)) {
                 if (representation instanceof DDiagram && ((DDiagram) representation).getDescription() == description) {
@@ -146,7 +146,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
                 throw new ProviderException("Cannot find session associated to the conf model root element.");
             }
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
-            List<DRepresentation> representations = getAssociatedRepresentationByDiagramDescriptionAndName(generation,
+            List<DRepresentation> representations = getAssociatedRepresentationByDiagramDescriptionName(generation,
                     targetRootEObject, (String) diagramDescriptionName, session, createIfAbsent);
             if (!representations.isEmpty() && representations.get(0) instanceof DDiagram) {
                 return generateAndReturnDiagramImages(rootPath, session, representations,
