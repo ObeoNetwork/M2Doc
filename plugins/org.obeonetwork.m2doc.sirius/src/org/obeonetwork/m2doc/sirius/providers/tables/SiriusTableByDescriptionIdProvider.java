@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.providers.tables;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,9 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
+import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.table.metamodel.table.DTable;
@@ -27,9 +31,13 @@ import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DView;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
+import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
+import org.obeonetwork.m2doc.sirius.session.CleaningAIRDJob;
+import org.obeonetwork.m2doc.sirius.session.CleaningJobRegistry;
 
 /**
  * {@link SiriusTableByDescriptionIdProvider} are used to get Sirius table representations using a given root
@@ -48,6 +56,14 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
      * table name (ID of the description in the odesign).
      */
     private static final String DESCRIPTION_ID_KEY = "descriptionId";
+    /**
+     * the key used in the map passed to {@link IProvider} to define the value of the create option.
+     */
+    private static final String CREATE_ID_KEY = "create";
+    /**
+     * The value to be tested for representation to be created.
+     */
+    private static final String CREATE_VALUE = "true";
 
     /**
      * Retrieve all representations whose target is the specified EObject and diagram description the given one.
@@ -90,6 +106,9 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
     public List<MTable> getTables(Map<String, Object> parameters) throws ProviderException {
         Object tableId = parameters.get(DESCRIPTION_ID_KEY);
         Object target = parameters.get(TARGET_ROOT_OBJECT_KEY);
+        Generation generation = (Generation) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
+        List<MTable> result;
+        boolean createRepresentation = CREATE_VALUE.equals(parameters.get(CREATE_ID_KEY));
         if (!(tableId instanceof String)) {
             throw new ProviderException(
                     "Table cannot be computed because no table name has been declared in a 'tableId' parameter ("
@@ -108,9 +127,49 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
         checkDiagramDescriptionExist(session, (String) tableId);
         List<DTable> tables = getAssociatedTablesByDiagramDescriptionAndName(eTarget, (String) tableId, session);
         if (!tables.isEmpty()) {
-            return extractTables(tables);
+            result = extractTables(tables);
+        } else if (createRepresentation) {
+            RepresentationDescription description = findDiagramDescription(session, (String) tableId);
+            session.getTransactionalEditingDomain().getCommandStack().execute(new CreateRepresentationCommand(session,
+                    description, eTarget, (String) tableId, new NullProgressMonitor()));
+            result = Collections.emptyList();
+            for (DRepresentation representation : DialectManager.INSTANCE.getRepresentations(eTarget, session)) {
+                if (representation instanceof DTable && ((DTable) representation).getDescription() == description) {
+                    CleaningJobRegistry.INSTANCE.registerJob(generation,
+                            new CleaningAIRDJob(eTarget, session, representation));
+                    result = extractTables(Lists.newArrayList((DTable) representation));
+                }
+            }
+        } else {
+            result = Collections.emptyList();
         }
-        return Collections.emptyList();
+        return result;
+    }
+
+    /**
+     * Returns the specified diagram representation.
+     * 
+     * @param session
+     *            the session
+     * @param diagramDescriptionName
+     *            the diagram description name
+     * @return the specified representation description.
+     * @throws ProviderException
+     *             if the specified representation doesn't exist.
+     */
+    private RepresentationDescription findDiagramDescription(Session session, String diagramDescriptionName)
+            throws ProviderException {
+        Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
+        for (Viewpoint viewpoint : selectedViewpoints) {
+            EList<RepresentationDescription> ownedRepresentations = viewpoint.getOwnedRepresentations();
+            for (RepresentationDescription representationDescription : ownedRepresentations) {
+                if (diagramDescriptionName.equals(representationDescription.getName())) {
+                    return representationDescription;
+                }
+            }
+        }
+        throw new ProviderException(
+                "The provided diagram description '" + diagramDescriptionName + "' does not exist in the loaded aird");
     }
 
     /**
@@ -124,17 +183,7 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
      *             if the diagram description does not exist in the session.
      */
     private void checkDiagramDescriptionExist(Session session, String diagramDescriptionName) throws ProviderException {
-        boolean diagramDescriptionExist = false;
-        Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-        for (Viewpoint viewpoint : selectedViewpoints) {
-            EList<RepresentationDescription> ownedRepresentations = viewpoint.getOwnedRepresentations();
-            for (RepresentationDescription representationDescription : ownedRepresentations) {
-                if (diagramDescriptionName.equals(representationDescription.getName())) {
-                    diagramDescriptionExist = true;
-                }
-            }
-        }
-        if (!diagramDescriptionExist) {
+        if (findDiagramDescription(session, diagramDescriptionName) == null) {
             throw new ProviderException("The provided diagram description '" + diagramDescriptionName
                 + "' does not exist in the loaded aird");
         }
