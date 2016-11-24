@@ -25,6 +25,7 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.tools.api.command.ChangeLayerActivationCommand;
+import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 
 /**
@@ -112,13 +113,14 @@ public class ExportRepresentationCommand extends RecordingCommand {
                 DialectManager.INSTANCE.refresh(exportedDiagram, new NullProgressMonitor());
             }
         } else {
-            // In this case, we are in layers mode and we refresh whatever refreshRepresentations status
-            CompoundCommand compoundCmd = new CompoundCommand();
             // copy representation
             this.exportedDiagram = (DDiagram) DialectManager.INSTANCE.copyRepresentation(this.representation,
                     this.representation.getName() + SUFFIXE_COPY, session, MONITOR);
             // activate layers list.
-            compoundCmd.append(activateLayers(this.exportedDiagram));
+            Command compoundCmd = activateLayers(this.exportedDiagram);
+            if (!isRepresentationOpened) {
+                new GMFDiagramUpdater(session, (DDiagram) representation);
+            }
             session.getTransactionalEditingDomain().getCommandStack().execute(compoundCmd);
         }
     }
