@@ -103,12 +103,12 @@ public class ExportRepresentationCommand extends RecordingCommand {
         if (this.layers.isEmpty() && this.representation instanceof DDiagram) {
             this.exportedDiagram = (DDiagram) this.representation;
         } else {
-            CompoundCommand compoundCmd = new CompoundCommand();
+            Command compoundCmd;
             // copy representation
             this.exportedDiagram = (DDiagram) DialectManager.INSTANCE.copyRepresentation(this.representation,
                     this.representation.getName() + SUFFIXE_COPY, session, MONITOR);
             // activate layers list.
-            compoundCmd.append(activateLayers(this.exportedDiagram));
+            compoundCmd = activateLayers(this.exportedDiagram);
             if (!isRepresentationOpened) {
                 new GMFDiagramUpdater(session, (DDiagram) representation);
             }
