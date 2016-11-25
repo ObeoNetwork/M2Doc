@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator.test;
 
+import java.io.File;
 //CHECKSTYLE:OFF
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -56,10 +57,12 @@ public class VariousTest {
         range.setId(new BigInteger("66"));
         document.createParagraph().createRun().setText("another static part that will not contain any link");
         // save the document in another file
-        FileOutputStream fos = new FileOutputStream("results/bookmarkTest.docx");
+        File tmpFile = File.createTempFile("generateddoc", "varioustest");
+        FileOutputStream fos = new FileOutputStream(tmpFile);
         document.write(fos);
         document.close();
         fos.close();
+        tmpFile.delete();
     }
 
     @Test
