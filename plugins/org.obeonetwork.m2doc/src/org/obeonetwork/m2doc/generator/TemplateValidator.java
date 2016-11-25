@@ -68,11 +68,6 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      */
     private IType booleanType;
 
-    // /**
-    // * The {@link AstValidator}.
-    // */
-    // private AstValidator validator;
-
     /**
      * The {@link Stack} of variables types.
      */
