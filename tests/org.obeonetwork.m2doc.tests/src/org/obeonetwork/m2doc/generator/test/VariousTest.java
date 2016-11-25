@@ -44,37 +44,40 @@ public class VariousTest {
     @Test
     public void testStaticFragmentWithFieldProcessing()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-        FileInputStream is = new FileInputStream("templates/test2.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        // insert some static content.
-        document.createParagraph().createRun().setText("static part that will not contain any link");
-        CTBookmark bookmark = document.getDocument().getBody().addNewBookmarkStart();
-        bookmark.setName("bookmark1");
-        bookmark.setId(new BigInteger("66"));
-        document.createParagraph().createRun().setText("bookmarked part");
-        CTMarkupRange range = document.getDocument().getBody().addNewBookmarkEnd();
-        range.setId(new BigInteger("66"));
-        document.createParagraph().createRun().setText("another static part that will not contain any link");
-        // save the document in another file
         File tmpFile = File.createTempFile("generateddoc", "varioustest");
-        FileOutputStream fos = new FileOutputStream(tmpFile);
-        document.write(fos);
-        document.close();
-        fos.close();
-        tmpFile.delete();
+        try (FileInputStream is = new FileInputStream("templates/test2.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);
+                FileOutputStream fos = new FileOutputStream(tmpFile);) {
+            // insert some static content.
+            document.createParagraph().createRun().setText("static part that will not contain any link");
+            CTBookmark bookmark = document.getDocument().getBody().addNewBookmarkStart();
+            bookmark.setName("bookmark1");
+            bookmark.setId(new BigInteger("66"));
+            document.createParagraph().createRun().setText("bookmarked part");
+            CTMarkupRange range = document.getDocument().getBody().addNewBookmarkEnd();
+            range.setId(new BigInteger("66"));
+            document.createParagraph().createRun().setText("another static part that will not contain any link");
+            // save the document in another file
+
+            document.write(fos);
+            document.close();
+            fos.close();
+            tmpFile.delete();
+        }
     }
 
     @Test
     public void testPropertiesAccess()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-        FileInputStream is = new FileInputStream("templates/propertiesTest.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        CustomProperties props = document.getProperties().getCustomProperties();
-        List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
-        for (CTProperty property : properties) {
-            // TODO Finish this.
+        try (FileInputStream is = new FileInputStream("templates/propertiesTest.docx");
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+            CustomProperties props = document.getProperties().getCustomProperties();
+            List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
+            for (CTProperty property : properties) {
+                // TODO Finish this.
+            }
         }
     }
 

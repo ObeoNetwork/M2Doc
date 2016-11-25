@@ -430,9 +430,9 @@ public class DocumentGeneratorTest {
         doGenerateDocAndCheckText("templates/testBookmarkNominal.docx", "results/testBookmarkNominal.docx",
                 definitions);
 
-        try (FileInputStream resIs = new FileInputStream("results/testBookmarkNominal.docx")) {
-            OPCPackage resOPackage = OPCPackage.open(resIs);
-            XWPFDocument resDocument = new XWPFDocument(resOPackage);
+        try (FileInputStream resIs = new FileInputStream("results/testBookmarkNominal.docx");
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
             assertEquals(4, resDocument.getBodyElements().size());
             assertTrue(resDocument.getBodyElements().get(0) instanceof XWPFParagraph);
@@ -514,9 +514,9 @@ public class DocumentGeneratorTest {
         doGenerateDocAndCheckText("templates/testBookmarkNoBookmark.docx", "results/testBookmarkNoBookmark.docx",
                 definitions);
 
-        try (FileInputStream resIs = new FileInputStream("results/testBookmarkNoBookmark.docx")) {
-            OPCPackage resOPackage = OPCPackage.open(resIs);
-            XWPFDocument resDocument = new XWPFDocument(resOPackage);
+        try (FileInputStream resIs = new FileInputStream("results/testBookmarkNoBookmark.docx");
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
             assertEquals(2, resDocument.getBodyElements().size());
             assertTrue(resDocument.getBodyElements().get(0) instanceof XWPFParagraph);
