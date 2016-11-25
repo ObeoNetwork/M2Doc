@@ -84,7 +84,7 @@ public class OptionParser {
      */
     public Map<String, String> parseOptions(String tag, TokenType tokenType, int optionGroupRank,
             int optionValGroupRank, AbstractConstruct construct) throws DocumentParserException {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         // first match the tag:
         if (tag.trim().startsWith(tokenType.getValue())) {
             // remove the token type from the type to handle generically all options from the same string.

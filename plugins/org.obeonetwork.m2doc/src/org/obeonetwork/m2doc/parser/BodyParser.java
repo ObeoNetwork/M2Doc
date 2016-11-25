@@ -586,7 +586,7 @@ public class BodyParser {
      */
     private List<TemplateValidationMessage> getValidationMessage(Diagnostic diagnostic, String queryText,
             XWPFRun location) {
-        final List<TemplateValidationMessage> res = new ArrayList<TemplateValidationMessage>();
+        final List<TemplateValidationMessage> res = new ArrayList<>();
 
         for (Diagnostic child : diagnostic.getChildren()) {
             final ValidationMessageLevel level;
@@ -805,7 +805,7 @@ public class BodyParser {
         representation.setProvider(getRepresentationProvider(representation, options));
         setImageOptions(representation, options);
         setLayersOption(representation, options);
-        Set<String> optionToIgnore = new HashSet<String>();
+        Set<String> optionToIgnore = new HashSet<>();
         optionToIgnore.add(IMAGE_LEGEND_KEY);
         optionToIgnore.add(IMAGE_LEGEND_POSITION);
         optionToIgnore.add(IMAGE_HEIGHT_KEY);
@@ -868,11 +868,14 @@ public class BodyParser {
         // first if provider option exists, set this one
         String providerQualifiedName = options.get(PROVIDER_KEY);
         if (providerQualifiedName != null) {
+            providerQualifiedName = providerQualifiedName.trim();
             result = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
             if (result == null) {
-            	representation.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                        String.format("The image tag is referencing an unknown diagram provider : '%s'", providerQualifiedName),
-                        representation.getRuns().get(1)));
+                representation.getValidationMessages()
+                        .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                String.format("The image tag is referencing an unknown diagram provider : '%s'",
+                                        providerQualifiedName),
+                                representation.getRuns().get(1)));
                 return null;
             }
         }
@@ -1192,9 +1195,9 @@ public class BodyParser {
         } else {
             ErrorExpression errorExpression = (ErrorExpression) EcoreUtil
                     .create(AstPackage.eINSTANCE.getErrorExpression());
-            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
+            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<>(1);
             errors.add(errorExpression);
-            final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+            final Map<Object, Integer> positions = new HashMap<>();
             if (expression != null) {
                 positions.put(errorExpression, Integer.valueOf(0));
             }
@@ -1226,7 +1229,7 @@ public class BodyParser {
          */
         private OptionChecker(Map<String, OptionType> providerOptions) {
             this.providerOptions = checkNotNull(providerOptions);
-            optionsToIgnore = new LinkedHashSet<String>();
+            optionsToIgnore = new LinkedHashSet<>();
         }
 
         /**

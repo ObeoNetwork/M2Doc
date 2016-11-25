@@ -335,22 +335,23 @@ public class DocumentParserTest {
         assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof Query);
         assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
     }
-    //
-    // @Test
-    // public void imageParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
-    // FileInputStream is = new FileInputStream("templates/testImageTag.docx");
-    // OPCPackage oPackage = OPCPackage.open(is);
-    // XWPFDocument document = new XWPFDocument(oPackage);
-    // BodyParser parser = new BodyParser(document, env);
-    // Template template = parser.parseTemplate();
-    // assertEquals(1, template.getSubConstructs().size());
-    // Image im = (Image) template.getSubConstructs().get(0);
-    // assertEquals("images/dh1.gif", im.getFileName());
-    // assertEquals(100, im.getHeight());
-    // assertEquals(100, im.getWidth());
-    // assertEquals("plan de forme du dingy herbulot", im.getLegend());
-    // assertEquals(POSITION.BELOW, im.getLegendPOS());
-    // }
+
+    @Test
+    public void imageParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
+        try (FileInputStream is = new FileInputStream("templates/testImageTag.docx")) {
+            OPCPackage oPackage = OPCPackage.open(is);
+            XWPFDocument document = new XWPFDocument(oPackage);
+            BodyParser parser = new BodyParser(document, env);
+            Template template = parser.parseTemplate();
+            assertEquals(1, template.getSubConstructs().size());
+            Image im = (Image) template.getSubConstructs().get(0);
+            assertEquals("images/dh1.gif", im.getFileName());
+            assertEquals(100, im.getHeight());
+            assertEquals(100, im.getWidth());
+            assertEquals("plan de forme du dingy herbulot", im.getLegend());
+            assertEquals(POSITION.BELOW, im.getLegendPOS());
+        }
+    }
 
     /**
      * Tests that the escaping character {@link BodyParser#M2DOC_ESCAPE_CHARACTER} does escape the value delimiter character
