@@ -284,9 +284,6 @@
           <value>mars</value>
         </property>
       </activation>
-      <properties>
-          <maven.test.skip>true</maven.test.skip>
-      </properties>
       <build>
         <plugins>
           <plugin>
@@ -308,15 +305,12 @@
     <profile>
       <id>platform-luna</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
           <value>luna</value>
         </property>
       </activation>
-      <properties>
-          <maven.test.skip>true</maven.test.skip>
-      </properties>
       <build>
         <plugins>
           <plugin>
