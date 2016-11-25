@@ -4,7 +4,7 @@ env:
   - DISPLAY=:99.0
   - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
 jdk:
-- oraclejdk7
+- oraclejdk8
 sudo: false
 install: true
 before_script:
