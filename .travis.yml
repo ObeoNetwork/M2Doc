@@ -16,7 +16,7 @@ before_script:
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
-- mvn clean verify
+- mvn clean verify -fae
 - cd ../..
 - if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
   $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
