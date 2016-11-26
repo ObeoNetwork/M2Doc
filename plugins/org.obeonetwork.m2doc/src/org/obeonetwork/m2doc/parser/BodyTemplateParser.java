@@ -959,4 +959,15 @@ public class BodyTemplateParser extends BodyAbstractParser {
 
         return result;
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.parser.BodyAbstractParser#getNewParser(org.apache.poi.xwpf.usermodel.IBody)
+     */
+    @Override
+    protected BodyAbstractParser getNewParser(IBody inputDocument) {
+        BodyAbstractParser parser = new BodyTemplateParser(inputDocument, this.queryParser, this.queryEnvironment);
+        return parser;
+    }
 }

@@ -284,12 +284,21 @@ public abstract class BodyAbstractParser {
                 Cell cell = (Cell) EcoreUtil.create(TemplatePackage.Literals.CELL);
                 row.getCells().add(cell);
                 cell.setTableCell(tableCell);
-                BodyTemplateParser parser = new BodyTemplateParser(tableCell, this.queryParser, queryEnvironment);
+                BodyAbstractParser parser = getNewParser(tableCell);
                 cell.setTemplate(parser.parseTemplate());
             }
         }
         return table;
     }
+
+    /**
+     * Get new Parser.
+     * 
+     * @param inputDocument
+     *            Document to parse
+     * @return new Template parser
+     */
+    protected abstract BodyAbstractParser getNewParser(IBody inputDocument);
 
     /**
      * Class to easily validate a list of options against options declared by a provider.

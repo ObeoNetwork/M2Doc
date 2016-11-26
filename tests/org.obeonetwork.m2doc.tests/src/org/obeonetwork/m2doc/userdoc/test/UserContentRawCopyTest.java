@@ -59,7 +59,7 @@ public class UserContentRawCopyTest {
 
         // Launch copy
         UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
-        userContentRawCopy.copy(userContent, paragraph);
+        userContentRawCopy.copy(userContent, paragraph, paragraph.getDocument());
 
         String resultFilePath = "results/generated/testUserDoc2RowCopyResultat.docx";
         POIServices.getInstance().saveFile(document, resultFilePath);

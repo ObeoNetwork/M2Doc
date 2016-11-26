@@ -279,8 +279,7 @@
       <id>platform-mars</id>
       <activation>
         <activeByDefault>false</activeByDefault>
-        <properties>
-            <property>
+        <property>
           <name>platform-version-name</name>
           <value>mars</value>
         </property>

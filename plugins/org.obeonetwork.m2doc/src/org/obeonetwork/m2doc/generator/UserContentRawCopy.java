@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFPicture;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -30,6 +32,7 @@ import org.apache.xmlbeans.XmlToken;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 
 /**
  * UserContent Raw Copy.
@@ -97,6 +100,8 @@ public class UserContentRawCopy {
      *            UserContent EObject
      * @param outputParagraphBeforeUserDocContent
      *            Output Paragraph Before User Doc Dest content (User Code dest is writen by {@link TemplateProcessor} )
+     * @param outputBody
+     *            output body
      * @return last paragraph created by copy
      * @throws InvalidFormatException
      *             InvalidFormatException
@@ -104,9 +109,9 @@ public class UserContentRawCopy {
      *             XmlException
      */
     @SuppressWarnings("deprecation")
-    public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent)
-            throws InvalidFormatException, XmlException {
-        XWPFDocument outputDocument = outputParagraphBeforeUserDocContent.getDocument();
+    public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent,
+            IBody outputBody) throws InvalidFormatException, XmlException {
+        XWPFDocument containerOutputDocument = outputParagraphBeforeUserDocContent.getDocument();
         // Test if run before userContent is in same XWPFParagraph than first run of userContent
         if (!userDocContentIsFirstRunOfParagraph(userContent)) {
             previousInputParagraph = userContent.getRuns().get(userContent.getRuns().size() - 1).getParagraph();
@@ -119,7 +124,8 @@ public class UserContentRawCopy {
                 currentRunParagraph = inputRun.getParagraph();
                 if (currentRunParagraph != currentInputParagraph) {
                     currentInputParagraph = currentRunParagraph;
-                    currentOutputParagraph = outputDocument.createParagraph();
+                    // currentOutputParagraph = outputDocument.createParagraph();
+                    currentOutputParagraph = createNewParagraph(outputBody);
                     // Copy new paragraph
                     currentOutputParagraph.getCTP().set(currentInputParagraph.getCTP());
                     listOutputParagraphs.add(currentOutputParagraph);
@@ -133,18 +139,19 @@ public class UserContentRawCopy {
                     listOutputRuns.add(outputRun);
                 }
                 // Create picture embedded in run and keep relation id in map (input to output)
-                createPictures(inputRun, outputDocument);
+                createPictures(inputRun, containerOutputDocument);
             }
             // In case of table (no run in abstractConstruct)
             if (abstractConstruct instanceof Table) {
                 Table table = (Table) abstractConstruct;
                 XWPFTable inputTable = table.getTable();
-                XWPFTable outputTable = outputDocument.createTable();
+                // XWPFTable outputTable = contenerOutputDocument.createTable();
+                XWPFTable outputTable = createNewTable(outputBody, inputTable);
                 outputTable.getCTTbl().set(inputTable.getCTTbl());
-                copyTableStyle(inputTable, outputDocument);
+                copyTableStyle(inputTable, containerOutputDocument);
                 listOutputTables.add(outputTable);
                 // Inspect table to extract all picture ID in run
-                collectRelationId(inputTable, outputDocument);
+                collectRelationId(inputTable, containerOutputDocument);
 
             }
         }
@@ -158,7 +165,55 @@ public class UserContentRawCopy {
         return currentOutputParagraph;
     }
 
-    // Copy Styles of Table and Paragraph.
+    /**
+     * Create new Table.
+     * TODO OHA fix bug in nested table on usercontent (else case in code)
+     * 
+     * @param document
+     *            document
+     * @param inputTable
+     *            input Table
+     * @return get Table
+     */
+    private XWPFTable createNewTable(IBody document, XWPFTable inputTable) {
+        XWPFTable generatedTable;
+        CTTbl copy = (CTTbl) inputTable.getCTTbl().copy();
+        if (document instanceof XWPFDocument) {
+            generatedTable = ((XWPFDocument) document).createTable();
+        } else if (document instanceof XWPFTableCell) {
+            XWPFTableCell tCell = (XWPFTableCell) document;
+            int tableRank = tCell.getTables().size();
+            generatedTable = new XWPFTable(copy, tCell, 0, 0);
+            tCell.insertTable(tableRank, generatedTable);
+            generatedTable = tCell.getTables().get(tableRank);
+        } else {
+            throw new UnsupportedOperationException("unknown type of IBody : " + document.getClass());
+        }
+        return generatedTable;
+    }
+
+    /**
+     * Create New Paragraph.
+     * 
+     * @param document
+     *            document
+     * @return new paragraph
+     */
+    private XWPFParagraph createNewParagraph(IBody document) {
+        XWPFParagraph newParagraph;
+        if (document instanceof XWPFTableCell) {
+            XWPFTableCell cell = (XWPFTableCell) document;
+            newParagraph = cell.addParagraph();
+        } else if (document instanceof XWPFDocument) {
+            newParagraph = ((XWPFDocument) document).createParagraph();
+        } else if (document instanceof XWPFHeaderFooter) {
+            newParagraph = ((XWPFHeaderFooter) document).createParagraph();
+        } else {
+            throw new UnsupportedOperationException("unkown IBody type :" + document.getClass());
+        }
+        return newParagraph;
+    }
+
     /**
      * Copy Table Style.
      * 
@@ -311,4 +366,5 @@ public class UserContentRawCopy {
             inputPicuteIdToOutputmap.put(idRelationInput, idRelationOutput);
         }
     }
+
 }

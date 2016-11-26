@@ -45,6 +45,7 @@ import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
@@ -525,7 +526,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             } else {
                 UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
                 try {
-                    currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph);
+                    currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
+                            generatedDocument);
                     needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
                     // Affect currentTemplateParagraph after Raw copy
                     if (object.getClosingRuns().size() != 0) {
@@ -607,7 +609,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             || object.getRuns().size() != 0 && object.getRuns().get(0).getParagraph() != currentTemplateParagraph) {
             createNewParagraph(object.getRuns().get(0).getParagraph());
         }
-        currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr("m:userContent " + id);
+        currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
     }
 
     /**
@@ -624,7 +626,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             if (needNewParagraph) {
                 createNewParagraph(object.getClosingRuns().get(0).getParagraph());
             }
-            currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr("m:enduserContent");
+            currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
         }
     }
 

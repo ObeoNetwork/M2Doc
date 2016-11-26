@@ -1299,10 +1299,10 @@ public class TemplateProcessorTest {
         assertEquals(8, destinationDoc.getParagraphs().size());
         assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getFldSimpleList().size());
         assertEquals(1, destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().size());
-        assertEquals("m:userContent value1",
+        assertEquals("m:usercontent value1",
                 destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().get(0).getInstr());
         assertEquals(1, destinationDoc.getParagraphs().get(5).getCTP().getFldSimpleList().size());
-        assertEquals("m:enduserContent",
+        assertEquals("m:endusercontent",
                 destinationDoc.getParagraphs().get(5).getCTP().getFldSimpleList().get(0).getInstr());
         // CHECKSTYLE:ON
     }
@@ -1337,9 +1337,9 @@ public class TemplateProcessorTest {
         assertEquals(4, destinationDoc.getParagraphs().size());
         assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getFldSimpleList().size());
         assertEquals(2, destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().size());
-        assertEquals("m:userContent value1",
+        assertEquals("m:usercontent value1",
                 destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().get(0).getInstr());
-        assertEquals("m:enduserContent",
+        assertEquals("m:endusercontent",
                 destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().get(1).getInstr());
         // CHECKSTYLE:ON
     }
@@ -1374,7 +1374,7 @@ public class TemplateProcessorTest {
         assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getFldSimpleList().size());
         XWPFParagraph paragraph1 = destinationDoc.getParagraphs().get(1);
         assertEquals(1, paragraph1.getCTP().getFldSimpleList().size());
-        assertEquals("m:userContent value1", paragraph1.getCTP().getFldSimpleList().get(0).getInstr());
+        assertEquals("m:usercontent value1", paragraph1.getCTP().getFldSimpleList().get(0).getInstr());
         // CHECKSTYLE:ON
     }
 
