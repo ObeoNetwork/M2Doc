@@ -158,13 +158,13 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         addValidationMessages(userDoc, run, validationResult);
         if (validationResult != null) { // FIXME : we might check why we may have a null validation result in AQL.
             checkUserDocSelectorTypes(userDoc, run, validationResult);
-            try {
-                for (AbstractConstruct construct : userDoc.getSubConstructs()) {
-                    doSwitch(construct);
-                }
-            } finally {
-                stack.pop();
+            // try {
+            for (AbstractConstruct construct : userDoc.getSubConstructs()) {
+                doSwitch(construct);
             }
+            // } finally {
+            // stack.pop();
+            // }
         }
 
         return null;
