@@ -38,7 +38,8 @@ M2Doc provides some generation tags that have fixed formats. Those tags are desc
 
 * @{m:bookmark <name query>} book marked content { m:endbookmark }@ : creates a book mark with a name (name query) and a content (book marked content).
 
-* @{m:userdoc <query>} user document part body {enduserdoc}@ : This tag in template produces following document part  @{m:userContent <id>} Generated user document part body {endContent}@ in generated document if generated document doesn't already exist. If it already exists the usercontent part with good id of old document is copied in the new generated document. Be careful, if in old generated document a usercontent with an id whose never been produced by template generation, the old usercontent will be lost. 
+* @{m:userdoc <query>} user document content {enduserdoc}@ : This tag in template produces following document part  @{m:userContent <id>} Generated user document content {endContent}@ in generated document if generated document doesn't already exist. If it already exists the usercontent part with good id of old document is copied in the new generated document. Be careful, if in old generated document a usercontent with an id whose never been produced by template generation, the old usercontent will be lost. 
+** Known limitation : Tables in userContents contained by a table are not supported.
 
 * @{m:link <book mark name query> <text query>}@ : creates a link to a book mark. The "book mark name query" is the same name as the one defines in {m:bookmark <name query>}. "text query" is the text used for the reference.
 		

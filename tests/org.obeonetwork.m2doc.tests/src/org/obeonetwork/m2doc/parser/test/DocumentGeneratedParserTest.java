@@ -56,7 +56,7 @@ public class DocumentGeneratedParserTest {
      */
     @Test
     public void testuserContentSimple() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("userContent/testuserContent1.docx");
+        FileInputStream is = new FileInputStream("userContent/testUserContent1.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyGeneratedParser parser = new BodyGeneratedParser(document, env);
@@ -90,7 +90,7 @@ public class DocumentGeneratedParserTest {
      */
     @Test
     public void testuserContentImage() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("userContent/testuserContent2.docx");
+        FileInputStream is = new FileInputStream("userContent/testUserContent2.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyGeneratedParser parser = new BodyGeneratedParser(document, env);
@@ -127,7 +127,7 @@ public class DocumentGeneratedParserTest {
      */
     @Test
     public void testuserContentTable() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("userContent/testuserContent3.docx");
+        FileInputStream is = new FileInputStream("userContent/testUserContent3.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyGeneratedParser parser = new BodyGeneratedParser(document, env);

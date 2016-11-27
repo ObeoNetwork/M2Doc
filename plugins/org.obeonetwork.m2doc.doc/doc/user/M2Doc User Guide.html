@@ -51,8 +51,11 @@
 		</ul>
 		<ul>
 			<li>
-				<code>{m:userdoc &lt;query&gt;} user document part body {enduserdoc}</code> : This tag in template produces following document part  
-				<code>{m:userContent &lt;id&gt;} Generated user document part body {endContent}</code> in generated document if generated document doesn&#8217;t already exist. If it already exists the usercontent part with good id of old document is copied in the new generated document. Be careful, if in old generated document a usercontent with an id whose never been produced by template generation, the old usercontent will be lost. 
+				<code>{m:userdoc &lt;query&gt;} user document content {enduserdoc}</code> : This tag in template produces following document part  
+				<code>{m:userContent &lt;id&gt;} Generated user document content {endContent}</code> in generated document if generated document doesn&#8217;t already exist. If it already exists the usercontent part with good id of old document is copied in the new generated document. Be careful, if in old generated document a usercontent with an id whose never been produced by template generation, the old usercontent will be lost. 
+				<ul>
+					<li>Known limitation : Tables in userContents contained by a table are not supported.</li>
+				</ul>
 			</li>
 		</ul>
 		<ul>
@@ -180,17 +183,18 @@
 			<code>title:"'Table name'"</code>. The description ID does not need such quotes because it is of type String.
 		</p>
 		<h4 id="UpdatestrategyforSiriusRepresentation">Update strategy for Sirius Representation</h4>
-		<p>In the cases of generating a diagram with {m:diagram} or a table with {m:wtable}, the M2Doc generation can take place on an unsynchronized representation (diagram or table). Consequently, a parameter has been introduced in the genConf model to allow users to specify whether representations must be refreshed before the M2Doc generation.</p>
+		<p>When we want to insert a SIRIUS representation in the generated doc with a {m:diagram} or a {m:wtable} tag, it can be the case that the representation and the semantics model are unsynchronized. To cope with this situation, we introduced a parameter in the genConf model that allows users to specify whether representations must be refreshed before the M2Doc generation or not.</p>
 		<p>
 			<img border="0" src="images/image019.png"/>
 		</p>
 		<p>The boolean parameter &#171;refreshRepresentations&#187; can be used to define following update strategy : 
-			<br/>- if it is set to false, the M2Doc generation take the state of graphical model without update it
-			<br/>- if it is set to true, the M2Doc generation take the updated with semantic model and arranged model like if we open diagram or table in Sirius representation view.
-			<br/>By default, the parameter is set to false.
+			<br/>- if it is set to false, the M2Doc generation is done with the graphical model as is without re-synchronising it with the semantic model
+			<br/>takes the state of graphical model without update it
+			<br/>- if it is set to true, the graphical model is synchronized with the semantics model before the M2Doc generation is done.
 		</p>
-		<p>Be careful, enabling the automatic update of representations can be time-consuming and could have a high impact on the generation time, especially on large models.</p>
-		<p>In case of enabling the automatic update of representations, if SIRIUS view is not open, the update and arrange effect is automatically save on graphical model. On the other hand, if SIRIUS view is open, the arrange and update is done by view. Your representation was dirty until you save your graphical diagram and the M2Doc Generation is done with update whatever the value of the &#171;refreshRepresentations&#187; parameter.</p>
+		<p>By default, the parameter is set to false.</p>
+		<p>Be careful, the automatic update of representations can be time-consuming and enabling it can have a high impact on the generation time, especially on large models.</p>
+		<p>In the case where automatic update of representations is enabled, if the inserted SIRIUS view is not open, the update and arrange effect is automatically saved in the graphical model. In the other case, if the inserted SIRIUS view is open and in the dirty state, the arrange and update is done on the open view and your representation will remain in the dirty state  until you save your graphical diagram. </p>
 		<h3 id="Documentgenerationandstyle">Document generation and style</h3>
 		<p>The style of the fragments of generated documents is determined by the style of the templates parts. </p>
 		<ul>
