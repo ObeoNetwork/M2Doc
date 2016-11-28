@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.api;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -92,41 +91,6 @@ public final class POIServices {
     }
 
     /**
-     * Get XWPFDocument from template path.
-     * 
-     * @param templatePath
-     *            String
-     * @return XWPFDocument
-     * @throws IOException
-     *             IOException
-     */
-    public XWPFDocument getXWPFDocument(String templatePath) throws IOException {
-        OPCPackage oPackage = getOPCPackage(templatePath);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        return document;
-    }
-
-    /**
-     * Get OPCPackage from template path.
-     * 
-     * @param templatePath
-     *            String
-     * @return OPCPackage
-     * @throws IOException
-     *             IOException
-     */
-    public OPCPackage getOPCPackage(String templatePath) throws IOException {
-
-        OPCPackage oPackage;
-        try (FileInputStream is = new FileInputStream(templatePath)) {
-            oPackage = OPCPackage.open(is);
-        } catch (InvalidFormatException e) {
-            throw new IllegalArgumentException("Couldn't open template file", e);
-        }
-        return oPackage;
-    }
-
-    /**
      * Get OPCPackage from template file.
      * 
      * @param templateFile
@@ -161,23 +125,6 @@ public final class POIServices {
      */
     public TemplateInfo getTemplateInformations(URI templateFile) throws IOException {
         XWPFDocument document = getXWPFDocument(templateFile);
-        TemplateInfo templateInfo = new TemplateInfo(document);
-        return templateInfo;
-    }
-
-    /**
-     * Get template informations.
-     * 
-     * @param templatePath
-     *            String
-     * @return TemplateInfo
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     */
-    public TemplateInfo getTemplateInformations(String templatePath) throws IOException {
-        XWPFDocument document = getXWPFDocument(templatePath);
         TemplateInfo templateInfo = new TemplateInfo(document);
         return templateInfo;
     }
