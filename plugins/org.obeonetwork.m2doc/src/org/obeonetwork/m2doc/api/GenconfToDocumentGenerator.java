@@ -16,9 +16,12 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -424,8 +427,8 @@ public class GenconfToDocumentGenerator {
         IFile validationFile = getValidationLogFile(templateFile);
 
         final TemplateValidator validator = new TemplateValidator();
-
-        validator.validate(template, generation, queryEnvironment);
+        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
+        validator.validate(template, generation, queryEnvironment, types);
         TemplateGenerator generator = new TemplateGenerator(validationFile.getLocation().toFile().getAbsolutePath(),
                 template);
         return generator.generate();

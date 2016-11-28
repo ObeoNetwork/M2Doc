@@ -17,6 +17,7 @@ package org.obeonetwork.m2doc.parser;
  * @author Romain Guider
  */
 public enum ParsingTokenKind {
+    // CHECKSTYLE:OFF
     RUN, TABLE
-
+    // CHECKSTYLE:ON
 }

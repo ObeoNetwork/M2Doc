@@ -48,7 +48,27 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when a diagram tag has invalid option.
      */
-    INVALID_DIAGRAM_OPTION("Invalid diagram option ({0}): {1}.");
+    INVALID_DIAGRAM_OPTION("Invalid diagram option ({0}): {1}."),
+    /**
+     * Error message issued when a userdoc tag contents some thing else than element of STATIC type.
+     */
+    INVALID_USERDOC_CONTENT("Invalid userdoc content, elements in userdoc must only be STATIC type."),
+    /**
+     * Error message issued when a userdoc tag contents some thing else than element of STATIC type.
+     */
+    INVALID_USERDOC_NOT_STATIC("Invalid userdoc content, the type {0} can not be contrain by userdoc tag."),
+    /**
+     * Error message issued when a userdoc tag have not id parameter.
+     */
+    INVALID_USERDOC_ID_MUST_EXIST("userdoc tag must have an id parameter."),
+    /**
+     * Error message issued when a userdoc tag have an unique id value.
+     */
+    INVALID_USERDOC_ID_NOT_UNIQUE("userdoc tag must have unique id value. ''{0}'' id already exists in document"),
+    /**
+     * Error message issued when a usercontent tag must have a not empty value.
+     */
+    INVALID_USERCONTENT_VALUE("usercontent tag must have an no empty value.");
     /**
      * The error message.
      */

@@ -20,8 +20,8 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.core.resources.IFile;
-import org.obeonetwork.m2doc.parser.DocumentParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
@@ -69,7 +69,7 @@ public final class POIServices {
     public DocumentTemplate parseTemplate(IFile templateFile, IQueryEnvironment queryEnvironment)
             throws IOException, DocumentParserException {
         XWPFDocument document = getXWPFDocument(templateFile);
-        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
         DocumentTemplate template = parser.parseDocument();
         return template;
     }
@@ -90,7 +90,7 @@ public final class POIServices {
     public DocumentTemplate parseTemplate(String templatePath, IQueryEnvironment queryEnvironment)
             throws IOException, DocumentParserException {
         XWPFDocument document = getXWPFDocument(templatePath);
-        DocumentParser parser = new DocumentParser(document, queryEnvironment);
+        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
         DocumentTemplate template = parser.parseDocument();
         return template;
     }

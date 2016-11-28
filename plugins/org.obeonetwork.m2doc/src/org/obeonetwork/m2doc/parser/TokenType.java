@@ -21,7 +21,7 @@ public enum TokenType {
     /**
      * Token type constants.
      */
-    AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"), LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), STATIC("static"), IMAGE("m:image"), EOF("end of file."), WTABLE("table"), DIAGRAM("m:diagram"), BOOKMARK("m:bookmark"), ENDBOOKMARK("m:endbookmark"), LINK("m:link"), TABLE("m:wtable");
+    AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"), LET("m:let"), ENDLET("m:endlet"), ELT("elt:"), STATIC("static"), IMAGE("m:image"), EOF("end of file."), WTABLE("table"), DIAGRAM("m:diagram"), BOOKMARK("m:bookmark"), ENDBOOKMARK("m:endbookmark"), LINK("m:link"), TABLE("m:wtable"), USERDOC("m:userdoc"), ENDUSERDOC("m:enduserdoc"), USERCONTENT("m:usercontent"), ENDUSERCONTENT("m:endusercontent");
 
     /**
      * Token type value.

@@ -24,6 +24,7 @@ import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
@@ -69,7 +70,7 @@ public class DocumentGenerator {
      * Create a new {@link DocumentGenerator} instance given a template and a
      * variable definition map.
      * 
-     * @param inputDocumentFileName
+     * @param templateFileName
      *            the template used for generation
      * @param destinationFileName
      *            the destination file name of the generation
@@ -84,10 +85,10 @@ public class DocumentGenerator {
      * @throws DocumentGenerationException
      *             when a generation problem occurs.
      */
-    public DocumentGenerator(String inputDocumentFileName, String destinationFileName, DocumentTemplate theTemplate,
+    public DocumentGenerator(String templateFileName, String destinationFileName, DocumentTemplate theTemplate,
             Map<String, Object> variables, IQueryEnvironment environment, EObject targetConfObject)
             throws DocumentGenerationException {
-        this("", inputDocumentFileName, destinationFileName, theTemplate, variables, environment, targetConfObject);
+        this("", templateFileName, destinationFileName, theTemplate, variables, environment, targetConfObject);
     }
 
     /**
@@ -97,7 +98,7 @@ public class DocumentGenerator {
      * @param projectPath
      *            the path of the project that serve as a root to relative
      *            paths.
-     * @param inputDocumentFileName
+     * @param templateFileName
      *            the template used for generation
      * @param destinationFileName
      *            the destination file name of the generation
@@ -112,7 +113,7 @@ public class DocumentGenerator {
      * @throws DocumentGenerationException
      *             when a generation problem occurs.
      */
-    public DocumentGenerator(String projectPath, String inputDocumentFileName, String destinationFileName,
+    public DocumentGenerator(String projectPath, String templateFileName, String destinationFileName,
             DocumentTemplate theTemplate, Map<String, Object> variables, IQueryEnvironment environment,
             EObject theTargetConfObject) throws DocumentGenerationException {
         this.definitions = new HashMap<String, Object>(variables);
@@ -122,7 +123,7 @@ public class DocumentGenerator {
         this.projectPath = projectPath;
         this.targetConfObject = theTargetConfObject;
         try {
-            this.destinationDocument = createDestinationDocument(inputDocumentFileName);
+            this.destinationDocument = createDestinationDocument(templateFileName);
         } catch (InvalidFormatException e) {
             throw new DocumentGenerationException("Input document seems to have an invalid format.", e);
         } catch (IOException e) {
@@ -135,20 +136,24 @@ public class DocumentGenerator {
      * 
      * @throws IOException
      *             if an I/O problem occurs during generation.
+     * @throws DocumentParserException
+     *             Last generated Document Parser Exception
      */
-    public void generate() throws IOException {
+    public void generate() throws IOException, DocumentParserException {
         // The output document is created from the input so as to get the styles
         // and definitions in the original template.
         final BookmarkManager bookmarkManager = new BookmarkManager();
+        final UserContentManager userContentManager = new UserContentManager(
+                this.destinationFileName);
         TemplateProcessor processor = new TemplateProcessor(definitions, this.projectPath, bookmarkManager,
-                queryEnvironment, destinationDocument, targetConfObject);
+                userContentManager, queryEnvironment, destinationDocument, targetConfObject);
         processor.doSwitch(this.template.getBody());
         Iterator<XWPFFooter> footers = destinationDocument.getFooterList().iterator();
         for (Template footerTemplate : this.template.getFooters()) {
             XWPFFooter footer = footers.next();
             cleanHeaderFooter(footer);
             TemplateProcessor footerProc = new TemplateProcessor(definitions, this.projectPath, bookmarkManager,
-                    queryEnvironment, footer, targetConfObject);
+                    userContentManager, queryEnvironment, footer, targetConfObject);
             footerProc.doSwitch(footerTemplate);
         }
         Iterator<XWPFHeader> headers = destinationDocument.getHeaderList().iterator();
@@ -156,7 +161,7 @@ public class DocumentGenerator {
             XWPFHeader header = headers.next();
             cleanHeaderFooter(header);
             TemplateProcessor headerProc = new TemplateProcessor(definitions, this.projectPath, bookmarkManager,
-                    queryEnvironment, header, targetConfObject);
+                    userContentManager, queryEnvironment, header, targetConfObject);
             headerProc.doSwitch(headerTemplate);
         }
 
@@ -165,6 +170,9 @@ public class DocumentGenerator {
         // At this point, the documnet has been generated and just needs being
         // writen on disk.
         POIServices.getInstance().saveFile(destinationDocument, destinationFileName);
+
+        // Remove temporary last destination document
+        userContentManager.deleteTempGeneratedFile();
     }
 
     /**
@@ -185,7 +193,7 @@ public class DocumentGenerator {
     /**
      * creates the destination document.
      * 
-     * @param inputDocumentFileName
+     * @param templateFileName
      *            the name of the destination document's file.
      * @return the created document
      * @throws IOException
@@ -193,9 +201,8 @@ public class DocumentGenerator {
      * @throws InvalidFormatException
      *             if the generated file has a format problem.
      */
-    private XWPFDocument createDestinationDocument(String inputDocumentFileName)
-            throws IOException, InvalidFormatException {
-        XWPFDocument document = POIServices.getInstance().getXWPFDocument(inputDocumentFileName);
+    private XWPFDocument createDestinationDocument(String templateFileName) throws IOException, InvalidFormatException {
+        XWPFDocument document = POIServices.getInstance().getXWPFDocument(templateFileName);
         int size = document.getBodyElements().size();
         for (int i = 0; i < size; i++) {
             document.removeBodyElement(0);

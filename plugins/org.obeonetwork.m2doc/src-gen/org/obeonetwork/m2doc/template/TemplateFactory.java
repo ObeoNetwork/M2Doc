@@ -57,6 +57,24 @@ public interface TemplateFactory extends EFactory {
 	Repetition createRepetition();
 
 	/**
+     * Returns a new object of class '<em>User Doc</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>User Doc</em>'.
+     * @generated
+     */
+    UserDoc createUserDoc();
+
+    /**
+     * Returns a new object of class '<em>User Content</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>User Content</em>'.
+     * @generated
+     */
+    UserContent createUserContent();
+
+    /**
      * Returns a new object of class '<em>Query</em>'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

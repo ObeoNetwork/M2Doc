@@ -202,7 +202,7 @@ public class ColumnServices {
      * @param b 
      * @return a yes/no string representation of the parameter.
      */
-    private String yesNo(boolean b){
+    private String yesNo(boolean b) {
         return b? "Oui" : "Non";
     }
     // @formatter:on
