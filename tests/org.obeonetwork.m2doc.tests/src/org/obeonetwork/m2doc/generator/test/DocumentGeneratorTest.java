@@ -74,7 +74,7 @@ public class DocumentGeneratorTest {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI(templatePath));
             out = File.createTempFile(resultPath, "generated-test");
             String outputPath = out.getAbsolutePath();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
@@ -562,7 +562,7 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc1.docx"));
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
                     URI.createFileURI("results/generated/testUserDoc1.docx"), template, definitions, queryEnvironment,
@@ -614,7 +614,7 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc9.docx"));
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
@@ -678,7 +678,7 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc1.docx"));
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
@@ -734,7 +734,7 @@ public class DocumentGeneratorTest {
                 XWPFDocument document = new XWPFDocument(oPackage);) {
 
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc9.docx"));
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
@@ -798,7 +798,7 @@ public class DocumentGeneratorTest {
                 XWPFDocument document = new XWPFDocument(oPackage);) {
 
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
@@ -856,7 +856,7 @@ public class DocumentGeneratorTest {
                 XWPFDocument document = new XWPFDocument(oPackage);) {
 
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
@@ -914,7 +914,7 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);

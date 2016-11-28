@@ -72,28 +72,7 @@ public final class POIServices {
             throws IOException, DocumentParserException {
         XWPFDocument document = getXWPFDocument(templateFile);
         DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
-        return template;
-    }
-
-    /**
-     * Parse template file.
-     * 
-     * @param templatePath
-     *            String
-     * @param queryEnvironment
-     *            IQueryEnvironment
-     * @return DocumentTemplate
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    public DocumentTemplate parseTemplate(String templatePath, IQueryEnvironment queryEnvironment)
-            throws IOException, DocumentParserException {
-        XWPFDocument document = getXWPFDocument(templatePath);
-        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
+        DocumentTemplate template = parser.parseDocument(templateFile);
         return template;
     }
 

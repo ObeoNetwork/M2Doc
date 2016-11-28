@@ -40,15 +40,15 @@ public class EcoreDocumentationGeneration {
                 .newEnvironmentWithDefaultServices(null);
         queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
         AQL4Compat.register(queryEnvironment, EcoreDocumentationServices.class);
-        FileInputStream is = new FileInputStream("templates/ecoreDocumentationTemplate.docx");
+        String templatePath = "templates/ecoreDocumentationTemplate.docx";
+        FileInputStream is = new FileInputStream(templatePath);
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
+        DocumentTemplate template = parser.parseDocument(URI.createFileURI(templatePath));
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", TemplatePackage.eINSTANCE);
-        DocumentGenerator generator = new DocumentGenerator(
-                URI.createFileURI("templates/ecoreDocumentationTemplate.docx"),
+        DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
                 URI.createFileURI("results/ecoreDocumentationTemplateResults.docx"), template, definitions,
                 queryEnvironment, null);
         generator.generate();
