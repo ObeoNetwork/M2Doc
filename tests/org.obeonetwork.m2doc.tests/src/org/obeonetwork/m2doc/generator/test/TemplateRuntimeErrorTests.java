@@ -62,7 +62,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<String, Object>();
+        Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
@@ -96,7 +96,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<String, Object>();
+        Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
@@ -133,7 +133,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<String, Object>();
+        Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testRepetitionSyntaxError.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
@@ -160,7 +160,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<String, Object>();
+        Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal1.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
@@ -187,7 +187,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyParser parser = new BodyParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<String, Object>();
+        Map<String, Object> definitions = new HashMap<>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal5.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, env, destinationDoc,
