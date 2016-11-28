@@ -434,7 +434,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 insertRun(tagRun);
             }
         } else {
-            List<Object> iteration = new ArrayList<Object>();
+            List<Object> iteration = new ArrayList<>();
             if (result.getResult() instanceof Collection) {
                 iteration.addAll((Collection<? extends Object>) result.getResult());
             } else {
@@ -608,14 +608,10 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         try {
             int heigth = Units.toEMU(object.getHeight());
             int width = Units.toEMU(object.getWidth());
-            FileInputStream imageStream = new FileInputStream(filePath);
-            try {
+
+            try (FileInputStream imageStream = new FileInputStream(filePath)) {
                 imageRun.addPicture(imageStream, getPictureType(object.getFileName()), object.getFileName(), width,
                         heigth);
-            } finally {
-                if (imageStream != null) {
-                    imageStream.close();
-                }
             }
         } catch (InvalidFormatException e) {
             setErrorMessageToRun("Picture in " + object.getFileName() + " has an invalid format.", imageRun);
@@ -652,13 +648,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                         }
                         int height = Units.toEMU(object.getHeight());
                         int width = Units.toEMU(object.getWidth());
-                        FileInputStream fileInputStream = new FileInputStream(imagePath);
-                        try {
+
+                        try (FileInputStream fileInputStream = new FileInputStream(imagePath)) {
                             imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePath, width, height);
-                        } finally {
-                            if (fileInputStream != null) {
-                                fileInputStream.close();
-                            }
                         }
                     } catch (InvalidFormatException e) {
                         setErrorMessageToRun("Picture in " + imagePath + " has an invalid format.", imageRun);
@@ -719,7 +711,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      */
     private Map<String, Object> setupParametersMap(TableClient object, IProvider provider)
             throws IllegalArgumentException {
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
         parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         setGenericParameters(object, provider.getOptionTypes(), parameters);
@@ -821,7 +813,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      */
     private Map<String, Object> setupParametersMap(Representation object, IProvider provider)
             throws IllegalArgumentException {
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
         parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, object.getHeight());

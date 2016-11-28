@@ -210,13 +210,9 @@ public final class POIServices {
      *             throws if the writing of the document on the file system fails.
      */
     public void saveFile(XWPFDocument document, String theDestinationFileName) throws IOException {
-        FileOutputStream os = new FileOutputStream(theDestinationFileName);
-        try {
+
+        try (FileOutputStream os = new FileOutputStream(theDestinationFileName)) {
             document.write(os);
-        } finally {
-            if (os != null) {
-                os.close();
-            }
         }
     }
 
