@@ -62,6 +62,8 @@ public final class ProviderRegistry {
      */
     public void clear() {
         this.registry.clear();
+        this.diagramProviders.clear();
+        this.tableProviders.clear();
     }
 
     /**
@@ -78,12 +80,12 @@ public final class ProviderRegistry {
                         + "\" is already registered. The current implementation will not be used."));
         } else {
             registry.put(classQualifiedName, provider);
-        }
-        if (provider instanceof AbstractDiagramProvider) {
-            if (((AbstractDiagramProvider) provider).isDefault()) {
-                diagramProviders.add(0, provider);
-            } else {
-                diagramProviders.add(provider);
+            if (provider instanceof AbstractDiagramProvider) {
+                if (((AbstractDiagramProvider) provider).isDefault()) {
+                    diagramProviders.add(0, provider);
+                } else {
+                    diagramProviders.add(provider);
+                }
             }
         }
     }
@@ -102,8 +104,8 @@ public final class ProviderRegistry {
                         + "\" is already registered. The current implementation will not be used."));
         } else {
             registry.put(classQualifiedName, provider);
+            tableProviders.add(provider);
         }
-        tableProviders.add(provider);
     }
 
     /**
