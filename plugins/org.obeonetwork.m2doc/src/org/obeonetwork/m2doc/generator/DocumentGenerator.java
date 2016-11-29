@@ -122,6 +122,7 @@ public class DocumentGenerator {
             TemplateProcessor footerProc = new TemplateProcessor(definitions, bookmarkManager, userContentManager,
                     queryEnvironment, footer, targetConfObject);
             footerProc.doSwitch(footerTemplate);
+            footerProc.clear();
         }
         Iterator<XWPFHeader> headers = destinationDocument.getHeaderList().iterator();
         for (Template headerTemplate : this.template.getHeaders()) {
@@ -130,6 +131,7 @@ public class DocumentGenerator {
             TemplateProcessor headerProc = new TemplateProcessor(definitions, bookmarkManager, userContentManager,
                     queryEnvironment, header, targetConfObject);
             headerProc.doSwitch(headerTemplate);
+            headerProc.clear();
         }
 
         bookmarkManager.markDanglingReferences();
@@ -140,6 +142,7 @@ public class DocumentGenerator {
 
         // Remove temporary last destination document
         userContentManager.dispose();
+        processor.clear();
     }
 
     /**

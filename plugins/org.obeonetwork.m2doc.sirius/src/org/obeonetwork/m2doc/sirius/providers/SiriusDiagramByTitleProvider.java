@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.providers;
 
-import com.google.common.io.Files;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,7 +63,7 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
-        String rootPath = Files.createTempDir().getAbsolutePath();
+        String rootPath = createTempFolderPath();
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
         Session session = SessionManager.INSTANCE.getSession(rootObject);
@@ -83,7 +81,7 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
                     .getAssociatedRepresentationByName((String) representationTitle, session);
             if (representation instanceof DDiagram) {
                 DDiagram dsd = (DDiagram) representation;
-                List<DRepresentation> representations = new ArrayList<DRepresentation>(1);
+                List<DRepresentation> representations = new ArrayList<>(1);
                 representations.add(dsd);
                 List<String> resultList = generateAndReturnDiagramImages(rootPath, session, representations,
                         getLayers(dsd, diagramActivatedLayers));
@@ -96,7 +94,7 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
 
     @Override
     public Map<String, OptionType> getOptionTypes() {
-        Map<String, OptionType> options = new HashMap<String, OptionType>();
+        Map<String, OptionType> options = new HashMap<>();
         options.put(REPRESENTATION_TITLE_KEY, OptionType.AQL_EXPRESSION);
         return options;
     }

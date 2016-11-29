@@ -98,7 +98,8 @@ public class UserContentManager {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
         try {
-            document = POIServices.getInstance().getXWPFDocument(generatedFileCopy.getAbsolutePath());
+            document = POIServices.getInstance()
+                    .getXWPFDocument(URI.createFileURI(generatedFileCopy.getAbsolutePath()));
             // CHECKSTYLE:OFF
         } catch (Exception e) {
             // In this case, we do nothing.

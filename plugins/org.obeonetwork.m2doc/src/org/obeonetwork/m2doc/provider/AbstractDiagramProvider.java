@@ -87,4 +87,11 @@ public abstract class AbstractDiagramProvider implements IProvider {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    /**
+     * Should be called after the document generation so that the implementer can cleanup temporary files.
+     */
+    public void clear() {
+        // default implementation has nothing to clean.
+    }
 }

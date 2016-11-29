@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.generator;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Sets;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -140,6 +141,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * An EObject from the conf model from which the generation has been called.
      */
     private EObject targetConfObject;
+
+    private Set<AbstractDiagramProvider> usedProviders = Sets.newLinkedHashSet();
 
     /**
      * Last Destination UserContent Manager.
@@ -849,6 +852,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             try {
                 parameters = setupParametersMap(object, provider);
                 List<String> imagePaths = ((AbstractDiagramProvider) provider).getRepresentationImagePath(parameters);
+                usedProviders.add((AbstractDiagramProvider) provider);
                 for (String imagePathStr : imagePaths) {
                     URI imagePath = URI.createFileURI(imagePathStr);
                     if (!imagePath.hasAbsolutePath() && object.eResource() != null
@@ -1123,6 +1127,17 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 options.put(aqlEntry.getKey(), result.getResult());
             }
         }
+    }
+
+    /**
+     * Should be called when the {@link TemplateProcessor} is no longer needed so that it can cleanup temporary files used during the
+     * generation.
+     */
+    public void clear() {
+        for (AbstractDiagramProvider diagprovider : usedProviders) {
+            diagprovider.clear();
+        }
+
     }
 
 }
