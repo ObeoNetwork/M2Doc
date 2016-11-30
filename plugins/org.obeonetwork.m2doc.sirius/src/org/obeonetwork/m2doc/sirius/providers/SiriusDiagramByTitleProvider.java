@@ -11,25 +11,22 @@
 package org.obeonetwork.m2doc.sirius.providers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.viewpoint.DRepresentation;
-import org.eclipse.sirius.viewpoint.DView;
-import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
+import org.obeonetwork.m2doc.sirius.services.SiriusServices;
 import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
@@ -62,37 +59,6 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
         return name.replaceAll("[:\\\\/*?|<>]", "_");
     }
 
-    /**
-     * Retrieve all representations whose target is the specified EObject.
-     * 
-     * @param representationName
-     *            the name of the representation from which we want to create an image.
-     * @param session
-     *            the Sirius session from which we want to find the representation with the given name.
-     * @return the corresponding representation.
-     */
-    private DRepresentation getAssociatedRepresentationByName(String representationName, Session session) {
-        if (representationName != null) {
-            Collection<DRepresentation> representations = DialectManager.INSTANCE.getAllRepresentations(session);
-
-            // Filter representations to keep only those in a selected viewpoint
-            Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-
-            for (DRepresentation representation : representations) {
-                if (representationName.equals(representation.getName())
-                    && representation.eContainer() instanceof DView) {
-                    DView dView = (DView) representation.eContainer();
-                    Viewpoint vp = dView.getViewpoint();
-                    if (selectedViewpoints.contains(vp)) {
-                        return representation;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
@@ -111,7 +77,8 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
                     "Image cannot be computed because no representation title has been provided to the provider \""
                         + this.getClass().getName() + "\"");
         } else {
-            DRepresentation representation = getAssociatedRepresentationByName((String) representationTitle, session);
+            DRepresentation representation = new SiriusServices()
+                    .getAssociatedRepresentationByName((String) representationTitle, session);
             if (representation instanceof DDiagram) {
                 DDiagram dsd = (DDiagram) representation;
                 List<DRepresentation> representations = new ArrayList<DRepresentation>(1);

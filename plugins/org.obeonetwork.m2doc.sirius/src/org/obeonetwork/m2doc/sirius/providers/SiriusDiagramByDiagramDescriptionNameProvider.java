@@ -12,7 +12,6 @@ package org.obeonetwork.m2doc.sirius.providers;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,13 +20,11 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.viewpoint.DRepresentation;
-import org.eclipse.sirius.viewpoint.DView;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -35,6 +32,7 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
+import org.obeonetwork.m2doc.sirius.services.SiriusServices;
 import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
@@ -58,43 +56,6 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
      * Default constructor.
      */
     public SiriusDiagramByDiagramDescriptionNameProvider() {
-    }
-
-    /**
-     * Retrieve all representations whose target is the specified EObject and diagram description the given one.
-     * 
-     * @param targetRootObject
-     *            Object which is the target of the representations.
-     * @param diagramDescriptionName
-     *            the diagram description from which we want to retrieve representations.
-     * @param session
-     *            the Sirius session from which we want to find the representation with the given name.
-     * @return all representations whose target is the specified EObject
-     */
-    private List<DRepresentation> getAssociatedRepresentationByDiagramDescriptionAndName(EObject targetRootObject,
-            String diagramDescriptionName, Session session) {
-        List<DRepresentation> result = new ArrayList<DRepresentation>();
-        if (diagramDescriptionName != null) {
-            Collection<DRepresentation> representations = DialectManager.INSTANCE.getRepresentations(targetRootObject,
-                    session);
-
-            // Filter representations to keep only those in a selected viewpoint
-            Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-
-            for (DRepresentation representation : representations) {
-                if (representation instanceof DDiagram
-                    && diagramDescriptionName.equals(((DDiagram) representation).getDescription().getName())
-                    && representation.eContainer() instanceof DView) {
-                    DView dView = (DView) representation.eContainer();
-                    Viewpoint vp = dView.getViewpoint();
-                    if (selectedViewpoints.contains(vp)) {
-                        result.add(representation);
-                    }
-                }
-            }
-        }
-
-        return result;
     }
 
     @SuppressWarnings("unchecked")
@@ -121,8 +82,9 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
                 throw new ProviderException("Cannot find session associated to the conf model root element.");
             }
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
-            List<DRepresentation> representations = getAssociatedRepresentationByDiagramDescriptionAndName(
-                    targetRootEObject, (String) diagramDescriptionName, session);
+            List<DRepresentation> representations = new SiriusServices()
+                    .getAssociatedRepresentationByDiagramDescriptionAndName(targetRootEObject,
+                            (String) diagramDescriptionName, session);
             if (!representations.isEmpty() && representations.get(0) instanceof DDiagram) {
                 return generateAndReturnDiagramImages(rootPath, session, representations,
                         getLayers((DDiagram) representations.get(0), diagramActivatedLayers));
