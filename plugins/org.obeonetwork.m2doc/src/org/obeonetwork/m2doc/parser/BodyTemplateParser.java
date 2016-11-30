@@ -106,6 +106,10 @@ public class BodyTemplateParser extends BodyAbstractParser {
      */
     private static final String PROVIDER_KEY = "provider";
     /**
+     * Diagram or table create option name.
+     */
+    private static final String CREATE_KEY = "create";
+    /**
      * Diagram layers option name.
      */
     private static final String DIAGRAM_LAYERS_KEY = "layers";
@@ -146,7 +150,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
     private static final String[] DIAGRAM_OPTION_SET =
 
             {PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY,
-                DIAGRAM_LAYERS_KEY, };
+                DIAGRAM_LAYERS_KEY, CREATE_KEY, };
 
     /**
      * Rank of the option's value group in the matcher.
@@ -508,6 +512,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
                 } else {
                     providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
                 }
+            } else if (CREATE_KEY.equals(parsedOption.getKey())) {
+                providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
             }
         }
     }
@@ -559,6 +565,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
         optionToIgnore.add(IMAGE_WIDTH_KEY);
         optionToIgnore.add(PROVIDER_KEY);
         optionToIgnore.add(DIAGRAM_LAYERS_KEY);
+        optionToIgnore.add(CREATE_KEY);
         if (representation.getProvider() != null) {
             setGenericOptions(representation, options, optionToIgnore, representation.getProvider());
         }
@@ -685,7 +692,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
             } else {
                 // let's find the best provider
                 for (AbstractTableProvider provider : providers) {
-                    if (OptionChecker.check(provider.getOptionTypes()).ignore(PROVIDER_KEY, HIDE_TITLE_KEY)
+                    if (OptionChecker.check(provider.getOptionTypes()).ignore(PROVIDER_KEY, HIDE_TITLE_KEY, CREATE_KEY)
                             .against(options)) {
                         tableClient.setProvider(provider);
                         setGenericOptions(tableClient, options, ImmutableSet.of(PROVIDER_KEY), provider);
