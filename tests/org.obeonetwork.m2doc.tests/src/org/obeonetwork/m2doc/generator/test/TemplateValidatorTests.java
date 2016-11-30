@@ -529,4 +529,53 @@ public class TemplateValidatorTests {
                 "option variable: error with ...", image.getStyleRun());
     }
 
+    @Test
+    public void userDocWrongVariable() {
+        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
+        final org.obeonetwork.m2doc.template.UserDoc userDoc = TemplatePackage.eINSTANCE.getTemplateFactory()
+                .createUserDoc();
+        userDoc.setId(engine.build("self"));
+
+        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
+        template.getSubConstructs().add(userDoc);
+        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
+
+        final TemplateValidator validator = new TemplateValidator();
+        Generation generation = GenconfFactory.eINSTANCE.createGeneration();
+        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
+        validator.validate(documentTemplate, generation, queryEnvironment, types);
+
+        assertEquals(1, userDoc.getValidationMessages().size());
+        assertTemplateValidationMessage(userDoc.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "Couldn't find the 'self' variable", userDoc.getRuns().get(1));
+    }
+
+    @Test
+    public void userDocWithAQLResultAsCollectionType() {
+        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
+        final org.obeonetwork.m2doc.template.UserDoc userDoc = TemplatePackage.eINSTANCE.getTemplateFactory()
+                .createUserDoc();
+        userDoc.setId(engine.build("collection"));
+
+        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
+        template.getSubConstructs().add(userDoc);
+        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
+
+        final TemplateValidator validator = new TemplateValidator();
+        Generation generation = GenconfFactory.eINSTANCE.createGeneration();
+        // Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
+        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
+        final Set<IType> selfTypes = new LinkedHashSet<IType>();
+        types.put("collection", selfTypes);
+        selfTypes.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
+
+        validator.validate(documentTemplate, generation, queryEnvironment, types);
+
+        assertEquals(1, userDoc.getValidationMessages().size());
+        assertTemplateValidationMessage(userDoc.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
+                "The id type must not be a collection (Sequence(java.lang.Object)).", userDoc.getRuns().get(1));
+    }
+
 }

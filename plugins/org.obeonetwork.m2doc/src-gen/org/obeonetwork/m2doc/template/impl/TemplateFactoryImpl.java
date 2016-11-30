@@ -86,6 +86,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
         switch (eClass.getClassifierID()) {
             case TemplatePackage.CONDITIONNAL: return createConditionnal();
             case TemplatePackage.REPETITION: return createRepetition();
+            case TemplatePackage.USER_DOC: return createUserDoc();
+            case TemplatePackage.USER_CONTENT: return createUserContent();
             case TemplatePackage.QUERY: return createQuery();
             case TemplatePackage.TABLE_MERGE: return createTableMerge();
             case TemplatePackage.IMAGE: return createImage();
@@ -197,6 +199,26 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public UserDoc createUserDoc() {
+        UserDocImpl userDoc = new UserDocImpl();
+        return userDoc;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public UserContent createUserContent() {
+        UserContentImpl userContent = new UserContentImpl();
+        return userContent;
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated

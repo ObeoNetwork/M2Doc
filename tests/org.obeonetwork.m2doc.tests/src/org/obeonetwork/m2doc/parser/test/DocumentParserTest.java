@@ -30,7 +30,7 @@ import org.eclipse.emf.common.util.EMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.obeonetwork.m2doc.parser.BodyParser;
+import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -53,6 +53,7 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.UserDoc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -130,7 +131,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testTemplate.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(document, template.getBody());
             assertEquals(1, template.getSubConstructs().size());
@@ -144,7 +145,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testVar.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
@@ -161,7 +162,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testAQL.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
@@ -178,7 +179,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testGDFOR.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
@@ -199,7 +200,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testConditionnal1.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
@@ -219,7 +220,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testConditionnal2.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
@@ -241,7 +242,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testConditionnal3.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
@@ -266,7 +267,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testConditionnal4.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
@@ -294,7 +295,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
@@ -324,7 +325,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testTable.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(2, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof Table);
@@ -353,7 +354,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testGDFORWithTable.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(6, template.getSubConstructs().size());
         Repetition rep = (Repetition) template.getSubConstructs().get(4);
@@ -373,7 +374,7 @@ public class DocumentParserTest {
         try (FileInputStream is = new FileInputStream("templates/testImageTag.docx")) {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
-            BodyParser parser = new BodyParser(document, env);
+            BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             assertEquals(1, template.getSubConstructs().size());
             Image im = (Image) template.getSubConstructs().get(0);
@@ -400,7 +401,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testStringOptionEscaping.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -426,7 +427,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testStringOptionEscaping2.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -451,7 +452,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testStringOptionEscaping3.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -476,7 +477,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testStringOptionNoEscaping.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -499,7 +500,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testStringOptionInvalidKey.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -522,7 +523,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testStringOptionInvalidNotComplete.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -547,7 +548,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testStringOptionEmptySpaces.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -564,7 +565,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testImageTag2.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -578,7 +579,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testImageTag3.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Image im = (Image) template.getSubConstructs().get(0);
@@ -601,7 +602,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramValidOneImage.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -633,7 +634,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramValidSpacesAroundProvider.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -664,7 +665,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramValidEscaping.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -703,7 +704,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramValidEscaping2.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -741,7 +742,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramInvalidNoProvider.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -797,7 +798,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramInvalidWrongProvider.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -827,7 +828,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramNoProviderOptions.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -859,7 +860,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/diagramInvalidAqlExpression.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(1, template.getSubConstructs().size());
         Representation representation = (Representation) template.getSubConstructs().get(0);
@@ -885,7 +886,7 @@ public class DocumentParserTest {
         FileInputStream is = new FileInputStream("templates/testBookmarkNominal.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
-        BodyParser parser = new BodyParser(document, env);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
         assertEquals(SEVEN, template.getSubConstructs().size());
 
@@ -914,4 +915,102 @@ public class DocumentParserTest {
         assertEquals("a reference to bookmark1", ((StringLiteral) linkAfter.getText().getAst()).getValue());
     }
 
+    /**
+     * Test parsing userDoc tag with default simple string.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     */
+    @Test
+    public void testUserDocSimpleText() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testUserDoc1.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
+        Template template = parser.parseTemplate();
+        assertEquals(document, template.getBody());
+        assertEquals(3, template.getSubConstructs().size());
+        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
+        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertNotNull(userDoc.getId());
+        assertTrue(userDoc.getId() instanceof AstResult);
+        assertEquals(1, userDoc.getSubConstructs().size());
+        assertTrue(userDoc.getSubConstructs().get(0) instanceof StaticFragment);
+        // AQL parsing test
+        assertTrue(userDoc.getId().getAst() instanceof StringLiteral);
+        assertEquals("value1", ((StringLiteral) (userDoc.getId().getAst())).getValue());
+
+    }
+
+    /**
+     * Test parsing userDoc tag with default one line string.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     */
+    @Test
+    public void testUserDocOneLine() throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testUserDoc2.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
+        Template template = parser.parseTemplate();
+        assertEquals(document, template.getBody());
+        assertEquals(3, template.getSubConstructs().size());
+        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
+        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertNotNull(userDoc.getId());
+        assertTrue(userDoc.getId() instanceof AstResult);
+        assertEquals(1, userDoc.getSubConstructs().size());
+        assertTrue(userDoc.getSubConstructs().get(0) instanceof StaticFragment);
+        // AQL parsing test
+        assertTrue(userDoc.getId().getAst() instanceof StringLiteral);
+        assertEquals("value1", ((StringLiteral) (userDoc.getId().getAst())).getValue());
+    }
+
+    /**
+     * Test parsing userDoc tag with condition tag in userDoc content.
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     */
+    @Test
+    public void testUserDocWithConditionInContent()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        FileInputStream is = new FileInputStream("templates/testUserDoc3.docx");
+        OPCPackage oPackage = OPCPackage.open(is);
+        XWPFDocument document = new XWPFDocument(oPackage);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
+        Template template = parser.parseTemplate();
+        assertEquals(document, template.getBody());
+        assertEquals(3, template.getSubConstructs().size());
+        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
+        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
+        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
+        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertNotNull(userDoc.getId());
+        assertTrue(userDoc.getId() instanceof AstResult);
+        assertEquals(3, userDoc.getSubConstructs().size());
+        assertTrue(userDoc.getSubConstructs().get(0) instanceof StaticFragment);
+        assertTrue(userDoc.getSubConstructs().get(1) instanceof Conditionnal);
+        assertTrue(userDoc.getSubConstructs().get(2) instanceof StaticFragment);
+        // Check ValidationMessage
+        assertEquals(0, userDoc.getValidationMessages().size());
+    }
 }
