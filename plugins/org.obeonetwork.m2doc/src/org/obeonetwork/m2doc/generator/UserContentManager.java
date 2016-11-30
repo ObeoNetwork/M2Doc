@@ -59,7 +59,7 @@ public class UserContentManager {
     /**
      * Current document.
      */
-    XWPFDocument document;
+    private XWPFDocument document;
 
     /**
      * Constructor.
@@ -98,12 +98,14 @@ public class UserContentManager {
                 .newEnvironmentWithDefaultServices(null);
         try {
             document = POIServices.getInstance().getXWPFDocument(generatedFileCopy.getAbsolutePath());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
             // In this case, we do nothing.
             // The old output doc is not a docx document and it will be overwrite at current generation.
             // And we have nothing to extract to a no docx document.
             return;
         }
+        // CHECKSTYLE:ON
         DocumentGeneratedParser documentGeneratedParser = new DocumentGeneratedParser(document, queryEnvironment);
         DocumentTemplate documentTemplate = documentGeneratedParser.parseDocument();
         final TreeIterator<EObject> iter = documentTemplate.eAllContents();
@@ -167,6 +169,7 @@ public class UserContentManager {
      * Dispose.
      * 
      * @throws IOException
+     *             IOException
      */
     public void dispose() throws IOException {
         // Delete Temp Generated File.
@@ -191,7 +194,8 @@ public class UserContentManager {
      *             IOException
      */
     private static void copyFile(File source, File dest) throws IOException {
-        try (InputStream is = new FileInputStream(source); OutputStream os = new FileOutputStream(dest);) {
+        try (InputStream is = new FileInputStream(source); 
+                OutputStream os = new FileOutputStream(dest);) {
             // CHECKSTYLE:OFF
             byte[] buffer = new byte[1024];
             // CHECKSTYLE:ON
