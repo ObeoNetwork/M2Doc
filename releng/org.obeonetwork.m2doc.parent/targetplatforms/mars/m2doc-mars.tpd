@@ -21,6 +21,5 @@ location Eclipse "http://download.eclipse.org/releases/mars" {
 	org.eclipse.sirius.table lazy
 	org.eclipse.sirius.table.ui lazy
 	
-	org.eclipse.acceleo.query lazy
-	org.eclipse.acceleo.annotations lazy
+	org.eclipse.acceleo.query.feature.group lazy
 }
