@@ -26,11 +26,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -42,12 +54,16 @@ import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
+import org.obeonetwork.m2doc.provider.ProviderRegistry;
+import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
@@ -55,6 +71,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class DocumentGeneratorTest {
+
+    /**
+     * Initialize registry.
+     */
+    @Before
+    public void setUp() {
+        ProviderRegistry.INSTANCE.clear();
+        ProviderRegistry.INSTANCE.registerProvider(new StubDiagramProvider());
+    }
+
+    /**
+     * Cleaning.
+     */
+    @After
+    public void after() {
+        ProviderRegistry.INSTANCE.clear();
+    }
 
     private void doGenerateDocAndCheckText(String templatePath, String resultPath, Map<String, Object> definitions)
             throws FileNotFoundException, IOException, InvalidFormatException, DocumentParserException,
@@ -140,12 +173,17 @@ public class DocumentGeneratorTest {
                 result += "\n" + entry.getName() + " | ";
                 if (entry.getName().endsWith(".xml") || entry.getName().endsWith(".rels")) {
                     String fileContent = CharStreams.toString(new InputStreamReader(zin, Charsets.UTF_8));
+
+                    fileContent = indentXML(fileContent);
+
                     // normalizing on \n to have a cross-platform comparison.
                     fileContent = fileContent.replace("\r\n", "\n");
                     // removing XML attributes which might change from run to run.
                     fileContent = fileContent.replaceAll("rsidR=\"([^\"]+)", "");
                     fileContent = fileContent.replaceAll("id=\"([^\"]+)", "");
-                    result += "\n" + fileContent;
+                    fileContent = fileContent.replaceAll("descr=\"([^\"]+)", "");
+
+                    result += "\n" + fileContent + "\n";
                 } else {
                     HashCode code = hf.hashBytes(ByteStreams.toByteArray(zin));
                     result += "\n md5:" + code.toString();
@@ -154,6 +192,37 @@ public class DocumentGeneratorTest {
         }
 
         return result;
+    }
+
+    /**
+     * @param fileContent
+     * @return
+     */
+    private String indentXML(String fileContent) {
+        StreamResult xmlOutput = null;
+        try {
+            // Configure transformer
+            Transformer transformer;
+            Source xmlInput = new StreamSource(new StringReader(fileContent));
+            xmlOutput = new StreamResult(new StringWriter());
+            transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            try {
+                transformer.transform(xmlInput, xmlOutput);
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerFactoryConfigurationError e) {
+            e.printStackTrace();
+        }
+
+        if (xmlOutput != null) {
+            fileContent = xmlOutput.getWriter().toString();
+        }
+        return fileContent;
     }
 
     @Test
