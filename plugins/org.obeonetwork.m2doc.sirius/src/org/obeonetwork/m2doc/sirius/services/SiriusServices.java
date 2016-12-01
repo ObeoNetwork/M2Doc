@@ -11,6 +11,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
+import org.eclipse.sirius.business.api.query.DRepresentationQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.viewpoint.DRepresentation;
@@ -72,7 +73,8 @@ public class SiriusServices {
             Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
 
             for (DRepresentation representation : representations) {
-                if (representation instanceof DDiagram
+                boolean isDangling = new DRepresentationQuery(representation).isDanglingRepresentation();
+                if (!isDangling && representation instanceof DDiagram
                     && diagramId.equals(((DDiagram) representation).getDescription().getName())
                     && representation.eContainer() instanceof DView) {
                     DView dView = (DView) representation.eContainer();
@@ -117,7 +119,8 @@ public class SiriusServices {
             Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
 
             for (DRepresentation representation : representations) {
-                if (representationName.equals(representation.getName())
+                boolean isDangling = new DRepresentationQuery(representation).isDanglingRepresentation();
+                if (!isDangling && representationName.equals(representation.getName())
                     && representation.eContainer() instanceof DView) {
                     DView dView = (DView) representation.eContainer();
                     Viewpoint vp = dView.getViewpoint();
