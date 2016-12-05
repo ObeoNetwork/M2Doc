@@ -40,11 +40,9 @@ import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
-import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.Image;
-import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.POSITION;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -879,40 +877,6 @@ public class DocumentParserTest {
         assertTemplateValidationMessage(representation.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "Expression \"wrong.->\" is invalid: missing collection service call",
                 representation.getRuns().get(THIRTY_FOUR));
-    }
-
-    @Test
-    public void bookmarkAndLink() throws IOException, InvalidFormatException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testBookmarkNominal.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(SEVEN, template.getSubConstructs().size());
-
-        assertTrue(template.getSubConstructs().get(1) instanceof Link);
-        final Link linkBefore = (Link) template.getSubConstructs().get(1);
-        assertTrue(linkBefore.getName().getAst() instanceof StringLiteral);
-        assertEquals("bookmark1", ((StringLiteral) linkBefore.getName().getAst()).getValue());
-        assertTrue(linkBefore.getText().getAst() instanceof StringLiteral);
-        assertEquals("a reference to bookmark1", ((StringLiteral) linkBefore.getText().getAst()).getValue());
-
-        assertTrue(template.getSubConstructs().get(3) instanceof Bookmark);
-        final Bookmark bookmark = (Bookmark) template.getSubConstructs().get(3);
-        assertTrue(bookmark.getName().getAst() instanceof StringLiteral);
-        assertEquals("bookmark1", ((StringLiteral) bookmark.getName().getAst()).getValue());
-        assertEquals(1, bookmark.getSubConstructs().size());
-        assertTrue(bookmark.getSubConstructs().get(0) instanceof StaticFragment);
-        final StaticFragment fragment = (StaticFragment) bookmark.getSubConstructs().get(0);
-        assertEquals(1, fragment.getRuns().size());
-        assertEquals("bookmarked content", fragment.getRuns().get(0).text());
-
-        assertTrue(template.getSubConstructs().get(5) instanceof Link);
-        final Link linkAfter = (Link) template.getSubConstructs().get(5);
-        assertTrue(linkAfter.getName().getAst() instanceof StringLiteral);
-        assertEquals("bookmark1", ((StringLiteral) linkAfter.getName().getAst()).getValue());
-        assertTrue(linkAfter.getText().getAst() instanceof StringLiteral);
-        assertEquals("a reference to bookmark1", ((StringLiteral) linkAfter.getText().getAst()).getValue());
     }
 
     /**

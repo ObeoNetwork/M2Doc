@@ -23,10 +23,12 @@ import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Conditionnal;
 import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
@@ -198,6 +200,19 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     public Void caseAbstractProviderClient(AbstractProviderClient providerClient) {
         insertErrorMessages(providerClient);
 
+        return null;
+    }
+
+    @Override
+    public Void caseBookmark(Bookmark bookmark) {
+        insertErrorMessages(bookmark);
+
+        return null;
+    }
+
+    @Override
+    public Void caseLink(Link link) {
+        insertErrorMessages(link);
         return null;
     }
 

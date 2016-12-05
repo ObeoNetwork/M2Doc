@@ -57,7 +57,7 @@ public class DocumentTemplateParser {
      * Parses a document and returns the {@link DocumentTemplate} resulting from
      * this parsing.
      * 
-     * @param templateFile
+     * @param templateURI
      *            URI for the template, used when external links (images, includes) have to be resolved.
      * @return the {@link DocumentTemplate} resulting from parsing the specified
      *         document.
