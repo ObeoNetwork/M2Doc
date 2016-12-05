@@ -1,0 +1,4 @@
+template null
+  Thisdemonstratethe simple usage ofdiagram :
+  representation null title null provider org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider height 200 width 200 legend null legendpos BELOW title 'anydsl class diagram' 
+  End ofdemonstration.
