@@ -10,6 +10,7 @@
  *  
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator.test;
+//CHECKSTYLE:OFF
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
@@ -20,19 +21,24 @@ import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 
 import java.io.BufferedInputStream;
+import com.google.common.base.Charsets;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.CharStreams;
+
+import java.io.BufferedInputStream;
 import java.io.File;
-//CHECKSTYLE:OFF
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -46,7 +52,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -65,6 +70,7 @@ import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.test.M2DocTestUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
 import static org.junit.Assert.assertEquals;
@@ -89,298 +95,152 @@ public class DocumentGeneratorTest {
         ProviderRegistry.INSTANCE.clear();
     }
 
-    private void doGenerateDocAndCheckText(String templatePath, String resultPath, Map<String, Object> definitions)
-            throws FileNotFoundException, IOException, InvalidFormatException, DocumentParserException,
-            DocumentGenerationException {
-        doGenerateDocAndCheckText(templatePath, resultPath, definitions, true);
-    }
-
-    private void doGenerateDocAndCheckText(String templatePath, String resultPath, Map<String, Object> definitions,
-            boolean checkThroughPOI) throws FileNotFoundException, IOException, InvalidFormatException,
-            DocumentParserException, DocumentGenerationException {
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
-        String previousTextContent = getTextContent(resultPath);
-        String previousArchiveContent = getArchiveContent(resultPath);
-        File out = null;
-        try (FileInputStream is = new FileInputStream(templatePath)) {
-            OPCPackage oPackage = OPCPackage.open(is);
-            XWPFDocument document = new XWPFDocument(oPackage);
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI(templatePath));
-            out = File.createTempFile(resultPath, "generated-test");
-            String outputPath = out.getAbsolutePath();
-            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
-                    URI.createFileURI(outputPath), template, definitions, queryEnvironment, null);
-            generator.generate();
-            if (checkThroughPOI) {
-                assertEquals(previousTextContent, getTextContent(outputPath));
-            }
-            assertEquals(previousArchiveContent, getArchiveContent(outputPath));
-
-        } finally {
-            if (out != null) {
-                out.delete();
-            }
-        }
-    }
-
-    private String loadTextRepresentation(String path)
-            throws FileNotFoundException, IOException, InvalidFormatException {
-        String result = getTextContent(path);
-
-        return result += getArchiveContent(path);
-    }
-
-    /**
-     * @param path
-     * @return
-     */
-    private String getTextContent(String path) {
-        String result = "";
-
-        try (FileInputStream is = new FileInputStream(path);
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFWordExtractor ex = new XWPFWordExtractor(document);) {
-
-            result += "===== Document Text ====\n";
-            result += ex.getText();
-        } catch (Throwable e) {
-            /*
-             * if for some reason we can't use POI to get the text content then move along, we'll still get the XML and hashs
-             */
-        }
-        return result;
-    }
-
-    /**
-     * @param path
-     * @param result
-     * @return
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
-    private String getArchiveContent(String path) throws IOException, FileNotFoundException {
-        String result = "";
-        HashFunction hf = Hashing.md5();
-        try (FileInputStream is = new FileInputStream(path);
-                ZipInputStream zin = new ZipInputStream(new BufferedInputStream(is))) {
-
-            result += "\n===== Archive Content ====";
-            ZipEntry entry;
-            while ((entry = zin.getNextEntry()) != null) {
-                result += "\n" + entry.getName() + " | ";
-                if (entry.getName().endsWith(".xml") || entry.getName().endsWith(".rels")) {
-                    String fileContent = CharStreams.toString(new InputStreamReader(zin, Charsets.UTF_8));
-
-                    fileContent = indentXML(fileContent);
-
-                    // normalizing on \n to have a cross-platform comparison.
-                    fileContent = fileContent.replace("\r\n", "\n");
-                    // removing XML attributes which might change from run to run.
-                    fileContent = fileContent.replaceAll("rsidR=\"([^\"]+)", "");
-                    fileContent = fileContent.replaceAll("id=\"([^\"]+)", "");
-                    fileContent = fileContent.replaceAll("descr=\"([^\"]+)", "");
-
-                    result += "\n" + fileContent + "\n";
-                } else {
-                    HashCode code = hf.hashBytes(ByteStreams.toByteArray(zin));
-                    result += "\n md5:" + code.toString();
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * @param fileContent
-     * @return
-     */
-    private String indentXML(String fileContent) {
-        StreamResult xmlOutput = null;
-        try {
-            // Configure transformer
-            Transformer transformer;
-            Source xmlInput = new StreamSource(new StringReader(fileContent));
-            xmlOutput = new StreamResult(new StringWriter());
-            transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-            try {
-                transformer.transform(xmlInput, xmlOutput);
-            } catch (TransformerException e) {
-                e.printStackTrace();
-            }
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerFactoryConfigurationError e) {
-            e.printStackTrace();
-        }
-
-        if (xmlOutput != null) {
-            fileContent = xmlOutput.getWriter().toString();
-        }
-        return fileContent;
-    }
-
     @Test
-    public void testFormsAndTextArea()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testFormsAndTextArea() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        doGenerateDocAndCheckText("templates/testTextAreaAndForms.docx", "results/testTextAreaAndForms.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testTextAreaAndForms.docx",
+                "results/testTextAreaAndForms.docx", definitions);
     }
 
     @Test
-    public void testStaticFragmentWithFieldProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testStaticFragmentWithFieldProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testStaticFragmentWithfields.docx",
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testStaticFragmentWithfields.docx",
                 "results/testStaticFragmentWithfields.docx", definitions);
 
     }
 
     @Test
-    public void testStaticFragmentProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testStaticFragmentProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testStaticFragment.docx", "results/testStaticFragment.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testStaticFragment.docx", "results/testStaticFragment.docx",
+                definitions);
     }
 
     @Test
-    public void testVarRefInHeaderProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testVarRefInHeaderProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testVarInHeader.docx", "results/testVarInHeaderResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarInHeader.docx", "results/testVarInHeaderResult.docx",
+                definitions);
     }
 
     @Test
-    public void testVarRefInFooterProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testVarRefInFooterProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testVarInFooter.docx", "results/testVarInFooterResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarInFooter.docx", "results/testVarInFooterResult.docx",
+                definitions);
 
     }
 
     @Test
-    public void testVarRefProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testVarRefProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResult.docx", definitions);
     }
 
     @Test
-    public void testVarRefErrorProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testVarRefErrorProcessing() throws Exception {
         Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResultError.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResultError.docx",
+                definitions);
     }
 
     @Test
-    public void testVarRefStyledProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testVarStyle.docx", "results/testVarStyleResult.docx", definitions);
-    }
-
-    @Test
-    public void testVarRefStyledMultipleParagraphsProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testVarRefStyledProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testVarStyleSpanning2Paragraphs.docx",
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarStyle.docx", "results/testVarStyleResult.docx",
+                definitions);
+    }
+
+    @Test
+    public void testVarRefStyledMultipleParagraphsProcessing() throws Exception {
+
+        Map<String, Object> definitions = new HashMap<>();
+        definitions.put("x", "valueofx");
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarStyleSpanning2Paragraphs.docx",
                 "results/testVarStyleSpanning2ParagraphsResult.docx", definitions);
     }
 
     @Test
-    public void testQueryStyledProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testQueryStyledProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResult.docx", definitions);
     }
 
     @Test
-    public void testQueryStyledErrorProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testQueryStyledErrorProcessing() throws Exception {
         // TODO this can't be right! two tests modifying the same data.
         Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResultError.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResultError.docx",
+                definitions);
     }
 
     @Test
-    public void testGDFORProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testGDFORProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        doGenerateDocAndCheckText("templates/testGDFOR.docx", "results/testGDFOR.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testGDFOR.docx", "results/testGDFOR.docx", definitions);
 
     }
 
     @Test
-    public void testGDFORWithTableProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testGDFORWithTableProcessing() throws Exception {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        doGenerateDocAndCheckText("templates/testGDFORWithTable.docx", "results/testGDFORWithTable.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testGDFORWithTable.docx", "results/testGDFORWithTable.docx",
+                definitions);
     }
 
     @Test
-    public void testConditionnal1trueProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnal1trueProcessing() throws Exception {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value1");
-        doGenerateDocAndCheckText("templates/testConditionnal1.docx", "results/testConditionnal1Result.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal1.docx",
+                "results/testConditionnal1Result.docx", definitions);
 
     }
 
     @Test
-    public void testConditionnal1falseProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnal1falseProcessing() throws Exception {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testConditionnal1.docx", "results/testConditionnal1FalseResult.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal1.docx",
+                "results/testConditionnal1FalseResult.docx", definitions);
 
     }
 
     @Test
-    public void testConditionnal2Processing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnal2Processing() throws Exception {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value1");
-        doGenerateDocAndCheckText("templates/testConditionnal2.docx", "results/testConditionnal2Result.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal2.docx",
+                "results/testConditionnal2Result.docx", definitions);
     }
 
     @Test
-    public void testConditionnalFalseProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnalFalseProcessing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testConditionnal2.docx", "results/testConditionnal2FalseResult.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal2.docx",
+                "results/testConditionnal2FalseResult.docx", definitions);
 
     }
 
@@ -408,99 +268,91 @@ public class DocumentGeneratorTest {
     // }
     //
     @Test
-    public void testImagesAndFootersAndHeadersAndBullets()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testImagesAndFootersAndHeadersAndBullets() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        doGenerateDocAndCheckText("templates/test.docx", "results/testResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/test.docx", "results/testResult.docx", definitions);
 
     }
 
     @Test
-    public void testConditionnal5Processing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnal5Processing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value1");
-        doGenerateDocAndCheckText("templates/testConditionnal5.docx", "results/testConditionnal5Result.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
+                "results/testConditionnal5Result.docx", definitions);
     }
 
     @Test
-    public void testConditionnal6Processing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnal6Processing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value2");
-        doGenerateDocAndCheckText("templates/testConditionnal5.docx", "results/testConditionnal6Result.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
+                "results/testConditionnal6Result.docx", definitions);
     }
 
     @Test
-    public void testConditionnal7Processing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnal7Processing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value3");
-        doGenerateDocAndCheckText("templates/testConditionnal5.docx", "results/testConditionnal7Result.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
+                "results/testConditionnal7Result.docx", definitions);
     }
 
     @Test
-    public void testConditionnal8Processing()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testConditionnal8Processing() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testConditionnal5.docx", "results/testConditionnal8Result.docx",
-                definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
+                "results/testConditionnal8Result.docx", definitions);
     }
 
     @Test
     @Ignore(value = "Seems like nobody knows yet what is the actual expected result.")
-    public void testImageGeneration()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testImageGeneration() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testImageTag.docx", "results/testImageTag.docx", definitions, false);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testImageTag.docx", "results/testImageTag.docx", definitions, false);
     }
 
     @Test
     @Ignore(value = "Seems like nobody knows yet what is the actual expected result.")
-    public void testDiagramGeneration()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testDiagramGeneration() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/allDiagram.docx", "results/allDiagram.docx", definitions, false);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/allDiagram.docx", "results/allDiagram.docx", definitions, false);
     }
 
     @Test
-    public void testStaticHyperlink()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testStaticHyperlink() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/staticHyperlink.docx", "results/staticHyperlink.docx", definitions);
-
-    }
-
-    @Test
-    public void testDynamicHyperlink()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-
-        Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/dynamicHyperlink.docx", "results/dynamicHyperlink.docx", definitions);
-
-    }
-
-    @Test
-    public void testBookmarkNominal()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-
-        Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/testBookmarkNominal.docx", "results/testBookmarkNominal.docx",
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/staticHyperlink.docx", "results/staticHyperlink.docx",
                 definitions);
+
+    }
+
+    @Test
+    public void testDynamicHyperlink() throws Exception {
+
+        Map<String, Object> definitions = new HashMap<>();
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/dynamicHyperlink.docx", "results/dynamicHyperlink.docx",
+                definitions);
+
+    }
+
+    @Test
+    public void testBookmarkNominal() throws Exception {
+
+        Map<String, Object> definitions = new HashMap<>();
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testBookmarkNominal.docx",
+                "results/testBookmarkNominal.docx", definitions);
 
         try (FileInputStream resIs = new FileInputStream("results/testBookmarkNominal.docx");
                 OPCPackage resOPackage = OPCPackage.open(resIs);
@@ -578,31 +430,6 @@ public class DocumentGeneratorTest {
         }
     }
 
-    @Test
-    public void testBookmarkNoBookmark()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-
-        Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/testBookmarkNoBookmark.docx", "results/testBookmarkNoBookmark.docx",
-                definitions);
-
-        try (FileInputStream resIs = new FileInputStream("results/testBookmarkNoBookmark.docx");
-                OPCPackage resOPackage = OPCPackage.open(resIs);
-                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
-
-            assertEquals(2, resDocument.getBodyElements().size());
-            assertTrue(resDocument.getBodyElements().get(0) instanceof XWPFParagraph);
-            XWPFParagraph paragraph = (XWPFParagraph) resDocument.getBodyElements().get(0);
-            assertEquals(10, paragraph.getRuns().size());
-            assertEquals("Test link ", paragraph.getRuns().get(0).text());
-            assertEquals("without", paragraph.getRuns().get(1).text());
-            assertEquals(" bookmark : ", paragraph.getRuns().get(2).text());
-
-            resOPackage.close();
-            resDocument.close();
-        }
-    }
-
     /**
      * Test UserDoc with no previous result.
      * 
@@ -616,8 +443,7 @@ public class DocumentGeneratorTest {
      *             DocumentGenerationException
      */
     @Test
-    public void testUserDoc()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testUserDoc() throws Exception {
         // Remove previous generated file
         String resultPath = "results/generated/testUserDoc1.docx";
         File oldResult = new File(resultPath);
@@ -668,8 +494,7 @@ public class DocumentGeneratorTest {
      *             DocumentGenerationException
      */
     @Test
-    public void testUserDocInHeaderFooter()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testUserDocInHeaderFooter() throws Exception {
         // Remove previous generated file
         String resultPath = "results/generated/testUserDoc9.docx";
         File oldResult = new File(resultPath);
@@ -729,8 +554,7 @@ public class DocumentGeneratorTest {
      *             DocumentGenerationException
      */
     @Test
-    public void testUserDocWithPreviousResult()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testUserDocWithPreviousResult() throws Exception {
         // Remove previous generated file
         String resultPath = "results/generated/testUserContent1Custom1Result.docx";
         File oldResult = new File(resultPath);
@@ -784,8 +608,7 @@ public class DocumentGeneratorTest {
      *             DocumentGenerationException
      */
     @Test
-    public void testUserDocInHeaderFooterWithPreviousResult()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testUserDocInHeaderFooterWithPreviousResult() throws Exception {
         // Remove previous generated file
         String resultPath = "results/generated/testUserDoc9Custom1Resultat.docx";
         File oldResult = new File(resultPath);
@@ -851,8 +674,7 @@ public class DocumentGeneratorTest {
      *             DocumentGenerationException
      */
     @Test
-    public void testUserDocInTable()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testUserDocInTable() throws Exception {
         // Remove previous generated file
         String resultPath = "results/generated/testUserDoc10.docx";
         File oldResult = new File(resultPath);
@@ -907,8 +729,7 @@ public class DocumentGeneratorTest {
      *             DocumentGenerationException
      */
     @Test
-    public void testUserDocInTableWithSimplePreviousResult()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testUserDocInTableWithSimplePreviousResult() throws Exception {
         // Remove previous generated file
         String resultPath = "results/generated/testUserDoc10Custom1.docx";
         File oldResult = new File(resultPath);
@@ -966,8 +787,7 @@ public class DocumentGeneratorTest {
      *             DocumentGenerationException
      */
     @Test
-    public void testUserDocInTableWithPreviousResult()
-            throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
+    public void testUserDocInTableWithPreviousResult() throws Exception {
         // Remove previous generated file
         String resultPath = "results/generated/testUserDoc10Custom2.docx";
         File oldResult = new File(resultPath);

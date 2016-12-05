@@ -460,11 +460,11 @@ public final class AQL4Compat {
      * @param variableTypes
      *            the variable types
      * @param environment
-     *            the {@link IQueryEnvironment}
+     *            the {@link IReadOnlyQueryEnvironment}
      * @return the {@link IValidationResult}
      */
     public static IValidationResult validate(AstResult astResult, Map<String, Set<IType>> variableTypes,
-            IQueryEnvironment environment) {
+            IReadOnlyQueryEnvironment environment) {
         IValidationResult result;
         AstValidator validator = getValidator(environment, variableTypes);
         if (astResult == null) {

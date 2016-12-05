@@ -1,0 +1,4 @@
+template null
+  Test link without bookmark : 
+  link 'bookmark1' 'a reference to bookmark1' endlink
+  Fin du gabarit
