@@ -48,6 +48,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
@@ -173,12 +174,14 @@ public final class M2DocTestUtils {
      *            the expected result .docx path
      * @param definitions
      *            the variables
+     * @param generation
+     *            the {@link Generation}
      * @throws Exception
      *             if something go wring
      */
     public static void doGenerateDocAndCheckText(String templatePath, String resultPath,
-            Map<String, Object> definitions) throws Exception {
-        doGenerateDocAndCheckText(templatePath, resultPath, definitions, true);
+            Map<String, Object> definitions, Generation generation) throws Exception {
+        doGenerateDocAndCheckText(templatePath, resultPath, definitions, generation, true);
     }
 
     /**
@@ -190,13 +193,15 @@ public final class M2DocTestUtils {
      *            the expected result .docx path
      * @param definitions
      *            the variables
+     * @param generation
+     *            the {@link Generation}
      * @param checkThroughPOI
      *            should we check the text extracted using PIO
      * @throws Exception
      *             if something go wring
      */
     public static void doGenerateDocAndCheckText(String templatePath, String resultPath,
-            Map<String, Object> definitions, boolean checkThroughPOI) throws Exception {
+            Map<String, Object> definitions, Generation generation, boolean checkThroughPOI) throws Exception {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
         File out = null;
@@ -205,7 +210,7 @@ public final class M2DocTestUtils {
                 try (XWPFDocument document = new XWPFDocument(oPackage)) {
                     out = File.createTempFile(resultPath, "generated-test");
                     String outputPath = out.getAbsolutePath();
-                    generate(templatePath, outputPath, queryEnvironment, definitions);
+                    generate(templatePath, outputPath, queryEnvironment, definitions, generation);
                     assertDocx(resultPath, outputPath, checkThroughPOI);
                 }
             }
@@ -227,19 +232,20 @@ public final class M2DocTestUtils {
      *            the {@link IQueryEnvironment}
      * @param variables
      *            the variables
+     * @param generation
+     *            the {@link Generation}
      * @throws Exception
      *             if something went wrong
      */
     public static void generate(String templatePath, String outputPath, IQueryEnvironment queryEnvironment,
-            Map<String, Object> variables) throws Exception {
-        File out = new File(outputPath);
+            Map<String, Object> variables, Generation generation) throws Exception {
         try (FileInputStream is = new FileInputStream(templatePath)) {
             try (OPCPackage oPackage = OPCPackage.open(is)) {
                 try (XWPFDocument document = new XWPFDocument(oPackage)) {
                     DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
                     DocumentTemplate template = parser.parseDocument(URI.createFileURI(templatePath));
                     DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
-                            URI.createFileURI(outputPath), template, variables, queryEnvironment, null);
+                            URI.createFileURI(outputPath), template, variables, queryEnvironment, generation);
                     generator.generate();
                 }
             }

@@ -12,43 +12,14 @@
 package org.obeonetwork.m2doc.generator.test;
 //CHECKSTYLE:OFF
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 
-import java.io.BufferedInputStream;
-import com.google.common.base.Charsets;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -101,7 +72,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testTextAreaAndForms.docx",
-                "results/testTextAreaAndForms.docx", definitions);
+                "results/testTextAreaAndForms.docx", definitions, null);
     }
 
     @Test
@@ -110,7 +81,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testStaticFragmentWithfields.docx",
-                "results/testStaticFragmentWithfields.docx", definitions);
+                "results/testStaticFragmentWithfields.docx", definitions, null);
 
     }
 
@@ -120,7 +91,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testStaticFragment.docx", "results/testStaticFragment.docx",
-                definitions);
+                definitions, null);
     }
 
     @Test
@@ -129,7 +100,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarInHeader.docx", "results/testVarInHeaderResult.docx",
-                definitions);
+                definitions, null);
     }
 
     @Test
@@ -138,7 +109,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarInFooter.docx", "results/testVarInFooterResult.docx",
-                definitions);
+                definitions, null);
 
     }
 
@@ -147,14 +118,15 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResult.docx", definitions,
+                null);
     }
 
     @Test
     public void testVarRefErrorProcessing() throws Exception {
         Map<String, Object> definitions = new HashMap<>();
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResultError.docx",
-                definitions);
+                definitions, null);
     }
 
     @Test
@@ -163,7 +135,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarStyle.docx", "results/testVarStyleResult.docx",
-                definitions);
+                definitions, null);
     }
 
     @Test
@@ -172,7 +144,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarStyleSpanning2Paragraphs.docx",
-                "results/testVarStyleSpanning2ParagraphsResult.docx", definitions);
+                "results/testVarStyleSpanning2ParagraphsResult.docx", definitions, null);
     }
 
     @Test
@@ -180,7 +152,8 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResult.docx", definitions,
+                null);
     }
 
     @Test
@@ -188,7 +161,7 @@ public class DocumentGeneratorTest {
         // TODO this can't be right! two tests modifying the same data.
         Map<String, Object> definitions = new HashMap<>();
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResultError.docx",
-                definitions);
+                definitions, null);
     }
 
     @Test
@@ -196,7 +169,8 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testGDFOR.docx", "results/testGDFOR.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testGDFOR.docx", "results/testGDFOR.docx", definitions,
+                null);
 
     }
 
@@ -205,7 +179,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testGDFORWithTable.docx", "results/testGDFORWithTable.docx",
-                definitions);
+                definitions, null);
     }
 
     @Test
@@ -213,7 +187,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value1");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal1.docx",
-                "results/testConditionnal1Result.docx", definitions);
+                "results/testConditionnal1Result.docx", definitions, null);
 
     }
 
@@ -222,7 +196,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal1.docx",
-                "results/testConditionnal1FalseResult.docx", definitions);
+                "results/testConditionnal1FalseResult.docx", definitions, null);
 
     }
 
@@ -231,7 +205,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value1");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal2.docx",
-                "results/testConditionnal2Result.docx", definitions);
+                "results/testConditionnal2Result.docx", definitions, null);
     }
 
     @Test
@@ -240,7 +214,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal2.docx",
-                "results/testConditionnal2FalseResult.docx", definitions);
+                "results/testConditionnal2FalseResult.docx", definitions, null);
 
     }
 
@@ -272,7 +246,7 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/test.docx", "results/testResult.docx", definitions);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/test.docx", "results/testResult.docx", definitions, null);
 
     }
 
@@ -282,7 +256,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value1");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal5Result.docx", definitions);
+                "results/testConditionnal5Result.docx", definitions, null);
     }
 
     @Test
@@ -291,7 +265,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value2");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal6Result.docx", definitions);
+                "results/testConditionnal6Result.docx", definitions, null);
     }
 
     @Test
@@ -300,7 +274,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value3");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal7Result.docx", definitions);
+                "results/testConditionnal7Result.docx", definitions, null);
     }
 
     @Test
@@ -309,7 +283,7 @@ public class DocumentGeneratorTest {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal8Result.docx", definitions);
+                "results/testConditionnal8Result.docx", definitions, null);
     }
 
     @Test
@@ -318,7 +292,8 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testImageTag.docx", "results/testImageTag.docx", definitions, false);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/testImageTag.docx", "results/testImageTag.docx",
+                definitions, null, false);
     }
 
     @Test
@@ -326,7 +301,8 @@ public class DocumentGeneratorTest {
     public void testDiagramGeneration() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/allDiagram.docx", "results/allDiagram.docx", definitions, false);
+        M2DocTestUtils.doGenerateDocAndCheckText("templates/allDiagram.docx", "results/allDiagram.docx", definitions,
+                null, false);
     }
 
     @Test
@@ -334,7 +310,7 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         M2DocTestUtils.doGenerateDocAndCheckText("templates/staticHyperlink.docx", "results/staticHyperlink.docx",
-                definitions);
+                definitions, null);
 
     }
 
@@ -343,7 +319,7 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         M2DocTestUtils.doGenerateDocAndCheckText("templates/dynamicHyperlink.docx", "results/dynamicHyperlink.docx",
-                definitions);
+                definitions, null);
 
     }
 
@@ -352,7 +328,7 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         M2DocTestUtils.doGenerateDocAndCheckText("templates/testBookmarkNominal.docx",
-                "results/testBookmarkNominal.docx", definitions);
+                "results/testBookmarkNominal.docx", definitions, null);
 
         try (FileInputStream resIs = new FileInputStream("results/testBookmarkNominal.docx");
                 OPCPackage resOPackage = OPCPackage.open(resIs);

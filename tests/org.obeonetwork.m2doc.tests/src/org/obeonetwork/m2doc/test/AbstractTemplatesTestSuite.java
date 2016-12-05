@@ -111,8 +111,7 @@ public abstract class AbstractTemplatesTestSuite {
         final File genconfFile = getGenconfFile(new File(testFolderPath));
         if (genconfFile.exists()) {
             final ResourceSet rs = getResourceSet();
-            generation = (Generation) rs.getResource(URI.createFileURI(genconfFile.getAbsolutePath()), true)
-                    .getContents().get(0);
+            generation = getGeneration(genconfFile, rs);
         } else {
             generation = GenconfFactory.eINSTANCE.createGeneration();
         }
@@ -122,6 +121,28 @@ public abstract class AbstractTemplatesTestSuite {
         types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
         ConfigurationServices configurationServices = new ConfigurationServices();
         variables = configurationServices.createDefinitions(generation);
+    }
+
+    /**
+     * Gets the {@link Generation}.
+     * 
+     * @param genconfFile
+     *            the {@link Generation} file
+     * @param rs
+     *            the {@link ResourceSet}
+     * @return the {@link Generation}
+     */
+    protected Generation getGeneration(File genconfFile, ResourceSet rs) {
+        return (Generation) rs.getResource(URI.createFileURI(genconfFile.getAbsolutePath()), true).getContents().get(0);
+    }
+
+    /**
+     * Gets the test folder path.
+     * 
+     * @return the test folder path
+     */
+    protected String getTestFolderPath() {
+        return testFolderPath;
     }
 
     /**

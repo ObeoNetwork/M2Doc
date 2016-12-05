@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Conditionnal;
@@ -478,7 +479,12 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append(image.getLegendPOS().getName());
         for (Entry<String, Object> entry : image.getOptionValueMap().entrySet()) {
             // TODO the value will not be consistent between serializations...
-            builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
+            if (entry.getValue() instanceof AstResult) {
+                builder.append(String.format(" %s %s ", entry.getKey(),
+                        querySerializer.serialize(((AstResult) entry.getValue()).getAst())));
+            } else {
+                builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
+            }
         }
         newLine();
         return null;
@@ -492,7 +498,11 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append(" title ");
         builder.append(representation.getRepresentationTitle());
         builder.append(" provider ");
-        builder.append(representation.getProvider().getClass().getName());
+        if (representation.getProvider() != null) {
+            builder.append(representation.getProvider().getClass().getName());
+        } else {
+            builder.append("null");
+        }
         builder.append(" height ");
         builder.append(representation.getHeight());
         builder.append(" width ");
@@ -503,7 +513,12 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append(representation.getLegendPOS().getName());
         for (Entry<String, Object> entry : representation.getOptionValueMap().entrySet()) {
             // TODO the value will not be consistent between serializations...
-            builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
+            if (entry.getValue() instanceof AstResult) {
+                builder.append(String.format(" %s %s ", entry.getKey(),
+                        querySerializer.serialize(((AstResult) entry.getValue()).getAst())));
+            } else {
+                builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
+            }
         }
         newLine();
         return null;
@@ -516,7 +531,12 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append(tableClient.getProvider().getClass().getName());
         for (Entry<String, Object> entry : tableClient.getOptionValueMap().entrySet()) {
             // TODO the value will not be consistent between serializations...
-            builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
+            if (entry.getValue() instanceof AstResult) {
+                builder.append(String.format(" %s %s ", entry.getKey(),
+                        querySerializer.serialize(((AstResult) entry.getValue()).getAst())));
+            } else {
+                builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
+            }
         }
         newLine();
         return null;
