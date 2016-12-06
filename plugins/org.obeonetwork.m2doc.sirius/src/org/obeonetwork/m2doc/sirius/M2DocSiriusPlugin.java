@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -18,7 +18,16 @@ import org.osgi.framework.BundleContext;
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
-public class M2DocSiriusPlugin extends Plugin {
+public class M2DocSiriusPlugin extends AbstractUIPlugin {
+    /**
+     * The plug-in ID.
+     */
+    public static final String PLUGIN_ID = "org.obeonetwork.m2doc.sirius"; //$NON-NLS-1$
+
+    /**
+     * The shared instance.
+     */
+    private static M2DocSiriusPlugin plugin;
 
     /**
      * Bundle context.
@@ -38,6 +47,7 @@ public class M2DocSiriusPlugin extends Plugin {
     @Override
     public void start(BundleContext bundleContext) throws Exception {
         M2DocSiriusPlugin.context = bundleContext;
+        plugin = this;
     }
 
     /*
@@ -51,4 +61,12 @@ public class M2DocSiriusPlugin extends Plugin {
         M2DocSiriusPlugin.context = null;
     }
 
+    /**
+     * Return this plugin's instance.
+     * 
+     * @return this plugin's instance.
+     */
+    public static M2DocSiriusPlugin getDefault() {
+        return plugin;
+    }
 }

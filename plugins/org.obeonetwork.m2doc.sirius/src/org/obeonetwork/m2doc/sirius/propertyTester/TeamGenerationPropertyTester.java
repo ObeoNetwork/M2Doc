@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ui.propertyTester;
+package org.obeonetwork.m2doc.sirius.propertyTester;
 
 import java.util.List;
 
@@ -22,35 +22,40 @@ import org.obeonetwork.m2doc.genconf.Generation;
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
-public class GenerationPropertyTester extends PropertyTester {
+public class TeamGenerationPropertyTester extends PropertyTester {
+    /**
+     * CDO Uri scheme prefix.
+     */
+    private static final String CDO_SCHEME_PREFIX = "cdo";
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public GenerationPropertyTester() {
+    public TeamGenerationPropertyTester() {
     }
 
     /**
-     * Returns <code>true</code> when the generation has a local URI (platform or file)
+     * Returns <code>true</code> when the generation has a local URI (platform or file).
      * 
      * @param generation
      *            the tested generation.
      * @return <code>true</code> for local objects.
      */
-    private boolean isLocal(Generation generation) {
+    private boolean isCDO(Generation generation) {
         URI uri = generation.eResource().getURI();
-        return uri.isFile() || uri.isPlatform();
+        return CDO_SCHEME_PREFIX.equals(uri.scheme());
     }
 
+    // CHECKSTYLE:OFF
     /**
-     * (non-Javadoc)
+     * (non-Javadoc).
      * 
      * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String, java.lang.Object[], java.lang.Object)
      */
     @SuppressWarnings("rawtypes")
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-        if (receiver instanceof Generation && isLocal((Generation) receiver)) {
+        if (receiver instanceof Generation && isCDO((Generation) receiver)) {
             return true;
         }
         if (receiver instanceof List) {
@@ -63,5 +68,5 @@ public class GenerationPropertyTester extends PropertyTester {
         }
         return false;
     }
-
+    // CHECKSTYLE:ON
 }

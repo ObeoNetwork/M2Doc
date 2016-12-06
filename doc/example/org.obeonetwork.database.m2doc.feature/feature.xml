@@ -12,7 +12,7 @@
 <feature
       id="org.obeonetwork.database.m2doc.feature"
       label="DatabaseServices"
-      version="0.9.1.qualifier">
+      version="1.0.0.qualifier">
 
    <description url="http://www.obeonetwork.com/">
       This feature provides a plug-in that registers services to the M2Doc service registry. These services are to be used when generating documentation with the database DSL.
