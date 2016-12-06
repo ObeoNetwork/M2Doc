@@ -21,7 +21,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.ast.Call;
-import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.impl.CallImpl;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
@@ -40,8 +39,7 @@ import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByDiagramDescriptionNameProvider;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
-import org.obeonetwork.m2doc.template.Conditionnal;
-import org.obeonetwork.m2doc.template.Default;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.POSITION;
 import org.obeonetwork.m2doc.template.Query;
@@ -181,13 +179,12 @@ public class DocumentParserTest {
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
             assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+            assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
             assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-            assertNotNull(conditionnal.getQuery());
-            assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
+            Conditional conditionnal = (Conditional) template.getSubConstructs().get(1);
+            assertNotNull(conditionnal.getCondition());
+            assertTrue(conditionnal.getThen().getSubConstructs().get(0) instanceof StaticFragment);
             assertNull(conditionnal.getElse());
-            assertNull(conditionnal.getAlternative());
         }
     }
 
@@ -201,12 +198,11 @@ public class DocumentParserTest {
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
             assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+            assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
             assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-            assertNotNull(conditionnal.getQuery());
-            assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
-            assertNull(conditionnal.getAlternative());
+            Conditional conditionnal = (Conditional) template.getSubConstructs().get(1);
+            assertNotNull(conditionnal.getCondition());
+            assertTrue(conditionnal.getThen().getSubConstructs().get(0) instanceof StaticFragment);
             assertEquals(1, conditionnal.getElse().getSubConstructs().size());
             assertTrue(conditionnal.getElse().getSubConstructs().get(0) instanceof StaticFragment);
         }
@@ -223,17 +219,16 @@ public class DocumentParserTest {
             assertEquals(document, template.getBody());
             assertEquals(3, template.getSubConstructs().size());
             assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+            assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
             assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-            assertNotNull(conditionnal.getQuery());
-            assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(conditionnal.getAlternative() instanceof Conditionnal);
-            assertNull(conditionnal.getElse());
-            assertTrue(conditionnal.getAlternative().getSubConstructs().get(0) instanceof StaticFragment);
-            assertNotNull(conditionnal.getAlternative().getQuery());
-            assertNull(conditionnal.getAlternative().getAlternative());
-            assertNull(conditionnal.getAlternative().getElse());
+            Conditional conditionnal = (Conditional) template.getSubConstructs().get(1);
+            assertNotNull(conditionnal.getCondition());
+            assertTrue(conditionnal.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+            assertTrue(conditionnal.getElse().getSubConstructs().get(0) instanceof Conditional);
+            final Conditional elseIf = (Conditional) conditionnal.getElse().getSubConstructs().get(0);
+            assertTrue(elseIf.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+            assertNotNull(elseIf.getCondition());
+            assertNull(elseIf.getElse());
         }
     }
 
@@ -248,21 +243,21 @@ public class DocumentParserTest {
         assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+        assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
         assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-        assertNotNull(conditionnal.getQuery());
-        assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(conditionnal.getAlternative() instanceof Conditionnal);
-        assertNull(conditionnal.getElse());
-        assertTrue(conditionnal.getAlternative().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(conditionnal.getAlternative().getQuery());
-        assertNotNull(conditionnal.getAlternative().getAlternative());
-        assertNull(conditionnal.getAlternative().getElse());
-        assertTrue(conditionnal.getAlternative().getAlternative().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(conditionnal.getAlternative().getAlternative().getQuery());
-        assertNull(conditionnal.getAlternative().getAlternative().getAlternative());
-        assertNull(conditionnal.getAlternative().getAlternative().getElse());
+        Conditional conditional = (Conditional) template.getSubConstructs().get(1);
+        assertNotNull(conditional.getCondition());
+        assertTrue(conditional.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+        assertNotNull(conditional.getElse());
+        assertTrue(conditional.getElse().getSubConstructs().get(0) instanceof Conditional);
+        Conditional elseIf = (Conditional) conditional.getElse().getSubConstructs().get(0);
+        assertTrue(elseIf.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+        assertNotNull(elseIf.getCondition());
+        assertNotNull(elseIf.getElse());
+        Conditional elseIf2 = (Conditional) elseIf.getElse().getSubConstructs().get(0);
+        assertTrue(elseIf2.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+        assertNotNull(elseIf2.getCondition());
+        assertNull(elseIf2.getElse());
     }
 
     @Test
@@ -276,24 +271,22 @@ public class DocumentParserTest {
         assertEquals(document, template.getBody());
         assertEquals(3, template.getSubConstructs().size());
         assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Conditionnal);
+        assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
         assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(1);
-        assertNotNull(conditionnal.getQuery());
-        assertTrue(conditionnal.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(conditionnal.getAlternative() instanceof Conditionnal);
-        assertNull(conditionnal.getElse());
-        assertTrue(conditionnal.getAlternative().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(conditionnal.getAlternative().getQuery());
-        assertNotNull(conditionnal.getAlternative().getAlternative());
-        assertNull(conditionnal.getAlternative().getElse());
-        assertTrue(conditionnal.getAlternative().getAlternative().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(conditionnal.getAlternative().getAlternative().getQuery());
-        assertNull(conditionnal.getAlternative().getAlternative().getAlternative());
-        assertNotNull(conditionnal.getAlternative().getAlternative().getElse());
-        assertTrue(conditionnal.getAlternative().getAlternative().getElse() instanceof Default);
-        assertTrue(conditionnal.getAlternative().getAlternative().getElse().getSubConstructs()
-                .get(0) instanceof StaticFragment);
+        Conditional conditional = (Conditional) template.getSubConstructs().get(1);
+        assertNotNull(conditional.getCondition());
+        assertTrue(conditional.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+        assertNotNull(conditional.getElse());
+        assertTrue(conditional.getElse().getSubConstructs().get(0) instanceof Conditional);
+        Conditional elseIf = (Conditional) conditional.getElse().getSubConstructs().get(0);
+        assertTrue(elseIf.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+        assertNotNull(elseIf.getCondition());
+        assertNotNull(elseIf.getElse());
+        Conditional elseIf2 = (Conditional) elseIf.getElse().getSubConstructs().get(0);
+        assertTrue(elseIf2.getThen().getSubConstructs().get(0) instanceof StaticFragment);
+        assertNotNull(elseIf2.getCondition());
+        assertNotNull(elseIf2.getElse());
+        assertTrue(elseIf2.getElse().getSubConstructs().get(0) instanceof StaticFragment);
     }
 
     @Test
@@ -636,7 +629,8 @@ public class DocumentParserTest {
         assertEquals(1, representation.getOptionValueMap().size());
         assertNotNull(optionValueMap.get("aqlExpression"));
         AstResult result = (AstResult) optionValueMap.get("aqlExpression");
-        org.eclipse.acceleo.query.ast.Conditional conditional = (Conditional) result.getAst();
+        org.eclipse.acceleo.query.ast.Conditional conditional = (org.eclipse.acceleo.query.ast.Conditional) result
+                .getAst();
 
         Call call = (CallImpl) conditional.getPredicate();
         Call subCall = (Call) call.getArguments().get(0);
@@ -675,7 +669,8 @@ public class DocumentParserTest {
         assertEquals(1, representation.getOptionValueMap().size());
         assertNotNull(optionValueMap.get("aqlExpression"));
         AstResult result = (AstResult) optionValueMap.get("aqlExpression");
-        org.eclipse.acceleo.query.ast.Conditional conditional = (Conditional) result.getAst();
+        org.eclipse.acceleo.query.ast.Conditional conditional = (org.eclipse.acceleo.query.ast.Conditional) result
+                .getAst();
 
         Call call = (CallImpl) conditional.getPredicate();
         Call subCall = (Call) call.getArguments().get(0);
@@ -930,7 +925,7 @@ public class DocumentParserTest {
         assertTrue(userDoc.getId() instanceof AstResult);
         assertEquals(3, userDoc.getSubConstructs().size());
         assertTrue(userDoc.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(userDoc.getSubConstructs().get(1) instanceof Conditionnal);
+        assertTrue(userDoc.getSubConstructs().get(1) instanceof Conditional);
         assertTrue(userDoc.getSubConstructs().get(2) instanceof StaticFragment);
         // Check ValidationMessage
         assertEquals(0, userDoc.getValidationMessages().size());

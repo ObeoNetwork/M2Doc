@@ -21,7 +21,6 @@ import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
-import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -41,7 +40,8 @@ import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.Bookmark;
-import org.obeonetwork.m2doc.template.Conditionnal;
+import org.obeonetwork.m2doc.template.Compound;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
@@ -51,6 +51,7 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 
@@ -149,7 +150,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         }
 
         @Override
-        public Void caseConditional(Conditional conditional) {
+        public Void caseConditional(org.eclipse.acceleo.query.ast.Conditional conditional) {
             builder.append("if (");
             doSwitch(conditional.getPredicate());
             builder.append(") then ");
@@ -419,40 +420,39 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     }
 
     @Override
-    public Void caseConditionnal(Conditionnal conditionnal) {
+    public Void caseConditional(Conditional conditional) {
         newLine();
         builder.append("if ");
-        if (conditionnal.getQuery() != null) {
-            builder.append(querySerializer.serialize(conditionnal.getQuery().getAst()));
+        if (conditional.getCondition() != null) {
+            builder.append(querySerializer.serialize(conditional.getCondition().getAst()));
         } else {
             builder.append(EXPRESSION_ERROR);
         }
         builder.append(" then");
-        indent();
-        newLine();
-        for (AbstractConstruct subConstruct : conditionnal.getSubConstructs()) {
-            doSwitch(subConstruct);
-        }
-        deindent();
-        if (conditionnal.getAlternative() != null) {
+        doSwitch(conditional.getThen());
+        if (conditional.getElse() != null) {
             newLine();
             builder.append("else");
-            indent();
-            newLine();
-            doSwitch(conditionnal.getAlternative());
-            deindent();
-        }
-        if (conditionnal.getElse() != null) {
-            newLine();
-            builder.append("else");
-            indent();
-            newLine();
-            doSwitch(conditionnal.getElse());
-            deindent();
+            doSwitch(conditional.getElse());
         }
         newLine();
         builder.append("endif");
         newLine();
+
+        return null;
+    }
+
+    @Override
+    public Void caseCompound(Compound compound) {
+        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
+            indent();
+            for (AbstractConstruct construct : compound.getSubConstructs()) {
+                newLine();
+                doSwitch(construct);
+            }
+            deindent();
+        }
+
         return null;
     }
 

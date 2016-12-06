@@ -142,6 +142,97 @@ public interface TemplatePackage extends EPackage {
 	int ABSTRACT_CONSTRUCT_OPERATION_COUNT = 0;
 
 	/**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.ConditionalImpl <em>Conditional</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.ConditionalImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getConditional()
+     * @generated
+     */
+    int CONDITIONAL = 1;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__CONDITION = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Then</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__THEN = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Else</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL__ELSE = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Conditional</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Conditional</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.CompoundImpl <em>Compound</em>}' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -149,7 +240,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCompound()
      * @generated
      */
-	int COMPOUND = 9;
+	int COMPOUND = 8;
 
 	/**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -213,106 +304,6 @@ public interface TemplatePackage extends EPackage {
      * @ordered
      */
 	int COMPOUND_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
-
-	/**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.ConditionnalImpl <em>Conditionnal</em>}' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.ConditionnalImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getConditionnal()
-     * @generated
-     */
-	int CONDITIONNAL = 1;
-
-	/**
-     * The feature id for the '<em><b>Style Run</b></em>' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL__STYLE_RUN = COMPOUND__STYLE_RUN;
-
-	/**
-     * The feature id for the '<em><b>Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL__RUNS = COMPOUND__RUNS;
-
-	/**
-     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
-
-	/**
-     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONDITIONNAL__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
-
-    /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
-
-	/**
-     * The feature id for the '<em><b>Alternative</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL__ALTERNATIVE = COMPOUND_FEATURE_COUNT + 0;
-
-	/**
-     * The feature id for the '<em><b>Else</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL__ELSE = COMPOUND_FEATURE_COUNT + 1;
-
-	/**
-     * The feature id for the '<em><b>Query</b></em>' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL__QUERY = COMPOUND_FEATURE_COUNT + 2;
-
-	/**
-     * The number of structural features of the '<em>Conditionnal</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 3;
-
-	/**
-     * The number of operations of the '<em>Conditionnal</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int CONDITIONNAL_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.RepetitionImpl <em>Repetition</em>}' class.
@@ -741,7 +732,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractProviderClient()
      * @generated
      */
-    int ABSTRACT_PROVIDER_CLIENT = 19;
+    int ABSTRACT_PROVIDER_CLIENT = 18;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -823,7 +814,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractImage()
      * @generated
      */
-    int ABSTRACT_IMAGE = 18;
+    int ABSTRACT_IMAGE = 17;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -941,7 +932,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTable()
      * @generated
      */
-	int TABLE = 13;
+	int TABLE = 12;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.RowImpl <em>Row</em>}' class.
@@ -951,7 +942,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRow()
      * @generated
      */
-	int ROW = 14;
+	int ROW = 13;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.CellImpl <em>Cell</em>}' class.
@@ -961,7 +952,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCell()
      * @generated
      */
-	int CELL = 15;
+	int CELL = 14;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.
@@ -1091,79 +1082,6 @@ public interface TemplatePackage extends EPackage {
 	int IMAGE_OPERATION_COUNT = ABSTRACT_IMAGE_OPERATION_COUNT + 0;
 
 	/**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.DefaultImpl <em>Default</em>}' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.DefaultImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDefault()
-     * @generated
-     */
-	int DEFAULT = 8;
-
-	/**
-     * The feature id for the '<em><b>Style Run</b></em>' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DEFAULT__STYLE_RUN = COMPOUND__STYLE_RUN;
-
-	/**
-     * The feature id for the '<em><b>Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DEFAULT__RUNS = COMPOUND__RUNS;
-
-	/**
-     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DEFAULT__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
-
-	/**
-     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int DEFAULT__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
-
-    /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DEFAULT__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
-
-	/**
-     * The number of structural features of the '<em>Default</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DEFAULT_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 0;
-
-	/**
-     * The number of operations of the '<em>Default</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DEFAULT_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
-
-	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TemplateImpl <em>Template</em>}' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1171,7 +1089,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplate()
      * @generated
      */
-	int TEMPLATE = 10;
+	int TEMPLATE = 9;
 
 	/**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1262,7 +1180,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRepresentation()
      * @generated
      */
-	int REPRESENTATION = 11;
+	int REPRESENTATION = 10;
 
 	/**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1416,7 +1334,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStaticFragment()
      * @generated
      */
-	int STATIC_FRAGMENT = 12;
+	int STATIC_FRAGMENT = 11;
 
 	/**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1624,7 +1542,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocumentTemplate()
      * @generated
      */
-	int DOCUMENT_TEMPLATE = 16;
+	int DOCUMENT_TEMPLATE = 15;
 
 	/**
      * The feature id for the '<em><b>Headers</b></em>' containment reference list.
@@ -1688,7 +1606,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOptionValueMap()
      * @generated
      */
-    int OPTION_VALUE_MAP = 17;
+    int OPTION_VALUE_MAP = 16;
 
     /**
      * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -1734,7 +1652,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBookmark()
      * @generated
      */
-    int BOOKMARK = 20;
+    int BOOKMARK = 19;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1816,7 +1734,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLink()
      * @generated
      */
-    int LINK = 21;
+    int LINK = 20;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1898,7 +1816,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableClient()
      * @generated
      */
-    int TABLE_CLIENT = 22;
+    int TABLE_CLIENT = 21;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1980,7 +1898,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-	int QUERY_BEHAVIOR = 23;
+	int QUERY_BEHAVIOR = 22;
 
 	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
@@ -1990,7 +1908,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-	int POSITION = 24;
+	int POSITION = 23;
 
 	/**
      * The meta object id for the '<em>Document</em>' data type.
@@ -2000,7 +1918,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 25;
+    int DOCUMENT = 24;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -2010,7 +1928,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-	int WTABLE = 26;
+	int WTABLE = 25;
 
 	/**
      * The meta object id for the '<em>Run</em>' data type.
@@ -2020,7 +1938,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-	int RUN = 27;
+	int RUN = 26;
 
 
 	/**
@@ -2031,7 +1949,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-	int AST_RESULT = 28;
+	int AST_RESULT = 27;
 
 	/**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -2041,7 +1959,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 29;
+    int TEMPLATE_VALIDATION_MESSAGE = 28;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -2051,7 +1969,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-	int WTABLE_ROW = 30;
+	int WTABLE_ROW = 29;
 
 	/**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -2061,7 +1979,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-	int WTABLE_CELL = 31;
+	int WTABLE_CELL = 30;
 
 	/**
      * The meta object id for the '<em>Provider</em>' data type.
@@ -2071,7 +1989,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
      * @generated
      */
-    int PROVIDER = 32;
+    int PROVIDER = 31;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -2081,7 +1999,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 33;
+    int BODY = 32;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractConstruct <em>Abstract Construct</em>}'.
@@ -2138,49 +2056,49 @@ public interface TemplatePackage extends EPackage {
     EAttribute getAbstractConstruct_ValidationMessages();
 
     /**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Conditionnal <em>Conditionnal</em>}'.
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Conditional <em>Conditional</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Conditionnal</em>'.
-     * @see org.obeonetwork.m2doc.template.Conditionnal
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Conditional</em>'.
+     * @see org.obeonetwork.m2doc.template.Conditional
      * @generated
      */
-	EClass getConditionnal();
+    EClass getConditional();
 
-	/**
-     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Conditionnal#getAlternative <em>Alternative</em>}'.
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Conditional#getCondition <em>Condition</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Alternative</em>'.
-     * @see org.obeonetwork.m2doc.template.Conditionnal#getAlternative()
-     * @see #getConditionnal()
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Condition</em>'.
+     * @see org.obeonetwork.m2doc.template.Conditional#getCondition()
+     * @see #getConditional()
      * @generated
      */
-	EReference getConditionnal_Alternative();
+    EAttribute getConditional_Condition();
 
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Conditionnal#getQuery <em>Query</em>}'.
+    /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Conditional#getThen <em>Then</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Query</em>'.
-     * @see org.obeonetwork.m2doc.template.Conditionnal#getQuery()
-     * @see #getConditionnal()
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Then</em>'.
+     * @see org.obeonetwork.m2doc.template.Conditional#getThen()
+     * @see #getConditional()
      * @generated
      */
-	EAttribute getConditionnal_Query();
+    EReference getConditional_Then();
 
-	/**
-     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Conditionnal#getElse <em>Else</em>}'.
+    /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Conditional#getElse <em>Else</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Else</em>'.
-     * @see org.obeonetwork.m2doc.template.Conditionnal#getElse()
-     * @see #getConditionnal()
+     * @see org.obeonetwork.m2doc.template.Conditional#getElse()
+     * @see #getConditional()
      * @generated
      */
-	EReference getConditionnal_Else();
+    EReference getConditional_Else();
 
-	/**
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Repetition <em>Repetition</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2662,16 +2580,6 @@ public interface TemplatePackage extends EPackage {
 	EAttribute getImage_FileName();
 
 	/**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Default <em>Default</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Default</em>'.
-     * @see org.obeonetwork.m2doc.template.Default
-     * @generated
-     */
-	EClass getDefault();
-
-	/**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Compound <em>Compound</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2973,40 +2881,40 @@ public interface TemplatePackage extends EPackage {
         EAttribute ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES = eINSTANCE.getAbstractConstruct_ValidationMessages();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ConditionnalImpl <em>Conditionnal</em>}' class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ConditionalImpl <em>Conditional</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.ConditionnalImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getConditionnal()
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.ConditionalImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getConditional()
          * @generated
          */
-		EClass CONDITIONNAL = eINSTANCE.getConditionnal();
+        EClass CONDITIONAL = eINSTANCE.getConditional();
 
-		/**
-         * The meta object literal for the '<em><b>Alternative</b></em>' containment reference feature.
+        /**
+         * The meta object literal for the '<em><b>Condition</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference CONDITIONNAL__ALTERNATIVE = eINSTANCE.getConditionnal_Alternative();
+        EAttribute CONDITIONAL__CONDITION = eINSTANCE.getConditional_Condition();
 
-		/**
-         * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
+        /**
+         * The meta object literal for the '<em><b>Then</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute CONDITIONNAL__QUERY = eINSTANCE.getConditionnal_Query();
+        EReference CONDITIONAL__THEN = eINSTANCE.getConditional_Then();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Else</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference CONDITIONNAL__ELSE = eINSTANCE.getConditionnal_Else();
+        EReference CONDITIONAL__ELSE = eINSTANCE.getConditional_Else();
 
-		/**
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.RepetitionImpl <em>Repetition</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3397,16 +3305,6 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
 		EAttribute IMAGE__FILE_NAME = eINSTANCE.getImage_FileName();
-
-		/**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.DefaultImpl <em>Default</em>}' class.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.DefaultImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDefault()
-         * @generated
-         */
-		EClass DEFAULT = eINSTANCE.getDefault();
 
 		/**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.CompoundImpl <em>Compound</em>}' class.

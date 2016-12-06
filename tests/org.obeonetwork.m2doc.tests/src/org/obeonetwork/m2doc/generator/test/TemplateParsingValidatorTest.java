@@ -240,43 +240,43 @@ public class TemplateParsingValidatorTest {
         // scan the destination document
         assertEquals(1, document.getParagraphs().size());
         assertEquals(24, document.getParagraphs().get(0).getRuns().size());
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(9).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(10).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(10).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(10).getFontSize());
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(7).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(8).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(8).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(8).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(10).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("Unexpected tag m:endlet at this location",
-                document.getParagraphs().get(0).getRuns().get(11).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(11).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(11).getFontSize());
-        assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(11).getCTR().getRPr().getHighlight().getVal());
-
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(10).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(10).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(10).getFontSize());
-        assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(10).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("Unexpected tag m:endlet at this location",
-                document.getParagraphs().get(0).getRuns().get(11).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(11).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(11).getFontSize());
-        assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(11).getCTR().getRPr().getHighlight().getVal());
-
-        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(15).getText(0));
-        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(16).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(16).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(16).getFontSize());
-        assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(16).getCTR().getRPr().getHighlight().getVal());
+                document.getParagraphs().get(0).getRuns().get(8).getCTR().getRPr().getHighlight().getVal());
         assertEquals("gd:elseif, gd:else or gd:endif expected here.",
-                document.getParagraphs().get(0).getRuns().get(17).getText(0));
-        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(17).getColor());
-        assertEquals(16, document.getParagraphs().get(0).getRuns().get(17).getFontSize());
+                document.getParagraphs().get(0).getRuns().get(9).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(9).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(9).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
-                document.getParagraphs().get(0).getRuns().get(17).getCTR().getRPr().getHighlight().getVal());
+                document.getParagraphs().get(0).getRuns().get(9).getCTR().getRPr().getHighlight().getVal());
+
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(8).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(8).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(8).getFontSize());
+        assertEquals(STHighlightColor.LIGHT_GRAY,
+                document.getParagraphs().get(0).getRuns().get(8).getCTR().getRPr().getHighlight().getVal());
+        assertEquals("gd:elseif, gd:else or gd:endif expected here.",
+                document.getParagraphs().get(0).getRuns().get(9).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(9).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(9).getFontSize());
+        assertEquals(STHighlightColor.LIGHT_GRAY,
+                document.getParagraphs().get(0).getRuns().get(9).getCTR().getRPr().getHighlight().getVal());
+
+        assertEquals("    ", document.getParagraphs().get(0).getRuns().get(12).getText(0));
+        assertEquals("<---", document.getParagraphs().get(0).getRuns().get(13).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(13).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(13).getFontSize());
+        assertEquals(STHighlightColor.LIGHT_GRAY,
+                document.getParagraphs().get(0).getRuns().get(14).getCTR().getRPr().getHighlight().getVal());
+        assertEquals("Unexpected tag m:endlet at this location",
+                document.getParagraphs().get(0).getRuns().get(14).getText(0));
+        assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(14).getColor());
+        assertEquals(16, document.getParagraphs().get(0).getRuns().get(14).getFontSize());
+        assertEquals(STHighlightColor.LIGHT_GRAY,
+                document.getParagraphs().get(0).getRuns().get(14).getCTR().getRPr().getHighlight().getVal());
 
         assertEquals("Some", document.getParagraphs().get(0).getRuns().get(18).getText(0));
         assertEquals(" t", document.getParagraphs().get(0).getRuns().get(19).getText(0));

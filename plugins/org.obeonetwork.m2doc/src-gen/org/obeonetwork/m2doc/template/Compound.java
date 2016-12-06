@@ -28,7 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getCompound()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface Compound extends AbstractConstruct {

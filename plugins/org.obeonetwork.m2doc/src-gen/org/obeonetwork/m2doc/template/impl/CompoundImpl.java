@@ -41,7 +41,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *
  * @generated
  */
-public abstract class CompoundImpl extends AbstractConstructImpl implements Compound {
+public class CompoundImpl extends AbstractConstructImpl implements Compound {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

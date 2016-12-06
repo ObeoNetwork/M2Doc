@@ -25,8 +25,8 @@ import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.template.Conditionnal;
-import org.obeonetwork.m2doc.template.Default;
+import org.obeonetwork.m2doc.template.Compound;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Template;
@@ -95,8 +95,8 @@ public class DocumentParserErrorsTest {
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
-        Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(0);
+        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
+        Conditional conditionnal = (Conditional) template.getSubConstructs().get(0);
         assertEquals(1, conditionnal.getValidationMessages().size());
         assertTemplateValidationMessage(conditionnal.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Expression \"x=\" is invalid: missing expression", conditionnal.getRuns().get(6));
@@ -121,15 +121,17 @@ public class DocumentParserErrorsTest {
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
-        Conditionnal conditionnal = (Conditionnal) template.getSubConstructs().get(0);
-        assertEquals(2, conditionnal.getValidationMessages().size());
+        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
+        Conditional conditionnal = (Conditional) template.getSubConstructs().get(0);
+        assertEquals(1, conditionnal.getValidationMessages().size());
         final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
         final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
         assertTemplateValidationMessage(conditionnal.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Unexpected tag EOF at this location", lastRun);
-        assertTemplateValidationMessage(conditionnal.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "gd:elseif, gd:else or gd:endif expected here.", conditionnal.getRuns().get(3));
+
+        assertEquals(1, conditionnal.getThen().getValidationMessages().size());
+        assertTemplateValidationMessage(conditionnal.getThen().getValidationMessages().get(0),
+                ValidationMessageLevel.ERROR, "Unexpected tag EOF at this location", lastRun);
     }
 
     /**
@@ -152,8 +154,8 @@ public class DocumentParserErrorsTest {
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
-        Default elseBranch = ((Conditionnal) template.getSubConstructs().get(0)).getElse();
+        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
+        Compound elseBranch = ((Conditional) template.getSubConstructs().get(0)).getElse();
         assertNotNull(elseBranch);
         assertEquals(1, elseBranch.getValidationMessages().size());
         final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
@@ -182,16 +184,19 @@ public class DocumentParserErrorsTest {
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
-        Conditionnal elseIfBranch = ((Conditionnal) template.getSubConstructs().get(0)).getAlternative();
+        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
+        Conditional elseIfBranch = (Conditional) ((Conditional) template.getSubConstructs().get(0)).getElse()
+                .getSubConstructs().get(0);
         assertNotNull(elseIfBranch);
-        assertEquals(2, elseIfBranch.getValidationMessages().size());
+        assertEquals(1, elseIfBranch.getValidationMessages().size());
         final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
         final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
         assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Unexpected tag EOF at this location", lastRun);
-        assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "gd:elseif, gd:else or gd:endif expected here.", elseIfBranch.getRuns().get(3));
+
+        assertEquals(1, elseIfBranch.getThen().getValidationMessages().size());
+        assertTemplateValidationMessage(elseIfBranch.getThen().getValidationMessages().get(0),
+                ValidationMessageLevel.ERROR, "Unexpected tag EOF at this location", lastRun);
     }
 
     /**
@@ -214,8 +219,9 @@ public class DocumentParserErrorsTest {
         Template template = parser.parseTemplate();
         assertEquals(document, template.getBody());
         assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditionnal);
-        Conditionnal elseIfBranch = ((Conditionnal) template.getSubConstructs().get(0)).getAlternative();
+        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
+        Conditional elseIfBranch = (Conditional) ((Conditional) template.getSubConstructs().get(0)).getElse()
+                .getSubConstructs().get(0);
         assertNotNull(elseIfBranch);
         assertEquals(1, elseIfBranch.getValidationMessages().size());
         assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,

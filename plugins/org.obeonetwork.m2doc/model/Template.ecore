@@ -13,17 +13,28 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="validationMessages" upperBound="-1"
         eType="#//TemplateValidationMessage"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Conditionnal" eSuperTypes="#//Compound">
+  <eClassifiers xsi:type="ecore:EClass" name="Conditional" eSuperTypes="#//AbstractConstruct">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="AlternativeExcludeElse"/>
-      <details key="documentation" value="Si l'expression expr est évaluée à true dans le contexte courant alors l'ensemble de la balise jusqu'à la balise gd:endif comprisee est remplacée par le traitement de runs1 dans le contexte courant. Sinon, l'ensemble des balises est remplacée par le traitement du premier run_n tel que l'expression expr de la balise gd:elseif associée est évaluée à vrai. Si aucune telle balise n'est présente ou si aucune d'entre-elle porte une expression évaluée à true, le résultat du traitement de run_else, si la balise gd:else est présente, dans le contexte courant est inséré à la place de l'ensemble des balises"/>
+      <details key="documentation" value="If {@link Conditional#getCondition() condition} is evaluated to &lt;code>true&lt;/code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}"/>
       <details key="syntax" value="{gd:if expr} runs1 [{gd:elseif &lt;expr>} runs_n]* [{gd:else} run_else]{gd:endif}"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="alternative" eType="#//Conditionnal"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="else" eType="#//Default"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" eType="#//AstResult">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+        <details key="documentation" value="If evaluated to &lt;code>true&lt;/code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="then" lowerBound="1" eType="#//Compound"
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+        <details key="documentation" value="The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to &lt;code>true&lt;/code>."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="else" eType="#//Compound"
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+        <details key="documentation" value="The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to &lt;code>false&lt;/code>."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Repetition" eSuperTypes="#//Compound">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
@@ -60,8 +71,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//AbstractImage">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Default" eSuperTypes="#//Compound"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Compound" abstract="true" eSuperTypes="#//AbstractConstruct">
+  <eClassifiers xsi:type="ecore:EClass" name="Compound" eSuperTypes="#//AbstractConstruct">
     <eStructuralFeatures xsi:type="ecore:EReference" name="subConstructs" upperBound="-1"
         eType="#//AbstractConstruct" containment="true"/>
   </eClassifiers>
