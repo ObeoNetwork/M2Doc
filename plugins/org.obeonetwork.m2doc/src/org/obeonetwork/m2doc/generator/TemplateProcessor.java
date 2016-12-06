@@ -64,7 +64,7 @@ import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Compound;
-import org.obeonetwork.m2doc.template.Conditionnal;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
@@ -75,6 +75,7 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
@@ -680,24 +681,29 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseConditionnal(Conditionnal object) {
-        EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
+    public AbstractConstruct caseCompound(Compound compound) {
+        // TODO remove the if when compound are composed and not expended
+        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
+            for (AbstractConstruct construct : compound.getSubConstructs()) {
+                doSwitch(construct);
+            }
+        }
+        return compound;
+    }
+
+    @Override
+    public AbstractConstruct caseConditional(Conditional conditional) {
+        EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(conditional.getCondition(),
                 definitions.getCurrentDefinitions());
-        boolean validQuery = object.getQuery() != null;
+        boolean validQuery = conditional.getCondition() != null;
         if (validQuery && result != null && result.getResult() instanceof Boolean) {
             if ((Boolean) result.getResult()) {
-                for (AbstractConstruct construct : object.getSubConstructs()) {
-                    doSwitch(construct);
-                }
-            } else if (object.getAlternative() != null) {
-                doSwitch(object.getAlternative());
-            } else if (object.getElse() != null) {
-                for (AbstractConstruct construct : object.getElse().getSubConstructs()) {
-                    doSwitch(construct);
-                }
+                doSwitch(conditional.getThen());
+            } else if (conditional.getElse() != null) {
+                doSwitch(conditional.getElse());
             }
         } else {
-            for (XWPFRun tagRun : object.getRuns()) {
+            for (XWPFRun tagRun : conditional.getRuns()) {
                 insertRun(tagRun);
             }
             XWPFRun run = currentGeneratedParagraph.createRun();
@@ -714,11 +720,11 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 run.setBold(true);
                 run.setColor(M2DocUtils.ERROR_COLOR);
             }
-            for (XWPFRun tagRun : object.getClosingRuns()) {
+            for (XWPFRun tagRun : conditional.getClosingRuns()) {
                 insertRun(tagRun);
             }
         }
-        return object;
+        return conditional;
     }
 
     @Override

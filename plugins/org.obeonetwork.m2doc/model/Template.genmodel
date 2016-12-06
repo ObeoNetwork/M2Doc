@@ -33,10 +33,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractConstruct/closingRuns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractConstruct/validationMessages"/>
     </genClasses>
-    <genClasses ecoreClass="Template.ecore#//Conditionnal">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditionnal/alternative"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditionnal/else"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Conditionnal/query"/>
+    <genClasses ecoreClass="Template.ecore#//Conditional">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Conditional/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditional/then"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditional/else"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Repetition">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Repetition/iterationVar"/>
@@ -58,7 +58,6 @@
     <genClasses ecoreClass="Template.ecore#//Image">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Image/fileName"/>
     </genClasses>
-    <genClasses ecoreClass="Template.ecore#//Default"/>
     <genClasses ecoreClass="Template.ecore#//Compound">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Compound/subConstructs"/>
     </genClasses>

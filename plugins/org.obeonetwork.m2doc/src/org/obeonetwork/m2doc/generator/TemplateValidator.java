@@ -23,7 +23,6 @@ import java.util.Stack;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -40,8 +39,8 @@ import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Conditionnal;
-import org.obeonetwork.m2doc.template.Default;
+import org.obeonetwork.m2doc.template.Compound;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -49,6 +48,7 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 
@@ -77,7 +77,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
     /**
      * AQL environment used to validate queries.
      */
-    private IReadOnlyQueryEnvironment environment;
+    private IQueryEnvironment environment;
 
     /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
@@ -111,14 +111,14 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     *            the {@link IQueryEnvironment}
      * @param types
      *            the variables types
      * @param generation
      *            Generation
      */
-    public void validate(DocumentTemplate documentTemplate, Generation generation,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
+    public void validate(DocumentTemplate documentTemplate, Generation generation, IQueryEnvironment queryEnvironment,
+            Map<String, Set<IType>> types) {
         environment = queryEnvironment;
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
         booleanType = new ClassType(queryEnvironment, boolean.class);
@@ -157,7 +157,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         final XWPFRun run = userDoc.getRuns().get(1);
         addValidationMessages(userDoc, run, validationResult);
         if (validationResult != null) { // FIXME : we might check why we may have a null validation result in AQL.
-            checkUserDocSelectorTypes(userDoc, run, validationResult);
+            checkUserDocIdTypes(userDoc, run, validationResult);
             for (AbstractConstruct construct : userDoc.getSubConstructs()) {
                 doSwitch(construct);
             }
@@ -167,45 +167,45 @@ public class TemplateValidator extends TemplateSwitch<Void> {
     }
 
     @Override
-    public Void caseConditionnal(Conditionnal conditional) {
-        final IValidationResult validationResult = AQL4Compat.validate(conditional.getQuery(), stack.peek(),
+    public Void caseCompound(Compound compound) {
+        // TODO remove the if when compound are composed and not expended
+        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
+            for (AbstractConstruct construct : compound.getSubConstructs()) {
+                doSwitch(construct);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Void caseConditional(Conditional conditional) {
+        final IValidationResult validationResult = AQL4Compat.validate(conditional.getCondition(), stack.peek(),
                 environment);
         final XWPFRun run = conditional.getRuns().get(1);
         addValidationMessages(conditional, run, validationResult);
         if (validationResult != null) { // FIXME : we might check why we may have a null validation result in AQL.
-            final Set<IType> types = validationResult.getPossibleTypes(conditional.getQuery().getAst());
-            checkConditionalSelectorTypes(conditional, run, types);
+            final Set<IType> types = validationResult.getPossibleTypes(conditional.getCondition().getAst());
+            checkConditionalConditionTypes(conditional, run, types);
 
             final Map<String, Set<IType>> thenVariables = new HashMap<String, Set<IType>>(stack.peek());
-            thenVariables
-                    .putAll(validationResult.getInferredVariableTypes(conditional.getQuery().getAst(), Boolean.TRUE));
+            thenVariables.putAll(
+                    validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.TRUE));
             stack.push(thenVariables);
             try {
-                for (AbstractConstruct construct : conditional.getSubConstructs()) {
-                    doSwitch(construct);
-                }
+                doSwitch(conditional.getThen());
             } finally {
                 stack.pop();
             }
-
-            try {
+            if (conditional.getElse() != null) {
                 final Map<String, Set<IType>> elseVariables = new HashMap<String, Set<IType>>(stack.peek());
                 elseVariables.putAll(
-                        validationResult.getInferredVariableTypes(conditional.getQuery().getAst(), Boolean.FALSE));
+                        validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.FALSE));
                 stack.push(elseVariables);
-                if (conditional.getAlternative() != null) {
-                    doSwitch(conditional.getAlternative());
-                    // TODO remove this when the AST for Conditional will be fixed
-                    final IValidationResult alternativeValidationResult = AQL4Compat
-                            .validate(conditional.getAlternative().getQuery(), stack.peek(), environment);
-                    elseVariables.putAll(alternativeValidationResult
-                            .getInferredVariableTypes(conditional.getAlternative().getQuery().getAst(), Boolean.FALSE));
-                }
-                if (conditional.getElse() != null) {
+                try {
                     doSwitch(conditional.getElse());
+                } finally {
+                    stack.pop();
                 }
-            } finally {
-                stack.pop();
             }
         }
         return null;
@@ -215,17 +215,17 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      * Checks if the given types are assignable to {@link Boolean}.
      * 
      * @param conditional
-     *            the {@link Conditionnal}
+     *            the {@link Conditional}
      * @param run
      *            the {@link XWPFRun}
-     * @param selectorTypes
-     *            the {@link Set} of {@link IType} for the selector
+     * @param conditionTypes
+     *            the {@link Set} of {@link IType} for the {@link Conditional#getCondition() condition}
      */
-    private void checkConditionalSelectorTypes(Conditionnal conditional, XWPFRun run, final Set<IType> selectorTypes) {
-        if (!selectorTypes.isEmpty()) {
+    private void checkConditionalConditionTypes(Conditional conditional, XWPFRun run, final Set<IType> conditionTypes) {
+        if (!conditionTypes.isEmpty()) {
             boolean onlyBoolean = true;
             boolean onlyNotBoolean = true;
-            for (IType type : selectorTypes) {
+            for (IType type : conditionTypes) {
                 final boolean assignableFrom = booleanObjectType.isAssignableFrom(type)
                     || booleanType.isAssignableFrom(type);
                 onlyBoolean = onlyBoolean && assignableFrom;
@@ -237,20 +237,20 @@ public class TemplateValidator extends TemplateSwitch<Void> {
             if (!onlyBoolean) {
                 if (onlyNotBoolean) {
                     conditional.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            String.format("The predicate never evaluates to a boolean type (%s).", selectorTypes),
+                            String.format("The predicate never evaluates to a boolean type (%s).", conditionTypes),
                             run));
                 } else {
                     conditional.getValidationMessages()
                             .add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                                     String.format(
                                             "The predicate may evaluate to a value that is not a boolean type (%s).",
-                                            selectorTypes),
+                                            conditionTypes),
                                     run));
                 }
             }
         } else {
             conditional.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                    String.format("The predicate never evaluates to a boolean type (%s).", selectorTypes), run));
+                    String.format("The predicate never evaluates to a boolean type (%s).", conditionTypes), run));
         }
     }
 
@@ -262,9 +262,9 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      * @param run
      *            the {@link XWPFRun}
      * @param validationResult
-     *            validation Result
+     *            validation Result for {@link UserDoc#getId() id}
      */
-    private void checkUserDocSelectorTypes(UserDoc userDoc, XWPFRun run, IValidationResult validationResult) {
+    private void checkUserDocIdTypes(UserDoc userDoc, XWPFRun run, IValidationResult validationResult) {
         final Set<IType> types = validationResult.getPossibleTypes(userDoc.getId().getAst());
         for (IType type : types) {
             if (type instanceof ICollectionType) {
@@ -273,15 +273,6 @@ public class TemplateValidator extends TemplateSwitch<Void> {
                 break;
             }
         }
-    }
-
-    @Override
-    public Void caseDefault(Default object) {
-        for (AbstractConstruct construct : object.getSubConstructs()) {
-            doSwitch(construct);
-        }
-
-        return null;
     }
 
     @Override

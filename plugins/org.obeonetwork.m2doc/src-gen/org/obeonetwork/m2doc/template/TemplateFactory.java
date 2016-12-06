@@ -39,15 +39,15 @@ public interface TemplateFactory extends EFactory {
 	TemplateFactory eINSTANCE = org.obeonetwork.m2doc.template.impl.TemplateFactoryImpl.init();
 
 	/**
-     * Returns a new object of class '<em>Conditionnal</em>'.
+     * Returns a new object of class '<em>Conditional</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Conditionnal</em>'.
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Conditional</em>'.
      * @generated
      */
-	Conditionnal createConditionnal();
+    Conditional createConditional();
 
-	/**
+    /**
      * Returns a new object of class '<em>Repetition</em>'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -165,15 +165,15 @@ public interface TemplateFactory extends EFactory {
 	Image createImage();
 
 	/**
-     * Returns a new object of class '<em>Default</em>'.
+     * Returns a new object of class '<em>Compound</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Default</em>'.
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Compound</em>'.
      * @generated
      */
-	Default createDefault();
+    Compound createCompound();
 
-	/**
+    /**
      * Returns a new object of class '<em>Template</em>'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

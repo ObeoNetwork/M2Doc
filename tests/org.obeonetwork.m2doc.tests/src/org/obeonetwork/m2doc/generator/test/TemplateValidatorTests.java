@@ -38,8 +38,8 @@ import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Conditionnal;
-import org.obeonetwork.m2doc.template.Default;
+import org.obeonetwork.m2doc.template.Compound;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -143,11 +143,13 @@ public class TemplateValidatorTests {
     }
 
     @Test
-    public void conditionalSelectorNotBoolean() {
+    public void conditionalConditionNotBoolean() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditionnal conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditionnal();
-        conditional.setQuery(engine.build("self"));
+        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
+        conditional.setCondition(engine.build("self"));
+        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
         template.getSubConstructs().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
@@ -170,8 +172,10 @@ public class TemplateValidatorTests {
     public void conditionalSelectorNotOnlyBoolean() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditionnal conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditionnal();
-        conditional.setQuery(engine.build("self"));
+        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
+        conditional.setCondition(engine.build("self"));
+        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
         template.getSubConstructs().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
@@ -196,8 +200,10 @@ public class TemplateValidatorTests {
     public void conditionalSelectorAlwaysTrue() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditionnal conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditionnal();
-        conditional.setQuery(engine.build("self.oclIsKindOf(String)"));
+        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
+        conditional.setCondition(engine.build("self.oclIsKindOf(String)"));
+        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
         template.getSubConstructs().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
@@ -221,11 +227,13 @@ public class TemplateValidatorTests {
     public void conditionalInferedTypeInThen() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditionnal conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditionnal();
-        conditional.setQuery(engine.build("self.oclIsKindOf(ecore::EClass)"));
+        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
+        conditional.setCondition(engine.build("self.oclIsKindOf(ecore::EClass)"));
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self.oclIsKindOf(ecore::EClass)"));
-        conditional.getSubConstructs().add(query);
+        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        thenCompound.getSubConstructs().add(query);
+        conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
         template.getSubConstructs().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
@@ -248,14 +256,20 @@ public class TemplateValidatorTests {
     }
 
     @Test
-    public void conditionalInferedTypeInElseIf() {
+    public void conditionalInferedTypeInElse() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditionnal conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditionnal();
-        conditional.setQuery(engine.build("self.oclIsKindOf(ecore::EClassifier)"));
-        final Conditionnal alternative = TemplatePackage.eINSTANCE.getTemplateFactory().createConditionnal();
-        alternative.setQuery(engine.build("self.oclIsKindOf(ecore::EPackage)"));
-        conditional.setAlternative(alternative);
+        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
+        conditional.setCondition(engine.build("self.oclIsKindOf(ecore::EClassifier)"));
+        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        conditional.setThen(thenCompound);
+        final Conditional alternative = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
+        alternative.setCondition(engine.build("self.oclIsKindOf(ecore::EPackage)"));
+        final Compound alternativeThenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        alternative.setThen(alternativeThenCompound);
+        final Compound elseCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        elseCompound.getSubConstructs().add(alternative);
+        conditional.setElse(elseCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
         template.getSubConstructs().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
@@ -276,61 +290,6 @@ public class TemplateValidatorTests {
         assertTemplateValidationMessage(alternative.getValidationMessages().get(0), ValidationMessageLevel.INFO,
                 "Always true:\nNothing inferred when self (EClassifier=EPackage) is not kind of EClassifierLiteral=EPackage",
                 alternative.getRuns().get(1));
-    }
-
-    @Test
-    public void conditionalInferedTypeInElse() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditionnal conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditionnal();
-        conditional.setQuery(engine.build("self.oclIsKindOf(ecore::EClassifier)"));
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self.oclIsKindOf(ecore::EPackage)"));
-        final Default def = TemplatePackage.eINSTANCE.getTemplateFactory().createDefault();
-        def.getSubConstructs().add(query);
-        conditional.setElse(def);
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(conditional);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
-        selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
-
-        validator.validate(documentTemplate, GenconfFactory.eINSTANCE.createGeneration(), queryEnvironment, types);
-
-        assertEquals(0, conditional.getValidationMessages().size());
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.INFO,
-                "Always true:\nNothing inferred when self (EClassifier=EPackage) is not kind of EClassifierLiteral=EPackage",
-                query.getStyleRun());
-    }
-
-    @Test
-    public void defaultSubConstruct() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        final Default def = TemplatePackage.eINSTANCE.getTemplateFactory().createDefault();
-        def.getSubConstructs().add(query);
-        template.getSubConstructs().add(query);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-        Generation generation = GenconfFactory.eINSTANCE.createGeneration();
-        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
-        validator.validate(documentTemplate, generation, queryEnvironment, types);
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test

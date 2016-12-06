@@ -25,8 +25,8 @@ import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Conditionnal;
-import org.obeonetwork.m2doc.template.Default;
+import org.obeonetwork.m2doc.template.Compound;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
@@ -35,6 +35,7 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -108,26 +109,24 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     }
 
     @Override
-    public Void caseConditionnal(Conditionnal conditional) {
-        insertErrorMessages(conditional);
-        for (AbstractConstruct construct : conditional.getSubConstructs()) {
-            doSwitch(construct);
-        }
-        if (conditional.getAlternative() != null) {
-            doSwitch(conditional.getAlternative());
-        }
-        if (conditional.getElse() != null) {
-            doSwitch(conditional.getElse());
+    public Void caseCompound(Compound compound) {
+        // TODO remove the if when compound are composed and not expended
+        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
+            insertErrorMessages(compound);
+            for (AbstractConstruct construct : compound.getSubConstructs()) {
+                doSwitch(construct);
+            }
         }
 
         return null;
     }
 
     @Override
-    public Void caseDefault(Default object) {
-        insertErrorMessages(object);
-        for (AbstractConstruct construct : object.getSubConstructs()) {
-            doSwitch(construct);
+    public Void caseConditional(Conditional conditional) {
+        insertErrorMessages(conditional);
+        doSwitch(conditional.getThen());
+        if (conditional.getElse() != null) {
+            doSwitch(conditional.getElse());
         }
 
         return null;

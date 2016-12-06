@@ -89,11 +89,10 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TemplatePackage.CONDITIONNAL: {
-                Conditionnal conditionnal = (Conditionnal)theEObject;
-                T result = caseConditionnal(conditionnal);
-                if (result == null) result = caseCompound(conditionnal);
-                if (result == null) result = caseAbstractConstruct(conditionnal);
+            case TemplatePackage.CONDITIONAL: {
+                Conditional conditional = (Conditional)theEObject;
+                T result = caseConditional(conditional);
+                if (result == null) result = caseAbstractConstruct(conditional);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -142,14 +141,6 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null) result = caseAbstractImage(image);
                 if (result == null) result = caseAbstractProviderClient(image);
                 if (result == null) result = caseAbstractConstruct(image);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TemplatePackage.DEFAULT: {
-                Default default_ = (Default)theEObject;
-                T result = caseDefault(default_);
-                if (result == null) result = caseCompound(default_);
-                if (result == null) result = caseAbstractConstruct(default_);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -273,21 +264,21 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
 	/**
-     * Returns the result of interpreting the object as an instance of '<em>Conditionnal</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Conditional</em>'.
      * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Conditionnal</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Conditional</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public T caseConditionnal(Conditionnal object) {
+    public T caseConditional(Conditional object) {
         return null;
     }
 
-	/**
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Repetition</em>'.
      * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -524,21 +515,6 @@ public class TemplateSwitch<T> extends Switch<T> {
      * @generated
      */
 	public T caseImage(Image object) {
-        return null;
-    }
-
-	/**
-     * Returns the result of interpreting the object as an instance of '<em>Default</em>'.
-     * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Default</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-	public T caseDefault(Default object) {
         return null;
     }
 

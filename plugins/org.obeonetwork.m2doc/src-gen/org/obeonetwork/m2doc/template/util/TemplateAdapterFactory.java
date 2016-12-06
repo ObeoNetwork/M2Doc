@@ -89,8 +89,8 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
                 return createAbstractConstructAdapter();
             }
             @Override
-            public Adapter caseConditionnal(Conditionnal object) {
-                return createConditionnalAdapter();
+            public Adapter caseConditional(Conditional object) {
+                return createConditionalAdapter();
             }
             @Override
             public Adapter caseRepetition(Repetition object) {
@@ -115,10 +115,6 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseImage(Image object) {
                 return createImageAdapter();
-            }
-            @Override
-            public Adapter caseDefault(Default object) {
-                return createDefaultAdapter();
             }
             @Override
             public Adapter caseCompound(Compound object) {
@@ -211,20 +207,20 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
     }
 
 	/**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Conditionnal <em>Conditionnal</em>}'.
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Conditional <em>Conditional</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.Conditionnal
+     * @see org.obeonetwork.m2doc.template.Conditional
      * @generated
      */
-	public Adapter createConditionnalAdapter() {
+    public Adapter createConditionalAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Repetition <em>Repetition</em>}'.
      * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -445,20 +441,6 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
 	public Adapter createImageAdapter() {
-        return null;
-    }
-
-	/**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Default <em>Default</em>}'.
-     * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.Default
-     * @generated
-     */
-	public Adapter createDefaultAdapter() {
         return null;
     }
 

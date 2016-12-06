@@ -57,8 +57,7 @@ import org.obeonetwork.m2doc.template.AbstractImage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Compound;
-import org.obeonetwork.m2doc.template.Conditionnal;
-import org.obeonetwork.m2doc.template.Default;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.POSITION;
@@ -275,7 +274,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
                     compound.getSubConstructs().add(parseRepetition());
                     break;
                 case IF:
-                    compound.getSubConstructs().add(parseConditionnal());
+                    compound.getSubConstructs().add(parseConditional());
                     break;
                 case USERDOC:
                     compound.getSubConstructs().add(parseUserDoc());
@@ -734,50 +733,54 @@ public class BodyTemplateParser extends BodyAbstractParser {
 
     /**
      * Parses a conditional.
-     * conditionnal are made of the following set of tags : {gd:if "query"} ...
+     * conditional are made of the following set of tags : {gd:if "query"} ...
      * [{gd:elseif "query"} ....]* ({gd:else})? ... {gd:endif}
      * 
      * @return the created object
      * @throws DocumentParserException
      *             if something wrong happens during parsing.
      */
-    private Conditionnal parseConditionnal() throws DocumentParserException {
-        Conditionnal conditionnal = (Conditionnal) EcoreUtil.create(TemplatePackage.Literals.CONDITIONNAL);
-        String tag = readTag(conditionnal, conditionnal.getRuns()).trim();
+    private Conditional parseConditional() throws DocumentParserException {
+        Conditional conditional = (Conditional) EcoreUtil.create(TemplatePackage.Literals.CONDITIONAL);
+        String tag = readTag(conditional, conditional.getRuns()).trim();
         boolean headConditionnal = tag.startsWith(TokenType.IF.getValue());
         int tagLength = headConditionnal ? TokenType.IF.getValue().length() : TokenType.ELSEIF.getValue().length();
         String query = tag.substring(tagLength).trim();
         AstResult result = queryParser.build(query);
         if (result.getErrors().size() == 0) {
-            conditionnal.setQuery(result);
+            conditional.setCondition(result);
         } else {
-            final XWPFRun lastRun = conditionnal.getRuns().get(conditionnal.getRuns().size() - 1);
-            conditionnal.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
+            final XWPFRun lastRun = conditional.getRuns().get(conditional.getRuns().size() - 1);
+            conditional.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
         }
-        parseCompound(conditionnal, TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
+        final Compound thenCompound = (Compound) EcoreUtil.create(TemplatePackage.Literals.COMPOUND);
+        conditional.setThen(thenCompound);
+        parseCompound(conditional.getThen(), TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
         TokenType nextRunType = getNextTokenType();
         switch (nextRunType) {
             case ELSEIF:
-                conditionnal.setAlternative(parseConditionnal());
+                final Compound elseIfCompound = (Compound) EcoreUtil.create(TemplatePackage.Literals.COMPOUND);
+                elseIfCompound.getSubConstructs().add(parseConditional());
+                conditional.setElse(elseIfCompound);
                 break;
             case ELSE:
-                Default defaultCompound = (Default) EcoreUtil.create(TemplatePackage.Literals.DEFAULT);
-                readTag(defaultCompound, defaultCompound.getRuns());
-                parseCompound(defaultCompound, TokenType.ENDIF);
-                conditionnal.setElse(defaultCompound);
+                final Compound elseCompound = (Compound) EcoreUtil.create(TemplatePackage.Literals.COMPOUND);
+                conditional.setElse(elseCompound);
+                readTag(elseCompound, elseCompound.getRuns());
+                parseCompound(conditional.getElse(), TokenType.ENDIF);
 
                 // read up the gd:endif tag if it exists
                 if (getNextTokenType() != TokenType.EOF) {
-                    readTag(conditionnal, conditionnal.getClosingRuns());
+                    readTag(conditional, conditional.getClosingRuns());
                 }
                 break;
             case ENDIF:
-                readTag(conditionnal, conditionnal.getClosingRuns());
-                break; // we just finish the current conditionnal.
+                readTag(conditional, conditional.getClosingRuns());
+                break; // we just finish the current conditional.
             default:
-                validationError(conditionnal, message(ParsingErrorMessage.CONDTAGEXPEXTED));
+                validationError(conditional, message(ParsingErrorMessage.CONDTAGEXPEXTED));
         }
-        return conditionnal;
+        return conditional;
     }
 
     /**

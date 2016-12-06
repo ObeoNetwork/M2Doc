@@ -84,14 +84,14 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 	@Override
 	public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case TemplatePackage.CONDITIONNAL: return createConditionnal();
+            case TemplatePackage.CONDITIONAL: return createConditional();
             case TemplatePackage.REPETITION: return createRepetition();
             case TemplatePackage.USER_DOC: return createUserDoc();
             case TemplatePackage.USER_CONTENT: return createUserContent();
             case TemplatePackage.QUERY: return createQuery();
             case TemplatePackage.TABLE_MERGE: return createTableMerge();
             case TemplatePackage.IMAGE: return createImage();
-            case TemplatePackage.DEFAULT: return createDefault();
+            case TemplatePackage.COMPOUND: return createCompound();
             case TemplatePackage.TEMPLATE: return createTemplate();
             case TemplatePackage.REPRESENTATION: return createRepresentation();
             case TemplatePackage.STATIC_FRAGMENT: return createStaticFragment();
@@ -180,15 +180,15 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public Conditionnal createConditionnal() {
-        ConditionnalImpl conditionnal = new ConditionnalImpl();
-        return conditionnal;
+    public Conditional createConditional() {
+        ConditionalImpl conditional = new ConditionalImpl();
+        return conditional;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -330,15 +330,15 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
 
 	/**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public Default createDefault() {
-        DefaultImpl default_ = new DefaultImpl();
-        return default_;
+    public Compound createCompound() {
+        CompoundImpl compound = new CompoundImpl();
+        return compound;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
