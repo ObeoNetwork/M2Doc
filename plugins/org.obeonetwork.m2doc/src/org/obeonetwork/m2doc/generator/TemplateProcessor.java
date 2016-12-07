@@ -134,7 +134,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     private XWPFParagraph currentGeneratedParagraph;
     /**
      * Used to force a new paragraph in gf:for body when there's a carriage
-     * return before the {gd:endfor} tag.
+     * return before the {m:endfor} tag.
      */
     private boolean forceNewParagraph;
     /**
