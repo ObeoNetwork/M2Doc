@@ -1,0 +1,6 @@
+template null
+  Invalid initialization expression :
+  for v | *** expression error **** do
+    A paragraph
+  endfor
+  End of demonstration.

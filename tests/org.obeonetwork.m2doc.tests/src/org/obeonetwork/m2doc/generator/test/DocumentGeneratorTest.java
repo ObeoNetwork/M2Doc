@@ -165,24 +165,6 @@ public class DocumentGeneratorTest {
     }
 
     @Test
-    public void testGDFORProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testGDFOR.docx", "results/testGDFOR.docx", definitions,
-                null);
-
-    }
-
-    @Test
-    public void testGDFORWithTableProcessing() throws Exception {
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testGDFORWithTable.docx", "results/testGDFORWithTable.docx",
-                definitions, null);
-    }
-
-    @Test
     public void testConditionnal1trueProcessing() throws Exception {
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "value1");
