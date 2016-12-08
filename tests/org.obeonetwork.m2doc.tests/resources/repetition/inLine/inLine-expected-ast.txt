@@ -1,0 +1,6 @@
+template null
+  Basic for demonstration : 
+  for v | .aqlFeatureAccess(self, 'eClassifiers') do
+    name = [query: .aqlFeatureAccess(v, 'name') | TEXT], 
+  endfor
+  End of demonstration.

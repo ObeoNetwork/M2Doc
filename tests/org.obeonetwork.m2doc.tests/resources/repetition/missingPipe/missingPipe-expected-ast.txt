@@ -1,0 +1,6 @@
+template null
+  Missing pipe arter variable name :
+  for null | *** expression error **** do
+    A paragraph
+  endfor
+  End of demonstration.

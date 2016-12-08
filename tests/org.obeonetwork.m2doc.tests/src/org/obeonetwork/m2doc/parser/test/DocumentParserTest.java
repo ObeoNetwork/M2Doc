@@ -45,7 +45,6 @@ import org.obeonetwork.m2doc.template.Default;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.POSITION;
 import org.obeonetwork.m2doc.template.Query;
-import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
@@ -169,27 +168,6 @@ public class DocumentParserTest {
             assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
             Query query = (Query) template.getSubConstructs().get(1);
             assertNotNull(query.getQuery());
-        }
-    }
-
-    @Test
-    public void testRepetitionParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testGDFOR.docx")) {
-            OPCPackage oPackage = OPCPackage.open(is);
-            XWPFDocument document = new XWPFDocument(oPackage);
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            assertEquals(document, template.getBody());
-            assertEquals(3, template.getSubConstructs().size());
-            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Repetition);
-            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Repetition repetition = (Repetition) template.getSubConstructs().get(1);
-            assertNotNull(repetition.getQuery());
-            assertEquals("v", repetition.getIterationVar());
-            assertTrue(repetition.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(repetition.getSubConstructs().get(1) instanceof Query);
-            assertTrue(repetition.getSubConstructs().get(0) instanceof StaticFragment);
         }
     }
 
@@ -345,26 +323,6 @@ public class DocumentParserTest {
         assertNotNull(row.getCells().get(1).getTableCell());
         assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
 
-    }
-
-    @Test
-    public void forWithtableParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testGDFORWithTable.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(6, template.getSubConstructs().size());
-        Repetition rep = (Repetition) template.getSubConstructs().get(4);
-        Table table = (Table) rep.getSubConstructs().get(0);
-        assertEquals(1, table.getRows().size());
-        // First row testing.
-        Row row = table.getRows().get(0);
-        assertEquals(2, row.getCells().size());
-        assertTrue(row.getCells().get(0).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(row.getCells().get(0).getTableCell());
-        assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof Query);
-        assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
     }
 
     @Test

@@ -1,0 +1,6 @@
+template null
+  Missing expression : 
+  for v | *** expression error **** do
+    name = [query: .aqlFeatureAccess(v, 'name') | TEXT],
+  endfor
+  En of demonstration.

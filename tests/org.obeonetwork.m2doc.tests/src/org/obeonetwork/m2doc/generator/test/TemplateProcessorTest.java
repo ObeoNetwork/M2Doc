@@ -152,14 +152,14 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         // CHECKSTYLE:OFF
         definitions.put("x", "valueofx");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
         // CHECKSTYLE:ON
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
@@ -191,12 +191,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "valueofx");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises de référence à une variable : valueofx",
@@ -225,12 +225,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("self", EcorePackage.eINSTANCE);
         XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         // scan the destination document
@@ -259,12 +259,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "valueofx");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises de référence à une variable : valueofx",
@@ -274,36 +274,6 @@ public class TemplateProcessorTest {
         assertEquals("E36C0A", run.getColor());
         assertNotNull(run.getCTR().getRPr().getI());
         assertNotNull(run.getCTR().getRPr().getB());
-    }
-
-    /**
-     * Test m:for tag Processing.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testGDFORProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testGDFOR.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("self", EcorePackage.eINSTANCE);
-        XWPFDocument destinationDoc = createDestinationDocument("templates/testGDFOR.docx");
-        final BookmarkManager bookmarkManager = new BookmarkManager();
-        final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
-                destinationDoc, null);
-        processor.doSwitch(template);
-        assertEquals(
-                "Template de test pour les balises de répétition: name = EAttribute, name = EAnnotation, name = EClass, name = EClassifier, name = EDataType, name = EEnum, name = EEnumLiteral, name = EFactory, name = EModelElement, name = ENamedElement, name = EObject, name = EOperation, name = EPackage, name = EParameter, name = EReference, name = EStructuralFeature, name = ETypedElement, name = EStringToStringMapEntry, name = EGenericType, name = ETypeParameter, name = EBigDecimal, name = EBigInteger, name = EBoolean, name = EBooleanObject, name = EByte, name = EByteArray, name = EByteObject, name = EChar, name = ECharacterObject, name = EDate, name = EDiagnosticChain, name = EDouble, name = EDoubleObject, name = EEList, name = EEnumerator, name = EFeatureMap, name = EFeatureMapEntry, name = EFloat, name = EFloatObject, name = EInt, name = EIntegerObject, name = EJavaClass, name = EJavaObject, name = ELong, name = ELongObject, name = EMap, name = EResource, name = EResourceSet, name = EShort, name = EShortObject, name = EString, name = ETreeIterator, name = EInvocationTargetException, ",
-                destinationDoc.getParagraphs().get(0).getText());
     }
 
     /**
@@ -326,14 +296,14 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         // CHECKSTYLE:OFF
         definitions.put("x", "value1");
         // CHECKSTYLE:ON
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal1.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         // CHECKSTYLE:OFF
@@ -360,14 +330,14 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         // CHECKSTYLE:OFF
         definitions.put("x", "value");
         // CHECKSTYLE:ON
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal1.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ",
@@ -394,12 +364,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal2.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
@@ -424,12 +394,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal2.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de default value",
@@ -456,12 +426,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
@@ -486,12 +456,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value2");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value2",
@@ -516,12 +486,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal5.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de default value",
@@ -546,12 +516,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("x", "value1");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testConditionnal6.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals("Template de test pour les balises conditionnelles\u00a0: ajout de value1",
@@ -577,14 +547,14 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         // CHECKSTYLE:OFF
         definitions.put("v", "part1\npart2\npart3\npart4");
         // CHECKSTYLE:ON
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -609,14 +579,14 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         // CHECKSTYLE:OFF
         definitions.put("v", "\n\n\n");
         // CHECKSTYLE:ON
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -641,14 +611,14 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         // CHECKSTYLE:OFF
         definitions.put("v", "\n\n\ntext");
         // CHECKSTYLE:ON
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -672,14 +642,14 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         // CHECKSTYLE:OFF
         definitions.put("v", "text\n\n\n");
         // CHECKSTYLE:ON
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -704,12 +674,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "part1\r\npart2\r\npart3\r\npart4");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -734,12 +704,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "\r\n\r\n\r\n");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -764,12 +734,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "\r\n\r\n\r\ntext");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -794,12 +764,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "text\r\n\r\n\r\n");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -825,12 +795,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "part1\tpart2\tpart3\tpart4");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -855,12 +825,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "\t\t\t");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -885,12 +855,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "\t\t\ttext");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -915,12 +885,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("v", "text\t\t\t");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
@@ -944,12 +914,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("author", "Moi");
         XWPFDocument destinationDoc = createDestinationDocument("templates/testEmptyParagraphs.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager, userContentManager, env,
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
                 destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(5, destinationDoc.getParagraphs().size());
@@ -980,7 +950,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidTwoImage.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         // CHECKSTYLE:OFF
@@ -1014,7 +984,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidOneImage.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1046,7 +1016,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidZeroImage.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1076,7 +1046,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/diagramException.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1109,7 +1079,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalidNoProvider.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1141,7 +1111,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("db", rootObject);
         XWPFDocument destinationDoc = createDestinationDocument("templates/diagramInvalidAqlExpression.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
@@ -1175,7 +1145,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         definitions.put("db", rootObject);
         XWPFDocument destinationDoc = createDestinationDocument("templates/diagramValidAqlOption.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
@@ -1206,7 +1176,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/staticHyperlink.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1242,7 +1212,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/dynamicHyperlink.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1287,7 +1257,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testUserDoc1.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1325,7 +1295,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testUserDoc2.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1361,7 +1331,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testUserDoc3.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1395,7 +1365,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testUserDoc4.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1431,7 +1401,7 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testUserDoc6.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
@@ -1471,12 +1441,12 @@ public class TemplateProcessorTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
+        Map<String, Object> definitions = new HashMap<String, Object>();
         XWPFDocument destinationDoc = createDestinationDocument("templates/testUserDoc8.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "results", bookmarkManager, userContentManager,
-                env, destinationDoc, rootObject);
+        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
+                destinationDoc, rootObject);
         processor.doSwitch(template);
         POIServices.getInstance().saveFile(destinationDoc,
                 URI.createFileURI("results/generated/testUserDoc8Resultat.docx"));
