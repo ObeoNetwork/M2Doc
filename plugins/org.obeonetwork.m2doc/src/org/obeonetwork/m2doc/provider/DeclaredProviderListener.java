@@ -79,14 +79,14 @@ public class DeclaredProviderListener implements IRegistryEventListener {
                     ProviderRegistry.INSTANCE.registerProvider(newDiagramProvider);
                 } catch (CoreException e) {
                     // CHECKSTYLE:OFF
-                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
+                    M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                             "Problem while registering M2Doc Providers : " + e.getMessage(), e));
                     // CHECKSTYLE:ON
                 } catch (InvalidRegistryObjectException e) {
-                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
+                    M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                             "Problem while registering M2Doc Providers : " + e.getMessage(), e));
                 } catch (ClassCastException e) {
-                    M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                    M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                             "The registered table provider does not extend AbstractDiagramProvider.", e));
                 }
             } else if (TABLE_PROVIDER_EXTENSION_ELEMENT.equals(confElt.getName())) {
@@ -96,14 +96,14 @@ public class DeclaredProviderListener implements IRegistryEventListener {
                     ProviderRegistry.INSTANCE.registerTableProvider(provider);
                 } catch (CoreException e) {
                     // CHECKSTYLE:OFF
-                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+                    M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
                             "Problem while registering M2Doc Providers : " + e.getMessage(), e));
                     // CHECKSTYLE:ON
                 } catch (InvalidRegistryObjectException e) {
-                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+                    M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
                             "Problem while registering M2Doc Providers : " + e.getMessage(), e));
                 } catch (ClassCastException e) {
-                    M2DocPlugin.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
+                    M2DocPlugin.INSTANCE.log(new Status(IStatus.ERROR, M2DocPlugin.PLUGIN_ID,
                             "The registered table provider does not extend AbstractTableProvider.", e));
                 }
             }
@@ -131,11 +131,11 @@ public class DeclaredProviderListener implements IRegistryEventListener {
                             ProviderRegistry.INSTANCE.removeProvider(newDiagramProvider);
                         } catch (CoreException e) {
                             // CHECKSTYLE:OFF
-                            M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
+                            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                                     "Problem while unregistering M2Doc Providers : " + e.getMessage(), e));
                             // CHECKSTYLE:ON
                         } catch (InvalidRegistryObjectException e) {
-                            M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
+                            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                                     "Problem while unregistering M2Doc Providers : " + e.getMessage(), e));
                         }
 

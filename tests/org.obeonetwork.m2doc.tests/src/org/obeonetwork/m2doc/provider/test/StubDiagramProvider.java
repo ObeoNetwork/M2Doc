@@ -61,7 +61,7 @@ public class StubDiagramProvider extends AbstractDiagramProvider {
      */
     @Override
     public Map<String, OptionType> getOptionTypes() {
-        Map<String, OptionType> options = new HashMap<String, OptionType>();
+        Map<String, OptionType> options = new HashMap<>();
         options.put(AQL_EXPRESSION_OPTION_KEY, OptionType.AQL_EXPRESSION);
         return options;
     }
@@ -75,14 +75,14 @@ public class StubDiagramProvider extends AbstractDiagramProvider {
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         String resultKind = (String) parameters.get(RESULT_KIND_KEY);
         String aqlExpression = (String) parameters.get(AQL_EXPRESSION_OPTION_KEY);
-        List<String> imagesPaths = new ArrayList<String>();
+        List<String> imagesPaths = new ArrayList<>();
         if (aqlExpression != null && "testImage".equals(aqlExpression)) {
-            imagesPaths.add(new File("images/testImage.jpg").getAbsolutePath());
+            imagesPaths.add(new File("templates/images/testImage.jpg").getAbsolutePath());
         } else if (ONE_IMAGE_RESULT_KIND.equals(resultKind)) {
-            imagesPaths.add(new File("images/dh1.gif").getAbsolutePath());
+            imagesPaths.add(new File("templates/images/dh1.gif").getAbsolutePath());
         } else if (TWO_IMAGE_RESULT_KIND.equals(resultKind)) {
-            imagesPaths.add(new File("images/dh1.gif").getAbsolutePath());
-            imagesPaths.add(new File("images/testImage.jpg").getAbsolutePath());
+            imagesPaths.add(new File("templates/images/dh1.gif").getAbsolutePath());
+            imagesPaths.add(new File("templates/images/testImage.jpg").getAbsolutePath());
         } else if (EXCEPTION_RESULT_KIND.equals(resultKind)) {
             throw new ProviderException("A problem occured.");
         }

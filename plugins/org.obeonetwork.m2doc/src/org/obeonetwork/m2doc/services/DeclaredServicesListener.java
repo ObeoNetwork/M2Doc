@@ -70,7 +70,7 @@ public class DeclaredServicesListener implements IRegistryEventListener {
                     String token = confElt.getAttribute(SERVICE_TOKEN_ATTR_NAME);
                     ServiceRegistry.INSTANCE.registerServicePackage(holder.getServiceClass(), token);
                 } catch (CoreException e) {
-                    M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
+                    M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                             "Problem while registering M2Doc Services : " + e.getMessage(), e));
                 }
             }
@@ -98,7 +98,7 @@ public class DeclaredServicesListener implements IRegistryEventListener {
                             String token = confElt.getAttribute(SERVICE_TOKEN_ATTR_NAME);
                             ServiceRegistry.INSTANCE.remove(holder.getServiceClass(), token);
                         } catch (CoreException e) {
-                            M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
+                            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
                                     "Problem while registering M2Doc Services : " + e.getMessage(), e));
                         }
 

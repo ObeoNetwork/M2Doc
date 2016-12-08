@@ -21,6 +21,7 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
@@ -49,6 +50,11 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
         siriusDiagramByTitleProvider = new SiriusDiagramByTitleProvider();
     }
 
+    @After
+    public void removeTempFolders() throws Exception {
+        siriusDiagramByTitleProvider.clear();
+    }
+
     /**
      * Provides the semantic resource of the session of the parent class initialized by the setup.
      * 
@@ -75,9 +81,8 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
      */
     @Test
     public void testAllOptionPresentAndCorrect() throws ProviderException {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, getSemanticResource().getContents().get(0));
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -99,9 +104,8 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
      */
     @Test
     public void testTitleDoNotExist() throws ProviderException {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, getSemanticResource().getContents().get(0));
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -123,9 +127,8 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
      */
     @Test
     public void testInvalidAQLExpression() throws ProviderException {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, getSemanticResource().getContents().get(0));
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -149,9 +152,8 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
      */
     @Test
     public void testTitleNotPresent() throws ProviderException {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, getSemanticResource().getContents().get(0));
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);

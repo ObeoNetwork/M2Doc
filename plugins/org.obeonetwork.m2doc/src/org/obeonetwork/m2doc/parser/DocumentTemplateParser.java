@@ -11,11 +11,15 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import javax.swing.text.html.parser.DocumentParser;
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -37,7 +41,7 @@ public class DocumentTemplateParser {
     private XWPFDocument document;
 
     /**
-     * Creates a new {@link DocumentTemplateParser} instance.
+     * Creates a new {@link DocumentParser} instance.
      * 
      * @param document
      *            the document to parse.
@@ -53,14 +57,19 @@ public class DocumentTemplateParser {
      * Parses a document and returns the {@link DocumentTemplate} resulting from
      * this parsing.
      * 
+     * @param templateFile
+     *            URI for the template, used when external links (images, includes) have to be resolved.
      * @return the {@link DocumentTemplate} resulting from parsing the specified
      *         document.
      * @throws DocumentParserException
      *             if a problem occurs while parsing the document.
      */
-    public DocumentTemplate parseDocument() throws DocumentParserException {
+    public DocumentTemplate parseDocument(URI templateURI) throws DocumentParserException {
+        ResourceImpl r = new ResourceImpl(templateURI);
         DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
-        BodyTemplateParser parser = new BodyTemplateParser(document, new QueryBuilderEngine(queryEnvironment), queryEnvironment);
+        r.getContents().add(result);
+        BodyTemplateParser parser = new BodyTemplateParser(document, new QueryBuilderEngine(queryEnvironment),
+                queryEnvironment);
         result.setBody(parser.parseTemplate());
         result.setDocument(document);
         for (XWPFFooter footer : document.getFooterList()) {

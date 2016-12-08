@@ -22,11 +22,12 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.TemplateGenerator;
-import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -60,11 +61,12 @@ public class TemplateGeneratorTest {
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
+        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
         final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
         template.getBody().getValidationMessages()
                 .add(new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx", template);
+        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                template);
         generator.generate();
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
@@ -96,11 +98,12 @@ public class TemplateGeneratorTest {
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
+        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
         final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
         template.getBody().getValidationMessages().add(
                 new TemplateValidationMessage(ValidationMessageLevel.WARNING, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx", template);
+        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                template);
         generator.generate();
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
@@ -132,11 +135,12 @@ public class TemplateGeneratorTest {
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
+        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
         final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
         template.getBody().getValidationMessages()
                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx", template);
+        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                template);
         generator.generate();
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
@@ -168,7 +172,7 @@ public class TemplateGeneratorTest {
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
+        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
         final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
         template.getBody().getValidationMessages()
                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "AAAA", location));
@@ -178,7 +182,8 @@ public class TemplateGeneratorTest {
                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "CCCC", location));
         template.getBody().getValidationMessages()
                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "DDDD", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx", template);
+        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                template);
         generator.generate();
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 

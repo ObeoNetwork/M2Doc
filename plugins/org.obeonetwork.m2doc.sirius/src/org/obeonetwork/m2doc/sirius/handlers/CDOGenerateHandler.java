@@ -104,16 +104,17 @@ public class CDOGenerateHandler extends AbstractHandler {
                         IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
                         IFile generatedFile = project.getFile(new Path(generation.getResultFileName()));
                         GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                        List<IFile> generatedfiles = generator.generate(generation, project, templateFile,
-                                generatedFile);
+                        List<URI> generatedfiles = generator.generate(generation,
+                                URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true),
+                                URI.createPlatformResourceURI(generatedFile.getFullPath().toString(), true));
                         if (generatedfiles.size() == 1) {
-                            MessageDialog.openInformation(shell, "M2Doc generation", "The document '"
-                                + generatedfiles.get(0).getLocation().toString() + "' is generated.");
+                            MessageDialog.openInformation(shell, "M2Doc generation",
+                                    "The document '" + generatedfiles.get(0).toString() + "' is generated.");
                         } else if (generatedfiles.size() == 2) {
                             MessageDialog.openInformation(shell, "M2Doc generation",
-                                    "The document '" + generatedfiles.get(0).getLocation().toString()
+                                    "The document '" + generatedfiles.get(0).toString()
                                         + "' is generated. \n\n The template file contains validation errors, please read '"
-                                        + generatedfiles.get(1).getLocation().toString() + "'.");
+                                        + generatedfiles.get(1).toString() + "'.");
                         }
 
                     } else {

@@ -11,15 +11,16 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.api;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
@@ -66,32 +67,11 @@ public final class POIServices {
      * @throws DocumentParserException
      *             DocumentParserException
      */
-    public DocumentTemplate parseTemplate(IFile templateFile, IQueryEnvironment queryEnvironment)
+    public DocumentTemplate parseTemplate(URI templateFile, IQueryEnvironment queryEnvironment)
             throws IOException, DocumentParserException {
         XWPFDocument document = getXWPFDocument(templateFile);
         DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
-        return template;
-    }
-
-    /**
-     * Parse template file.
-     * 
-     * @param templatePath
-     *            String
-     * @param queryEnvironment
-     *            IQueryEnvironment
-     * @return DocumentTemplate
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    public DocumentTemplate parseTemplate(String templatePath, IQueryEnvironment queryEnvironment)
-            throws IOException, DocumentParserException {
-        XWPFDocument document = getXWPFDocument(templatePath);
-        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument();
+        DocumentTemplate template = parser.parseDocument(templateFile);
         return template;
     }
 
@@ -104,45 +84,10 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
-    public XWPFDocument getXWPFDocument(IFile templateFile) throws IOException {
+    public XWPFDocument getXWPFDocument(URI templateFile) throws IOException {
         OPCPackage oPackage = getOPCPackage(templateFile);
         XWPFDocument document = new XWPFDocument(oPackage);
         return document;
-    }
-
-    /**
-     * Get XWPFDocument from template path.
-     * 
-     * @param templatePath
-     *            String
-     * @return XWPFDocument
-     * @throws IOException
-     *             IOException
-     */
-    public XWPFDocument getXWPFDocument(String templatePath) throws IOException {
-        OPCPackage oPackage = getOPCPackage(templatePath);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        return document;
-    }
-
-    /**
-     * Get OPCPackage from template path.
-     * 
-     * @param templatePath
-     *            String
-     * @return OPCPackage
-     * @throws IOException
-     *             IOException
-     */
-    public OPCPackage getOPCPackage(String templatePath) throws IOException {
-        FileInputStream is = new FileInputStream(templatePath);
-        OPCPackage oPackage;
-        try {
-            oPackage = OPCPackage.open(is);
-        } catch (InvalidFormatException e) {
-            throw new IllegalArgumentException("Couldn't open template file", e);
-        }
-        return oPackage;
     }
 
     /**
@@ -154,13 +99,15 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
-    public OPCPackage getOPCPackage(IFile templateFile) throws IOException {
-        FileInputStream is = new FileInputStream(templateFile.getLocation().toFile());
+    public OPCPackage getOPCPackage(URI templateFile) throws IOException {
         OPCPackage oPackage;
-        try {
-            oPackage = OPCPackage.open(is);
-        } catch (InvalidFormatException e) {
-            throw new IllegalArgumentException("Couldn't open template file", e);
+        try (InputStream is = URIConverter.INSTANCE.createInputStream(templateFile)) {
+            try {
+                oPackage = OPCPackage.open(is);
+
+            } catch (InvalidFormatException e) {
+                throw new IllegalArgumentException("Couldn't open template file", e);
+            }
         }
         return oPackage;
     }
@@ -176,25 +123,8 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
-    public TemplateInfo getTemplateInformations(IFile templateFile) throws IOException {
+    public TemplateInfo getTemplateInformations(URI templateFile) throws IOException {
         XWPFDocument document = getXWPFDocument(templateFile);
-        TemplateInfo templateInfo = new TemplateInfo(document);
-        return templateInfo;
-    }
-
-    /**
-     * Get template informations.
-     * 
-     * @param templatePath
-     *            String
-     * @return TemplateInfo
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     */
-    public TemplateInfo getTemplateInformations(String templatePath) throws IOException {
-        XWPFDocument document = getXWPFDocument(templatePath);
         TemplateInfo templateInfo = new TemplateInfo(document);
         return templateInfo;
     }
@@ -209,9 +139,8 @@ public final class POIServices {
      * @throws IOException
      *             throws if the writing of the document on the file system fails.
      */
-    public void saveFile(XWPFDocument document, String theDestinationFileName) throws IOException {
-
-        try (FileOutputStream os = new FileOutputStream(theDestinationFileName)) {
+    public void saveFile(XWPFDocument document, URI theDestinationFileName) throws IOException {
+        try (OutputStream os = URIConverter.INSTANCE.createOutputStream(theDestinationFileName)) {
             document.write(os);
         }
     }

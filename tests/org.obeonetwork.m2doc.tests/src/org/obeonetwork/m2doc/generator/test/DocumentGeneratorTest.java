@@ -17,6 +17,7 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
+import com.google.common.io.Files;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -25,12 +26,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigInteger;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -40,13 +52,18 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
+import org.obeonetwork.m2doc.provider.ProviderRegistry;
+import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
@@ -54,6 +71,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class DocumentGeneratorTest {
+
+    /**
+     * Initialize registry.
+     */
+    @Before
+    public void setUp() {
+        ProviderRegistry.INSTANCE.clear();
+        ProviderRegistry.INSTANCE.registerProvider(new StubDiagramProvider());
+    }
+
+    /**
+     * Cleaning.
+     */
+    @After
+    public void after() {
+        ProviderRegistry.INSTANCE.clear();
+    }
 
     private void doGenerateDocAndCheckText(String templatePath, String resultPath, Map<String, Object> definitions)
             throws FileNotFoundException, IOException, InvalidFormatException, DocumentParserException,
@@ -73,11 +107,11 @@ public class DocumentGeneratorTest {
             OPCPackage oPackage = OPCPackage.open(is);
             XWPFDocument document = new XWPFDocument(oPackage);
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI(templatePath));
             out = File.createTempFile(resultPath, "generated-test");
             String outputPath = out.getAbsolutePath();
-            DocumentGenerator generator = new DocumentGenerator(templatePath, outputPath, template, definitions,
-                    queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
+                    URI.createFileURI(outputPath), template, definitions, queryEnvironment, null);
             generator.generate();
             if (checkThroughPOI) {
                 assertEquals(previousTextContent, getTextContent(outputPath));
@@ -139,12 +173,17 @@ public class DocumentGeneratorTest {
                 result += "\n" + entry.getName() + " | ";
                 if (entry.getName().endsWith(".xml") || entry.getName().endsWith(".rels")) {
                     String fileContent = CharStreams.toString(new InputStreamReader(zin, Charsets.UTF_8));
+
+                    fileContent = indentXML(fileContent);
+
                     // normalizing on \n to have a cross-platform comparison.
                     fileContent = fileContent.replace("\r\n", "\n");
                     // removing XML attributes which might change from run to run.
                     fileContent = fileContent.replaceAll("rsidR=\"([^\"]+)", "");
                     fileContent = fileContent.replaceAll("id=\"([^\"]+)", "");
-                    result += "\n" + fileContent;
+                    fileContent = fileContent.replaceAll("descr=\"([^\"]+)", "");
+
+                    result += "\n" + fileContent + "\n";
                 } else {
                     HashCode code = hf.hashBytes(ByteStreams.toByteArray(zin));
                     result += "\n md5:" + code.toString();
@@ -153,6 +192,37 @@ public class DocumentGeneratorTest {
         }
 
         return result;
+    }
+
+    /**
+     * @param fileContent
+     * @return
+     */
+    private String indentXML(String fileContent) {
+        StreamResult xmlOutput = null;
+        try {
+            // Configure transformer
+            Transformer transformer;
+            Source xmlInput = new StreamSource(new StringReader(fileContent));
+            xmlOutput = new StreamResult(new StringWriter());
+            transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            try {
+                transformer.transform(xmlInput, xmlOutput);
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerFactoryConfigurationError e) {
+            e.printStackTrace();
+        }
+
+        if (xmlOutput != null) {
+            fileContent = xmlOutput.getWriter().toString();
+        }
+        return fileContent;
     }
 
     @Test
@@ -394,8 +464,7 @@ public class DocumentGeneratorTest {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("x", "valueofx");
-        doGenerateDocAndCheckText("templates/testImageTag.docx", "results/expected/testImageTag.docx", definitions,
-                false);
+        doGenerateDocAndCheckText("templates/testImageTag.docx", "results/testImageTag.docx", definitions, false);
     }
 
     @Test
@@ -404,7 +473,7 @@ public class DocumentGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
 
         Map<String, Object> definitions = new HashMap<>();
-        doGenerateDocAndCheckText("templates/allDiagram.docx", "results/expected/allDiagram.docx", definitions, false);
+        doGenerateDocAndCheckText("templates/allDiagram.docx", "results/allDiagram.docx", definitions, false);
     }
 
     @Test
@@ -504,9 +573,8 @@ public class DocumentGeneratorTest {
             assertEquals(1, paragraph.getRuns().get(5).getCTR().getFldCharList().size());
             assertEquals(STFldCharType.END,
                     paragraph.getRuns().get(5).getCTR().getFldCharList().get(0).getFldCharType());
-            resDocument.close();
             resOPackage.close();
-            resIs.close();
+            resDocument.close();
         }
     }
 
@@ -530,9 +598,8 @@ public class DocumentGeneratorTest {
             assertEquals("without", paragraph.getRuns().get(1).text());
             assertEquals(" bookmark : ", paragraph.getRuns().get(2).text());
 
-            resDocument.close();
             resOPackage.close();
-            resIs.close();
+            resDocument.close();
         }
     }
 
@@ -564,10 +631,11 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc1.docx"));
             Map<String, Object> definitions = new HashMap<>();
-            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc1.docx",
-                    "results/generated/testUserDoc1.docx", template, definitions, queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
+                    URI.createFileURI("results/generated/testUserDoc1.docx"), template, definitions, queryEnvironment,
+                    null);
             generator.generate();
             document.close();
             oPackage.close();
@@ -615,10 +683,10 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc9.docx"));
             Map<String, Object> definitions = new HashMap<>();
-            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc9.docx", resultPath, template,
-                    definitions, queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
+                    URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
             document.close();
             oPackage.close();
@@ -671,7 +739,7 @@ public class DocumentGeneratorTest {
         }
 
         // Copy result in right place
-        Files.copy(new File("userContent/testUserContent1Custom1.docx").toPath(), new File(resultPath).toPath());
+        Files.copy(new File("userContent/testUserContent1Custom1.docx"), new File(resultPath));
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
@@ -679,10 +747,10 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc1.docx"));
             Map<String, Object> definitions = new HashMap<>();
-            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc1.docx", resultPath, template,
-                    definitions, queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
+                    URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
             document.close();
             oPackage.close();
@@ -725,7 +793,7 @@ public class DocumentGeneratorTest {
             oldResult.delete();
         }
         // Copy result in right place
-        Files.copy(new File("userContent/testUserContent9Custom1.docx").toPath(), new File(resultPath).toPath());
+        Files.copy(new File("userContent/testUserContent9Custom1.docx"), new File(resultPath));
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
@@ -735,10 +803,10 @@ public class DocumentGeneratorTest {
                 XWPFDocument document = new XWPFDocument(oPackage);) {
 
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc9.docx"));
             Map<String, Object> definitions = new HashMap<>();
-            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc9.docx", resultPath, template,
-                    definitions, queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
+                    URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
             document.close();
             oPackage.close();
@@ -799,10 +867,10 @@ public class DocumentGeneratorTest {
                 XWPFDocument document = new XWPFDocument(oPackage);) {
 
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
             Map<String, Object> definitions = new HashMap<>();
-            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc10.docx", resultPath, template,
-                    definitions, queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
+                    URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
             document.close();
             oPackage.close();
@@ -848,7 +916,7 @@ public class DocumentGeneratorTest {
             oldResult.delete();
         }
         // Copy result in right place
-        Files.copy(new File("userContent/testUserDoc10Custom1.docx").toPath(), new File(resultPath).toPath());
+        Files.copy(new File("userContent/testUserDoc10Custom1.docx"), new File(resultPath));
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
@@ -857,10 +925,10 @@ public class DocumentGeneratorTest {
                 XWPFDocument document = new XWPFDocument(oPackage);) {
 
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
             Map<String, Object> definitions = new HashMap<>();
-            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc10.docx", resultPath, template,
-                    definitions, queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
+                    URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
             document.close();
             oPackage.close();
@@ -907,7 +975,7 @@ public class DocumentGeneratorTest {
             oldResult.delete();
         }
         // Copy result in right place
-        Files.copy(new File("userContent/testUserDoc10Custom2.docx").toPath(), new File(resultPath).toPath());
+        Files.copy(new File("userContent/testUserDoc10Custom2.docx"), new File(resultPath));
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
@@ -915,10 +983,10 @@ public class DocumentGeneratorTest {
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
             DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument();
+            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
             Map<String, Object> definitions = new HashMap<>();
-            DocumentGenerator generator = new DocumentGenerator("templates/testUserDoc10.docx", resultPath, template,
-                    definitions, queryEnvironment, null);
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
+                    URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
             document.close();
             oPackage.close();
@@ -946,4 +1014,5 @@ public class DocumentGeneratorTest {
         }
 
     }
+
 }
