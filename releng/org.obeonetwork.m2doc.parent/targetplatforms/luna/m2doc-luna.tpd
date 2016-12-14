@@ -25,6 +25,5 @@ location Sirius "http://download.eclipse.org/sirius/updates/releases/3.1.1/luna"
 }
 
 location AQL.4.0.0 "http://download.eclipse.org/acceleo/updates/releases/3.6/R201510121214" {
-	org.eclipse.acceleo.query lazy
-	org.eclipse.acceleo.annotations lazy
+	org.eclipse.acceleo.query.feature.group lazy
 }
