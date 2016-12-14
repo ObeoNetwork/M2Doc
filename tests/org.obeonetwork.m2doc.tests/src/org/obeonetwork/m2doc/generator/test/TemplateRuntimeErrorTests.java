@@ -22,10 +22,11 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
-import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.generator.TemplateProcessor;
+import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.Template;
@@ -67,7 +68,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager lastDestinationUserContentManager = new UserContentManager(
-                "noResult");
+                URI.createFileURI("noResult"));
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
                 lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
@@ -103,7 +104,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager lastDestinationUserContentManager = new UserContentManager(
-                "noResult");
+                URI.createFileURI("noResult"));
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
                 lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
@@ -142,7 +143,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument destinationDoc = createDestinationDocument("templates/testRepetitionSyntaxError.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager lastDestinationUserContentManager = new UserContentManager(
-                "noResult");
+                URI.createFileURI("noResult"));
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
                 lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
@@ -171,7 +172,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal1.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager lastDestinationUserContentManager = new UserContentManager(
-                "noResult");
+                URI.createFileURI("noResult"));
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
                 lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
@@ -200,7 +201,7 @@ public class TemplateRuntimeErrorTests {
         XWPFDocument destinationDoc = createDestinationDocument("templates/testInvalidConditionnal5.docx");
         final BookmarkManager bookmarkManager = new BookmarkManager();
         final UserContentManager lastDestinationUserContentManager = new UserContentManager(
-                "noResult");
+                URI.createFileURI("noResult"));
         TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
                 lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);

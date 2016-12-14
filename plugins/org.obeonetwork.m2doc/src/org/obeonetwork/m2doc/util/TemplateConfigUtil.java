@@ -22,7 +22,7 @@ import java.util.Set;
 
 import org.apache.poi.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
@@ -95,7 +95,7 @@ public final class TemplateConfigUtil {
      * @throws IOException
      *             If a I/O problem occurs while reading the given docx file.
      */
-    public static TemplateConfig load(IFile templateFile) throws IOException {
+    public static TemplateConfig load(URI templateFile) throws IOException {
         TemplateInfo info = POIServices.getInstance().getTemplateInformations(templateFile);
         return load(info);
     }
@@ -176,7 +176,7 @@ public final class TemplateConfigUtil {
         }
         if (mapping == null) {
             // Metamodel not registered yet => is it registered in the current eclipse version?
-            Set<String> uris = new LinkedHashSet<String>(Registry.INSTANCE.keySet()); // Avoid concurrent modification
+            Set<String> uris = new LinkedHashSet<>(Registry.INSTANCE.keySet()); // Avoid concurrent modification
             for (String nsURI : uris) {
                 EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
                 if (ePackage != null && mappingName.equals(ePackage.getName())) {
@@ -249,12 +249,12 @@ public final class TemplateConfigUtil {
      * @throws IOException
      *             If an I/O problem occurs while reading or writing the docx file.
      */
-    public static void save(TemplateConfig config, IFile templateFile) throws IOException {
+    public static void save(TemplateConfig config, URI templateFile) throws IOException {
         XWPFDocument xwpfDocument = POIServices.getInstance().getXWPFDocument(templateFile);
 
         store(config, xwpfDocument);
 
-        POIServices.getInstance().saveFile(xwpfDocument, templateFile.getRawLocation().toOSString());
+        POIServices.getInstance().saveFile(xwpfDocument, templateFile);
     }
 
     /**
@@ -280,7 +280,7 @@ public final class TemplateConfigUtil {
             customProperties.addProperty(M2DocCustomProperties.URI_PROPERTY_PREFIX, b.toString());
         }
 
-        List<Integer> indicesToRemove = new ArrayList<Integer>();
+        List<Integer> indicesToRemove = new ArrayList<>();
         // Delete former variables
         List<CTProperty> propertyList = customProperties.getUnderlyingProperties().getPropertyList();
         for (int i = 0; i < propertyList.size(); i++) {

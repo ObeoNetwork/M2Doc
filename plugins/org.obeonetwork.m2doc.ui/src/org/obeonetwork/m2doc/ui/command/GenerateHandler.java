@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -63,15 +63,15 @@ public class GenerateHandler extends AbstractHandler {
             if (generation != null) {
                 try {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    List<IFile> generatedfiles = generator.generate(generation);
+                    List<URI> generatedfiles = generator.generate(generation);
                     if (generatedfiles.size() == 1) {
                         MessageDialog.openInformation(shell, "M2Doc generation",
-                                "The document '" + generatedfiles.get(0).getLocation().toString() + "' is generated.");
+                                "The document '" + generatedfiles.get(0) + "' is generated.");
                     } else if (generatedfiles.size() == 2) {
                         MessageDialog.openInformation(shell, "M2Doc generation",
-                                "The document '" + generatedfiles.get(0).getLocation().toString()
+                                "The document '" + generatedfiles.get(0).toString()
                                     + "' is generated. \n\n The template file contains validation errors, please read '"
-                                    + generatedfiles.get(1).getLocation().toString() + "'.");
+                                    + generatedfiles.get(1) + "'.");
                     }
 
                 } catch (IOException e) {

@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.obeonetwork.m2doc.provider.configuration.IProviderConfiguration"/>
+                  <meta.attribute kind="java" basedOn=":org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider"/>
                </appinfo>
             </annotation>
          </attribute>

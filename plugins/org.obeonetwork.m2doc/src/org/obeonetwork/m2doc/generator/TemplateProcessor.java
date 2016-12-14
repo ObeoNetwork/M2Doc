@@ -11,9 +11,13 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import java.io.FileInputStream;
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Sets;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,7 +46,9 @@ import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
@@ -98,10 +104,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * Error message when an AQL query contains syntax errors.
      */
     private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression.";
-    /**
-     * The path to the root project where the template is located.
-     */
-    private String rootProjectPath;
 
     /**
      * The {@link BookmarkManager}.
@@ -140,6 +142,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      */
     private EObject targetConfObject;
 
+    private Set<AbstractDiagramProvider> usedProviders = Sets.newLinkedHashSet();
+
     /**
      * Last Destination UserContent Manager.
      */
@@ -149,7 +153,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * User Doc Ids list.
      * Used for uniqueness test.
      */
-    private List<String> userDocIds = new ArrayList<String>();
+    private List<String> userDocIds = new ArrayList<>();
 
     /**
      * Create a new {@link TemplateProcessor} instance given some definitions
@@ -158,7 +162,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * @param initialDefs
      *            the definitions used in queries and variable tags
      * @param projectPath
-     *            the path to the project where the template is located.
+     *            deprecated, should not be used anymore.
      * @param bookmarkManager
      *            the {@link BookmarkManager}
      * @param userContentManager
@@ -170,10 +174,34 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      * @param theTargetConfObject
      *            the root EObject of the gen conf model.
      */
+    @Deprecated
     public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, BookmarkManager bookmarkManager,
             UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
             EObject theTargetConfObject) {
-        this.rootProjectPath = projectPath;
+        this(initialDefs, bookmarkManager, userContentManager, queryEnvironment, destinationDocument,
+                theTargetConfObject);
+    }
+
+    /**
+     * Create a new {@link TemplateProcessor} instance given some definitions
+     * and a query environment.
+     * 
+     * @param initialDefs
+     *            the definitions used in queries and variable tags
+     * @param bookmarkManager
+     *            the {@link BookmarkManager}
+     * @param userContentManager
+     *            the {@link UserContentManager}
+     * @param queryEnvironment
+     *            the query environment used to evaluate queries in the
+     * @param destinationDocument
+     *            the path to the destination document.
+     * @param theTargetConfObject
+     *            the root EObject of the gen conf model.
+     */
+    public TemplateProcessor(Map<String, Object> initialDefs, BookmarkManager bookmarkManager,
+            UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
+            EObject theTargetConfObject) {
         this.definitions = new GenerationEnvironment(initialDefs);
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
@@ -746,11 +774,10 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            the picture file
      * @return the picture's file extension
      */
-    private int getPictureType(String fileName) {
-        String[] segments = fileName.split("\\.");
+    private int getPictureType(URI fileName) {
         int result;
-        if (segments.length > 1) {
-            String extension = segments[segments.length - 1].trim();
+        if (fileName.fileExtension() != null) {
+            String extension = fileName.fileExtension();
             if ("jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)) {
                 result = Document.PICTURE_TYPE_JPEG;
             } else if ("gif".equalsIgnoreCase(extension)) {
@@ -787,19 +814,22 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         XWPFRun imageRun = insertRun(object.getStyleRun());
         imageRun.setText("");
         imageRun.getCTR().getInstrTextList().clear();
-        String filePath;
-        if ("".equals(this.rootProjectPath) || this.rootProjectPath == null) {
-            filePath = object.getFileName();
-        } else {
-            filePath = this.rootProjectPath + "/" + object.getFileName();
+        URI filePath = URI.createFileURI(object.getFileName());
+        if (!filePath.hasAbsolutePath() && object.eResource() != null && object.eResource().getURI() != null) {
+            /*
+             * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
+             */
+            filePath = object.eResource().getURI().trimSegments(1);
+            for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(object.getFileName())) {
+                filePath = filePath.appendSegment(s);
+            }
         }
         try {
             int heigth = Units.toEMU(object.getHeight());
             int width = Units.toEMU(object.getWidth());
 
-            try (FileInputStream imageStream = new FileInputStream(filePath)) {
-                imageRun.addPicture(imageStream, getPictureType(object.getFileName()), object.getFileName(), width,
-                        heigth);
+            try (InputStream imageStream = URIConverter.INSTANCE.createInputStream(filePath)) {
+                imageRun.addPicture(imageStream, getPictureType(filePath), object.getFileName(), width, heigth);
             }
         } catch (InvalidFormatException e) {
             setErrorMessageToRun("Picture in " + object.getFileName() + " has an invalid format.", imageRun);
@@ -822,7 +852,20 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             try {
                 parameters = setupParametersMap(object, provider);
                 List<String> imagePaths = ((AbstractDiagramProvider) provider).getRepresentationImagePath(parameters);
-                for (String imagePath : imagePaths) {
+                usedProviders.add((AbstractDiagramProvider) provider);
+                for (String imagePathStr : imagePaths) {
+                    URI imagePath = URI.createFileURI(imagePathStr);
+                    if (!imagePath.hasAbsolutePath() && object.eResource() != null
+                        && object.eResource().getURI() != null) {
+                        /*
+                         * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
+                         */
+                        imagePath = object.eResource().getURI().trimSegments(1);
+                        for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(imagePathStr)) {
+                            imagePath = imagePath.appendSegment(s);
+                        }
+                    }
+
                     try {
                         imageRun.setText("");
                         imageRun.getCTR().getInstrTextList().clear();
@@ -837,8 +880,9 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                         int height = Units.toEMU(object.getHeight());
                         int width = Units.toEMU(object.getWidth());
 
-                        try (FileInputStream fileInputStream = new FileInputStream(imagePath)) {
-                            imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePath, width, height);
+                        try (InputStream fileInputStream = URIConverter.INSTANCE.createInputStream(imagePath)) {
+                            imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePathStr, width,
+                                    height);
                         }
                     } catch (InvalidFormatException e) {
                         setErrorMessageToRun("Picture in " + imagePath + " has an invalid format.", imageRun);
@@ -859,6 +903,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         }
 
         return super.caseRepresentation(object);
+
     }
 
     @Override
@@ -901,7 +946,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             throws IllegalArgumentException {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
-        parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         if (targetConfObject instanceof Generation) {
             parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
                     ((Generation) targetConfObject).isRefreshRepresentations());
@@ -1009,7 +1053,6 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             throws IllegalArgumentException {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
-        parameters.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, rootProjectPath);
         parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, object.getHeight());
         parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, object.getWidth());
         parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, object.getActivatedLayers());
@@ -1084,6 +1127,17 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 options.put(aqlEntry.getKey(), result.getResult());
             }
         }
+    }
+
+    /**
+     * Should be called when the {@link TemplateProcessor} is no longer needed so that it can cleanup temporary files used during the
+     * generation.
+     */
+    public void clear() {
+        for (AbstractDiagramProvider diagprovider : usedProviders) {
+            diagprovider.clear();
+        }
+
     }
 
 }

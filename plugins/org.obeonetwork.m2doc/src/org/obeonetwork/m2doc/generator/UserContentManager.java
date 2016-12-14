@@ -12,11 +12,11 @@
 package org.obeonetwork.m2doc.generator;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +24,9 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.parser.DocumentGeneratedParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -73,11 +75,10 @@ public class UserContentManager {
      * @throws InvalidFormatException
      *             InvalidFormatException
      */
-    public UserContentManager(String destinationPathFileName) throws IOException, DocumentParserException {
-        File lastGeneratedFile = new File(destinationPathFileName);
-        if (lastGeneratedFile.exists() && lastGeneratedFile.isFile()) {
+    public UserContentManager(URI destinationPathFileName) throws IOException, DocumentParserException {
+        if (URIConverter.INSTANCE.exists(destinationPathFileName, Collections.EMPTY_MAP)) {
             // Copy file
-            generatedFileCopy = tempCopyFile(lastGeneratedFile);
+            generatedFileCopy = tempCopyFile(destinationPathFileName);
             // Launch parsing
             launchParsing();
         }
@@ -97,7 +98,8 @@ public class UserContentManager {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
         try {
-            document = POIServices.getInstance().getXWPFDocument(generatedFileCopy.getAbsolutePath());
+            document = POIServices.getInstance()
+                    .getXWPFDocument(URI.createFileURI(generatedFileCopy.getAbsolutePath()));
             // CHECKSTYLE:OFF
         } catch (Exception e) {
             // In this case, we do nothing.
@@ -116,7 +118,7 @@ public class UserContentManager {
                 if (userContent.getId() != null) {
                     String id = userContent.getId();
                     if (mapIdUserContent == null) {
-                        mapIdUserContent = new HashMap<String, UserContent>();
+                        mapIdUserContent = new HashMap<>();
                     }
                     if (mapIdUserContent.containsKey(id)) {
                         // Mark message to generate lost part of document
@@ -157,9 +159,9 @@ public class UserContentManager {
      * @throws IOException
      *             IOException
      */
-    private File tempCopyFile(File source) throws IOException {
+    private File tempCopyFile(URI source) throws IOException {
         // Create temporary file
-        File dest = File.createTempFile(source.getName(), TEMP_DEST_SUFFIX, source.getParentFile());
+        File dest = File.createTempFile(source.lastSegment(), TEMP_DEST_SUFFIX);
         // Copy generated file in temp file
         copyFile(source, dest);
         return dest;
@@ -193,8 +195,8 @@ public class UserContentManager {
      * @throws IOException
      *             IOException
      */
-    private static void copyFile(File source, File dest) throws IOException {
-        try (InputStream is = new FileInputStream(source); 
+    private static void copyFile(URI source, File dest) throws IOException {
+        try (InputStream is = URIConverter.INSTANCE.createInputStream(source);
                 OutputStream os = new FileOutputStream(dest);) {
             // CHECKSTYLE:OFF
             byte[] buffer = new byte[1024];

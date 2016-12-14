@@ -11,25 +11,22 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.api;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -64,7 +61,7 @@ public class GenconfToDocumentGenerator {
      * @throws IOException
      *             IOException
      */
-    public List<IFile> generate(Generation generation)
+    public List<URI> generate(Generation generation)
             throws DocumentGenerationException, IOException, DocumentParserException {
         if (generation == null) {
             throw new IllegalArgumentException("Null configuration object passed.");
@@ -81,21 +78,24 @@ public class GenconfToDocumentGenerator {
             throw new DocumentGenerationException("The result file path isn't set in the provided configuration");
         }
 
-        // get project container
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IResource configurationFile = workspace.getRoot()
-                .findMember(generation.eResource().getURI().toPlatformString(true));
-        IProject project = configurationFile.getProject();
-
         // get template and result file
-        IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
-        IFile generatedFile = project.getFile(new Path(generation.getResultFileName()));
-        if (!templateFile.exists()) {
+        URI templateFile = createURIStartingFromCurrentModel(generation, generation.getTemplateFileName());
+        URI generatedFile = createURIStartingFromCurrentModel(generation, generation.getResultFileName());
+
+        if (!URIConverter.INSTANCE.exists(templateFile, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
         }
 
         // generate result file.
-        return generate(generation, project, templateFile, generatedFile);
+        return generate(generation, templateFile, generatedFile);
+    }
+
+    private URI createURIStartingFromCurrentModel(Generation generation, String relativePath) {
+        URI generationURI = generation.eResource().getURI().trimSegments(1);
+        for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(relativePath)) {
+            generationURI = generationURI.appendSegment(s);
+        }
+        return generationURI;
     }
 
     /**
@@ -107,8 +107,6 @@ public class GenconfToDocumentGenerator {
      *            template file
      * @param generatedFile
      *            generated file
-     * @param project
-     *            IProject
      * @return generated file and validation file if exists
      * @throws IOException
      *             if an I/O problem occurs
@@ -117,10 +115,10 @@ public class GenconfToDocumentGenerator {
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
      */
-    public List<IFile> generate(Generation generation, IProject project, IFile templateFile, IFile generatedFile)
+    public List<URI> generate(Generation generation, URI templateFile, URI generatedFile)
             throws IOException, DocumentParserException, DocumentGenerationException {
         // pre generation
-        preGenerate(generation, project, templateFile, generatedFile);
+        preGenerate(generation, templateFile, generatedFile);
 
         IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
 
@@ -135,20 +133,18 @@ public class GenconfToDocumentGenerator {
         boolean inError = validate(generatedFile, template, generation);
 
         // launch generation
-        DocumentGenerator generator = new DocumentGenerator(project.getLocation().toOSString(),
-                templateFile.getLocation().toFile().getAbsolutePath(),
-                generatedFile.getLocation().toFile().getAbsolutePath(), template, definitions, queryEnvironment,
-                generation);
+        DocumentGenerator generator = new DocumentGenerator(templateFile, generatedFile, template, definitions,
+                queryEnvironment, generation);
         generator.generate();
 
-        List<IFile> generatedFiles = Lists.newArrayList(generatedFile);
+        List<URI> generatedFiles = Lists.newArrayList(generatedFile);
         if (inError) {
-            IFile validationFile = getValidationLogFile(generatedFile);
+            URI validationFile = getValidationLogFile(generatedFile);
             generatedFiles.add(validationFile);
         }
 
         // post generation
-        generatedFiles.addAll(postGenerate(generation, project, templateFile, generatedFile, template, generator));
+        generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template, generator));
 
         return generatedFiles;
     }
@@ -158,16 +154,14 @@ public class GenconfToDocumentGenerator {
      * 
      * @param generation
      *            Generation
-     * @param project
-     *            IProject
      * @param templateFile
-     *            IFile
+     *            File
      * @param generatedFile
-     *            IFile
+     *            File
      */
-    public void preGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile) {
+    public void preGenerate(Generation generation, URI templateFile, URI generatedFile) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            configurationProvider.preGenerate(generation, project, templateFile, generatedFile);
+            configurationProvider.preGenerate(generation, templateFile, generatedFile);
         }
     }
 
@@ -176,24 +170,22 @@ public class GenconfToDocumentGenerator {
      * 
      * @param generation
      *            Generation
-     * @param project
-     *            IProject
      * @param templateFile
-     *            IFile
+     *            File
      * @param generatedFile
-     *            IFile
+     *            File
      * @param template
      *            DocumentTemplate
      * @param generator
      *            DocumentGenerator
-     * @return IFile list to return after the generation. Generation result and validation log are already in there.
+     * @return File list to return after the generation. Generation result and validation log are already in there.
      */
-    public List<IFile> postGenerate(Generation generation, IProject project, IFile templateFile, IFile generatedFile,
-            DocumentTemplate template, DocumentGenerator generator) {
-        List<IFile> files = Lists.newArrayList();
+    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
+            DocumentGenerator generator) {
+        List<URI> files = Lists.newArrayList();
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            List<IFile> postGenerateFiles = configurationProvider.postGenerate(generation, project, templateFile,
-                    generatedFile, template, generator);
+            List<URI> postGenerateFiles = configurationProvider.postGenerate(generation, templateFile, generatedFile,
+                    template, generator);
             if (postGenerateFiles != null) {
                 files.addAll(postGenerateFiles);
             }
@@ -205,14 +197,14 @@ public class GenconfToDocumentGenerator {
      * Create genconf model from templateInfo information.
      * 
      * @param templateFile
-     *            IFile
+     *            File
      * @return configuration model
      * @throws InvalidFormatException
      *             InvalidFormatException
      * @throws IOException
      *             IOException
      */
-    public Resource createConfigurationModel(IFile templateFile) throws IOException {
+    public Resource createConfigurationModel(URI templateFile) throws IOException {
         Resource resource = null;
         TemplateInfo templateInfo = POIServices.getInstance().getTemplateInformations(templateFile);
 
@@ -228,24 +220,23 @@ public class GenconfToDocumentGenerator {
      * 
      * @param templateInfo
      *            TemplateInfo
-     * @param templateFile
-     *            IFile
+     * @param templateURI
+     *            File
      * @return configuration model
      */
-    public Resource createConfigurationModel(TemplateInfo templateInfo, final IFile templateFile) {
+    public Resource createConfigurationModel(TemplateInfo templateInfo, final URI templateURI) {
         // pre model creation: by default nothing.
-        preCreateConfigurationModel(templateInfo, templateFile);
+        preCreateConfigurationModel(templateInfo, templateURI);
 
         // create genconf resource.
-        URI templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
         URI genConfURI = templateURI.trimFileExtension()
                 .appendFileExtension(ConfigurationServices.GENCONF_EXTENSION_FILE);
-        Resource resource = M2DocUtils.createResource(templateFile, genConfURI);
+        Resource resource = M2DocUtils.createResource(templateURI, genConfURI);
 
         // create initial model content.
         ConfigurationServices configurationServices = new ConfigurationServices();
         Generation rootObject = configurationServices.createInitialModel(genConfURI.trimFileExtension().lastSegment(),
-                templateFile.getProjectRelativePath().toString());
+                templateURI.deresolve(genConfURI).toString());
         // add docx properties
         TemplateConfigurationServices.getInstance().addProperties(rootObject, templateInfo);
         if (rootObject != null) {
@@ -255,7 +246,7 @@ public class GenconfToDocumentGenerator {
         M2DocUtils.saveResource(resource);
 
         // post model creation: by default nothing.
-        postCreateConfigurationModel(templateInfo, templateFile, rootObject);
+        postCreateConfigurationModel(templateInfo, templateURI, rootObject);
 
         // Save the contents of the resource to the file system.
         M2DocUtils.saveResource(resource);
@@ -268,11 +259,11 @@ public class GenconfToDocumentGenerator {
      * @param templateInfo
      *            TemplateInfo
      * @param templateFile
-     *            IFile
+     *            File
      * @param generation
      *            Generation
      */
-    public void postCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile, Generation generation) {
+    public void postCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile, Generation generation) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
             configurationProvider.postCreateConfigurationModel(templateInfo, templateFile, generation);
         }
@@ -284,9 +275,9 @@ public class GenconfToDocumentGenerator {
      * @param templateInfo
      *            TemplateInfo
      * @param templateFile
-     *            IFile
+     *            File
      */
-    public void preCreateConfigurationModel(TemplateInfo templateInfo, IFile templateFile) {
+    public void preCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
             configurationProvider.preCreateConfigurationModel(templateInfo, templateFile);
         }
@@ -313,14 +304,11 @@ public class GenconfToDocumentGenerator {
             throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
         }
 
-        // get project container
-        IResource configurationFile = ResourcesPlugin.getWorkspace().getRoot()
-                .findMember(generation.eResource().getURI().toPlatformString(true));
-        IProject project = configurationFile.getProject();
+        URI generationURI = generation.eResource().getURI();
 
         // get template and result file
-        IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
-        if (!templateFile.exists()) {
+        URI templateFile = generationURI.trimSegments(1).appendSegment(generation.getTemplateFileName());
+        if (!URIConverter.INSTANCE.exists(templateFile, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
         }
         // get acceleo environment
@@ -340,7 +328,7 @@ public class GenconfToDocumentGenerator {
      * Validate template with templateInfo information.
      * 
      * @param templateFile
-     *            IFile
+     *            File
      * @param template
      *            DocumentTemplate
      * @param generation
@@ -351,17 +339,16 @@ public class GenconfToDocumentGenerator {
      * @throws IOException
      *             IOException
      */
-    public boolean validate(IFile templateFile, DocumentTemplate template, Generation generation)
+    public boolean validate(URI templateFile, DocumentTemplate template, Generation generation)
             throws DocumentGenerationException, IOException {
         // pre template validation
         preValidateTemplate(templateFile, template, generation);
-        IFile validationFile = getValidationLogFile(templateFile);
+        URI validationFile = getValidationLogFile(templateFile);
 
         final TemplateValidator validator = new TemplateValidator();
 
         validator.validate(template, generation);
-        TemplateGenerator generator = new TemplateGenerator(validationFile.getLocation().toFile().getAbsolutePath(),
-                template);
+        TemplateGenerator generator = new TemplateGenerator(validationFile, template);
         boolean validationResult = generator.generate();
         return validationResult && postValidateTemplate(templateFile, template, generation, generator);
     }
@@ -370,7 +357,7 @@ public class GenconfToDocumentGenerator {
      * Post template validation.
      * 
      * @param templateFile
-     *            IFile
+     *            File
      * @param template
      *            DocumentTemplate
      * @param generation
@@ -379,7 +366,7 @@ public class GenconfToDocumentGenerator {
      *            TemplateGenerator
      * @return validation result.
      */
-    public boolean postValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation,
+    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation,
             TemplateGenerator generator) {
         boolean validate = true;
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
@@ -393,13 +380,13 @@ public class GenconfToDocumentGenerator {
      * Pre template validation.
      * 
      * @param templateFile
-     *            IFile
+     *            File
      * @param template
      *            DocumentTemplate
      * @param generation
      *            Generation
      */
-    public void preValidateTemplate(IFile templateFile, DocumentTemplate template, Generation generation) {
+    public void preValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
             configurationProvider.preValidateTemplate(templateFile, template, generation);
         }
@@ -409,7 +396,7 @@ public class GenconfToDocumentGenerator {
      * Validate template with templateInfo information.
      * 
      * @param templateFile
-     *            IFile
+     *            File
      * @param template
      *            DocumentTemplate
      * @param generation
@@ -422,29 +409,29 @@ public class GenconfToDocumentGenerator {
      * @throws IOException
      *             IOException
      */
-    public boolean validate(IFile templateFile, DocumentTemplate template, Generation generation,
+    public boolean validate(URI templateFile, DocumentTemplate template, Generation generation,
             IReadOnlyQueryEnvironment queryEnvironment) throws DocumentGenerationException, IOException {
-        IFile validationFile = getValidationLogFile(templateFile);
+        URI validationFile = getValidationLogFile(templateFile);
 
         final TemplateValidator validator = new TemplateValidator();
-        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
-        validator.validate(template, generation, queryEnvironment, types);
-        TemplateGenerator generator = new TemplateGenerator(validationFile.getLocation().toFile().getAbsolutePath(),
-                template);
-        return generator.generate();
+
+        validator.validate(template, generation);
+        TemplateGenerator generator = new TemplateGenerator(validationFile, template);
+        boolean validationResult = generator.generate();
+        return validationResult && postValidateTemplate(templateFile, template, generation, generator);
     }
 
     /**
      * return validation log file.
      * 
      * @param file
-     *            IFile
+     *            File
      * @return validation log file.
      */
-    public IFile getValidationLogFile(IFile file) {
-        String validationPath = file.getProjectRelativePath().removeFileExtension().toString() + "-error."
-            + file.getFileExtension();
-        IFile validationFile = file.getProject().getFile(new Path(validationPath));
+    public URI getValidationLogFile(URI file) {
+        URI validationFile = file.trimSegments(1)
+                .appendSegment(Files.getNameWithoutExtension(file.lastSegment()) + "-error")
+                .appendFileExtension(file.fileExtension());
         return validationFile;
     }
 }

@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.userdoc.test;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -43,7 +44,7 @@ public class UserContentManagerTest {
      */
     @Test
     public void testWithNoExistLastDestinationFile() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager("no_exist_file_path");
+        UserContentManager userContentManager = new UserContentManager(URI.createFileURI("no_exist_file_path"));
 
         assertNull(userContentManager.getUserContent("noExistid1"));
 
@@ -61,22 +62,35 @@ public class UserContentManagerTest {
     public void testDeleteTempDestinationFile() throws IOException, DocumentParserException {
         String fileName = "testUserContent2.docx";
         String filePath = "userContent/" + fileName;
-        File destFile = new File(filePath);
+        File destFile = null;
+        UserContentManager userContentManager = null;
+        try {
+            destFile = File.createTempFile("testDeleteTempDestinationFile", "");
 
-        // Before userContentManager creation temp file not exist
-        File tempFile = findFirstTempFile(fileName, destFile);
-        assertNull(tempFile);
+            // Before userContentManager creation temp file not exist
+            File tempFile = findFirstTempFile(fileName, destFile);
+            assertNull(tempFile);
 
-        UserContentManager userContentManager = new UserContentManager(filePath);
+            userContentManager = new UserContentManager(URI.createFileURI(filePath));
 
-        // After userContentManager creation temp file exist
-        tempFile = findFirstTempFile(fileName, destFile);
-        assertNotNull(tempFile);
-        assertTrue(tempFile.exists());
+            // After userContentManager creation temp file exist
+            tempFile = findFirstTempFile(fileName, destFile);
+            assertNotNull(tempFile);
+            assertTrue(tempFile.exists());
 
-        userContentManager.dispose();
-        // After launch deleteTempGeneratedFile method temp file no exist
-        assertFalse(tempFile.exists());
+            userContentManager.dispose();
+            // After launch deleteTempGeneratedFile method temp file no exist
+            assertFalse(tempFile.exists());
+        } finally {
+
+            if (destFile != null) {
+                destFile.delete();
+            }
+            if (userContentManager != null) {
+                userContentManager.dispose();
+            }
+
+        }
 
     }
 
@@ -110,7 +124,8 @@ public class UserContentManagerTest {
      */
     @Test
     public void testLastDestinationFileContainNoUserContent() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager("userContent/testUserContent2.docx");
+        UserContentManager userContentManager = new UserContentManager(
+                URI.createFileURI("userContent/testUserContent2.docx"));
         // CHECKSTYLE:OFF
         assertNull(userContentManager.getUserContent("noExistid2"));
         // CHECKSTYLE:ON
@@ -127,7 +142,8 @@ public class UserContentManagerTest {
      */
     @Test
     public void testLastDestinationFileContainOneUserContent() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager("userContent/testUserContent1.docx");
+        UserContentManager userContentManager = new UserContentManager(
+                URI.createFileURI("userContent/testUserContent1.docx"));
 
         assertNull(userContentManager.getUserContent("noExistid2"));
         UserContent userContent = userContentManager.getUserContent("value1");
@@ -147,7 +163,8 @@ public class UserContentManagerTest {
      */
     @Test
     public void testLastDestinationFileContain3UserContent() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager("userContent/testUserContent4.docx");
+        UserContentManager userContentManager = new UserContentManager(
+                URI.createFileURI("userContent/testUserContent4.docx"));
 
         assertNull(userContentManager.getUserContent("noExistid2"));
 

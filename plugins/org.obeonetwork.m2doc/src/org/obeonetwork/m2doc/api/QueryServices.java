@@ -115,7 +115,7 @@ public final class QueryServices {
         for (String nsURI : packageURIs) {
             EPackage p = EPackage.Registry.INSTANCE.getEPackage(nsURI);
             if (p == null) {
-                M2DocPlugin.getDefault().getLog().log(
+                M2DocPlugin.INSTANCE.log(
                         new Status(Status.WARNING, M2DocPlugin.PLUGIN_ID, "Couldn't find package with nsURI " + nsURI));
             } else {
                 queryEnvironment.registerEPackage(p);
@@ -173,7 +173,7 @@ public final class QueryServices {
      * @return the {@link IType} from variables
      */
     public Map<String, Set<IType>> getTypes(IReadOnlyQueryEnvironment environment, Generation generation) {
-        final Map<String, Set<IType>> res = new HashMap<String, Set<IType>>();
+        final Map<String, Set<IType>> res = new HashMap<>();
 
         // create definitions
         ConfigurationServices configurationServices = new ConfigurationServices();
@@ -199,7 +199,7 @@ public final class QueryServices {
      * @return the {@link IType} from variables
      */
     public Set<IType> getTypes(IReadOnlyQueryEnvironment environment, Object value) {
-        final Set<IType> types = new LinkedHashSet<IType>();
+        final Set<IType> types = new LinkedHashSet<>();
         if (value instanceof EObject) {
             types.add(new EClassifierType(environment, ((EObject) value).eClass()));
         } else if (value instanceof List) {

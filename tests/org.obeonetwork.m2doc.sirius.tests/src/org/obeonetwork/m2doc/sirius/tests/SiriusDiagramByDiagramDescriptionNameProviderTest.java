@@ -19,6 +19,7 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.genconf.Generation;
@@ -48,6 +49,11 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
         siriusDiagramProvider = new SiriusDiagramByDiagramDescriptionNameProvider();
     }
 
+    @After
+    public void removeTempFolders() throws Exception {
+        siriusDiagramProvider.clear();
+    }
+
     /**
      * Tests
      * {@link SiriusDiagramByDiagramDescriptionNameProvider#getRepresentationImagePath(Map)}
@@ -62,10 +68,9 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
      */
     @Test
     public void testAllOptionPresentAndCorrect() throws ProviderException {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -89,10 +94,9 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
      */
     @Test
     public void testNoRootObject() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -116,10 +120,9 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
      */
     @Test
     public void testDiagramDescriptionInvalid() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -142,10 +145,9 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
      */
     @Test
     public void testDiagramDescriptionNotPresent() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
@@ -171,10 +173,9 @@ public class SiriusDiagramByDiagramDescriptionNameProviderTest extends AbstractM
      */
     @Test
     public void testNoResult() throws ProviderException {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         Generation generation = (Generation) getSemanticResource().getContents().get(0);
         options.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        options.put(ProviderConstants.PROJECT_ROOT_PATH_KEY, "org.obeonetwork.m2doc.sirius.tests");
         // CHECKSTYLE:OFF
         options.put(ProviderConstants.IMAGE_HEIGHT_KEY, 500);
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);

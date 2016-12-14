@@ -19,6 +19,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.xmlbeans.XmlException;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.generator.UserContentManager;
@@ -49,7 +50,7 @@ public class UserContentRawCopyTest {
     // CHECKSTYLE:OFF
     public void test() throws IOException, DocumentParserException, InvalidFormatException, XmlException {
         String filePath = "userContent/testUserContent2.docx";
-        UserContentManager userContentManager = new UserContentManager(filePath);
+        UserContentManager userContentManager = new UserContentManager(URI.createFileURI(filePath));
         UserContent userContent = userContentManager.getUserContent("value1");
 
         // Create an empty document
@@ -63,7 +64,7 @@ public class UserContentRawCopyTest {
             userContentRawCopy.copy(userContent, paragraph, paragraph.getDocument());
 
             String resultFilePath = "results/generated/testUserDoc2RowCopyResultat.docx";
-            POIServices.getInstance().saveFile(document, resultFilePath);
+            POIServices.getInstance().saveFile(document, URI.createFileURI(resultFilePath));
             document.close();
 
             userContentManager.dispose();

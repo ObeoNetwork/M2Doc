@@ -62,7 +62,7 @@
                   ServiceHolder that&apos;s used to convey a service package.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.obeonetwork.m2doc.service.IServiceHolder"/>
+                  <meta.attribute kind="java" basedOn=":org.obeonetwork.m2doc.services.IServiceHolder"/>
                </appinfo>
             </annotation>
          </attribute>

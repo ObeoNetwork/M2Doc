@@ -62,6 +62,8 @@ public final class ProviderRegistry {
      */
     public void clear() {
         this.registry.clear();
+        this.diagramProviders.clear();
+        this.tableProviders.clear();
     }
 
     /**
@@ -73,17 +75,17 @@ public final class ProviderRegistry {
     public void registerProvider(IProvider provider) {
         String classQualifiedName = provider.getClass().getName();
         if (registry.get(classQualifiedName) != null) {
-            M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
                     "Problem while registering M2Doc Providers : the provider \"" + classQualifiedName
                         + "\" is already registered. The current implementation will not be used."));
         } else {
             registry.put(classQualifiedName, provider);
-        }
-        if (provider instanceof AbstractDiagramProvider) {
-            if (((AbstractDiagramProvider) provider).isDefault()) {
-                diagramProviders.add(0, provider);
-            } else {
-                diagramProviders.add(provider);
+            if (provider instanceof AbstractDiagramProvider) {
+                if (((AbstractDiagramProvider) provider).isDefault()) {
+                    diagramProviders.add(0, provider);
+                } else {
+                    diagramProviders.add(provider);
+                }
             }
         }
     }
@@ -97,13 +99,13 @@ public final class ProviderRegistry {
     public void registerTableProvider(AbstractTableProvider provider) {
         String classQualifiedName = provider.getClass().getName();
         if (registry.get(classQualifiedName) != null) {
-            M2DocPlugin.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
                     "Problem while registering M2Doc Providers : the provider \"" + classQualifiedName
                         + "\" is already registered. The current implementation will not be used."));
         } else {
             registry.put(classQualifiedName, provider);
+            tableProviders.add(provider);
         }
-        tableProviders.add(provider);
     }
 
     /**

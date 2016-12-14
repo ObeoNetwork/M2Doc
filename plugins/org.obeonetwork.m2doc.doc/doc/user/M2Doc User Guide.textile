@@ -57,33 +57,32 @@ M2Doc provides a way to extend its information retrieval for a tag by registerin
 
 h4. Sirius diagram provider
 
-M2doc gives a way to insert Sirius diagrams: you have to install the Sirius provider feature coming with M2Doc installation.
+M2doc provides the @m:diagram@ tag to insert Sirius diagrams into documents. There are two ways to insert a diagram:
+* by the diagram title : the __title__ option can be used to specify the title of the representation that must be inserted. 
+* by the description Id and the representation's semantic object : the __descriptionId__ option must be used to specify which representation must be inserted and the __object__ option must be used to provide the semantic object of the selected representation.
 
-The diagram tag has the following syntax: @{m:diagram}@, with the following options:
+In the second case , the __create__ option can be used to specify whether the representation must be created if absent on the specified object. In case the create option is set to the "true" string and the representation is absent, it is created, inserted into the generated document and cleaned.
+gives a way to insert Sirius diagrams: you have to install the Sirius provider feature coming with M2Doc installation. 
 
-* __title__ : AQL expression, mandatory if you want to get a diagram by its name. Be careful, as it is an AQL expression, if you just want to put a string, you have to add some'' around the string: title:"'diagram name'",
+With both diagram providers, when several representations fit the selection criteria, all the fitting representations are inserted in the generated documentation. 
+The diagram tag admits the following complementary and non mandatory options:
 
 * __width__ : integer, optional, by default the diagram export real width,
-
 * __height__ : integer, optional, by default the diagram export real height,
-
 * __layers__ : string list, optional, to define the layers to display (the default layer is always displayed),
-
 * __provider__ : Java class qualified name, optional. Use to define your own way to get a Sirius diagram.
 
-The default way to get a diagram is by its name. If several diagrams have the same name, it will get the first.
 
-However, if the behavior is not enough, you can define your own diagram provider and refers it in 'provider' option tag. See the developer guide to add one.
+In case these two diagrams providers (by title and by descriptionId and object) are not what you are looking for, you can contribute you're own diagram provider. See the developer guide to learn how.
 
 Some examples:
 
 * @m:diagram title:"'Diagram name'"@: get the first diagram named 'Diagram name' in the modeling project. The diagram size is the export image size. 
-
 * @m:diagram title:"self.name"@: if 'self.name' is 'My Diagram', get the first diagram named 'My Diagram' in the modeling project. 
-
 * @m:diagram title:"'Diagram name'" width:"200" height:"200"@:  get the first diagram named 'Diagram name' in the modeling project. The diagram picture will be resize to 200x200.
-
 * @m:diagram title:"'Diagram name'" layers:"layer1, layer2"@: get the first diagram named 'Diagram name' in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
+* @m:diagram descriptionId:"class diagram" object:"self" layers:"layer1, layer2"@: get the first diagram named 'Diagram name' in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
+* @m:diagram descriptionId:"class diagram" object:"self" create:"true" layers:"layer1, layer2"@: get the first diagram named 'Diagram name' in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
 
 **Warning**: do not forget the ' around the string in an AQL Expression: @title:"'Diagram name'"@
 

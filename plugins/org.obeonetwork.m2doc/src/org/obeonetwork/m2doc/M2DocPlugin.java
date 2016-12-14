@@ -1,14 +1,3 @@
-package org.obeonetwork.m2doc;
-
-import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
-import org.obeonetwork.m2doc.provider.DeclaredProviderListener;
-import org.obeonetwork.m2doc.provider.IProvider;
-import org.osgi.framework.BundleContext;
-
 /*******************************************************************************
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
@@ -21,12 +10,23 @@ import org.osgi.framework.BundleContext;
  *  
  *******************************************************************************/
 
+package org.obeonetwork.m2doc;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.ResourceLocator;
+import org.obeonetwork.m2doc.provider.DeclaredProviderListener;
+import org.obeonetwork.m2doc.provider.IProvider;
+import org.osgi.framework.BundleContext;
+
 /**
  * Plugin's activator class.
  * 
  * @author PGUILET_OBEO
  */
-public class M2DocPlugin extends Plugin {
+public class M2DocPlugin extends EMFPlugin {
 
     /**
      * Plugin's id.
@@ -41,7 +41,12 @@ public class M2DocPlugin extends Plugin {
     /**
      * The shared instance.
      */
-    private static M2DocPlugin plugin;
+    public static final M2DocPlugin INSTANCE = new M2DocPlugin();
+
+    /**
+     * The implementation plugin for Eclipse.
+     */
+    private static Implementation plugin;
     /**
      * Register/unregister {@link IProvider} provided by plugins.
      */
@@ -51,32 +56,57 @@ public class M2DocPlugin extends Plugin {
      * The constructor.
      */
     public M2DocPlugin() {
-        // not used
+        super(new ResourceLocator[] {});
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-     */
     @Override
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
-        plugin = this;
-        providerListener = new DeclaredProviderListener();
-        Platform.getExtensionRegistry().addListener(providerListener);
+    public ResourceLocator getPluginResourceLocator() {
+        return plugin;
     }
 
-    /*
-     * (non-Javadoc)
+    public static Implementation getPlugin() {
+        return plugin;
+    }
+
+    /**
+     * Class implementing the EclipsePlugin instance, instanciated when the code is run in an OSGi context.
      * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     * @author cedric
      */
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        plugin = null;
-        super.stop(context);
-        Platform.getExtensionRegistry().removeListener(providerListener);
+    public static class Implementation extends EclipsePlugin {
+        /**
+         * Create the Eclipse Implementation.
+         */
+        public Implementation() {
+            super();
+
+            // Remember the static instance.
+            //
+            plugin = this;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
+         */
+        @Override
+        public void start(BundleContext context) throws Exception {
+            super.start(context);
+            INSTANCE.providerListener = new DeclaredProviderListener();
+            Platform.getExtensionRegistry().addListener(INSTANCE.providerListener);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+         */
+        @Override
+        public void stop(BundleContext context) throws Exception {
+            super.stop(context);
+            Platform.getExtensionRegistry().removeListener(INSTANCE.providerListener);
+        }
     }
 
     /**
@@ -85,7 +115,7 @@ public class M2DocPlugin extends Plugin {
      * @return the shared instance.
      */
     public static M2DocPlugin getDefault() {
-        return plugin;
+        return INSTANCE;
     }
 
     /**
@@ -102,30 +132,7 @@ public class M2DocPlugin extends Plugin {
         if (blocker) {
             severity = IStatus.ERROR;
         }
-        ILog log = getDefault().getLog();
-        if (getDefault() != null) {
-            log.log(new Status(severity, PLUGIN_ID, exception.getMessage(), exception));
-        } else {
-            // We are out of eclipse. Prints the message on standard error.
-            System.err.println(exception.getMessage());
-            exception.printStackTrace();
-        }
-    }
-
-    /**
-     * Puts the given status in the error log view.
-     * 
-     * @param status
-     *            Error Status.
-     */
-    public static void log(IStatus status) {
-        if (getDefault() != null) {
-            getDefault().getLog().log(status);
-        } else {
-            // We are out of eclipse. Prints the message on standard error.
-            System.err.println(status.getMessage());
-            status.getException().printStackTrace();
-        }
+        M2DocPlugin.INSTANCE.log(new Status(severity, PLUGIN_ID, exception.getMessage(), exception));
     }
 
     /**
@@ -138,19 +145,14 @@ public class M2DocPlugin extends Plugin {
      *            warning.
      */
     public static void log(String message, boolean blocker) {
-        if (getDefault() == null) {
-            // We are out of eclipse. Prints the message on standard error.
-            System.err.println(message);
-        } else {
-            int severity = IStatus.WARNING;
-            if (blocker) {
-                severity = IStatus.ERROR;
-            }
-            String errorMessage = message;
-            if (errorMessage == null || "".equals(errorMessage)) { //$NON-NLS-1$
-                errorMessage = "Logging null message should never happens."; //$NON-NLS-1$
-            }
-            log(new Status(severity, PLUGIN_ID, errorMessage));
+        int severity = IStatus.WARNING;
+        if (blocker) {
+            severity = IStatus.ERROR;
         }
+        String errorMessage = message;
+        if (errorMessage == null || "".equals(errorMessage)) { //$NON-NLS-1$
+            errorMessage = "Logging null message should never happens."; //$NON-NLS-1$
+        }
+        M2DocPlugin.INSTANCE.log(new Status(severity, PLUGIN_ID, errorMessage));
     }
 }

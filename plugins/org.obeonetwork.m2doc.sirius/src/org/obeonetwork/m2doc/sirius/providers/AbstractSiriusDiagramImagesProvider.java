@@ -12,12 +12,15 @@
 package org.obeonetwork.m2doc.sirius.providers;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.io.Files;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -77,6 +80,8 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
      * True mean refresh, and default value is false.
      */
     protected boolean refreshRepresentations;
+
+    private Set<File> foldersToCleanup = Sets.newLinkedHashSet();
 
     /**
      * Replace forbidden characters with "_" in a filename.
@@ -350,6 +355,37 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
             }
         }
         return null;
+    }
+
+    /**
+     * @return
+     */
+    protected String createTempFolderPath() {
+        File tempFolder = Files.createTempDir();
+        foldersToCleanup.add(tempFolder);
+        return tempFolder.getAbsolutePath();
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        for (File file : foldersToCleanup) {
+            removeDirectory(file);
+        }
+    }
+
+    private void removeDirectory(File dir) {
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files != null && files.length > 0) {
+                for (File aFile : files) {
+                    removeDirectory(aFile);
+                }
+            }
+            dir.delete();
+        } else {
+            dir.delete();
+        }
     }
 
 }

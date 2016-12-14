@@ -22,10 +22,6 @@ public interface ProviderConstants {
      */
     String CONF_ROOT_OBJECT_KEY = "confRootObject";
     /**
-     * The key used in the map passed to {@link IProvider} to define the root path of the project source of the document generation.
-     */
-    String PROJECT_ROOT_PATH_KEY = "projectRootPath";
-    /**
      * The key used in the map passed to {@link IProvider} to define the height the image should have. Value associated is of type int.
      */
     String IMAGE_HEIGHT_KEY = "imageHeight";

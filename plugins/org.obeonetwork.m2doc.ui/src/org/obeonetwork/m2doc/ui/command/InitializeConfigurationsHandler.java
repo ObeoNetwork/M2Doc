@@ -19,6 +19,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -53,9 +54,10 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
             if (selected instanceof IFile) {
                 try {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    Resource configurationModel = generator.createConfigurationModel((IFile) selected);
+                    Resource configurationModel = generator.createConfigurationModel(
+                            URI.createPlatformResourceURI((((IFile) selected).getFullPath().toString()), true));
                     MessageDialog.openInformation(shell, "M2Doc generation", "The configuration file '"
-                        + configurationModel.getURI().toPlatformString(true) + "' has been created.");
+                        + configurationModel.getURI().toPlatformString(true) + "' is created.");
                 } catch (FileNotFoundException e) {
                     Activator.getDefault().getLog()
                             .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));

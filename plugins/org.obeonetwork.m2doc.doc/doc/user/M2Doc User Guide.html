@@ -73,56 +73,59 @@
 		<h3 id="M2Docdynamicgenerationtags">M2Doc dynamic generation tags</h3>
 		<p>M2Doc provides a way to extend its information retrieval for a tag by registering a provider by an extension point. Each provider uses its own options in addition of the one generically provided par M2Doc core. Many providers can be associated to a same kind of tag and any one of those can be choose to retrieve information in a tag. </p>
 		<h4 id="Siriusdiagramprovider">Sirius diagram provider</h4>
-		<p>M2doc gives a way to insert Sirius diagrams: you have to install the Sirius provider feature coming with M2Doc installation.</p>
-		<p>The diagram tag has the following syntax: 
-			<code>{m:diagram}</code>, with the following options:
+		<p>M2doc provides the 
+			<code>m:diagram</code> tag to insert Sirius diagrams into documents. There are two ways to insert a diagram:
 		</p>
 		<ul>
-			<li>
-				<i>title</i> : AQL expression, mandatory if you want to get a diagram by its name. Be careful, as it is an AQL expression, if you just want to put a string, you have to add some'' around the string: title:&#171;'diagram name'&#187;,
+			<li>by the diagram title : the 
+				<i>title</i> option can be used to specify the title of the representation that must be inserted. 
+			</li>
+			<li>by the description Id and the representation&#8217;s semantic object : the 
+				<i>descriptionId</i> option must be used to specify which representation must be inserted and the 
+				<i>object</i> option must be used to provide the semantic object of the selected representation.
 			</li>
 		</ul>
+		<p>In the second case , the 
+			<i>create</i> option can be used to specify whether the representation must be created if absent on the specified object. In case the create option is set to the &#171;true&#187; string and the representation is absent, it is created, inserted into the generated document and cleaned.
+			<br/>gives a way to insert Sirius diagrams: you have to install the Sirius provider feature coming with M2Doc installation. 
+		</p>
+		<p>With both diagram providers, when several representations fit the selection criteria, all the fitting representations are inserted in the generated documentation. 
+			<br/>The diagram tag admits the following complementary and non mandatory options:
+		</p>
 		<ul>
 			<li>
 				<i>width</i> : integer, optional, by default the diagram export real width,
 			</li>
-		</ul>
-		<ul>
 			<li>
 				<i>height</i> : integer, optional, by default the diagram export real height,
 			</li>
-		</ul>
-		<ul>
 			<li>
 				<i>layers</i> : string list, optional, to define the layers to display (the default layer is always displayed),
 			</li>
-		</ul>
-		<ul>
 			<li>
 				<i>provider</i> : Java class qualified name, optional. Use to define your own way to get a Sirius diagram.
 			</li>
 		</ul>
-		<p>The default way to get a diagram is by its name. If several diagrams have the same name, it will get the first.</p>
-		<p>However, if the behavior is not enough, you can define your own diagram provider and refers it in &#8249;provider&#8250; option tag. See the developer guide to add one.</p>
+		<p>In case these two diagrams providers (by title and by descriptionId and object) are not what you are looking for, you can contribute you&#8217;re own diagram provider. See the developer guide to learn how.</p>
 		<p>Some examples:</p>
 		<ul>
 			<li>
 				<code>m:diagram title:"'Diagram name'"</code>: get the first diagram named &#8249;Diagram name&#8250; in the modeling project. The diagram size is the export image size. 
 			</li>
-		</ul>
-		<ul>
 			<li>
 				<code>m:diagram title:"self.name"</code>: if &#8249;self.name&#8250; is &#8249;My Diagram&#8250;, get the first diagram named &#8249;My Diagram&#8250; in the modeling project. 
 			</li>
-		</ul>
-		<ul>
 			<li>
 				<code>m:diagram title:"'Diagram name'" width:"200" height:"200"</code>:  get the first diagram named &#8249;Diagram name&#8250; in the modeling project. The diagram picture will be resize to 200x200.
 			</li>
-		</ul>
-		<ul>
 			<li>
 				<code>m:diagram title:"'Diagram name'" layers:"layer1, layer2"</code>: get the first diagram named &#8249;Diagram name&#8250; in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
+			</li>
+			<li>
+				<code>m:diagram descriptionId:"class diagram" object:"self" layers:"layer1, layer2"</code>: get the first diagram named &#8249;Diagram name&#8250; in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
+			</li>
+			<li>
+				<code>m:diagram descriptionId:"class diagram" object:"self" create:"true" layers:"layer1, layer2"</code>: get the first diagram named &#8249;Diagram name&#8250; in the modeling project and apply the two layers layer1 and layer2. The current diagram is not modified.
 			</li>
 		</ul>
 		<p>
