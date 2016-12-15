@@ -129,7 +129,7 @@ public class DocumentParserErrorsTest {
         assertTemplateValidationMessage(conditionnal.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Unexpected tag EOF at this location", lastRun);
         assertTemplateValidationMessage(conditionnal.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
-                "gd:elseif, gd:else or gd:endif expected here.", conditionnal.getRuns().get(3));
+                "m:elseif, m:else or m:endif expected here.", conditionnal.getRuns().get(3));
     }
 
     /**
@@ -191,7 +191,7 @@ public class DocumentParserErrorsTest {
         assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Unexpected tag EOF at this location", lastRun);
         assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
-                "gd:elseif, gd:else or gd:endif expected here.", elseIfBranch.getRuns().get(3));
+                "m:elseif, m:else or m:endif expected here.", elseIfBranch.getRuns().get(3));
     }
 
     /**

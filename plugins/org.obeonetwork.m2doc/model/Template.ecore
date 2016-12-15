@@ -16,8 +16,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Conditionnal" eSuperTypes="#//Compound">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
       <details key="constraints" value="AlternativeExcludeElse"/>
-      <details key="documentation" value="Si l'expression expr est évaluée à true dans le contexte courant alors l'ensemble de la balise jusqu'à la balise gd:endif comprisee est remplacée par le traitement de runs1 dans le contexte courant. Sinon, l'ensemble des balises est remplacée par le traitement du premier run_n tel que l'expression expr de la balise gd:elseif associée est évaluée à vrai. Si aucune telle balise n'est présente ou si aucune d'entre-elle porte une expression évaluée à true, le résultat du traitement de run_else, si la balise gd:else est présente, dans le contexte courant est inséré à la place de l'ensemble des balises"/>
-      <details key="syntax" value="{gd:if expr} runs1 [{gd:elseif &lt;expr>} runs_n]* [{gd:else} run_else]{gd:endif}"/>
+      <details key="documentation" value="Si l'expression expr est évaluée à true dans le contexte courant alors l'ensemble de la balise jusqu'à la balise m:endif comprisee est remplacée par le traitement de runs1 dans le contexte courant. Sinon, l'ensemble des balises est remplacée par le traitement du premier run_n tel que l'expression expr de la balise m:elseif associée est évaluée à vrai. Si aucune telle balise n'est présente ou si aucune d'entre-elle porte une expression évaluée à true, le résultat du traitement de run_else, si la balise m:else est présente, dans le contexte courant est inséré à la place de l'ensemble des balises"/>
+      <details key="syntax" value="{m:if expr} runs1 [{m:elseif &lt;expr>} runs_n]* [{m:else} run_else]{m:endif}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="alternative" eType="#//Conditionnal"
         containment="true"/>
@@ -27,8 +27,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Repetition" eSuperTypes="#//Compound">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="documentation" value="pour chaque valeur v dans le résultat de l'évaluation de query, &#xD;&#xA;- un nouveau contexte est crée en ajoutant la définition 'var =v' au contexte courant&#xD;&#xA;- le résultat du traitement du corps runs est inséré dans le document &#xD;&#xA;les balises {gd:for} et {gd:endfor} sont supprimées.&#xD;&#xA;Si la balise {gd:for} est immédiatement suivie d'un retour chariot alors l'ensemble du paragraphe la contenant est supprimée du résultat sinon, le paragraphe duquel on a supprimé la balise est inséré dans le résultat. Le même traitement est appliqué à la balise {gd:endfor}"/>
-      <details key="syntax" value="{gd:for var | query} body {gd:endfor}"/>
+      <details key="documentation" value="pour chaque valeur v dans le résultat de l'évaluation de query, &#xD;&#xA;- un nouveau contexte est crée en ajoutant la définition 'var =v' au contexte courant&#xD;&#xA;- le résultat du traitement du corps runs est inséré dans le document &#xD;&#xA;les balises {m:for} et {m:endfor} sont supprimées.&#xD;&#xA;Si la balise {m:for} est immédiatement suivie d'un retour chariot alors l'ensemble du paragraphe la contenant est supprimée du résultat sinon, le paragraphe duquel on a supprimé la balise est inséré dans le résultat. Le même traitement est appliqué à la balise {m:endfor}"/>
+      <details key="syntax" value="{m:for var | query} body {m:endfor}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iterationVar" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="#//AstResult"/>

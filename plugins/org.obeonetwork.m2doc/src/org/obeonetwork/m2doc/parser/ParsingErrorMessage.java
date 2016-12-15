@@ -20,7 +20,7 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when a cnoditionnal end tag is expected.
      */
-    CONDTAGEXPEXTED("gd:elseif, gd:else or gd:endif expected here."),
+    CONDTAGEXPEXTED("m:elseif, m:else or m:endif expected here."),
     /**
      * Error message issued when unexpected tag is encountered.
      */
