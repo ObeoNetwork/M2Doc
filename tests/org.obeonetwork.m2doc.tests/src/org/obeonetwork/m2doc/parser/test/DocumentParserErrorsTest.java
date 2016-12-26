@@ -17,7 +17,6 @@ import java.io.IOException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.junit.Test;
@@ -25,15 +24,12 @@ import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.template.Compound;
-import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidationMessage;
@@ -87,159 +83,7 @@ public class DocumentParserErrorsTest {
      *             DocumentParserException
      */
     @Test
-    public void testConditionnalError1() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testInvalidConditionnal1.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
-        Conditional conditionnal = (Conditional) template.getSubConstructs().get(0);
-        assertEquals(1, conditionnal.getValidationMessages().size());
-        assertTemplateValidationMessage(conditionnal.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Expression \"x=\" is invalid: missing expression", conditionnal.getRuns().get(6));
-    }
 
-    /**
-     * Tests the error reporting on a conditionnal without an m:endif tag.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testConditionnalError2() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testInvalidConditionnal2.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
-        Conditional conditionnal = (Conditional) template.getSubConstructs().get(0);
-        assertEquals(1, conditionnal.getValidationMessages().size());
-        final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
-        final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-        assertTemplateValidationMessage(conditionnal.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "gd:elseif, gd:else or gd:endif expected here.", conditionnal.getRuns().get(3));
-
-        assertEquals(1, conditionnal.getThen().getValidationMessages().size());
-        assertTemplateValidationMessage(conditionnal.getThen().getValidationMessages().get(0),
-                ValidationMessageLevel.ERROR, "Unexpected tag EOF at this location", lastRun);
-    }
-
-    /**
-     * Tests the error reporting on a conditional tag with an else without an
-     * m:endif tag.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testConditionnalError3() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testInvalidConditionnal3.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
-        Compound elseBranch = ((Conditional) template.getSubConstructs().get(0)).getElse();
-        assertNotNull(elseBranch);
-        assertEquals(1, elseBranch.getValidationMessages().size());
-        final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
-        final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-        assertTemplateValidationMessage(elseBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Unexpected tag EOF at this location", lastRun);
-    }
-
-    /**
-     * Tests the error reporting on a conditional tag with a syntactically
-     * invalid expression.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testConditionnalError4() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testInvalidConditionnal4.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
-        Conditional elseIfBranch = (Conditional) ((Conditional) template.getSubConstructs().get(0)).getElse()
-                .getSubConstructs().get(0);
-        assertNotNull(elseIfBranch);
-        assertEquals(1, elseIfBranch.getValidationMessages().size());
-        final XWPFParagraph lastParagraph = document.getParagraphs().get(document.getParagraphs().size() - 1);
-        final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-        assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "gd:elseif, gd:else or gd:endif expected here.", elseIfBranch.getRuns().get(3));
-
-        assertEquals(1, elseIfBranch.getThen().getValidationMessages().size());
-        assertTemplateValidationMessage(elseIfBranch.getThen().getValidationMessages().get(0),
-                ValidationMessageLevel.ERROR, "Unexpected tag EOF at this location", lastRun);
-    }
-
-    /**
-     * Tests the error reporting on a conditional tag with a syntactically
-     * invalid expression.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testConditionnalError5() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testInvalidConditionnal5.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Conditional);
-        Conditional elseIfBranch = (Conditional) ((Conditional) template.getSubConstructs().get(0)).getElse()
-                .getSubConstructs().get(0);
-        assertNotNull(elseIfBranch);
-        assertEquals(1, elseIfBranch.getValidationMessages().size());
-        assertTemplateValidationMessage(elseIfBranch.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Expression \"x=\" is invalid: missing expression", elseIfBranch.getRuns().get(4));
-    }
-
-    /**
-     * Tests the error reporting on a conditional tag with a syntactically
-     * invalid expression.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
     public void testVarRefError() throws InvalidFormatException, IOException, DocumentParserException {
         FileInputStream is = new FileInputStream("templates/testVarInvalid.docx");
         OPCPackage oPackage = OPCPackage.open(is);

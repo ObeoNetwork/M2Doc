@@ -1,0 +1,8 @@
+template null
+  Basic if demonstration :
+  if .differs(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+    The THEN paragraph.
+  else
+    The ELSE paragraph.
+  endif
+  End of demonstration.

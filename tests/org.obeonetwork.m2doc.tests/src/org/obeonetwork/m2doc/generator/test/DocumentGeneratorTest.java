@@ -165,107 +165,12 @@ public class DocumentGeneratorTest {
     }
 
     @Test
-    public void testConditionnal1trueProcessing() throws Exception {
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "value1");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal1.docx",
-                "results/testConditionnal1Result.docx", definitions, null);
-
-    }
-
-    @Test
-    public void testConditionnal1falseProcessing() throws Exception {
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal1.docx",
-                "results/testConditionnal1FalseResult.docx", definitions, null);
-
-    }
-
-    @Test
-    public void testConditionnal2Processing() throws Exception {
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "value1");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal2.docx",
-                "results/testConditionnal2Result.docx", definitions, null);
-    }
-
-    @Test
-    public void testConditionnalFalseProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal2.docx",
-                "results/testConditionnal2FalseResult.docx", definitions, null);
-
-    }
-
-    //
-    // @Test
-    // public void testConditionnal3Processing()
-    // throws InvalidFormatException, IOException, DocumentParserException,
-    // DocumentGenerationException {
-    // IQueryEnvironment queryEnvironment =
-    // org.eclipse.acceleo.query.runtime.Query
-    // .newEnvironmentWithDefaultServices(null);
-    // FileInputStream is = new
-    // FileInputStream("templates/testConditionnal3.docx");
-    // OPCPackage oPackage = OPCPackage.open(is);
-    // XWPFDocument document = new XWPFDocument(oPackage);
-    // BodyParser parser = new BodyParser(document, queryEnvironment);
-    // Template template = parser.parseTemplate();
-    // Map<String, Object> definitions = new HashMap<String, Object>();
-    // definitions.put("x", "valueofx");
-    // DocumentGenerator generator = new
-    // DocumentGenerator("templates/testConditionnal3.docx",
-    // "results/testConditionnal3Result.docx", template, definitions,
-    // queryEnvironment);
-    // generator.generate();
-    // }
-    //
-    @Test
     public void testImagesAndFootersAndHeadersAndBullets() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();
         definitions.put("self", EcorePackage.eINSTANCE);
         M2DocTestUtils.doGenerateDocAndCheckText("templates/test.docx", "results/testResult.docx", definitions, null);
 
-    }
-
-    @Test
-    public void testConditionnal5Processing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "value1");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal5Result.docx", definitions, null);
-    }
-
-    @Test
-    public void testConditionnal6Processing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "value2");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal6Result.docx", definitions, null);
-    }
-
-    @Test
-    public void testConditionnal7Processing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "value3");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal7Result.docx", definitions, null);
-    }
-
-    @Test
-    public void testConditionnal8Processing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testConditionnal5.docx",
-                "results/testConditionnal8Result.docx", definitions, null);
     }
 
     @Test

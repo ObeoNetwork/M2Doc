@@ -62,10 +62,7 @@ import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidation
  * @author pguilet<pierre.guilet@obeo.fr>
  */
 public class DocumentParserTest {
-    /**
-     * Number constant.
-     */
-    private static final int SEVEN = 7;
+
     /**
      * Number constant.
      */
@@ -167,126 +164,6 @@ public class DocumentParserTest {
             Query query = (Query) template.getSubConstructs().get(1);
             assertNotNull(query.getQuery());
         }
-    }
-
-    @Test
-    public void testSimpleConditionnalParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testConditionnal1.docx")) {
-            OPCPackage oPackage = OPCPackage.open(is);
-            XWPFDocument document = new XWPFDocument(oPackage);
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            assertEquals(document, template.getBody());
-            assertEquals(3, template.getSubConstructs().size());
-            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
-            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Conditional conditionnal = (Conditional) template.getSubConstructs().get(1);
-            assertNotNull(conditionnal.getCondition());
-            assertTrue(conditionnal.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-            assertNull(conditionnal.getElse());
-        }
-    }
-
-    @Test
-    public void testConditionnalWithElseParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testConditionnal2.docx")) {
-            OPCPackage oPackage = OPCPackage.open(is);
-            XWPFDocument document = new XWPFDocument(oPackage);
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            assertEquals(document, template.getBody());
-            assertEquals(3, template.getSubConstructs().size());
-            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
-            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Conditional conditionnal = (Conditional) template.getSubConstructs().get(1);
-            assertNotNull(conditionnal.getCondition());
-            assertTrue(conditionnal.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-            assertEquals(1, conditionnal.getElse().getSubConstructs().size());
-            assertTrue(conditionnal.getElse().getSubConstructs().get(0) instanceof StaticFragment);
-        }
-    }
-
-    @Test
-    public void testConditionnalWithElseIfParsing()
-            throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testConditionnal3.docx")) {
-            OPCPackage oPackage = OPCPackage.open(is);
-            XWPFDocument document = new XWPFDocument(oPackage);
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            assertEquals(document, template.getBody());
-            assertEquals(3, template.getSubConstructs().size());
-            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
-            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Conditional conditionnal = (Conditional) template.getSubConstructs().get(1);
-            assertNotNull(conditionnal.getCondition());
-            assertTrue(conditionnal.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(conditionnal.getElse().getSubConstructs().get(0) instanceof Conditional);
-            final Conditional elseIf = (Conditional) conditionnal.getElse().getSubConstructs().get(0);
-            assertTrue(elseIf.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-            assertNotNull(elseIf.getCondition());
-            assertNull(elseIf.getElse());
-        }
-    }
-
-    @Test
-    public void testConditionnalWith2ElseIfParsing()
-            throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testConditionnal4.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Conditional conditional = (Conditional) template.getSubConstructs().get(1);
-        assertNotNull(conditional.getCondition());
-        assertTrue(conditional.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(conditional.getElse());
-        assertTrue(conditional.getElse().getSubConstructs().get(0) instanceof Conditional);
-        Conditional elseIf = (Conditional) conditional.getElse().getSubConstructs().get(0);
-        assertTrue(elseIf.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(elseIf.getCondition());
-        assertNotNull(elseIf.getElse());
-        Conditional elseIf2 = (Conditional) elseIf.getElse().getSubConstructs().get(0);
-        assertTrue(elseIf2.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(elseIf2.getCondition());
-        assertNull(elseIf2.getElse());
-    }
-
-    @Test
-    public void testConditionnalWith2ElseIfAndElseParsing()
-            throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testConditionnal5.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof Conditional);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        Conditional conditional = (Conditional) template.getSubConstructs().get(1);
-        assertNotNull(conditional.getCondition());
-        assertTrue(conditional.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(conditional.getElse());
-        assertTrue(conditional.getElse().getSubConstructs().get(0) instanceof Conditional);
-        Conditional elseIf = (Conditional) conditional.getElse().getSubConstructs().get(0);
-        assertTrue(elseIf.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(elseIf.getCondition());
-        assertNotNull(elseIf.getElse());
-        Conditional elseIf2 = (Conditional) elseIf.getElse().getSubConstructs().get(0);
-        assertTrue(elseIf2.getThen().getSubConstructs().get(0) instanceof StaticFragment);
-        assertNotNull(elseIf2.getCondition());
-        assertNotNull(elseIf2.getElse());
-        assertTrue(elseIf2.getElse().getSubConstructs().get(0) instanceof StaticFragment);
     }
 
     @Test

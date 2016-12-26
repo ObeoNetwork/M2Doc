@@ -1,0 +1,6 @@
+template null
+  Basic if demonstration :
+  if false then
+    The THEN paragraph.
+  endif
+  End of demonstration.
