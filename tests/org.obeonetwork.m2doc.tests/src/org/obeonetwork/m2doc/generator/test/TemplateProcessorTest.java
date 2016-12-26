@@ -1199,14 +1199,15 @@ public class TemplateProcessorTest {
         POIServices.getInstance().saveFile(destinationDoc,
                 URI.createFileURI("results/generated/testUserDoc8Resultat.docx"));
 
-        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
-        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertTrue(template.getBody().getStatements().get(1) instanceof UserDoc);
+        UserDoc userDoc = (UserDoc) template.getBody().getStatements().get(1);
         assertTrue(userDoc.getClosingRuns().isEmpty());
-        assertEquals("Unexpected tag EOF at this location", userDoc.getValidationMessages().get(0).getMessage());
-        assertEquals(ValidationMessageLevel.ERROR, userDoc.getValidationMessages().get(0).getLevel());
-        XWPFRun lastRunOfContent = userDoc.getSubConstructs().get(0).getRuns()
-                .get(userDoc.getSubConstructs().get(0).getRuns().size() - 1);
-        assertEquals(lastRunOfContent, userDoc.getValidationMessages().get(0).getLocation());
-        assertEquals(1, userDoc.getValidationMessages().size());
+        assertEquals("Unexpected tag EOF at this location",
+                userDoc.getBody().getValidationMessages().get(0).getMessage());
+        assertEquals(ValidationMessageLevel.ERROR, userDoc.getBody().getValidationMessages().get(0).getLevel());
+        XWPFRun lastRunOfContent = userDoc.getBody().getStatements().get(0).getRuns()
+                .get(userDoc.getBody().getStatements().get(0).getRuns().size() - 1);
+        assertEquals(lastRunOfContent, userDoc.getBody().getValidationMessages().get(0).getLocation());
+        assertEquals(1, userDoc.getBody().getValidationMessages().size());
     }
 }

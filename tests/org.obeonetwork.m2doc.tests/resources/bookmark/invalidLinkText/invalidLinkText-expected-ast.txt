@@ -1,10 +1,16 @@
 template null
   This template demonstrates the use of bookmarks. It creates two links to the same bookmark.Test link before bookmark : 
+  
   link 'bookmark1' 'a reference to bookmark1' endlink
+  
   Test bookmark : 
+  
   bookmark 'bookmark1'
     bookmarked content
   endbookmark
+  
   Test link after bookmark : 
+  
   link *** expression error **** *** expression error **** endlink
+  
    End of demonstration.

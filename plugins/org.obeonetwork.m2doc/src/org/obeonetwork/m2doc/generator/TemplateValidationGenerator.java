@@ -21,13 +21,13 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -35,7 +35,6 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -101,21 +100,16 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     @Override
     public Void caseTemplate(Template template) {
         insertErrorMessages(template);
-        for (AbstractConstruct construct : template.getSubConstructs()) {
-            doSwitch(construct);
-        }
+        doSwitch(template.getBody());
 
         return null;
     }
 
     @Override
-    public Void caseCompound(Compound compound) {
-        // TODO remove the if when compound are composed and not expended
-        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
-            insertErrorMessages(compound);
-            for (AbstractConstruct construct : compound.getSubConstructs()) {
-                doSwitch(construct);
-            }
+    public Void caseBlock(Block block) {
+        insertErrorMessages(block);
+        for (IConstruct construct : block.getStatements()) {
+            doSwitch(construct);
         }
 
         return null;
@@ -135,9 +129,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     @Override
     public Void caseUserDoc(UserDoc object) {
         insertErrorMessages(object);
-        for (AbstractConstruct construct : object.getSubConstructs()) {
-            doSwitch(construct);
-        }
+        doSwitch(object.getBody());
 
         return null;
     }
@@ -145,9 +137,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     @Override
     public Void caseRepetition(Repetition repetition) {
         insertErrorMessages(repetition);
-        for (AbstractConstruct construct : repetition.getSubConstructs()) {
-            doSwitch(construct);
-        }
+        doSwitch(repetition.getBody());
 
         return null;
     }
@@ -155,9 +145,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     @Override
     public Void caseTableMerge(TableMerge tableMerge) {
         insertErrorMessages(tableMerge);
-        for (AbstractConstruct construct : tableMerge.getSubConstructs()) {
-            doSwitch(construct);
-        }
+        doSwitch(tableMerge.getBody());
 
         return null;
     }
@@ -221,7 +209,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
      * @param abstractConstruct
      *            the construct that may contains messages to insert into the produced document.
      */
-    protected void insertErrorMessages(AbstractConstruct abstractConstruct) {
+    protected void insertErrorMessages(IConstruct abstractConstruct) {
         final List<TemplateValidationMessage> messages = abstractConstruct.getValidationMessages();
         final Map<XWPFRun, Integer> offsets = new HashMap<XWPFRun, Integer>();
         for (TemplateValidationMessage message : messages) {

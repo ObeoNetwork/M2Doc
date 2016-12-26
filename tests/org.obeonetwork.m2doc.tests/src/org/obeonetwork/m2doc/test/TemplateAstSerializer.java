@@ -38,10 +38,10 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
-import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
@@ -51,7 +51,6 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 
@@ -343,12 +342,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     @Override
     public Void caseTemplate(Template template) {
         builder.append(String.format("template %s", template.getTemplateName()));
-        indent();
-        newLine();
-        for (AbstractConstruct construct : template.getSubConstructs()) {
-            doSwitch(construct);
-        }
-        deindent();
+        doSwitch(template.getBody());
         return null;
     }
 
@@ -384,12 +378,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
             builder.append(EXPRESSION_ERROR);
         }
         builder.append(" do");
-        indent();
-        newLine();
-        for (AbstractConstruct subConstruct : repetition.getSubConstructs()) {
-            doSwitch(subConstruct);
-        }
-        deindent();
+        doSwitch(repetition.getBody());
         newLine();
         builder.append("endfor");
         newLine();
@@ -409,9 +398,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append(" do");
         indent();
         newLine();
-        for (AbstractConstruct subConstruct : userDoc.getSubConstructs()) {
-            doSwitch(subConstruct);
-        }
+        doSwitch(userDoc.getBody());
         deindent();
         newLine();
         builder.append("enduserdoc");
@@ -443,15 +430,13 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     }
 
     @Override
-    public Void caseCompound(Compound compound) {
-        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
-            indent();
-            for (AbstractConstruct construct : compound.getSubConstructs()) {
-                newLine();
-                doSwitch(construct);
-            }
-            deindent();
+    public Void caseBlock(Block block) {
+        indent();
+        for (IConstruct construct : block.getStatements()) {
+            newLine();
+            doSwitch(construct);
         }
+        deindent();
 
         return null;
     }
@@ -551,12 +536,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         } else {
             builder.append(EXPRESSION_ERROR);
         }
-        indent();
-        newLine();
-        for (AbstractConstruct subConstruct : bookmark.getSubConstructs()) {
-            doSwitch(subConstruct);
-        }
-        deindent();
+        doSwitch(bookmark.getBody());
         newLine();
         builder.append("endbookmark");
         newLine();

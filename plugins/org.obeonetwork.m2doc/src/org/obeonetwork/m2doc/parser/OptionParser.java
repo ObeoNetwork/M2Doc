@@ -14,7 +14,7 @@ package org.obeonetwork.m2doc.parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.IConstruct;
 
 import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
 
@@ -83,7 +83,7 @@ public class OptionParser {
      *             if tag is syntactically invalid.
      */
     public Map<String, String> parseOptions(String tag, TokenType tokenType, int optionGroupRank,
-            int optionValGroupRank, AbstractConstruct construct) throws DocumentParserException {
+            int optionValGroupRank, IConstruct construct) throws DocumentParserException {
         Map<String, String> result = new HashMap<>();
         // first match the tag:
         if (tag.trim().startsWith(tokenType.getValue())) {
@@ -143,7 +143,7 @@ public class OptionParser {
      * @param key
      *            the previous parsed key.
      */
-    private void consumeOptionUntilValueDelimiter(AbstractConstruct construct, String optionsString, int maxIndex,
+    private void consumeOptionUntilValueDelimiter(IConstruct construct, String optionsString, int maxIndex,
             String key) {
         boolean valueEnclosingQuoteReached = false;
         String forbiddenCharacters = "";
@@ -180,7 +180,7 @@ public class OptionParser {
      *            the index of the last character of the options string.
      * @return the next option's value.
      */
-    protected String parseValue(AbstractConstruct construct, String optionsString, int maxIndex) {
+    protected String parseValue(IConstruct construct, String optionsString, int maxIndex) {
         String value = "";
         valueParsedCompletely = false;
         boolean nextCharEscaped = false;
@@ -215,7 +215,7 @@ public class OptionParser {
      *            the index of the last character of the options string.
      * @return the next option's key.
      */
-    protected String parseKey(AbstractConstruct construct, String optionsString, int maxIndex) {
+    protected String parseKey(IConstruct construct, String optionsString, int maxIndex) {
         String key = "";
         keyParsed = false;
         keyDetected = false;

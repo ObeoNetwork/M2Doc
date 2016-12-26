@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,19 +7,18 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template.util;
 
 import java.util.Map;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+
 import org.obeonetwork.m2doc.template.*;
 
 /**
@@ -31,42 +30,43 @@ import org.obeonetwork.m2doc.template.*;
  * @generated
  */
 public class TemplateAdapterFactory extends AdapterFactoryImpl {
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
-	/**
+    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+
+    /**
      * The cached model package.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	protected static TemplatePackage modelPackage;
+    protected static TemplatePackage modelPackage;
 
-	/**
+    /**
      * Creates an instance of the adapter factory.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public TemplateAdapterFactory() {
+    public TemplateAdapterFactory() {
         if (modelPackage == null) {
             modelPackage = TemplatePackage.eINSTANCE;
         }
     }
 
-	/**
+    /**
      * Returns whether this factory is applicable for the type of the object.
      * <!-- begin-user-doc -->
-	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
-	 * <!-- end-user-doc -->
+     * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
+     * <!-- end-user-doc -->
      * @return whether this factory is applicable for the type of the object.
      * @generated
      */
-	@Override
-	public boolean isFactoryForType(Object object) {
+    @Override
+    public boolean isFactoryForType(Object object) {
         if (object == modelPackage) {
             return true;
         }
@@ -76,17 +76,17 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
         return false;
     }
 
-	/**
+    /**
      * The switch that delegates to the <code>createXXX</code> methods.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	protected TemplateSwitch<Adapter> modelSwitch =
-		new TemplateSwitch<Adapter>() {
+    protected TemplateSwitch<Adapter> modelSwitch =
+        new TemplateSwitch<Adapter>() {
             @Override
-            public Adapter caseAbstractConstruct(AbstractConstruct object) {
-                return createAbstractConstructAdapter();
+            public Adapter caseIConstruct(IConstruct object) {
+                return createIConstructAdapter();
             }
             @Override
             public Adapter caseConditional(Conditional object) {
@@ -117,8 +117,12 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
                 return createImageAdapter();
             }
             @Override
-            public Adapter caseCompound(Compound object) {
-                return createCompoundAdapter();
+            public Adapter caseBlock(Block object) {
+                return createBlockAdapter();
+            }
+            @Override
+            public Adapter caseStatement(Statement object) {
+                return createStatementAdapter();
             }
             @Override
             public Adapter caseTemplate(Template object) {
@@ -178,35 +182,35 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
             }
         };
 
-	/**
+    /**
      * Creates an adapter for the <code>target</code>.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @param target the object to adapt.
      * @return the adapter for the <code>target</code>.
      * @generated
      */
-	@Override
-	public Adapter createAdapter(Notifier target) {
+    @Override
+    public Adapter createAdapter(Notifier target) {
         return modelSwitch.doSwitch((EObject)target);
     }
 
 
-	/**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.AbstractConstruct <em>Abstract Construct</em>}'.
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.AbstractConstruct
+     * @see org.obeonetwork.m2doc.template.IConstruct
      * @generated
      */
-	public Adapter createAbstractConstructAdapter() {
+    public Adapter createIConstructAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Conditional <em>Conditional</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -223,18 +227,18 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
     /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Repetition <em>Repetition</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @see org.obeonetwork.m2doc.template.Repetition
      * @generated
      */
-	public Adapter createRepetitionAdapter() {
+    public Adapter createRepetitionAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.UserDoc <em>User Doc</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -265,88 +269,172 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
     /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Query <em>Query</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @see org.obeonetwork.m2doc.template.Query
      * @generated
      */
-	public Adapter createQueryAdapter() {
+    public Adapter createQueryAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.TableMerge <em>Table Merge</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @see org.obeonetwork.m2doc.template.TableMerge
      * @generated
      */
-	public Adapter createTableMergeAdapter() {
+    public Adapter createTableMergeAdapter() {
         return null;
     }
 
-	/**
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Image
+     * @generated
+     */
+    public Adapter createImageAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Block <em>Block</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Block
+     * @generated
+     */
+    public Adapter createBlockAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Statement <em>Statement</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Statement
+     * @generated
+     */
+    public Adapter createStatementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Template <em>Template</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Template
+     * @generated
+     */
+    public Adapter createTemplateAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Representation <em>Representation</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Representation
+     * @generated
+     */
+    public Adapter createRepresentationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.StaticFragment
+     * @generated
+     */
+    public Adapter createStaticFragmentAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Table <em>Table</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @see org.obeonetwork.m2doc.template.Table
      * @generated
      */
-	public Adapter createTableAdapter() {
+    public Adapter createTableAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Row <em>Row</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @see org.obeonetwork.m2doc.template.Row
      * @generated
      */
-	public Adapter createRowAdapter() {
+    public Adapter createRowAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Cell <em>Cell</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @see org.obeonetwork.m2doc.template.Cell
      * @generated
      */
-	public Adapter createCellAdapter() {
+    public Adapter createCellAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.DocumentTemplate <em>Document Template</em>}'.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @see org.obeonetwork.m2doc.template.DocumentTemplate
      * @generated
      */
-	public Adapter createDocumentTemplateAdapter() {
+    public Adapter createDocumentTemplateAdapter() {
         return null;
     }
 
-	/**
+    /**
      * Creates a new adapter for an object of class '{@link java.util.Map.Entry <em>Option Value Map</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -431,84 +519,14 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
-     * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.Image
-     * @generated
-     */
-	public Adapter createImageAdapter() {
-        return null;
-    }
-
-	/**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Compound <em>Compound</em>}'.
-     * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.Compound
-     * @generated
-     */
-	public Adapter createCompoundAdapter() {
-        return null;
-    }
-
-	/**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Template <em>Template</em>}'.
-     * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.Template
-     * @generated
-     */
-	public Adapter createTemplateAdapter() {
-        return null;
-    }
-
-	/**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Representation <em>Representation</em>}'.
-     * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.Representation
-     * @generated
-     */
-	public Adapter createRepresentationAdapter() {
-        return null;
-    }
-
-	/**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
-     * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.StaticFragment
-     * @generated
-     */
-	public Adapter createStaticFragmentAdapter() {
-        return null;
-    }
-
-	/**
      * Creates a new adapter for the default case.
      * <!-- begin-user-doc -->
-	 * This default implementation returns null.
-	 * <!-- end-user-doc -->
+     * This default implementation returns null.
+     * <!-- end-user-doc -->
      * @return the new adapter.
      * @generated
      */
-	public Adapter createEObjectAdapter() {
+    public Adapter createEObjectAdapter() {
         return null;
     }
 

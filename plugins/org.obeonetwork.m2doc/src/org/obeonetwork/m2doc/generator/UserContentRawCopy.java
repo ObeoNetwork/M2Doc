@@ -29,7 +29,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlToken;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
@@ -119,7 +119,7 @@ public class UserContentRawCopy {
             currentOutputParagraph = outputParagraphBeforeUserDocContent;
         }
         XWPFParagraph currentRunParagraph = null;
-        for (AbstractConstruct abstractConstruct : userContent.getSubConstructs()) {
+        for (IConstruct abstractConstruct : userContent.getBody().getStatements()) {
             for (XWPFRun inputRun : abstractConstruct.getRuns()) {
                 currentRunParagraph = inputRun.getParagraph();
                 if (currentRunParagraph != currentInputParagraph) {
@@ -340,7 +340,7 @@ public class UserContentRawCopy {
      * @return true if userContent content begin by a paragraph
      */
     private boolean userDocContentIsFirstRunOfParagraph(UserContent userContent) {
-        XWPFRun userContentFirstRun = userContent.getSubConstructs().get(0).getRuns().get(0);
+        XWPFRun userContentFirstRun = userContent.getBody().getStatements().get(0).getRuns().get(0);
         @SuppressWarnings("deprecation")
         XWPFRun paragraphFirstRun = userContentFirstRun.getParagraph().getRuns().get(0);
         return userContentFirstRun == paragraphFirstRun;

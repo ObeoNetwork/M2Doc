@@ -29,9 +29,9 @@ import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.provider.OptionType;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Compound;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
@@ -127,23 +127,24 @@ public abstract class BodyAbstractParser {
      *             if a syntax problem is detected during parsing.
      */
     public Template parseTemplate() throws DocumentParserException {
-        Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
-        template.setBody(this.document);
-        parseCompound(template, TokenType.EOF);
+        final Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
+        template.setXWPFBody(this.document);
+        final Block body = parseBlock(TokenType.EOF);
+        template.setBody(body);
+
         return template;
     }
 
     /**
-     * Parses a compound object.
+     * Parses a {@link Block}.
      * 
-     * @param compound
-     *            the compound to parse
      * @param endTypes
      *            the token types that mark the end of the parsed compound
+     * @return the parsed {@link Block}
      * @throws DocumentParserException
-     *             if a problem occurs while parsing.
+     *             if a problem occurs while parsing
      */
-    protected abstract void parseCompound(Compound compound, TokenType... endTypes) throws DocumentParserException;
+    protected abstract Block parseBlock(TokenType... endTypes) throws DocumentParserException;
 
     /**
      * Reads up a tag so that it can be parsed as a simple string.
@@ -155,7 +156,7 @@ public abstract class BodyAbstractParser {
      * @return the string present into the tag as typed by the template author.
      */
     // CHECKSTYLE:OFF
-    protected String readTag(AbstractConstruct construct, List<XWPFRun> runsToFill) {
+    protected String readTag(IConstruct construct, List<XWPFRun> runsToFill) {
         XWPFRun run = this.runIterator.lookAhead(1).getRun();
         if (run == null) {
             throw new IllegalStateException("readTag shouldn't be called with a table in the lookahead window.");

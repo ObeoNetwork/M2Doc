@@ -1,6 +1,8 @@
 template null
   Basic if demonstration :
+  
   if *** expression error **** then
     The THEN paragraph.
   endif
+  
   End of demonstration.

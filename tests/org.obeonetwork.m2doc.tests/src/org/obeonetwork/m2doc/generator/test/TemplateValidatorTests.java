@@ -37,8 +37,8 @@ import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Image;
@@ -67,7 +67,8 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(query);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(query);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
         documentTemplate.getHeaders().add(template);
 
@@ -88,7 +89,8 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(query);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(query);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -108,7 +110,8 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(query);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(query);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
         documentTemplate.getFooters().add(template);
 
@@ -129,7 +132,8 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(query);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(query);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -148,10 +152,11 @@ public class TemplateValidatorTests {
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
         conditional.setCondition(engine.build("self"));
-        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
         conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(conditional);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -174,10 +179,11 @@ public class TemplateValidatorTests {
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
         conditional.setCondition(engine.build("self"));
-        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
         conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(conditional);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -202,10 +208,11 @@ public class TemplateValidatorTests {
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
         conditional.setCondition(engine.build("self.oclIsKindOf(String)"));
-        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
         conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(conditional);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -231,11 +238,12 @@ public class TemplateValidatorTests {
         conditional.setCondition(engine.build("self.oclIsKindOf(ecore::EClass)"));
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self.oclIsKindOf(ecore::EClass)"));
-        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
-        thenCompound.getSubConstructs().add(query);
+        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        thenCompound.getStatements().add(query);
         conditional.setThen(thenCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(conditional);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -261,17 +269,18 @@ public class TemplateValidatorTests {
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
         conditional.setCondition(engine.build("self.oclIsKindOf(ecore::EClassifier)"));
-        final Compound thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
         conditional.setThen(thenCompound);
         final Conditional alternative = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
         alternative.setCondition(engine.build("self.oclIsKindOf(ecore::EPackage)"));
-        final Compound alternativeThenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
+        final Block alternativeThenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
         alternative.setThen(alternativeThenCompound);
-        final Compound elseCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createCompound();
-        elseCompound.getSubConstructs().add(alternative);
+        final Block elseCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        elseCompound.getStatements().add(alternative);
         conditional.setElse(elseCompound);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(conditional);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -297,10 +306,13 @@ public class TemplateValidatorTests {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final Repetition repetition = TemplatePackage.eINSTANCE.getTemplateFactory().createRepetition();
+        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        repetition.setBody(body);
         repetition.setIterationVar("self");
         repetition.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(repetition);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(repetition);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -325,7 +337,10 @@ public class TemplateValidatorTests {
         repetition.setIterationVar("i");
         repetition.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(repetition);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        repetition.setBody(body);
+        template.getBody().getStatements().add(repetition);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -350,11 +365,14 @@ public class TemplateValidatorTests {
         repetition.setIterationVar("i");
         repetition.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(repetition);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(repetition);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("i.oclIsKindOf(String)"));
-        repetition.getSubConstructs().add(query);
+        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        body.getStatements().add(query);
+        repetition.setBody(body);
 
         final TemplateValidator validator = new TemplateValidator();
 
@@ -380,9 +398,12 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
         final TableMerge tableMerge = TemplatePackage.eINSTANCE.getTemplateFactory().createTableMerge();
-        tableMerge.getSubConstructs().add(query);
-        template.getSubConstructs().add(query);
+        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        tableMerge.setBody(body);
+        tableMerge.getBody().getStatements().add(query);
+        template.getBody().getStatements().add(query);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -402,7 +423,8 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(query);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(query);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -422,14 +444,16 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
         final Table table = TemplatePackage.eINSTANCE.getTemplateFactory().createTable();
-        template.getSubConstructs().add(table);
+        template.getBody().getStatements().add(table);
         final Row row = TemplatePackage.eINSTANCE.getTemplateFactory().createRow();
         table.getRows().add(row);
         final Cell cell = TemplatePackage.eINSTANCE.getTemplateFactory().createCell();
         row.getCells().add(cell);
         final Template cellTemplate = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        cellTemplate.getSubConstructs().add(query);
+        cellTemplate.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        cellTemplate.getBody().getStatements().add(query);
         cell.setTemplate(cellTemplate);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
@@ -448,6 +472,7 @@ public class TemplateValidatorTests {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
         final Image image = TemplatePackage.eINSTANCE.getTemplateFactory().createImage();
         image.setProvider(new IProvider() {
 
@@ -473,7 +498,7 @@ public class TemplateValidatorTests {
         image.getOptionValueMap().put("variable", "value");
         image.getOptionValueMap().put("query", engine.build("self"));
 
-        template.getSubConstructs().add(image);
+        template.getBody().getStatements().add(image);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -495,9 +520,12 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.UserDoc userDoc = TemplatePackage.eINSTANCE.getTemplateFactory()
                 .createUserDoc();
         userDoc.setId(engine.build("self"));
+        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        userDoc.setBody(body);
 
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(userDoc);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(userDoc);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
@@ -517,9 +545,12 @@ public class TemplateValidatorTests {
         final org.obeonetwork.m2doc.template.UserDoc userDoc = TemplatePackage.eINSTANCE.getTemplateFactory()
                 .createUserDoc();
         userDoc.setId(engine.build("collection"));
+        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
+        userDoc.setBody(body);
 
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.getSubConstructs().add(userDoc);
+        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
+        template.getBody().getStatements().add(userDoc);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();

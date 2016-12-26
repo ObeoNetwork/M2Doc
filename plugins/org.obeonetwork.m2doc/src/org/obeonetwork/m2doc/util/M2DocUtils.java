@@ -29,7 +29,7 @@ import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
+import org.obeonetwork.m2doc.template.IConstruct;
 
 /**
  * Util class for M2Doc.
@@ -194,14 +194,14 @@ public final class M2DocUtils {
     }
 
     /**
-     * Add a validation error message to a given {@link AbstractConstruct}'s last run.
+     * Add a validation error message to a given {@link IConstruct}'s last run.
      * 
      * @param construct
      *            The construct in which to 'log' the message
      * @param msg
      *            THe message to log
      */
-    public static void validationError(AbstractConstruct construct, String msg) {
+    public static void validationError(IConstruct construct, String msg) {
         XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
         construct.getValidationMessages()
                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, msg, lastRun));

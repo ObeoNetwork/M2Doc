@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,9 +7,6 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template;
 
@@ -25,6 +22,7 @@ import org.apache.poi.xwpf.usermodel.IBody;
  * </p>
  * <ul>
  *   <li>{@link org.obeonetwork.m2doc.template.Template#getTemplateName <em>Template Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.Template#getXWPFBody <em>XWPF Body</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -32,64 +30,91 @@ import org.apache.poi.xwpf.usermodel.IBody;
  * @model
  * @generated
  */
-public interface Template extends Compound {
-	/**
+public interface Template extends IConstruct {
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
-	/**
+    /**
      * Returns the value of the '<em><b>Template Name</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Template Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Template Name</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
      * @return the value of the '<em>Template Name</em>' attribute.
      * @see #setTemplateName(String)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate_TemplateName()
      * @model
      * @generated
      */
-	String getTemplateName();
+    String getTemplateName();
 
-	/**
+    /**
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Template#getTemplateName <em>Template Name</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @param value the new value of the '<em>Template Name</em>' attribute.
      * @see #getTemplateName()
      * @generated
      */
-	void setTemplateName(String value);
+    void setTemplateName(String value);
 
-	/**
-     * Returns the value of the '<em><b>Body</b></em>' attribute.
+    /**
+     * Returns the value of the '<em><b>XWPF Body</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Body</em>' attribute isn't clear,
+     * If the meaning of the '<em>XWPF Body</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Body</em>' attribute.
-     * @see #setBody(IBody)
-     * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate_Body()
+     * @return the value of the '<em>XWPF Body</em>' attribute.
+     * @see #setXWPFBody(IBody)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate_XWPFBody()
      * @model dataType="org.obeonetwork.m2doc.template.Body"
      * @generated
      */
-    IBody getBody();
+    IBody getXWPFBody();
 
     /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}' attribute.
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Template#getXWPFBody <em>XWPF Body</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Body</em>' attribute.
+     * @param value the new value of the '<em>XWPF Body</em>' attribute.
+     * @see #getXWPFBody()
+     * @generated
+     */
+    void setXWPFBody(IBody value);
+
+    /**
+     * Returns the value of the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Body</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Body</em>' containment reference.
+     * @see #setBody(Block)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate_Body()
+     * @model containment="true" required="true"
+     *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Block} of {@link Statement}.'"
+     * @generated
+     */
+    Block getBody();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Body</em>' containment reference.
      * @see #getBody()
      * @generated
      */
-    void setBody(IBody value);
+    void setBody(Block value);
 
 } // Template

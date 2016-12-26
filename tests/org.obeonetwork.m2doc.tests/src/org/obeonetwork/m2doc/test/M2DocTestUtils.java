@@ -53,8 +53,8 @@ import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
@@ -140,14 +140,14 @@ public final class M2DocTestUtils {
     }
 
     /**
-     * Links the given {@link AbstractConstruct} with new {@link XWPFRun} created in the given {@link XWPFParagraph}.
+     * Links the given {@link IConstruct} with new {@link XWPFRun} created in the given {@link XWPFParagraph}.
      * 
      * @param paragraph
      *            the {@link XWPFParagraph}
      * @param construct
-     *            the {@link AbstractConstruct}
+     *            the {@link IConstruct}
      */
-    private static void linkRuns(XWPFParagraph paragraph, AbstractConstruct construct) {
+    private static void linkRuns(XWPFParagraph paragraph, IConstruct construct) {
         construct.setStyleRun(paragraph.createRun());
 
         construct.getRuns().add(paragraph.createRun());
@@ -155,8 +155,8 @@ public final class M2DocTestUtils {
         construct.getRuns().add(paragraph.createRun());
 
         for (EObject child : construct.eContents()) {
-            if (child instanceof AbstractConstruct) {
-                linkRuns(paragraph, (AbstractConstruct) child);
+            if (child instanceof IConstruct) {
+                linkRuns(paragraph, (IConstruct) child);
             }
         }
 

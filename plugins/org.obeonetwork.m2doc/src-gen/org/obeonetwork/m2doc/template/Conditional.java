@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,9 +7,6 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template;
 
@@ -17,7 +14,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Conditionnal</b></em>'.
+ * A representation of the model object '<em><b>Conditional</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
@@ -33,15 +30,15 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='If {@link Conditional#getCondition() condition} is evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}' syntax='{gd:if expr} runs1 [{gd:elseif <expr>} runs_n]* [{gd:else} run_else]{gd:endif}'"
  * @generated
  */
-public interface Conditional extends AbstractConstruct {
-	/**
+public interface Conditional extends Statement {
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
-	/**
+    /**
      * Returns the value of the '<em><b>Condition</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
@@ -77,13 +74,13 @@ public interface Conditional extends AbstractConstruct {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Then</em>' containment reference.
-     * @see #setThen(Compound)
+     * @see #setThen(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional_Then()
      * @model containment="true" required="true"
      *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>true</code>.'"
      * @generated
      */
-    Compound getThen();
+    Block getThen();
 
     /**
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Conditional#getThen <em>Then</em>}' containment reference.
@@ -93,26 +90,26 @@ public interface Conditional extends AbstractConstruct {
      * @see #getThen()
      * @generated
      */
-    void setThen(Compound value);
+    void setThen(Block value);
 
     /**
      * Returns the value of the '<em><b>Else</b></em>' containment reference.
      * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Else</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Else</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
      * @return the value of the '<em>Else</em>' containment reference.
-     * @see #setElse(Compound)
+     * @see #setElse(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional_Else()
      * @model containment="true"
      *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>false</code>.'"
      * @generated
      */
-	Compound getElse();
+    Block getElse();
 
-	/**
+    /**
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Conditional#getElse <em>Else</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -120,6 +117,6 @@ public interface Conditional extends AbstractConstruct {
      * @see #getElse()
      * @generated
      */
-    void setElse(Compound value);
+    void setElse(Block value);
 
-} // Conditionnal
+} // Conditional

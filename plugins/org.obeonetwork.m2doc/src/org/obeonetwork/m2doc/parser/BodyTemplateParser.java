@@ -52,11 +52,10 @@ import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractImage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
-import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
@@ -65,6 +64,7 @@ import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Representation;
+import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
@@ -251,33 +251,24 @@ public class BodyTemplateParser extends BodyAbstractParser {
         return result;
     }
 
-    /**
-     * Parses a compound object.
-     * 
-     * @param compound
-     *            the compound to parse
-     * @param endTypes
-     *            the token types that mark the end of the parsed compound
-     * @throws DocumentParserException
-     *             if a problem occurs while parsing.
-     */
     @Override
-    protected void parseCompound(Compound compound, TokenType... endTypes) throws DocumentParserException {
+    protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
+        final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
         TokenType type = getNextTokenType();
         List<TokenType> endTypeList = Lists.newArrayList(endTypes);
-        while (!endTypeList.contains(type)) {
+        endBlock: while (!endTypeList.contains(type)) {
             switch (type) {
                 case AQL:
-                    compound.getSubConstructs().add(parseQuery());
+                    res.getStatements().add(parseQuery());
                     break;
                 case FOR:
-                    compound.getSubConstructs().add(parseRepetition());
+                    res.getStatements().add(parseRepetition());
                     break;
                 case IF:
-                    compound.getSubConstructs().add(parseConditional());
+                    res.getStatements().add(parseConditional());
                     break;
                 case USERDOC:
-                    compound.getSubConstructs().add(parseUserDoc());
+                    res.getStatements().add(parseUserDoc());
                     break;
                 case ELSEIF:
                 case ELSE:
@@ -293,41 +284,41 @@ public class BodyTemplateParser extends BodyAbstractParser {
                         throw new IllegalStateException(
                                 "Token of type " + type + " detected. Run shouldn't be null at this place.");
                     }
-                    compound.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                             message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
-                    readTag(compound, compound.getRuns());
+                    readTag(res, res.getRuns());
                     break;
                 case EOF:
                     final XWPFParagraph lastParagraph = document.getParagraphs()
                             .get(document.getParagraphs().size() - 1);
                     final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-                    compound.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                             message(ParsingErrorMessage.UNEXPECTEDTAG, type), lastRun));
-                    return;
+                    break endBlock;
                 case LET:
-                    compound.getSubConstructs().add(parseLet());
+                    res.getStatements().add(parseLet());
                     break;
                 case IMAGE:
-                    compound.getSubConstructs().add(parseImage());
+                    res.getStatements().add(parseImage());
                     break;
                 case STATIC:
-                    compound.getSubConstructs().add(parseStaticFragment());
+                    res.getStatements().add(parseStaticFragment());
                     break;
                 case BOOKMARK:
-                    compound.getSubConstructs().add(parseBookmark());
+                    res.getStatements().add(parseBookmark());
                     break;
                 case LINK:
-                    compound.getSubConstructs().add(parseLink());
+                    res.getStatements().add(parseLink());
                     break;
                 case WTABLE:
-                    compound.getSubConstructs().add(parseTable(runIterator.next().getTable()));
+                    res.getStatements().add(parseTable(runIterator.next().getTable()));
                     break;
                 case DIAGRAM:
-                    compound.getSubConstructs().add(parseRepresentation()); // XXX : change representation into diagram in the template
-                                                                            // model.
+                    res.getStatements().add(parseRepresentation()); // XXX : change representation into diagram in the template
+                                                                    // model.
                     break;
                 case TABLE:
-                    compound.getSubConstructs().add(parseTableClient());
+                    res.getStatements().add(parseTableClient());
                     break;
                 default:
                     throw new UnsupportedOperationException(
@@ -335,6 +326,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
             }
             type = getNextTokenType();
         }
+
+        return res;
     }
 
     /**
@@ -344,7 +337,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
      * @throws DocumentParserException
      *             if a problem occurs while parsing.
      */
-    private AbstractConstruct parseLet() throws DocumentParserException {
+    private Statement parseLet() throws DocumentParserException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("not implemented yet");
     }
@@ -753,21 +746,21 @@ public class BodyTemplateParser extends BodyAbstractParser {
             final XWPFRun lastRun = conditional.getRuns().get(conditional.getRuns().size() - 1);
             conditional.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
         }
-        final Compound thenCompound = (Compound) EcoreUtil.create(TemplatePackage.Literals.COMPOUND);
+        final Block thenCompound = parseBlock(TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
         conditional.setThen(thenCompound);
-        parseCompound(conditional.getThen(), TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
         TokenType nextRunType = getNextTokenType();
         switch (nextRunType) {
             case ELSEIF:
-                final Compound elseIfCompound = (Compound) EcoreUtil.create(TemplatePackage.Literals.COMPOUND);
-                elseIfCompound.getSubConstructs().add(parseConditional());
+                final Block elseIfCompound = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
+                elseIfCompound.getStatements().add(parseConditional());
                 conditional.setElse(elseIfCompound);
                 break;
             case ELSE:
-                final Compound elseCompound = (Compound) EcoreUtil.create(TemplatePackage.Literals.COMPOUND);
+                // TODO we should be able to do this an other way...
+                final Block block = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
+                readTag(block, block.getRuns());
+                final Block elseCompound = parseBlock(TokenType.ENDIF);
                 conditional.setElse(elseCompound);
-                readTag(elseCompound, elseCompound.getRuns());
-                parseCompound(conditional.getElse(), TokenType.ENDIF);
 
                 // read up the gd:endif tag if it exists
                 if (getNextTokenType() != TokenType.EOF) {
@@ -820,7 +813,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
             }
         }
         // read up the tags until the "gd:endfor" tag is encountered.
-        parseCompound(repetition, TokenType.ENDFOR);
+        final Block body = parseBlock(TokenType.ENDFOR);
+        repetition.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(repetition, repetition.getClosingRuns());
         }
@@ -850,7 +844,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
             bookmark.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), tagText, lastRun));
         }
         // read up the tags until the "gd:endbookmark" tag is encountered.
-        parseCompound(bookmark, TokenType.ENDBOOKMARK);
+        final Block body = parseBlock(TokenType.ENDBOOKMARK);
+        bookmark.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(bookmark, bookmark.getClosingRuns());
         }
@@ -920,7 +915,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
         }
 
         // read up the tags until the "m:enduserdoc" tag is encountered.
-        parseCompound(userDoc, TokenType.ENDUSERDOC);
+        final Block body = parseBlock(TokenType.ENDUSERDOC);
+        userDoc.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(userDoc, userDoc.getClosingRuns());
         }

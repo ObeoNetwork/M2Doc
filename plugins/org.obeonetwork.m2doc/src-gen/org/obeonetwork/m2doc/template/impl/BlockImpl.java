@@ -14,8 +14,6 @@ import java.util.Collection;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -28,32 +26,33 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 
 import org.obeonetwork.m2doc.template.Block;
-import org.obeonetwork.m2doc.template.Bookmark;
+import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Bookmark</b></em>'.
+ * An implementation of the model object '<em><b>Block</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl#getStyleRun <em>Style Run</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl#getRuns <em>Runs</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl#getClosingRuns <em>Closing Runs</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl#getValidationMessages <em>Validation Messages</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.BlockImpl#getStyleRun <em>Style Run</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.BlockImpl#getRuns <em>Runs</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.BlockImpl#getClosingRuns <em>Closing Runs</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.BlockImpl#getValidationMessages <em>Validation Messages</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.BlockImpl#getStatements <em>Statements</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookmark {
+public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -112,41 +111,21 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
     protected EList<TemplateValidationMessage> validationMessages;
 
     /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+     * The cached value of the '{@link #getStatements() <em>Statements</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getName()
+     * @see #getStatements()
      * @generated
      * @ordered
      */
-    protected static final AstResult NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected AstResult name = NAME_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
-    protected Block body;
+    protected EList<Statement> statements;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected BookmarkImpl() {
+    protected BlockImpl() {
         super();
     }
 
@@ -157,7 +136,7 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
      */
     @Override
     protected EClass eStaticClass() {
-        return TemplatePackage.Literals.BOOKMARK;
+        return TemplatePackage.Literals.BLOCK;
     }
 
     /**
@@ -178,7 +157,7 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
         XWPFRun oldStyleRun = styleRun;
         styleRun = newStyleRun;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.BOOKMARK__STYLE_RUN, oldStyleRun, styleRun));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.BLOCK__STYLE_RUN, oldStyleRun, styleRun));
     }
 
     /**
@@ -188,7 +167,7 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
      */
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
-            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.BOOKMARK__RUNS);
+            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.BLOCK__RUNS);
         }
         return runs;
     }
@@ -200,7 +179,7 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
      */
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
-            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.BOOKMARK__CLOSING_RUNS);
+            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.BLOCK__CLOSING_RUNS);
         }
         return closingRuns;
     }
@@ -212,7 +191,7 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
      */
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class, this, TemplatePackage.BOOKMARK__VALIDATION_MESSAGES);
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class, this, TemplatePackage.BLOCK__VALIDATION_MESSAGES);
         }
         return validationMessages;
     }
@@ -222,63 +201,11 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
      * <!-- end-user-doc -->
      * @generated
      */
-    public AstResult getName() {
-        return name;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setName(AstResult newName) {
-        AstResult oldName = name;
-        name = newName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.BOOKMARK__NAME, oldName, name));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public Block getBody() {
-        return body;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
-        Block oldBody = body;
-        body = newBody;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.BOOKMARK__BODY, oldBody, newBody);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
+    public EList<Statement> getStatements() {
+        if (statements == null) {
+            statements = new EObjectContainmentEList<Statement>(Statement.class, this, TemplatePackage.BLOCK__STATEMENTS);
         }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setBody(Block newBody) {
-        if (newBody != body) {
-            NotificationChain msgs = null;
-            if (body != null)
-                msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.BOOKMARK__BODY, null, msgs);
-            if (newBody != null)
-                msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.BOOKMARK__BODY, null, msgs);
-            msgs = basicSetBody(newBody, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.BOOKMARK__BODY, newBody, newBody));
+        return statements;
     }
 
     /**
@@ -289,8 +216,8 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case TemplatePackage.BOOKMARK__BODY:
-                return basicSetBody(null, msgs);
+            case TemplatePackage.BLOCK__STATEMENTS:
+                return ((InternalEList<?>)getStatements()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -303,18 +230,16 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case TemplatePackage.BOOKMARK__STYLE_RUN:
+            case TemplatePackage.BLOCK__STYLE_RUN:
                 return getStyleRun();
-            case TemplatePackage.BOOKMARK__RUNS:
+            case TemplatePackage.BLOCK__RUNS:
                 return getRuns();
-            case TemplatePackage.BOOKMARK__CLOSING_RUNS:
+            case TemplatePackage.BLOCK__CLOSING_RUNS:
                 return getClosingRuns();
-            case TemplatePackage.BOOKMARK__VALIDATION_MESSAGES:
+            case TemplatePackage.BLOCK__VALIDATION_MESSAGES:
                 return getValidationMessages();
-            case TemplatePackage.BOOKMARK__NAME:
-                return getName();
-            case TemplatePackage.BOOKMARK__BODY:
-                return getBody();
+            case TemplatePackage.BLOCK__STATEMENTS:
+                return getStatements();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -328,26 +253,24 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case TemplatePackage.BOOKMARK__STYLE_RUN:
+            case TemplatePackage.BLOCK__STYLE_RUN:
                 setStyleRun((XWPFRun)newValue);
                 return;
-            case TemplatePackage.BOOKMARK__RUNS:
+            case TemplatePackage.BLOCK__RUNS:
                 getRuns().clear();
                 getRuns().addAll((Collection<? extends XWPFRun>)newValue);
                 return;
-            case TemplatePackage.BOOKMARK__CLOSING_RUNS:
+            case TemplatePackage.BLOCK__CLOSING_RUNS:
                 getClosingRuns().clear();
                 getClosingRuns().addAll((Collection<? extends XWPFRun>)newValue);
                 return;
-            case TemplatePackage.BOOKMARK__VALIDATION_MESSAGES:
+            case TemplatePackage.BLOCK__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>)newValue);
                 return;
-            case TemplatePackage.BOOKMARK__NAME:
-                setName((AstResult)newValue);
-                return;
-            case TemplatePackage.BOOKMARK__BODY:
-                setBody((Block)newValue);
+            case TemplatePackage.BLOCK__STATEMENTS:
+                getStatements().clear();
+                getStatements().addAll((Collection<? extends Statement>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -361,23 +284,20 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case TemplatePackage.BOOKMARK__STYLE_RUN:
+            case TemplatePackage.BLOCK__STYLE_RUN:
                 setStyleRun(STYLE_RUN_EDEFAULT);
                 return;
-            case TemplatePackage.BOOKMARK__RUNS:
+            case TemplatePackage.BLOCK__RUNS:
                 getRuns().clear();
                 return;
-            case TemplatePackage.BOOKMARK__CLOSING_RUNS:
+            case TemplatePackage.BLOCK__CLOSING_RUNS:
                 getClosingRuns().clear();
                 return;
-            case TemplatePackage.BOOKMARK__VALIDATION_MESSAGES:
+            case TemplatePackage.BLOCK__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 return;
-            case TemplatePackage.BOOKMARK__NAME:
-                setName(NAME_EDEFAULT);
-                return;
-            case TemplatePackage.BOOKMARK__BODY:
-                setBody((Block)null);
+            case TemplatePackage.BLOCK__STATEMENTS:
+                getStatements().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -391,18 +311,16 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case TemplatePackage.BOOKMARK__STYLE_RUN:
+            case TemplatePackage.BLOCK__STYLE_RUN:
                 return STYLE_RUN_EDEFAULT == null ? styleRun != null : !STYLE_RUN_EDEFAULT.equals(styleRun);
-            case TemplatePackage.BOOKMARK__RUNS:
+            case TemplatePackage.BLOCK__RUNS:
                 return runs != null && !runs.isEmpty();
-            case TemplatePackage.BOOKMARK__CLOSING_RUNS:
+            case TemplatePackage.BLOCK__CLOSING_RUNS:
                 return closingRuns != null && !closingRuns.isEmpty();
-            case TemplatePackage.BOOKMARK__VALIDATION_MESSAGES:
+            case TemplatePackage.BLOCK__VALIDATION_MESSAGES:
                 return validationMessages != null && !validationMessages.isEmpty();
-            case TemplatePackage.BOOKMARK__NAME:
-                return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-            case TemplatePackage.BOOKMARK__BODY:
-                return body != null;
+            case TemplatePackage.BLOCK__STATEMENTS:
+                return statements != null && !statements.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -425,10 +343,8 @@ public class BookmarkImpl extends MinimalEObjectImpl.Container implements Bookma
         result.append(closingRuns);
         result.append(", validationMessages: ");
         result.append(validationMessages);
-        result.append(", name: ");
-        result.append(name);
         result.append(')');
         return result.toString();
     }
 
-} //BookmarkImpl
+} //BlockImpl

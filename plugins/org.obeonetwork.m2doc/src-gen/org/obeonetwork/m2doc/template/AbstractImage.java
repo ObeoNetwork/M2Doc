@@ -10,6 +10,7 @@
  */
 package org.obeonetwork.m2doc.template;
 
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Abstract Image</b></em>'.

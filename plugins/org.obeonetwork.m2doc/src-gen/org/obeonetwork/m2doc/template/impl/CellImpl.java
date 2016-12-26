@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,9 +7,6 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template.impl;
 
@@ -23,6 +20,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -42,77 +40,77 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * @generated
  */
 public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
-	/**
+    /**
      * The cached value of the '{@link #getTemplate() <em>Template</em>}' containment reference.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getTemplate()
      * @generated
      * @ordered
      */
-	protected Template template;
+    protected Template template;
 
-	/**
+    /**
      * The default value of the '{@link #getTableCell() <em>Table Cell</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getTableCell()
      * @generated
      * @ordered
      */
-	protected static final XWPFTableCell TABLE_CELL_EDEFAULT = null;
+    protected static final XWPFTableCell TABLE_CELL_EDEFAULT = null;
 
-	/**
+    /**
      * The cached value of the '{@link #getTableCell() <em>Table Cell</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getTableCell()
      * @generated
      * @ordered
      */
-	protected XWPFTableCell tableCell = TABLE_CELL_EDEFAULT;
+    protected XWPFTableCell tableCell = TABLE_CELL_EDEFAULT;
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	protected CellImpl() {
+    protected CellImpl() {
         super();
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	protected EClass eStaticClass() {
+    @Override
+    protected EClass eStaticClass() {
         return TemplatePackage.Literals.CELL;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public Template getTemplate() {
+    public Template getTemplate() {
         return template;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public NotificationChain basicSetTemplate(Template newTemplate, NotificationChain msgs) {
+    public NotificationChain basicSetTemplate(Template newTemplate, NotificationChain msgs) {
         Template oldTemplate = template;
         template = newTemplate;
         if (eNotificationRequired()) {
@@ -122,12 +120,12 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
         return msgs;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public void setTemplate(Template newTemplate) {
+    public void setTemplate(Template newTemplate) {
         if (newTemplate != template) {
             NotificationChain msgs = null;
             if (template != null)
@@ -141,34 +139,34 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
             eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CELL__TEMPLATE, newTemplate, newTemplate));
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public XWPFTableCell getTableCell() {
+    public XWPFTableCell getTableCell() {
         return tableCell;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public void setTableCell(XWPFTableCell newTableCell) {
+    public void setTableCell(XWPFTableCell newTableCell) {
         XWPFTableCell oldTableCell = tableCell;
         tableCell = newTableCell;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CELL__TABLE_CELL, oldTableCell, tableCell));
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TemplatePackage.CELL__TEMPLATE:
                 return basicSetTemplate(null, msgs);
@@ -176,13 +174,13 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    @Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TemplatePackage.CELL__TEMPLATE:
                 return getTemplate();
@@ -192,13 +190,13 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
         return super.eGet(featureID, resolve, coreType);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public void eSet(int featureID, Object newValue) {
+    @Override
+    public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case TemplatePackage.CELL__TEMPLATE:
                 setTemplate((Template)newValue);
@@ -210,13 +208,13 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
         super.eSet(featureID, newValue);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public void eUnset(int featureID) {
+    @Override
+    public void eUnset(int featureID) {
         switch (featureID) {
             case TemplatePackage.CELL__TEMPLATE:
                 setTemplate((Template)null);
@@ -228,13 +226,13 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
         super.eUnset(featureID);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public boolean eIsSet(int featureID) {
+    @Override
+    public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TemplatePackage.CELL__TEMPLATE:
                 return template != null;
@@ -244,13 +242,13 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
         return super.eIsSet(featureID);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());

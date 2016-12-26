@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,9 +7,6 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template.impl;
 
@@ -21,24 +18,30 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+
 import org.obeonetwork.m2doc.provider.IProvider;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
+
 import org.obeonetwork.m2doc.template.AbstractImage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
@@ -46,6 +49,7 @@ import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
+import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
@@ -75,7 +79,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass abstractConstructEClass = null;
+    private EClass iConstructEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -118,6 +122,48 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EClass tableMergeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass imageEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass blockEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass statementEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass templateEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass representationEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass staticFragmentEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -188,41 +234,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EClass tableClientEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass imageEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass compoundEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass templateEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass representationEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass staticFragmentEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -367,9 +378,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EClass getAbstractConstruct() {
-        return abstractConstructEClass;
+    public EClass getIConstruct() {
+        return iConstructEClass;
     }
 
     /**
@@ -377,9 +387,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EAttribute getAbstractConstruct_StyleRun() {
-        return (EAttribute)abstractConstructEClass.getEStructuralFeatures().get(0);
+    public EAttribute getIConstruct_StyleRun() {
+        return (EAttribute)iConstructEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -387,9 +396,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EAttribute getAbstractConstruct_Runs() {
-        return (EAttribute)abstractConstructEClass.getEStructuralFeatures().get(1);
+    public EAttribute getIConstruct_Runs() {
+        return (EAttribute)iConstructEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -397,9 +405,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EAttribute getAbstractConstruct_ClosingRuns() {
-        return (EAttribute)abstractConstructEClass.getEStructuralFeatures().get(2);
+    public EAttribute getIConstruct_ClosingRuns() {
+        return (EAttribute)iConstructEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -407,9 +414,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EAttribute getAbstractConstruct_ValidationMessages() {
-        return (EAttribute)abstractConstructEClass.getEStructuralFeatures().get(3);
+    public EAttribute getIConstruct_ValidationMessages() {
+        return (EAttribute)iConstructEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -453,7 +459,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EClass getRepetition() {
         return repetitionEClass;
     }
@@ -463,7 +468,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getRepetition_IterationVar() {
         return (EAttribute)repetitionEClass.getEStructuralFeatures().get(0);
     }
@@ -473,7 +477,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getRepetition_Query() {
         return (EAttribute)repetitionEClass.getEStructuralFeatures().get(1);
     }
@@ -483,7 +486,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
+    public EReference getRepetition_Body() {
+        return (EReference)repetitionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getUserDoc() {
         return userDocEClass;
     }
@@ -493,7 +504,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getUserDoc_Id() {
         return (EAttribute)userDocEClass.getEStructuralFeatures().get(0);
     }
@@ -503,7 +513,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
+    public EReference getUserDoc_Body() {
+        return (EReference)userDocEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getUserContent() {
         return userContentEClass;
     }
@@ -513,7 +531,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getUserContent_Id() {
         return (EAttribute)userContentEClass.getEStructuralFeatures().get(0);
     }
@@ -523,7 +540,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
+    public EReference getUserContent_Body() {
+        return (EReference)userContentEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getQuery() {
         return queryEClass;
     }
@@ -533,37 +558,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EAttribute getQuery_Query() {
-        return (EAttribute)queryEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getTableMerge() {
-        return tableMergeEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getTableMerge_Legend() {
-        return (EAttribute)tableMergeEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
     public EAttribute getQuery_Behavior() {
         return (EAttribute)queryEClass.getEStructuralFeatures().get(0);
     }
@@ -573,9 +567,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EClass getTable() {
-        return tableEClass;
+    public EAttribute getQuery_Query() {
+        return (EAttribute)queryEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -583,9 +576,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EReference getTable_Rows() {
-        return (EReference)tableEClass.getEStructuralFeatures().get(0);
+    public EClass getTableMerge() {
+        return tableMergeEClass;
     }
 
     /**
@@ -593,9 +585,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EAttribute getTable_Table() {
-        return (EAttribute)tableEClass.getEStructuralFeatures().get(1);
+    public EAttribute getTableMerge_Legend() {
+        return (EAttribute)tableMergeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -603,9 +594,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EClass getRow() {
-        return rowEClass;
+    public EReference getTableMerge_Body() {
+        return (EReference)tableMergeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -613,277 +603,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EReference getRow_Cells() {
-        return (EReference)rowEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getRow_TableRow() {
-        return (EAttribute)rowEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getCell() {
-        return cellEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EReference getCell_Template() {
-        return (EReference)cellEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getCell_TableCell() {
-        return (EAttribute)cellEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getDocumentTemplate() {
-        return documentTemplateEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EReference getDocumentTemplate_Headers() {
-        return (EReference)documentTemplateEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EReference getDocumentTemplate_Footers() {
-        return (EReference)documentTemplateEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EReference getDocumentTemplate_Body() {
-        return (EReference)documentTemplateEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getDocumentTemplate_Document() {
-        return (EAttribute)documentTemplateEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getOptionValueMap() {
-        return optionValueMapEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getOptionValueMap_Key() {
-        return (EAttribute)optionValueMapEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getOptionValueMap_Value() {
-        return (EAttribute)optionValueMapEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getAbstractImage() {
-        return abstractImageEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getAbstractImage_Legend() {
-        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getAbstractImage_Height() {
-        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getAbstractImage_Width() {
-        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getAbstractImage_LegendPOS() {
-        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getAbstractProviderClient() {
-        return abstractProviderClientEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EReference getAbstractProviderClient_OptionValueMap() {
-        return (EReference)abstractProviderClientEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getAbstractProviderClient_Provider() {
-        return (EAttribute)abstractProviderClientEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getBookmark() {
-        return bookmarkEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getBookmark_Name() {
-        return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getLink() {
-        return linkEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getLink_Name() {
-        return (EAttribute)linkEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EAttribute getLink_Text() {
-        return (EAttribute)linkEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public EClass getTableClient() {
-        return tableClientEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
     public EClass getImage() {
         return imageEClass;
     }
@@ -893,7 +612,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getImage_FileName() {
         return (EAttribute)imageEClass.getEStructuralFeatures().get(0);
     }
@@ -903,9 +621,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EClass getCompound() {
-        return compoundEClass;
+    public EClass getBlock() {
+        return blockEClass;
     }
 
     /**
@@ -913,9 +630,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EReference getCompound_SubConstructs() {
-        return (EReference)compoundEClass.getEStructuralFeatures().get(0);
+    public EReference getBlock_Statements() {
+        return (EReference)blockEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -923,7 +639,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
+    public EClass getStatement() {
+        return statementEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getTemplate() {
         return templateEClass;
     }
@@ -933,7 +657,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getTemplate_TemplateName() {
         return (EAttribute)templateEClass.getEStructuralFeatures().get(0);
     }
@@ -943,8 +666,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public EAttribute getTemplate_Body() {
+    public EAttribute getTemplate_XWPFBody() {
         return (EAttribute)templateEClass.getEStructuralFeatures().get(1);
     }
 
@@ -953,7 +675,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
+    public EReference getTemplate_Body() {
+        return (EReference)templateEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getRepresentation() {
         return representationEClass;
     }
@@ -963,7 +693,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getRepresentation_Query() {
         return (EAttribute)representationEClass.getEStructuralFeatures().get(0);
     }
@@ -973,7 +702,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getRepresentation_RepresentationId() {
         return (EAttribute)representationEClass.getEStructuralFeatures().get(1);
     }
@@ -983,7 +711,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getRepresentation_RepresentationTitle() {
         return (EAttribute)representationEClass.getEStructuralFeatures().get(2);
     }
@@ -993,7 +720,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EAttribute getRepresentation_ActivatedLayers() {
         return (EAttribute)representationEClass.getEStructuralFeatures().get(3);
     }
@@ -1003,7 +729,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EClass getStaticFragment() {
         return staticFragmentEClass;
     }
@@ -1013,7 +738,294 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
+    public EClass getTable() {
+        return tableEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getTable_Rows() {
+        return (EReference)tableEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getTable_Table() {
+        return (EAttribute)tableEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getRow() {
+        return rowEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getRow_Cells() {
+        return (EReference)rowEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRow_TableRow() {
+        return (EAttribute)rowEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCell() {
+        return cellEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getCell_Template() {
+        return (EReference)cellEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCell_TableCell() {
+        return (EAttribute)cellEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getDocumentTemplate() {
+        return documentTemplateEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentTemplate_Headers() {
+        return (EReference)documentTemplateEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentTemplate_Footers() {
+        return (EReference)documentTemplateEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentTemplate_Body() {
+        return (EReference)documentTemplateEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getDocumentTemplate_Document() {
+        return (EAttribute)documentTemplateEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getOptionValueMap() {
+        return optionValueMapEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOptionValueMap_Key() {
+        return (EAttribute)optionValueMapEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOptionValueMap_Value() {
+        return (EAttribute)optionValueMapEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getAbstractImage() {
+        return abstractImageEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_Legend() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_Height() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_Width() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractImage_LegendPOS() {
+        return (EAttribute)abstractImageEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getAbstractProviderClient() {
+        return abstractProviderClientEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getAbstractProviderClient_OptionValueMap() {
+        return (EReference)abstractProviderClientEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAbstractProviderClient_Provider() {
+        return (EAttribute)abstractProviderClientEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getBookmark() {
+        return bookmarkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getBookmark_Name() {
+        return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getBookmark_Body() {
+        return (EReference)bookmarkEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getLink() {
+        return linkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getLink_Name() {
+        return (EAttribute)linkEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getLink_Text() {
+        return (EAttribute)linkEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getTableClient() {
+        return tableClientEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getQueryBehavior() {
         return queryBehaviorEEnum;
     }
@@ -1023,7 +1035,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EEnum getPOSITION() {
         return positionEEnum;
     }
@@ -1033,7 +1044,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getDocument() {
         return documentEDataType;
     }
@@ -1043,7 +1053,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getWTable() {
         return wTableEDataType;
     }
@@ -1053,7 +1062,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getRun() {
         return runEDataType;
     }
@@ -1063,7 +1071,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getAstResult() {
         return astResultEDataType;
     }
@@ -1073,7 +1080,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getTemplateValidationMessage() {
         return templateValidationMessageEDataType;
     }
@@ -1083,7 +1089,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getWTableRow() {
         return wTableRowEDataType;
     }
@@ -1093,7 +1098,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getWTableCell() {
         return wTableCellEDataType;
     }
@@ -1103,7 +1107,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getProvider() {
         return providerEDataType;
     }
@@ -1113,7 +1116,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public EDataType getBody() {
         return bodyEDataType;
     }
@@ -1123,7 +1125,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    @Override
     public TemplateFactory getTemplateFactory() {
         return (TemplateFactory)getEFactoryInstance();
     }
@@ -1147,11 +1148,11 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         isCreated = true;
 
         // Create classes and their features
-        abstractConstructEClass = createEClass(ABSTRACT_CONSTRUCT);
-        createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__STYLE_RUN);
-        createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__RUNS);
-        createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__CLOSING_RUNS);
-        createEAttribute(abstractConstructEClass, ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES);
+        iConstructEClass = createEClass(ICONSTRUCT);
+        createEAttribute(iConstructEClass, ICONSTRUCT__STYLE_RUN);
+        createEAttribute(iConstructEClass, ICONSTRUCT__RUNS);
+        createEAttribute(iConstructEClass, ICONSTRUCT__CLOSING_RUNS);
+        createEAttribute(iConstructEClass, ICONSTRUCT__VALIDATION_MESSAGES);
 
         conditionalEClass = createEClass(CONDITIONAL);
         createEAttribute(conditionalEClass, CONDITIONAL__CONDITION);
@@ -1161,12 +1162,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         repetitionEClass = createEClass(REPETITION);
         createEAttribute(repetitionEClass, REPETITION__ITERATION_VAR);
         createEAttribute(repetitionEClass, REPETITION__QUERY);
+        createEReference(repetitionEClass, REPETITION__BODY);
 
         userDocEClass = createEClass(USER_DOC);
         createEAttribute(userDocEClass, USER_DOC__ID);
+        createEReference(userDocEClass, USER_DOC__BODY);
 
         userContentEClass = createEClass(USER_CONTENT);
         createEAttribute(userContentEClass, USER_CONTENT__ID);
+        createEReference(userContentEClass, USER_CONTENT__BODY);
 
         queryEClass = createEClass(QUERY);
         createEAttribute(queryEClass, QUERY__BEHAVIOR);
@@ -1174,16 +1178,20 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         tableMergeEClass = createEClass(TABLE_MERGE);
         createEAttribute(tableMergeEClass, TABLE_MERGE__LEGEND);
+        createEReference(tableMergeEClass, TABLE_MERGE__BODY);
 
         imageEClass = createEClass(IMAGE);
         createEAttribute(imageEClass, IMAGE__FILE_NAME);
 
-        compoundEClass = createEClass(COMPOUND);
-        createEReference(compoundEClass, COMPOUND__SUB_CONSTRUCTS);
+        blockEClass = createEClass(BLOCK);
+        createEReference(blockEClass, BLOCK__STATEMENTS);
+
+        statementEClass = createEClass(STATEMENT);
 
         templateEClass = createEClass(TEMPLATE);
         createEAttribute(templateEClass, TEMPLATE__TEMPLATE_NAME);
-        createEAttribute(templateEClass, TEMPLATE__BODY);
+        createEAttribute(templateEClass, TEMPLATE__XWPF_BODY);
+        createEReference(templateEClass, TEMPLATE__BODY);
 
         representationEClass = createEClass(REPRESENTATION);
         createEAttribute(representationEClass, REPRESENTATION__QUERY);
@@ -1227,6 +1235,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         bookmarkEClass = createEClass(BOOKMARK);
         createEAttribute(bookmarkEClass, BOOKMARK__NAME);
+        createEReference(bookmarkEClass, BOOKMARK__BODY);
 
         linkEClass = createEClass(LINK);
         createEAttribute(linkEClass, LINK__NAME);
@@ -1278,45 +1287,49 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         // Set bounds for type parameters
 
         // Add supertypes to classes
-        conditionalEClass.getESuperTypes().add(this.getAbstractConstruct());
-        repetitionEClass.getESuperTypes().add(this.getCompound());
-        userDocEClass.getESuperTypes().add(this.getCompound());
-        userContentEClass.getESuperTypes().add(this.getCompound());
-        queryEClass.getESuperTypes().add(this.getAbstractConstruct());
-        tableMergeEClass.getESuperTypes().add(this.getCompound());
+        conditionalEClass.getESuperTypes().add(this.getStatement());
+        repetitionEClass.getESuperTypes().add(this.getStatement());
+        userDocEClass.getESuperTypes().add(this.getStatement());
+        userContentEClass.getESuperTypes().add(this.getStatement());
+        queryEClass.getESuperTypes().add(this.getStatement());
+        tableMergeEClass.getESuperTypes().add(this.getStatement());
         imageEClass.getESuperTypes().add(this.getAbstractImage());
-        compoundEClass.getESuperTypes().add(this.getAbstractConstruct());
-        templateEClass.getESuperTypes().add(this.getCompound());
+        blockEClass.getESuperTypes().add(this.getIConstruct());
+        statementEClass.getESuperTypes().add(this.getIConstruct());
+        templateEClass.getESuperTypes().add(this.getIConstruct());
         representationEClass.getESuperTypes().add(this.getAbstractImage());
-        staticFragmentEClass.getESuperTypes().add(this.getAbstractConstruct());
-        tableEClass.getESuperTypes().add(this.getAbstractConstruct());
+        staticFragmentEClass.getESuperTypes().add(this.getStatement());
+        tableEClass.getESuperTypes().add(this.getStatement());
         abstractImageEClass.getESuperTypes().add(this.getAbstractProviderClient());
-        abstractProviderClientEClass.getESuperTypes().add(this.getAbstractConstruct());
-        bookmarkEClass.getESuperTypes().add(this.getCompound());
-        linkEClass.getESuperTypes().add(this.getAbstractConstruct());
+        abstractProviderClientEClass.getESuperTypes().add(this.getStatement());
+        bookmarkEClass.getESuperTypes().add(this.getStatement());
+        linkEClass.getESuperTypes().add(this.getStatement());
         tableClientEClass.getESuperTypes().add(this.getAbstractProviderClient());
 
         // Initialize classes, features, and operations; add parameters
-        initEClass(abstractConstructEClass, AbstractConstruct.class, "AbstractConstruct", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getAbstractConstruct_StyleRun(), this.getRun(), "styleRun", null, 0, 1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getAbstractConstruct_Runs(), this.getRun(), "runs", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getAbstractConstruct_ClosingRuns(), this.getRun(), "closingRuns", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getAbstractConstruct_ValidationMessages(), this.getTemplateValidationMessage(), "validationMessages", null, 0, -1, AbstractConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(iConstructEClass, IConstruct.class, "IConstruct", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getIConstruct_StyleRun(), this.getRun(), "styleRun", null, 0, 1, IConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getIConstruct_Runs(), this.getRun(), "runs", null, 0, -1, IConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getIConstruct_ClosingRuns(), this.getRun(), "closingRuns", null, 0, -1, IConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getIConstruct_ValidationMessages(), this.getTemplateValidationMessage(), "validationMessages", null, 0, -1, IConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(conditionalEClass, Conditional.class, "Conditional", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getConditional_Condition(), this.getAstResult(), "condition", null, 0, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getConditional_Then(), this.getCompound(), null, "then", null, 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getConditional_Else(), this.getCompound(), null, "else", null, 0, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getConditional_Then(), this.getBlock(), null, "then", null, 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getConditional_Else(), this.getBlock(), null, "else", null, 0, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(repetitionEClass, Repetition.class, "Repetition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRepetition_IterationVar(), ecorePackage.getEString(), "iterationVar", null, 0, 1, Repetition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRepetition_Query(), this.getAstResult(), "query", null, 0, 1, Repetition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getRepetition_Body(), this.getBlock(), null, "body", null, 1, 1, Repetition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(userDocEClass, UserDoc.class, "UserDoc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getUserDoc_Id(), this.getAstResult(), "id", null, 0, 1, UserDoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getUserDoc_Body(), this.getBlock(), null, "body", null, 1, 1, UserDoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(userContentEClass, UserContent.class, "UserContent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getUserContent_Id(), ecorePackage.getEString(), "id", null, 0, 1, UserContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getUserContent_Body(), this.getBlock(), null, "body", null, 1, 1, UserContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(queryEClass, Query.class, "Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getQuery_Behavior(), this.getQueryBehavior(), "behavior", "TEXT", 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1324,16 +1337,20 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         initEClass(tableMergeEClass, TableMerge.class, "TableMerge", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getTableMerge_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, TableMerge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getTableMerge_Body(), this.getBlock(), null, "body", null, 1, 1, TableMerge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(imageEClass, Image.class, "Image", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getImage_FileName(), ecorePackage.getEString(), "fileName", null, 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(compoundEClass, Compound.class, "Compound", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getCompound_SubConstructs(), this.getAbstractConstruct(), null, "subConstructs", null, 0, -1, Compound.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(blockEClass, Block.class, "Block", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getBlock_Statements(), this.getStatement(), null, "statements", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(statementEClass, Statement.class, "Statement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getTemplate_TemplateName(), ecorePackage.getEString(), "templateName", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getTemplate_Body(), this.getBody(), "body", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getTemplate_XWPFBody(), this.getBody(), "XWPFBody", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getTemplate_Body(), this.getBlock(), null, "body", null, 1, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(representationEClass, Representation.class, "Representation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRepresentation_Query(), this.getAstResult(), "query", null, 0, 1, Representation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1377,6 +1394,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getBookmark_Name(), this.getAstResult(), "name", null, 0, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getBookmark_Body(), this.getBlock(), null, "body", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getLink_Name(), this.getAstResult(), "name", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1460,10 +1478,22 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
              "syntax", "{gd:for var | query} body {gd:endfor}"
            });	
         addAnnotation
+          (getRepetition_Body(), 
+           source, 
+           new String[] {
+             "documentation", "The {@link Block} of {@link Statement}."
+           });	
+        addAnnotation
           (userDocEClass, 
            source, 
            new String[] {
              "documentation", "UserDoc  tag\r\n\r\nTag template to keep user part modification in previous generated \r\nresult file."
+           });	
+        addAnnotation
+          (getUserDoc_Body(), 
+           source, 
+           new String[] {
+             "documentation", "The {@link Block} of {@link Statement}."
            });	
         addAnnotation
           (userContentEClass, 
@@ -1472,12 +1502,36 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
              "documentation", "UserDocDest  tag\r\n\r\nTag in generated document neede to extract user part modification.\r\nUserDocDest is generated by M2Doc\r\n\r\n."
            });	
         addAnnotation
+          (getUserContent_Body(), 
+           source, 
+           new String[] {
+             "documentation", "The {@link Block} of {@link Statement}."
+           });	
+        addAnnotation
           (queryEClass, 
            source, 
            new String[] {
              "documentation", "La balise est remplac\u00e9e dans le document par la repr\u00e9sentation en \r\nchaine de caract\u00e8re du r\u00e9sultat de l\'\u00e9valuation de l\'expression dans le \r\ncontexte courant. La style du premier run contenant query est utilis\u00e9 pour g\u00e9n\u00e9rer le document. Il n\'y a pas de sens \u00e0 utiliser plusieurs styles diff\u00e9rents dans une requ\u00eate si bien que seul le premier est utilis\u00e9 si plusieurs sont pr\u00e9sents.\r\n- Lorsque le modifier icon est pr\u00e9cis\u00e9, l\'icone de l\'\u00e9l\u00e9ment \u00e9valu\u00e9 telle que d\u00e9finie dans le .edit correspondant  est ins\u00e9r\u00e9e \u00e0 la place du run\r\n- Lorsque le modifier label est pr\u00e9cis\u00e9, le label de l\'\u00e9l\u00e9ment \u00e9valu\u00e9 tel que d\u00e9finin dans le .edit correspondant est ins\u00e9r\u00e9 \u00e0 la place du run.\r\n- Lorsque le modifier text ou qu\'aucun modifier n\'apparait, la repr\u00e9sentation en chaine de caract\u00e8re de l\'\u00e9valuation du r\u00e9sultat est ins\u00e9r\u00e9.",
              "syntax", "{aql:query [icon, label,text]}"
+           });	
+        addAnnotation
+          (getTableMerge_Body(), 
+           source, 
+           new String[] {
+             "documentation", "The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>true</code>."
+           });	
+        addAnnotation
+          (getTemplate_Body(), 
+           source, 
+           new String[] {
+             "documentation", "The {@link Block} of {@link Statement}."
+           });	
+        addAnnotation
+          (getBookmark_Body(), 
+           source, 
+           new String[] {
+             "documentation", "The {@link Block} of {@link Statement}."
            });
     }
 
-} // TemplatePackageImpl
+} //TemplatePackageImpl

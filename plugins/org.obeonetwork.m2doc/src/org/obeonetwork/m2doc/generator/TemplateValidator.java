@@ -36,19 +36,18 @@ import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 
@@ -144,9 +143,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseTemplate(Template template) {
-        for (AbstractConstruct construct : template.getSubConstructs()) {
-            doSwitch(construct);
-        }
+        doSwitch(template.getBody());
 
         return null;
     }
@@ -158,21 +155,16 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         addValidationMessages(userDoc, run, validationResult);
         if (validationResult != null) { // FIXME : we might check why we may have a null validation result in AQL.
             checkUserDocIdTypes(userDoc, run, validationResult);
-            for (AbstractConstruct construct : userDoc.getSubConstructs()) {
-                doSwitch(construct);
-            }
+            doSwitch(userDoc.getBody());
         }
 
         return null;
     }
 
     @Override
-    public Void caseCompound(Compound compound) {
-        // TODO remove the if when compound are composed and not expended
-        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
-            for (AbstractConstruct construct : compound.getSubConstructs()) {
-                doSwitch(construct);
-            }
+    public Void caseBlock(Block block) {
+        for (IConstruct construct : block.getStatements()) {
+            doSwitch(construct);
         }
         return null;
     }
@@ -312,9 +304,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
             iterationVariables.put(repetition.getIterationVar(), iteratorTypes);
             stack.push(iterationVariables);
             try {
-                for (AbstractConstruct construct : repetition.getSubConstructs()) {
-                    doSwitch(construct);
-                }
+                doSwitch(repetition.getBody());
             } finally {
                 stack.pop();
             }
@@ -324,9 +314,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseTableMerge(TableMerge tableMerge) {
-        for (AbstractConstruct construct : tableMerge.getSubConstructs()) {
-            doSwitch(construct);
-        }
+        doSwitch(tableMerge.getBody());
 
         return null;
     }
@@ -396,16 +384,16 @@ public class TemplateValidator extends TemplateSwitch<Void> {
     }
 
     /**
-     * Adds {@link IValidationMessage} from the given {@link IValidationResult} to the given {@link AbstractConstruct}.
+     * Adds {@link IValidationMessage} from the given {@link IValidationResult} to the given {@link IConstruct}.
      * 
      * @param construct
-     *            the {@link AbstractConstruct}
+     *            the {@link IConstruct}
      * @param run
      *            the {@link XWPFRun}
      * @param validationResult
      *            the {@link IValidationResult}
      */
-    private void addValidationMessages(AbstractConstruct construct, XWPFRun run, IValidationResult validationResult) {
+    private void addValidationMessages(IConstruct construct, XWPFRun run, IValidationResult validationResult) {
         if (validationResult != null) {
             for (IValidationMessage message : validationResult.getMessages()) {
                 construct.getValidationMessages()

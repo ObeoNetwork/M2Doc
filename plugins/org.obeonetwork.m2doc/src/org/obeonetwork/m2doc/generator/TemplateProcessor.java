@@ -59,12 +59,12 @@ import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
-import org.obeonetwork.m2doc.template.AbstractConstruct;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Compound;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
@@ -75,7 +75,6 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
@@ -92,7 +91,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
  * @author Romain Guider
  */
 @SuppressWarnings("restriction")
-public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
+public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     /**
      * Colon.
      */
@@ -275,16 +274,14 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseTemplate(Template object) {
-        List<AbstractConstruct> subConstructs = object.getSubConstructs();
-        for (int i = 0; i < subConstructs.size(); i++) {
-            doSwitch(subConstructs.get(i));
-        }
+    public IConstruct caseTemplate(Template object) {
+        doSwitch(object.getBody());
+
         return object;
     }
 
     @Override
-    public AbstractConstruct caseStaticFragment(StaticFragment object) {
+    public IConstruct caseStaticFragment(StaticFragment object) {
         for (XWPFRun run : object.getRuns()) {
             insertRun(run);
         }
@@ -433,7 +430,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseQuery(Query object) {
+    public IConstruct caseQuery(Query object) {
         // first evaluate the query.
         String strResult;
         EvaluationResult result = null;
@@ -462,7 +459,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public AbstractConstruct caseRepetition(Repetition object) {
+    public IConstruct caseRepetition(Repetition object) {
         // first evaluate the query
         boolean validQuery = object.getQuery() != null;
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
@@ -498,11 +495,8 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             }
             for (Object val : iteration) {
                 this.definitions.setValue(object.getIterationVar(), val);
-                for (AbstractConstruct construct : object.getSubConstructs()) {
-                    doSwitch(construct);
-                }
-
-                closingCompound(object);
+                doSwitch(object.getBody());
+                closingRepretition(object);
             }
         }
         return object;
@@ -516,7 +510,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      */
     @SuppressWarnings("deprecation")
     @Override
-    public AbstractConstruct caseUserDoc(UserDoc object) {
+    public IConstruct caseUserDoc(UserDoc object) {
         // first : evaluate the query
         boolean validQuery = object.getId() != null;
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getId(),
@@ -548,9 +542,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             UserContent userContent = userContentManager.getUserContent(id);
             boolean needNewParagraphBeforeEndTag = true;
             if (userContent == null) {
-                for (AbstractConstruct construct : object.getSubConstructs()) {
-                    doSwitch(construct);
-                }
+                doSwitch(object.getBody());
                 needNewParagraphBeforeEndTag = needNewParagraph(object);
             } else {
                 UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
@@ -574,25 +566,22 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
 
             // Tag m:enduserContent
             addEndUserDocField(object, needNewParagraphBeforeEndTag);
-            // Closing compound
-            closingCompound(object);
             // }
         }
         return object;
     }
 
     /**
-     * Test if compound need new paragraph before end tag.
+     * Tells if the given {@link IConstruct} need new paragraph before end tag.
      * 
-     * @param compound
-     *            compound
-     * @return true if need new paragraph
+     * @param construct
+     *            the {@link IConstruct}
+     * @return <code>true</code> if the given {@link IConstruct} need new paragraph before end tag, <code>false</code> otherwise
      */
-    @SuppressWarnings("deprecation")
-    private boolean needNewParagraph(Compound compound) {
+    private boolean needNewParagraph(IConstruct construct) {
         boolean needNewParagraph = true;
-        if (compound.getClosingRuns().size() != 0) {
-            if (compound.getClosingRuns().get(0).getParagraph() == currentTemplateParagraph) {
+        if (construct.getClosingRuns().size() != 0) {
+            if (construct.getClosingRuns().get(0).getParent() == currentTemplateParagraph) {
                 needNewParagraph = false;
             }
         }
@@ -633,7 +622,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            UserDoc Id
      */
     @SuppressWarnings("deprecation")
-    private void addStartUserDocField(AbstractConstruct object, String id) {
+    private void addStartUserDocField(IConstruct object, String id) {
         if (currentTemplateParagraph == null
             || object.getRuns().size() != 0 && object.getRuns().get(0).getParagraph() != currentTemplateParagraph) {
             createNewParagraph(object.getRuns().get(0).getParagraph());
@@ -650,7 +639,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
      *            need New Paragraph boolean
      */
     @SuppressWarnings("deprecation")
-    private void addEndUserDocField(AbstractConstruct object, boolean needNewParagraph) {
+    private void addEndUserDocField(IConstruct object, boolean needNewParagraph) {
         if (object.getClosingRuns().size() != 0) {
             if (needNewParagraph) {
                 createNewParagraph(object.getClosingRuns().get(0).getParagraph());
@@ -660,39 +649,37 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     /**
-     * Closing Compound.
-     * if the end of compound lies on a distinct paragraph, insert a new
+     * Closes the generation of the given {@link Repetition}.
+     * if the end of {@link Repetition} lies on a distinct paragraph, insert a new
      * paragraph there to take this into account.
      * 
-     * @param object
-     *            Compound to close
+     * @param repetition
+     *            {@link Repetition} to close
      */
-    private void closingCompound(Compound object) {
-        int bodySize = object.getSubConstructs().size();
-        if (bodySize > 0 && object.getSubConstructs().get(bodySize - 1).getRuns().size() > 0) {
-            AbstractConstruct lastBodyPart = object.getSubConstructs().get(bodySize - 1);
+    private void closingRepretition(Repetition repetition) {
+        int bodySize = repetition.getBody().getStatements().size();
+        if (bodySize > 0 && repetition.getBody().getStatements().get(bodySize - 1).getRuns().size() > 0) {
+            IConstruct lastBodyPart = repetition.getBody().getStatements().get(bodySize - 1);
             int runNumber = lastBodyPart.getRuns().size();
             XWPFRun lastRun = lastBodyPart.getRuns().get(runNumber - 1);
-            int closingRunNumber = object.getClosingRuns().size();
-            if (closingRunNumber > 0 && object.getClosingRuns().get(0).getParent() != lastRun.getParent()) {
+            int closingRunNumber = repetition.getClosingRuns().size();
+            if (closingRunNumber > 0 && repetition.getClosingRuns().get(0).getParent() != lastRun.getParent()) {
                 forceNewParagraph = true;
             }
         }
     }
 
     @Override
-    public AbstractConstruct caseCompound(Compound compound) {
-        // TODO remove the if when compound are composed and not expended
-        if (compound.eClass() == TemplatePackage.eINSTANCE.getCompound()) {
-            for (AbstractConstruct construct : compound.getSubConstructs()) {
-                doSwitch(construct);
-            }
+    public IConstruct caseBlock(Block compound) {
+        for (IConstruct construct : compound.getStatements()) {
+            doSwitch(construct);
         }
+
         return compound;
     }
 
     @Override
-    public AbstractConstruct caseConditional(Conditional conditional) {
+    public IConstruct caseConditional(Conditional conditional) {
         EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(conditional.getCondition(),
                 definitions.getCurrentDefinitions());
         boolean validQuery = conditional.getCondition() != null;
@@ -728,7 +715,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseTable(Table object) {
+    public IConstruct caseTable(Table object) {
         // Create the table structure in the destination document.
         XWPFTable generatedTable;
         CTTbl copy = (CTTbl) object.getTable().getCTTbl().copy();
@@ -816,7 +803,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseImage(Image object) {
+    public IConstruct caseImage(Image object) {
         XWPFRun imageRun = insertRun(object.getStyleRun());
         imageRun.setText("");
         imageRun.getCTR().getInstrTextList().clear();
@@ -848,7 +835,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseRepresentation(Representation object) {
+    public IConstruct caseRepresentation(Representation object) {
         XWPFRun imageRun = insertRun(object.getStyleRun());
         IProvider provider = object.getProvider();
         if (provider == null) {
@@ -913,7 +900,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseTableClient(TableClient object) {
+    public IConstruct caseTableClient(TableClient object) {
         XWPFRun tableRun = insertRun(object.getStyleRun());
         tableRun.getCTR().getInstrTextList().clear();
         AbstractTableProvider provider = (AbstractTableProvider) object.getProvider();
@@ -963,7 +950,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseBookmark(Bookmark bookmark) {
+    public IConstruct caseBookmark(Bookmark bookmark) {
         if (bookmark.getName() == null) {
             XWPFRun run = insertRun(bookmark.getStyleRun());
             setErrorMessageToRun(
@@ -981,9 +968,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 setErrorMessageToRun(builder.toString(), run);
             } else {
                 bookmarkManager.startBookmark(currentGeneratedParagraph, result.getResult().toString());
-                for (AbstractConstruct construct : bookmark.getSubConstructs()) {
-                    doSwitch(construct);
-                }
+                doSwitch(bookmark.getBody());
                 bookmarkManager.endBookmark(currentGeneratedParagraph, result.getResult().toString());
             }
         }
@@ -992,7 +977,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
     }
 
     @Override
-    public AbstractConstruct caseLink(Link link) {
+    public IConstruct caseLink(Link link) {
         if (link.getName() == null) {
             XWPFRun run = insertRun(link.getStyleRun());
             setErrorMessageToRun(QUERY_SYNTAX_ERROR_MESSAGE + COLON + link.getValidationMessages().get(0).getMessage(),

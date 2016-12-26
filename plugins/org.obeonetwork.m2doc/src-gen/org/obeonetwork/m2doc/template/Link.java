@@ -12,7 +12,6 @@ package org.obeonetwork.m2doc.template;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Link</b></em>'.
@@ -30,7 +29,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * @model
  * @generated
  */
-public interface Link extends AbstractConstruct {
+public interface Link extends Statement {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

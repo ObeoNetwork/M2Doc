@@ -31,7 +31,7 @@ import org.obeonetwork.m2doc.provider.IProvider;
  * @model abstract="true"
  * @generated
  */
-public interface AbstractProviderClient extends AbstractConstruct {
+public interface AbstractProviderClient extends Statement {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

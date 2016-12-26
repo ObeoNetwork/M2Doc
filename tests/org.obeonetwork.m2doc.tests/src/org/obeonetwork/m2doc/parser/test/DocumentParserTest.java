@@ -125,10 +125,10 @@ public class DocumentParserTest {
             XWPFDocument document = new XWPFDocument(oPackage);
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
-            assertEquals(document, template.getBody());
-            assertEquals(1, template.getSubConstructs().size());
-            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertEquals(2, ((StaticFragment) template.getSubConstructs().get(0)).getRuns().size());
+            assertEquals(document, template.getXWPFBody());
+            assertEquals(1, template.getBody().getStatements().size());
+            assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
+            assertEquals(2, ((StaticFragment) template.getBody().getStatements().get(0)).getRuns().size());
         }
     }
 
@@ -139,12 +139,12 @@ public class DocumentParserTest {
             XWPFDocument document = new XWPFDocument(oPackage);
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
-            assertEquals(document, template.getBody());
-            assertEquals(3, template.getSubConstructs().size());
-            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Query);
-            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Query varRef = (Query) template.getSubConstructs().get(1);
+            assertEquals(document, template.getXWPFBody());
+            assertEquals(3, template.getBody().getStatements().size());
+            assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
+            assertTrue(template.getBody().getStatements().get(1) instanceof Query);
+            assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
+            Query varRef = (Query) template.getBody().getStatements().get(1);
             assertNotNull(varRef.getQuery());
         }
     }
@@ -156,12 +156,12 @@ public class DocumentParserTest {
             XWPFDocument document = new XWPFDocument(oPackage);
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
-            assertEquals(document, template.getBody());
-            assertEquals(3, template.getSubConstructs().size());
-            assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-            assertTrue(template.getSubConstructs().get(1) instanceof Query);
-            assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-            Query query = (Query) template.getSubConstructs().get(1);
+            assertEquals(document, template.getXWPFBody());
+            assertEquals(3, template.getBody().getStatements().size());
+            assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
+            assertTrue(template.getBody().getStatements().get(1) instanceof Query);
+            assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
+            Query query = (Query) template.getBody().getStatements().get(1);
             assertNotNull(query.getQuery());
         }
     }
@@ -173,25 +173,25 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(2, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Table);
-        Table table = (Table) template.getSubConstructs().get(0);
+        assertEquals(2, template.getBody().getStatements().size());
+        assertTrue(template.getBody().getStatements().get(0) instanceof Table);
+        Table table = (Table) template.getBody().getStatements().get(0);
         assertEquals(2, table.getRows().size());
         // First row testing.
         Row row = table.getRows().get(0);
         assertEquals(2, row.getCells().size());
-        assertTrue(row.getCells().get(0).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
+        assertTrue(row.getCells().get(0).getTemplate().getBody().getStatements().get(0) instanceof StaticFragment);
         assertNotNull(row.getCells().get(0).getTableCell());
-        assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
+        assertTrue(row.getCells().get(1).getTemplate().getBody().getStatements().get(0) instanceof StaticFragment);
         assertNotNull(row.getCells().get(1).getTableCell());
         // Second row testing.
         row = table.getRows().get(1);
         assertEquals(2, row.getCells().size());
-        assertTrue(row.getCells().get(0).getTemplate().getSubConstructs().get(0) instanceof StaticFragment);
+        assertTrue(row.getCells().get(0).getTemplate().getBody().getStatements().get(0) instanceof StaticFragment);
         assertNotNull(row.getCells().get(0).getTableCell());
-        assertTrue(row.getCells().get(1).getTemplate().getSubConstructs().get(0) instanceof Query);
+        assertTrue(row.getCells().get(1).getTemplate().getBody().getStatements().get(0) instanceof Query);
         assertNotNull(row.getCells().get(1).getTableCell());
-        assertNotNull(((Query) row.getCells().get(1).getTemplate().getSubConstructs().get(0)).getQuery());
+        assertNotNull(((Query) row.getCells().get(1).getTemplate().getBody().getStatements().get(0)).getQuery());
 
     }
 
@@ -202,8 +202,8 @@ public class DocumentParserTest {
             XWPFDocument document = new XWPFDocument(oPackage);
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
-            assertEquals(1, template.getSubConstructs().size());
-            Image im = (Image) template.getSubConstructs().get(0);
+            assertEquals(1, template.getBody().getStatements().size());
+            Image im = (Image) template.getBody().getStatements().get(0);
             assertEquals("images/dh1.gif", im.getFileName());
             assertEquals(100, im.getHeight());
             assertEquals(100, im.getWidth());
@@ -229,8 +229,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertEquals("images/dh1.gif", im.getFileName());
         assertEquals(100, im.getHeight());
         assertEquals(100, im.getWidth());
@@ -255,8 +255,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertEquals("images/dh1.gif", im.getFileName());
         assertEquals(100, im.getHeight());
         assertEquals(100, im.getWidth());
@@ -280,8 +280,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertEquals("images/dh1.gif", im.getFileName());
         assertEquals(100, im.getHeight());
         assertEquals(100, im.getWidth());
@@ -305,8 +305,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "A forbidden space character is present at the index 2 of the key definition 'du dingy herbulot\" legendPos'.",
                 im.getRuns().get(TWENTY_FIVE));
@@ -328,8 +328,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "A forbidden space character is present at the index 5 of the key definition 'legen d'.",
                 im.getRuns().get(TWENTY_SEVEN));
@@ -351,8 +351,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "The start of an option's key has been read but the end of it and the value were missing : ' legendPos'.",
                 im.getRuns().get(TWENTY_TWO));
@@ -376,8 +376,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertEquals("images/dh1.gif", im.getFileName());
         assertEquals(100, im.getHeight());
         assertEquals(100, im.getWidth());
@@ -393,8 +393,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Invalid image directive : no file name provided.", im.getRuns().get(TWENTY));
     }
@@ -407,8 +407,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Image im = (Image) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Image im = (Image) template.getBody().getStatements().get(0);
         assertTemplateValidationMessage(im.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Invalid image option (leg): unknown option name.", im.getRuns().get(TWENTY_FOUR));
     }
@@ -430,8 +430,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
         assertEquals(TWO_HUNDRED, representation.getHeight());
@@ -462,8 +462,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
         assertEquals(TWO_HUNDRED, representation.getHeight());
@@ -493,8 +493,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
         assertEquals(TWO_HUNDRED, representation.getHeight());
@@ -533,8 +533,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
         assertEquals(TWO_HUNDRED, representation.getHeight());
@@ -572,8 +572,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertNull(representation.getProvider());
         assertEquals(TWO_HUNDRED, representation.getHeight());
         assertEquals(TWO_HUNDRED, representation.getWidth());
@@ -628,8 +628,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertEquals(NoDiagramProvider.class, representation.getProvider().getClass());
         assertEquals(TWO_HUNDRED, representation.getHeight());
         assertEquals(TWO_HUNDRED, representation.getWidth());
@@ -658,8 +658,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
         assertEquals(TWO_HUNDRED, representation.getHeight());
@@ -690,8 +690,8 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(1, template.getSubConstructs().size());
-        Representation representation = (Representation) template.getSubConstructs().get(0);
+        assertEquals(1, template.getBody().getStatements().size());
+        Representation representation = (Representation) template.getBody().getStatements().get(0);
         assertTrue(representation.getProvider() instanceof StubDiagramProvider);
         // CHECKSTYLE:OFF
         assertEquals(TWO_HUNDRED, representation.getHeight());
@@ -726,16 +726,16 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertEquals(document, template.getXWPFBody());
+        assertEquals(3, template.getBody().getStatements().size());
+        assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
+        assertTrue(template.getBody().getStatements().get(1) instanceof UserDoc);
+        assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
+        UserDoc userDoc = (UserDoc) template.getBody().getStatements().get(1);
         assertNotNull(userDoc.getId());
         assertTrue(userDoc.getId() instanceof AstResult);
-        assertEquals(1, userDoc.getSubConstructs().size());
-        assertTrue(userDoc.getSubConstructs().get(0) instanceof StaticFragment);
+        assertEquals(1, userDoc.getBody().getStatements().size());
+        assertTrue(userDoc.getBody().getStatements().get(0) instanceof StaticFragment);
         // AQL parsing test
         assertTrue(userDoc.getId().getAst() instanceof StringLiteral);
         assertEquals("value1", ((StringLiteral) (userDoc.getId().getAst())).getValue());
@@ -759,16 +759,16 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertEquals(document, template.getXWPFBody());
+        assertEquals(3, template.getBody().getStatements().size());
+        assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
+        assertTrue(template.getBody().getStatements().get(1) instanceof UserDoc);
+        assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
+        UserDoc userDoc = (UserDoc) template.getBody().getStatements().get(1);
         assertNotNull(userDoc.getId());
         assertTrue(userDoc.getId() instanceof AstResult);
-        assertEquals(1, userDoc.getSubConstructs().size());
-        assertTrue(userDoc.getSubConstructs().get(0) instanceof StaticFragment);
+        assertEquals(1, userDoc.getBody().getStatements().size());
+        assertTrue(userDoc.getBody().getStatements().get(0) instanceof StaticFragment);
         // AQL parsing test
         assertTrue(userDoc.getId().getAst() instanceof StringLiteral);
         assertEquals("value1", ((StringLiteral) (userDoc.getId().getAst())).getValue());
@@ -792,18 +792,18 @@ public class DocumentParserTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertEquals(document, template.getXWPFBody());
+        assertEquals(3, template.getBody().getStatements().size());
+        assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
+        assertTrue(template.getBody().getStatements().get(1) instanceof UserDoc);
+        assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
+        UserDoc userDoc = (UserDoc) template.getBody().getStatements().get(1);
         assertNotNull(userDoc.getId());
         assertTrue(userDoc.getId() instanceof AstResult);
-        assertEquals(3, userDoc.getSubConstructs().size());
-        assertTrue(userDoc.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(userDoc.getSubConstructs().get(1) instanceof Conditional);
-        assertTrue(userDoc.getSubConstructs().get(2) instanceof StaticFragment);
+        assertEquals(3, userDoc.getBody().getStatements().size());
+        assertTrue(userDoc.getBody().getStatements().get(0) instanceof StaticFragment);
+        assertTrue(userDoc.getBody().getStatements().get(1) instanceof Conditional);
+        assertTrue(userDoc.getBody().getStatements().get(2) instanceof StaticFragment);
         // Check ValidationMessage
         assertEquals(0, userDoc.getValidationMessages().size());
     }

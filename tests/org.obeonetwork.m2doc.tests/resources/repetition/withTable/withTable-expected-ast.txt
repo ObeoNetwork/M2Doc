@@ -1,6 +1,11 @@
 template null
-  Demonstrate the For with a table: Tableau 1 package classes [query: .aqlFeatureAccess(self, 'name') | TEXT]
+  Demonstrate the For with a table: 
+  
+  Tableau 1 package classes 
+  [query: .aqlFeatureAccess(self, 'name') | TEXT]
+  
   for v | .aqlFeatureAccess(self, 'eClassifiers') do
     
   endfor
+  
   End of demonstration.

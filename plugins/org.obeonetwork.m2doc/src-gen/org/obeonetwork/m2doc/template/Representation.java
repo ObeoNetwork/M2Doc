@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,15 +7,12 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,64 +34,64 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface Representation extends AbstractImage {
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
-	/**
+    /**
      * Returns the value of the '<em><b>Query</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Query</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Query</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
      * @return the value of the '<em>Query</em>' attribute.
      * @see #setQuery(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation_Query()
      * @model dataType="org.obeonetwork.m2doc.template.AstResult"
      * @generated
      */
-	AstResult getQuery();
+    AstResult getQuery();
 
-	/**
+    /**
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Representation#getQuery <em>Query</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @param value the new value of the '<em>Query</em>' attribute.
      * @see #getQuery()
      * @generated
      */
-	void setQuery(AstResult value);
+    void setQuery(AstResult value);
 
-	/**
+    /**
      * Returns the value of the '<em><b>Representation Id</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Representation Id</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Representation Id</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
      * @return the value of the '<em>Representation Id</em>' attribute.
      * @see #setRepresentationId(String)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepresentation_RepresentationId()
      * @model
      * @generated
      */
-	String getRepresentationId();
+    String getRepresentationId();
 
-	/**
+    /**
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationId <em>Representation Id</em>}' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @param value the new value of the '<em>Representation Id</em>' attribute.
      * @see #getRepresentationId()
      * @generated
      */
-	void setRepresentationId(String value);
+    void setRepresentationId(String value);
 
     /**
      * Returns the value of the '<em><b>Representation Title</b></em>' attribute.

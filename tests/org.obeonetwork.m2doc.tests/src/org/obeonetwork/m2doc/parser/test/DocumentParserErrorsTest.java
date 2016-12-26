@@ -63,10 +63,10 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(2, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(1) instanceof Query);
-        Query query = (Query) template.getSubConstructs().get(1);
+        assertEquals(document, template.getXWPFBody());
+        assertEquals(2, template.getBody().getStatements().size());
+        assertTrue(template.getBody().getStatements().get(1) instanceof Query);
+        Query query = (Query) template.getBody().getStatements().get(1);
         assertEquals("Expression \"self.\" is invalid: missing feature access or service call",
                 query.getValidationMessages().get(0).getMessage());
     }
@@ -90,10 +90,10 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(1, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof Query);
-        Query query = (Query) template.getSubConstructs().get(0);
+        assertEquals(document, template.getXWPFBody());
+        assertEquals(1, template.getBody().getStatements().size());
+        assertTrue(template.getBody().getStatements().get(0) instanceof Query);
+        Query query = (Query) template.getBody().getStatements().get(0);
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Expression \"\" is invalid: null or empty string.", query.getRuns().get(4));
@@ -116,12 +116,12 @@ public class DocumentParserErrorsTest {
         XWPFDocument document = new XWPFDocument(oPackage);
         BodyTemplateParser parser = new BodyTemplateParser(document, env);
         Template template = parser.parseTemplate();
-        assertEquals(document, template.getBody());
-        assertEquals(3, template.getSubConstructs().size());
-        assertTrue(template.getSubConstructs().get(0) instanceof StaticFragment);
-        assertTrue(template.getSubConstructs().get(1) instanceof UserDoc);
-        assertTrue(template.getSubConstructs().get(2) instanceof StaticFragment);
-        UserDoc userDoc = (UserDoc) template.getSubConstructs().get(1);
+        assertEquals(document, template.getXWPFBody());
+        assertEquals(3, template.getBody().getStatements().size());
+        assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
+        assertTrue(template.getBody().getStatements().get(1) instanceof UserDoc);
+        assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
+        UserDoc userDoc = (UserDoc) template.getBody().getStatements().get(1);
         assertNull(userDoc.getId());
         // Check ValidationMessage
         assertEquals(1, userDoc.getValidationMessages().size());

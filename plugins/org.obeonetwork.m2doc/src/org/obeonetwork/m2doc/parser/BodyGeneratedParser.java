@@ -22,7 +22,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.obeonetwork.m2doc.template.Compound;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 
@@ -101,24 +101,16 @@ public class BodyGeneratedParser extends BodyAbstractParser {
         return result;
     }
 
-    /**
-     * Parses a compound object.
-     * 
-     * @param compound
-     *            the compound to parse
-     * @param endTypes
-     *            the token types that mark the end of the parsed compound
-     * @throws DocumentParserException
-     *             if a problem occurs while parsing.
-     */
     @Override
-    protected void parseCompound(Compound compound, TokenType... endTypes) throws DocumentParserException {
+    protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
+        final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
+
         TokenType type = getNextTokenType();
         List<TokenType> endTypeList = Lists.newArrayList(endTypes);
-        while (!endTypeList.contains(type)) {
+        endBlock: while (!endTypeList.contains(type)) {
             switch (type) {
                 case USERCONTENT:
-                    compound.getSubConstructs().add(parseUserContent());
+                    res.getStatements().add(parseUserContent());
                     break;
                 case ENDUSERCONTENT:
                     // report the error and ignore the problem so that parsing
@@ -128,22 +120,22 @@ public class BodyGeneratedParser extends BodyAbstractParser {
                         throw new IllegalStateException(
                                 "Token of type " + type + " detected. Run shouldn't be null at this place.");
                     }
-                    compound.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                             message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
-                    readTag(compound, compound.getRuns());
+                    readTag(res, res.getRuns());
                     break;
                 case EOF:
                     final XWPFParagraph lastParagraph = document.getParagraphs()
                             .get(document.getParagraphs().size() - 1);
                     final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-                    compound.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                             message(ParsingErrorMessage.UNEXPECTEDTAG, type), lastRun));
-                    return;
+                    break endBlock;
                 case STATIC:
-                    compound.getSubConstructs().add(parseStaticFragment());
+                    res.getStatements().add(parseStaticFragment());
                     break;
                 case WTABLE:
-                    compound.getSubConstructs().add(parseTable(runIterator.next().getTable()));
+                    res.getStatements().add(parseTable(runIterator.next().getTable()));
                     break;
                 default:
                     throw new UnsupportedOperationException(
@@ -151,6 +143,8 @@ public class BodyGeneratedParser extends BodyAbstractParser {
             }
             type = getNextTokenType();
         }
+
+        return res;
     }
 
     /**
@@ -191,7 +185,8 @@ public class BodyGeneratedParser extends BodyAbstractParser {
         }
 
         // read up the tags until the "m:enduserdoc" tag is encountered.
-        parseCompound(userContent, TokenType.ENDUSERCONTENT);
+        final Block body = parseBlock(TokenType.ENDUSERCONTENT);
+        userContent.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(userContent, userContent.getClosingRuns());
         }

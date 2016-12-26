@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,15 +7,13 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template.impl;
 
 import java.util.Collection;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -29,6 +27,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -50,44 +49,44 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * @generated
  */
 public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implements DocumentTemplate {
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
-	/**
+    /**
      * The cached value of the '{@link #getHeaders() <em>Headers</em>}' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getHeaders()
      * @generated
      * @ordered
      */
-	protected EList<Template> headers;
+    protected EList<Template> headers;
 
-	/**
+    /**
      * The cached value of the '{@link #getFooters() <em>Footers</em>}' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getFooters()
      * @generated
      * @ordered
      */
-	protected EList<Template> footers;
+    protected EList<Template> footers;
 
-	/**
+    /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see #getBody()
      * @generated
      * @ordered
      */
-	protected Template body;
+    protected Template body;
 
-	/**
+    /**
      * The default value of the '{@link #getDocument() <em>Document</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -109,62 +108,62 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
 
     /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	protected DocumentTemplateImpl() {
+    protected DocumentTemplateImpl() {
         super();
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	protected EClass eStaticClass() {
+    @Override
+    protected EClass eStaticClass() {
         return TemplatePackage.Literals.DOCUMENT_TEMPLATE;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public EList<Template> getHeaders() {
+    public EList<Template> getHeaders() {
         if (headers == null) {
             headers = new EObjectContainmentEList<Template>(Template.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
         }
         return headers;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public EList<Template> getFooters() {
+    public EList<Template> getFooters() {
         if (footers == null) {
             footers = new EObjectContainmentEList<Template>(Template.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
         }
         return footers;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public Template getBody() {
+    public Template getBody() {
         return body;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public NotificationChain basicSetBody(Template newBody, NotificationChain msgs) {
+    public NotificationChain basicSetBody(Template newBody, NotificationChain msgs) {
         Template oldBody = body;
         body = newBody;
         if (eNotificationRequired()) {
@@ -174,12 +173,12 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         return msgs;
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	public void setBody(Template newBody) {
+    public void setBody(Template newBody) {
         if (newBody != body) {
             NotificationChain msgs = null;
             if (body != null)
@@ -193,7 +192,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__BODY, newBody, newBody));
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -216,11 +215,11 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
 
     /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TemplatePackage.DOCUMENT_TEMPLATE__HEADERS:
                 return ((InternalEList<?>)getHeaders()).basicRemove(otherEnd, msgs);
@@ -232,13 +231,13 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    @Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TemplatePackage.DOCUMENT_TEMPLATE__HEADERS:
                 return getHeaders();
@@ -252,14 +251,14 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         return super.eGet(featureID, resolve, coreType);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void eSet(int featureID, Object newValue) {
+    @SuppressWarnings("unchecked")
+    @Override
+    public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case TemplatePackage.DOCUMENT_TEMPLATE__HEADERS:
                 getHeaders().clear();
@@ -279,13 +278,13 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         super.eSet(featureID, newValue);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public void eUnset(int featureID) {
+    @Override
+    public void eUnset(int featureID) {
         switch (featureID) {
             case TemplatePackage.DOCUMENT_TEMPLATE__HEADERS:
                 getHeaders().clear();
@@ -303,13 +302,13 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         super.eUnset(featureID);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	@Override
-	public boolean eIsSet(int featureID) {
+    @Override
+    public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TemplatePackage.DOCUMENT_TEMPLATE__HEADERS:
                 return headers != null && !headers.isEmpty();

@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,9 +7,6 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template;
 
@@ -38,110 +35,174 @@ import org.eclipse.emf.ecore.EReference;
  * @generated
  */
 public interface TemplatePackage extends EPackage {
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
-	/**
+    /**
      * The package name.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String eNAME = "template";
+    String eNAME = "template";
 
-	/**
+    /**
      * The package namespace URI.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String eNS_URI = "http://www.obeonetwork.org/m2doc/template/1.0";
+    String eNS_URI = "http://www.obeonetwork.org/m2doc/template/1.0";
 
-	/**
+    /**
      * The package namespace name.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String eNS_PREFIX = "template";
+    String eNS_PREFIX = "template";
 
-	/**
+    /**
      * The singleton instance of the package.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	TemplatePackage eINSTANCE = org.obeonetwork.m2doc.template.impl.TemplatePackageImpl.init();
+    TemplatePackage eINSTANCE = org.obeonetwork.m2doc.template.impl.TemplatePackageImpl.init();
 
-	/**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.AbstractConstructImpl <em>Abstract Construct</em>}' class.
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.AbstractConstructImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractConstruct()
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.IConstruct
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getIConstruct()
      * @generated
      */
-	int ABSTRACT_CONSTRUCT = 0;
+    int ICONSTRUCT = 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ABSTRACT_CONSTRUCT__STYLE_RUN = 0;
+    int ICONSTRUCT__STYLE_RUN = 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ABSTRACT_CONSTRUCT__RUNS = 1;
+    int ICONSTRUCT__RUNS = 1;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ABSTRACT_CONSTRUCT__CLOSING_RUNS = 2;
+    int ICONSTRUCT__CLOSING_RUNS = 2;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES = 3;
+    int ICONSTRUCT__VALIDATION_MESSAGES = 3;
 
     /**
-     * The number of structural features of the '<em>Abstract Construct</em>' class.
+     * The number of structural features of the '<em>IConstruct</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ABSTRACT_CONSTRUCT_FEATURE_COUNT = 4;
+    int ICONSTRUCT_FEATURE_COUNT = 4;
 
-	/**
-     * The number of operations of the '<em>Abstract Construct</em>' class.
+    /**
+     * The number of operations of the '<em>IConstruct</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ABSTRACT_CONSTRUCT_OPERATION_COUNT = 0;
+    int ICONSTRUCT_OPERATION_COUNT = 0;
 
-	/**
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.Statement <em>Statement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.Statement
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStatement()
+     * @generated
+     */
+    int STATEMENT = 9;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int STATEMENT__STYLE_RUN = ICONSTRUCT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int STATEMENT__RUNS = ICONSTRUCT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int STATEMENT__CLOSING_RUNS = ICONSTRUCT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int STATEMENT__VALIDATION_MESSAGES = ICONSTRUCT__VALIDATION_MESSAGES;
+
+    /**
+     * The number of structural features of the '<em>Statement</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int STATEMENT_FEATURE_COUNT = ICONSTRUCT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Statement</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int STATEMENT_OPERATION_COUNT = ICONSTRUCT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.ConditionalImpl <em>Conditional</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -158,7 +219,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+    int CONDITIONAL__STYLE_RUN = STATEMENT__STYLE_RUN;
 
     /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -167,7 +228,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+    int CONDITIONAL__RUNS = STATEMENT__RUNS;
 
     /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -176,7 +237,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+    int CONDITIONAL__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
     /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
@@ -185,7 +246,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+    int CONDITIONAL__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute.
@@ -194,7 +255,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL__CONDITION = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+    int CONDITIONAL__CONDITION = STATEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Then</b></em>' containment reference.
@@ -203,7 +264,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL__THEN = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+    int CONDITIONAL__THEN = STATEMENT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Else</b></em>' containment reference.
@@ -212,7 +273,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL__ELSE = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+    int CONDITIONAL__ELSE = STATEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Conditional</em>' class.
@@ -221,7 +282,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 3;
+    int CONDITIONAL_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Conditional</em>' class.
@@ -230,173 +291,100 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+    int CONDITIONAL_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.CompoundImpl <em>Compound</em>}' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.CompoundImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCompound()
-     * @generated
-     */
-	int COMPOUND = 8;
-
-	/**
-     * The feature id for the '<em><b>Style Run</b></em>' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int COMPOUND__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
-
-	/**
-     * The feature id for the '<em><b>Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int COMPOUND__RUNS = ABSTRACT_CONSTRUCT__RUNS;
-
-	/**
-     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int COMPOUND__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
-
-	/**
-     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPOUND__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
-
-    /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int COMPOUND__SUB_CONSTRUCTS = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
-
-	/**
-     * The number of structural features of the '<em>Compound</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int COMPOUND_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
-
-	/**
-     * The number of operations of the '<em>Compound</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int COMPOUND_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
-
-	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.RepetitionImpl <em>Repetition</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.impl.RepetitionImpl
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRepetition()
      * @generated
      */
-	int REPETITION = 2;
+    int REPETITION = 2;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION__STYLE_RUN = COMPOUND__STYLE_RUN;
+    int REPETITION__STYLE_RUN = STATEMENT__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION__RUNS = COMPOUND__RUNS;
+    int REPETITION__RUNS = STATEMENT__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+    int REPETITION__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REPETITION__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
+    int REPETITION__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int REPETITION__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
-
-	/**
      * The feature id for the '<em><b>Iteration Var</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION__ITERATION_VAR = COMPOUND_FEATURE_COUNT + 0;
+    int REPETITION__ITERATION_VAR = STATEMENT_FEATURE_COUNT + 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Query</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION__QUERY = COMPOUND_FEATURE_COUNT + 1;
+    int REPETITION__QUERY = STATEMENT_FEATURE_COUNT + 1;
 
-	/**
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPETITION__BODY = STATEMENT_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Repetition</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 2;
+    int REPETITION_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 3;
 
-	/**
+    /**
      * The number of operations of the '<em>Repetition</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPETITION_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+    int REPETITION_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.UserDocImpl <em>User Doc</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -413,7 +401,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_DOC__STYLE_RUN = COMPOUND__STYLE_RUN;
+    int USER_DOC__STYLE_RUN = STATEMENT__STYLE_RUN;
 
     /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -422,7 +410,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_DOC__RUNS = COMPOUND__RUNS;
+    int USER_DOC__RUNS = STATEMENT__RUNS;
 
     /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -431,7 +419,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_DOC__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+    int USER_DOC__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
     /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
@@ -440,16 +428,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_DOC__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
-
-    /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int USER_DOC__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
+    int USER_DOC__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -458,7 +437,16 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_DOC__ID = COMPOUND_FEATURE_COUNT + 0;
+    int USER_DOC__ID = STATEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int USER_DOC__BODY = STATEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>User Doc</em>' class.
@@ -467,7 +455,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_DOC_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 1;
+    int USER_DOC_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>User Doc</em>' class.
@@ -476,7 +464,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_DOC_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+    int USER_DOC_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.UserContentImpl <em>User Content</em>}' class.
@@ -495,7 +483,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_CONTENT__STYLE_RUN = COMPOUND__STYLE_RUN;
+    int USER_CONTENT__STYLE_RUN = STATEMENT__STYLE_RUN;
 
     /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -504,7 +492,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_CONTENT__RUNS = COMPOUND__RUNS;
+    int USER_CONTENT__RUNS = STATEMENT__RUNS;
 
     /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -513,7 +501,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_CONTENT__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+    int USER_CONTENT__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
     /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
@@ -522,16 +510,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_CONTENT__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
-
-    /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int USER_CONTENT__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
+    int USER_CONTENT__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -540,7 +519,16 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_CONTENT__ID = COMPOUND_FEATURE_COUNT + 0;
+    int USER_CONTENT__ID = STATEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int USER_CONTENT__BODY = STATEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>User Content</em>' class.
@@ -549,7 +537,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_CONTENT_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 1;
+    int USER_CONTENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>User Content</em>' class.
@@ -558,173 +546,173 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int USER_CONTENT_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+    int USER_CONTENT_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.QueryImpl <em>Query</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.impl.QueryImpl
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQuery()
      * @generated
      */
-	int QUERY = 5;
+    int QUERY = 5;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+    int QUERY__STYLE_RUN = STATEMENT__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+    int QUERY__RUNS = STATEMENT__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+    int QUERY__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int QUERY__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+    int QUERY__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Behavior</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY__BEHAVIOR = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+    int QUERY__BEHAVIOR = STATEMENT_FEATURE_COUNT + 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Query</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY__QUERY = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+    int QUERY__QUERY = STATEMENT_FEATURE_COUNT + 1;
 
-	/**
+    /**
      * The number of structural features of the '<em>Query</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+    int QUERY_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
-	/**
+    /**
      * The number of operations of the '<em>Query</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int QUERY_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+    int QUERY_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableMergeImpl <em>Table Merge</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.impl.TableMergeImpl
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableMerge()
      * @generated
      */
-	int TABLE_MERGE = 6;
+    int TABLE_MERGE = 6;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_MERGE__STYLE_RUN = COMPOUND__STYLE_RUN;
+    int TABLE_MERGE__STYLE_RUN = STATEMENT__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_MERGE__RUNS = COMPOUND__RUNS;
+    int TABLE_MERGE__RUNS = STATEMENT__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_MERGE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+    int TABLE_MERGE__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int TABLE_MERGE__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
+    int TABLE_MERGE__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int TABLE_MERGE__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
-
-	/**
      * The feature id for the '<em><b>Legend</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_MERGE__LEGEND = COMPOUND_FEATURE_COUNT + 0;
+    int TABLE_MERGE__LEGEND = STATEMENT_FEATURE_COUNT + 0;
 
-	/**
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TABLE_MERGE__BODY = STATEMENT_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Table Merge</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_MERGE_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 1;
+    int TABLE_MERGE_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
-	/**
+    /**
      * The number of operations of the '<em>Table Merge</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_MERGE_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+    int TABLE_MERGE_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.AbstractProviderClientImpl <em>Abstract Provider Client</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -732,7 +720,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractProviderClient()
      * @generated
      */
-    int ABSTRACT_PROVIDER_CLIENT = 18;
+    int ABSTRACT_PROVIDER_CLIENT = 19;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -741,7 +729,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+    int ABSTRACT_PROVIDER_CLIENT__STYLE_RUN = STATEMENT__STYLE_RUN;
 
     /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -750,7 +738,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+    int ABSTRACT_PROVIDER_CLIENT__RUNS = STATEMENT__RUNS;
 
     /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -759,7 +747,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+    int ABSTRACT_PROVIDER_CLIENT__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
     /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
@@ -768,7 +756,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+    int ABSTRACT_PROVIDER_CLIENT__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Option Value Map</b></em>' map.
@@ -777,7 +765,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT__OPTION_VALUE_MAP = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+    int ABSTRACT_PROVIDER_CLIENT__OPTION_VALUE_MAP = STATEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Provider</b></em>' attribute.
@@ -786,7 +774,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT__PROVIDER = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+    int ABSTRACT_PROVIDER_CLIENT__PROVIDER = STATEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Abstract Provider Client</em>' class.
@@ -795,7 +783,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+    int ABSTRACT_PROVIDER_CLIENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Abstract Provider Client</em>' class.
@@ -804,7 +792,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ABSTRACT_PROVIDER_CLIENT_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+    int ABSTRACT_PROVIDER_CLIENT_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.AbstractImageImpl <em>Abstract Image</em>}' class.
@@ -814,7 +802,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractImage()
      * @generated
      */
-    int ABSTRACT_IMAGE = 17;
+    int ABSTRACT_IMAGE = 18;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -925,73 +913,43 @@ public interface TemplatePackage extends EPackage {
     int ABSTRACT_IMAGE_OPERATION_COUNT = ABSTRACT_PROVIDER_CLIENT_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableImpl <em>Table</em>}' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.TableImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTable()
-     * @generated
-     */
-	int TABLE = 12;
-
-	/**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.RowImpl <em>Row</em>}' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.RowImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRow()
-     * @generated
-     */
-	int ROW = 13;
-
-	/**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.CellImpl <em>Cell</em>}' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.CellImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCell()
-     * @generated
-     */
-	int CELL = 14;
-
-	/**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.impl.ImageImpl
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getImage()
      * @generated
      */
-	int IMAGE = 7;
+    int IMAGE = 7;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__STYLE_RUN = ABSTRACT_IMAGE__STYLE_RUN;
+    int IMAGE__STYLE_RUN = ABSTRACT_IMAGE__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__RUNS = ABSTRACT_IMAGE__RUNS;
+    int IMAGE__RUNS = ABSTRACT_IMAGE__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
+    int IMAGE__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1021,195 +979,268 @@ public interface TemplatePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Legend</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__LEGEND = ABSTRACT_IMAGE__LEGEND;
+    int IMAGE__LEGEND = ABSTRACT_IMAGE__LEGEND;
 
     /**
      * The feature id for the '<em><b>Height</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__HEIGHT = ABSTRACT_IMAGE__HEIGHT;
+    int IMAGE__HEIGHT = ABSTRACT_IMAGE__HEIGHT;
 
     /**
      * The feature id for the '<em><b>Width</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__WIDTH = ABSTRACT_IMAGE__WIDTH;
+    int IMAGE__WIDTH = ABSTRACT_IMAGE__WIDTH;
 
     /**
      * The feature id for the '<em><b>Legend POS</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__LEGEND_POS = ABSTRACT_IMAGE__LEGEND_POS;
+    int IMAGE__LEGEND_POS = ABSTRACT_IMAGE__LEGEND_POS;
 
     /**
      * The feature id for the '<em><b>File Name</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE__FILE_NAME = ABSTRACT_IMAGE_FEATURE_COUNT + 0;
+    int IMAGE__FILE_NAME = ABSTRACT_IMAGE_FEATURE_COUNT + 0;
 
-	/**
+    /**
      * The number of structural features of the '<em>Image</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 1;
+    int IMAGE_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 1;
 
-	/**
+    /**
      * The number of operations of the '<em>Image</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int IMAGE_OPERATION_COUNT = ABSTRACT_IMAGE_OPERATION_COUNT + 0;
+    int IMAGE_OPERATION_COUNT = ABSTRACT_IMAGE_OPERATION_COUNT + 0;
 
-	/**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TemplateImpl <em>Template</em>}' class.
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.BlockImpl <em>Block</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.TemplateImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplate()
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.BlockImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBlock()
      * @generated
      */
-	int TEMPLATE = 9;
+    int BLOCK = 8;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TEMPLATE__STYLE_RUN = COMPOUND__STYLE_RUN;
+    int BLOCK__STYLE_RUN = ICONSTRUCT__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TEMPLATE__RUNS = COMPOUND__RUNS;
+    int BLOCK__RUNS = ICONSTRUCT__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TEMPLATE__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+    int BLOCK__CLOSING_RUNS = ICONSTRUCT__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int TEMPLATE__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
+    int BLOCK__VALIDATION_MESSAGES = ICONSTRUCT__VALIDATION_MESSAGES;
 
     /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int TEMPLATE__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
-
-	/**
-     * The feature id for the '<em><b>Template Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int TEMPLATE__TEMPLATE_NAME = COMPOUND_FEATURE_COUNT + 0;
-
-	/**
-     * The feature id for the '<em><b>Body</b></em>' attribute.
+     * The feature id for the '<em><b>Statements</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int TEMPLATE__BODY = COMPOUND_FEATURE_COUNT + 1;
+    int BLOCK__STATEMENTS = ICONSTRUCT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Block</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BLOCK_FEATURE_COUNT = ICONSTRUCT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Block</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BLOCK_OPERATION_COUNT = ICONSTRUCT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TemplateImpl <em>Template</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.TemplateImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplate()
+     * @generated
+     */
+    int TEMPLATE = 10;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__STYLE_RUN = ICONSTRUCT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__RUNS = ICONSTRUCT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__CLOSING_RUNS = ICONSTRUCT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__VALIDATION_MESSAGES = ICONSTRUCT__VALIDATION_MESSAGES;
+
+    /**
+     * The feature id for the '<em><b>Template Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__TEMPLATE_NAME = ICONSTRUCT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>XWPF Body</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__XWPF_BODY = ICONSTRUCT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__BODY = ICONSTRUCT_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Template</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TEMPLATE_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 2;
+    int TEMPLATE_FEATURE_COUNT = ICONSTRUCT_FEATURE_COUNT + 3;
 
-	/**
+    /**
      * The number of operations of the '<em>Template</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TEMPLATE_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+    int TEMPLATE_OPERATION_COUNT = ICONSTRUCT_OPERATION_COUNT + 0;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl <em>Representation</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.impl.RepresentationImpl
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRepresentation()
      * @generated
      */
-	int REPRESENTATION = 10;
+    int REPRESENTATION = 11;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__STYLE_RUN = ABSTRACT_IMAGE__STYLE_RUN;
+    int REPRESENTATION__STYLE_RUN = ABSTRACT_IMAGE__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__RUNS = ABSTRACT_IMAGE__RUNS;
+    int REPRESENTATION__RUNS = ABSTRACT_IMAGE__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
+    int REPRESENTATION__CLOSING_RUNS = ABSTRACT_IMAGE__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1275,20 +1306,20 @@ public interface TemplatePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Query</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__QUERY = ABSTRACT_IMAGE_FEATURE_COUNT + 0;
+    int REPRESENTATION__QUERY = ABSTRACT_IMAGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Representation Id</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION__REPRESENTATION_ID = ABSTRACT_IMAGE_FEATURE_COUNT + 1;
+    int REPRESENTATION__REPRESENTATION_ID = ABSTRACT_IMAGE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Representation Title</b></em>' attribute.
@@ -1311,267 +1342,297 @@ public interface TemplatePackage extends EPackage {
     /**
      * The number of structural features of the '<em>Representation</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 4;
+    int REPRESENTATION_FEATURE_COUNT = ABSTRACT_IMAGE_FEATURE_COUNT + 4;
 
-	/**
+    /**
      * The number of operations of the '<em>Representation</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int REPRESENTATION_OPERATION_COUNT = ABSTRACT_IMAGE_OPERATION_COUNT + 0;
+    int REPRESENTATION_OPERATION_COUNT = ABSTRACT_IMAGE_OPERATION_COUNT + 0;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.StaticFragmentImpl <em>Static Fragment</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.impl.StaticFragmentImpl
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStaticFragment()
      * @generated
      */
-	int STATIC_FRAGMENT = 11;
+    int STATIC_FRAGMENT = 12;
 
-	/**
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int STATIC_FRAGMENT__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+    int STATIC_FRAGMENT__STYLE_RUN = STATEMENT__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int STATIC_FRAGMENT__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+    int STATIC_FRAGMENT__RUNS = STATEMENT__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int STATIC_FRAGMENT__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+    int STATIC_FRAGMENT__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int STATIC_FRAGMENT__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+    int STATIC_FRAGMENT__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The number of structural features of the '<em>Static Fragment</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int STATIC_FRAGMENT_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+    int STATIC_FRAGMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 0;
 
-	/**
+    /**
      * The number of operations of the '<em>Static Fragment</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int STATIC_FRAGMENT_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+    int STATIC_FRAGMENT_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
-	/**
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableImpl <em>Table</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.TableImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTable()
+     * @generated
+     */
+    int TABLE = 13;
+
+    /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+    int TABLE__STYLE_RUN = STATEMENT__STYLE_RUN;
 
-	/**
+    /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+    int TABLE__RUNS = STATEMENT__RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+    int TABLE__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
-	/**
+    /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int TABLE__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+    int TABLE__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Rows</b></em>' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE__ROWS = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+    int TABLE__ROWS = STATEMENT_FEATURE_COUNT + 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Table</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE__TABLE = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+    int TABLE__TABLE = STATEMENT_FEATURE_COUNT + 1;
 
-	/**
+    /**
      * The number of structural features of the '<em>Table</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+    int TABLE_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
-	/**
+    /**
      * The number of operations of the '<em>Table</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int TABLE_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+    int TABLE_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
-	/**
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.RowImpl <em>Row</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.RowImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRow()
+     * @generated
+     */
+    int ROW = 14;
+
+    /**
      * The feature id for the '<em><b>Cells</b></em>' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ROW__CELLS = 0;
+    int ROW__CELLS = 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Table Row</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ROW__TABLE_ROW = 1;
+    int ROW__TABLE_ROW = 1;
 
-	/**
+    /**
      * The number of structural features of the '<em>Row</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ROW_FEATURE_COUNT = 2;
+    int ROW_FEATURE_COUNT = 2;
 
-	/**
+    /**
      * The number of operations of the '<em>Row</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int ROW_OPERATION_COUNT = 0;
+    int ROW_OPERATION_COUNT = 0;
 
-	/**
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.CellImpl <em>Cell</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.CellImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCell()
+     * @generated
+     */
+    int CELL = 15;
+
+    /**
      * The feature id for the '<em><b>Template</b></em>' containment reference.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int CELL__TEMPLATE = 0;
+    int CELL__TEMPLATE = 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Table Cell</b></em>' attribute.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int CELL__TABLE_CELL = 1;
+    int CELL__TABLE_CELL = 1;
 
-	/**
+    /**
      * The number of structural features of the '<em>Cell</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int CELL_FEATURE_COUNT = 2;
+    int CELL_FEATURE_COUNT = 2;
 
-	/**
+    /**
      * The number of operations of the '<em>Cell</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int CELL_OPERATION_COUNT = 0;
+    int CELL_OPERATION_COUNT = 0;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl <em>Document Template</em>}' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocumentTemplate()
      * @generated
      */
-	int DOCUMENT_TEMPLATE = 15;
+    int DOCUMENT_TEMPLATE = 16;
 
-	/**
+    /**
      * The feature id for the '<em><b>Headers</b></em>' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DOCUMENT_TEMPLATE__HEADERS = 0;
+    int DOCUMENT_TEMPLATE__HEADERS = 0;
 
-	/**
+    /**
      * The feature id for the '<em><b>Footers</b></em>' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DOCUMENT_TEMPLATE__FOOTERS = 1;
+    int DOCUMENT_TEMPLATE__FOOTERS = 1;
 
-	/**
+    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DOCUMENT_TEMPLATE__BODY = 2;
+    int DOCUMENT_TEMPLATE__BODY = 2;
 
-	/**
+    /**
      * The feature id for the '<em><b>Document</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1583,22 +1644,22 @@ public interface TemplatePackage extends EPackage {
     /**
      * The number of structural features of the '<em>Document Template</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DOCUMENT_TEMPLATE_FEATURE_COUNT = 4;
+    int DOCUMENT_TEMPLATE_FEATURE_COUNT = 4;
 
-	/**
+    /**
      * The number of operations of the '<em>Document Template</em>' class.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DOCUMENT_TEMPLATE_OPERATION_COUNT = 0;
+    int DOCUMENT_TEMPLATE_OPERATION_COUNT = 0;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.OptionValueMapImpl <em>Option Value Map</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1606,7 +1667,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOptionValueMap()
      * @generated
      */
-    int OPTION_VALUE_MAP = 16;
+    int OPTION_VALUE_MAP = 17;
 
     /**
      * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -1652,7 +1713,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBookmark()
      * @generated
      */
-    int BOOKMARK = 19;
+    int BOOKMARK = 20;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1661,7 +1722,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOKMARK__STYLE_RUN = COMPOUND__STYLE_RUN;
+    int BOOKMARK__STYLE_RUN = STATEMENT__STYLE_RUN;
 
     /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -1670,7 +1731,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOKMARK__RUNS = COMPOUND__RUNS;
+    int BOOKMARK__RUNS = STATEMENT__RUNS;
 
     /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -1679,7 +1740,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOKMARK__CLOSING_RUNS = COMPOUND__CLOSING_RUNS;
+    int BOOKMARK__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
     /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
@@ -1688,16 +1749,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOKMARK__VALIDATION_MESSAGES = COMPOUND__VALIDATION_MESSAGES;
-
-    /**
-     * The feature id for the '<em><b>Sub Constructs</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int BOOKMARK__SUB_CONSTRUCTS = COMPOUND__SUB_CONSTRUCTS;
+    int BOOKMARK__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1706,7 +1758,16 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOKMARK__NAME = COMPOUND_FEATURE_COUNT + 0;
+    int BOOKMARK__NAME = STATEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int BOOKMARK__BODY = STATEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Bookmark</em>' class.
@@ -1715,7 +1776,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOKMARK_FEATURE_COUNT = COMPOUND_FEATURE_COUNT + 1;
+    int BOOKMARK_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Bookmark</em>' class.
@@ -1724,7 +1785,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOKMARK_OPERATION_COUNT = COMPOUND_OPERATION_COUNT + 0;
+    int BOOKMARK_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.LinkImpl <em>Link</em>}' class.
@@ -1734,7 +1795,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLink()
      * @generated
      */
-    int LINK = 20;
+    int LINK = 21;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1743,7 +1804,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK__STYLE_RUN = ABSTRACT_CONSTRUCT__STYLE_RUN;
+    int LINK__STYLE_RUN = STATEMENT__STYLE_RUN;
 
     /**
      * The feature id for the '<em><b>Runs</b></em>' attribute list.
@@ -1752,7 +1813,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK__RUNS = ABSTRACT_CONSTRUCT__RUNS;
+    int LINK__RUNS = STATEMENT__RUNS;
 
     /**
      * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
@@ -1761,7 +1822,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK__CLOSING_RUNS = ABSTRACT_CONSTRUCT__CLOSING_RUNS;
+    int LINK__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
 
     /**
      * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
@@ -1770,7 +1831,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK__VALIDATION_MESSAGES = ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES;
+    int LINK__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1779,7 +1840,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK__NAME = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 0;
+    int LINK__NAME = STATEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -1788,7 +1849,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK__TEXT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 1;
+    int LINK__TEXT = STATEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Link</em>' class.
@@ -1797,7 +1858,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK_FEATURE_COUNT = ABSTRACT_CONSTRUCT_FEATURE_COUNT + 2;
+    int LINK_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Link</em>' class.
@@ -1806,7 +1867,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LINK_OPERATION_COUNT = ABSTRACT_CONSTRUCT_OPERATION_COUNT + 0;
+    int LINK_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableClientImpl <em>Table Client</em>}' class.
@@ -1816,7 +1877,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableClient()
      * @generated
      */
-    int TABLE_CLIENT = 21;
+    int TABLE_CLIENT = 22;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1893,24 +1954,24 @@ public interface TemplatePackage extends EPackage {
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}' enum.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.QueryBehavior
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-	int QUERY_BEHAVIOR = 22;
+    int QUERY_BEHAVIOR = 23;
 
-	/**
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.obeonetwork.m2doc.template.POSITION
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-	int POSITION = 23;
+    int POSITION = 24;
 
-	/**
+    /**
      * The meta object id for the '<em>Document</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1918,40 +1979,39 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 24;
+    int DOCUMENT = 25;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.apache.poi.xwpf.usermodel.XWPFTable
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-	int WTABLE = 25;
+    int WTABLE = 26;
 
-	/**
+    /**
      * The meta object id for the '<em>Run</em>' data type.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.apache.poi.xwpf.usermodel.XWPFRun
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-	int RUN = 26;
+    int RUN = 27;
 
-
-	/**
+    /**
      * The meta object id for the '<em>Ast Result</em>' data type.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-	int AST_RESULT = 27;
+    int AST_RESULT = 28;
 
-	/**
+    /**
      * The meta object id for the '<em>Validation Message</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1959,29 +2019,29 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 28;
+    int TEMPLATE_VALIDATION_MESSAGE = 29;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.apache.poi.xwpf.usermodel.XWPFTableRow
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-	int WTABLE_ROW = 29;
+    int WTABLE_ROW = 30;
 
-	/**
+    /**
      * The meta object id for the '<em>WTable Cell</em>' data type.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.apache.poi.xwpf.usermodel.XWPFTableCell
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-	int WTABLE_CELL = 30;
+    int WTABLE_CELL = 31;
 
-	/**
+    /**
      * The meta object id for the '<em>Provider</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1989,7 +2049,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
      * @generated
      */
-    int PROVIDER = 31;
+    int PROVIDER = 32;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -1999,61 +2059,62 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 32;
+    int BODY = 33;
+
 
     /**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.AbstractConstruct <em>Abstract Construct</em>}'.
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Abstract Construct</em>'.
-     * @see org.obeonetwork.m2doc.template.AbstractConstruct
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>IConstruct</em>'.
+     * @see org.obeonetwork.m2doc.template.IConstruct
      * @generated
      */
-	EClass getAbstractConstruct();
+    EClass getIConstruct();
 
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.AbstractConstruct#getStyleRun <em>Style Run</em>}'.
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.IConstruct#getStyleRun <em>Style Run</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Style Run</em>'.
-     * @see org.obeonetwork.m2doc.template.AbstractConstruct#getStyleRun()
-     * @see #getAbstractConstruct()
+     * @see org.obeonetwork.m2doc.template.IConstruct#getStyleRun()
+     * @see #getIConstruct()
      * @generated
      */
-	EAttribute getAbstractConstruct_StyleRun();
+    EAttribute getIConstruct_StyleRun();
 
-	/**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.AbstractConstruct#getRuns <em>Runs</em>}'.
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.IConstruct#getRuns <em>Runs</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute list '<em>Runs</em>'.
-     * @see org.obeonetwork.m2doc.template.AbstractConstruct#getRuns()
-     * @see #getAbstractConstruct()
+     * @see org.obeonetwork.m2doc.template.IConstruct#getRuns()
+     * @see #getIConstruct()
      * @generated
      */
-	EAttribute getAbstractConstruct_Runs();
+    EAttribute getIConstruct_Runs();
 
-	/**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.AbstractConstruct#getClosingRuns <em>Closing Runs</em>}'.
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.IConstruct#getClosingRuns <em>Closing Runs</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute list '<em>Closing Runs</em>'.
-     * @see org.obeonetwork.m2doc.template.AbstractConstruct#getClosingRuns()
-     * @see #getAbstractConstruct()
+     * @see org.obeonetwork.m2doc.template.IConstruct#getClosingRuns()
+     * @see #getIConstruct()
      * @generated
      */
-	EAttribute getAbstractConstruct_ClosingRuns();
+    EAttribute getIConstruct_ClosingRuns();
 
-	/**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.AbstractConstruct#getValidationMessages <em>Validation Messages</em>}'.
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.IConstruct#getValidationMessages <em>Validation Messages</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute list '<em>Validation Messages</em>'.
-     * @see org.obeonetwork.m2doc.template.AbstractConstruct#getValidationMessages()
-     * @see #getAbstractConstruct()
+     * @see org.obeonetwork.m2doc.template.IConstruct#getValidationMessages()
+     * @see #getIConstruct()
      * @generated
      */
-    EAttribute getAbstractConstruct_ValidationMessages();
+    EAttribute getIConstruct_ValidationMessages();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Conditional <em>Conditional</em>}'.
@@ -2101,36 +2162,47 @@ public interface TemplatePackage extends EPackage {
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Repetition <em>Repetition</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for class '<em>Repetition</em>'.
      * @see org.obeonetwork.m2doc.template.Repetition
      * @generated
      */
-	EClass getRepetition();
+    EClass getRepetition();
 
-	/**
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Repetition#getIterationVar <em>Iteration Var</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Iteration Var</em>'.
      * @see org.obeonetwork.m2doc.template.Repetition#getIterationVar()
      * @see #getRepetition()
      * @generated
      */
-	EAttribute getRepetition_IterationVar();
+    EAttribute getRepetition_IterationVar();
 
-	/**
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Repetition#getQuery <em>Query</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Query</em>'.
      * @see org.obeonetwork.m2doc.template.Repetition#getQuery()
      * @see #getRepetition()
      * @generated
      */
-	EAttribute getRepetition_Query();
+    EAttribute getRepetition_Query();
 
-	/**
+    /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Repetition#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.Repetition#getBody()
+     * @see #getRepetition()
+     * @generated
+     */
+    EReference getRepetition_Body();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.UserDoc <em>User Doc</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2150,6 +2222,17 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EAttribute getUserDoc_Id();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.UserDoc#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.UserDoc#getBody()
+     * @see #getUserDoc()
+     * @generated
+     */
+    EReference getUserDoc_Body();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.UserContent <em>User Content</em>}'.
@@ -2173,198 +2256,379 @@ public interface TemplatePackage extends EPackage {
     EAttribute getUserContent_Id();
 
     /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.UserContent#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.UserContent#getBody()
+     * @see #getUserContent()
+     * @generated
+     */
+    EReference getUserContent_Body();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Query <em>Query</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for class '<em>Query</em>'.
      * @see org.obeonetwork.m2doc.template.Query
      * @generated
      */
-	EClass getQuery();
+    EClass getQuery();
 
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Query#getQuery <em>Query</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Query</em>'.
-     * @see org.obeonetwork.m2doc.template.Query#getQuery()
-     * @see #getQuery()
-     * @generated
-     */
-	EAttribute getQuery_Query();
-
-	/**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.TableMerge <em>Table Merge</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Table Merge</em>'.
-     * @see org.obeonetwork.m2doc.template.TableMerge
-     * @generated
-     */
-	EClass getTableMerge();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.TableMerge#getLegend <em>Legend</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Legend</em>'.
-     * @see org.obeonetwork.m2doc.template.TableMerge#getLegend()
-     * @see #getTableMerge()
-     * @generated
-     */
-	EAttribute getTableMerge_Legend();
-
-	/**
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Query#getBehavior <em>Behavior</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Behavior</em>'.
      * @see org.obeonetwork.m2doc.template.Query#getBehavior()
      * @see #getQuery()
      * @generated
      */
-	EAttribute getQuery_Behavior();
+    EAttribute getQuery_Behavior();
 
-	/**
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Query#getQuery <em>Query</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Query</em>'.
+     * @see org.obeonetwork.m2doc.template.Query#getQuery()
+     * @see #getQuery()
+     * @generated
+     */
+    EAttribute getQuery_Query();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.TableMerge <em>Table Merge</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Table Merge</em>'.
+     * @see org.obeonetwork.m2doc.template.TableMerge
+     * @generated
+     */
+    EClass getTableMerge();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.TableMerge#getLegend <em>Legend</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Legend</em>'.
+     * @see org.obeonetwork.m2doc.template.TableMerge#getLegend()
+     * @see #getTableMerge()
+     * @generated
+     */
+    EAttribute getTableMerge_Legend();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.TableMerge#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.TableMerge#getBody()
+     * @see #getTableMerge()
+     * @generated
+     */
+    EReference getTableMerge_Body();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Image</em>'.
+     * @see org.obeonetwork.m2doc.template.Image
+     * @generated
+     */
+    EClass getImage();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Image#getFileName <em>File Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>File Name</em>'.
+     * @see org.obeonetwork.m2doc.template.Image#getFileName()
+     * @see #getImage()
+     * @generated
+     */
+    EAttribute getImage_FileName();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Block <em>Block</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Block</em>'.
+     * @see org.obeonetwork.m2doc.template.Block
+     * @generated
+     */
+    EClass getBlock();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.template.Block#getStatements <em>Statements</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Statements</em>'.
+     * @see org.obeonetwork.m2doc.template.Block#getStatements()
+     * @see #getBlock()
+     * @generated
+     */
+    EReference getBlock_Statements();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Statement <em>Statement</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Statement</em>'.
+     * @see org.obeonetwork.m2doc.template.Statement
+     * @generated
+     */
+    EClass getStatement();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Template <em>Template</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Template</em>'.
+     * @see org.obeonetwork.m2doc.template.Template
+     * @generated
+     */
+    EClass getTemplate();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getTemplateName <em>Template Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Template Name</em>'.
+     * @see org.obeonetwork.m2doc.template.Template#getTemplateName()
+     * @see #getTemplate()
+     * @generated
+     */
+    EAttribute getTemplate_TemplateName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getXWPFBody <em>XWPF Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>XWPF Body</em>'.
+     * @see org.obeonetwork.m2doc.template.Template#getXWPFBody()
+     * @see #getTemplate()
+     * @generated
+     */
+    EAttribute getTemplate_XWPFBody();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.Template#getBody()
+     * @see #getTemplate()
+     * @generated
+     */
+    EReference getTemplate_Body();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Representation <em>Representation</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Representation</em>'.
+     * @see org.obeonetwork.m2doc.template.Representation
+     * @generated
+     */
+    EClass getRepresentation();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getQuery <em>Query</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Query</em>'.
+     * @see org.obeonetwork.m2doc.template.Representation#getQuery()
+     * @see #getRepresentation()
+     * @generated
+     */
+    EAttribute getRepresentation_Query();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationId <em>Representation Id</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Representation Id</em>'.
+     * @see org.obeonetwork.m2doc.template.Representation#getRepresentationId()
+     * @see #getRepresentation()
+     * @generated
+     */
+    EAttribute getRepresentation_RepresentationId();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationTitle <em>Representation Title</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Representation Title</em>'.
+     * @see org.obeonetwork.m2doc.template.Representation#getRepresentationTitle()
+     * @see #getRepresentation()
+     * @generated
+     */
+    EAttribute getRepresentation_RepresentationTitle();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.Representation#getActivatedLayers <em>Activated Layers</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Activated Layers</em>'.
+     * @see org.obeonetwork.m2doc.template.Representation#getActivatedLayers()
+     * @see #getRepresentation()
+     * @generated
+     */
+    EAttribute getRepresentation_ActivatedLayers();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Static Fragment</em>'.
+     * @see org.obeonetwork.m2doc.template.StaticFragment
+     * @generated
+     */
+    EClass getStaticFragment();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Table <em>Table</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for class '<em>Table</em>'.
      * @see org.obeonetwork.m2doc.template.Table
      * @generated
      */
-	EClass getTable();
+    EClass getTable();
 
-	/**
+    /**
      * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.template.Table#getRows <em>Rows</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the containment reference list '<em>Rows</em>'.
      * @see org.obeonetwork.m2doc.template.Table#getRows()
      * @see #getTable()
      * @generated
      */
-	EReference getTable_Rows();
+    EReference getTable_Rows();
 
-	/**
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Table#getTable <em>Table</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Table</em>'.
      * @see org.obeonetwork.m2doc.template.Table#getTable()
      * @see #getTable()
      * @generated
      */
-	EAttribute getTable_Table();
+    EAttribute getTable_Table();
 
-	/**
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Row <em>Row</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for class '<em>Row</em>'.
      * @see org.obeonetwork.m2doc.template.Row
      * @generated
      */
-	EClass getRow();
+    EClass getRow();
 
-	/**
+    /**
      * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.template.Row#getCells <em>Cells</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the containment reference list '<em>Cells</em>'.
      * @see org.obeonetwork.m2doc.template.Row#getCells()
      * @see #getRow()
      * @generated
      */
-	EReference getRow_Cells();
+    EReference getRow_Cells();
 
-	/**
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Row#getTableRow <em>Table Row</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Table Row</em>'.
      * @see org.obeonetwork.m2doc.template.Row#getTableRow()
      * @see #getRow()
      * @generated
      */
-	EAttribute getRow_TableRow();
+    EAttribute getRow_TableRow();
 
-	/**
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Cell <em>Cell</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for class '<em>Cell</em>'.
      * @see org.obeonetwork.m2doc.template.Cell
      * @generated
      */
-	EClass getCell();
+    EClass getCell();
 
-	/**
+    /**
      * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Cell#getTemplate <em>Template</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Template</em>'.
      * @see org.obeonetwork.m2doc.template.Cell#getTemplate()
      * @see #getCell()
      * @generated
      */
-	EReference getCell_Template();
+    EReference getCell_Template();
 
-	/**
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Cell#getTableCell <em>Table Cell</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Table Cell</em>'.
      * @see org.obeonetwork.m2doc.template.Cell#getTableCell()
      * @see #getCell()
      * @generated
      */
-	EAttribute getCell_TableCell();
+    EAttribute getCell_TableCell();
 
-	/**
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.DocumentTemplate <em>Document Template</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for class '<em>Document Template</em>'.
      * @see org.obeonetwork.m2doc.template.DocumentTemplate
      * @generated
      */
-	EClass getDocumentTemplate();
+    EClass getDocumentTemplate();
 
-	/**
+    /**
      * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getHeaders <em>Headers</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the containment reference list '<em>Headers</em>'.
      * @see org.obeonetwork.m2doc.template.DocumentTemplate#getHeaders()
      * @see #getDocumentTemplate()
      * @generated
      */
-	EReference getDocumentTemplate_Headers();
+    EReference getDocumentTemplate_Headers();
 
-	/**
+    /**
      * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getFooters <em>Footers</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the containment reference list '<em>Footers</em>'.
      * @see org.obeonetwork.m2doc.template.DocumentTemplate#getFooters()
      * @see #getDocumentTemplate()
      * @generated
      */
-	EReference getDocumentTemplate_Footers();
+    EReference getDocumentTemplate_Footers();
 
-	/**
+    /**
      * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Body</em>'.
      * @see org.obeonetwork.m2doc.template.DocumentTemplate#getBody()
      * @see #getDocumentTemplate()
      * @generated
      */
-	EReference getDocumentTemplate_Body();
+    EReference getDocumentTemplate_Body();
 
-	/**
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2517,6 +2781,17 @@ public interface TemplatePackage extends EPackage {
     EAttribute getBookmark_Name();
 
     /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Bookmark#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.Bookmark#getBody()
+     * @see #getBookmark()
+     * @generated
+     */
+    EReference getBookmark_Body();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Link <em>Link</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2559,164 +2834,26 @@ public interface TemplatePackage extends EPackage {
     EClass getTableClient();
 
     /**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Image</em>'.
-     * @see org.obeonetwork.m2doc.template.Image
-     * @generated
-     */
-	EClass getImage();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Image#getFileName <em>File Name</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>File Name</em>'.
-     * @see org.obeonetwork.m2doc.template.Image#getFileName()
-     * @see #getImage()
-     * @generated
-     */
-	EAttribute getImage_FileName();
-
-	/**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Compound <em>Compound</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Compound</em>'.
-     * @see org.obeonetwork.m2doc.template.Compound
-     * @generated
-     */
-	EClass getCompound();
-
-	/**
-     * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.template.Compound#getSubConstructs <em>Sub Constructs</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Sub Constructs</em>'.
-     * @see org.obeonetwork.m2doc.template.Compound#getSubConstructs()
-     * @see #getCompound()
-     * @generated
-     */
-	EReference getCompound_SubConstructs();
-
-	/**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Template <em>Template</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Template</em>'.
-     * @see org.obeonetwork.m2doc.template.Template
-     * @generated
-     */
-	EClass getTemplate();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getTemplateName <em>Template Name</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Template Name</em>'.
-     * @see org.obeonetwork.m2doc.template.Template#getTemplateName()
-     * @see #getTemplate()
-     * @generated
-     */
-	EAttribute getTemplate_TemplateName();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Body</em>'.
-     * @see org.obeonetwork.m2doc.template.Template#getBody()
-     * @see #getTemplate()
-     * @generated
-     */
-    EAttribute getTemplate_Body();
-
-    /**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Representation <em>Representation</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Representation</em>'.
-     * @see org.obeonetwork.m2doc.template.Representation
-     * @generated
-     */
-	EClass getRepresentation();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getQuery <em>Query</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Query</em>'.
-     * @see org.obeonetwork.m2doc.template.Representation#getQuery()
-     * @see #getRepresentation()
-     * @generated
-     */
-	EAttribute getRepresentation_Query();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationId <em>Representation Id</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Representation Id</em>'.
-     * @see org.obeonetwork.m2doc.template.Representation#getRepresentationId()
-     * @see #getRepresentation()
-     * @generated
-     */
-	EAttribute getRepresentation_RepresentationId();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Representation#getRepresentationTitle <em>Representation Title</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Representation Title</em>'.
-     * @see org.obeonetwork.m2doc.template.Representation#getRepresentationTitle()
-     * @see #getRepresentation()
-     * @generated
-     */
-    EAttribute getRepresentation_RepresentationTitle();
-
-    /**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.Representation#getActivatedLayers <em>Activated Layers</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Activated Layers</em>'.
-     * @see org.obeonetwork.m2doc.template.Representation#getActivatedLayers()
-     * @see #getRepresentation()
-     * @generated
-     */
-    EAttribute getRepresentation_ActivatedLayers();
-
-    /**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Static Fragment</em>'.
-     * @see org.obeonetwork.m2doc.template.StaticFragment
-     * @generated
-     */
-	EClass getStaticFragment();
-
-	/**
      * Returns the meta object for enum '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for enum '<em>Query Behavior</em>'.
      * @see org.obeonetwork.m2doc.template.QueryBehavior
      * @generated
      */
-	EEnum getQueryBehavior();
+    EEnum getQueryBehavior();
 
-	/**
+    /**
      * Returns the meta object for enum '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for enum '<em>POSITION</em>'.
      * @see org.obeonetwork.m2doc.template.POSITION
      * @generated
      */
-	EEnum getPOSITION();
+    EEnum getPOSITION();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFDocument <em>Document</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2730,37 +2867,37 @@ public interface TemplatePackage extends EPackage {
     /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTable <em>WTable</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for data type '<em>WTable</em>'.
      * @see org.apache.poi.xwpf.usermodel.XWPFTable
      * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFTable"
      * @generated
      */
-	EDataType getWTable();
+    EDataType getWTable();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFRun <em>Run</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for data type '<em>Run</em>'.
      * @see org.apache.poi.xwpf.usermodel.XWPFRun
      * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFRun"
      * @generated
      */
-	EDataType getRun();
+    EDataType getRun();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult <em>Ast Result</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for data type '<em>Ast Result</em>'.
      * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
      * @model instanceClass="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"
      * @generated
      */
-	EDataType getAstResult();
+    EDataType getAstResult();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.obeonetwork.m2doc.parser.TemplateValidationMessage <em>Validation Message</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2774,26 +2911,26 @@ public interface TemplatePackage extends EPackage {
     /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTableRow <em>WTable Row</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for data type '<em>WTable Row</em>'.
      * @see org.apache.poi.xwpf.usermodel.XWPFTableRow
      * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFTableRow"
      * @generated
      */
-	EDataType getWTableRow();
+    EDataType getWTableRow();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFTableCell <em>WTable Cell</em>}'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the meta object for data type '<em>WTable Cell</em>'.
      * @see org.apache.poi.xwpf.usermodel.XWPFTableCell
      * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFTableCell"
      * @generated
      */
-	EDataType getWTableCell();
+    EDataType getWTableCell();
 
-	/**
+    /**
      * Returns the meta object for data type '{@link org.obeonetwork.m2doc.provider.IProvider <em>Provider</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2818,67 +2955,67 @@ public interface TemplatePackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the factory that creates the instances of the model.
      * @generated
      */
-	TemplateFactory getTemplateFactory();
+    TemplateFactory getTemplateFactory();
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * Defines literals for the meta objects that represent
-	 * <ul>
-	 *   <li>each class,</li>
-	 *   <li>each feature of each class,</li>
-	 *   <li>each operation of each class,</li>
-	 *   <li>each enum,</li>
-	 *   <li>and each data type</li>
-	 * </ul>
-	 * <!-- end-user-doc -->
+     * Defines literals for the meta objects that represent
+     * <ul>
+     *   <li>each class,</li>
+     *   <li>each feature of each class,</li>
+     *   <li>each operation of each class,</li>
+     *   <li>each enum,</li>
+     *   <li>and each data type</li>
+     * </ul>
+     * <!-- end-user-doc -->
      * @generated
      */
-	interface Literals {
-		/**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.AbstractConstructImpl <em>Abstract Construct</em>}' class.
+    interface Literals {
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.AbstractConstructImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractConstruct()
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.IConstruct
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getIConstruct()
          * @generated
          */
-		EClass ABSTRACT_CONSTRUCT = eINSTANCE.getAbstractConstruct();
+        EClass ICONSTRUCT = eINSTANCE.getIConstruct();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Style Run</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute ABSTRACT_CONSTRUCT__STYLE_RUN = eINSTANCE.getAbstractConstruct_StyleRun();
+        EAttribute ICONSTRUCT__STYLE_RUN = eINSTANCE.getIConstruct_StyleRun();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Runs</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute ABSTRACT_CONSTRUCT__RUNS = eINSTANCE.getAbstractConstruct_Runs();
+        EAttribute ICONSTRUCT__RUNS = eINSTANCE.getIConstruct_Runs();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Closing Runs</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute ABSTRACT_CONSTRUCT__CLOSING_RUNS = eINSTANCE.getAbstractConstruct_ClosingRuns();
+        EAttribute ICONSTRUCT__CLOSING_RUNS = eINSTANCE.getIConstruct_ClosingRuns();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Validation Messages</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute ABSTRACT_CONSTRUCT__VALIDATION_MESSAGES = eINSTANCE.getAbstractConstruct_ValidationMessages();
+        EAttribute ICONSTRUCT__VALIDATION_MESSAGES = eINSTANCE.getIConstruct_ValidationMessages();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ConditionalImpl <em>Conditional</em>}' class.
@@ -2917,30 +3054,38 @@ public interface TemplatePackage extends EPackage {
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.RepetitionImpl <em>Repetition</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.impl.RepetitionImpl
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRepetition()
          * @generated
          */
-		EClass REPETITION = eINSTANCE.getRepetition();
+        EClass REPETITION = eINSTANCE.getRepetition();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Iteration Var</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute REPETITION__ITERATION_VAR = eINSTANCE.getRepetition_IterationVar();
+        EAttribute REPETITION__ITERATION_VAR = eINSTANCE.getRepetition_IterationVar();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute REPETITION__QUERY = eINSTANCE.getRepetition_Query();
+        EAttribute REPETITION__QUERY = eINSTANCE.getRepetition_Query();
 
-		/**
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference REPETITION__BODY = eINSTANCE.getRepetition_Body();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.UserDocImpl <em>User Doc</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -2957,6 +3102,14 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute USER_DOC__ID = eINSTANCE.getUserDoc_Id();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference USER_DOC__BODY = eINSTANCE.getUserDoc_Body();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.UserContentImpl <em>User Content</em>}' class.
@@ -2977,162 +3130,310 @@ public interface TemplatePackage extends EPackage {
         EAttribute USER_CONTENT__ID = eINSTANCE.getUserContent_Id();
 
         /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference USER_CONTENT__BODY = eINSTANCE.getUserContent_Body();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.QueryImpl <em>Query</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.impl.QueryImpl
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQuery()
          * @generated
          */
-		EClass QUERY = eINSTANCE.getQuery();
+        EClass QUERY = eINSTANCE.getQuery();
 
-		/**
-         * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
+        /**
+         * The meta object literal for the '<em><b>Behavior</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute QUERY__QUERY = eINSTANCE.getQuery_Query();
+        EAttribute QUERY__BEHAVIOR = eINSTANCE.getQuery_Behavior();
 
-		/**
+        /**
+         * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute QUERY__QUERY = eINSTANCE.getQuery_Query();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.TableMergeImpl <em>Table Merge</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.impl.TableMergeImpl
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableMerge()
          * @generated
          */
-		EClass TABLE_MERGE = eINSTANCE.getTableMerge();
+        EClass TABLE_MERGE = eINSTANCE.getTableMerge();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Legend</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute TABLE_MERGE__LEGEND = eINSTANCE.getTableMerge_Legend();
+        EAttribute TABLE_MERGE__LEGEND = eINSTANCE.getTableMerge_Legend();
 
-		/**
-         * The meta object literal for the '<em><b>Behavior</b></em>' attribute feature.
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute QUERY__BEHAVIOR = eINSTANCE.getQuery_Behavior();
+        EReference TABLE_MERGE__BODY = eINSTANCE.getTableMerge_Body();
 
-		/**
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.ImageImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getImage()
+         * @generated
+         */
+        EClass IMAGE = eINSTANCE.getImage();
+
+        /**
+         * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute IMAGE__FILE_NAME = eINSTANCE.getImage_FileName();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.BlockImpl <em>Block</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.BlockImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBlock()
+         * @generated
+         */
+        EClass BLOCK = eINSTANCE.getBlock();
+
+        /**
+         * The meta object literal for the '<em><b>Statements</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference BLOCK__STATEMENTS = eINSTANCE.getBlock_Statements();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.Statement <em>Statement</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.Statement
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStatement()
+         * @generated
+         */
+        EClass STATEMENT = eINSTANCE.getStatement();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.TemplateImpl <em>Template</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.TemplateImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplate()
+         * @generated
+         */
+        EClass TEMPLATE = eINSTANCE.getTemplate();
+
+        /**
+         * The meta object literal for the '<em><b>Template Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TEMPLATE__TEMPLATE_NAME = eINSTANCE.getTemplate_TemplateName();
+
+        /**
+         * The meta object literal for the '<em><b>XWPF Body</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TEMPLATE__XWPF_BODY = eINSTANCE.getTemplate_XWPFBody();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference TEMPLATE__BODY = eINSTANCE.getTemplate_Body();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl <em>Representation</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.RepresentationImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRepresentation()
+         * @generated
+         */
+        EClass REPRESENTATION = eINSTANCE.getRepresentation();
+
+        /**
+         * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REPRESENTATION__QUERY = eINSTANCE.getRepresentation_Query();
+
+        /**
+         * The meta object literal for the '<em><b>Representation Id</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REPRESENTATION__REPRESENTATION_ID = eINSTANCE.getRepresentation_RepresentationId();
+
+        /**
+         * The meta object literal for the '<em><b>Representation Title</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REPRESENTATION__REPRESENTATION_TITLE = eINSTANCE.getRepresentation_RepresentationTitle();
+
+        /**
+         * The meta object literal for the '<em><b>Activated Layers</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REPRESENTATION__ACTIVATED_LAYERS = eINSTANCE.getRepresentation_ActivatedLayers();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.StaticFragmentImpl <em>Static Fragment</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.StaticFragmentImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStaticFragment()
+         * @generated
+         */
+        EClass STATIC_FRAGMENT = eINSTANCE.getStaticFragment();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.TableImpl <em>Table</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.impl.TableImpl
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTable()
          * @generated
          */
-		EClass TABLE = eINSTANCE.getTable();
+        EClass TABLE = eINSTANCE.getTable();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Rows</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference TABLE__ROWS = eINSTANCE.getTable_Rows();
+        EReference TABLE__ROWS = eINSTANCE.getTable_Rows();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Table</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute TABLE__TABLE = eINSTANCE.getTable_Table();
+        EAttribute TABLE__TABLE = eINSTANCE.getTable_Table();
 
-		/**
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.RowImpl <em>Row</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.impl.RowImpl
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRow()
          * @generated
          */
-		EClass ROW = eINSTANCE.getRow();
+        EClass ROW = eINSTANCE.getRow();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Cells</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference ROW__CELLS = eINSTANCE.getRow_Cells();
+        EReference ROW__CELLS = eINSTANCE.getRow_Cells();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Table Row</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute ROW__TABLE_ROW = eINSTANCE.getRow_TableRow();
+        EAttribute ROW__TABLE_ROW = eINSTANCE.getRow_TableRow();
 
-		/**
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.CellImpl <em>Cell</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.impl.CellImpl
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCell()
          * @generated
          */
-		EClass CELL = eINSTANCE.getCell();
+        EClass CELL = eINSTANCE.getCell();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Template</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference CELL__TEMPLATE = eINSTANCE.getCell_Template();
+        EReference CELL__TEMPLATE = eINSTANCE.getCell_Template();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Table Cell</b></em>' attribute feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EAttribute CELL__TABLE_CELL = eINSTANCE.getCell_TableCell();
+        EAttribute CELL__TABLE_CELL = eINSTANCE.getCell_TableCell();
 
-		/**
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl <em>Document Template</em>}' class.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocumentTemplate()
          * @generated
          */
-		EClass DOCUMENT_TEMPLATE = eINSTANCE.getDocumentTemplate();
+        EClass DOCUMENT_TEMPLATE = eINSTANCE.getDocumentTemplate();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Headers</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference DOCUMENT_TEMPLATE__HEADERS = eINSTANCE.getDocumentTemplate_Headers();
+        EReference DOCUMENT_TEMPLATE__HEADERS = eINSTANCE.getDocumentTemplate_Headers();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Footers</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference DOCUMENT_TEMPLATE__FOOTERS = eINSTANCE.getDocumentTemplate_Footers();
+        EReference DOCUMENT_TEMPLATE__FOOTERS = eINSTANCE.getDocumentTemplate_Footers();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @generated
          */
-		EReference DOCUMENT_TEMPLATE__BODY = eINSTANCE.getDocumentTemplate_Body();
+        EReference DOCUMENT_TEMPLATE__BODY = eINSTANCE.getDocumentTemplate_Body();
 
-		/**
+        /**
          * The meta object literal for the '<em><b>Document</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3253,6 +3554,14 @@ public interface TemplatePackage extends EPackage {
         EAttribute BOOKMARK__NAME = eINSTANCE.getBookmark_Name();
 
         /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference BOOKMARK__BODY = eINSTANCE.getBookmark_Body();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.LinkImpl <em>Link</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3289,140 +3598,26 @@ public interface TemplatePackage extends EPackage {
         EClass TABLE_CLIENT = eINSTANCE.getTableClient();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.ImageImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getImage()
-         * @generated
-         */
-		EClass IMAGE = eINSTANCE.getImage();
-
-		/**
-         * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute IMAGE__FILE_NAME = eINSTANCE.getImage_FileName();
-
-		/**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.CompoundImpl <em>Compound</em>}' class.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.CompoundImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCompound()
-         * @generated
-         */
-		EClass COMPOUND = eINSTANCE.getCompound();
-
-		/**
-         * The meta object literal for the '<em><b>Sub Constructs</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EReference COMPOUND__SUB_CONSTRUCTS = eINSTANCE.getCompound_SubConstructs();
-
-		/**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.TemplateImpl <em>Template</em>}' class.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.TemplateImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplate()
-         * @generated
-         */
-		EClass TEMPLATE = eINSTANCE.getTemplate();
-
-		/**
-         * The meta object literal for the '<em><b>Template Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute TEMPLATE__TEMPLATE_NAME = eINSTANCE.getTemplate_TemplateName();
-
-		/**
-         * The meta object literal for the '<em><b>Body</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute TEMPLATE__BODY = eINSTANCE.getTemplate_Body();
-
-        /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.RepresentationImpl <em>Representation</em>}' class.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.RepresentationImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRepresentation()
-         * @generated
-         */
-		EClass REPRESENTATION = eINSTANCE.getRepresentation();
-
-		/**
-         * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute REPRESENTATION__QUERY = eINSTANCE.getRepresentation_Query();
-
-		/**
-         * The meta object literal for the '<em><b>Representation Id</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute REPRESENTATION__REPRESENTATION_ID = eINSTANCE.getRepresentation_RepresentationId();
-
-		/**
-         * The meta object literal for the '<em><b>Representation Title</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute REPRESENTATION__REPRESENTATION_TITLE = eINSTANCE.getRepresentation_RepresentationTitle();
-
-        /**
-         * The meta object literal for the '<em><b>Activated Layers</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute REPRESENTATION__ACTIVATED_LAYERS = eINSTANCE.getRepresentation_ActivatedLayers();
-
-        /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.StaticFragmentImpl <em>Static Fragment</em>}' class.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.StaticFragmentImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStaticFragment()
-         * @generated
-         */
-		EClass STATIC_FRAGMENT = eINSTANCE.getStaticFragment();
-
-		/**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}' enum.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.QueryBehavior
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
          * @generated
          */
-		EEnum QUERY_BEHAVIOR = eINSTANCE.getQueryBehavior();
+        EEnum QUERY_BEHAVIOR = eINSTANCE.getQueryBehavior();
 
-		/**
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.obeonetwork.m2doc.template.POSITION
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
          * @generated
          */
-		EEnum POSITION = eINSTANCE.getPOSITION();
+        EEnum POSITION = eINSTANCE.getPOSITION();
 
-		/**
+        /**
          * The meta object literal for the '<em>Document</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3435,34 +3630,34 @@ public interface TemplatePackage extends EPackage {
         /**
          * The meta object literal for the '<em>WTable</em>' data type.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.apache.poi.xwpf.usermodel.XWPFTable
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
          * @generated
          */
-		EDataType WTABLE = eINSTANCE.getWTable();
+        EDataType WTABLE = eINSTANCE.getWTable();
 
-		/**
+        /**
          * The meta object literal for the '<em>Run</em>' data type.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.apache.poi.xwpf.usermodel.XWPFRun
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
          * @generated
          */
-		EDataType RUN = eINSTANCE.getRun();
+        EDataType RUN = eINSTANCE.getRun();
 
-		/**
+        /**
          * The meta object literal for the '<em>Ast Result</em>' data type.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
          * @generated
          */
-		EDataType AST_RESULT = eINSTANCE.getAstResult();
+        EDataType AST_RESULT = eINSTANCE.getAstResult();
 
-		/**
+        /**
          * The meta object literal for the '<em>Validation Message</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3475,22 +3670,22 @@ public interface TemplatePackage extends EPackage {
         /**
          * The meta object literal for the '<em>WTable Row</em>' data type.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.apache.poi.xwpf.usermodel.XWPFTableRow
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
          * @generated
          */
-		EDataType WTABLE_ROW = eINSTANCE.getWTableRow();
+        EDataType WTABLE_ROW = eINSTANCE.getWTableRow();
 
-		/**
+        /**
          * The meta object literal for the '<em>WTable Cell</em>' data type.
          * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+         * <!-- end-user-doc -->
          * @see org.apache.poi.xwpf.usermodel.XWPFTableCell
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
          * @generated
          */
-		EDataType WTABLE_CELL = eINSTANCE.getWTableCell();
+        EDataType WTABLE_CELL = eINSTANCE.getWTableCell();
 
         /**
          * The meta object literal for the '<em>Provider</em>' data type.
@@ -3512,6 +3707,6 @@ public interface TemplatePackage extends EPackage {
          */
         EDataType BODY = eINSTANCE.getBody();
 
-	}
+    }
 
 } //TemplatePackage

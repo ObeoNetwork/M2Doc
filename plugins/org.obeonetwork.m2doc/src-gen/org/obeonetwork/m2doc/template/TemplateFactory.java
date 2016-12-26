@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  *  Copyright (c) 2016 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -7,9 +7,6 @@
  *   
  *   Contributors:
  *       Obeo - initial API and implementation
- *  
- *******************************************************************************/
-/**
  */
 package org.obeonetwork.m2doc.template;
 
@@ -24,21 +21,22 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface TemplateFactory extends EFactory {
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
-	/**
+    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+
+    /**
      * The singleton instance of the factory.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-	TemplateFactory eINSTANCE = org.obeonetwork.m2doc.template.impl.TemplateFactoryImpl.init();
+    TemplateFactory eINSTANCE = org.obeonetwork.m2doc.template.impl.TemplateFactoryImpl.init();
 
-	/**
+    /**
      * Returns a new object of class '<em>Conditional</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -50,13 +48,13 @@ public interface TemplateFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Repetition</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return a new object of class '<em>Repetition</em>'.
      * @generated
      */
-	Repetition createRepetition();
+    Repetition createRepetition();
 
-	/**
+    /**
      * Returns a new object of class '<em>User Doc</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -77,58 +75,103 @@ public interface TemplateFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Query</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return a new object of class '<em>Query</em>'.
      * @generated
      */
-	Query createQuery();
+    Query createQuery();
 
-	/**
+    /**
      * Returns a new object of class '<em>Table Merge</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return a new object of class '<em>Table Merge</em>'.
      * @generated
      */
-	TableMerge createTableMerge();
+    TableMerge createTableMerge();
 
-	/**
+    /**
+     * Returns a new object of class '<em>Image</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Image</em>'.
+     * @generated
+     */
+    Image createImage();
+
+    /**
+     * Returns a new object of class '<em>Block</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Block</em>'.
+     * @generated
+     */
+    Block createBlock();
+
+    /**
+     * Returns a new object of class '<em>Template</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Template</em>'.
+     * @generated
+     */
+    Template createTemplate();
+
+    /**
+     * Returns a new object of class '<em>Representation</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Representation</em>'.
+     * @generated
+     */
+    Representation createRepresentation();
+
+    /**
+     * Returns a new object of class '<em>Static Fragment</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Static Fragment</em>'.
+     * @generated
+     */
+    StaticFragment createStaticFragment();
+
+    /**
      * Returns a new object of class '<em>Table</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return a new object of class '<em>Table</em>'.
      * @generated
      */
-	Table createTable();
+    Table createTable();
 
-	/**
+    /**
      * Returns a new object of class '<em>Row</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return a new object of class '<em>Row</em>'.
      * @generated
      */
-	Row createRow();
+    Row createRow();
 
-	/**
+    /**
      * Returns a new object of class '<em>Cell</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return a new object of class '<em>Cell</em>'.
      * @generated
      */
-	Cell createCell();
+    Cell createCell();
 
-	/**
+    /**
      * Returns a new object of class '<em>Document Template</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return a new object of class '<em>Document Template</em>'.
      * @generated
      */
-	DocumentTemplate createDocumentTemplate();
+    DocumentTemplate createDocumentTemplate();
 
-	/**
+    /**
      * Returns a new object of class '<em>Bookmark</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -156,57 +199,12 @@ public interface TemplateFactory extends EFactory {
     TableClient createTableClient();
 
     /**
-     * Returns a new object of class '<em>Image</em>'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Image</em>'.
-     * @generated
-     */
-	Image createImage();
-
-	/**
-     * Returns a new object of class '<em>Compound</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Compound</em>'.
-     * @generated
-     */
-    Compound createCompound();
-
-    /**
-     * Returns a new object of class '<em>Template</em>'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Template</em>'.
-     * @generated
-     */
-	Template createTemplate();
-
-	/**
-     * Returns a new object of class '<em>Representation</em>'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Representation</em>'.
-     * @generated
-     */
-	Representation createRepresentation();
-
-	/**
-     * Returns a new object of class '<em>Static Fragment</em>'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Static Fragment</em>'.
-     * @generated
-     */
-	StaticFragment createStaticFragment();
-
-	/**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @return the package supported by this factory.
      * @generated
      */
-	TemplatePackage getTemplatePackage();
+    TemplatePackage getTemplatePackage();
 
 } //TemplateFactory

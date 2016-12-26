@@ -148,8 +148,9 @@ public class UserContentManagerTest {
         assertNull(userContentManager.getUserContent("noExistid2"));
         UserContent userContent = userContentManager.getUserContent("value1");
         assertNotNull(userContent);
-        assertEquals(1, userContent.getSubConstructs().size());
-        assertEquals("User document part Texte 1", userContent.getSubConstructs().get(0).getRuns().get(0).getText(0));
+        assertEquals(1, userContent.getBody().getStatements().size());
+        assertEquals("User document part Texte 1",
+                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
         userContentManager.dispose();
     }
 
@@ -170,18 +171,21 @@ public class UserContentManagerTest {
 
         UserContent userContent = userContentManager.getUserContent("value1");
         assertNotNull(userContent);
-        assertEquals(1, userContent.getSubConstructs().size());
-        assertEquals("User document part Texte 1", userContent.getSubConstructs().get(0).getRuns().get(0).getText(0));
+        assertEquals(1, userContent.getBody().getStatements().size());
+        assertEquals("User document part Texte 1",
+                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
 
         userContent = userContentManager.getUserContent("value2");
         assertNotNull(userContent);
-        assertEquals(1, userContent.getSubConstructs().size());
-        assertEquals("User document part Texte 2", userContent.getSubConstructs().get(0).getRuns().get(0).getText(0));
+        assertEquals(1, userContent.getBody().getStatements().size());
+        assertEquals("User document part Texte 2",
+                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
 
         userContent = userContentManager.getUserContent("value3");
         assertNotNull(userContent);
-        assertEquals(1, userContent.getSubConstructs().size());
-        assertEquals("User document part Texte 3", userContent.getSubConstructs().get(0).getRuns().get(0).getText(0));
+        assertEquals(1, userContent.getBody().getStatements().size());
+        assertEquals("User document part Texte 3",
+                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
 
         userContentManager.dispose();
     }
