@@ -148,23 +148,6 @@ public class DocumentGeneratorTest {
     }
 
     @Test
-    public void testQueryStyledProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResult.docx", definitions,
-                null);
-    }
-
-    @Test
-    public void testQueryStyledErrorProcessing() throws Exception {
-        // TODO this can't be right! two tests modifying the same data.
-        Map<String, Object> definitions = new HashMap<>();
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testAQL.docx", "results/testAQLResultError.docx",
-                definitions, null);
-    }
-
-    @Test
     public void testImagesAndFootersAndHeadersAndBullets() throws Exception {
 
         Map<String, Object> definitions = new HashMap<>();

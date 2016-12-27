@@ -150,23 +150,6 @@ public class DocumentParserTest {
     }
 
     @Test
-    public void testQueryParsing() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testAQL.docx")) {
-            OPCPackage oPackage = OPCPackage.open(is);
-            XWPFDocument document = new XWPFDocument(oPackage);
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            assertEquals(document, template.getXWPFBody());
-            assertEquals(3, template.getBody().getStatements().size());
-            assertTrue(template.getBody().getStatements().get(0) instanceof StaticFragment);
-            assertTrue(template.getBody().getStatements().get(1) instanceof Query);
-            assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
-            Query query = (Query) template.getBody().getStatements().get(1);
-            assertNotNull(query.getQuery());
-        }
-    }
-
-    @Test
     public void tableParsingTest() throws IOException, InvalidFormatException, DocumentParserException {
         FileInputStream is = new FileInputStream("templates/testTable.docx");
         OPCPackage oPackage = OPCPackage.open(is);

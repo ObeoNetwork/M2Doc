@@ -1,0 +1,4 @@
+template null
+  A simple demonstration of a query :
+  [query: *** expression error **** | [Lorg.obeonetwork.m2doc.template.QueryBehavior;@6913c1fb]
+  End of demonstration.

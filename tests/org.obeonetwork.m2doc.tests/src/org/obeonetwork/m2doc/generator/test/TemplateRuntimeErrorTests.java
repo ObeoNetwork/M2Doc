@@ -86,43 +86,6 @@ public class TemplateRuntimeErrorTests {
     }
 
     /**
-     * Tests processing of a query where the evaluation results in an error.
-     * 
-     * @throws InvalidFormatException
-     * @throws IOException
-     * @throws DocumentParserException
-     */
-    @Test
-    public void testQueryEvaluationErrorProcessing()
-            throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testAQL.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<>();
-        XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
-        final BookmarkManager bookmarkManager = new BookmarkManager();
-        final UserContentManager lastDestinationUserContentManager = new UserContentManager(
-                URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, "", bookmarkManager,
-                lastDestinationUserContentManager, env, destinationDoc, null);
-        processor.doSwitch(template);
-        // scan the destination document
-        assertEquals(3, destinationDoc.getParagraphs().size());
-        System.out.println(destinationDoc.getParagraphs().get(0).getText());
-        assertEquals(
-                "Template de test pour les balises de query aql : Couldn't find the 'self' variable\nCouldn't find the 'aqlFeatureAccess(org.eclipse.acceleo.query.runtime.impl.Nothing,java.lang.String)' service",
-                destinationDoc.getParagraphs().get(0).getText());
-        XWPFRun run = destinationDoc.getParagraphs().get(0).getRuns()
-                .get(destinationDoc.getParagraphs().get(0).getRuns().size() - 1);
-        assertEquals("FF0000", run.getColor());
-        assertNotNull(run.getCTR().getRPr().getB());
-        assertEquals("Fin du gabarit", destinationDoc.getParagraphs().get(1).getText());
-        assertEquals("", destinationDoc.getParagraphs().get(2).getText());
-    }
-
-    /**
      * Tests that the proper error message is inserted in the result when an AQL Syntax error is detected in a repetition tag.
      * 
      * @throws IOException

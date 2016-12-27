@@ -47,31 +47,6 @@ public class DocumentParserErrorsTest {
     private IQueryEnvironment env = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
 
     /**
-     * Test the error reporting on a query tag with an invalid expression.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testQueryTagError() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testInvalidAQL.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getXWPFBody());
-        assertEquals(2, template.getBody().getStatements().size());
-        assertTrue(template.getBody().getStatements().get(1) instanceof Query);
-        Query query = (Query) template.getBody().getStatements().get(1);
-        assertEquals("Expression \"self.\" is invalid: missing feature access or service call",
-                query.getValidationMessages().get(0).getMessage());
-    }
-
-    /**
      * Tests the error reporting on a conditional tag with a syntactically
      * invalid expression.
      * 

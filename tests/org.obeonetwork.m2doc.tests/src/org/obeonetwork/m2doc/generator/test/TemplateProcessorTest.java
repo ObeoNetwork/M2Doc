@@ -25,7 +25,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -206,40 +205,6 @@ public class TemplateProcessorTest {
         assertEquals("E36C0A", run.getColor());
         assertNotNull(run.getCTR().getRPr().getI());
         assertNotNull(run.getCTR().getRPr().getB());
-    }
-
-    /**
-     * Test Query Processing.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testQueryProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testAQL.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        Map<String, Object> definitions = new HashMap<String, Object>();
-        definitions.put("self", EcorePackage.eINSTANCE);
-        XWPFDocument destinationDoc = createDestinationDocument("templates/testAQL.docx");
-        final BookmarkManager bookmarkManager = new BookmarkManager();
-        final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-        TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                destinationDoc, null);
-        processor.doSwitch(template);
-        // scan the destination document
-        assertEquals(3, destinationDoc.getParagraphs().size());
-        System.out.println(destinationDoc.getParagraphs().get(0).getText());
-        assertEquals("Template de test pour les balises de query aql\u00a0: ecore",
-                destinationDoc.getParagraphs().get(0).getText());
-        assertEquals("Fin du gabarit", destinationDoc.getParagraphs().get(1).getText());
-        assertEquals("", destinationDoc.getParagraphs().get(2).getText());
     }
 
     /**
