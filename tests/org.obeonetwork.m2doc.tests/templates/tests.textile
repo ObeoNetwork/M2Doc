@@ -1,16 +1,16 @@
 h2. Test des traitements d'erreur 
 
-* @gd:for@ avec query invalide
-* @gd:for@ sans variable
-* @gd:for@ sans |
-* @gd:for@ sans gd:endfor
-* @gd:endfor tout seul
+* @m:for@ avec query invalide
+* @m:for@ sans variable
+* @m:for@ sans |
+* @m:for@ sans m:endfor
+* @m:endfor tout seul
 
-* @gd:if@ avec query invalide
-* @gd:if@ sans endif
-* @gd:if@ avec else sans endif
-* @gd:if@ avec elseif sans endif
-* @gd:if@ avec elseif à query invalide
+* @m:if@ avec query invalide
+* @m:if@ sans endif
+* @m:if@ avec else sans endif
+* @m:if@ avec elseif sans endif
+* @m:if@ avec elseif à query invalide
 
 * query avec query invalide
 
@@ -21,16 +21,16 @@ h2. Test du traitement des templates :
 * @aql@: avec style
 * @var@:
 * @var@: avec style
-* @gd:for@ avec une liste complète
-* @gd:for@ avec une liste vide
-* @gd:if@ avec évaluation à vrai
-* @gd:if@ avec évaluation à faux
-* @gd:if/gd:else@ avec évaluation à vrai
-* @gd:if/gd:else@ avec évaluation à faux
-* @gd:if/gd:elseif/gd:else@ avec évaluation à vrai pour la première
-* @gd:if/gd:elseif/gd:else@ avec évaluation à faux  pour la première et vrai pour la deuxième
-* @gd:if/gd:elseif/gd:else@ avec évaluation à faux  pour la première et vrai pour la deuxième
-* @gd:if/gd:elseif/gd:else@ avec évaluation à vrai pour les deux expressions
+* @m:for@ avec une liste complète
+* @m:for@ avec une liste vide
+* @m:if@ avec évaluation à vrai
+* @m:if@ avec évaluation à faux
+* @m:if/m:else@ avec évaluation à vrai
+* @m:if/m:else@ avec évaluation à faux
+* @m:if/m:elseif/m:else@ avec évaluation à vrai pour la première
+* @m:if/m:elseif/m:else@ avec évaluation à faux  pour la première et vrai pour la deuxième
+* @m:if/m:elseif/m:else@ avec évaluation à faux  pour la première et vrai pour la deuxième
+* @m:if/m:elseif/m:else@ avec évaluation à vrai pour les deux expressions
 
 h2. Test de la restitution des erreurs :
  

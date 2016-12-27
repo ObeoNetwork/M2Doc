@@ -246,7 +246,7 @@ public class TemplateParsingValidatorTest {
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(8).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
                 document.getParagraphs().get(0).getRuns().get(8).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("gd:elseif, gd:else or gd:endif expected here.",
+        assertEquals("m:elseif, m:else or m:endif expected here.",
                 document.getParagraphs().get(0).getRuns().get(9).getText(0));
         assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(9).getColor());
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(9).getFontSize());
@@ -258,7 +258,7 @@ public class TemplateParsingValidatorTest {
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(8).getFontSize());
         assertEquals(STHighlightColor.LIGHT_GRAY,
                 document.getParagraphs().get(0).getRuns().get(8).getCTR().getRPr().getHighlight().getVal());
-        assertEquals("gd:elseif, gd:else or gd:endif expected here.",
+        assertEquals("m:elseif, m:else or m:endif expected here.",
                 document.getParagraphs().get(0).getRuns().get(9).getText(0));
         assertEquals("FF0000", document.getParagraphs().get(0).getRuns().get(9).getColor());
         assertEquals(16, document.getParagraphs().get(0).getRuns().get(9).getFontSize());

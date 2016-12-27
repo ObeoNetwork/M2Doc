@@ -1450,7 +1450,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
            source, 
            new String[] {
              "documentation", "If {@link Conditional#getCondition() condition} is evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}",
-             "syntax", "{gd:if expr} runs1 [{gd:elseif <expr>} runs_n]* [{gd:else} run_else]{gd:endif}"
+             "syntax", "{m:if expr} runs1 [{m:elseif <expr>} runs_n]* [{m:else} run_else]{m:endif}"
            });	
         addAnnotation
           (getConditional_Condition(), 
@@ -1474,8 +1474,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
           (repetitionEClass, 
            source, 
            new String[] {
-             "documentation", "pour chaque valeur v dans le r\u00e9sultat de l\'\u00e9valuation de query, \r\n- un nouveau contexte est cr\u00e9e en ajoutant la d\u00e9finition \'var =v\' au contexte courant\r\n- le r\u00e9sultat du traitement du corps runs est ins\u00e9r\u00e9 dans le document \r\nles balises {gd:for} et {gd:endfor} sont supprim\u00e9es.\r\nSi la balise {gd:for} est imm\u00e9diatement suivie d\'un retour chariot alors l\'ensemble du paragraphe la contenant est supprim\u00e9e du r\u00e9sultat sinon, le paragraphe duquel on a supprim\u00e9 la balise est ins\u00e9r\u00e9 dans le r\u00e9sultat. Le m\u00eame traitement est appliqu\u00e9 \u00e0 la balise {gd:endfor}",
-             "syntax", "{gd:for var | query} body {gd:endfor}"
+             "documentation", "pour chaque valeur v dans le r\u00e9sultat de l\'\u00e9valuation de query, \r\n- un nouveau contexte est cr\u00e9e en ajoutant la d\u00e9finition \'var =v\' au contexte courant\r\n- le r\u00e9sultat du traitement du corps runs est ins\u00e9r\u00e9 dans le document \r\nles balises {m:for} et {m:endfor} sont supprim\u00e9es.\r\nSi la balise {m:for} est imm\u00e9diatement suivie d\'un retour chariot alors l\'ensemble du paragraphe la contenant est supprim\u00e9e du r\u00e9sultat sinon, le paragraphe duquel on a supprim\u00e9 la balise est ins\u00e9r\u00e9 dans le r\u00e9sultat. Le m\u00eame traitement est appliqu\u00e9 \u00e0 la balise {m:endfor}",
+             "syntax", "{m:for var | query} body {m:endfor}"
            });	
         addAnnotation
           (getRepetition_Body(), 

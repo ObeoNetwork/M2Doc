@@ -726,8 +726,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
 
     /**
      * Parses a conditional.
-     * conditional are made of the following set of tags : {gd:if "query"} ...
-     * [{gd:elseif "query"} ....]* ({gd:else})? ... {gd:endif}
+     * conditional are made of the following set of tags : {m:if "query"} ...
+     * [{m:elseif "query"} ....]* ({m:else})? ... {m:endif}
      * 
      * @return the created object
      * @throws DocumentParserException
@@ -762,7 +762,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
                 final Block elseCompound = parseBlock(TokenType.ENDIF);
                 conditional.setElse(elseCompound);
 
-                // read up the gd:endif tag if it exists
+                // read up the m:endif tag if it exists
                 if (getNextTokenType() != TokenType.EOF) {
                     readTag(conditional, conditional.getClosingRuns());
                 }
@@ -778,7 +778,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
 
     /**
      * Parse a repetition construct. Repetition are of the form
-     * <code>{gd:for var | query} runs {gd:endfor}</code>
+     * <code>{m:for var | query} runs {m:endfor}</code>
      * 
      * @return the created object
      * @throws DocumentParserException
@@ -793,15 +793,15 @@ public class BodyTemplateParser extends BodyAbstractParser {
         // extract the variable;
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
-            validationError(repetition, "Malformed tag gd:for, no '|' found.");
+            validationError(repetition, "Malformed tag m:for, no '|' found.");
         } else {
             String iterationVariable = tagText.substring(0, indexOfPipe).trim();
             if ("".equals(iterationVariable)) {
-                validationError(repetition, "Malformed tag gd:for : no iteration variable specified.");
+                validationError(repetition, "Malformed tag m:for : no iteration variable specified.");
             }
             repetition.setIterationVar(iterationVariable);
             if (tagText.length() == indexOfPipe + 1) {
-                validationError(repetition, "Malformed tag gd:for : no query expression specified." + tagText);
+                validationError(repetition, "Malformed tag m:for : no query expression specified." + tagText);
             }
             String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
             AstResult result = queryParser.build(query);
@@ -812,7 +812,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
                 repetition.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
             }
         }
-        // read up the tags until the "gd:endfor" tag is encountered.
+        // read up the tags until the "m:endfor" tag is encountered.
         final Block body = parseBlock(TokenType.ENDFOR);
         repetition.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
@@ -823,7 +823,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
 
     /**
      * Parse a bookmark construct. Bookmark are of the form
-     * <code>{gd:bookmark 'bookmark name'} runs {gd:endbookmark}</code>
+     * <code>{m:bookmark 'bookmark name'} runs {m:endbookmark}</code>
      * 
      * @return the created object
      * @throws DocumentParserException
@@ -843,7 +843,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
             final XWPFRun lastRun = bookmark.getRuns().get(bookmark.getRuns().size() - 1);
             bookmark.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), tagText, lastRun));
         }
-        // read up the tags until the "gd:endbookmark" tag is encountered.
+        // read up the tags until the "m:endbookmark" tag is encountered.
         final Block body = parseBlock(TokenType.ENDBOOKMARK);
         bookmark.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
@@ -855,7 +855,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
 
     /**
      * Parse a link construct. Link are of the form
-     * <code>{gd:link 'bookmark name' 'link text'}</code>
+     * <code>{m:link 'bookmark name' 'link text'}</code>
      * 
      * @return the created object
      * @throws DocumentParserException

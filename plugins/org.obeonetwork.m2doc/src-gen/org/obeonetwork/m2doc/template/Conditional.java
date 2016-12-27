@@ -27,7 +27,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='If {@link Conditional#getCondition() condition} is evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}' syntax='{gd:if expr} runs1 [{gd:elseif <expr>} runs_n]* [{gd:else} run_else]{gd:endif}'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='If {@link Conditional#getCondition() condition} is evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}' syntax='{m:if expr} runs1 [{m:elseif <expr>} runs_n]* [{m:else} run_else]{m:endif}'"
  * @generated
  */
 public interface Conditional extends Statement {
