@@ -298,10 +298,9 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      *            the run to copy
      * @return the inserted run.
      */
-    @SuppressWarnings("deprecation")
     private XWPFRun insertRun(XWPFRun srcRun) {
-        if (srcRun.getParagraph() != currentTemplateParagraph || forceNewParagraph) {
-            createNewParagraph(srcRun.getParagraph());
+        if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph) {
+            createNewParagraph((XWPFParagraph) srcRun.getParent());
             forceNewParagraph = false;
         }
         XWPFRun newRun = null;
@@ -311,7 +310,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             CTHyperlink newHyperlink = currentGeneratedParagraph.getCTP().addNewHyperlink();
             newHyperlink.set(((XWPFHyperlinkRun) srcRun).getCTHyperlink());
 
-            newRun = new XWPFHyperlinkRun(newHyperlink, srcRun.getCTR(), srcRun.getParagraph());
+            newRun = new XWPFHyperlinkRun(newHyperlink, srcRun.getCTR(), srcRun.getParent());
             currentGeneratedParagraph.addRun(newRun);
         } else {
             newRun = currentGeneratedParagraph.createRun();
@@ -329,10 +328,9 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      *            the text to set
      * @return the inserted run
      */
-    @SuppressWarnings("deprecation")
     private XWPFRun insertFieldRunReplacement(XWPFRun srcRun, String replacement) {
-        if (srcRun.getParagraph() != currentTemplateParagraph || forceNewParagraph) {
-            createNewParagraph(srcRun.getParagraph());
+        if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph) {
+            createNewParagraph((XWPFParagraph) srcRun.getParent());
             forceNewParagraph = false;
         }
         return insertString(srcRun, replacement);
@@ -511,7 +509,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * 
      * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseUserDoc(org.obeonetwork.m2doc.template.UserDoc)
      */
-    @SuppressWarnings("deprecation")
     @Override
     public IConstruct caseUserDoc(UserDoc object) {
         // first : evaluate the query
@@ -555,8 +552,8 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                     needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
                     // Affect currentTemplateParagraph after Raw copy
                     if (object.getClosingRuns().size() != 0) {
-                        currentTemplateParagraph = object.getClosingRuns().get(object.getClosingRuns().size() - 1)
-                                .getParagraph();
+                        currentTemplateParagraph = (XWPFParagraph) object.getClosingRuns()
+                                .get(object.getClosingRuns().size() - 1).getParent();
                     }
                 } catch (InvalidFormatException e) {
                     XWPFRun run = currentGeneratedParagraph.createRun();
@@ -624,11 +621,10 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * @param id
      *            UserDoc Id
      */
-    @SuppressWarnings("deprecation")
     private void addStartUserDocField(IConstruct object, String id) {
         if (currentTemplateParagraph == null
-            || object.getRuns().size() != 0 && object.getRuns().get(0).getParagraph() != currentTemplateParagraph) {
-            createNewParagraph(object.getRuns().get(0).getParagraph());
+            || object.getRuns().size() != 0 && object.getRuns().get(0).getParent() != currentTemplateParagraph) {
+            createNewParagraph((XWPFParagraph) object.getRuns().get(0).getParent());
         }
         currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
     }
@@ -641,11 +637,10 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * @param needNewParagraph
      *            need New Paragraph boolean
      */
-    @SuppressWarnings("deprecation")
     private void addEndUserDocField(IConstruct object, boolean needNewParagraph) {
         if (object.getClosingRuns().size() != 0) {
             if (needNewParagraph) {
-                createNewParagraph(object.getClosingRuns().get(0).getParagraph());
+                createNewParagraph((XWPFParagraph) object.getClosingRuns().get(0).getParent());
             }
             currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
         }
