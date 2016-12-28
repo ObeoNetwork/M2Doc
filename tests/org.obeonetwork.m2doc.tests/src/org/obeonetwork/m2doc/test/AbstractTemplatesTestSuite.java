@@ -33,10 +33,10 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
@@ -48,6 +48,7 @@ import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -62,6 +63,11 @@ import static org.junit.Assert.fail;
 public abstract class AbstractTemplatesTestSuite {
 
     /**
+     * The {@link DocumentTemplate}.
+     */
+    private static DocumentTemplate documentTemplate;
+
+    /**
      * The {@link TemplateAstSerializer}.
      */
     private final TemplateAstSerializer templateAstSerializer = new TemplateAstSerializer();
@@ -70,11 +76,6 @@ public abstract class AbstractTemplatesTestSuite {
      * The test folder path.
      */
     private final String testFolderPath;
-
-    /**
-     * The {@link DocumentTemplate}.
-     */
-    private final DocumentTemplate documentTemplate;
 
     /**
      * The {@link Generation}.
@@ -117,10 +118,21 @@ public abstract class AbstractTemplatesTestSuite {
         }
         queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
         final URI templateURI = URI.createFileURI(getTemplateFile(new File(testFolderPath)).getAbsolutePath());
-        documentTemplate = POIServices.getInstance().parseTemplate(templateURI, queryEnvironment);
+        documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment);
         types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
         ConfigurationServices configurationServices = new ConfigurationServices();
         variables = configurationServices.createDefinitions(generation);
+    }
+
+    /**
+     * Closes the {@link DocumentTemplate}.
+     * 
+     * @throws IOException
+     *             if the {@link DocumentTemplate} can't be closed
+     */
+    @AfterClass
+    public static void afterClass() throws IOException {
+        documentTemplate.close();
     }
 
     /**

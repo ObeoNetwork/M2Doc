@@ -10,8 +10,10 @@
  */
 package org.obeonetwork.m2doc.template.impl;
 
+import java.io.InputStream;
 import java.util.Map;
 
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -248,6 +250,20 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EEnum positionEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType inputStreamEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType opcPackageEDataType = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -855,8 +871,26 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getDocumentTemplate_Document() {
+    public EAttribute getDocumentTemplate_InputStream() {
         return (EAttribute)documentTemplateEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getDocumentTemplate_OpcPackage() {
+        return (EAttribute)documentTemplateEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getDocumentTemplate_Document() {
+        return (EAttribute)documentTemplateEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -1044,6 +1078,24 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getInputStream() {
+        return inputStreamEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getOPCPackage() {
+        return opcPackageEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EDataType getDocument() {
         return documentEDataType;
     }
@@ -1217,6 +1269,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__HEADERS);
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__FOOTERS);
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__BODY);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__INPUT_STREAM);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__OPC_PACKAGE);
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__DOCUMENT);
 
         optionValueMapEClass = createEClass(OPTION_VALUE_MAP);
@@ -1248,6 +1302,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         positionEEnum = createEEnum(POSITION);
 
         // Create data types
+        inputStreamEDataType = createEDataType(INPUT_STREAM);
+        opcPackageEDataType = createEDataType(OPC_PACKAGE);
         documentEDataType = createEDataType(DOCUMENT);
         wTableEDataType = createEDataType(WTABLE);
         runEDataType = createEDataType(RUN);
@@ -1375,8 +1431,10 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEClass(documentTemplateEClass, DocumentTemplate.class, "DocumentTemplate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getDocumentTemplate_Headers(), this.getTemplate(), null, "headers", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentTemplate_Footers(), this.getTemplate(), null, "footers", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentTemplate_Body(), this.getTemplate(), null, "body", null, 0, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getDocumentTemplate_Document(), this.getDocument(), "document", null, 0, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentTemplate_Body(), this.getTemplate(), null, "body", null, 1, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_InputStream(), this.getInputStream(), "inputStream", null, 1, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_OpcPackage(), this.getOPCPackage(), "opcPackage", null, 1, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_Document(), this.getDocument(), "document", null, 1, 1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(optionValueMapEClass, Map.Entry.class, "OptionValueMap", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getOptionValueMap_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1413,6 +1471,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         addEEnumLiteral(positionEEnum, org.obeonetwork.m2doc.template.POSITION.BELOW);
 
         // Initialize data types
+        initEDataType(inputStreamEDataType, InputStream.class, "InputStream", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(opcPackageEDataType, OPCPackage.class, "OPCPackage", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(documentEDataType, XWPFDocument.class, "Document", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(wTableEDataType, XWPFTable.class, "WTable", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(runEDataType, XWPFRun.class, "Run", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

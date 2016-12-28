@@ -50,13 +50,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
 
@@ -239,16 +239,11 @@ public final class M2DocTestUtils {
      */
     public static void generate(String templatePath, String outputPath, IQueryEnvironment queryEnvironment,
             Map<String, Object> variables, Generation generation) throws Exception {
-        try (FileInputStream is = new FileInputStream(templatePath)) {
-            try (OPCPackage oPackage = OPCPackage.open(is)) {
-                try (XWPFDocument document = new XWPFDocument(oPackage)) {
-                    DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-                    DocumentTemplate template = parser.parseDocument(URI.createFileURI(templatePath));
-                    DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
-                            URI.createFileURI(outputPath), template, variables, queryEnvironment, generation);
-                    generator.generate();
-                }
-            }
+        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI(templatePath), queryEnvironment)) {
+            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
+                    URI.createFileURI(outputPath), template, variables, queryEnvironment, generation);
+            generator.generate();
+            template.close();
         }
     }
 

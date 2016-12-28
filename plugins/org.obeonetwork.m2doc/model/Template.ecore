@@ -111,6 +111,8 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="InputStream" instanceClassName="java.io.InputStream"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="OPCPackage" instanceClassName="org.apache.poi.openxml4j.opc.OPCPackage"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Document" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFDocument"/>
   <eClassifiers xsi:type="ecore:EDataType" name="WTable" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTable"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Run" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFRun"/>
@@ -151,9 +153,14 @@
         eType="#//Template" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="footers" upperBound="-1"
         eType="#//Template" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//Template"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Template"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" eType="#//Document"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inputStream" lowerBound="1"
+        eType="#//InputStream"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opcPackage" lowerBound="1"
+        eType="#//OPCPackage"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" lowerBound="1"
+        eType="#//Document"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="POSITION">
     <eLiterals name="ABOVE"/>

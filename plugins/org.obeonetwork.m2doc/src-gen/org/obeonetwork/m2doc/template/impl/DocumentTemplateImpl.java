@@ -10,8 +10,11 @@
  */
 package org.obeonetwork.m2doc.template.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -43,6 +46,8 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getHeaders <em>Headers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getFooters <em>Footers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getInputStream <em>Input Stream</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getOpcPackage <em>Opc Package</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getDocument <em>Document</em>}</li>
  * </ul>
  *
@@ -85,6 +90,46 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * @ordered
      */
     protected Template body;
+
+    /**
+     * The default value of the '{@link #getInputStream() <em>Input Stream</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInputStream()
+     * @generated
+     * @ordered
+     */
+    protected static final InputStream INPUT_STREAM_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getInputStream() <em>Input Stream</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInputStream()
+     * @generated
+     * @ordered
+     */
+    protected InputStream inputStream = INPUT_STREAM_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getOpcPackage() <em>Opc Package</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getOpcPackage()
+     * @generated
+     * @ordered
+     */
+    protected static final OPCPackage OPC_PACKAGE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getOpcPackage() <em>Opc Package</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getOpcPackage()
+     * @generated
+     * @ordered
+     */
+    protected OPCPackage opcPackage = OPC_PACKAGE_EDEFAULT;
 
     /**
      * The default value of the '{@link #getDocument() <em>Document</em>}' attribute.
@@ -197,6 +242,48 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setInputStream(InputStream newInputStream) {
+        InputStream oldInputStream = inputStream;
+        inputStream = newInputStream;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM, oldInputStream, inputStream));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public OPCPackage getOpcPackage() {
+        return opcPackage;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setOpcPackage(OPCPackage newOpcPackage) {
+        OPCPackage oldOpcPackage = opcPackage;
+        opcPackage = newOpcPackage;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE, oldOpcPackage, opcPackage));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public XWPFDocument getDocument() {
         return document;
     }
@@ -245,6 +332,10 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return getFooters();
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 return getBody();
+            case TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM:
+                return getInputStream();
+            case TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE:
+                return getOpcPackage();
             case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
                 return getDocument();
         }
@@ -271,6 +362,12 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 setBody((Template)newValue);
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM:
+                setInputStream((InputStream)newValue);
+                return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE:
+                setOpcPackage((OPCPackage)newValue);
+                return;
             case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
                 setDocument((XWPFDocument)newValue);
                 return;
@@ -295,6 +392,12 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 setBody((Template)null);
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM:
+                setInputStream(INPUT_STREAM_EDEFAULT);
+                return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE:
+                setOpcPackage(OPC_PACKAGE_EDEFAULT);
+                return;
             case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
                 setDocument(DOCUMENT_EDEFAULT);
                 return;
@@ -316,6 +419,10 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return footers != null && !footers.isEmpty();
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 return body != null;
+            case TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM:
+                return INPUT_STREAM_EDEFAULT == null ? inputStream != null : !INPUT_STREAM_EDEFAULT.equals(inputStream);
+            case TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE:
+                return OPC_PACKAGE_EDEFAULT == null ? opcPackage != null : !OPC_PACKAGE_EDEFAULT.equals(opcPackage);
             case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
                 return DOCUMENT_EDEFAULT == null ? document != null : !DOCUMENT_EDEFAULT.equals(document);
         }
@@ -332,10 +439,25 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (document: ");
+        result.append(" (inputStream: ");
+        result.append(inputStream);
+        result.append(", opcPackage: ");
+        result.append(opcPackage);
+        result.append(", document: ");
         result.append(document);
         result.append(')');
         return result.toString();
     }
 
+    /**
+     * @see java.io.Closeable#close()
+     * @generated NOT
+     */
+    @Override
+    public void close() throws IOException {
+        getDocument().close();
+        getOpcPackage().close();
+        getInputStream().close();
+    }
+    
 } //DocumentTemplateImpl

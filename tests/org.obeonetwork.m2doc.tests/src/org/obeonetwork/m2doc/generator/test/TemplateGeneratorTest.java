@@ -27,11 +27,11 @@ import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.test.M2DocTestUtils;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,28 +57,32 @@ public class TemplateGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        FileInputStream is = new FileInputStream("templates/testParsingErrorSimpleTag.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
-        final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-        template.getBody().getValidationMessages()
-                .add(new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                template);
-        generator.generate();
+        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
+                queryEnvironment)) {
+            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            template.getBody().getValidationMessages().add(
+                    new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
+            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                    template);
+            generator.generate();
+            template.close();
+        }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
-        FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
-        OPCPackage resOPackage = OPCPackage.open(resIs);
-        XWPFDocument resDocument = new XWPFDocument(resOPackage);
+        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
-        final XWPFRun messageRun = M2DocTestUtils.getRunContaining(resDocument, "XXXXXXXXXXXXXXXXXXXXXXXX");
+            final XWPFRun messageRun = M2DocTestUtils.getRunContaining(resDocument, "XXXXXXXXXXXXXXXXXXXXXXXX");
 
-        assertNotNull(messageRun);
-        assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
-        assertEquals("0000FF", messageRun.getColor());
+            assertNotNull(messageRun);
+            assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
+            assertEquals("0000FF", messageRun.getColor());
+
+            resIs.close();
+            resOPackage.close();
+            resDocument.close();
+        }
     }
 
     /**
@@ -94,28 +98,32 @@ public class TemplateGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        FileInputStream is = new FileInputStream("templates/testParsingErrorSimpleTag.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
-        final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-        template.getBody().getValidationMessages().add(
-                new TemplateValidationMessage(ValidationMessageLevel.WARNING, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                template);
-        generator.generate();
+        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
+                queryEnvironment)) {
+            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            template.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
+                    "XXXXXXXXXXXXXXXXXXXXXXXX", location));
+            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                    template);
+            generator.generate();
+            template.close();
+        }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
-        FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
-        OPCPackage resOPackage = OPCPackage.open(resIs);
-        XWPFDocument resDocument = new XWPFDocument(resOPackage);
+        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
-        final XWPFRun messageRun = M2DocTestUtils.getRunContaining(resDocument, "XXXXXXXXXXXXXXXXXXXXXXXX");
+            final XWPFRun messageRun = M2DocTestUtils.getRunContaining(resDocument, "XXXXXXXXXXXXXXXXXXXXXXXX");
 
-        assertNotNull(messageRun);
-        assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
-        assertEquals("FFFF00", messageRun.getColor());
+            assertNotNull(messageRun);
+            assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
+            assertEquals("FFFF00", messageRun.getColor());
+
+            resIs.close();
+            resOPackage.close();
+            resDocument.close();
+        }
     }
 
     /**
@@ -131,28 +139,32 @@ public class TemplateGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        FileInputStream is = new FileInputStream("templates/testParsingErrorSimpleTag.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
-        final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-        template.getBody().getValidationMessages()
-                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                template);
-        generator.generate();
+        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
+                queryEnvironment)) {
+            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            template.getBody().getValidationMessages().add(
+                    new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
+            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                    template);
+            generator.generate();
+            template.close();
+        }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
-        FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
-        OPCPackage resOPackage = OPCPackage.open(resIs);
-        XWPFDocument resDocument = new XWPFDocument(resOPackage);
+        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
-        final XWPFRun messageRun = M2DocTestUtils.getRunContaining(resDocument, "XXXXXXXXXXXXXXXXXXXXXXXX");
+            final XWPFRun messageRun = M2DocTestUtils.getRunContaining(resDocument, "XXXXXXXXXXXXXXXXXXXXXXXX");
 
-        assertNotNull(messageRun);
-        assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
-        assertEquals("FF0000", messageRun.getColor());
+            assertNotNull(messageRun);
+            assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
+            assertEquals("FF0000", messageRun.getColor());
+
+            resIs.close();
+            resOPackage.close();
+            resDocument.close();
+        }
     }
 
     /**
@@ -168,58 +180,62 @@ public class TemplateGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        FileInputStream is = new FileInputStream("templates/testParsingErrorSimpleTag.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"));
-        final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-        template.getBody().getValidationMessages()
-                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "AAAA", location));
-        template.getBody().getValidationMessages()
-                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "BBBB", location));
-        template.getBody().getValidationMessages()
-                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "CCCC", location));
-        template.getBody().getValidationMessages()
-                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "DDDD", location));
-        TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                template);
-        generator.generate();
+        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
+                queryEnvironment)) {
+            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            template.getBody().getValidationMessages()
+                    .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "AAAA", location));
+            template.getBody().getValidationMessages()
+                    .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "BBBB", location));
+            template.getBody().getValidationMessages()
+                    .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "CCCC", location));
+            template.getBody().getValidationMessages()
+                    .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "DDDD", location));
+            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
+                    template);
+            generator.generate();
+            template.close();
+        }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
-        FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
-        OPCPackage resOPackage = OPCPackage.open(resIs);
-        XWPFDocument resDocument = new XWPFDocument(resOPackage);
+        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+                OPCPackage resOPackage = OPCPackage.open(resIs);
+                XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
-        final XWPFRun messageARun = M2DocTestUtils.getRunContaining(resDocument, "AAAA");
-        final XWPFRun messageBRun = M2DocTestUtils.getRunContaining(resDocument, "BBBB");
-        final XWPFRun messageCRun = M2DocTestUtils.getRunContaining(resDocument, "CCCC");
-        final XWPFRun messageDRun = M2DocTestUtils.getRunContaining(resDocument, "DDDD");
+            final XWPFRun messageARun = M2DocTestUtils.getRunContaining(resDocument, "AAAA");
+            final XWPFRun messageBRun = M2DocTestUtils.getRunContaining(resDocument, "BBBB");
+            final XWPFRun messageCRun = M2DocTestUtils.getRunContaining(resDocument, "CCCC");
+            final XWPFRun messageDRun = M2DocTestUtils.getRunContaining(resDocument, "DDDD");
 
-        assertNotNull(messageARun);
-        assertEquals("AAAA", messageARun.text());
-        assertEquals("FF0000", messageARun.getColor());
+            assertNotNull(messageARun);
+            assertEquals("AAAA", messageARun.text());
+            assertEquals("FF0000", messageARun.getColor());
 
-        assertNotNull(messageBRun);
-        assertEquals("BBBB", messageBRun.text());
-        assertEquals("FF0000", messageBRun.getColor());
+            assertNotNull(messageBRun);
+            assertEquals("BBBB", messageBRun.text());
+            assertEquals("FF0000", messageBRun.getColor());
 
-        assertNotNull(messageCRun);
-        assertEquals("CCCC", messageCRun.text());
-        assertEquals("FF0000", messageCRun.getColor());
+            assertNotNull(messageCRun);
+            assertEquals("CCCC", messageCRun.text());
+            assertEquals("FF0000", messageCRun.getColor());
 
-        assertNotNull(messageDRun);
-        assertEquals("DDDD", messageDRun.text());
-        assertEquals("FF0000", messageDRun.getColor());
+            assertNotNull(messageDRun);
+            assertEquals("DDDD", messageDRun.text());
+            assertEquals("FF0000", messageDRun.getColor());
 
-        final int indexA = ((XWPFParagraph) messageARun.getParent()).getRuns().indexOf(messageARun);
-        final int indexB = ((XWPFParagraph) messageBRun.getParent()).getRuns().indexOf(messageBRun);
-        final int indexC = ((XWPFParagraph) messageCRun.getParent()).getRuns().indexOf(messageCRun);
-        final int indexD = ((XWPFParagraph) messageDRun.getParent()).getRuns().indexOf(messageDRun);
+            final int indexA = ((XWPFParagraph) messageARun.getParent()).getRuns().indexOf(messageARun);
+            final int indexB = ((XWPFParagraph) messageBRun.getParent()).getRuns().indexOf(messageBRun);
+            final int indexC = ((XWPFParagraph) messageCRun.getParent()).getRuns().indexOf(messageCRun);
+            final int indexD = ((XWPFParagraph) messageDRun.getParent()).getRuns().indexOf(messageDRun);
 
-        assertTrue(indexA < indexB);
-        assertTrue(indexB < indexC);
-        assertTrue(indexC < indexD);
+            assertTrue(indexA < indexB);
+            assertTrue(indexB < indexC);
+            assertTrue(indexC < indexD);
+
+            resIs.close();
+            resOPackage.close();
+            resDocument.close();
+        }
     }
 
 }

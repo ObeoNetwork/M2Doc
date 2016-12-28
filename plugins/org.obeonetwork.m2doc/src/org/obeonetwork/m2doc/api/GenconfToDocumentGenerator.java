@@ -127,26 +127,28 @@ public class GenconfToDocumentGenerator {
         Map<String, Object> definitions = configurationServices.createDefinitions(generation);
 
         // create generated file
-        DocumentTemplate template = POIServices.getInstance().parseTemplate(templateFile, queryEnvironment);
+        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment)) {
 
-        // validate template
-        boolean inError = validate(generatedFile, template, generation);
+            // validate template
+            boolean inError = validate(generatedFile, template, generation);
 
-        // launch generation
-        DocumentGenerator generator = new DocumentGenerator(templateFile, generatedFile, template, definitions,
-                queryEnvironment, generation);
-        generator.generate();
+            // launch generation
+            DocumentGenerator generator = new DocumentGenerator(templateFile, generatedFile, template, definitions,
+                    queryEnvironment, generation);
+            generator.generate();
 
-        List<URI> generatedFiles = Lists.newArrayList(generatedFile);
-        if (inError) {
-            URI validationFile = getValidationLogFile(generatedFile);
-            generatedFiles.add(validationFile);
+            List<URI> generatedFiles = Lists.newArrayList(generatedFile);
+            if (inError) {
+                URI validationFile = getValidationLogFile(generatedFile);
+                generatedFiles.add(validationFile);
+            }
+
+            // post generation
+            generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template, generator));
+            template.close();
+
+            return generatedFiles;
         }
-
-        // post generation
-        generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template, generator));
-
-        return generatedFiles;
     }
 
     /**
@@ -298,6 +300,8 @@ public class GenconfToDocumentGenerator {
      */
     public boolean validate(Generation generation)
             throws IOException, DocumentParserException, DocumentGenerationException {
+        final boolean res;
+
         // get the template path and parses it.
         String templateFilePath = generation.getTemplateFileName();
         if (templateFilePath == null) {
@@ -315,13 +319,18 @@ public class GenconfToDocumentGenerator {
         IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
 
         // parse template
-        DocumentTemplate template = POIServices.getInstance().parseTemplate(templateFile, queryEnvironment);
+        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment)) {
 
-        // validate template
-        if (template != null) {
-            return validate(templateFile, template, generation);
+            // validate template
+            if (template != null) {
+                res = validate(templateFile, template, generation);
+            } else {
+                res = true;
+            }
+            template.close();
         }
-        return true;
+
+        return res;
     }
 
     /**

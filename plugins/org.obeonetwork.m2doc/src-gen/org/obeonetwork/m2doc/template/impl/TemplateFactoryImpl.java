@@ -10,8 +10,10 @@
  */
 package org.obeonetwork.m2doc.template.impl;
 
+import java.io.InputStream;
 import java.util.Map;
 
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -123,6 +125,10 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createQueryBehaviorFromString(eDataType, initialValue);
             case TemplatePackage.POSITION:
                 return createPOSITIONFromString(eDataType, initialValue);
+            case TemplatePackage.INPUT_STREAM:
+                return createInputStreamFromString(eDataType, initialValue);
+            case TemplatePackage.OPC_PACKAGE:
+                return createOPCPackageFromString(eDataType, initialValue);
             case TemplatePackage.DOCUMENT:
                 return createDocumentFromString(eDataType, initialValue);
             case TemplatePackage.WTABLE:
@@ -158,6 +164,10 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return convertQueryBehaviorToString(eDataType, instanceValue);
             case TemplatePackage.POSITION:
                 return convertPOSITIONToString(eDataType, instanceValue);
+            case TemplatePackage.INPUT_STREAM:
+                return convertInputStreamToString(eDataType, instanceValue);
+            case TemplatePackage.OPC_PACKAGE:
+                return convertOPCPackageToString(eDataType, instanceValue);
             case TemplatePackage.DOCUMENT:
                 return convertDocumentToString(eDataType, instanceValue);
             case TemplatePackage.WTABLE:
@@ -409,6 +419,42 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      */
     public String convertPOSITIONToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public InputStream createInputStreamFromString(EDataType eDataType, String initialValue) {
+        return (InputStream)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertInputStreamToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public OPCPackage createOPCPackageFromString(EDataType eDataType, String initialValue) {
+        return (OPCPackage)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertOPCPackageToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
     }
 
     /**

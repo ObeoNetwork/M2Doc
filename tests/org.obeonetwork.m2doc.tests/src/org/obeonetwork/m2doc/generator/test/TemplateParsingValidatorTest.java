@@ -48,8 +48,10 @@ public class TemplateParsingValidatorTest {
      */
     private void createDestinationDocument(XWPFDocument theDocument, String inputDocumentFilePath)
             throws IOException, InvalidFormatException {
-        FileOutputStream os = new FileOutputStream(inputDocumentFilePath);
-        theDocument.write(os);
+        try (final FileOutputStream os = new FileOutputStream(inputDocumentFilePath)) {
+            theDocument.write(os);
+            os.close();
+        }
     }
 
     /**

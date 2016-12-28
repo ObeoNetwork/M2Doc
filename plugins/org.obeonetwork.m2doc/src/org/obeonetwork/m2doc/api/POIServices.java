@@ -18,13 +18,9 @@ import java.io.OutputStream;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
-import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
  * POI services.
@@ -52,27 +48,6 @@ public final class POIServices {
      */
     public static POIServices getInstance() {
         return eINSTANCE;
-    }
-
-    /**
-     * Parse template file.
-     * 
-     * @param templateFile
-     *            IFile
-     * @param queryEnvironment
-     *            IQueryEnvironment
-     * @return DocumentTemplate
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    public DocumentTemplate parseTemplate(URI templateFile, IQueryEnvironment queryEnvironment)
-            throws IOException, DocumentParserException {
-        XWPFDocument document = getXWPFDocument(templateFile);
-        DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-        DocumentTemplate template = parser.parseDocument(templateFile);
-        return template;
     }
 
     /**

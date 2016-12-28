@@ -18,6 +18,8 @@
       <genEnumLiterals ecoreEnumLiteral="Template.ecore#//POSITION/ABOVE"/>
       <genEnumLiterals ecoreEnumLiteral="Template.ecore#//POSITION/BELOW"/>
     </genEnums>
+    <genDataTypes ecoreDataType="Template.ecore#//InputStream"/>
+    <genDataTypes ecoreDataType="Template.ecore#//OPCPackage"/>
     <genDataTypes ecoreDataType="Template.ecore#//Document"/>
     <genDataTypes ecoreDataType="Template.ecore#//WTable"/>
     <genDataTypes ecoreDataType="Template.ecore#//Run"/>
@@ -94,6 +96,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/headers"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/footers"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/inputStream"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/opcPackage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/document"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//OptionValueMap">

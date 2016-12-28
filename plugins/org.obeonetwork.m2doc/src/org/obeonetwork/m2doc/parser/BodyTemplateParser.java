@@ -182,7 +182,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
      * @param queryEnvironment
      *            The {@link IQueryEnvironment}
      */
-    BodyTemplateParser(IBody inputDocument, IQueryBuilderEngine queryParser, IQueryEnvironment queryEnvironment) {
+    public BodyTemplateParser(IBody inputDocument, IQueryBuilderEngine queryParser,
+            IQueryEnvironment queryEnvironment) {
         super(inputDocument, queryParser, queryEnvironment);
     }
 

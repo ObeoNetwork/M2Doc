@@ -37,11 +37,11 @@ import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.parser.DocumentTemplateParser;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.test.M2DocTestUtils;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
 import static org.junit.Assert.assertEquals;
@@ -299,19 +299,14 @@ public class DocumentGeneratorTest {
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (FileInputStream is = new FileInputStream("templates/testUserDoc1.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc1.docx"));
+        try (final DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testUserDoc1.docx"),
+                queryEnvironment)) {
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
                     URI.createFileURI("results/generated/testUserDoc1.docx"), template, definitions, queryEnvironment,
                     null);
             generator.generate();
-            document.close();
-            oPackage.close();
-            is.close();
+            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -350,18 +345,13 @@ public class DocumentGeneratorTest {
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (FileInputStream is = new FileInputStream("templates/testUserDoc9.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc9.docx"));
+        try (final DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testUserDoc9.docx"),
+                queryEnvironment)) {
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            document.close();
-            oPackage.close();
-            is.close();
+            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -413,18 +403,13 @@ public class DocumentGeneratorTest {
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (FileInputStream is = new FileInputStream("templates/testUserDoc1.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc1.docx"));
+        try (final DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testUserDoc1.docx"),
+                queryEnvironment)) {
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            document.close();
-            oPackage.close();
-            is.close();
+            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -467,19 +452,13 @@ public class DocumentGeneratorTest {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
-        try (FileInputStream is = new FileInputStream("templates/testUserDoc9.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc9.docx"));
+        try (final DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testUserDoc9.docx"),
+                queryEnvironment)) {
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            document.close();
-            oPackage.close();
-            is.close();
+            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -530,19 +509,13 @@ public class DocumentGeneratorTest {
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (FileInputStream is = new FileInputStream("templates/testUserDoc10.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
+        try (final DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testUserDoc10.docx"),
+                queryEnvironment)) {
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            document.close();
-            oPackage.close();
-            is.close();
+            template.close();
         }
         try (FileInputStream resIs = new FileInputStream("results/generated/testUserDoc10.docx");
                 OPCPackage resOPackage = OPCPackage.open(resIs);
@@ -587,19 +560,13 @@ public class DocumentGeneratorTest {
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (FileInputStream is = new FileInputStream("templates/testUserDoc10.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
+        try (final DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testUserDoc10.docx"),
+                queryEnvironment)) {
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            document.close();
-            oPackage.close();
-            is.close();
+            template.close();
         }
         try (FileInputStream resIs = new FileInputStream(resultPath);
                 OPCPackage resOPackage = OPCPackage.open(resIs);
@@ -645,18 +612,13 @@ public class DocumentGeneratorTest {
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (FileInputStream is = new FileInputStream("templates/testUserDoc10.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-            DocumentTemplateParser parser = new DocumentTemplateParser(document, queryEnvironment);
-            DocumentTemplate template = parser.parseDocument(URI.createFileURI("templates/testUserDoc10.docx"));
+        try (final DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testUserDoc10.docx"),
+                queryEnvironment)) {
             Map<String, Object> definitions = new HashMap<>();
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            document.close();
-            oPackage.close();
-            is.close();
+            template.close();
         }
         try (FileInputStream resIs = new FileInputStream(resultPath);
                 OPCPackage resOPackage = OPCPackage.open(resIs);

@@ -1633,13 +1633,31 @@ public interface TemplatePackage extends EPackage {
     int DOCUMENT_TEMPLATE__BODY = 2;
 
     /**
+     * The feature id for the '<em><b>Input Stream</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__INPUT_STREAM = 3;
+
+    /**
+     * The feature id for the '<em><b>Opc Package</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__OPC_PACKAGE = 4;
+
+    /**
      * The feature id for the '<em><b>Document</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DOCUMENT_TEMPLATE__DOCUMENT = 3;
+    int DOCUMENT_TEMPLATE__DOCUMENT = 5;
 
     /**
      * The number of structural features of the '<em>Document Template</em>' class.
@@ -1648,7 +1666,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_TEMPLATE_FEATURE_COUNT = 4;
+    int DOCUMENT_TEMPLATE_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Document Template</em>' class.
@@ -1972,6 +1990,26 @@ public interface TemplatePackage extends EPackage {
     int POSITION = 24;
 
     /**
+     * The meta object id for the '<em>Input Stream</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.io.InputStream
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getInputStream()
+     * @generated
+     */
+    int INPUT_STREAM = 25;
+
+    /**
+     * The meta object id for the '<em>OPC Package</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.apache.poi.openxml4j.opc.OPCPackage
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOPCPackage()
+     * @generated
+     */
+    int OPC_PACKAGE = 26;
+
+    /**
      * The meta object id for the '<em>Document</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1979,7 +2017,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 25;
+    int DOCUMENT = 27;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -1989,7 +2027,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-    int WTABLE = 26;
+    int WTABLE = 28;
 
     /**
      * The meta object id for the '<em>Run</em>' data type.
@@ -1999,7 +2037,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-    int RUN = 27;
+    int RUN = 29;
 
     /**
      * The meta object id for the '<em>Ast Result</em>' data type.
@@ -2009,7 +2047,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-    int AST_RESULT = 28;
+    int AST_RESULT = 30;
 
     /**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -2019,7 +2057,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 29;
+    int TEMPLATE_VALIDATION_MESSAGE = 31;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -2029,7 +2067,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-    int WTABLE_ROW = 30;
+    int WTABLE_ROW = 32;
 
     /**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -2039,7 +2077,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-    int WTABLE_CELL = 31;
+    int WTABLE_CELL = 33;
 
     /**
      * The meta object id for the '<em>Provider</em>' data type.
@@ -2049,7 +2087,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
      * @generated
      */
-    int PROVIDER = 32;
+    int PROVIDER = 34;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -2059,7 +2097,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 33;
+    int BODY = 35;
 
 
     /**
@@ -2629,6 +2667,28 @@ public interface TemplatePackage extends EPackage {
     EReference getDocumentTemplate_Body();
 
     /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Input Stream</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_InputStream();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Opc Package</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_OpcPackage();
+
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2852,6 +2912,28 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EEnum getPOSITION();
+
+    /**
+     * Returns the meta object for data type '{@link java.io.InputStream <em>Input Stream</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Input Stream</em>'.
+     * @see java.io.InputStream
+     * @model instanceClass="java.io.InputStream"
+     * @generated
+     */
+    EDataType getInputStream();
+
+    /**
+     * Returns the meta object for data type '{@link org.apache.poi.openxml4j.opc.OPCPackage <em>OPC Package</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>OPC Package</em>'.
+     * @see org.apache.poi.openxml4j.opc.OPCPackage
+     * @model instanceClass="org.apache.poi.openxml4j.opc.OPCPackage"
+     * @generated
+     */
+    EDataType getOPCPackage();
 
     /**
      * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFDocument <em>Document</em>}'.
@@ -3434,6 +3516,22 @@ public interface TemplatePackage extends EPackage {
         EReference DOCUMENT_TEMPLATE__BODY = eINSTANCE.getDocumentTemplate_Body();
 
         /**
+         * The meta object literal for the '<em><b>Input Stream</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__INPUT_STREAM = eINSTANCE.getDocumentTemplate_InputStream();
+
+        /**
+         * The meta object literal for the '<em><b>Opc Package</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__OPC_PACKAGE = eINSTANCE.getDocumentTemplate_OpcPackage();
+
+        /**
          * The meta object literal for the '<em><b>Document</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3616,6 +3714,26 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EEnum POSITION = eINSTANCE.getPOSITION();
+
+        /**
+         * The meta object literal for the '<em>Input Stream</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.io.InputStream
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getInputStream()
+         * @generated
+         */
+        EDataType INPUT_STREAM = eINSTANCE.getInputStream();
+
+        /**
+         * The meta object literal for the '<em>OPC Package</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.apache.poi.openxml4j.opc.OPCPackage
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOPCPackage()
+         * @generated
+         */
+        EDataType OPC_PACKAGE = eINSTANCE.getOPCPackage();
 
         /**
          * The meta object literal for the '<em>Document</em>' data type.

@@ -10,6 +10,9 @@
  */
 package org.obeonetwork.m2doc.template;
 
+import java.io.Closeable;
+import java.io.InputStream;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import org.eclipse.emf.common.util.EList;
@@ -28,14 +31,16 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getHeaders <em>Headers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getFooters <em>Footers</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate()
  * @model
- * @generated
+ * @generated NOT
  */
-public interface DocumentTemplate extends EObject {
+public interface DocumentTemplate extends EObject, Closeable {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -86,7 +91,7 @@ public interface DocumentTemplate extends EObject {
      * @return the value of the '<em>Body</em>' containment reference.
      * @see #setBody(Template)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Body()
-     * @model containment="true"
+     * @model containment="true" required="true"
      * @generated
      */
     Template getBody();
@@ -102,6 +107,58 @@ public interface DocumentTemplate extends EObject {
     void setBody(Template value);
 
     /**
+     * Returns the value of the '<em><b>Input Stream</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Input Stream</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Input Stream</em>' attribute.
+     * @see #setInputStream(InputStream)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_InputStream()
+     * @model dataType="org.obeonetwork.m2doc.template.InputStream" required="true"
+     * @generated
+     */
+    InputStream getInputStream();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Input Stream</em>' attribute.
+     * @see #getInputStream()
+     * @generated
+     */
+    void setInputStream(InputStream value);
+
+    /**
+     * Returns the value of the '<em><b>Opc Package</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Opc Package</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Opc Package</em>' attribute.
+     * @see #setOpcPackage(OPCPackage)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_OpcPackage()
+     * @model dataType="org.obeonetwork.m2doc.template.OPCPackage" required="true"
+     * @generated
+     */
+    OPCPackage getOpcPackage();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Opc Package</em>' attribute.
+     * @see #getOpcPackage()
+     * @generated
+     */
+    void setOpcPackage(OPCPackage value);
+
+    /**
      * Returns the value of the '<em><b>Document</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
@@ -112,7 +169,7 @@ public interface DocumentTemplate extends EObject {
      * @return the value of the '<em>Document</em>' attribute.
      * @see #setDocument(XWPFDocument)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Document()
-     * @model dataType="org.obeonetwork.m2doc.template.Document"
+     * @model dataType="org.obeonetwork.m2doc.template.Document" required="true"
      * @generated
      */
     XWPFDocument getDocument();
