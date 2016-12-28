@@ -252,7 +252,7 @@ public class DocumentGeneratedParserTest {
         UserContent userContent = (UserContent) template.getBody().getStatements().get(1);
         assertTrue(userContent.getClosingRuns().isEmpty());
         assertEquals(ValidationMessageLevel.ERROR, userContent.getBody().getValidationMessages().get(0).getLevel());
-        assertEquals("Unexpected tag EOF at this location",
+        assertEquals("Unexpected tag EOF at this location missing [ENDUSERCONTENT]",
                 userContent.getBody().getValidationMessages().get(0).getMessage());
         XWPFRun lastRunInContent = userContent.getBody().getStatements().get(0).getRuns()
                 .get(userContent.getBody().getStatements().get(0).getRuns().size() - 1);

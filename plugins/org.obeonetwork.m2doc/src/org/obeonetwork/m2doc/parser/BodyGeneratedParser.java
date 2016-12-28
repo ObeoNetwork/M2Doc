@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.parser;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.IBody;
@@ -128,8 +129,10 @@ public class BodyGeneratedParser extends BodyAbstractParser {
                     final XWPFParagraph lastParagraph = document.getParagraphs()
                             .get(document.getParagraphs().size() - 1);
                     final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            message(ParsingErrorMessage.UNEXPECTEDTAG, type), lastRun));
+                    res.getValidationMessages()
+                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                    message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type, Arrays.toString(endTypes)),
+                                    lastRun));
                     break endBlock;
                 case STATIC:
                     res.getStatements().add(parseStaticFragment());

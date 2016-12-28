@@ -19,6 +19,7 @@ import com.google.common.collect.Sets;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -256,7 +257,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
     protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
         TokenType type = getNextTokenType();
-        List<TokenType> endTypeList = Lists.newArrayList(endTypes);
+        Set<TokenType> endTypeList = Sets.newHashSet(endTypes);
         endBlock: while (!endTypeList.contains(type)) {
             switch (type) {
                 case AQL:
@@ -293,8 +294,10 @@ public class BodyTemplateParser extends BodyAbstractParser {
                     final XWPFParagraph lastParagraph = document.getParagraphs()
                             .get(document.getParagraphs().size() - 1);
                     final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            message(ParsingErrorMessage.UNEXPECTEDTAG, type), lastRun));
+                    res.getValidationMessages()
+                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                    message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type, Arrays.toString(endTypes)),
+                                    lastRun));
                     break endBlock;
                 case LET:
                     res.getStatements().add(parseLet());

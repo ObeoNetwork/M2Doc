@@ -47,7 +47,7 @@ import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
 /**
- * Util class for M2Doc.
+ * Utility class for M2Doc.
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */

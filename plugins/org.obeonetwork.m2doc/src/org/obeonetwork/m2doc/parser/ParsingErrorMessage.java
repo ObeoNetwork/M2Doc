@@ -26,6 +26,10 @@ public enum ParsingErrorMessage {
      */
     UNEXPECTEDTAG("Unexpected tag {0} at this location"), MALFORMEDTAG("Tag {0} is malformed"),
     /**
+     * Error message issued when unexpected tag is encountered.
+     */
+    UNEXPECTEDTAGMISSING("Unexpected tag {0} at this location missing {1}"),
+    /**
      * Error message issued when a invalid AQL expression is encountered.
      */
     INVALIDEXPR("Expression \"{0}\" is invalid: {1}"),

@@ -284,7 +284,7 @@ public class TemplateParsingValidatorTest {
         assertEquals(" t", document.getParagraphs().get(0).getRuns().get(19).getText(0));
         assertEquals("ext", document.getParagraphs().get(0).getRuns().get(20).getText(0));
         assertEquals("<---", document.getParagraphs().get(0).getRuns().get(22).getText(0));
-        assertEquals("Unexpected tag EOF at this location",
+        assertEquals("Unexpected tag EOF at this location missing [ELSEIF, ELSE, ENDIF]",
                 document.getParagraphs().get(0).getRuns().get(23).getText(0));
     }
 
