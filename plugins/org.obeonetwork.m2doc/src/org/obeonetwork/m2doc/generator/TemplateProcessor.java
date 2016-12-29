@@ -156,6 +156,11 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     private List<String> userDocIds = new ArrayList<>();
 
     /**
+     * The {@link IQueryEvaluationEngine}.
+     */
+    private final IQueryEvaluationEngine evaluator;
+
+    /**
      * Create a new {@link TemplateProcessor} instance given some definitions
      * and a query environment.
      * 
@@ -206,6 +211,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.queryEnvironment = queryEnvironment;
+        this.evaluator = new QueryEvaluationEngine(queryEnvironment);
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
     }
@@ -235,6 +241,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.queryEnvironment = queryEnvironment;
+        this.evaluator = new QueryEvaluationEngine(queryEnvironment);
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
     }
@@ -398,7 +405,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (query.getQuery() == null) {
             insertQuerySyntaxMessages(query);
         } else {
-            IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), definitions.getCurrentDefinitions());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
@@ -417,7 +423,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (repetition.getQuery() == null) {
             insertQuerySyntaxMessages(repetition);
         } else {
-            final IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(),
                     definitions.getCurrentDefinitions());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
@@ -446,7 +451,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (userDoc.getId() == null) {
             insertQuerySyntaxMessages(userDoc);
         } else {
-            final IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), definitions.getCurrentDefinitions());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(userDoc, queryResult.getDiagnostic());
@@ -616,7 +620,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (conditional.getCondition() == null) {
             insertQuerySyntaxMessages(conditional);
         } else {
-            EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(conditional.getCondition(),
+            final EvaluationResult result = evaluator.eval(conditional.getCondition(),
                     definitions.getCurrentDefinitions());
             if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(conditional, result.getDiagnostic());
@@ -891,7 +895,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (bookmark.getName() == null) {
             insertQuerySyntaxMessages(bookmark);
         } else {
-            IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult result = evaluator.eval(bookmark.getName(), definitions.getCurrentDefinitions());
             if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(bookmark, result.getDiagnostic());
@@ -947,7 +950,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (link.getName() == null || link.getText() == null) {
             insertQuerySyntaxMessages(link);
         } else {
-            IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult nameResult = evaluator.eval(link.getName(), definitions.getCurrentDefinitions());
             if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(link, nameResult.getDiagnostic());
@@ -1044,7 +1046,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             throw new IllegalArgumentException(
                     QUERY_SYNTAX_ERROR_MESSAGE + templateProvider.getValidationMessages().get(0).getMessage());
         } else {
-            EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval((AstResult) aqlEntry.getValue(),
+            EvaluationResult result = evaluator.eval((AstResult) aqlEntry.getValue(),
                     definitions.getCurrentDefinitions());
             if (result == null) {
                 throw new IllegalArgumentException(QUERY_EVALERROR_MESSAGE);
