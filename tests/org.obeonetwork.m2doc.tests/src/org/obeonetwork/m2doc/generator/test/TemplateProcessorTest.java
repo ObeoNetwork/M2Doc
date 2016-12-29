@@ -767,7 +767,7 @@ public class TemplateProcessorTest {
                 env, destinationDoc, rootObject);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
-        assertEquals("A problem occured while creating image from an diagram provider : A problem occured.",
+        assertEquals("A problem occured while creating image from an diagram provider: A problem occured.",
                 destinationDoc.getParagraphs().get(0).getText());
     }
 
@@ -834,8 +834,8 @@ public class TemplateProcessorTest {
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
         assertEquals(
-                "Syntax error in AQL expression.:Expression \"wrong.->\" is invalid: missing feature access or service call",
-                destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
+                "Syntax error in AQL expression: Expression \"wrong.->\" is invalid: missing feature access or service call",
+                destinationDoc.getParagraphs().get(0).getRuns().get(1).getText(0));
     }
 
     /**
@@ -1087,13 +1087,14 @@ public class TemplateProcessorTest {
         processor.doSwitch(template);
         // POIServices.getInstance().saveFile(destinationDoc, "results/generated/testUserDoc4Resultat.docx");
         // CHECKSTYLE:OFF
-        assertEquals(4, destinationDoc.getParagraphs().size());
+        assertEquals(5, destinationDoc.getParagraphs().size());
         assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getFldSimpleList().size());
         XWPFParagraph paragraph1 = destinationDoc.getParagraphs().get(1);
         assertEquals(1, paragraph1.getRuns().get(0).getCTR().getFldCharList().size());
         assertEquals("m:userdoc", fieldUtils.lookAheadTag(paragraph1.getRuns()));
         int paragraph1RunNbr = paragraph1.getRuns().size();
-        assertEquals("Syntax error in AQL expression.", paragraph1.getRuns().get(paragraph1RunNbr - 1).getText(0));
+        assertEquals("Syntax error in AQL expression: Expression \"\" is invalid: null or empty string.",
+                paragraph1.getRuns().get(paragraph1RunNbr - 1).getText(0));
         // CHECKSTYLE:ON
     }
 

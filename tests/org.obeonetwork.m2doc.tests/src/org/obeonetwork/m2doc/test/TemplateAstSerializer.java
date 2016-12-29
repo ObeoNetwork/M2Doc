@@ -360,7 +360,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
             builder.append(String.format("[query: %s | %s]", querySerializer.serialize(query.getQuery().getAst()),
                     query.getBehavior()));
         } else {
-            builder.append(String.format("[query: %s | %s]", EXPRESSION_ERROR, query.getBehavior().values()));
+            builder.append(String.format("[query: %s | %s]", EXPRESSION_ERROR, query.getBehavior().getName()));
         }
 
         return null;

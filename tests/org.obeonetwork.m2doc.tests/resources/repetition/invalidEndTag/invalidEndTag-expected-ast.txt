@@ -1,0 +1,11 @@
+template null
+  Invalid end tag : 
+  
+  for v | .aqlFeatureAccess(self, 'eClassifiers') do
+    name = 
+    [query: .aqlFeatureAccess(v, 'name') | TEXT]
+    ,
+    [query: enfor | TEXT]
+    End of demonstration.
+  endfor
+  

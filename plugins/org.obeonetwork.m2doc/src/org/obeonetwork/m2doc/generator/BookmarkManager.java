@@ -135,10 +135,10 @@ public class BookmarkManager {
             }
         } else if (bookmarks.containsKey(name)) {
             M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
-                    "Can't can't end already closed bookmark " + name);
+                    "Can't end already closed bookmark " + name);
         } else {
             M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
-                    "Can't can't end not existing bookmark " + name);
+                    "Can't end not existing bookmark " + name);
         }
     }
 

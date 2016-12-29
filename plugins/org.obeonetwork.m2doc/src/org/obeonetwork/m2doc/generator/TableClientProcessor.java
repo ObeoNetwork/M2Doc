@@ -26,6 +26,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider.MCell;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
@@ -33,6 +34,7 @@ import org.obeonetwork.m2doc.provider.AbstractTableProvider.MRow;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider.MTable;
 import org.obeonetwork.m2doc.provider.ProviderException;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -104,7 +106,7 @@ public final class TableClientProcessor {
     }
 
     /**
-     * Create a table justa after a given run.
+     * Create a table just after a given run.
      * 
      * @param tableRun
      *            The run
@@ -122,8 +124,8 @@ public final class TableClientProcessor {
             XWPFTableCell tcell = (XWPFTableCell) body;
             table = createTableInCell(tableRun, first, mtable, tcell);
         } else {
-            TemplateProcessor.setErrorMessageToRun("m:table is not supported in headers, footers, or footnotes.",
-                    tableRun);
+            M2DocUtils.appendMessageRun((XWPFParagraph) tableRun.getParent(), ValidationMessageLevel.ERROR,
+                    "m:table is not supported in headers, footers, or footnotes.");
         }
         return table;
     }

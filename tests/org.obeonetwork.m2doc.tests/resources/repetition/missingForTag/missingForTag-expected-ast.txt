@@ -1,0 +1,3 @@
+template null
+  Missing start tag of for block :A paragraph
+  End of demonstration.

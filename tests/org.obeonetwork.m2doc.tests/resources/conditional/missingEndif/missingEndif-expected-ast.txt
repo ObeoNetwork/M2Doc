@@ -1,0 +1,7 @@
+template null
+  Basic if demonstration :
+  
+  if .equals(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+    The THEN paragraph.End of demonstration.
+  endif
+  

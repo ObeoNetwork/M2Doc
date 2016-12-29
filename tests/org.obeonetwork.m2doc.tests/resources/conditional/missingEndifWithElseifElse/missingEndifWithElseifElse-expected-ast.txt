@@ -1,0 +1,21 @@
+template null
+  Basic if demonstration :
+  
+  if .differs(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+    The THEN paragraph.
+  else
+    
+    if .differs(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+      The ELSEIF paragraph.
+    else
+      
+      if .equals(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+        The ELSEIF2 paragraph.
+      else
+        The ELSE paragraph.End of demonstration.
+      endif
+      
+    endif
+    
+  endif
+  

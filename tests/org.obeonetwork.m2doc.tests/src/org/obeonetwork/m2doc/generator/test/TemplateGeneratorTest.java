@@ -118,7 +118,7 @@ public class TemplateGeneratorTest {
 
             assertNotNull(messageRun);
             assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
-            assertEquals("FFFF00", messageRun.getColor());
+            assertEquals("FFA500", messageRun.getColor());
 
             resIs.close();
             resOPackage.close();

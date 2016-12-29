@@ -28,6 +28,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -61,7 +62,7 @@ public final class M2DocUtils {
     /**
      * constant defining the color of warning messages.
      */
-    public static final String WARNING_COLOR = "FFFF00";
+    public static final String WARNING_COLOR = "FFA500";
 
     /**
      * constant defining the color of error messages.
@@ -133,6 +134,38 @@ public final class M2DocUtils {
         setRunMessage(res, level, message);
 
         return res;
+    }
+
+    /**
+     * Appends the given {@link Diagnostic} to the given {@link XWPFParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param diagnostic
+     *            the {@link Diagnostic}
+     */
+    public static void appendDiagnosticMessage(XWPFParagraph paragraph, Diagnostic diagnostic) {
+        for (Diagnostic child : diagnostic.getChildren()) {
+            switch (child.getSeverity()) {
+                case Diagnostic.INFO:
+                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage());
+                    break;
+                case Diagnostic.WARNING:
+                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING, child.getMessage());
+                    break;
+                case Diagnostic.ERROR:
+                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, child.getMessage());
+                    break;
+
+                default:
+                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage());
+                    break;
+            }
+            paragraph.getRuns().get(paragraph.getRuns().size() - 1).addBreak();
+            if (!child.getChildren().isEmpty()) {
+                appendDiagnosticMessage(paragraph, child);
+            }
+        }
     }
 
     /**

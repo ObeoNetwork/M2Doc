@@ -75,7 +75,7 @@ public class TemplateRuntimeErrorTests {
         // scan the destination document
         assertEquals(2, destinationDoc.getParagraphs().size());
         System.out.println(destinationDoc.getParagraphs().get(0).getText());
-        assertEquals("Template de test pour les balises de référence à une variable : Couldn't find the 'x' variable",
+        assertEquals("Template de test pour les balises de référence à une variable : Couldn't find the 'x' variable\n",
                 destinationDoc.getParagraphs().get(0).getText());
         XWPFRun run = destinationDoc.getParagraphs().get(0).getRuns()
                 .get(destinationDoc.getParagraphs().get(0).getRuns().size() - 1);
@@ -111,7 +111,8 @@ public class TemplateRuntimeErrorTests {
                 lastDestinationUserContentManager, env, destinationDoc, null);
         processor.doSwitch(template);
         assertEquals(1, destinationDoc.getParagraphs().size());
-        assertEquals("Syntax error in AQL expression.", destinationDoc.getParagraphs().get(0).getText());
+        assertEquals("Syntax error in AQL expression: Expression \"<expr>\" is invalid: missing expression",
+                destinationDoc.getParagraphs().get(0).getText());
     }
 
 }

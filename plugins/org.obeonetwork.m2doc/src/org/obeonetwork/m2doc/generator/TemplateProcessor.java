@@ -92,10 +92,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
  */
 @SuppressWarnings("restriction")
 public class TemplateProcessor extends TemplateSwitch<IConstruct> {
-    /**
-     * Colon.
-     */
-    private static final String COLON = ":";
+
     /**
      * Error message when AQL query could not be evaluated.
      */
@@ -103,7 +100,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     /**
      * Error message when an AQL query contains syntax errors.
      */
-    private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression.";
+    private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression: ";
 
     /**
      * The {@link BookmarkManager}.
@@ -240,40 +237,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         this.queryEnvironment = queryEnvironment;
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
-    }
-
-    /**
-     * returns the diagnostic associated to the {@link Diagnostic} instance and its children.
-     * 
-     * @param diagnostic
-     *            the {@link Diagnostic} in which searching
-     * @param builder
-     *            a string builder that aggregate the messages
-     * @return the diagnostic status of the specified diagnostic tree.
-     */
-    private int getDiagnostic(Diagnostic diagnostic, StringBuilder builder) {
-        String message;
-        int code;
-        if (diagnostic.getCode() == Diagnostic.ERROR) {
-            message = diagnostic.getMessage();
-            code = Diagnostic.ERROR;
-        } else {
-            message = diagnostic.getMessage();
-            code = diagnostic.getCode();
-            for (Diagnostic child : diagnostic.getChildren()) {
-                int childrenCode = getDiagnostic(child, builder);
-                if (childrenCode > code) {
-                    code = childrenCode;
-                }
-            }
-        }
-        if (message != null) {
-            if (builder.length() > 0) {
-                builder.append('\n');
-            }
-            builder.append(message);
-        }
-        return code;
     }
 
     @Override
@@ -431,144 +394,117 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseQuery(Query object) {
-        // first evaluate the query.
-        String strResult;
-        EvaluationResult result = null;
-        if (object.getQuery() == null) {
-            strResult = QUERY_SYNTAX_ERROR_MESSAGE + COLON + object.getValidationMessages().get(0).getMessage();
+    public IConstruct caseQuery(Query query) {
+        if (query.getQuery() == null) {
+            insertQuerySyntaxMessages(query);
         } else {
             IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
-            result = evaluator.eval(object.getQuery(), definitions.getCurrentDefinitions());
-            if (result == null) {
-                strResult = QUERY_EVALERROR_MESSAGE;
-            } else if (result.getResult() == null) {
-                StringBuilder builder = new StringBuilder();
-                getDiagnostic(result.getDiagnostic(), builder);
-                strResult = builder.toString();
+            final EvaluationResult queryResult = evaluator.eval(query.getQuery(), definitions.getCurrentDefinitions());
+            if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
+            } else if (queryResult.getResult() == null) {
+                insertFieldRunReplacement(query.getStyleRun(), "");
             } else {
-                strResult = result.getResult().toString();
+                insertFieldRunReplacement(query.getStyleRun(), queryResult.getResult().toString());
             }
         }
-        XWPFRun run = insertFieldRunReplacement(object.getStyleRun(), strResult);
-        if (object.getQuery() == null || result == null || result.getResult() == null) {
-            run.setBold(true);
-            run.setColor(M2DocUtils.ERROR_COLOR);
-        }
-        return object;
+
+        return query;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public IConstruct caseRepetition(Repetition object) {
-        // first evaluate the query
-        boolean validQuery = object.getQuery() != null;
-        EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getQuery(),
-                definitions.getCurrentDefinitions());
-        if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
-            // insert the tag runs as is.
-            for (XWPFRun tagRun : object.getRuns()) {
-                insertRun(tagRun);
-            }
-            // insert the error message.
-            XWPFRun run = currentGeneratedParagraph.createRun();
-            if (!validQuery) {
-                run.setText(QUERY_SYNTAX_ERROR_MESSAGE);
-            } else if (result != null) {
-                run.setText(result.getDiagnostic().getMessage());
-            } else {
-                run.setText(QUERY_EVALERROR_MESSAGE);
-            }
-            if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
-                run.setBold(true);
-                run.setColor(M2DocUtils.ERROR_COLOR);
-            }
-
-            for (XWPFRun tagRun : object.getClosingRuns()) {
-                insertRun(tagRun);
-            }
+    public IConstruct caseRepetition(Repetition repetition) {
+        if (repetition.getQuery() == null) {
+            insertQuerySyntaxMessages(repetition);
         } else {
-            List<Object> iteration = new ArrayList<>();
-            if (result.getResult() instanceof Collection) {
-                iteration.addAll((Collection<? extends Object>) result.getResult());
+            final IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
+            final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(),
+                    definitions.getCurrentDefinitions());
+            if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(repetition, queryResult.getDiagnostic());
             } else {
-                iteration.add(result.getResult());
-            }
-            for (Object val : iteration) {
-                this.definitions.setValue(object.getIterationVar(), val);
-                doSwitch(object.getBody());
-                closingRepretition(object);
-            }
-        }
-        return object;
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseUserDoc(org.obeonetwork.m2doc.template.UserDoc)
-     */
-    @Override
-    public IConstruct caseUserDoc(UserDoc object) {
-        // first : evaluate the query
-        boolean validQuery = object.getId() != null;
-        EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(object.getId(),
-                definitions.getCurrentDefinitions());
-        if (!validQuery || result == null || result.getResult() == null
-            || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
-            // insert the tag runs as is.
-            for (XWPFRun tagRun : object.getRuns()) {
-                insertRun(tagRun);
-            }
-            // insert the error message.
-            XWPFRun run = currentGeneratedParagraph.createRun();
-            if (!validQuery) {
-                setErrorMessageToRun(QUERY_SYNTAX_ERROR_MESSAGE, run);
-            } else if (result != null) {
-                setErrorMessageToRun(result.getDiagnostic().getMessage(), run);
-            } else {
-                setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
-            }
-        } else {
-            // compute userdoc id
-            String id = result.getResult().toString();
-
-            // Tag UserContent with evaluated id
-            addStartUserDocField(object, id);
-            // manage user Doc Id Uniqueness
-            manageUserDocIdUniqueness(id, object);
-            // Copy userdoc content
-            UserContent userContent = userContentManager.getUserContent(id);
-            boolean needNewParagraphBeforeEndTag = true;
-            if (userContent == null) {
-                doSwitch(object.getBody());
-                needNewParagraphBeforeEndTag = needNewParagraph(object);
-            } else {
-                UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
-                try {
-                    currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
-                            generatedDocument);
-                    needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
-                    // Affect currentTemplateParagraph after Raw copy
-                    if (object.getClosingRuns().size() != 0) {
-                        currentTemplateParagraph = (XWPFParagraph) object.getClosingRuns()
-                                .get(object.getClosingRuns().size() - 1).getParent();
-                    }
-                } catch (InvalidFormatException e) {
-                    XWPFRun run = currentGeneratedParagraph.createRun();
-                    setErrorMessageToRun("userdoc copy error : " + e.getMessage(), run);
-                } catch (XmlException e) {
-                    XWPFRun run = currentGeneratedParagraph.createRun();
-                    setErrorMessageToRun("userdoc copy error : " + e.getMessage(), run);
+                final List<Object> iteration = new ArrayList<>();
+                if (queryResult.getResult() instanceof Collection) {
+                    iteration.addAll((Collection<?>) queryResult.getResult());
+                } else {
+                    iteration.add(queryResult.getResult());
+                }
+                for (Object val : iteration) {
+                    this.definitions.setValue(repetition.getIterationVar(), val);
+                    doSwitch(repetition.getBody());
+                    closingRepretition(repetition);
                 }
             }
-
-            // Tag m:enduserContent
-            addEndUserDocField(object, needNewParagraphBeforeEndTag);
-            // }
         }
-        return object;
+
+        return repetition;
+
+    }
+
+    @Override
+    public IConstruct caseUserDoc(UserDoc userDoc) {
+        if (userDoc.getId() == null) {
+            insertQuerySyntaxMessages(userDoc);
+        } else {
+            final IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
+            final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), definitions.getCurrentDefinitions());
+            if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(userDoc, queryResult.getDiagnostic());
+            } else {
+                if (queryResult.getResult() == null) {
+                    M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                            "User doc id can't be null.");
+                } else {
+                    final String id = queryResult.getResult().toString();
+                    insertUserContent(userDoc, id);
+                }
+            }
+        }
+
+        return userDoc;
+    }
+
+    /**
+     * Inserts the {@link UserContent}.
+     * 
+     * @param userDoc
+     *            the source {@link UserDoc}
+     * @param id
+     *            the ID
+     */
+    private void insertUserContent(UserDoc userDoc, final String id) {
+        // Tag UserContent with evaluated id
+        addStartUserDocField(userDoc, id);
+        // manage user Doc Id Uniqueness
+        manageUserDocIdUniqueness(id, userDoc);
+        // Copy userdoc content
+        UserContent userContent = userContentManager.getUserContent(id);
+        boolean needNewParagraphBeforeEndTag = true;
+        if (userContent == null) {
+            doSwitch(userDoc.getBody());
+            needNewParagraphBeforeEndTag = needNewParagraph(userDoc);
+        } else {
+            UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
+            try {
+                currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
+                        generatedDocument);
+                needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
+                // Affect currentTemplateParagraph after Raw copy
+                if (userDoc.getClosingRuns().size() != 0) {
+                    currentTemplateParagraph = (XWPFParagraph) userDoc.getClosingRuns()
+                            .get(userDoc.getClosingRuns().size() - 1).getParent();
+                }
+            } catch (InvalidFormatException e) {
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "userdoc copy error : " + e.getMessage());
+            } catch (XmlException e) {
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "userdoc copy error : " + e.getMessage());
+            }
+        }
+
+        // Tag m:enduserContent
+        addEndUserDocField(userDoc, needNewParagraphBeforeEndTag);
     }
 
     /**
@@ -599,10 +535,9 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     private void manageUserDocIdUniqueness(String id, UserDoc userdoc) {
         if (userDocIds.contains(id)) {
             // insert the error message.
-            XWPFRun run = currentGeneratedParagraph.createRun();
             String msgError = "The id '" + id
                 + "' is already used in generated document. Ids must be unique otherwise document part contained userContent could be lost at next generation.";
-            setErrorMessageToRun(msgError, run);
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR, msgError);
 
             TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, msgError, userdoc.getRuns().get(userdoc.getRuns().size() - 1));
@@ -678,37 +613,34 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseConditional(Conditional conditional) {
-        EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(conditional.getCondition(),
-                definitions.getCurrentDefinitions());
-        boolean validQuery = conditional.getCondition() != null;
-        if (validQuery && result != null && result.getResult() instanceof Boolean) {
-            if ((Boolean) result.getResult()) {
-                doSwitch(conditional.getThen());
-            } else if (conditional.getElse() != null) {
-                doSwitch(conditional.getElse());
-            }
+        if (conditional.getCondition() == null) {
+            insertQuerySyntaxMessages(conditional);
         } else {
-            for (XWPFRun tagRun : conditional.getRuns()) {
-                insertRun(tagRun);
-            }
-            XWPFRun run = currentGeneratedParagraph.createRun();
-            String message;
-            if (!validQuery) {
-                message = QUERY_SYNTAX_ERROR_MESSAGE;
-            } else if (result != null) {
-                message = result.getDiagnostic().getMessage();
+            EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval(conditional.getCondition(),
+                    definitions.getCurrentDefinitions());
+            if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(conditional, result.getDiagnostic());
+                for (XWPFRun tagRun : conditional.getClosingRuns()) {
+                    insertRun(tagRun);
+                }
+            } else if (result.getResult() instanceof Boolean) {
+                if ((Boolean) result.getResult()) {
+                    doSwitch(conditional.getThen());
+                } else if (conditional.getElse() != null) {
+                    doSwitch(conditional.getElse());
+                }
             } else {
-                message = QUERY_EVALERROR_MESSAGE;
-            }
-            run.setText(message);
-            if (!validQuery || result == null || result.getDiagnostic().getCode() == Diagnostic.ERROR) {
-                run.setBold(true);
-                run.setColor(M2DocUtils.ERROR_COLOR);
-            }
-            for (XWPFRun tagRun : conditional.getClosingRuns()) {
-                insertRun(tagRun);
+                for (XWPFRun tagRun : conditional.getRuns()) {
+                    insertRun(tagRun);
+                }
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "Condition evaluation result must be a boolean.");
+                for (XWPFRun tagRun : conditional.getClosingRuns()) {
+                    insertRun(tagRun);
+                }
             }
         }
+
         return conditional;
     }
 
@@ -823,11 +755,14 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 imageRun.addPicture(imageStream, getPictureType(filePath), object.getFileName(), width, heigth);
             }
         } catch (InvalidFormatException e) {
-            setErrorMessageToRun("Picture in " + object.getFileName() + " has an invalid format.", imageRun);
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    "Picture in " + object.getFileName() + " has an invalid format.");
         } catch (FileNotFoundException e) {
-            setErrorMessageToRun("File " + filePath + " cannot be found.", imageRun);
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    "File " + filePath + " cannot be found.");
         } catch (IOException e) {
-            setErrorMessageToRun("An I/O Problem occured while reading file.", imageRun);
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    "An I/O Problem occured while reading file.");
         }
         return super.caseImage(object);
     }
@@ -837,7 +772,8 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         XWPFRun imageRun = insertRun(object.getStyleRun());
         IProvider provider = object.getProvider();
         if (provider == null) {
-            setErrorMessageToRun(object.getValidationMessages().get(0).getMessage(), imageRun);
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    object.getValidationMessages().get(0).getMessage());
         } else {
             Map<String, Object> parameters;
             try {
@@ -876,19 +812,21 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                                     height);
                         }
                     } catch (InvalidFormatException e) {
-                        setErrorMessageToRun("Picture in " + imagePath + " has an invalid format.", imageRun);
+                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                                "Picture in " + imagePath + " has an invalid format.");
                     } catch (FileNotFoundException e) {
-                        setErrorMessageToRun("File " + imagePath + " cannot be found.", imageRun);
+                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                                "File " + imagePath + " cannot be found.");
                     } catch (IOException e) {
-                        setErrorMessageToRun("An I/O Problem occured while reading file.", imageRun);
+                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                                "An I/O Problem occured while reading file: " + e.getMessage());
                     }
                 }
             } catch (IllegalArgumentException e) {
-                setErrorMessageToRun(e.getMessage(), imageRun);
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
             } catch (ProviderException e) {
-                setErrorMessageToRun(
-                        "A problem occured while creating image from an diagram provider : " + e.getMessage(),
-                        imageRun);
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "A problem occured while creating image from an diagram provider: " + e.getMessage());
             }
 
         }
@@ -903,7 +841,8 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         tableRun.getCTR().getInstrTextList().clear();
         AbstractTableProvider provider = (AbstractTableProvider) object.getProvider();
         if (provider == null) {
-            setErrorMessageToRun(object.getValidationMessages().get(0).getMessage(), tableRun);
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    object.getValidationMessages().get(0).getMessage());
         } else {
             Map<String, Object> parameters;
             try {
@@ -911,10 +850,10 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters);
                 tableProcessor.generate(tableRun);
             } catch (IllegalArgumentException e) {
-                setErrorMessageToRun(e.getMessage(), tableRun);
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
             } catch (ProviderException e) {
-                setErrorMessageToRun("A problem occured while creating table from a table provider : " + e.getMessage(),
-                        tableRun);
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "A problem occured while creating table from a table provider: " + e.getMessage());
             }
         }
         return super.caseTableClient(object);
@@ -950,20 +889,12 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseBookmark(Bookmark bookmark) {
         if (bookmark.getName() == null) {
-            XWPFRun run = insertRun(bookmark.getStyleRun());
-            setErrorMessageToRun(
-                    QUERY_SYNTAX_ERROR_MESSAGE + COLON + bookmark.getValidationMessages().get(0).getMessage(), run);
+            insertQuerySyntaxMessages(bookmark);
         } else {
             IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult result = evaluator.eval(bookmark.getName(), definitions.getCurrentDefinitions());
-            if (result == null) {
-                XWPFRun run = insertRun(bookmark.getStyleRun());
-                setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
-            } else if (result.getResult() == null) {
-                StringBuilder builder = new StringBuilder();
-                getDiagnostic(result.getDiagnostic(), builder);
-                XWPFRun run = insertRun(bookmark.getStyleRun());
-                setErrorMessageToRun(builder.toString(), run);
+            if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(bookmark, result.getDiagnostic());
             } else {
                 bookmarkManager.startBookmark(currentGeneratedParagraph, result.getResult().toString());
                 doSwitch(bookmark.getBody());
@@ -974,33 +905,56 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         return super.caseBookmark(bookmark);
     }
 
+    /**
+     * Inserts evaluation messages for the given {@link IConstruct}.
+     * 
+     * @param construct
+     *            the {@link IConstruct}
+     * @param diagnostic
+     *            the {@link Diagnostic}
+     */
+    protected void insertQueryEvaluationMessages(IConstruct construct, Diagnostic diagnostic) {
+        for (XWPFRun tagRun : construct.getRuns()) {
+            insertRun(tagRun);
+        }
+        M2DocUtils.appendDiagnosticMessage(currentGeneratedParagraph, diagnostic);
+        for (XWPFRun tagRun : construct.getClosingRuns()) {
+            insertRun(tagRun);
+        }
+    }
+
+    /**
+     * Inserts AQL query syntax messages for the given {@link IConstruct}.
+     * 
+     * @param construct
+     *            the {@link IConstruct}
+     */
+    protected void insertQuerySyntaxMessages(IConstruct construct) {
+        for (XWPFRun tagRun : construct.getRuns()) {
+            insertRun(tagRun);
+        }
+        for (TemplateValidationMessage message : construct.getValidationMessages()) {
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, message.getLevel(),
+                    QUERY_SYNTAX_ERROR_MESSAGE + message.getMessage());
+        }
+        for (XWPFRun tagRun : construct.getClosingRuns()) {
+            insertRun(tagRun);
+        }
+    }
+
     @Override
     public IConstruct caseLink(Link link) {
-        if (link.getName() == null) {
-            XWPFRun run = insertRun(link.getStyleRun());
-            setErrorMessageToRun(QUERY_SYNTAX_ERROR_MESSAGE + COLON + link.getValidationMessages().get(0).getMessage(),
-                    run);
+        if (link.getName() == null || link.getText() == null) {
+            insertQuerySyntaxMessages(link);
         } else {
             IQueryEvaluationEngine evaluator = new QueryEvaluationEngine(queryEnvironment);
             final EvaluationResult nameResult = evaluator.eval(link.getName(), definitions.getCurrentDefinitions());
-            if (nameResult == null) {
-                XWPFRun run = insertRun(link.getStyleRun());
-                setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
-            } else if (nameResult.getResult() == null) {
-                StringBuilder builder = new StringBuilder();
-                getDiagnostic(nameResult.getDiagnostic(), builder);
-                XWPFRun run = insertRun(link.getStyleRun());
-                setErrorMessageToRun(builder.toString(), run);
+            if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(link, nameResult.getDiagnostic());
             } else {
                 final EvaluationResult textResult = evaluator.eval(link.getText(), definitions.getCurrentDefinitions());
-                if (textResult == null) {
-                    XWPFRun run = insertRun(link.getStyleRun());
-                    setErrorMessageToRun(QUERY_EVALERROR_MESSAGE, run);
-                } else if (textResult.getResult() == null) {
-                    StringBuilder builder = new StringBuilder();
-                    getDiagnostic(textResult.getDiagnostic(), builder);
-                    XWPFRun run = insertRun(link.getStyleRun());
-                    setErrorMessageToRun(builder.toString(), run);
+                if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                    insertQueryEvaluationMessages(link, textResult.getDiagnostic());
                 } else {
                     bookmarkManager.insertReference(currentGeneratedParagraph, nameResult.getResult().toString(),
                             textResult.getResult().toString());
@@ -1009,20 +963,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         }
 
         return super.caseLink(link);
-    }
-
-    /**
-     * Sets an error message into the given run.
-     * 
-     * @param errorMessage
-     *            the error message to set.
-     * @param run
-     *            the run were to insert the error message.
-     */
-    public static void setErrorMessageToRun(String errorMessage, XWPFRun run) {
-        run.setText(errorMessage);
-        run.setBold(true);
-        run.setColor(M2DocUtils.ERROR_COLOR);
     }
 
     /**
@@ -1102,7 +1042,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             Entry<String, Object> aqlEntry) {
         if (aqlEntry.getValue() == null) {
             throw new IllegalArgumentException(
-                    QUERY_SYNTAX_ERROR_MESSAGE + COLON + templateProvider.getValidationMessages().get(0).getMessage());
+                    QUERY_SYNTAX_ERROR_MESSAGE + templateProvider.getValidationMessages().get(0).getMessage());
         } else {
             EvaluationResult result = new QueryEvaluationEngine(queryEnvironment).eval((AstResult) aqlEntry.getValue(),
                     definitions.getCurrentDefinitions());
@@ -1116,6 +1056,40 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 options.put(aqlEntry.getKey(), result.getResult());
             }
         }
+    }
+
+    /**
+     * returns the diagnostic associated to the {@link Diagnostic} instance and its children.
+     * 
+     * @param diagnostic
+     *            the {@link Diagnostic} in which searching
+     * @param builder
+     *            a string builder that aggregate the messages
+     * @return the diagnostic status of the specified diagnostic tree.
+     */
+    private int getDiagnostic(Diagnostic diagnostic, StringBuilder builder) {
+        String message;
+        int code;
+        if (diagnostic.getCode() == Diagnostic.ERROR) {
+            message = diagnostic.getMessage();
+            code = Diagnostic.ERROR;
+        } else {
+            message = diagnostic.getMessage();
+            code = diagnostic.getCode();
+            for (Diagnostic child : diagnostic.getChildren()) {
+                int childrenCode = getDiagnostic(child, builder);
+                if (childrenCode > code) {
+                    code = childrenCode;
+                }
+            }
+        }
+        if (message != null) {
+            if (builder.length() > 0) {
+                builder.append('\n');
+            }
+            builder.append(message);
+        }
+        return code;
     }
 
     /**
