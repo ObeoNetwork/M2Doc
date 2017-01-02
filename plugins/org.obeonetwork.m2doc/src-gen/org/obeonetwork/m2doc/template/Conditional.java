@@ -49,7 +49,7 @@ public interface Conditional extends Statement {
      * @return the value of the '<em>Condition</em>' attribute.
      * @see #setCondition(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional_Condition()
-     * @model dataType="org.obeonetwork.m2doc.template.AstResult"
+     * @model dataType="org.obeonetwork.m2doc.template.AstResult" required="true"
      *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='If evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}'"
      * @generated
      */

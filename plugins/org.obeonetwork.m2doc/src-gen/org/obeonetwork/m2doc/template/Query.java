@@ -78,7 +78,7 @@ public interface Query extends Statement {
      * @return the value of the '<em>Query</em>' attribute.
      * @see #setQuery(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getQuery_Query()
-     * @model dataType="org.obeonetwork.m2doc.template.AstResult"
+     * @model dataType="org.obeonetwork.m2doc.template.AstResult" required="true"
      * @generated
      */
     AstResult getQuery();

@@ -402,7 +402,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseQuery(Query query) {
-        if (query.getQuery() == null) {
+        if (query.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(query);
         } else {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), definitions.getCurrentDefinitions());
@@ -420,7 +420,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseRepetition(Repetition repetition) {
-        if (repetition.getQuery() == null) {
+        if (repetition.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(repetition);
         } else {
             final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(),
@@ -448,7 +448,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseUserDoc(UserDoc userDoc) {
-        if (userDoc.getId() == null) {
+        if (userDoc.getId().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(userDoc);
         } else {
             final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), definitions.getCurrentDefinitions());
@@ -617,7 +617,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseConditional(Conditional conditional) {
-        if (conditional.getCondition() == null) {
+        if (conditional.getCondition().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(conditional);
         } else {
             final EvaluationResult result = evaluator.eval(conditional.getCondition(),
@@ -892,7 +892,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseBookmark(Bookmark bookmark) {
-        if (bookmark.getName() == null) {
+        if (bookmark.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(bookmark);
         } else {
             final EvaluationResult result = evaluator.eval(bookmark.getName(), definitions.getCurrentDefinitions());
@@ -947,7 +947,8 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseLink(Link link) {
-        if (link.getName() == null || link.getText() == null) {
+        if (link.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR
+            || link.getText().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(link);
         } else {
             final EvaluationResult nameResult = evaluator.eval(link.getName(), definitions.getCurrentDefinitions());

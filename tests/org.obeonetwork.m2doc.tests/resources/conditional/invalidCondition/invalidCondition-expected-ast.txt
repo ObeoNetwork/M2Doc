@@ -1,7 +1,7 @@
 template null
   Basic if demonstration :
   
-  if *** expression error **** then
+  if .equals(.aqlFeatureAccess(self, 'name'), ***ERROR***) then
     The THEN paragraph.
   endif
   

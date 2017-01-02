@@ -48,7 +48,7 @@ public interface Link extends Statement {
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getLink_Name()
-     * @model dataType="org.obeonetwork.m2doc.template.AstResult"
+     * @model dataType="org.obeonetwork.m2doc.template.AstResult" required="true"
      * @generated
      */
     AstResult getName();
@@ -74,7 +74,7 @@ public interface Link extends Statement {
      * @return the value of the '<em>Text</em>' attribute.
      * @see #setText(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getLink_Text()
-     * @model dataType="org.obeonetwork.m2doc.template.AstResult"
+     * @model dataType="org.obeonetwork.m2doc.template.AstResult" required="true"
      * @generated
      */
     AstResult getText();

@@ -48,7 +48,7 @@ public interface UserDoc extends Statement {
      * @return the value of the '<em>Id</em>' attribute.
      * @see #setId(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getUserDoc_Id()
-     * @model dataType="org.obeonetwork.m2doc.template.AstResult"
+     * @model dataType="org.obeonetwork.m2doc.template.AstResult" required="true"
      * @generated
      */
     AstResult getId();

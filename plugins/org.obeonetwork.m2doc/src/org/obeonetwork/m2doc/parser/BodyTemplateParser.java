@@ -367,10 +367,9 @@ public class BodyTemplateParser extends BodyAbstractParser {
             queryText = queryText.substring(0, tagLength - TEXT_MODIFIER.length());
         }
         queryText = queryText.trim();
-        AstResult result = queryParser.build(queryText);
-        if (result.getErrors().size() == 0) {
-            query.setQuery(result);
-        } else {
+        final AstResult result = queryParser.build(queryText);
+        query.setQuery(result);
+        if (!result.getErrors().isEmpty()) {
             final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
             query.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryText, lastRun));
         }
@@ -524,13 +523,12 @@ public class BodyTemplateParser extends BodyAbstractParser {
      */
     private void parseAqlOptions(AbstractProviderClient providerTemplate, Entry<String, String> aqlParsedOption) {
         String query = aqlParsedOption.getValue();
-        AstResult result = queryParser.build(query);
-        if (result.getErrors().size() == 0) {
-            providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), result);
-        } else {
+        final AstResult option = queryParser.build(query);
+        providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), option);
+        if (!option.getErrors().isEmpty()) {
             final XWPFRun lastRun = providerTemplate.getRuns().get(providerTemplate.getRuns().size() - 1);
             providerTemplate.getValidationMessages()
-                    .addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
+                    .addAll(getValidationMessage(option.getDiagnostic(), query, lastRun));
             providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), null);
         }
     }
@@ -743,10 +741,9 @@ public class BodyTemplateParser extends BodyAbstractParser {
         boolean headConditionnal = tag.startsWith(TokenType.IF.getValue());
         int tagLength = headConditionnal ? TokenType.IF.getValue().length() : TokenType.ELSEIF.getValue().length();
         String query = tag.substring(tagLength).trim();
-        AstResult result = queryParser.build(query);
-        if (result.getErrors().size() == 0) {
-            conditional.setCondition(result);
-        } else {
+        final AstResult result = queryParser.build(query);
+        conditional.setCondition(result);
+        if (!result.getErrors().isEmpty()) {
             final XWPFRun lastRun = conditional.getRuns().get(conditional.getRuns().size() - 1);
             conditional.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
         }
@@ -798,6 +795,10 @@ public class BodyTemplateParser extends BodyAbstractParser {
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
             validationError(repetition, "Malformed tag m:for, no '|' found.");
+            final AstResult result = queryParser.build(null);
+            repetition.setQuery(result);
+            final Block body = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
+            repetition.setBody(body);
         } else {
             String iterationVariable = tagText.substring(0, indexOfPipe).trim();
             if ("".equals(iterationVariable)) {
@@ -808,10 +809,9 @@ public class BodyTemplateParser extends BodyAbstractParser {
                 validationError(repetition, "Malformed tag m:for : no query expression specified." + tagText);
             }
             String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
-            AstResult result = queryParser.build(query);
-            if (result.getErrors().size() == 0) {
-                repetition.setQuery(result);
-            } else {
+            final AstResult result = queryParser.build(query);
+            repetition.setQuery(result);
+            if (!result.getErrors().isEmpty()) {
                 final XWPFRun lastRun = repetition.getRuns().get(repetition.getRuns().size() - 1);
                 repetition.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
             }
@@ -840,10 +840,9 @@ public class BodyTemplateParser extends BodyAbstractParser {
         String tagText = readTag(bookmark, bookmark.getRuns()).trim();
         // remove the prefix
         tagText = tagText.substring(TokenType.BOOKMARK.getValue().length()).trim();
-        AstResult result = queryParser.build(tagText);
-        if (result.getErrors().size() == 0) {
-            bookmark.setName(result);
-        } else {
+        final AstResult result = queryParser.build(tagText);
+        bookmark.setName(result);
+        if (!result.getErrors().isEmpty()) {
             final XWPFRun lastRun = bookmark.getRuns().get(bookmark.getRuns().size() - 1);
             bookmark.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), tagText, lastRun));
         }
@@ -872,19 +871,17 @@ public class BodyTemplateParser extends BodyAbstractParser {
         String tagText = readTag(link, link.getRuns()).trim();
         // remove the prefix
         tagText = tagText.substring(TokenType.LINK.getValue().length()).trim();
-        AstResult nameResult = parseWhileAqlExpression(tagText);
-        if (nameResult.getErrors().size() == 0) {
-            link.setName(nameResult);
-        } else {
+        final AstResult nameResult = parseWhileAqlExpression(tagText);
+        link.setName(nameResult);
+        if (!nameResult.getErrors().isEmpty()) {
             final XWPFRun lastRun = link.getRuns().get(link.getRuns().size() - 1);
             link.getValidationMessages().addAll(getValidationMessage(nameResult.getDiagnostic(), tagText, lastRun));
         }
 
         tagText = tagText.substring(nameResult.getEndPosition(nameResult.getAst()));
-        AstResult textResult = parseWhileAqlExpression(tagText);
-        if (textResult.getErrors().size() == 0) {
-            link.setText(textResult);
-        } else {
+        final AstResult textResult = parseWhileAqlExpression(tagText);
+        link.setText(textResult);
+        if (!textResult.getErrors().isEmpty()) {
             final XWPFRun lastRun = link.getRuns().get(link.getRuns().size() - 1);
             link.getValidationMessages().addAll(getValidationMessage(textResult.getDiagnostic(), tagText, lastRun));
         }
@@ -910,12 +907,11 @@ public class BodyTemplateParser extends BodyAbstractParser {
         // remove the prefix
         tagText = tagText.substring(TokenType.USERDOC.getValue().length()).trim();
 
-        AstResult result = queryParser.build(tagText);
-        if (result.getErrors().size() == 0) {
-            userDoc.setId(result);
-        } else {
+        final AstResult id = queryParser.build(tagText);
+        userDoc.setId(id);
+        if (!id.getErrors().isEmpty()) {
             final XWPFRun lastRun = userDoc.getRuns().get(userDoc.getRuns().size() - 1);
-            userDoc.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), tagText, lastRun));
+            userDoc.getValidationMessages().addAll(getValidationMessage(id.getDiagnostic(), tagText, lastRun));
         }
 
         // read up the tags until the "m:enduserdoc" tag is encountered.

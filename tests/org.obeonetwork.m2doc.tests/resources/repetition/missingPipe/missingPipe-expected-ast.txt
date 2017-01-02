@@ -1,7 +1,7 @@
 template null
   Missing pipe arter variable name :
   
-  for null | *** expression error **** do
+  for null | ***ERROR*** do
     A paragraph
   endfor
   

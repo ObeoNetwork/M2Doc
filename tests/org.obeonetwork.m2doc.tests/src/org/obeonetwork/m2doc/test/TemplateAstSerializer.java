@@ -62,11 +62,6 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 public class TemplateAstSerializer extends TemplateSwitch<Void> {
 
     /**
-     * Expression error message.
-     */
-    private static final String EXPRESSION_ERROR = "*** expression error ****";
-
-    /**
      * Serialize a {@link Expression}.
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -356,12 +351,8 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
 
     @Override
     public Void caseQuery(Query query) {
-        if (query.getQuery() != null) {
-            builder.append(String.format("[query: %s | %s]", querySerializer.serialize(query.getQuery().getAst()),
-                    query.getBehavior()));
-        } else {
-            builder.append(String.format("[query: %s | %s]", EXPRESSION_ERROR, query.getBehavior().getName()));
-        }
+        builder.append(String.format("[query: %s | %s]", querySerializer.serialize(query.getQuery().getAst()),
+                query.getBehavior()));
 
         return null;
     }
@@ -372,11 +363,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append("for ");
         builder.append(repetition.getIterationVar());
         builder.append(" | ");
-        if (repetition.getQuery() != null) {
-            builder.append(querySerializer.serialize(repetition.getQuery().getAst()));
-        } else {
-            builder.append(EXPRESSION_ERROR);
-        }
+        builder.append(querySerializer.serialize(repetition.getQuery().getAst()));
         builder.append(" do");
         doSwitch(repetition.getBody());
         newLine();
@@ -390,11 +377,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     public Void caseUserDoc(UserDoc userDoc) {
         newLine();
         builder.append("userdoc ");
-        if (userDoc.getId() != null) {
-            builder.append(querySerializer.serialize(userDoc.getId().getAst()));
-        } else {
-            builder.append(EXPRESSION_ERROR);
-        }
+        builder.append(querySerializer.serialize(userDoc.getId().getAst()));
         builder.append(" do");
         indent();
         newLine();
@@ -410,11 +393,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     public Void caseConditional(Conditional conditional) {
         newLine();
         builder.append("if ");
-        if (conditional.getCondition() != null) {
-            builder.append(querySerializer.serialize(conditional.getCondition().getAst()));
-        } else {
-            builder.append(EXPRESSION_ERROR);
-        }
+        builder.append(querySerializer.serialize(conditional.getCondition().getAst()));
         builder.append(" then");
         doSwitch(conditional.getThen());
         if (conditional.getElse() != null) {
@@ -531,11 +510,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     public Void caseBookmark(Bookmark bookmark) {
         newLine();
         builder.append("bookmark ");
-        if (bookmark.getName() != null) {
-            builder.append(querySerializer.serialize(bookmark.getName().getAst()));
-        } else {
-            builder.append(EXPRESSION_ERROR);
-        }
+        builder.append(querySerializer.serialize(bookmark.getName().getAst()));
         doSwitch(bookmark.getBody());
         newLine();
         builder.append("endbookmark");
@@ -547,17 +522,9 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     public Void caseLink(Link link) {
         newLine();
         builder.append("link ");
-        if (link.getName() != null) {
-            builder.append(querySerializer.serialize(link.getName().getAst()));
-        } else {
-            builder.append(EXPRESSION_ERROR);
-        }
+        builder.append(querySerializer.serialize(link.getName().getAst()));
         builder.append(" ");
-        if (link.getText() != null) {
-            builder.append(querySerializer.serialize(link.getText().getAst()));
-        } else {
-            builder.append(EXPRESSION_ERROR);
-        }
+        builder.append(querySerializer.serialize(link.getText().getAst()));
         builder.append(" endlink");
         newLine();
         return null;

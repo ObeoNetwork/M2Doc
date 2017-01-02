@@ -49,7 +49,7 @@ public interface Repetition extends Statement {
      * @return the value of the '<em>Iteration Var</em>' attribute.
      * @see #setIterationVar(String)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_IterationVar()
-     * @model
+     * @model required="true"
      * @generated
      */
     String getIterationVar();
@@ -75,7 +75,7 @@ public interface Repetition extends Statement {
      * @return the value of the '<em>Query</em>' attribute.
      * @see #setQuery(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_Query()
-     * @model dataType="org.obeonetwork.m2doc.template.AstResult"
+     * @model dataType="org.obeonetwork.m2doc.template.AstResult" required="true"
      * @generated
      */
     AstResult getQuery();

@@ -1,4 +1,4 @@
 template null
   A simple demonstration of a query :
-  [query: *** expression error **** | TEXT]
+  [query: ***ERROR***.aqlFeatureAccess(self) | TEXT]
   End of demonstration.

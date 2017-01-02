@@ -19,6 +19,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.junit.Test;
 import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -30,7 +31,6 @@ import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidationMessage;
 
@@ -97,7 +97,7 @@ public class DocumentParserErrorsTest {
         assertTrue(template.getBody().getStatements().get(1) instanceof UserDoc);
         assertTrue(template.getBody().getStatements().get(2) instanceof StaticFragment);
         UserDoc userDoc = (UserDoc) template.getBody().getStatements().get(1);
-        assertNull(userDoc.getId());
+        assertEquals(Diagnostic.ERROR, userDoc.getId().getDiagnostic().getSeverity());
         // Check ValidationMessage
         assertEquals(1, userDoc.getValidationMessages().size());
         TemplateValidationMessage validationMessage1 = userDoc.getValidationMessages().get(0);

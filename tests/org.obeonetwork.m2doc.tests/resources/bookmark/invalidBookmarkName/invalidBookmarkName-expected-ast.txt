@@ -5,7 +5,7 @@ template null
   
   Test bookmark : 
   
-  bookmark *** expression error ****
+  bookmark ***ERROR***.aqlFeatureAccess(self)
     bookmarked content
   endbookmark
   

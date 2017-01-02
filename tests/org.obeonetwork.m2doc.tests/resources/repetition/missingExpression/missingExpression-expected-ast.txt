@@ -1,7 +1,7 @@
 template null
   Missing expression : 
   
-  for v | *** expression error **** do
+  for v | ***ERROR*** do
     name = 
     [query: .aqlFeatureAccess(v, 'name') | TEXT]
     ,

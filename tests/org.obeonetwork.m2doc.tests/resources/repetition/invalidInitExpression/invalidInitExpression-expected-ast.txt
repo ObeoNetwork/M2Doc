@@ -1,7 +1,7 @@
 template null
   Invalid initialization expression :
   
-  for v | *** expression error **** do
+  for v | ***ERROR***.aqlFeatureAccess(self) do
     A paragraph
   endfor
   

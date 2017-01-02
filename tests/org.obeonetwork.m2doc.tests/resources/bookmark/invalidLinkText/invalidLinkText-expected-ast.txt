@@ -11,6 +11,6 @@ template null
   
   Test link after bookmark : 
   
-  link *** expression error **** *** expression error **** endlink
+  link ***ERROR***.aqlFeatureAccess('bookmark1') ***ERROR*** endlink
   
    End of demonstration.

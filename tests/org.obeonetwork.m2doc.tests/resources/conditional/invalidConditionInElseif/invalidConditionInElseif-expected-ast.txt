@@ -5,7 +5,7 @@ template null
     The THEN paragraph.
   else
     
-    if *** expression error **** then
+    if .equals(.aqlFeatureAccess(self, 'name'), ***ERROR***) then
       The ELSEIF paragraph.
     endif
     
