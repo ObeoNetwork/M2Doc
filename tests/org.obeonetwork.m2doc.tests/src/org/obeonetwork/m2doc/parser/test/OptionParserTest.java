@@ -19,6 +19,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -77,7 +78,7 @@ public class OptionParserTest {
      * @throws IOException
      * @throws InvalidFormatException
      */
-    @Before
+    @After
     public void after() throws InvalidFormatException, IOException {
         document.close();
 

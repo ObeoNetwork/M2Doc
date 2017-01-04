@@ -205,8 +205,6 @@ public class UserContentManager {
             while ((length = is.read(buffer)) > 0) {
                 os.write(buffer, 0, length);
             }
-            is.close();
-            os.close();
         }
     }
 }

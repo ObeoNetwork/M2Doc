@@ -65,7 +65,6 @@ public class UserContentRawCopyTest {
 
             String resultFilePath = "results/generated/testUserDoc2RowCopyResultat.docx";
             POIServices.getInstance().saveFile(document, URI.createFileURI(resultFilePath));
-            document.close();
 
             userContentManager.dispose();
 

@@ -163,8 +163,8 @@ public class DocumentGenerator {
     /**
      * creates the destination document.
      * 
-     * @param templateFileName
-     *            the name of the destination document's file.
+     * @param inputDocumentFileName
+     *            the name of the input document's file.
      * @return the created document
      * @throws IOException
      *             if an I/O problem occurs.

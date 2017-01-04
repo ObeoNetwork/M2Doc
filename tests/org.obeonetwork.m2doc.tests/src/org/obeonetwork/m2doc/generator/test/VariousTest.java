@@ -61,8 +61,6 @@ public class VariousTest {
             // save the document in another file
 
             document.write(fos);
-            document.close();
-            fos.close();
             tmpFile.delete();
         }
     }

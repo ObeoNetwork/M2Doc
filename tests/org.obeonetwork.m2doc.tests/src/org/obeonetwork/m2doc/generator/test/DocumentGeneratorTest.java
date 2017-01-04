@@ -271,8 +271,6 @@ public class DocumentGeneratorTest {
             assertEquals(1, paragraph.getRuns().get(5).getCTR().getFldCharList().size());
             assertEquals(STFldCharType.END,
                     paragraph.getRuns().get(5).getCTR().getFldCharList().get(0).getFldCharType());
-            resOPackage.close();
-            resDocument.close();
         }
     }
 
@@ -305,8 +303,6 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
                     URI.createFileURI("results/generated/testUserDoc1.docx"), template, definitions, queryEnvironment,
                     null);
-            generator.generate();
-            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -315,10 +311,6 @@ public class DocumentGeneratorTest {
 
             assertEquals(8, resDocument.getParagraphs().size());
             assertEquals("User document part Texte 1", resDocument.getParagraphs().get(2).getText());
-
-            resDocument.close();
-            resOPackage.close();
-            resIs.close();
         }
     }
 
@@ -351,7 +343,6 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -369,10 +360,6 @@ public class DocumentGeneratorTest {
             assertEquals(1, resDocument.getFooterList().get(0).getParagraphs().size());
             assertEquals(" User document part Texte 3",
                     resDocument.getFooterList().get(0).getParagraphs().get(0).getText());
-
-            resDocument.close();
-            resOPackage.close();
-            resIs.close();
         }
     }
 
@@ -409,7 +396,6 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -419,10 +405,6 @@ public class DocumentGeneratorTest {
             assertEquals(1, resDocument.getParagraphs().get(2).getRuns().get(1).getEmbeddedPictures().size());
             assertEquals(new Long("3355498452"), resDocument.getParagraphs().get(2).getRuns().get(1)
                     .getEmbeddedPictures().get(0).getPictureData().getChecksum());
-
-            resDocument.close();
-            resOPackage.close();
-            resIs.close();
         }
     }
 
@@ -458,7 +440,6 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc9.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            template.close();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
@@ -479,10 +460,6 @@ public class DocumentGeneratorTest {
             assertEquals(1, resDocument.getFooterList().size());
             assertEquals(1, resDocument.getFooterList().get(0).getParagraphs().size());
             assertEquals(" Custom 3", resDocument.getFooterList().get(0).getParagraphs().get(0).getText());
-
-            resDocument.close();
-            resOPackage.close();
-            resIs.close();
         }
     }
 
@@ -515,7 +492,6 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            template.close();
         }
         try (FileInputStream resIs = new FileInputStream("results/generated/testUserDoc10.docx");
                 OPCPackage resOPackage = OPCPackage.open(resIs);
@@ -528,10 +504,6 @@ public class DocumentGeneratorTest {
             assertEquals(" OrigText3 ", table.getRow(0).getCell(1).getParagraphs().get(0).getText());
             assertEquals(" OrigText2 ", table.getRow(1).getCell(0).getParagraphs().get(0).getText());
             assertEquals(" OrigText4 ", table.getRow(1).getCell(1).getParagraphs().get(0).getText());
-
-            resDocument.close();
-            resOPackage.close();
-            resIs.close();
         }
     }
 
@@ -566,7 +538,6 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            template.close();
         }
         try (FileInputStream resIs = new FileInputStream(resultPath);
                 OPCPackage resOPackage = OPCPackage.open(resIs);
@@ -579,10 +550,6 @@ public class DocumentGeneratorTest {
             assertEquals(" Custom3 ", table.getRow(0).getCell(1).getParagraphs().get(0).getText());
             assertEquals(" Custom2 ", table.getRow(1).getCell(0).getParagraphs().get(0).getText());
             assertEquals(" Custom4 ", table.getRow(1).getCell(1).getParagraphs().get(0).getText());
-
-            resDocument.close();
-            resOPackage.close();
-            resIs.close();
         }
 
     }
@@ -618,7 +585,6 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc10.docx"),
                     URI.createFileURI(resultPath), template, definitions, queryEnvironment, null);
             generator.generate();
-            template.close();
         }
         try (FileInputStream resIs = new FileInputStream(resultPath);
                 OPCPackage resOPackage = OPCPackage.open(resIs);
@@ -635,10 +601,6 @@ public class DocumentGeneratorTest {
             assertEquals(" Custom2 ", table.getRow(1).getCell(0).getParagraphs().get(1).getText());
 
             // TODO OHA fix bug in nested table on usercontent and add asset
-
-            resDocument.close();
-            resOPackage.close();
-            resIs.close();
         }
 
     }

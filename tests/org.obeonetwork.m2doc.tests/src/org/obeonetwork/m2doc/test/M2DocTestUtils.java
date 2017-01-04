@@ -243,7 +243,6 @@ public final class M2DocTestUtils {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
                     URI.createFileURI(outputPath), template, variables, queryEnvironment, generation);
             generator.generate();
-            template.close();
         }
     }
 

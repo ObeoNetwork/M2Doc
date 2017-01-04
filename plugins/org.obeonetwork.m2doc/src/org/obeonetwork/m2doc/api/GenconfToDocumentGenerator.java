@@ -146,7 +146,6 @@ public class GenconfToDocumentGenerator {
 
             // post generation
             generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template, generator));
-            template.close();
 
             return generatedFiles;
         }
@@ -328,7 +327,6 @@ public class GenconfToDocumentGenerator {
             } else {
                 res = true;
             }
-            template.close();
         }
 
         return res;

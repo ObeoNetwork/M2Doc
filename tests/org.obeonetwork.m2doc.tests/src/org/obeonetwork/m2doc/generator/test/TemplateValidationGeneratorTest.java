@@ -63,7 +63,6 @@ public class TemplateValidationGeneratorTest {
                     new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
             M2DocUtils.serializeValidatedDocumentTemplate(template,
                     URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
-            template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
@@ -76,10 +75,6 @@ public class TemplateValidationGeneratorTest {
             assertNotNull(messageRun);
             assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
             assertEquals("0000FF", messageRun.getColor());
-
-            resIs.close();
-            resOPackage.close();
-            resDocument.close();
         }
     }
 
@@ -103,7 +98,6 @@ public class TemplateValidationGeneratorTest {
                     "XXXXXXXXXXXXXXXXXXXXXXXX", location));
             M2DocUtils.serializeValidatedDocumentTemplate(template,
                     URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
-            template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
@@ -116,10 +110,6 @@ public class TemplateValidationGeneratorTest {
             assertNotNull(messageRun);
             assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
             assertEquals("FFA500", messageRun.getColor());
-
-            resIs.close();
-            resOPackage.close();
-            resDocument.close();
         }
     }
 
@@ -143,7 +133,6 @@ public class TemplateValidationGeneratorTest {
                     new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
             M2DocUtils.serializeValidatedDocumentTemplate(template,
                     URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
-            template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
@@ -156,10 +145,6 @@ public class TemplateValidationGeneratorTest {
             assertNotNull(messageRun);
             assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
             assertEquals("FF0000", messageRun.getColor());
-
-            resIs.close();
-            resOPackage.close();
-            resDocument.close();
         }
     }
 
@@ -189,7 +174,6 @@ public class TemplateValidationGeneratorTest {
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "DDDD", location));
             M2DocUtils.serializeValidatedDocumentTemplate(template,
                     URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
-            template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
 
@@ -226,10 +210,6 @@ public class TemplateValidationGeneratorTest {
             assertTrue(indexA < indexB);
             assertTrue(indexB < indexC);
             assertTrue(indexC < indexD);
-
-            resIs.close();
-            resOPackage.close();
-            resDocument.close();
         }
     }
 

@@ -188,7 +188,6 @@ public abstract class AbstractTemplatesTestSuite {
             final String expectedAst = getContent(stream, "UTF-8");
             String actualAst = templateAstSerializer.serialize(documentTemplate);
             assertEquals(expectedAst, actualAst);
-            stream.close();
         }
     }
 
@@ -433,7 +432,6 @@ public abstract class AbstractTemplatesTestSuite {
                     res.append(buffer, 0, length);
                     length = input.read(buffer);
                 }
-                input.close();
             }
         }
         return res.toString();

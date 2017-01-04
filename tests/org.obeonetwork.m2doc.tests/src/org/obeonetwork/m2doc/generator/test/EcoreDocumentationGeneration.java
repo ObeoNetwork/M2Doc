@@ -43,7 +43,6 @@ public class EcoreDocumentationGeneration {
                     URI.createFileURI("results/ecoreDocumentationTemplateResults.docx"), template, definitions,
                     queryEnvironment, null);
             generator.generate();
-            template.close();
         }
     }
 
