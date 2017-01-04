@@ -1,6 +1,13 @@
+
+=== HEADER ===
+
+=== BODY ===
 template null
   Basic if demonstration :
+  
   if .aqlFeatureAccess(self, 'name') then
     The THEN paragraph.
   endif
+  
   End of demonstration.
+=== FOOTER ===

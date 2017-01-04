@@ -20,10 +20,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -31,9 +33,8 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.generator.TemplateGenerator;
-import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.provider.configuration.ConfigurationProviderService;
 import org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider;
@@ -338,28 +339,21 @@ public class GenconfToDocumentGenerator {
      * 
      * @param templateFile
      *            File
-     * @param template
+     * @param documentTemplate
      *            DocumentTemplate
      * @param generation
      *            Generation
-     * @return if template contains errors
+     * @return if template contains errors/warnings/info
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      * @throws IOException
      *             IOException
      */
-    public boolean validate(URI templateFile, DocumentTemplate template, Generation generation)
+    public boolean validate(URI templateFile, DocumentTemplate documentTemplate, Generation generation)
             throws DocumentGenerationException, IOException {
-        // pre template validation
-        preValidateTemplate(templateFile, template, generation);
-        URI validationFile = getValidationLogFile(templateFile);
+        final IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
 
-        final TemplateValidator validator = new TemplateValidator();
-
-        validator.validate(template, generation);
-        TemplateGenerator generator = new TemplateGenerator(validationFile, template);
-        boolean validationResult = generator.generate();
-        return validationResult && postValidateTemplate(templateFile, template, generation, generator);
+        return validate(templateFile, documentTemplate, generation, queryEnvironment);
     }
 
     /**
@@ -371,16 +365,12 @@ public class GenconfToDocumentGenerator {
      *            DocumentTemplate
      * @param generation
      *            Generation
-     * @param generator
-     *            TemplateGenerator
      * @return validation result.
      */
-    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation,
-            TemplateGenerator generator) {
+    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
         boolean validate = true;
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            validate = validate
-                && configurationProvider.postValidateTemplate(templateFile, template, generation, generator);
+            validate = validate && configurationProvider.postValidateTemplate(templateFile, template, generation);
         }
         return validate;
     }
@@ -406,7 +396,7 @@ public class GenconfToDocumentGenerator {
      * 
      * @param templateFile
      *            File
-     * @param template
+     * @param documentTemplate
      *            DocumentTemplate
      * @param generation
      *            Generation
@@ -418,16 +408,16 @@ public class GenconfToDocumentGenerator {
      * @throws IOException
      *             IOException
      */
-    public boolean validate(URI templateFile, DocumentTemplate template, Generation generation,
+    public boolean validate(URI templateFile, DocumentTemplate documentTemplate, Generation generation,
             IReadOnlyQueryEnvironment queryEnvironment) throws DocumentGenerationException, IOException {
         URI validationFile = getValidationLogFile(templateFile);
 
-        final TemplateValidator validator = new TemplateValidator();
+        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
+        final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment, types);
+        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
 
-        validator.validate(template, generation);
-        TemplateGenerator generator = new TemplateGenerator(validationFile, template);
-        boolean validationResult = generator.generate();
-        return validationResult && postValidateTemplate(templateFile, template, generation, generator);
+        return validationResult == ValidationMessageLevel.ERROR
+            && postValidateTemplate(templateFile, documentTemplate, generation);
     }
 
     /**

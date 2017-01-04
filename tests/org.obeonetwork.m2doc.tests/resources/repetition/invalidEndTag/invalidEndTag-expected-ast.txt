@@ -1,3 +1,7 @@
+
+=== HEADER ===
+
+=== BODY ===
 template null
   Invalid end tag : 
   
@@ -9,3 +13,4 @@ template null
     End of demonstration.
   endfor
   
+=== FOOTER ===

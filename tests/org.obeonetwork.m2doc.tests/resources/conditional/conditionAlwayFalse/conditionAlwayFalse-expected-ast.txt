@@ -5,7 +5,7 @@
 template null
   Basic if demonstration :
   
-  if .equals(.aqlFeatureAccess(self, 'name'), ***ERROR***) then
+  if .oclIsKindOf(self, EClass) then
     The THEN paragraph.
   endif
   

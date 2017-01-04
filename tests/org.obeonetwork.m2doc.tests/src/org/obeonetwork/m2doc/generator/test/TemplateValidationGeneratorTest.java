@@ -25,7 +25,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -42,7 +41,7 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
-public class TemplateGeneratorTest {
+public class TemplateValidationGeneratorTest {
 
     /**
      * Ensure that the validation generation produces a document with an info.
@@ -62,9 +61,8 @@ public class TemplateGeneratorTest {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                    template);
-            generator.generate();
+            M2DocUtils.serializeValidatedDocumentTemplate(template,
+                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
             template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
@@ -103,9 +101,8 @@ public class TemplateGeneratorTest {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                    template);
-            generator.generate();
+            M2DocUtils.serializeValidatedDocumentTemplate(template,
+                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
             template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
@@ -144,9 +141,8 @@ public class TemplateGeneratorTest {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                    template);
-            generator.generate();
+            M2DocUtils.serializeValidatedDocumentTemplate(template,
+                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
             template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
@@ -191,9 +187,8 @@ public class TemplateGeneratorTest {
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "CCCC", location));
             template.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "DDDD", location));
-            TemplateGenerator generator = new TemplateGenerator("results/generated/testParsingErrorSimpleTag.docx",
-                    template);
-            generator.generate();
+            M2DocUtils.serializeValidatedDocumentTemplate(template,
+                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
             template.close();
         }
         assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());

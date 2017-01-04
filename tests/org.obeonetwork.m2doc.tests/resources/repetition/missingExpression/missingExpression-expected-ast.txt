@@ -1,3 +1,7 @@
+
+=== HEADER ===
+
+=== BODY ===
 template null
   Missing expression : 
   
@@ -8,3 +12,4 @@ template null
   endfor
   
   En of demonstration.
+=== FOOTER ===

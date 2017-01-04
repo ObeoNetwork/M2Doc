@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -26,7 +27,9 @@ import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
@@ -38,6 +41,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
+import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
@@ -317,6 +323,42 @@ public final class M2DocUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Validates the given {@link DocumentTemplate} with the given {@link IReadOnlyQueryEnvironment} and variables types.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param types
+     *            variables types
+     * @return the {@link ValidationMessageLevel}
+     */
+    public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
+        final TemplateValidator validator = new TemplateValidator();
+        return validator.validate(documentTemplate, queryEnvironment, types);
+    }
+
+    /**
+     * Serializes the given {@link M2DocUtils#validate(DocumentTemplate, IReadOnlyQueryEnvironment, Map) validated} {@link DocumentTemplate}
+     * to the given destination.
+     * 
+     * @param documentTemplate
+     *            the {@link M2DocUtils#validate(DocumentTemplate, IReadOnlyQueryEnvironment, Map) validated} {@link DocumentTemplate}
+     * @param destination
+     *            the destination {@link URI}
+     * @throws IOException
+     *             if the {@link DocumentTemplate} can't be serialized to the given destination
+     */
+    public static void serializeValidatedDocumentTemplate(DocumentTemplate documentTemplate, URI destination)
+            throws IOException {
+        TemplateValidationGenerator generator = new TemplateValidationGenerator();
+
+        generator.doSwitch(documentTemplate);
+        POIServices.getInstance().saveFile(documentTemplate.getDocument(), destination);
     }
 
 }

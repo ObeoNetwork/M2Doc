@@ -16,7 +16,6 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
@@ -61,12 +60,9 @@ public interface IConfigurationProvider {
      *            DocumentTemplate
      * @param generation
      *            Generation
-     * @param generator
-     *            TemplateGenerator
      * @return validation result, must return true by default.
      */
-    boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation,
-            TemplateGenerator generator);
+    boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation);
 
     /**
      * Pre operation before template validation.

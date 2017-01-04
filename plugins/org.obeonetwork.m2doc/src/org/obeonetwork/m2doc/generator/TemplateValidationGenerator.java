@@ -20,7 +20,6 @@ import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
-import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
@@ -64,24 +63,10 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     private static final String LOCATION_SEPARATOR = "<---";
 
     /**
-     * Tells whether the template contains parsing errors or not.
-     */
-    private boolean inError;
-
-    /**
      * Create a new {@link TemplateValidationGenerator} instance given some definitions
      * and a query environment.
      */
     public TemplateValidationGenerator() {
-    }
-
-    /**
-     * Returns <code>true</code> when the template contains at least one parsing error.
-     * 
-     * @return <code>true</code> when there are parsing errors.
-     */
-    public boolean isInError() {
-        return inError;
     }
 
     @Override
@@ -216,7 +201,6 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
             offsets.put(message.getLocation(), 0);
         }
         for (TemplateValidationMessage message : messages) {
-            inError = inError || message.getLevel() == ValidationMessageLevel.ERROR;
             final int offset = offsets.get(message.getLocation());
             final int shift = addRunError(message, offset);
             offsets.put(message.getLocation(), offset + shift);

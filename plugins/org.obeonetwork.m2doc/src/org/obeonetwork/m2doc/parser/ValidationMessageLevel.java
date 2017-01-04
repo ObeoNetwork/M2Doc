@@ -19,6 +19,11 @@ package org.obeonetwork.m2doc.parser;
 public enum ValidationMessageLevel {
 
     /**
+     * No problem.
+     */
+    OK,
+
+    /**
      * used for simple information message.
      */
     INFO,

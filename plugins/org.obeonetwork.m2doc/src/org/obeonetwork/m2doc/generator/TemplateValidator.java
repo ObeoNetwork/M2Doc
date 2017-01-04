@@ -23,6 +23,7 @@ import java.util.Stack;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -48,6 +49,7 @@ import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
+import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
@@ -59,7 +61,7 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class TemplateValidator extends TemplateSwitch<Void> {
+public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     /**
      * {@link Boolean} {@link IType}.
@@ -79,7 +81,7 @@ public class TemplateValidator extends TemplateSwitch<Void> {
     /**
      * AQL environment used to validate queries.
      */
-    private IQueryEnvironment environment;
+    private IReadOnlyQueryEnvironment environment;
 
     /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
@@ -88,10 +90,12 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      *            the {@link DocumentTemplate}
      * @param generation
      *            Generation
+     * @return the {@link ValidationMessageLevel}
      */
-    public void validate(DocumentTemplate documentTemplate, Generation generation) {
+    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, Generation generation) {
         environment = QueryServices.getInstance().initAcceleoEnvironment(generation);
-        internalValidate(documentTemplate, generation);
+
+        return internalValidate(documentTemplate, generation);
     }
 
     /**
@@ -101,10 +105,12 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      *            the {@link DocumentTemplate}
      * @param generation
      *            Generation
+     * @return the {@link ValidationMessageLevel}
      */
-    public void internalValidate(DocumentTemplate documentTemplate, Generation generation) {
+    public ValidationMessageLevel internalValidate(DocumentTemplate documentTemplate, Generation generation) {
         Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(environment, generation);
-        validate(documentTemplate, generation, environment, types);
+
+        return validate(documentTemplate, environment, types);
     }
 
     /**
@@ -116,56 +122,58 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      *            the {@link IQueryEnvironment}
      * @param types
      *            the variables types
-     * @param generation
-     *            Generation
+     * @return the {@link ValidationMessageLevel}
      */
-    public void validate(DocumentTemplate documentTemplate, Generation generation, IQueryEnvironment queryEnvironment,
-            Map<String, Set<IType>> types) {
+    public ValidationMessageLevel validate(DocumentTemplate documentTemplate,
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
         environment = queryEnvironment;
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
         booleanType = new ClassType(queryEnvironment, boolean.class);
         stack.clear();
         stack.push(types);
-        doSwitch(documentTemplate);
+
+        return doSwitch(documentTemplate);
     }
 
     @Override
-    public Void caseDocumentTemplate(DocumentTemplate documentTemplate) {
-        for (Template template : documentTemplate.getHeaders()) {
-            doSwitch(template);
+    public ValidationMessageLevel caseDocumentTemplate(DocumentTemplate documentTemplate) {
+        ValidationMessageLevel headerLevel = ValidationMessageLevel.OK;
+        for (Template header : documentTemplate.getHeaders()) {
+            headerLevel = updateLevel(headerLevel, doSwitch(header));
         }
-        if (documentTemplate.getBody() != null) {
-            doSwitch(documentTemplate.getBody());
-        }
-        for (Template template : documentTemplate.getFooters()) {
-            doSwitch(template);
+        final ValidationMessageLevel bodyLevel = doSwitch(documentTemplate.getBody());
+        ValidationMessageLevel footerLevel = ValidationMessageLevel.OK;
+        for (Template footer : documentTemplate.getFooters()) {
+            footerLevel = updateLevel(footerLevel, doSwitch(footer));
         }
 
-        return null;
+        return updateLevel(headerLevel, bodyLevel, footerLevel);
     }
 
     @Override
-    public Void caseTemplate(Template template) {
-        doSwitch(template.getBody());
+    public ValidationMessageLevel caseTemplate(Template template) {
+        final ValidationMessageLevel parsingLevel = getHighestMessageLevel(template);
+        final ValidationMessageLevel bodyLevel = doSwitch(template.getBody());
 
-        return null;
+        return updateLevel(parsingLevel, bodyLevel);
     }
 
     @Override
-    public Void caseBookmark(Bookmark bookmark) {
+    public ValidationMessageLevel caseBookmark(Bookmark bookmark) {
         if (bookmark.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult validationResult = AQL4Compat.validate(bookmark.getName(), stack.peek(),
                     environment);
             final XWPFRun run = bookmark.getRuns().get(1);
             addValidationMessages(bookmark, run, validationResult);
         }
-        doSwitch(bookmark.getBody());
 
-        return null;
+        final ValidationMessageLevel bodyLevel = doSwitch(bookmark.getBody());
+
+        return updateLevel(getHighestMessageLevel(bookmark), bodyLevel);
     }
 
     @Override
-    public Void caseLink(Link link) {
+    public ValidationMessageLevel caseLink(Link link) {
         if (link.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult nameValidationResult = AQL4Compat.validate(link.getName(), stack.peek(),
                     environment);
@@ -180,63 +188,80 @@ public class TemplateValidator extends TemplateSwitch<Void> {
             addValidationMessages(link, run, textValidationResult);
         }
 
-        return null;
+        return getHighestMessageLevel(link);
     }
 
     @Override
-    public Void caseUserDoc(UserDoc userDoc) {
+    public ValidationMessageLevel caseUserDoc(UserDoc userDoc) {
+        final ValidationMessageLevel idLevel;
         if (userDoc.getId().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult validationResult = AQL4Compat.validate(userDoc.getId(), stack.peek(), environment);
             final XWPFRun run = userDoc.getRuns().get(1);
             addValidationMessages(userDoc, run, validationResult);
-            checkUserDocIdTypes(userDoc, run, validationResult);
+            idLevel = checkUserDocIdTypes(userDoc, run, validationResult);
+        } else {
+            idLevel = ValidationMessageLevel.ERROR;
         }
-        doSwitch(userDoc.getBody());
 
-        return null;
+        return updateLevel(getHighestMessageLevel(userDoc), idLevel, doSwitch(userDoc.getBody()));
     }
 
     @Override
-    public Void caseBlock(Block block) {
+    public ValidationMessageLevel caseBlock(Block block) {
+        ValidationMessageLevel res = getHighestMessageLevel(block);
+
         for (IConstruct construct : block.getStatements()) {
-            doSwitch(construct);
+            res = updateLevel(res, doSwitch(construct));
         }
-        return null;
+
+        return res;
     }
 
     @Override
-    public Void caseConditional(Conditional conditional) {
+    public ValidationMessageLevel caseStaticFragment(StaticFragment staticFragment) {
+        return ValidationMessageLevel.OK;
+    }
+
+    @Override
+    public ValidationMessageLevel caseConditional(Conditional conditional) {
         final IValidationResult validationResult = AQL4Compat.validate(conditional.getCondition(), stack.peek(),
                 environment);
         final Set<IType> types = validationResult.getPossibleTypes(conditional.getCondition().getAst());
+        final ValidationMessageLevel conditionLevel;
         if (conditional.getCondition().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final XWPFRun run = conditional.getRuns().get(1);
             addValidationMessages(conditional, run, validationResult);
-            checkConditionalConditionTypes(conditional, run, types);
+            conditionLevel = checkConditionalConditionTypes(conditional, run, types);
+        } else {
+            conditionLevel = ValidationMessageLevel.ERROR;
         }
 
         final Map<String, Set<IType>> thenVariables = new HashMap<String, Set<IType>>(stack.peek());
         thenVariables
                 .putAll(validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.TRUE));
         stack.push(thenVariables);
+        final ValidationMessageLevel thenLevel;
         try {
-            doSwitch(conditional.getThen());
+            thenLevel = doSwitch(conditional.getThen());
         } finally {
             stack.pop();
         }
+        final ValidationMessageLevel elseLevel;
         if (conditional.getElse() != null) {
             final Map<String, Set<IType>> elseVariables = new HashMap<String, Set<IType>>(stack.peek());
             elseVariables.putAll(
                     validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.FALSE));
             stack.push(elseVariables);
             try {
-                doSwitch(conditional.getElse());
+                elseLevel = doSwitch(conditional.getElse());
             } finally {
                 stack.pop();
             }
+        } else {
+            elseLevel = ValidationMessageLevel.OK;
         }
 
-        return null;
+        return updateLevel(getHighestMessageLevel(conditional), conditionLevel, thenLevel, elseLevel);
     }
 
     /**
@@ -248,8 +273,12 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      *            the {@link XWPFRun}
      * @param conditionTypes
      *            the {@link Set} of {@link IType} for the {@link Conditional#getCondition() condition}
+     * @return the {@link ValidationMessageLevel}
      */
-    private void checkConditionalConditionTypes(Conditional conditional, XWPFRun run, final Set<IType> conditionTypes) {
+    private ValidationMessageLevel checkConditionalConditionTypes(Conditional conditional, XWPFRun run,
+            final Set<IType> conditionTypes) {
+        final ValidationMessageLevel res;
+
         if (!conditionTypes.isEmpty()) {
             boolean onlyBoolean = true;
             boolean onlyNotBoolean = true;
@@ -264,22 +293,29 @@ public class TemplateValidator extends TemplateSwitch<Void> {
             }
             if (!onlyBoolean) {
                 if (onlyNotBoolean) {
-                    conditional.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                    res = ValidationMessageLevel.ERROR;
+                    conditional.getValidationMessages().add(new TemplateValidationMessage(res,
                             String.format("The predicate never evaluates to a boolean type (%s).", conditionTypes),
                             run));
                 } else {
+                    res = ValidationMessageLevel.WARNING;
                     conditional.getValidationMessages()
-                            .add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
+                            .add(new TemplateValidationMessage(res,
                                     String.format(
                                             "The predicate may evaluate to a value that is not a boolean type (%s).",
                                             conditionTypes),
                                     run));
                 }
+            } else {
+                res = ValidationMessageLevel.OK;
             }
         } else {
-            conditional.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+            res = ValidationMessageLevel.ERROR;
+            conditional.getValidationMessages().add(new TemplateValidationMessage(res,
                     String.format("The predicate never evaluates to a boolean type (%s).", conditionTypes), run));
         }
+
+        return res;
     }
 
     /**
@@ -291,35 +327,41 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      *            the {@link XWPFRun}
      * @param validationResult
      *            validation Result for {@link UserDoc#getId() id}
+     * @return the {@link ValidationMessageLevel}
      */
-    private void checkUserDocIdTypes(UserDoc userDoc, XWPFRun run, IValidationResult validationResult) {
+    private ValidationMessageLevel checkUserDocIdTypes(UserDoc userDoc, XWPFRun run,
+            IValidationResult validationResult) {
+        ValidationMessageLevel res = ValidationMessageLevel.OK;
+
         final Set<IType> types = validationResult.getPossibleTypes(userDoc.getId().getAst());
         for (IType type : types) {
             if (type instanceof ICollectionType) {
                 userDoc.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                         String.format("The id type must not be a collection (%s).", type), run));
+                res = ValidationMessageLevel.ERROR;
                 break;
             }
         }
+
+        return res;
     }
 
     @Override
-    public Void caseRepetition(Repetition repetition) {
+    public ValidationMessageLevel caseRepetition(Repetition repetition) {
+
         final IValidationResult validationResult = AQL4Compat.validate(repetition.getQuery(), stack.peek(),
                 environment);
         final Set<IType> types = validationResult.getPossibleTypes(repetition.getQuery().getAst());
         final XWPFRun run = repetition.getRuns().get(1);
+        ValidationMessageLevel iteratorLevel;
         if (repetition.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             addValidationMessages(repetition, run, validationResult);
-            for (IType type : types) {
-                if (!(type instanceof ICollectionType)) {
-                    repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            String.format("The iteration variable types must be collections (%s).", types), run));
-                    break;
-                }
-            }
+            iteratorLevel = validateRepetitionQueryType(repetition, run, types);
+        } else {
+            iteratorLevel = ValidationMessageLevel.ERROR;
         }
         if (stack.peek().containsKey(repetition.getIterationVar())) {
+            iteratorLevel = updateLevel(iteratorLevel, ValidationMessageLevel.WARNING);
             repetition.getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                             String.format("The iteration variable mask an existing variable (%s).",
@@ -339,62 +381,93 @@ public class TemplateValidator extends TemplateSwitch<Void> {
         final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
         iterationVariables.put(repetition.getIterationVar(), iteratorTypes);
         stack.push(iterationVariables);
+        final ValidationMessageLevel bodyLevel;
         try {
-            doSwitch(repetition.getBody());
+            bodyLevel = doSwitch(repetition.getBody());
         } finally {
             stack.pop();
         }
 
-        return null;
+        return updateLevel(getHighestMessageLevel(repetition), iteratorLevel, bodyLevel);
+    }
+
+    /**
+     * Validates the {@link Repetition#getQuery() query}.
+     * 
+     * @param repetition
+     *            the {@link Repetition}
+     * @param run
+     *            the {@link XWPFRun}
+     * @param types
+     *            the {@link Set} of {@link IType} for the {@link Repetition#getQuery() query}
+     * @return the {@link ValidationMessageLevel}
+     */
+    private ValidationMessageLevel validateRepetitionQueryType(Repetition repetition, final XWPFRun run,
+            final Set<IType> types) {
+        ValidationMessageLevel res = ValidationMessageLevel.OK;
+
+        for (IType type : types) {
+            if (!(type instanceof ICollectionType)) {
+                res = ValidationMessageLevel.ERROR;
+                repetition.getValidationMessages().add(new TemplateValidationMessage(res,
+                        String.format("The iteration variable types must be collections (%s).", types), run));
+                break;
+            }
+        }
+
+        return res;
     }
 
     @Override
-    public Void caseTableMerge(TableMerge tableMerge) {
-        doSwitch(tableMerge.getBody());
-
-        return null;
+    public ValidationMessageLevel caseTableMerge(TableMerge tableMerge) {
+        return doSwitch(tableMerge.getBody());
     }
 
     @Override
-    public Void caseQuery(Query query) {
+    public ValidationMessageLevel caseQuery(Query query) {
         if (query.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult validationResult = AQL4Compat.validate(query.getQuery(), stack.peek(), environment);
             final XWPFRun run = query.getStyleRun();
             addValidationMessages(query, run, validationResult);
         }
 
-        return null;
+        return getHighestMessageLevel(query);
     }
 
     @Override
-    public Void caseTable(Table table) {
+    public ValidationMessageLevel caseTable(Table table) {
+        ValidationMessageLevel res = ValidationMessageLevel.OK;
+
         for (Row row : table.getRows()) {
-            doSwitch(row);
+            res = updateLevel(res, doSwitch(row));
         }
 
-        return null;
+        return res;
     }
 
     @Override
-    public Void caseRow(Row row) {
+    public ValidationMessageLevel caseRow(Row row) {
+        ValidationMessageLevel res = ValidationMessageLevel.OK;
+
         for (Cell cell : row.getCells()) {
-            doSwitch(cell);
+            res = updateLevel(res, doSwitch(cell));
         }
 
-        return null;
+        return res;
     }
 
     @Override
-    public Void caseCell(Cell cell) {
-        doSwitch(cell.getTemplate());
-
-        return null;
+    public ValidationMessageLevel caseCell(Cell cell) {
+        return doSwitch(cell.getTemplate());
     }
 
     @Override
-    public Void caseAbstractProviderClient(AbstractProviderClient providerClient) {
+    public ValidationMessageLevel caseAbstractProviderClient(AbstractProviderClient providerClient) {
+        ValidationMessageLevel res = ValidationMessageLevel.OK;
+
         final XWPFRun run = providerClient.getStyleRun();
         if (providerClient.getProvider() != null) {
+            ValidationMessageLevel optionsLevel = ValidationMessageLevel.OK;
             Map<String, Object> options = new LinkedHashMap<String, Object>(providerClient.getOptionValueMap().size());
             for (Entry<String, Object> entry : providerClient.getOptionValueMap()) {
                 if (providerClient.getProvider().getOptionTypes().get(entry.getKey()) == OptionType.AQL_EXPRESSION) {
@@ -404,6 +477,8 @@ public class TemplateValidator extends TemplateSwitch<Void> {
                                 environment);
                         addValidationMessages(providerClient, run, validationResult);
                         options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));
+                    } else {
+                        optionsLevel = updateLevel(optionsLevel, ValidationMessageLevel.ERROR);
                     }
                 } else {
                     options.put(entry.getKey(), entry.getValue());
@@ -416,9 +491,10 @@ public class TemplateValidator extends TemplateSwitch<Void> {
                         String.format("option %s: %s", message.getOptionName(), message.getMessage()), run));
             }
         } else {
-            // This case seems to be checked at parsing time
+            res = ValidationMessageLevel.ERROR;
         }
-        return null;
+
+        return updateLevel(res, getHighestMessageLevel(providerClient));
     }
 
     /**
@@ -433,14 +509,15 @@ public class TemplateValidator extends TemplateSwitch<Void> {
      */
     private void addValidationMessages(IConstruct construct, XWPFRun run, IValidationResult validationResult) {
         if (validationResult != null) {
+            ValidationMessageLevel messageLevel = ValidationMessageLevel.OK;
             for (IValidationMessage message : validationResult.getMessages()) {
-                construct.getValidationMessages()
-                        .add(new TemplateValidationMessage(getLevel(message), message.getMessage(), run));
+                final ValidationMessageLevel level = getLevel(message);
+                messageLevel = updateLevel(messageLevel, level);
+                construct.getValidationMessages().add(new TemplateValidationMessage(level, message.getMessage(), run));
             }
         } else {
             construct.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "Couldn't validate the expression", run));
-
         }
     }
 
@@ -468,8 +545,67 @@ public class TemplateValidator extends TemplateSwitch<Void> {
                 break;
 
             default:
-                res = ValidationMessageLevel.INFO;
+                res = ValidationMessageLevel.OK;
                 break;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the highest {@link ValidationMessageLevel} between the two given {@link ValidationMessageLevel}.
+     * 
+     * @param level1
+     *            the first {@link ValidationMessageLevel}
+     * @param levels
+     *            others {@link ValidationMessageLevel}
+     * @return the highest {@link ValidationMessageLevel} between the two given {@link ValidationMessageLevel}
+     */
+    protected ValidationMessageLevel updateLevel(ValidationMessageLevel level1, ValidationMessageLevel... levels) {
+        ValidationMessageLevel res = level1;
+
+        for (ValidationMessageLevel other : levels) {
+            if (res != ValidationMessageLevel.ERROR) {
+                switch (other) {
+                    case ERROR:
+                        res = ValidationMessageLevel.ERROR;
+                        break;
+
+                    case WARNING:
+                        if (res != ValidationMessageLevel.ERROR) {
+                            res = ValidationMessageLevel.WARNING;
+                        }
+                        break;
+
+                    case INFO:
+                        if (res == ValidationMessageLevel.OK) {
+                            res = ValidationMessageLevel.INFO;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the highest {@link ValidationMessageLevel} for the given {@link IConstruct}.
+     * 
+     * @param construct
+     *            the {@link IConstruct}
+     * @return the highest {@link ValidationMessageLevel} for the given {@link IConstruct}
+     */
+    protected ValidationMessageLevel getHighestMessageLevel(IConstruct construct) {
+        ValidationMessageLevel res = ValidationMessageLevel.OK;
+
+        for (TemplateValidationMessage message : construct.getValidationMessages()) {
+            res = updateLevel(res, message.getLevel());
         }
 
         return res;

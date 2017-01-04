@@ -44,9 +44,8 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.generator.TemplateGenerator;
-import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -187,7 +186,7 @@ public abstract class AbstractTemplatesTestSuite {
         }
         try (FileInputStream stream = new FileInputStream(expectedASTFile)) {
             final String expectedAst = getContent(stream, "UTF-8");
-            String actualAst = templateAstSerializer.serialize(documentTemplate.getBody());
+            String actualAst = templateAstSerializer.serialize(documentTemplate);
             assertEquals(expectedAst, actualAst);
             stream.close();
         }
@@ -203,44 +202,33 @@ public abstract class AbstractTemplatesTestSuite {
      */
     @Test
     public void validation() throws IOException, DocumentGenerationException {
-        final TemplateValidator validator = new TemplateValidator();
-        validator.validate(documentTemplate, generation, queryEnvironment, types);
+        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment, types);
+
         final File expectedValidationFile = getExpectedValidatedFile(new File(testFolderPath));
         final File tempFile;
         if (expectedValidationFile.exists()) {
             tempFile = File.createTempFile(expectedValidationFile.getAbsolutePath(), "validation-test.docx");
+            if (validationLevel != ValidationMessageLevel.OK) {
+                M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate,
+                        URI.createFileURI(tempFile.getAbsolutePath()));
+            }
         } else {
             tempFile = getActualValidatedFile(new File(testFolderPath));
             tempFile.createNewFile();
-            validateTemplate(tempFile);
+            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate,
+                    URI.createFileURI(tempFile.getAbsolutePath()));
             fail(expectedValidationFile.getAbsolutePath() + " doesn't exists.");
         }
-
-        validateTemplate(tempFile);
 
         if (tempFile.length() != 0) {
             M2DocTestUtils.assertDocx(expectedValidationFile.getAbsolutePath(), tempFile.getAbsolutePath(), true);
         } else {
+            assertEquals(ValidationMessageLevel.OK, validationLevel);
             assertTrue(expectedValidationFile.exists());
             assertEquals(0, expectedValidationFile.length());
         }
 
         tempFile.delete();
-    }
-
-    /**
-     * Validates the current template to the given output file.
-     * 
-     * @param outputFile
-     *            the output .docx file
-     * @throws IOException
-     *             if the validation template can't be generated
-     * @throws DocumentGenerationException
-     *             if the validation template can't be generated
-     */
-    private void validateTemplate(final File outputFile) throws DocumentGenerationException, IOException {
-        TemplateGenerator generator = new TemplateGenerator(outputFile.getAbsolutePath(), documentTemplate);
-        generator.generate();
     }
 
     /**

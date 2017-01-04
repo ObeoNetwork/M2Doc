@@ -1,3 +1,7 @@
+
+=== HEADER ===
+
+=== BODY ===
 template null
   Invalid start tag : 
   [query: fr | TEXT]
@@ -5,3 +9,4 @@ template null
   [query: .aqlFeatureAccess(v, 'name') | TEXT]
   ,
   End of demonstration.
+=== FOOTER ===

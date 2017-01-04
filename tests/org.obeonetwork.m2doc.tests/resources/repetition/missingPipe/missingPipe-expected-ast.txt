@@ -1,3 +1,7 @@
+
+=== HEADER ===
+
+=== BODY ===
 template null
   Missing pipe arter variable name :
   
@@ -6,3 +10,4 @@ template null
   endfor
   
   End of demonstration.
+=== FOOTER ===

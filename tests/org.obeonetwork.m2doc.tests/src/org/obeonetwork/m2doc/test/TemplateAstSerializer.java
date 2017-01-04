@@ -38,9 +38,11 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.emf.ecore.EClassifier;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
@@ -262,6 +264,21 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
             return null;
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseTypeLiteral(org.eclipse.acceleo.query.ast.TypeLiteral)
+         */
+        @Override
+        public Void caseTypeLiteral(TypeLiteral object) {
+            if (object.getValue() instanceof Class) {
+                builder.append(((Class<?>) object.getValue()).getName());
+            } else if (object.getValue() instanceof EClassifier) {
+                builder.append(((EClassifier) object.getValue()).getName());
+            }
+            return null;
+        }
+
         @Override
         public Void caseVariableDeclaration(VariableDeclaration variableDeclaration) {
             builder.append(variableDeclaration.getName());
@@ -312,17 +329,17 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     }
 
     /**
-     * Serializes the given {@link Template}.
+     * Serializes the given {@link DocumentTemplate}.
      * 
-     * @param template
-     *            the {@link Template}
-     * @return the serialized {@link Template}
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @return the serialized {@link DocumentTemplate}
      */
-    public String serialize(Template template) {
+    public String serialize(DocumentTemplate documentTemplate) {
         builder = new StringBuilder();
         indentation = "";
 
-        doSwitch(template);
+        doSwitch(documentTemplate);
 
         return builder.toString();
     }
@@ -332,6 +349,33 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
      */
     protected void newLine() {
         builder.append("\n" + indentation);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseDocumentTemplate(org.obeonetwork.m2doc.template.DocumentTemplate)
+     */
+    @Override
+    public Void caseDocumentTemplate(DocumentTemplate documentTemplate) {
+        newLine();
+        builder.append("=== HEADER ===");
+        newLine();
+        for (Template header : documentTemplate.getHeaders()) {
+            doSwitch(header);
+        }
+        newLine();
+        builder.append("=== BODY ===");
+        newLine();
+        doSwitch(documentTemplate.getBody());
+        newLine();
+        builder.append("=== FOOTER ===");
+        newLine();
+        for (Template footer : documentTemplate.getFooters()) {
+            doSwitch(footer);
+        }
+
+        return null;
     }
 
     @Override

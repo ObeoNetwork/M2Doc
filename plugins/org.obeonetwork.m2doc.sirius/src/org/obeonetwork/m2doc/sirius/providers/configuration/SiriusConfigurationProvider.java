@@ -29,7 +29,6 @@ import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
-import org.obeonetwork.m2doc.generator.TemplateGenerator;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -156,12 +155,10 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * {@inheritDoc}
      * 
      * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#postValidateTemplate(org.eclipse.core.resources.File,
-     *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.genconf.Generation,
-     *      org.obeonetwork.m2doc.generator.TemplateGenerator)
+     *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.genconf.Generation)
      */
     @Override
-    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation,
-            TemplateGenerator generator) {
+    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
         // do nothing.
         return true;
     }

@@ -1,3 +1,7 @@
+
+=== HEADER ===
+
+=== BODY ===
 template null
   Basic if demonstration :
   
@@ -11,3 +15,4 @@ template null
     
   endif
   
+=== FOOTER ===

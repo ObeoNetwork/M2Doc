@@ -1,3 +1,7 @@
+
+=== HEADER ===
+
+=== BODY ===
 template null
   This template demonstrates the use of bookmarks. It creates two links to the same bookmark.Test link before bookmark : 
   
@@ -14,3 +18,4 @@ template null
   link ***ERROR***.aqlFeatureAccess('bookmark1') ***ERROR*** endlink
   
    End of demonstration.
+=== FOOTER ===
