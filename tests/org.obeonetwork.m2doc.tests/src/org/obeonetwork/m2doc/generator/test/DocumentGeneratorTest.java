@@ -303,6 +303,7 @@ public class DocumentGeneratorTest {
             DocumentGenerator generator = new DocumentGenerator(URI.createFileURI("templates/testUserDoc1.docx"),
                     URI.createFileURI("results/generated/testUserDoc1.docx"), template, definitions, queryEnvironment,
                     null);
+            generator.generate();
         }
 
         try (FileInputStream resIs = new FileInputStream(resultPath);
