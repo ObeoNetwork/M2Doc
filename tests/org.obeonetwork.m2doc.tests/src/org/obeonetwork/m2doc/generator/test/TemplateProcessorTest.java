@@ -47,6 +47,7 @@ import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.util.FieldUtils;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -1298,12 +1299,15 @@ public class TemplateProcessorTest {
         // CHECKSTYLE:OFF
         assertEquals(8, destinationDoc.getParagraphs().size());
         assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getFldSimpleList().size());
-        assertEquals(1, destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().size());
+        assertEquals(STFldCharType.BEGIN,
+                destinationDoc.getParagraphs().get(1).getCTP().getRArray(0).getFldCharArray(0).getFldCharType());
         assertEquals("m:usercontent value1",
-                destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().get(0).getInstr());
-        assertEquals(1, destinationDoc.getParagraphs().get(5).getCTP().getFldSimpleList().size());
+                destinationDoc.getParagraphs().get(1).getCTP().getRArray(1).getInstrTextArray(0).getStringValue());
+
+        assertEquals(STFldCharType.BEGIN,
+                destinationDoc.getParagraphs().get(5).getCTP().getRArray(0).getFldCharArray(0).getFldCharType());
         assertEquals("m:endusercontent",
-                destinationDoc.getParagraphs().get(5).getCTP().getFldSimpleList().get(0).getInstr());
+                destinationDoc.getParagraphs().get(5).getCTP().getRArray(1).getInstrTextArray(0).getStringValue());
         // CHECKSTYLE:ON
     }
 
@@ -1335,12 +1339,14 @@ public class TemplateProcessorTest {
         // POIServices.getInstance().saveFile(destinationDoc, "results/generated/testUserDoc2Resultat.docx");
         // CHECKSTYLE:OFF
         assertEquals(4, destinationDoc.getParagraphs().size());
-        assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getFldSimpleList().size());
-        assertEquals(2, destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().size());
+        assertEquals(STFldCharType.BEGIN,
+                destinationDoc.getParagraphs().get(1).getCTP().getRArray(1).getFldCharArray(0).getFldCharType());
         assertEquals("m:usercontent value1",
-                destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().get(0).getInstr());
+                destinationDoc.getParagraphs().get(1).getCTP().getRArray(2).getInstrTextArray(0).getStringValue());
+        assertEquals(STFldCharType.BEGIN,
+                destinationDoc.getParagraphs().get(1).getCTP().getRArray(6).getFldCharArray(0).getFldCharType());
         assertEquals("m:endusercontent",
-                destinationDoc.getParagraphs().get(1).getCTP().getFldSimpleList().get(1).getInstr());
+                destinationDoc.getParagraphs().get(1).getCTP().getRArray(7).getInstrTextArray(0).getStringValue());
         // CHECKSTYLE:ON
     }
 
@@ -1371,10 +1377,10 @@ public class TemplateProcessorTest {
         // POIServices.getInstance().saveFile(destinationDoc, "results/generated/testUserDoc3Resultat.docx");
         // CHECKSTYLE:OFF
         assertEquals(9, destinationDoc.getParagraphs().size());
-        assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getFldSimpleList().size());
         XWPFParagraph paragraph1 = destinationDoc.getParagraphs().get(1);
-        assertEquals(1, paragraph1.getCTP().getFldSimpleList().size());
-        assertEquals("m:usercontent value1", paragraph1.getCTP().getFldSimpleList().get(0).getInstr());
+
+        assertEquals(STFldCharType.BEGIN, paragraph1.getCTP().getRArray(0).getFldCharArray(0).getFldCharType());
+        assertEquals("m:usercontent value1", paragraph1.getCTP().getRArray(1).getInstrTextArray(0).getStringValue());
         // CHECKSTYLE:ON
     }
 
