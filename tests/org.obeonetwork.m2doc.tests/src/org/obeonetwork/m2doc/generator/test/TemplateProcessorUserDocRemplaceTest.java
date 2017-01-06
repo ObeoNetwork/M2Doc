@@ -147,6 +147,79 @@ public class TemplateProcessorUserDocRemplaceTest {
     }
 
     /**
+     * Test userdoc with custom and twice generation.
+     * For test bug #137 : https://github.com/ObeoNetwork/M2Doc/issues/137
+     * 
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     */
+    @Test
+    public void testUserDocTagWithImageInUserContentGenerateTwice()
+            throws InvalidFormatException, IOException, DocumentParserException {
+        // CHECKSTYLE:OFF
+        String templatePath = "templates/testUserDoc1.docx";
+        // CHECKSTYLE:ON
+        XWPFDocument document = loadDoc(templatePath);
+        BodyTemplateParser parser = new BodyTemplateParser(document, env);
+        Template template = parser.parseTemplate();
+        Map<String, Object> definitions = new HashMap<String, Object>();
+        XWPFDocument destinationDoc = createDestinationDocument("templates/testUserDoc1.docx");
+        final BookmarkManager bookmarkManager = new BookmarkManager();
+        final UserContentManager userContentManager = new UserContentManager(
+                "userContent/testUserContent1Custom1.docx");
+        // CHECKSTYLE:OFF
+        TemplateProcessor processor = new TemplateProcessor(definitions, "results", bookmarkManager, userContentManager,
+                env, destinationDoc, rootObject);
+        // CHECKSTYLE:ON
+        processor.doSwitch(template);
+
+        String resultDoc = "results/generated/testUserDoc1Custom1Resultat.docx";
+        POIServices.getInstance().saveFile(destinationDoc, resultDoc);
+        // Reload generated document
+
+        XWPFDocument reloadDocument = loadDoc(resultDoc);
+        // CHECKSTYLE:OFF
+        assertEquals(6, reloadDocument.getParagraphs().size());
+        assertEquals(0, reloadDocument.getParagraphs().get(0).getCTP().getFldSimpleList().size());
+        XWPFParagraph paragraph3 = reloadDocument.getParagraphs().get(2);
+        assertEquals("Custom texte avec image ", paragraph3.getRuns().get(0).getText(0));
+        assertEquals(1, paragraph3.getRuns().get(1).getEmbeddedPictures().size());
+        userContentManager.dispose();
+        // CHECKSTYLE:ON
+
+        // Twice
+        XWPFDocument document2 = loadDoc(templatePath);
+        BodyTemplateParser parser2 = new BodyTemplateParser(document2, env);
+        Template template2 = parser2.parseTemplate();
+        Map<String, Object> definitions2 = new HashMap<String, Object>();
+        XWPFDocument destinationDoc2 = createDestinationDocument("templates/testUserDoc1.docx");
+        final BookmarkManager bookmarkManager2 = new BookmarkManager();
+        final UserContentManager userContentManager2 = new UserContentManager(resultDoc);
+        // CHECKSTYLE:OFF
+        TemplateProcessor processor2 = new TemplateProcessor(definitions2, "results", bookmarkManager2,
+                userContentManager2, env, destinationDoc2, rootObject);
+        // CHECKSTYLE:ON
+        processor2.doSwitch(template);
+
+        // String resultDoc = "results/generated/testUserDoc1Custom1Resultat.docx";
+        POIServices.getInstance().saveFile(destinationDoc2, resultDoc);
+        // Reload generated document
+
+        XWPFDocument reloadDocument2 = loadDoc(resultDoc);
+        // CHECKSTYLE:OFF
+        assertEquals(6, reloadDocument2.getParagraphs().size());
+        assertEquals(0, reloadDocument2.getParagraphs().get(0).getCTP().getFldSimpleList().size());
+        XWPFParagraph paragraph32 = reloadDocument.getParagraphs().get(2);
+        assertEquals("Custom texte avec image ", paragraph32.getRuns().get(0).getText(0));
+        assertEquals(1, paragraph32.getRuns().get(1).getEmbeddedPictures().size());
+        userContentManager2.dispose();
+    }
+
+    /**
      * Test userdoc.
      * 
      * @throws InvalidFormatException

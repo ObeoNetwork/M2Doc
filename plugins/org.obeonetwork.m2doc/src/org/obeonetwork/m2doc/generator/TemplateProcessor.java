@@ -72,6 +72,7 @@ import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
+import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
@@ -537,6 +538,7 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 } catch (InvalidFormatException e) {
                     XWPFRun run = currentGeneratedParagraph.createRun();
                     setErrorMessageToRun("userdoc copy error : " + e.getMessage(), run);
+
                 } catch (XmlException e) {
                     XWPFRun run = currentGeneratedParagraph.createRun();
                     setErrorMessageToRun("userdoc copy error : " + e.getMessage(), run);
@@ -609,7 +611,11 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             || object.getRuns().size() != 0 && object.getRuns().get(0).getParagraph() != currentTemplateParagraph) {
             createNewParagraph(object.getRuns().get(0).getParagraph());
         }
-        currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
+        FieldUtils fieldUtils = new FieldUtils();
+        fieldUtils.addInstrField(currentGeneratedParagraph, TokenType.USERCONTENT.getValue() + " " + id);
+
+        // OLD
+        // currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
     }
 
     /**
@@ -626,7 +632,10 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
             if (needNewParagraph) {
                 createNewParagraph(object.getClosingRuns().get(0).getParagraph());
             }
-            currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
+            FieldUtils fieldUtils = new FieldUtils();
+            fieldUtils.addInstrField(currentGeneratedParagraph, TokenType.ENDUSERCONTENT.getValue());
+            // OLD
+            // currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
         }
     }
 
