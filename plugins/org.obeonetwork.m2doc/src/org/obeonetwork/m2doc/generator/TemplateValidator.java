@@ -490,8 +490,6 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
                 providerClient.getValidationMessages().add(new TemplateValidationMessage(message.getLevel(),
                         String.format("option %s: %s", message.getOptionName(), message.getMessage()), run));
             }
-        } else {
-            res = ValidationMessageLevel.ERROR;
         }
 
         return updateLevel(res, getHighestMessageLevel(providerClient));

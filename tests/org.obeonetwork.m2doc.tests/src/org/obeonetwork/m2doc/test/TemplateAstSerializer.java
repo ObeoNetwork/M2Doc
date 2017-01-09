@@ -41,6 +41,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.ecore.EClassifier;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
+import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -49,6 +50,7 @@ import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Representation;
+import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
@@ -465,8 +467,37 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     }
 
     @Override
-    public Void caseTable(Table object) {
-        // TODO
+    public Void caseTable(Table table) {
+        builder.append("table");
+        indent();
+        newLine();
+        for (Row row : table.getRows()) {
+            doSwitch(row);
+            newLine();
+        }
+        deindent();
+
+        return null;
+    }
+
+    @Override
+    public Void caseRow(Row row) {
+        builder.append("row");
+        indent();
+        newLine();
+        for (Cell cell : row.getCells()) {
+            doSwitch(cell);
+            newLine();
+        }
+        deindent();
+
+        return null;
+    }
+
+    @Override
+    public Void caseCell(Cell cell) {
+        doSwitch(cell.getTemplate());
+
         return null;
     }
 
@@ -476,7 +507,11 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append("image ");
         builder.append(image.getFileName());
         builder.append(" provider ");
-        builder.append(image.getProvider().getClass().getName());
+        if (image.getProvider() != null) {
+            builder.append(image.getProvider().getClass().getName());
+        } else {
+            builder.append("null");
+        }
         builder.append(" height ");
         builder.append(image.getHeight());
         builder.append(" width ");

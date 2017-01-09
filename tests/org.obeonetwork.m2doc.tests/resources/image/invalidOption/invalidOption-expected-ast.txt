@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of an image :
+  
+  image dh1.gif provider null height 100 width 100 legend null legendpos BELOW
+  
+  End of demonstration.
+=== FOOTER ===

@@ -361,4 +361,20 @@ public final class M2DocUtils {
         POIServices.getInstance().saveFile(documentTemplate.getDocument(), destination);
     }
 
+    /**
+     * Generates the given template into the given destination.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param variables
+     *            variables
+     * @param destination
+     *            the destination.
+     */
+    public static void generate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment,
+            Map<String, Object> variables, URI destination) {
+
+    }
 }

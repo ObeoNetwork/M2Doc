@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a simple variable query :
+  [query: x | TEXT]
+  End of demonstration.
+=== FOOTER ===

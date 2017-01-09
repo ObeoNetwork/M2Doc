@@ -29,7 +29,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -67,96 +66,6 @@ public class DocumentGeneratorTest {
     }
 
     @Test
-    public void testFormsAndTextArea() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testTextAreaAndForms.docx",
-                "results/testTextAreaAndForms.docx", definitions, null);
-    }
-
-    @Test
-    public void testStaticFragmentWithFieldProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testStaticFragmentWithfields.docx",
-                "results/testStaticFragmentWithfields.docx", definitions, null);
-
-    }
-
-    @Test
-    public void testStaticFragmentProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testStaticFragment.docx", "results/testStaticFragment.docx",
-                definitions, null);
-    }
-
-    @Test
-    public void testVarRefInHeaderProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarInHeader.docx", "results/testVarInHeaderResult.docx",
-                definitions, null);
-    }
-
-    @Test
-    public void testVarRefInFooterProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarInFooter.docx", "results/testVarInFooterResult.docx",
-                definitions, null);
-
-    }
-
-    @Test
-    public void testVarRefProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResult.docx", definitions,
-                null);
-    }
-
-    @Test
-    public void testVarRefErrorProcessing() throws Exception {
-        Map<String, Object> definitions = new HashMap<>();
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVar.docx", "results/testVarResultError.docx",
-                definitions, null);
-    }
-
-    @Test
-    public void testVarRefStyledProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarStyle.docx", "results/testVarStyleResult.docx",
-                definitions, null);
-    }
-
-    @Test
-    public void testVarRefStyledMultipleParagraphsProcessing() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testVarStyleSpanning2Paragraphs.docx",
-                "results/testVarStyleSpanning2ParagraphsResult.docx", definitions, null);
-    }
-
-    @Test
-    public void testImagesAndFootersAndHeadersAndBullets() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("self", EcorePackage.eINSTANCE);
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/test.docx", "results/testResult.docx", definitions, null);
-
-    }
-
-    @Test
     @Ignore(value = "Seems like nobody knows yet what is the actual expected result.")
     public void testImageGeneration() throws Exception {
 
@@ -176,37 +85,14 @@ public class DocumentGeneratorTest {
     }
 
     @Test
-    public void testStaticHyperlink() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/staticHyperlink.docx", "results/staticHyperlink.docx",
-                definitions, null);
-
-    }
-
-    @Test
-    public void testDynamicHyperlink() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/dynamicHyperlink.docx", "results/dynamicHyperlink.docx",
-                definitions, null);
-
-    }
-
-    @Test
     public void testBookmarkNominal() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testBookmarkNominal.docx",
-                "results/testBookmarkNominal.docx", definitions, null);
-
-        try (FileInputStream resIs = new FileInputStream("results/testBookmarkNominal.docx");
+        try (FileInputStream resIs = new FileInputStream("resources/bookmark/nominal/nominal-expected-generation.docx");
                 OPCPackage resOPackage = OPCPackage.open(resIs);
                 XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
-            assertEquals(4, resDocument.getBodyElements().size());
-            assertTrue(resDocument.getBodyElements().get(0) instanceof XWPFParagraph);
-            XWPFParagraph paragraph = (XWPFParagraph) resDocument.getBodyElements().get(0);
+            assertEquals(5, resDocument.getBodyElements().size());
+            assertTrue(resDocument.getBodyElements().get(1) instanceof XWPFParagraph);
+            XWPFParagraph paragraph = (XWPFParagraph) resDocument.getBodyElements().get(1);
             assertEquals(6, paragraph.getRuns().size());
             assertEquals("Test link before bookmark : ", paragraph.getRuns().get(0).text());
 
@@ -237,14 +123,14 @@ public class DocumentGeneratorTest {
                     paragraph.getRuns().get(5).getCTR().getFldCharList().get(0).getFldCharType());
 
             assertTrue(resDocument.getBodyElements().get(1) instanceof XWPFParagraph);
-            paragraph = (XWPFParagraph) resDocument.getBodyElements().get(1);
+            paragraph = (XWPFParagraph) resDocument.getBodyElements().get(2);
 
             assertEquals(1, paragraph.getCTP().getBookmarkStartList().size());
             assertEquals("bookmark1", paragraph.getCTP().getBookmarkStartList().get(0).getName());
             assertEquals(1, paragraph.getCTP().getBookmarkEndList().size());
 
             assertTrue(resDocument.getBodyElements().get(2) instanceof XWPFParagraph);
-            paragraph = (XWPFParagraph) resDocument.getBodyElements().get(2);
+            paragraph = (XWPFParagraph) resDocument.getBodyElements().get(3);
             assertEquals(7, paragraph.getRuns().size());
             assertEquals("Test link after bookmark : ", paragraph.getRuns().get(0).text());
 

@@ -403,7 +403,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseQuery(Query query) {
         if (query.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(query);
+            insertQuerySyntaxMessages(query, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), definitions.getCurrentDefinitions());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
@@ -421,7 +421,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseRepetition(Repetition repetition) {
         if (repetition.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(repetition);
+            insertQuerySyntaxMessages(repetition, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
             final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(),
                     definitions.getCurrentDefinitions());
@@ -449,7 +449,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseUserDoc(UserDoc userDoc) {
         if (userDoc.getId().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(userDoc);
+            insertQuerySyntaxMessages(userDoc, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
             final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), definitions.getCurrentDefinitions());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
@@ -618,7 +618,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseConditional(Conditional conditional) {
         if (conditional.getCondition().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(conditional);
+            insertQuerySyntaxMessages(conditional, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
             final EvaluationResult result = evaluator.eval(conditional.getCondition(),
                     definitions.getCurrentDefinitions());
@@ -737,38 +737,43 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseImage(Image object) {
-        XWPFRun imageRun = insertRun(object.getStyleRun());
+    public IConstruct caseImage(Image image) {
+        XWPFRun imageRun = insertRun(image.getStyleRun());
         imageRun.setText("");
         imageRun.getCTR().getInstrTextList().clear();
-        URI filePath = URI.createFileURI(object.getFileName());
-        if (!filePath.hasAbsolutePath() && object.eResource() != null && object.eResource().getURI() != null) {
-            /*
-             * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
-             */
-            filePath = object.eResource().getURI().trimSegments(1);
-            for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(object.getFileName())) {
-                filePath = filePath.appendSegment(s);
+        if (image.getFileName() == null) {
+            insertQuerySyntaxMessages(image, "");
+        } else {
+            URI filePath = URI.createFileURI(image.getFileName());
+            if (!filePath.hasAbsolutePath() && image.eResource() != null && image.eResource().getURI() != null) {
+                /*
+                 * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
+                 */
+                filePath = image.eResource().getURI().trimSegments(1);
+                for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(image.getFileName())) {
+                    filePath = filePath.appendSegment(s);
+                }
             }
-        }
-        try {
-            int heigth = Units.toEMU(object.getHeight());
-            int width = Units.toEMU(object.getWidth());
+            try {
+                int heigth = Units.toEMU(image.getHeight());
+                int width = Units.toEMU(image.getWidth());
 
-            try (InputStream imageStream = URIConverter.INSTANCE.createInputStream(filePath)) {
-                imageRun.addPicture(imageStream, getPictureType(filePath), object.getFileName(), width, heigth);
+                try (InputStream imageStream = URIConverter.INSTANCE.createInputStream(filePath)) {
+                    imageRun.addPicture(imageStream, getPictureType(filePath), image.getFileName(), width, heigth);
+                }
+            } catch (InvalidFormatException e) {
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "Picture in " + image.getFileName() + " has an invalid format.");
+            } catch (FileNotFoundException e) {
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "File " + filePath + " cannot be found.");
+            } catch (IOException e) {
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        "An I/O Problem occured while reading file.");
             }
-        } catch (InvalidFormatException e) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    "Picture in " + object.getFileName() + " has an invalid format.");
-        } catch (FileNotFoundException e) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    "File " + filePath + " cannot be found.");
-        } catch (IOException e) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    "An I/O Problem occured while reading file.");
         }
-        return super.caseImage(object);
+
+        return super.caseImage(image);
     }
 
     @Override
@@ -893,7 +898,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseBookmark(Bookmark bookmark) {
         if (bookmark.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(bookmark);
+            insertQuerySyntaxMessages(bookmark, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
             final EvaluationResult result = evaluator.eval(bookmark.getName(), definitions.getCurrentDefinitions());
             if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
@@ -931,14 +936,16 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * 
      * @param construct
      *            the {@link IConstruct}
+     * @param errorPrefix
+     *            error message prefix
      */
-    protected void insertQuerySyntaxMessages(IConstruct construct) {
+    protected void insertQuerySyntaxMessages(IConstruct construct, String errorPrefix) {
         for (XWPFRun tagRun : construct.getRuns()) {
             insertRun(tagRun);
         }
         for (TemplateValidationMessage message : construct.getValidationMessages()) {
             M2DocUtils.appendMessageRun(currentGeneratedParagraph, message.getLevel(),
-                    QUERY_SYNTAX_ERROR_MESSAGE + message.getMessage());
+                    errorPrefix + message.getMessage());
         }
         for (XWPFRun tagRun : construct.getClosingRuns()) {
             insertRun(tagRun);
@@ -949,7 +956,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     public IConstruct caseLink(Link link) {
         if (link.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR
             || link.getText().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(link);
+            insertQuerySyntaxMessages(link, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
             final EvaluationResult nameResult = evaluator.eval(link.getName(), definitions.getCurrentDefinitions());
             if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {

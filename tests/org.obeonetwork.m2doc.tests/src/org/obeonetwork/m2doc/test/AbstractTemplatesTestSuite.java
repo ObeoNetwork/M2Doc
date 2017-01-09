@@ -214,8 +214,10 @@ public abstract class AbstractTemplatesTestSuite {
         } else {
             tempFile = getActualValidatedFile(new File(testFolderPath));
             tempFile.createNewFile();
-            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate,
-                    URI.createFileURI(tempFile.getAbsolutePath()));
+            if (validationLevel != ValidationMessageLevel.OK) {
+                M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate,
+                        URI.createFileURI(tempFile.getAbsolutePath()));
+            }
             fail(expectedValidationFile.getAbsolutePath() + " doesn't exists.");
         }
 

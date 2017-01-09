@@ -34,7 +34,7 @@ public class TemplateInfoTest {
 
     @Test
     public void testServiceToken() throws IOException, InvalidFormatException {
-        FileInputStream is = new FileInputStream("templates/propertiesTest.docx");
+        FileInputStream is = new FileInputStream("resources/document/properties/properties-template.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         TemplateInfo info = new TemplateInfo(document);
@@ -45,7 +45,7 @@ public class TemplateInfoTest {
 
     @Test
     public void testVariableMap() throws IOException, InvalidFormatException {
-        FileInputStream is = new FileInputStream("templates/propertiesTest.docx");
+        FileInputStream is = new FileInputStream("resources/document/properties/properties-template.docx");
         OPCPackage oPackage = OPCPackage.open(is);
         XWPFDocument document = new XWPFDocument(oPackage);
         TemplateInfo info = new TemplateInfo(document);

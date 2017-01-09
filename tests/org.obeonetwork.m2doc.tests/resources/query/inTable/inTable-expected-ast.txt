@@ -1,0 +1,28 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a query :
+  table
+    row
+      template null
+        
+      template null
+        
+      
+    row
+      template null
+        
+      template null
+        
+      
+    row
+      template null
+        
+      template null
+        [query: .aqlFeatureAccess(self, 'name') | TEXT]
+      
+    
+  End of demonstration.
+=== FOOTER ===

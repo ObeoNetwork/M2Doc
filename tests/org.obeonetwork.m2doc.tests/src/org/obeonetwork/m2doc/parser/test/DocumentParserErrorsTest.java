@@ -25,14 +25,12 @@ import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidationMessage;
 
 /**
  * Document Parser Errors Test.
@@ -45,34 +43,6 @@ public class DocumentParserErrorsTest {
      * Environment.
      */
     private IQueryEnvironment env = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
-
-    /**
-     * Tests the error reporting on a conditional tag with a syntactically
-     * invalid expression.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-
-    public void testVarRefError() throws InvalidFormatException, IOException, DocumentParserException {
-        FileInputStream is = new FileInputStream("templates/testVarInvalid.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        BodyTemplateParser parser = new BodyTemplateParser(document, env);
-        Template template = parser.parseTemplate();
-        assertEquals(document, template.getXWPFBody());
-        assertEquals(1, template.getBody().getStatements().size());
-        assertTrue(template.getBody().getStatements().get(0) instanceof Query);
-        Query query = (Query) template.getBody().getStatements().get(0);
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Expression \"\" is invalid: null or empty string.", query.getRuns().get(4));
-    }
 
     /**
      * Test parsing userDoc tag with No ID Parameter.

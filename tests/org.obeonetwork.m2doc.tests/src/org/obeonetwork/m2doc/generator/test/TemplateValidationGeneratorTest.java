@@ -56,8 +56,8 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
-                queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils
+                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -91,8 +91,8 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
-                queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils
+                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -126,8 +126,8 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
-                queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils
+                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -161,8 +161,8 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI("templates/testParsingErrorSimpleTag.docx"),
-                queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils
+                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "AAAA", location));

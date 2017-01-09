@@ -50,7 +50,6 @@ import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -138,116 +137,6 @@ public class TemplateProcessorTest {
     }
 
     /**
-     * Test the replacement of a variable in a doc.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testVarRefProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testVar.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testVar.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            // CHECKSTYLE:OFF
-            definitions.put("x", "valueofx");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            // CHECKSTYLE:ON
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            // scan the destination document
-            assertEquals(2, destinationDoc.getParagraphs().size());
-            System.out.println(destinationDoc.getParagraphs().get(0).getText());
-            // CHECKSTYLE:OFF
-            assertEquals("Template de test pour les balises de référence à une variable : valueofx",
-                    destinationDoc.getParagraphs().get(0).getText());
-            // CHECKSTYLE:ON
-            assertEquals("Fin du gabarit", destinationDoc.getParagraphs().get(1).getText());
-        }
-    }
-
-    /**
-     * Test Var Ref Styled Processing.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testVarRefStyledProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-        try ( // CHECKSTYLE:OFF
-                FileInputStream is = new FileInputStream("templates/testVarStyle.docx");
-                // CHECKSTYLE:ON
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            definitions.put("x", "valueofx");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            assertEquals("Template de test pour les balises de référence à une variable : valueofx",
-                    destinationDoc.getParagraphs().get(0).getText());
-            XWPFParagraph paragraph = destinationDoc.getParagraphs().get(0);
-            XWPFRun run = paragraph.getRuns().get(paragraph.getRuns().size() - 1);
-            assertEquals("E36C0A", run.getColor());
-            assertNotNull(run.getCTR().getRPr().getI());
-            assertNotNull(run.getCTR().getRPr().getB());
-        }
-    }
-
-    /**
-     * Test Query Styled Processing.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testVarQueryStyledProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testVarStyle.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testVarStyle.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            definitions.put("x", "valueofx");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            assertEquals("Template de test pour les balises de référence à une variable : valueofx",
-                    destinationDoc.getParagraphs().get(0).getText());
-            XWPFParagraph paragraph = destinationDoc.getParagraphs().get(0);
-            XWPFRun run = paragraph.getRuns().get(paragraph.getRuns().size() - 1);
-            assertEquals("E36C0A", run.getColor());
-            assertNotNull(run.getCTR().getRPr().getI());
-            assertNotNull(run.getCTR().getRPr().getB());
-        }
-    }
-
-    /**
      * Tests NewLine processing.
      * 
      * @throws InvalidFormatException
@@ -260,11 +149,13 @@ public class TemplateProcessorTest {
     @Test
     public void testNewLineProcessing() throws InvalidFormatException, IOException, DocumentParserException {
         try ( // CHECKSTYLE:OFF
-                FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+                FileInputStream is = new FileInputStream(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");
                 // CHECKSTYLE:ON
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -294,10 +185,11 @@ public class TemplateProcessorTest {
     @Test
     public void testNewLineProcessingNoTextAround()
             throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        try (FileInputStream is = new FileInputStream("resources/document/carriageReturn/carriageReturn-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -327,10 +219,11 @@ public class TemplateProcessorTest {
     @Test
     public void testNewLineProcessingNoTextBefore()
             throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        try (FileInputStream is = new FileInputStream("resources/document/carriageReturn/carriageReturn-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -359,10 +252,11 @@ public class TemplateProcessorTest {
      */
     @Test
     public void testNewLineProcessingNoTextAfter() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        try (FileInputStream is = new FileInputStream("resources/document/carriageReturn/carriageReturn-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -392,10 +286,11 @@ public class TemplateProcessorTest {
     @Test
     public void testCarryageReturnNewLineProcessing()
             throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        try (FileInputStream is = new FileInputStream("resources/document/carriageReturn/carriageReturn-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -423,10 +318,11 @@ public class TemplateProcessorTest {
     @Test
     public void testCarryageReturnNewLineProcessingNoTextAround()
             throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        try (FileInputStream is = new FileInputStream("resources/document/carriageReturn/carriageReturn-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -454,10 +350,11 @@ public class TemplateProcessorTest {
     @Test
     public void testCarryageReturnNewLineProcessingNoTextBefore()
             throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        try (FileInputStream is = new FileInputStream("resources/document/carriageReturn/carriageReturn-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -485,10 +382,11 @@ public class TemplateProcessorTest {
     @Test
     public void testCarryageReturnNewLineProcessingNoTextAfter()
             throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testCarriageReturn.docx");
+        try (FileInputStream is = new FileInputStream("resources/document/carriageReturn/carriageReturn-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testCarriageReturn.docx");) {
+                XWPFDocument destinationDoc = createDestinationDocument(
+                        "resources/document/carriageReturn/carriageReturn-template.docx");) {
             BodyTemplateParser parser = new BodyTemplateParser(document, env);
             Template template = parser.parseTemplate();
             Map<String, Object> definitions = new HashMap<String, Object>();
@@ -500,165 +398,6 @@ public class TemplateProcessorTest {
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("text\n\n\n", destinationDoc.getParagraphs().get(0).getText());
-        }
-    }
-
-    /**
-     * Tests Tabulation processing.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testTabulationProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-        try ( // CHECKSTYLE:OFF
-                FileInputStream is = new FileInputStream("templates/testTabulation.docx");
-                // CHECKSTYLE:ON
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            definitions.put("v", "part1\tpart2\tpart3\tpart4");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            assertEquals(1, destinationDoc.getParagraphs().size());
-            assertEquals("part1\tpart2\tpart3\tpart4", destinationDoc.getParagraphs().get(0).getText());
-        }
-    }
-
-    /**
-     * Tests Tabulation processing with no text Around.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testTabulationProcessingNoTextAround()
-            throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testTabulation.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            definitions.put("v", "\t\t\t");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            assertEquals(1, destinationDoc.getParagraphs().size());
-            assertEquals("\t\t\t", destinationDoc.getParagraphs().get(0).getText());
-        }
-    }
-
-    /**
-     * Tests Tabulation processing with no text Before.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testTabulationProcessingNoTextBefore()
-            throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testTabulation.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            definitions.put("v", "\t\t\ttext");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            assertEquals(1, destinationDoc.getParagraphs().size());
-            assertEquals("\t\t\ttext", destinationDoc.getParagraphs().get(0).getText());
-        }
-    }
-
-    /**
-     * Tests Tabulation processing with no text After.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testTabulationProcessingNoTextAfter()
-            throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testTabulation.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testTabulation.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            definitions.put("v", "text\t\t\t");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            assertEquals(1, destinationDoc.getParagraphs().size());
-            assertEquals("text\t\t\t", destinationDoc.getParagraphs().get(0).getText());
-        }
-    }
-
-    /**
-     * Tests Empty Paragraphs processing with no text Around.
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testEmptyParagraphsProcessing() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/testEmptyParagraphs.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/testEmptyParagraphs.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            definitions.put("author", "Moi");
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
-            processor.doSwitch(template);
-            assertEquals(5, destinationDoc.getParagraphs().size());
-            assertEquals("Paragraph1 Moi", destinationDoc.getParagraphs().get(0).getText());
-            assertEquals("", destinationDoc.getParagraphs().get(1).getText());
-            assertEquals("Paragraph2", destinationDoc.getParagraphs().get(2).getText());
-            assertEquals("", destinationDoc.getParagraphs().get(3).getText());
-            assertEquals("Paragraph3 Moi", destinationDoc.getParagraphs().get(4).getText());
         }
     }
 
@@ -895,91 +634,6 @@ public class TemplateProcessorTest {
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("", destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
             assertEquals(1, destinationDoc.getParagraphs().get(0).getRuns().get(0).getEmbeddedPictures().size());
-        }
-    }
-
-    /**
-     * Tests that a static hyperlink is correctly produced in the generated document. ({HYPERLINK "http://www.obeo.fr"},Lien statique vers
-     * obeo)
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testStaticHyperLink() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/staticHyperlink.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/staticHyperlink.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, "results", bookmarkManager,
-                    userContentManager, env, destinationDoc, rootObject);
-            processor.doSwitch(template);
-            // CHECKSTYLE:OFF
-            assertEquals(18, destinationDoc.getParagraphs().size());
-            // CHECKSTYLE:ON
-            assertEquals(1, destinationDoc.getParagraphs().get(0).getCTP().getHyperlinkList().size());
-            assertEquals(1, destinationDoc.getHyperlinks().length);
-            assertEquals("rId8", destinationDoc.getHyperlinks()[0].getId());
-            assertEquals("http://www.obeo.fr", destinationDoc.getHyperlinks()[0].getURL());
-            assertEquals(1, destinationDoc.getParagraphs().get(0).getRuns().size());
-            assertEquals("Lien statique vers obeo", destinationDoc.getParagraphs().get(0).getRuns().get(0).getText(0));
-        }
-    }
-
-    /**
-     * Tests that a dynamic hyperlink which has its URL provided by an AQL expression is generated correctly. ({HYPERLINK
-     * "{m:'http://www.obeo.fr'}"},Lien dynamique vers obeo).
-     * 
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testDynamicHyperLink() throws InvalidFormatException, IOException, DocumentParserException {
-        try (FileInputStream is = new FileInputStream("templates/dynamicHyperlink.docx");
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);
-                XWPFDocument destinationDoc = createDestinationDocument("templates/dynamicHyperlink.docx");) {
-            BodyTemplateParser parser = new BodyTemplateParser(document, env);
-            Template template = parser.parseTemplate();
-            Map<String, Object> definitions = new HashMap<String, Object>();
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
-            TemplateProcessor processor = new TemplateProcessor(definitions, "results", bookmarkManager,
-                    userContentManager, env, destinationDoc, rootObject);
-            processor.doSwitch(template);
-            // CHECKSTYLE:OFF
-            assertEquals(17, destinationDoc.getParagraphs().size());
-            assertEquals(0, destinationDoc.getParagraphs().get(0).getCTP().getHyperlinkList().size());
-            assertEquals(0, destinationDoc.getHyperlinks().length);
-            assertEquals(8, destinationDoc.getParagraphs().get(0).getRuns().size());
-            assertTrue(destinationDoc.getParagraphs().get(0).getCTP().toString().replaceAll("[\\s\\t]", "")
-                    .replaceAll("(\\r)?\\n", "")
-                    .contains(("<w:r>" + "  <w:fldChar w:fldCharType=\"begin\"/>" + "</w:r>" + " <w:r>"
-                        + "  <w:instrText xml:space=\"preserve\">HYPERLINK</w:instrText>" + "</w:r>"
-                        + " <w:r w:rsidR=\"003177F4\">" + "  <w:instrText>\"</w:instrText>" + " </w:r>"
-                        + "<w:r w:rsidR=\"003177F4\">" + "  <w:t>http://www.obeo.fr</w:t>" + " </w:r>"
-                        + "<w:r w:rsidR=\"003177F4\">" + "  <w:instrText>\"</w:instrText>" + "</w:r>" + "<w:r>"
-                        + " <w:fldChar w:fldCharType=\"separate\"/>" + "</w:r>"
-                        + "<w:r w:rsidR=\"00047C1A\" w:rsidRPr=\"00047C1A\">" + "  <w:rPr>"
-                        + "   <w:rStyle w:val=\"Lienhypertexte\"/>" + "  </w:rPr>"
-                        + " <w:t>Lien dynamique vers obeo</w:t>" + "</w:r>" + "<w:r>" + "  <w:rPr>"
-                        + "   <w:rStyle w:val=\"Lienhypertexte\"/>" + "  </w:rPr>"
-                        + "  <w:fldChar w:fldCharType=\"end\"/>" + " </w:r>" + "</xml-fragment>")
-                                .replaceAll("[\\s\\t]", "").replaceAll("(\\r)?\\n", "")));
-            // CHECKSTYLE:ON
         }
     }
 

@@ -4,12 +4,26 @@
 === BODY ===
 template null
   Demonstrate the For with a table: 
-  
+  table
+    row
+      template null
+        Label
+      template null
+        Name
+      
+    
   Tableau 1 package classes 
   [query: .aqlFeatureAccess(self, 'name') | TEXT]
   
   for v | .aqlFeatureAccess(self, 'eClassifiers') do
-    
+    table
+      row
+        template null
+          Name :
+        template null
+          [query: .aqlFeatureAccess(v, 'name') | TEXT]
+        
+      
   endfor
   
   End of demonstration.

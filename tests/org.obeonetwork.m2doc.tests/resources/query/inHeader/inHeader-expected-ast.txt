@@ -1,0 +1,12 @@
+
+=== HEADER ===
+template null
+  A simple demonstration of a query in header :
+  [query: .aqlFeatureAccess(self, 'name') | TEXT]
+  End of demonstration.
+=== BODY ===
+template null
+  A simple demonstration of a query :
+  [query: .aqlFeatureAccess(self, 'name') | TEXT]
+  End of demonstration.
+=== FOOTER ===

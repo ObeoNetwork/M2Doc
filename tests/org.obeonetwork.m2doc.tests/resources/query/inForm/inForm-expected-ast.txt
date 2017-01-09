@@ -1,0 +1,7 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a query :End of demonstration.
+=== FOOTER ===

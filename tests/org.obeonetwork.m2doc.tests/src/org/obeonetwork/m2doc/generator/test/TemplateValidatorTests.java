@@ -493,6 +493,7 @@ public class TemplateValidatorTests {
                 return res;
             }
         });
+        image.setFileName("somefile");
         image.getOptionValueMap().put("variable", "value");
         image.getOptionValueMap().put("query", engine.build("self"));
 
