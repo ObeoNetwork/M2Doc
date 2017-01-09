@@ -3,6 +3,10 @@ env:
   global:
   - DISPLAY=:99.0
   - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
+  matrix:
+  - PROFILE=platform-luna
+  - PROFILE=platform-mars
+  - PROFILE=platform-neon,updatesites
 jdk:
 - oraclejdk8
 sudo: false
@@ -16,10 +20,10 @@ before_script:
 script:
 - cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
-- mvn clean verify -fae
+- mvn clean verify -fae -P$PROFILE
 - cd ../..
-- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
-  $TRAVIS_BUILD_DIR/$TRAVIS_TAG; fi
+- if [[ "$TRAVIS_TAG" != "" ]] && [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
+  $TRAVIS_BUILD_DIR/$TRAVIS_TAG; export UPDATE_SITES=true; fi
 after_script:
 - if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh;
   fi
@@ -38,4 +42,5 @@ deploy:
     tags: true
     all_branches: true
     repo: ObeoNetwork/M2Doc
+    condition: $UPDATE_SITES = true
 

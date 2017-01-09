@@ -38,7 +38,6 @@
 		<module>../../features/org.obeonetwork.m2doc.feature</module>
 		<module>../../features/org.obeonetwork.m2doc.sirius.feature</module>
 		<module>../../features/org.obeonetwork.m2doc.sirius.addon.feature</module>
-		<module>../../releng/org.obeonetwork.m2doc.update</module>
 		<module>../../dependencies/org.apache.poi</module>
 		<module>../../dependencies/org.apache.poi.feature</module>
 		<module>../../tests/org.obeonetwork.m2doc.tests</module>
@@ -251,9 +250,18 @@
 	</build>
   <profiles>
     <profile>
+      <id>updatesites</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <modules>
+        <module>../../releng/org.obeonetwork.m2doc.update</module>
+      </modules>
+    </profile>
+    <profile>
       <id>platform-neon</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
         <property>
           <name>platform-version-name</name>
           <value>neon</value>
