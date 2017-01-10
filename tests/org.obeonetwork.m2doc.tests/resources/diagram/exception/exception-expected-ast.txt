@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a diagram:
+  
+  representation null title null provider org.obeonetwork.m2doc.provider.test.TestDiagramProvider height 200 width 200 legend the diagram legend legendpos BELOW resultKind exception 
+  
+  End of demonstration.
+=== FOOTER ===

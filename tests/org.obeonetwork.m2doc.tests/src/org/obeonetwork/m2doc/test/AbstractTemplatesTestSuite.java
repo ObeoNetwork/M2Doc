@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -46,6 +47,8 @@ import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.provider.ProviderRegistry;
+import org.obeonetwork.m2doc.provider.test.TestDiagramProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -124,6 +127,15 @@ public abstract class AbstractTemplatesTestSuite {
     }
 
     /**
+     * Registers the {@link TestDiagramProvider}.
+     */
+    @BeforeClass
+    public static void beforeClass() {
+        ProviderRegistry.INSTANCE.clear();
+        ProviderRegistry.INSTANCE.registerProvider(new TestDiagramProvider());
+    }
+
+    /**
      * Closes the {@link DocumentTemplate}.
      * 
      * @throws IOException
@@ -132,6 +144,7 @@ public abstract class AbstractTemplatesTestSuite {
     @AfterClass
     public static void afterClass() throws IOException {
         documentTemplate.close();
+        ProviderRegistry.INSTANCE.clear();
     }
 
     /**

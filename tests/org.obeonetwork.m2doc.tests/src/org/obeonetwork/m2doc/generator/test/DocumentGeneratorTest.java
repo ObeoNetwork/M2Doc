@@ -37,7 +37,7 @@ import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
-import org.obeonetwork.m2doc.provider.test.StubDiagramProvider;
+import org.obeonetwork.m2doc.provider.test.TestDiagramProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.test.M2DocTestUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -54,7 +54,7 @@ public class DocumentGeneratorTest {
     @Before
     public void setUp() {
         ProviderRegistry.INSTANCE.clear();
-        ProviderRegistry.INSTANCE.registerProvider(new StubDiagramProvider());
+        ProviderRegistry.INSTANCE.registerProvider(new TestDiagramProvider());
     }
 
     /**

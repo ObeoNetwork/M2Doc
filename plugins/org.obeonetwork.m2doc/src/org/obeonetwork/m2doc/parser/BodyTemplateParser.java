@@ -529,7 +529,6 @@ public class BodyTemplateParser extends BodyAbstractParser {
             final XWPFRun lastRun = providerTemplate.getRuns().get(providerTemplate.getRuns().size() - 1);
             providerTemplate.getValidationMessages()
                     .addAll(getValidationMessage(option.getDiagnostic(), query, lastRun));
-            providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), null);
         }
     }
 

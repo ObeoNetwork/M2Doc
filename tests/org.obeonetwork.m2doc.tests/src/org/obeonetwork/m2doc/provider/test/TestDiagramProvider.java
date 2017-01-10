@@ -24,11 +24,11 @@ import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 
 /**
- * A stub {@link AbstractDiagramProvider} used to test generic providers' options usage.
+ * A test {@link AbstractDiagramProvider} used to test generic providers' options usage.
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
-public class StubDiagramProvider extends AbstractDiagramProvider {
+public class TestDiagramProvider extends AbstractDiagramProvider {
     /**
      * The key of the option using an AQL expression.
      */
@@ -77,12 +77,12 @@ public class StubDiagramProvider extends AbstractDiagramProvider {
         String aqlExpression = (String) parameters.get(AQL_EXPRESSION_OPTION_KEY);
         List<String> imagesPaths = new ArrayList<>();
         if (aqlExpression != null && "testImage".equals(aqlExpression)) {
-            imagesPaths.add(new File("templates/images/testImage.jpg").getAbsolutePath());
+            imagesPaths.add(new File("resources/diagram/images/testImage.jpg").getAbsolutePath());
         } else if (ONE_IMAGE_RESULT_KIND.equals(resultKind)) {
-            imagesPaths.add(new File("templates/images/dh1.gif").getAbsolutePath());
+            imagesPaths.add(new File("resources/diagram/images/dh1.gif").getAbsolutePath());
         } else if (TWO_IMAGE_RESULT_KIND.equals(resultKind)) {
-            imagesPaths.add(new File("templates/images/dh1.gif").getAbsolutePath());
-            imagesPaths.add(new File("templates/images/testImage.jpg").getAbsolutePath());
+            imagesPaths.add(new File("resources/diagram/images/dh1.gif").getAbsolutePath());
+            imagesPaths.add(new File("resources/diagram/images/testImage.jpg").getAbsolutePath());
         } else if (EXCEPTION_RESULT_KIND.equals(resultKind)) {
             throw new ProviderException("A problem occured.");
         }
