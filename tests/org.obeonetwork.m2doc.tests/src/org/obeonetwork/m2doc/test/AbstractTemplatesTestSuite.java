@@ -439,7 +439,7 @@ public abstract class AbstractTemplatesTestSuite {
         });
         Arrays.sort(children);
         for (File child : children) {
-            parameters.add(new Object[] {child.getAbsolutePath() });
+            parameters.add(new Object[] {child.getPath() });
         }
 
         return parameters;
