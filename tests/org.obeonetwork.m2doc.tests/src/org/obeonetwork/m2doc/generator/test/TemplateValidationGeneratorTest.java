@@ -56,17 +56,18 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
+        final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
+
         try (DocumentTemplate template = M2DocUtils
                 .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template,
-                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
+            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
         }
-        assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
+        assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
-        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+        try (FileInputStream resIs = new FileInputStream(tempFile.getAbsolutePath());
                 OPCPackage resOPackage = OPCPackage.open(resIs);
                 XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
@@ -76,6 +77,8 @@ public class TemplateValidationGeneratorTest {
             assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
             assertEquals("0000FF", messageRun.getColor());
         }
+
+        tempFile.delete();
     }
 
     /**
@@ -91,17 +94,18 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
+        final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
+
         try (DocumentTemplate template = M2DocUtils
                 .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template,
-                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
+            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
         }
-        assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
+        assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
-        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+        try (FileInputStream resIs = new FileInputStream(tempFile.getAbsolutePath());
                 OPCPackage resOPackage = OPCPackage.open(resIs);
                 XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
@@ -111,6 +115,8 @@ public class TemplateValidationGeneratorTest {
             assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
             assertEquals("FFA500", messageRun.getColor());
         }
+
+        tempFile.delete();
     }
 
     /**
@@ -126,17 +132,18 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
+        final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
+
         try (DocumentTemplate template = M2DocUtils
                 .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template,
-                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
+            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
         }
-        assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
+        assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
-        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+        try (FileInputStream resIs = new FileInputStream(tempFile.getAbsolutePath());
                 OPCPackage resOPackage = OPCPackage.open(resIs);
                 XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
@@ -146,6 +153,8 @@ public class TemplateValidationGeneratorTest {
             assertEquals("XXXXXXXXXXXXXXXXXXXXXXXX", messageRun.text());
             assertEquals("FF0000", messageRun.getColor());
         }
+
+        tempFile.delete();
     }
 
     /**
@@ -161,6 +170,8 @@ public class TemplateValidationGeneratorTest {
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
+        final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
+
         try (DocumentTemplate template = M2DocUtils
                 .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
@@ -172,12 +183,11 @@ public class TemplateValidationGeneratorTest {
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "CCCC", location));
             template.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "DDDD", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template,
-                    URI.createFileURI("results/generated/testParsingErrorSimpleTag.docx"));
+            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
         }
-        assertTrue(new File("results/generated/testParsingErrorSimpleTag.docx").exists());
+        assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
-        try (FileInputStream resIs = new FileInputStream("results/generated/testParsingErrorSimpleTag.docx");
+        try (FileInputStream resIs = new FileInputStream(tempFile.getAbsolutePath());
                 OPCPackage resOPackage = OPCPackage.open(resIs);
                 XWPFDocument resDocument = new XWPFDocument(resOPackage);) {
 
@@ -211,6 +221,8 @@ public class TemplateValidationGeneratorTest {
             assertTrue(indexB < indexC);
             assertTrue(indexC < indexD);
         }
+
+        tempFile.delete();
     }
 
 }
