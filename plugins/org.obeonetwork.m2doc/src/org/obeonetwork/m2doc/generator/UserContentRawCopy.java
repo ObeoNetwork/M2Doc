@@ -108,7 +108,6 @@ public class UserContentRawCopy {
      * @throws XmlException
      *             XmlException
      */
-    @SuppressWarnings("deprecation")
     public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent,
             IBody outputBody) throws InvalidFormatException, XmlException {
         XWPFDocument containerOutputDocument = outputParagraphBeforeUserDocContent.getDocument();
@@ -121,7 +120,7 @@ public class UserContentRawCopy {
         XWPFParagraph currentRunParagraph = null;
         for (IConstruct abstractConstruct : userContent.getBody().getStatements()) {
             for (XWPFRun inputRun : abstractConstruct.getRuns()) {
-                currentRunParagraph = inputRun.getParagraph();
+                currentRunParagraph = (XWPFParagraph) inputRun.getParent();
                 if (currentRunParagraph != currentInputParagraph) {
                     currentInputParagraph = currentRunParagraph;
                     // currentOutputParagraph = outputDocument.createParagraph();
@@ -341,8 +340,7 @@ public class UserContentRawCopy {
      */
     private boolean userDocContentIsFirstRunOfParagraph(UserContent userContent) {
         XWPFRun userContentFirstRun = userContent.getBody().getStatements().get(0).getRuns().get(0);
-        @SuppressWarnings("deprecation")
-        XWPFRun paragraphFirstRun = userContentFirstRun.getParagraph().getRuns().get(0);
+        XWPFRun paragraphFirstRun = ((XWPFParagraph) userContentFirstRun.getParent()).getRuns().get(0);
         return userContentFirstRun == paragraphFirstRun;
     }
 

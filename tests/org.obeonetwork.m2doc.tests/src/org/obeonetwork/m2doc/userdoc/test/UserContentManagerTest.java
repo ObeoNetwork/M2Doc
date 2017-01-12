@@ -18,13 +18,8 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.template.UserContent;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.obeonetwork.m2doc.generator.UserContentManager.TEMP_DEST_SUFFIX;
 
 /**
@@ -47,50 +42,6 @@ public class UserContentManagerTest {
         UserContentManager userContentManager = new UserContentManager(URI.createFileURI("no_exist_file_path"));
 
         assertNull(userContentManager.getUserContent("noExistid1"));
-
-    }
-
-    /**
-     * Test With Last Destination File Contain No UserContent.
-     * 
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testDeleteTempDestinationFile() throws IOException, DocumentParserException {
-        String fileName = "testUserContent2.docx";
-        String filePath = "userContent/" + fileName;
-        File destFile = null;
-        UserContentManager userContentManager = null;
-        try {
-            destFile = File.createTempFile("testDeleteTempDestinationFile", "");
-
-            // Before userContentManager creation temp file not exist
-            File tempFile = findFirstTempFile(fileName, destFile);
-            assertNull(tempFile);
-
-            userContentManager = new UserContentManager(URI.createFileURI(filePath));
-
-            // After userContentManager creation temp file exist
-            tempFile = findFirstTempFile(fileName, destFile);
-            assertNotNull(tempFile);
-            assertTrue(tempFile.exists());
-
-            userContentManager.dispose();
-            // After launch deleteTempGeneratedFile method temp file no exist
-            assertFalse(tempFile.exists());
-        } finally {
-
-            if (destFile != null) {
-                destFile.delete();
-            }
-            if (userContentManager != null) {
-                userContentManager.dispose();
-            }
-
-        }
 
     }
 
@@ -129,64 +80,6 @@ public class UserContentManagerTest {
         // CHECKSTYLE:OFF
         assertNull(userContentManager.getUserContent("noExistid2"));
         // CHECKSTYLE:ON
-        userContentManager.dispose();
-    }
-
-    /**
-     * Test With Last Destination File Contain 1 UserContent.
-     * 
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testLastDestinationFileContainOneUserContent() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager(
-                URI.createFileURI("userContent/testUserContent1.docx"));
-
-        assertNull(userContentManager.getUserContent("noExistid2"));
-        UserContent userContent = userContentManager.getUserContent("value1");
-        assertNotNull(userContent);
-        assertEquals(1, userContent.getBody().getStatements().size());
-        assertEquals("User document part Texte 1",
-                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
-        userContentManager.dispose();
-    }
-
-    /**
-     * Test With Last Destination File Contain 3 UserContent.
-     * 
-     * @throws IOException
-     *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     */
-    @Test
-    public void testLastDestinationFileContain3UserContent() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager(
-                URI.createFileURI("userContent/testUserContent4.docx"));
-
-        assertNull(userContentManager.getUserContent("noExistid2"));
-
-        UserContent userContent = userContentManager.getUserContent("value1");
-        assertNotNull(userContent);
-        assertEquals(1, userContent.getBody().getStatements().size());
-        assertEquals("User document part Texte 1",
-                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
-
-        userContent = userContentManager.getUserContent("value2");
-        assertNotNull(userContent);
-        assertEquals(1, userContent.getBody().getStatements().size());
-        assertEquals("User document part Texte 2",
-                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
-
-        userContent = userContentManager.getUserContent("value3");
-        assertNotNull(userContent);
-        assertEquals(1, userContent.getBody().getStatements().size());
-        assertEquals("User document part Texte 3",
-                userContent.getBody().getStatements().get(0).getRuns().get(0).getText(0));
-
         userContentManager.dispose();
     }
 

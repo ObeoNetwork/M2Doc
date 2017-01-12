@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.test;
 
+import com.google.common.io.Files;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileFilter;
@@ -255,12 +257,16 @@ public abstract class AbstractTemplatesTestSuite {
     public void generation() throws Exception {
         final File expectedGeneratedFile = getExpectedGeneratedFile(new File(testFolderPath));
         final File templateFile = getTemplateFile(new File(testFolderPath));
+        final File userContentFile = getUserContentFile(new File(testFolderPath));
 
         File outputFile = null;
         if (expectedGeneratedFile.exists()) {
             outputFile = File.createTempFile(expectedGeneratedFile.getAbsolutePath(), "generated-test");
         } else {
             outputFile = getActualGeneratedFile(new File(testFolderPath));
+            if (userContentFile.exists()) {
+                Files.copy(userContentFile, outputFile);
+            }
             generateTemplate(templateFile, outputFile);
             fail(expectedGeneratedFile.getAbsoluteFile() + " doesn't exists.");
         }
@@ -268,6 +274,9 @@ public abstract class AbstractTemplatesTestSuite {
         try (FileInputStream is = new FileInputStream(templateFile)) {
             try (OPCPackage oPackage = OPCPackage.open(is)) {
                 try (XWPFDocument document = new XWPFDocument(oPackage)) {
+                    if (userContentFile.exists()) {
+                        Files.copy(userContentFile, outputFile);
+                    }
                     generateTemplate(templateFile, outputFile);
                     M2DocTestUtils.assertDocx(expectedGeneratedFile.getAbsolutePath(), outputFile.getAbsolutePath(),
                             true);
@@ -362,10 +371,21 @@ public abstract class AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder path
-     * @return the actual template file from the test folder path
+     * @return the actual generated file from the test folder path
      */
     protected File getActualGeneratedFile(File testFolder) {
         return new File(testFolder + File.separator + testFolder.getName() + "-actual-generation.docx");
+    }
+
+    /**
+     * Gets the user content file from the test folder path.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @return the user content file from the test folder path
+     */
+    protected File getUserContentFile(File testFolder) {
+        return new File(testFolder + File.separator + testFolder.getName() + "-userContent.docx");
     }
 
     /**

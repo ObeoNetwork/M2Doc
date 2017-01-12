@@ -28,7 +28,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -44,6 +43,7 @@ import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
+import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
 import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
@@ -52,6 +52,7 @@ import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.TemplatePackage;
+import org.obeonetwork.m2doc.template.UserContent;
 
 /**
  * Utility class for M2Doc.
@@ -275,7 +276,7 @@ public final class M2DocUtils {
     }
 
     /**
-     * Parses a document and returns the {@link DocumentTemplate} resulting from
+     * Parses a template document and returns the {@link DocumentTemplate} resulting from
      * this parsing.
      * 
      * @param templateURI
@@ -295,24 +296,21 @@ public final class M2DocUtils {
 
         try {
             // resources are closed in DocumentTemplate.close()
-            InputStream is = URIConverter.INSTANCE.createInputStream(templateURI);
-            OPCPackage oPackage = OPCPackage.open(is);
-            XWPFDocument document = new XWPFDocument(oPackage);
+            final InputStream is = URIConverter.INSTANCE.createInputStream(templateURI);
+            final OPCPackage oPackage = OPCPackage.open(is);
+            final XWPFDocument document = new XWPFDocument(oPackage);
             r.getContents().add(result);
-            BodyTemplateParser parser = new BodyTemplateParser(document, new QueryBuilderEngine(queryEnvironment),
-                    queryEnvironment);
+            final BodyTemplateParser parser = new BodyTemplateParser(document, queryEnvironment);
             result.setBody(parser.parseTemplate());
             result.setInputStream(is);
             result.setOpcPackage(oPackage);
             result.setDocument(document);
             for (XWPFFooter footer : document.getFooterList()) {
-                BodyTemplateParser footerParser = new BodyTemplateParser(footer,
-                        new QueryBuilderEngine(queryEnvironment), queryEnvironment);
+                final BodyTemplateParser footerParser = new BodyTemplateParser(footer, queryEnvironment);
                 result.getFooters().add(footerParser.parseTemplate());
             }
             for (XWPFHeader header : document.getHeaderList()) {
-                BodyTemplateParser headerParser = new BodyTemplateParser(header,
-                        new QueryBuilderEngine(queryEnvironment), queryEnvironment);
+                final BodyTemplateParser headerParser = new BodyTemplateParser(header, queryEnvironment);
                 result.getHeaders().add(headerParser.parseTemplate());
             }
 
@@ -320,6 +318,54 @@ public final class M2DocUtils {
             throw new DocumentParserException("Unable to open " + templateURI, e);
         } catch (InvalidFormatException e1) {
             throw new DocumentParserException("Invalid .docx format " + templateURI, e1);
+        }
+
+        return result;
+    }
+
+    /**
+     * Parses a document for {@link UserContent} and returns the {@link DocumentTemplate} resulting from
+     * this parsing.
+     * 
+     * @param documentURI
+     *            URI for the document
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment}
+     * @return the {@link DocumentTemplate} resulting from parsing the specified
+     *         document
+     * @throws DocumentParserException
+     *             if a problem occurs while parsing the document.
+     */
+    @SuppressWarnings("resource")
+    public static DocumentTemplate parseUserContent(URI documentURI, IQueryEnvironment queryEnvironment)
+            throws DocumentParserException {
+        final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
+        final ResourceImpl r = new ResourceImpl(documentURI);
+
+        try {
+            // resources are closed in DocumentTemplate.close()
+            final InputStream is = URIConverter.INSTANCE.createInputStream(documentURI);
+            final OPCPackage oPackage = OPCPackage.open(is);
+            final XWPFDocument document = new XWPFDocument(oPackage);
+            r.getContents().add(result);
+            final BodyGeneratedParser parser = new BodyGeneratedParser(document, queryEnvironment);
+            result.setBody(parser.parseTemplate());
+            result.setInputStream(is);
+            result.setOpcPackage(oPackage);
+            result.setDocument(document);
+            for (XWPFFooter footer : document.getFooterList()) {
+                final BodyGeneratedParser footerParser = new BodyGeneratedParser(footer, queryEnvironment);
+                result.getFooters().add(footerParser.parseTemplate());
+            }
+            for (XWPFHeader header : document.getHeaderList()) {
+                final BodyGeneratedParser headerParser = new BodyGeneratedParser(header, queryEnvironment);
+                result.getHeaders().add(headerParser.parseTemplate());
+            }
+
+        } catch (IOException e) {
+            throw new DocumentParserException("Unable to open " + documentURI, e);
+        } catch (InvalidFormatException e1) {
+            throw new DocumentParserException("Invalid .docx format " + documentURI, e1);
         }
 
         return result;

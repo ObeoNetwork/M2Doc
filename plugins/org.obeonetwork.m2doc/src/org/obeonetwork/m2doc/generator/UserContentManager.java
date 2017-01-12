@@ -27,13 +27,12 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.api.POIServices;
-import org.obeonetwork.m2doc.parser.DocumentGeneratedParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * This class manage UserDoc Destination tag UserContent.
@@ -89,50 +88,43 @@ public class UserContentManager {
      * 
      * @throws IOException
      *             IOException
-     * @throws InvalidFormatException
-     *             InvalidFormatException
      * @throws DocumentParserException
      *             DocumentParserException
      */
-    private void launchParsing() throws DocumentParserException {
+    private void launchParsing() throws DocumentParserException, IOException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-        try {
-            document = POIServices.getInstance()
-                    .getXWPFDocument(URI.createFileURI(generatedFileCopy.getAbsolutePath()));
-            // CHECKSTYLE:OFF
+
+        try (DocumentTemplate userDocDocument = M2DocUtils
+                .parseUserContent(URI.createFileURI(generatedFileCopy.getAbsolutePath()), queryEnvironment);) {
+            final TreeIterator<EObject> iter = userDocDocument.eAllContents();
+            while (iter.hasNext()) {
+                EObject eObject = iter.next();
+                if (eObject instanceof UserContent) {
+                    UserContent userContent = (UserContent) eObject;
+                    if (userContent.getId() != null) {
+                        String id = userContent.getId();
+                        if (mapIdUserContent == null) {
+                            mapIdUserContent = new HashMap<>();
+                        }
+                        if (mapIdUserContent.containsKey(id)) {
+                            // Mark message to generate lost part of document
+                            TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
+                                    ValidationMessageLevel.WARNING,
+                                    "The id " + id
+                                        + " is already used in generated document. Ids must be unique otherwise document part contained userContent will be lost.",
+                                    userContent.getRuns().get(0));
+                            userContent.getValidationMessages().add(templateValidationMessage);
+                        } else {
+                            mapIdUserContent.put(id, userContent);
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
             // In this case, we do nothing.
             // The old output doc is not a docx document and it will be overwrite at current generation.
             // And we have nothing to extract to a no docx document.
-            return;
-        }
-        // CHECKSTYLE:ON
-        DocumentGeneratedParser documentGeneratedParser = new DocumentGeneratedParser(document, queryEnvironment);
-        DocumentTemplate documentTemplate = documentGeneratedParser.parseDocument();
-        final TreeIterator<EObject> iter = documentTemplate.eAllContents();
-        while (iter.hasNext()) {
-            EObject eObject = iter.next();
-            if (eObject instanceof UserContent) {
-                UserContent userContent = (UserContent) eObject;
-                if (userContent.getId() != null) {
-                    String id = userContent.getId();
-                    if (mapIdUserContent == null) {
-                        mapIdUserContent = new HashMap<>();
-                    }
-                    if (mapIdUserContent.containsKey(id)) {
-                        // Mark message to generate lost part of document
-                        TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
-                                ValidationMessageLevel.WARNING,
-                                "The id " + id
-                                    + " is already used in generated document. Ids must be unique otherwise document part contained userContent will be lost.",
-                                userContent.getRuns().get(0));
-                        userContent.getValidationMessages().add(templateValidationMessage);
-                    } else {
-                        mapIdUserContent.put(id, userContent);
-                    }
-                }
-            }
         }
     }
 

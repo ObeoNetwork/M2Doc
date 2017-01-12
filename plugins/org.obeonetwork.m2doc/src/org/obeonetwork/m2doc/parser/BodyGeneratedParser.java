@@ -65,7 +65,8 @@ public class BodyGeneratedParser extends BodyAbstractParser {
      * @param queryEnvironment
      *            The {@link IQueryEnvironment}
      */
-    BodyGeneratedParser(IBody inputDocument, IQueryBuilderEngine queryParser, IQueryEnvironment queryEnvironment) {
+    private BodyGeneratedParser(IBody inputDocument, IQueryBuilderEngine queryParser,
+            IQueryEnvironment queryEnvironment) {
         super(inputDocument, queryParser, queryEnvironment);
     }
 

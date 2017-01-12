@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a user doc :End of demonstration.
+=== FOOTER ===
+template null
+  
+  userdoc 'zone1' do
+    
+      Some protected text.
+  enduserdoc
+  
+  

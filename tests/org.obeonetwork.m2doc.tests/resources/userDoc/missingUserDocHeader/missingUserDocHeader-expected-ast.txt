@@ -1,0 +1,8 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a user doc :Some protected text.
+  End of demonstration.
+=== FOOTER ===

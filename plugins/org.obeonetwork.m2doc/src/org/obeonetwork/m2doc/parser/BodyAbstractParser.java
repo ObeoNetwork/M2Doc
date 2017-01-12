@@ -104,7 +104,8 @@ public abstract class BodyAbstractParser {
      * @param queryEnvironment
      *            The {@link IQueryEnvironment}
      */
-    BodyAbstractParser(IBody inputDocument, IQueryBuilderEngine queryParser, IQueryEnvironment queryEnvironment) {
+    protected BodyAbstractParser(IBody inputDocument, IQueryBuilderEngine queryParser,
+            IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
         this.queryParser = queryParser;
