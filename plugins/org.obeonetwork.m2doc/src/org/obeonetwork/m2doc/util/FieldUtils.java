@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.util;
 
 import java.util.List;
 
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.parser.TokenProvider;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFldChar;
@@ -166,5 +167,31 @@ public class FieldUtils {
             runBuilder.append(text.getStringValue());
         }
         return runBuilder;
+    }
+
+    /**
+     * * Add instruction word Document Field.
+     * 
+     * @param paragraph
+     *            paragraph where write instruction
+     * @param instruction
+     *            M2Doc tag
+     */
+    public void addInstrField(XWPFParagraph paragraph, String instruction) {
+        // Add r begin
+        CTFldChar fldCharBegin = paragraph.getCTP().addNewR().addNewFldChar();
+        fldCharBegin.setFldCharType(STFldCharType.BEGIN);
+
+        // Add m2doc tag
+        CTText instr = paragraph.getCTP().addNewR().addNewInstrText();
+        instr.setStringValue(instruction);
+
+        // Add r Separate
+        CTFldChar fldCharSeparate = paragraph.getCTP().addNewR().addNewFldChar();
+        fldCharSeparate.setFldCharType(STFldCharType.SEPARATE);
+
+        // Add r Separate
+        CTFldChar fldCharEnd = paragraph.getCTP().addNewR().addNewFldChar();
+        fldCharEnd.setFldCharType(STFldCharType.END);
     }
 }

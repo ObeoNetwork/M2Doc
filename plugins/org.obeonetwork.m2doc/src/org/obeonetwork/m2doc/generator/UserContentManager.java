@@ -56,6 +56,11 @@ public class UserContentManager {
     private Map<String, UserContent> mapIdUserContent;
 
     /**
+     * Lost id.
+     */
+    private boolean noLostId = true;
+
+    /**
      * Current document.
      */
     private XWPFDocument document;
@@ -104,9 +109,12 @@ public class UserContentManager {
                             TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
                                     ValidationMessageLevel.WARNING,
                                     "The id " + id
-                                        + " is already used in generated document. Ids must be unique otherwise document part contained userContent will be lost.",
+                                        + " is already used in generated document. Ids must be unique otherwise document part contained userContent will be lost. "
+                                        + "The previous generated document is copied here : "
+                                        + generatedFileCopy.getAbsoluteFile(),
                                     userContent.getRuns().get(0));
                             userContent.getValidationMessages().add(templateValidationMessage);
+                            lostIdOccur();
                         } else {
                             mapIdUserContent.put(id, userContent);
                         }
@@ -160,8 +168,9 @@ public class UserContentManager {
      *             IOException
      */
     public void dispose() throws IOException {
+
         // Delete Temp Generated File.
-        if (generatedFileCopy != null && generatedFileCopy.exists() && generatedFileCopy.isFile()) {
+        if (noLostId && generatedFileCopy != null && generatedFileCopy.exists() && generatedFileCopy.isFile()) {
             mapIdUserContent = null;
             generatedFileCopy.delete();
         }
@@ -192,5 +201,21 @@ public class UserContentManager {
                 os.write(buffer, 0, length);
             }
         }
+    }
+
+    /**
+     * Lost id occur in current transformation.
+     */
+    public void lostIdOccur() {
+        noLostId = false;
+    }
+
+    /**
+     * Get generatedFileCopy.
+     * 
+     * @return the generatedFileCopy
+     */
+    public File getGeneratedFileCopy() {
+        return generatedFileCopy;
     }
 }
