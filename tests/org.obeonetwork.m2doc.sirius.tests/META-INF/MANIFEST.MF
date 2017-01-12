@@ -9,11 +9,11 @@ Require-Bundle: org.junit,
  org.obeonetwork.m2doc.sirius;bundle-version="0.9.3",
  org.obeonetwork.m2doc;bundle-version="0.9.3",
  org.obeonetwork.m2doc.ui;bundle-version="0.9.3",
- org.eclipse.sirius,
+ org.eclipse.sirius;bundle-version="[0.0.0,4.1.0)",
  org.eclipse.core.runtime,
  org.obeonetwork.m2doc.genconf;bundle-version="0.9.3",
- org.eclipse.sirius.table,
- org.eclipse.sirius.common,
+ org.eclipse.sirius.table;bundle-version="[0.0.0,4.1.0)",
+ org.eclipse.sirius.common;bundle-version="[0.0.0,4.1.0)",
  org.obeonetwork.m2doc.tests
 Export-Package: org.obeonetwork.m2doc.sirius.tests
 Bundle-ActivationPolicy: lazy

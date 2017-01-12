@@ -15,11 +15,11 @@ location Eclipse "http://download.eclipse.org/releases/neon" {
 	org.eclipse.gmf.runtime.diagram.ui lazy
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
 	
-	org.eclipse.sirius lazy
-	org.eclipse.sirius.diagram lazy
-	org.eclipse.sirius.diagram.ui lazy
-	org.eclipse.sirius.table lazy
-	org.eclipse.sirius.table.ui lazy
-
 	org.eclipse.acceleo.query.feature.group lazy
+	
+}
+
+location "http://download.eclipse.org/sirius/updates/nightly/4.0.x/neon" {
+	 org.eclipse.sirius.runtime.feature.group lazy
+	 org.eclipse.sirius.diagram.ui lazy	 
 }
