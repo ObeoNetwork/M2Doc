@@ -113,7 +113,8 @@ public class UserContentRawCopy {
         XWPFDocument containerOutputDocument = outputParagraphBeforeUserDocContent.getDocument();
         // Test if run before userContent is in same XWPFParagraph than first run of userContent
         if (!userDocContentIsFirstRunOfParagraph(userContent)) {
-            previousInputParagraph = userContent.getRuns().get(userContent.getRuns().size() - 1).getParagraph();
+            previousInputParagraph = (XWPFParagraph) userContent.getRuns().get(userContent.getRuns().size() - 1)
+                    .getParent();
             currentInputParagraph = previousInputParagraph;
             currentOutputParagraph = outputParagraphBeforeUserDocContent;
         }
@@ -158,7 +159,7 @@ public class UserContentRawCopy {
         changePictureId();
 
         if (userContent.getClosingRuns().size() != 0
-            && currentInputParagraph == userContent.getClosingRuns().get(0).getParagraph()) {
+            && currentInputParagraph == userContent.getClosingRuns().get(0).getParent()) {
             needNewParagraph = false;
         }
         return currentOutputParagraph;

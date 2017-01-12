@@ -14,8 +14,6 @@ package org.obeonetwork.m2doc.generator.test;
 
 import java.io.FileInputStream;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -23,11 +21,9 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.provider.test.TestDiagramProvider;
-import org.obeonetwork.m2doc.test.M2DocTestUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
 import static org.junit.Assert.assertEquals;
@@ -50,25 +46,6 @@ public class DocumentGeneratorTest {
     @After
     public void after() {
         ProviderRegistry.INSTANCE.clear();
-    }
-
-    @Test
-    @Ignore(value = "Seems like nobody knows yet what is the actual expected result.")
-    public void testImageGeneration() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        definitions.put("x", "valueofx");
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/testImageTag.docx", "results/testImageTag.docx",
-                definitions, null, false);
-    }
-
-    @Test
-    @Ignore(value = "Seems like nobody knows yet what is the actual expected result.")
-    public void testDiagramGeneration() throws Exception {
-
-        Map<String, Object> definitions = new HashMap<>();
-        M2DocTestUtils.doGenerateDocAndCheckText("templates/allDiagram.docx", "results/allDiagram.docx", definitions,
-                null, false);
     }
 
     @Test

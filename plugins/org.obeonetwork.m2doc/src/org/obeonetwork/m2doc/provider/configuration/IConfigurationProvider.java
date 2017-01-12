@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
@@ -99,11 +98,8 @@ public interface IConfigurationProvider {
      *            IFile
      * @param template
      *            DocumentTemplate
-     * @param generator
-     *            DocumentGenerator
      * @return URI list to return after the generation. Generation result and validation log are already in there.
      */
-    List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
-            DocumentGenerator generator);
+    List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template);
 
 }

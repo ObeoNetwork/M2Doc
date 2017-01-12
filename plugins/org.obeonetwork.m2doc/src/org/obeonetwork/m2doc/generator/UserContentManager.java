@@ -20,14 +20,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -69,12 +67,8 @@ public class UserContentManager {
      *            Generated path file name
      * @throws IOException
      *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
-     * @throws InvalidFormatException
-     *             InvalidFormatException
      */
-    public UserContentManager(URI destinationPathFileName) throws IOException, DocumentParserException {
+    public UserContentManager(URI destinationPathFileName) throws IOException {
         if (URIConverter.INSTANCE.exists(destinationPathFileName, Collections.EMPTY_MAP)) {
             // Copy file
             generatedFileCopy = tempCopyFile(destinationPathFileName);
@@ -88,10 +82,8 @@ public class UserContentManager {
      * 
      * @throws IOException
      *             IOException
-     * @throws DocumentParserException
-     *             DocumentParserException
      */
-    private void launchParsing() throws DocumentParserException, IOException {
+    private void launchParsing() throws IOException {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
@@ -121,7 +113,9 @@ public class UserContentManager {
                     }
                 }
             }
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             // In this case, we do nothing.
             // The old output doc is not a docx document and it will be overwrite at current generation.
             // And we have nothing to extract to a no docx document.

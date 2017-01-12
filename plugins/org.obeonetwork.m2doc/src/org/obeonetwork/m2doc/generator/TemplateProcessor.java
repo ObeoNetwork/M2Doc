@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.generator;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.io.FileNotFoundException;
@@ -21,16 +22,20 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Stack;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -43,6 +48,7 @@ import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
@@ -64,6 +70,7 @@ import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
@@ -79,6 +86,7 @@ import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
@@ -106,17 +114,10 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * The {@link BookmarkManager}.
      */
     private final BookmarkManager bookmarkManager;
-
-    /**
-     * The {@link IQueryEnvironment} instance used for evaluating all the AQL
-     * queries found in the template.
-     */
-    private IQueryEnvironment queryEnvironment;
-
     /**
      * variable definition used during generation.
      */
-    private GenerationEnvironment definitions;
+    private final Stack<Map<String, Object>> variablesStack = new Stack<Map<String, Object>>();
     /**
      * The generated document.
      */
@@ -129,6 +130,14 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * The currently generated paragraph where runs are actually inserted.
      */
     private XWPFParagraph currentGeneratedParagraph;
+    /**
+     * The currently generated {@link XWPFTable}.
+     */
+    private XWPFTable currentGeneratedTable;
+    /**
+     * The currently generated {@link XWPFTableRow}.
+     */
+    private XWPFTableRow currentGeneratedRow;
     /**
      * Used to force a new paragraph in gf:for body when there's a carriage
      * return before the {m:endfor} tag.
@@ -166,33 +175,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * 
      * @param initialDefs
      *            the definitions used in queries and variable tags
-     * @param projectPath
-     *            deprecated, should not be used anymore.
-     * @param bookmarkManager
-     *            the {@link BookmarkManager}
-     * @param userContentManager
-     *            the {@link UserContentManager}
-     * @param queryEnvironment
-     *            the query environment used to evaluate queries in the
-     * @param destinationDocument
-     *            the path to the destination document.
-     * @param theTargetConfObject
-     *            the root EObject of the gen conf model.
-     */
-    @Deprecated
-    public TemplateProcessor(Map<String, Object> initialDefs, String projectPath, BookmarkManager bookmarkManager,
-            UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
-            EObject theTargetConfObject) {
-        this(initialDefs, bookmarkManager, userContentManager, queryEnvironment, destinationDocument,
-                theTargetConfObject);
-    }
-
-    /**
-     * Create a new {@link TemplateProcessor} instance given some definitions
-     * and a query environment.
-     * 
-     * @param initialDefs
-     *            the definitions used in queries and variable tags
      * @param bookmarkManager
      *            the {@link BookmarkManager}
      * @param userContentManager
@@ -205,60 +187,67 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      *            the root EObject of the gen conf model.
      */
     public TemplateProcessor(Map<String, Object> initialDefs, BookmarkManager bookmarkManager,
-            UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
-            EObject theTargetConfObject) {
-        this.definitions = new GenerationEnvironment(initialDefs);
+            UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment,
+            IBody destinationDocument, EObject theTargetConfObject) {
+        variablesStack.push(initialDefs);
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
-        this.queryEnvironment = queryEnvironment;
-        this.evaluator = new QueryEvaluationEngine(queryEnvironment);
+        this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
         this.generatedDocument = destinationDocument;
         this.targetConfObject = theTargetConfObject;
+    }
+
+    @Override
+    public IConstruct caseDocumentTemplate(DocumentTemplate documentTemplate) {
+        doSwitch(documentTemplate.getBody());
+
+        final XWPFDocument document = (XWPFDocument) generatedDocument;
+        final Iterator<XWPFFooter> footers = document.getFooterList().iterator();
+        for (final Template footer : documentTemplate.getFooters()) {
+            final XWPFFooter f = footers.next();
+            cleanHeaderFooter(f);
+            generatedDocument = f;
+            doSwitch(footer);
+        }
+        final Iterator<XWPFHeader> headers = document.getHeaderList().iterator();
+        for (final Template header : documentTemplate.getHeaders()) {
+            final XWPFHeader h = headers.next();
+            cleanHeaderFooter(h);
+            generatedDocument = h;
+            doSwitch(header);
+        }
+
+        return null;
     }
 
     /**
-     * Create a new {@link TemplateProcessor} instance given some definitions
-     * and a query environment.
+     * Clear up the header or footer from the existing paragraphs and tables.
      * 
-     * @param defs
-     *            the definitions used in queries and variable tags
-     * @param bookmarkManager
-     *            the {@link BookmarkManager}
-     * @param userContentManager
-     *            the {@link UserContentManager}
-     * @param queryEnvironment
-     *            the query environment used to evaluate queries in the
-     *            template.
-     * @param destinationDocument
-     *            the path to the destination document.
-     * @param theTargetConfObject
-     *            the root EObject of the gen conf model.
+     * @param headerFooter
+     *            the header or footer to clean up.
      */
-    public TemplateProcessor(GenerationEnvironment defs, BookmarkManager bookmarkManager,
-            UserContentManager userContentManager, IQueryEnvironment queryEnvironment, IBody destinationDocument,
-            EObject theTargetConfObject) {
-        this.definitions = defs;
-        this.bookmarkManager = bookmarkManager;
-        this.userContentManager = userContentManager;
-        this.queryEnvironment = queryEnvironment;
-        this.evaluator = new QueryEvaluationEngine(queryEnvironment);
-        this.generatedDocument = destinationDocument;
-        this.targetConfObject = theTargetConfObject;
+    void cleanHeaderFooter(XWPFHeaderFooter headerFooter) {
+        CTHdrFtr ctHdrFtr = (CTHdrFtr) headerFooter._getHdrFtr().copy();
+        ctHdrFtr.getPList().clear();
+        ctHdrFtr.getTblList().clear();
+        // XXX : there are many other lists in the header and footer that should
+        // probably be cleaned.
+        headerFooter.setHeaderFooter(ctHdrFtr);
     }
 
     @Override
-    public IConstruct caseTemplate(Template object) {
-        doSwitch(object.getBody());
+    public IConstruct caseTemplate(Template template) {
+        doSwitch(template.getBody());
 
-        return object;
+        return template;
     }
 
     @Override
-    public IConstruct caseStaticFragment(StaticFragment object) {
-        for (XWPFRun run : object.getRuns()) {
+    public IConstruct caseStaticFragment(StaticFragment staticFragment) {
+        for (XWPFRun run : staticFragment.getRuns()) {
             insertRun(run);
         }
-        return object;
+        return staticFragment;
     }
 
     /**
@@ -405,7 +394,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (query.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(query, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult queryResult = evaluator.eval(query.getQuery(), definitions.getCurrentDefinitions());
+            final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
             } else if (queryResult.getResult() == null) {
@@ -423,8 +412,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (repetition.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(repetition, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(),
-                    definitions.getCurrentDefinitions());
+            final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(repetition, queryResult.getDiagnostic());
             } else {
@@ -434,10 +422,16 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 } else {
                     iteration.add(queryResult.getResult());
                 }
-                for (Object val : iteration) {
-                    this.definitions.setValue(repetition.getIterationVar(), val);
-                    doSwitch(repetition.getBody());
-                    closingRepretition(repetition);
+                final Map<String, Object> newVariables = Maps.newHashMap(variablesStack.peek());
+                variablesStack.push(newVariables);
+                try {
+                    for (Object val : iteration) {
+                        newVariables.put(repetition.getIterationVar(), val);
+                        doSwitch(repetition.getBody());
+                        closingRepretition(repetition);
+                    }
+                } finally {
+                    variablesStack.pop();
                 }
             }
         }
@@ -451,7 +445,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (userDoc.getId().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(userDoc, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), definitions.getCurrentDefinitions());
+            final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(userDoc, queryResult.getDiagnostic());
             } else {
@@ -607,12 +601,12 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseBlock(Block compound) {
-        for (IConstruct construct : compound.getStatements()) {
+    public IConstruct caseBlock(Block block) {
+        for (IConstruct construct : block.getStatements()) {
             doSwitch(construct);
         }
 
-        return compound;
+        return block;
     }
 
     @Override
@@ -620,8 +614,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (conditional.getCondition().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(conditional, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult result = evaluator.eval(conditional.getCondition(),
-                    definitions.getCurrentDefinitions());
+            final EvaluationResult result = evaluator.eval(conditional.getCondition(), variablesStack.peek());
             if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(conditional, result.getDiagnostic());
                 for (XWPFRun tagRun : conditional.getClosingRuns()) {
@@ -649,17 +642,17 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseTable(Table object) {
+    public IConstruct caseTable(Table table) {
         // Create the table structure in the destination document.
-        XWPFTable generatedTable;
-        CTTbl copy = (CTTbl) object.getTable().getCTTbl().copy();
+
+        CTTbl copy = (CTTbl) table.getTable().getCTTbl().copy();
         copy.getTrList().clear();
         if (generatedDocument instanceof XWPFDocument) {
-            generatedTable = ((XWPFDocument) generatedDocument).createTable();
-            if (generatedTable.getRows().size() > 0) {
-                generatedTable.removeRow(0);
+            currentGeneratedTable = ((XWPFDocument) generatedDocument).createTable();
+            if (currentGeneratedTable.getRows().size() > 0) {
+                currentGeneratedTable.removeRow(0);
             }
-            generatedTable.getCTTbl().set(copy);
+            currentGeneratedTable.getCTTbl().set(copy);
         } else if (generatedDocument instanceof XWPFTableCell) {
             XWPFTableCell tCell = (XWPFTableCell) generatedDocument;
             int tableRank = tCell.getTables().size();
@@ -668,30 +661,49 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 newTable.removeRow(0);
             }
             tCell.insertTable(tableRank, newTable);
-            generatedTable = tCell.getTables().get(tableRank);
+            currentGeneratedTable = tCell.getTables().get(tableRank);
         } else {
             throw new UnsupportedOperationException("unknown type of IBody : " + generatedDocument.getClass());
         }
         // iterate on the row
-        for (Row row : object.getRows()) {
-            XWPFTableRow newRow = generatedTable.createRow();
-            CTRow ctRow = (CTRow) row.getTableRow().getCtRow().copy();
-            ctRow.getTcList().clear();
-            newRow.getCtRow().set(ctRow);
-            // iterate on cells.
-            for (Cell cell : row.getCells()) {
-                XWPFTableCell newCell = newRow.createCell();
-                CTTc ctCell = (CTTc) cell.getTableCell().getCTTc().copy();
-                ctCell.getPList().clear();
-                ctCell.getTblList().clear();
-                newCell.getCTTc().set(ctCell);
-                // process the cell :
-                TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager,
-                        queryEnvironment, newCell, targetConfObject);
-                processor.doSwitch(cell.getTemplate());
-            }
+        for (Row row : table.getRows()) {
+            doSwitch(row);
         }
-        return super.caseTable(object);
+
+        return table;
+    }
+
+    @Override
+    public IConstruct caseRow(Row row) {
+        currentGeneratedRow = currentGeneratedTable.createRow();
+        final CTRow ctRow = (CTRow) row.getTableRow().getCtRow().copy();
+        ctRow.getTcList().clear();
+        currentGeneratedRow.getCtRow().set(ctRow);
+        // iterate on cells.
+        for (Cell cell : row.getCells()) {
+            doSwitch(cell);
+        }
+
+        return null;
+    }
+
+    @Override
+    public IConstruct caseCell(Cell cell) {
+        final XWPFTableCell newCell = currentGeneratedRow.createCell();
+        final CTTc ctCell = (CTTc) cell.getTableCell().getCTTc().copy();
+        ctCell.getPList().clear();
+        ctCell.getTblList().clear();
+        newCell.getCTTc().set(ctCell);
+
+        final IBody savedGeneratedDocument = generatedDocument;
+        generatedDocument = newCell;
+        try {
+            doSwitch(cell.getTemplate());
+        } finally {
+            generatedDocument = savedGeneratedDocument;
+        }
+
+        return null;
     }
 
     /**
@@ -773,30 +785,30 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             }
         }
 
-        return super.caseImage(image);
+        return image;
     }
 
     @Override
-    public IConstruct caseRepresentation(Representation object) {
-        XWPFRun imageRun = insertRun(object.getStyleRun());
-        IProvider provider = object.getProvider();
+    public IConstruct caseRepresentation(Representation representation) {
+        XWPFRun imageRun = insertRun(representation.getStyleRun());
+        IProvider provider = representation.getProvider();
         if (provider == null) {
             M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    object.getValidationMessages().get(0).getMessage());
+                    representation.getValidationMessages().get(0).getMessage());
         } else {
             Map<String, Object> parameters;
             try {
-                parameters = setupParametersMap(object, provider);
+                parameters = setupParametersMap(representation, provider);
                 List<String> imagePaths = ((AbstractDiagramProvider) provider).getRepresentationImagePath(parameters);
                 usedProviders.add((AbstractDiagramProvider) provider);
                 for (String imagePathStr : imagePaths) {
                     URI imagePath = URI.createFileURI(imagePathStr);
-                    if (!imagePath.hasAbsolutePath() && object.eResource() != null
-                        && object.eResource().getURI() != null) {
+                    if (!imagePath.hasAbsolutePath() && representation.eResource() != null
+                        && representation.eResource().getURI() != null) {
                         /*
                          * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
                          */
-                        imagePath = object.eResource().getURI().trimSegments(1);
+                        imagePath = representation.eResource().getURI().trimSegments(1);
                         for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(imagePathStr)) {
                             imagePath = imagePath.appendSegment(s);
                         }
@@ -807,14 +819,14 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                         imageRun.getCTR().getInstrTextList().clear();
 
                         // get default image size if needed
-                        if (object.getHeight() == 0) {
-                            object.setHeight(((AbstractDiagramProvider) provider).getHeight());
+                        if (representation.getHeight() == 0) {
+                            representation.setHeight(((AbstractDiagramProvider) provider).getHeight());
                         }
-                        if (object.getWidth() == 0) {
-                            object.setWidth(((AbstractDiagramProvider) provider).getWidth());
+                        if (representation.getWidth() == 0) {
+                            representation.setWidth(((AbstractDiagramProvider) provider).getWidth());
                         }
-                        int height = Units.toEMU(object.getHeight());
-                        int width = Units.toEMU(object.getWidth());
+                        int height = Units.toEMU(representation.getHeight());
+                        int width = Units.toEMU(representation.getWidth());
 
                         try (InputStream fileInputStream = URIConverter.INSTANCE.createInputStream(imagePath)) {
                             imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePathStr, width,
@@ -840,22 +852,22 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
         }
 
-        return super.caseRepresentation(object);
+        return representation;
 
     }
 
     @Override
-    public IConstruct caseTableClient(TableClient object) {
-        XWPFRun tableRun = insertRun(object.getStyleRun());
+    public IConstruct caseTableClient(TableClient tableClient) {
+        XWPFRun tableRun = insertRun(tableClient.getStyleRun());
         tableRun.getCTR().getInstrTextList().clear();
-        AbstractTableProvider provider = (AbstractTableProvider) object.getProvider();
+        AbstractTableProvider provider = (AbstractTableProvider) tableClient.getProvider();
         if (provider == null) {
             M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    object.getValidationMessages().get(0).getMessage());
+                    tableClient.getValidationMessages().get(0).getMessage());
         } else {
             Map<String, Object> parameters;
             try {
-                parameters = setupParametersMap(object, provider);
+                parameters = setupParametersMap(tableClient, provider);
                 TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters);
                 tableProcessor.generate(tableRun);
             } catch (IllegalArgumentException e) {
@@ -865,7 +877,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                         "A problem occured while creating table from a table provider: " + e.getMessage());
             }
         }
-        return super.caseTableClient(object);
+        return tableClient;
     }
 
     /**
@@ -900,7 +912,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (bookmark.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(bookmark, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult result = evaluator.eval(bookmark.getName(), definitions.getCurrentDefinitions());
+            final EvaluationResult result = evaluator.eval(bookmark.getName(), variablesStack.peek());
             if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(bookmark, result.getDiagnostic());
             } else {
@@ -958,11 +970,11 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             || link.getText().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(link, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult nameResult = evaluator.eval(link.getName(), definitions.getCurrentDefinitions());
+            final EvaluationResult nameResult = evaluator.eval(link.getName(), variablesStack.peek());
             if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(link, nameResult.getDiagnostic());
             } else {
-                final EvaluationResult textResult = evaluator.eval(link.getText(), definitions.getCurrentDefinitions());
+                final EvaluationResult textResult = evaluator.eval(link.getText(), variablesStack.peek());
                 if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                     insertQueryEvaluationMessages(link, textResult.getDiagnostic());
                 } else {
@@ -972,7 +984,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             }
         }
 
-        return super.caseLink(link);
+        return link;
     }
 
     /**
@@ -1054,8 +1066,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             throw new IllegalArgumentException(
                     QUERY_SYNTAX_ERROR_MESSAGE + templateProvider.getValidationMessages().get(0).getMessage());
         } else {
-            EvaluationResult result = evaluator.eval((AstResult) aqlEntry.getValue(),
-                    definitions.getCurrentDefinitions());
+            EvaluationResult result = evaluator.eval((AstResult) aqlEntry.getValue(), variablesStack.peek());
             if (result == null) {
                 throw new IllegalArgumentException(QUERY_EVALERROR_MESSAGE);
             } else if (result.getResult() == null) {

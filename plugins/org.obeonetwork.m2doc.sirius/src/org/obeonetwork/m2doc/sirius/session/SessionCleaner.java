@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -46,8 +45,8 @@ public class SessionCleaner implements IConfigurationProvider {
     }
 
     @Override
-    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
-            DocumentGenerator generator) {
+    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile,
+            DocumentTemplate template) {
         CleaningJobRegistry.INSTANCE.clean(generation);
         return Collections.emptyList();
     }

@@ -46,7 +46,6 @@ import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
@@ -306,9 +305,7 @@ public abstract class AbstractTemplatesTestSuite {
     private void generateTemplate(final File templateFile, File outputFile)
             throws DocumentGenerationException, IOException, DocumentParserException {
         String outputPath = outputFile.getAbsolutePath();
-        DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templateFile.getAbsolutePath()),
-                URI.createFileURI(outputPath), documentTemplate, variables, queryEnvironment, generation);
-        generator.generate();
+        M2DocUtils.generate(documentTemplate, queryEnvironment, variables, URI.createFileURI(outputPath), generation);
     }
 
     /**

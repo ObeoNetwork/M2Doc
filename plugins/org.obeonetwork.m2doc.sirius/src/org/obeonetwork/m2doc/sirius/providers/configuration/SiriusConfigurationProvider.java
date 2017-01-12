@@ -28,7 +28,6 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -190,11 +189,11 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * 
      * @see org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider#postGenerate(org.obeonetwork.m2doc.genconf.Generation,
      *      org.eclipse.core.resources.IProject, org.eclipse.core.resources.File, org.eclipse.core.resources.File,
-     *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.generator.DocumentGenerator)
+     *      org.obeonetwork.m2doc.template.DocumentTemplate)
      */
     @Override
-    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
-            DocumentGenerator generator) {
+    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile,
+            DocumentTemplate template) {
         // do nothing.
         return Lists.newArrayList();
     }

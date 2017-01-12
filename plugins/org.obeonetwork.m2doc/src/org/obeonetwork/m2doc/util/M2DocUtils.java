@@ -32,6 +32,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -41,8 +42,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.generator.BookmarkManager;
+import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.generator.TemplateProcessor;
 import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
+import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
 import org.obeonetwork.m2doc.parser.BodyTemplateParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -417,10 +422,45 @@ public final class M2DocUtils {
      * @param variables
      *            variables
      * @param destination
-     *            the destination.
+     *            the destination
+     * @param targetConfObject
+     *            the root EObject of the gen conf model
+     * @throws DocumentGenerationException
+     *             if the generation fails
      */
     public static void generate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment,
-            Map<String, Object> variables, URI destination) {
+            Map<String, Object> variables, URI destination, EObject targetConfObject)
+            throws DocumentGenerationException {
 
+        try (final InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
+                final OPCPackage oPackage = OPCPackage.open(is);
+                final XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
+            // clear the document
+            int size = destinationDocument.getBodyElements().size();
+            for (int i = 0; i < size; i++) {
+                destinationDocument.removeBodyElement(0);
+            }
+
+            final BookmarkManager bookmarkManager = new BookmarkManager();
+            final UserContentManager userContentManager = new UserContentManager(destination);
+            TemplateProcessor processor = new TemplateProcessor(variables, bookmarkManager, userContentManager,
+                    queryEnvironment, destinationDocument, targetConfObject);
+            processor.doSwitch(documentTemplate);
+
+            bookmarkManager.markDanglingReferences();
+            bookmarkManager.markOpenBookmarks();
+            // At this point, the document has been generated and just needs being
+            // written on disk.
+            POIServices.getInstance().saveFile(destinationDocument, destination);
+
+            // Remove temporary last destination document
+            userContentManager.dispose();
+            processor.clear();
+        } catch (IOException e) {
+            throw new DocumentGenerationException("An I/O problem occured while creating the output document.", e);
+        } catch (InvalidFormatException e) {
+            throw new DocumentGenerationException("Input document seems to have an invalid format.", e);
+        }
     }
+
 }

@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
@@ -134,9 +133,7 @@ public class GenconfToDocumentGenerator {
             boolean inError = validate(generatedFile, template, generation);
 
             // launch generation
-            DocumentGenerator generator = new DocumentGenerator(templateFile, generatedFile, template, definitions,
-                    queryEnvironment, generation);
-            generator.generate();
+            M2DocUtils.generate(template, queryEnvironment, definitions, generatedFile, generation);
 
             List<URI> generatedFiles = Lists.newArrayList(generatedFile);
             if (inError) {
@@ -145,7 +142,7 @@ public class GenconfToDocumentGenerator {
             }
 
             // post generation
-            generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template, generator));
+            generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template));
 
             return generatedFiles;
         }
@@ -178,16 +175,14 @@ public class GenconfToDocumentGenerator {
      *            File
      * @param template
      *            DocumentTemplate
-     * @param generator
-     *            DocumentGenerator
      * @return File list to return after the generation. Generation result and validation log are already in there.
      */
-    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
-            DocumentGenerator generator) {
+    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile,
+            DocumentTemplate template) {
         List<URI> files = Lists.newArrayList();
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
             List<URI> postGenerateFiles = configurationProvider.postGenerate(generation, templateFile, generatedFile,
-                    template, generator);
+                    template);
             if (postGenerateFiles != null) {
                 files.addAll(postGenerateFiles);
             }

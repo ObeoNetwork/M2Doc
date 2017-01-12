@@ -19,14 +19,12 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -45,18 +43,13 @@ import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.generator.DocumentGenerator;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
 
@@ -163,87 +156,6 @@ public final class M2DocTestUtils {
         construct.getClosingRuns().add(paragraph.createRun());
         construct.getClosingRuns().add(paragraph.createRun());
         construct.getClosingRuns().add(paragraph.createRun());
-    }
-
-    /**
-     * Generates the given template and check the result against the given result.
-     * 
-     * @param templatePath
-     *            the template .docx path
-     * @param resultPath
-     *            the expected result .docx path
-     * @param definitions
-     *            the variables
-     * @param generation
-     *            the {@link Generation}
-     * @throws Exception
-     *             if something go wring
-     */
-    public static void doGenerateDocAndCheckText(String templatePath, String resultPath,
-            Map<String, Object> definitions, Generation generation) throws Exception {
-        doGenerateDocAndCheckText(templatePath, resultPath, definitions, generation, true);
-    }
-
-    /**
-     * Generates the given template and check the result against the given result.
-     * 
-     * @param templatePath
-     *            the template .docx path
-     * @param resultPath
-     *            the expected result .docx path
-     * @param definitions
-     *            the variables
-     * @param generation
-     *            the {@link Generation}
-     * @param checkThroughPOI
-     *            should we check the text extracted using PIO
-     * @throws Exception
-     *             if something go wring
-     */
-    public static void doGenerateDocAndCheckText(String templatePath, String resultPath,
-            Map<String, Object> definitions, Generation generation, boolean checkThroughPOI) throws Exception {
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
-        File out = null;
-        try (FileInputStream is = new FileInputStream(templatePath)) {
-            try (OPCPackage oPackage = OPCPackage.open(is)) {
-                try (XWPFDocument document = new XWPFDocument(oPackage)) {
-                    out = File.createTempFile(resultPath, "generated-test");
-                    String outputPath = out.getAbsolutePath();
-                    generate(templatePath, outputPath, queryEnvironment, definitions, generation);
-                    assertDocx(resultPath, outputPath, checkThroughPOI);
-                }
-            }
-        } finally {
-            if (out != null) {
-                out.delete();
-            }
-        }
-    }
-
-    /**
-     * Generates the given template to the given output path.
-     * 
-     * @param templatePath
-     *            the template path .docx
-     * @param outputPath
-     *            the output path .docx
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
-     * @param variables
-     *            the variables
-     * @param generation
-     *            the {@link Generation}
-     * @throws Exception
-     *             if something went wrong
-     */
-    public static void generate(String templatePath, String outputPath, IQueryEnvironment queryEnvironment,
-            Map<String, Object> variables, Generation generation) throws Exception {
-        try (DocumentTemplate template = M2DocUtils.parse(URI.createFileURI(templatePath), queryEnvironment)) {
-            DocumentGenerator generator = new DocumentGenerator(URI.createFileURI(templatePath),
-                    URI.createFileURI(outputPath), template, variables, queryEnvironment, generation);
-            generator.generate();
-        }
     }
 
     /**
