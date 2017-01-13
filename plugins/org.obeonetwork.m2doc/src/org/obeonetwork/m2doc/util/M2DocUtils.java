@@ -432,9 +432,10 @@ public final class M2DocUtils {
             Map<String, Object> variables, URI destination, EObject targetConfObject)
             throws DocumentGenerationException {
 
-        try (final InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
-                final OPCPackage oPackage = OPCPackage.open(is);
-                final XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
+        UserContentManager userContentManager = null;
+        try (InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
             // clear the document
             int size = destinationDocument.getBodyElements().size();
             for (int i = 0; i < size; i++) {
@@ -442,7 +443,7 @@ public final class M2DocUtils {
             }
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(destination);
+            userContentManager = new UserContentManager(destination);
             TemplateProcessor processor = new TemplateProcessor(variables, bookmarkManager, userContentManager,
                     queryEnvironment, destinationDocument, targetConfObject);
             processor.doSwitch(documentTemplate);
@@ -453,13 +454,35 @@ public final class M2DocUtils {
             // written on disk.
             POIServices.getInstance().saveFile(destinationDocument, destination);
 
-            // Remove temporary last destination document
-            userContentManager.dispose();
             processor.clear();
         } catch (IOException e) {
+            if (userContentManager != null) {
+                try {
+                    userContentManager.dispose();
+                } catch (IOException e2) {
+                    // Do no thing
+                }
+            }
             throw new DocumentGenerationException("An I/O problem occured while creating the output document.", e);
         } catch (InvalidFormatException e) {
+            if (userContentManager != null) {
+                try {
+                    userContentManager.dispose();
+                } catch (IOException e2) {
+                    // Do no thing
+                }
+            }
             throw new DocumentGenerationException("Input document seems to have an invalid format.", e);
+        } finally {
+            // Remove temporary last destination document
+            if (userContentManager != null) {
+                try {
+                    userContentManager.dispose();
+                } catch (IOException e) {
+                    throw new DocumentGenerationException(
+                            "An I/O problem occured while remove the copyed pervious result document.", e);
+                }
+            }
         }
     }
 
