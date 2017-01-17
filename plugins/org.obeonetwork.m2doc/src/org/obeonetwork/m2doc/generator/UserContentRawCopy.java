@@ -340,9 +340,17 @@ public class UserContentRawCopy {
      * @return true if userContent content begin by a paragraph
      */
     private boolean userDocContentIsFirstRunOfParagraph(UserContent userContent) {
-        XWPFRun userContentFirstRun = userContent.getBody().getStatements().get(0).getRuns().get(0);
-        XWPFRun paragraphFirstRun = ((XWPFParagraph) userContentFirstRun.getParent()).getRuns().get(0);
-        return userContentFirstRun == paragraphFirstRun;
+        boolean result = true;
+        if (userContent.getBody() != null && userContent.getBody().getStatements().size() > 0
+            && userContent.getBody().getStatements().get(0).getRuns().size() > 0) {
+            XWPFRun userContentFirstRun = userContent.getBody().getStatements().get(0).getRuns().get(0);
+            XWPFParagraph userContentFirstRunParagraph = (XWPFParagraph) userContentFirstRun.getParent();
+            if (userContentFirstRunParagraph != null && userContentFirstRunParagraph.getRuns().size() > 0) {
+                XWPFRun paragraphFirstRun = userContentFirstRunParagraph.getRuns().get(0);
+                result = userContentFirstRun == paragraphFirstRun;
+            }
+        }
+        return result;
     }
 
     /**

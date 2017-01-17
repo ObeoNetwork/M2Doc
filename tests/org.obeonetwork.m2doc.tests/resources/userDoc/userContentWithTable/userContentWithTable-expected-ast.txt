@@ -1,0 +1,56 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a user doc :
+  
+  userdoc 'zone1' do
+    
+      table
+        row
+          template null
+            A
+          template null
+            B
+          template null
+            C
+          template null
+            D
+          
+        row
+          template null
+            E
+          template null
+            F
+          template null
+            G
+          template null
+            H
+          
+        row
+          template null
+            I
+          template null
+            J
+          template null
+            K
+          template null
+            L
+          
+        row
+          template null
+            
+          template null
+            
+          template null
+            
+          template null
+            
+          
+        
+      
+  enduserdoc
+  
+  End of demonstration.
+=== FOOTER ===

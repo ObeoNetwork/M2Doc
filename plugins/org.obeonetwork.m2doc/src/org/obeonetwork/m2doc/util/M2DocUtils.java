@@ -432,9 +432,9 @@ public final class M2DocUtils {
             Map<String, Object> variables, URI destination, EObject targetConfObject)
             throws DocumentGenerationException {
 
-        try (final InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
-                final OPCPackage oPackage = OPCPackage.open(is);
-                final XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
+        try (InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
             // clear the document
             int size = destinationDocument.getBodyElements().size();
             for (int i = 0; i < size; i++) {
