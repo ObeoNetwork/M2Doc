@@ -252,6 +252,26 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
         for (int i = 0; i < subConstructs.size(); i++) {
             doSwitch(subConstructs.get(i));
         }
+        if (currentGeneratedParagraph == null) {
+            // cannnot leave a body (subdocument) with an empty content.
+            if (object.getSubConstructs().size() > 0) {
+                AbstractConstruct construct = object.getSubConstructs().get(0);
+                if (construct.getRuns().size() > 0) {
+                    XWPFRun srcRun = construct.getRuns().get(0);
+                    XWPFRun newRun = insertRun(srcRun);
+                    newRun.getCTR().getFldCharList().clear();
+                    newRun.getCTR().getCrList().clear();
+                    newRun.getCTR().getInstrTextList().clear();
+                    newRun.setText("");
+                } else {
+                    throw new UnsupportedOperationException(
+                            "this shouldn't happen : at least one run must be present in a template");
+                }
+            } else {
+                throw new UnsupportedOperationException(
+                        "this shouldn't happen : at least one sub construct must be present in a template");
+            }
+        }
         return object;
     }
 
@@ -743,9 +763,28 @@ public class TemplateProcessor extends TemplateSwitch<AbstractConstruct> {
                 TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager,
                         queryEnvironment, newCell, targetConfObject);
                 processor.doSwitch(cell.getTemplate());
+                // check that the cell isn't empty as it must contain at least an empty paragraph.
+                // addRunIfNeeded(newCell);
             }
         }
         return super.caseTable(object);
+    }
+
+    /**
+     * Scans the cell and add a paragraph with an empty run or an empty run if needed.
+     * 
+     * @param cell
+     *            the cell to complete as needed.
+     */
+    private boolean runAddtionNeeded(XWPFTableCell cell) {
+        boolean needRunAddition = true;
+        for (XWPFParagraph p : cell.getParagraphs()) {
+            if (p.getRuns().size() > 0) {
+                needRunAddition = false;
+                break;
+            }
+        }
+        return needRunAddition;
     }
 
     /**
