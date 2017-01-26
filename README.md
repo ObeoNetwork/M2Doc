@@ -53,3 +53,12 @@ The workflow of M2Doc is depicted below:
 
 ![M2Doc Workflow](doc/doc/M2DocWorkflow.png)
 
+## Download & Installation
+
+Update sites:
+* [M2Doc 0.9.7](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/M2Doc_0.9.7/repository)
+* [M2Doc 0.9.6](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/M2Doc_0.9.6/repository)
+* [M2Doc 0.9.5](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/0.9.5)
+
+
+
