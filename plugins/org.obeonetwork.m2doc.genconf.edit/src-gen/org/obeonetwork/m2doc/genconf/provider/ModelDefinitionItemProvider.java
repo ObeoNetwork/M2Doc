@@ -9,6 +9,8 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
@@ -155,11 +157,22 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
         String label = ((ModelDefinition) object).getKey();
         EObject value = ((ModelDefinition) object).getValue();
         if (value != null) {
-            label += ": " + value.toString();
+            label += ": " + getLabelForExternalEObject(value);
         }
         return label == null ? "" : label;
     }
-
+    
+    private String getLabelForExternalEObject(EObject eObject) {
+    	ComposedAdapterFactory af = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+        if (af != null) {
+            IItemLabelProvider itemLabelProvider = (IItemLabelProvider) af.adapt(eObject, IItemLabelProvider.class);
+            if (itemLabelProvider != null) {
+                return itemLabelProvider.getText(eObject);
+            }
+        }
+        return "";
+    }
+    
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
