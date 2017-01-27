@@ -101,7 +101,7 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
      */
     protected String getDiagramImageFilename(DDiagram diagram, String rootPath) {
         return rootPath + "/.generated/images/representations/diagram_"
-            + sanitizeFilename(diagram.eResource().getURIFragment(diagram)) + "." + ImageFileFormat.JPEG.getName();
+            + sanitizeFilename(diagram.eResource().getURIFragment(diagram)) + "." + ImageFileFormat.JPG.getName();
     }
 
     /**
@@ -257,7 +257,7 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
                 final Diagram realOne = (Diagram) editingDomain.getResourceSet()
                         .getEObject(EcoreUtil.getURI(gmfDiagram), true);
                 try {
-                    imageUtility.copyToImage(realOne, path, ImageFileFormat.JPEG, new NullProgressMonitor(),
+                    imageUtility.copyToImage(realOne, path, ImageFileFormat.JPG, new NullProgressMonitor(),
                             PreferencesHint.USE_DEFAULTS);
                     resultList.add(filePath);
 
