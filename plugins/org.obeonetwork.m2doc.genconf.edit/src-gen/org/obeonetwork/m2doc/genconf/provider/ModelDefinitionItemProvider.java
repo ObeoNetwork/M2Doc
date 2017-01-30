@@ -5,6 +5,7 @@ package org.obeonetwork.m2doc.genconf.provider;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
@@ -162,15 +163,43 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
         return label == null ? "" : label;
     }
     
+    /**
+     * Return a label for the specified EObject by calling its LabelItemProvider 
+     * @param eObject
+     * @return Label for the specified object
+     */
     private String getLabelForExternalEObject(EObject eObject) {
-    	ComposedAdapterFactory af = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-        if (af != null) {
-            IItemLabelProvider itemLabelProvider = (IItemLabelProvider) af.adapt(eObject, IItemLabelProvider.class);
-            if (itemLabelProvider != null) {
-                return itemLabelProvider.getText(eObject);
-            }
-        }
+    	IItemLabelProvider itemLabelProvider = getItemLabelProvider(eObject);
+    	if (itemLabelProvider != null) {
+    		return itemLabelProvider.getText(eObject);
+    	}
         return "";
+    }
+    
+    private ComposedAdapterFactory adapterFactory = null;
+    /**
+     * Return a label provider for the specified EObject
+     * Try to return an existing one and create a new AdapterFactory if needed
+     * @param eObject
+     * @return IItemLabelProvider instance
+     */
+    private IItemLabelProvider getItemLabelProvider(EObject eObject) {
+    	// First, try to retrieve an already register adapter
+    	for (Adapter adapter : eObject.eAdapters()) {
+			if (adapter instanceof IItemLabelProvider) {
+				return (IItemLabelProvider)adapter;
+			}
+		}
+    	
+    	// No adapter found we have no choice but creating our own AdapterFactory
+    	if (adapterFactory == null) {
+    		adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+    	}
+    	if (adapterFactory != null) {
+    		return (IItemLabelProvider) adapterFactory.adapt(eObject, IItemLabelProvider.class);
+    	}
+    	
+    	return null;
     }
     
     /**
