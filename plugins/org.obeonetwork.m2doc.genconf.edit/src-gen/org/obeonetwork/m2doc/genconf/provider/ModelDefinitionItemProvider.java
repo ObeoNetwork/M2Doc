@@ -176,7 +176,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
         return "";
     }
     
-    private ComposedAdapterFactory adapterFactory = null;
+    private ComposedAdapterFactory delegatedAdapterFactory = null;
     /**
      * Return a label provider for the specified EObject
      * Try to return an existing one and create a new AdapterFactory if needed
@@ -192,11 +192,11 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 		}
     	
     	// No adapter found we have no choice but creating our own AdapterFactory
-    	if (adapterFactory == null) {
-    		adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+    	if (delegatedAdapterFactory == null) {
+    		delegatedAdapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
     	}
-    	if (adapterFactory != null) {
-    		return (IItemLabelProvider) adapterFactory.adapt(eObject, IItemLabelProvider.class);
+    	if (delegatedAdapterFactory != null) {
+    		return (IItemLabelProvider) delegatedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
     	}
     	
     	return null;
