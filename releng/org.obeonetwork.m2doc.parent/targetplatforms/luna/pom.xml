@@ -6,13 +6,13 @@
   <parent>
 	<groupId>org.obeonetwork.m2doc</groupId>
 	<artifactId>org.obeonetwork.m2doc.parent</artifactId>
-	<version>0.9.7-SNAPSHOT</version>
+	<version>0.9.9-SNAPSHOT</version>
     <relativePath>../../</relativePath>
   </parent>
 
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>m2doc-luna</artifactId>
-  <version>0.9.7-SNAPSHOT</version>
+  <version>0.9.9-SNAPSHOT</version>
   <packaging>eclipse-target-definition</packaging>
 
 </project>
