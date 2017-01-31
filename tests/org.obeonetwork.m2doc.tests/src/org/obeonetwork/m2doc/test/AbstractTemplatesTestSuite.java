@@ -18,9 +18,12 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -195,12 +198,19 @@ public abstract class AbstractTemplatesTestSuite {
     @Test
     public void parsing() throws FileNotFoundException, IOException {
         final File expectedASTFile = getExpectedASTFile(new File(testFolderPath));
+        final String actualAst = templateAstSerializer.serialize(documentTemplate);
         if (!expectedASTFile.exists()) {
-            expectedASTFile.createNewFile();
+            final File actualASTFile = getActualASTFile(new File(testFolderPath));
+            if (!actualASTFile.exists()) {
+                actualASTFile.createNewFile();
+            }
+            try (FileOutputStream stream = new FileOutputStream(actualASTFile);) {
+                setContent(stream, "UTF-8", actualAst);
+            }
+            fail(expectedASTFile.getAbsolutePath() + " doesn't exists.");
         }
         try (FileInputStream stream = new FileInputStream(expectedASTFile)) {
             final String expectedAst = getContent(stream, "UTF-8");
-            String actualAst = templateAstSerializer.serialize(documentTemplate);
             assertEquals(expectedAst, actualAst);
         }
     }
@@ -328,6 +338,17 @@ public abstract class AbstractTemplatesTestSuite {
      */
     protected File getExpectedASTFile(File testFolder) {
         return new File(testFolder + File.separator + testFolder.getName() + "-expected-ast.txt");
+    }
+
+    /**
+     * Gets the actual AST file from the test folder path.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @return the actual file from the test folder path
+     */
+    protected File getActualASTFile(File testFolder) {
+        return new File(testFolder + File.separator + testFolder.getName() + "-actual-ast.txt");
     }
 
     /**
@@ -467,6 +488,26 @@ public abstract class AbstractTemplatesTestSuite {
             }
         }
         return res.toString();
+    }
+
+    /**
+     * Sets the given content to the given {@link OutputStream}.
+     * 
+     * @param stream
+     *            the {@link OutputStream}
+     * @param charsetName
+     *            the charset name
+     * @param content
+     *            the content to write
+     * @throws UnsupportedEncodingException
+     *             if the given charset is not supported
+     * @throws IOException
+     *             if the given stream can't be written to
+     */
+    public static void setContent(OutputStream stream, String charsetName, String content)
+            throws UnsupportedEncodingException, IOException {
+        stream.write(content.getBytes(charsetName));
+        stream.flush();
     }
 
 }

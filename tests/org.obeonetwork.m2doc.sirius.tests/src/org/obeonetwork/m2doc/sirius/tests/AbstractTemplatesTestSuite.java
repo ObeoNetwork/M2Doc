@@ -9,10 +9,16 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.provider.ProviderRegistry;
+import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
 
 public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.test.AbstractTemplatesTestSuite {
+
+    private final static SiriusDiagramByTitleProvider PROVIDER = new SiriusDiagramByTitleProvider();
 
     private Session session = null;
 
@@ -28,6 +34,22 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
+    }
+
+    /**
+     * Register
+     */
+    @BeforeClass
+    public static void beforeClass() {
+        ProviderRegistry.INSTANCE.registerProvider(PROVIDER);
+    }
+
+    /**
+     * 
+     */
+    @AfterClass
+    public static void afterClass() {
+        ProviderRegistry.INSTANCE.removeProvider(PROVIDER);
     }
 
     private Session initSession() {

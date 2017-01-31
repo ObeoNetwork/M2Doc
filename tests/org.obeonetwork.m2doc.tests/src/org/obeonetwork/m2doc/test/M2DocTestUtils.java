@@ -177,11 +177,27 @@ public final class M2DocTestUtils {
         if (checkThroughPOI) {
             final String expectedTextContent = getTextContent(expectedPath);
             final String actualTextContent = getTextContent(actualPath);
-            assertEquals(expectedTextContent, actualTextContent);
+
+            assertEquals(getPortableString(expectedTextContent), getPortableString(actualTextContent));
         }
         final String expectedArchiveContent = getArchiveContent(expectedPath);
         final String actualArchiveContent = getArchiveContent(actualPath);
         assertEquals(expectedArchiveContent, actualArchiveContent);
+    }
+
+    /**
+     * Gets the portable version of the given {@link String}.
+     * 
+     * @param textContent
+     *            the text content
+     * @return the portable version of the given {@link String}
+     */
+    private static String getPortableString(String textContent) {
+        String res;
+
+        res = textContent.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc");
+
+        return res;
     }
 
     /**
@@ -241,7 +257,7 @@ public final class M2DocTestUtils {
                     fileContent = fileContent.replaceAll("rsidR=\"([^\"]+)", "");
                     fileContent = fileContent.replaceAll("id=\"([^\"]+)", "");
                     fileContent = fileContent.replaceAll("descr=\"([^\"]+)", "");
-                    result.append(String.format("\n%s\n", fileContent));
+                    result.append(String.format("\n%s\n", getPortableString(fileContent)));
                 } else {
                     HashCode code = hf.hashBytes(ByteStreams.toByteArray(zin));
                     result.append(String.format("\n md5:%s", code.toString()));
