@@ -40,8 +40,6 @@
 		<module>../../features/org.obeonetwork.m2doc.sirius.addon.feature</module>
 		<module>../../dependencies/org.apache.poi</module>
 		<module>../../dependencies/org.apache.poi.feature</module>
-		<module>../../tests/org.obeonetwork.m2doc.tests</module>
-		<module>../../tests/org.obeonetwork.m2doc.sirius.tests</module>
 	</modules>
 
   <properties>
@@ -266,6 +264,16 @@
       </activation>
       <modules>
         <module>../../releng/org.obeonetwork.m2doc.update</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>tests</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <modules>
+        <module>../../tests/org.obeonetwork.m2doc.tests</module>
+        <module>../../tests/org.obeonetwork.m2doc.sirius.tests</module>
       </modules>
     </profile>
     <profile>
