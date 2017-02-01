@@ -19,6 +19,7 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -59,6 +60,15 @@ import static org.junit.Assert.assertEquals;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class M2DocTestUtils {
+
+    /**
+     * The hash function for binary content.
+     */
+    private static final HashFunction HF = Hashing.md5();
+    /**
+     * Image comparison threshold.
+     */
+    private static final double IMAGE_THRESHOLD = 0.4;
 
     /**
      * Constructor.
@@ -165,24 +175,17 @@ public final class M2DocTestUtils {
      *            the expected .docx path
      * @param actualPath
      *            the actual .docx path
-     * @param checkThroughPOI
-     *            should we check the text extracted using PIO
      * @throws FileNotFoundException
      *             if .docx files can't be found
      * @throws IOException
      *             if .docx files can't be read
      */
-    public static void assertDocx(String expectedPath, String actualPath, boolean checkThroughPOI)
-            throws FileNotFoundException, IOException {
-        if (checkThroughPOI) {
-            final String expectedTextContent = getTextContent(expectedPath);
-            final String actualTextContent = getTextContent(actualPath);
+    public static void assertDocx(String expectedPath, String actualPath) throws FileNotFoundException, IOException {
+        final String expectedTextContent = getPortableString(getTextContent(expectedPath));
+        final String actualTextContent = getPortableString(getTextContent(actualPath));
+        assertEquals(expectedTextContent, actualTextContent);
 
-            assertEquals(getPortableString(expectedTextContent), getPortableString(actualTextContent));
-        }
-        final String expectedArchiveContent = getArchiveContent(expectedPath);
-        final String actualArchiveContent = getArchiveContent(actualPath);
-        assertEquals(expectedArchiveContent, actualArchiveContent);
+        assertArchiveContent(expectedPath, actualPath);
     }
 
     /**
@@ -228,42 +231,113 @@ public final class M2DocTestUtils {
     }
 
     /**
-     * Gets the textual representation of non textual element of the .docx at the given path.
+     * Asserts the archive content of expected and actual .docx.
      * 
-     * @param path
-     *            the path
-     * @return the textual representation of non textual element of the .docx at the given path
+     * @param expectedPath
+     *            the expected path
+     * @param actualPath
+     *            the actual path
      * @throws IOException
      *             if .docx can't be read
      * @throws FileNotFoundException
      *             if .docx can't be found
      */
-    public static String getArchiveContent(String path) throws IOException, FileNotFoundException {
-        StringBuilder result = new StringBuilder();
-        HashFunction hf = Hashing.md5();
-        try (FileInputStream is = new FileInputStream(path);
-                ZipInputStream zin = new ZipInputStream(new BufferedInputStream(is))) {
+    public static void assertArchiveContent(String expectedPath, String actualPath)
+            throws IOException, FileNotFoundException {
 
-            result.append("\n===== Archive Content ====");
-            ZipEntry entry;
-            while ((entry = zin.getNextEntry()) != null) {
-                result.append(String.format("\n%s | ", entry.getName()));
-                if (entry.getName().endsWith(".xml") || entry.getName().endsWith(".rels")) {
-                    String fileContent = CharStreams.toString(new InputStreamReader(zin, Charsets.UTF_8));
-                    fileContent = indentXML(fileContent);
-                    // normalizing on \n to have a cross-platform comparison.
-                    fileContent = fileContent.replace("\r\n", "\n");
-                    // removing XML attributes which might change from run to run.
-                    fileContent = fileContent.replaceAll("rsidR=\"([^\"]+)", "");
-                    fileContent = fileContent.replaceAll("id=\"([^\"]+)", "");
-                    fileContent = fileContent.replaceAll("descr=\"([^\"]+)", "");
-                    result.append(String.format("\n%s\n", getPortableString(fileContent)));
+        try (FileInputStream expectedIs = new FileInputStream(expectedPath);
+                ZipInputStream expectedZin = new ZipInputStream(new BufferedInputStream(expectedIs));
+                FileInputStream actualIs = new FileInputStream(actualPath);
+                ZipInputStream actualZin = new ZipInputStream(new BufferedInputStream(actualIs))) {
+
+            ZipEntry expectedEntry;
+            ZipEntry actualEntry;
+            while ((expectedEntry = expectedZin.getNextEntry()) != null) {
+                actualEntry = actualZin.getNextEntry();
+                if (expectedEntry.getName().endsWith(".xml") || expectedEntry.getName().endsWith(".rels")) {
+                    final String expectedXMLContent = getXMLContent(expectedZin, expectedEntry);
+                    final String actualXMLContent = getXMLContent(actualZin, actualEntry);
+                    assertEquals(expectedXMLContent, actualXMLContent);
+                } else if (expectedEntry.getName().endsWith(".jpeg") || expectedEntry.getName().endsWith(".jpg")) {
+                    final File imageDiff = getDiffImageFile(expectedPath, expectedEntry);
+                    ImageTestUtils.assertJPG(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
+                } else if (expectedEntry.getName().endsWith(".gif")) {
+                    final File imageDiff = getDiffImageFile(expectedPath, expectedEntry);
+                    ImageTestUtils.assertGIF(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
+                } else if (expectedEntry.getName().endsWith(".png")) {
+                    final File imageDiff = getDiffImageFile(expectedPath, expectedEntry);
+                    ImageTestUtils.assertPNG(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
                 } else {
-                    HashCode code = hf.hashBytes(ByteStreams.toByteArray(zin));
-                    result.append(String.format("\n md5:%s", code.toString()));
+                    final String expectedHash = getZipEntryHash(expectedZin, expectedEntry);
+                    final String actualHash = getZipEntryHash(actualZin, actualEntry);
+                    assertEquals(expectedHash, actualHash);
                 }
             }
         }
+    }
+
+    /**
+     * Gets the image difference output file.
+     * 
+     * @param expectedDocxPath
+     *            the expected .docx file path
+     * @param entry
+     *            the {@link ZipEntry}
+     * @return the image difference output file
+     * @throws IOException
+     *             if the file can't be created
+     */
+    private static File getDiffImageFile(String expectedDocxPath, ZipEntry entry) throws IOException {
+        final File result = new File(expectedDocxPath + "-diff-" + entry.getName().replaceAll("/", "-"));
+        return result;
+    }
+
+    /**
+     * Gets the XML contents of the given {@link ZipEntry}.
+     * 
+     * @param zin
+     *            the {@link ZipInputStream}
+     * @param entry
+     *            the {@link ZipEntry}
+     * @throws IOException
+     *             if the {@link ZipInputStream} can't be read
+     * @return the XML contents of the given {@link ZipEntry}
+     */
+    private static String getXMLContent(ZipInputStream zin, ZipEntry entry) throws IOException {
+        final StringBuilder result = new StringBuilder();
+
+        result.append(String.format("\n%s | ", entry.getName()));
+        String fileContent = CharStreams.toString(new InputStreamReader(zin, Charsets.UTF_8));
+        fileContent = indentXML(fileContent);
+        // normalizing on \n to have a cross-platform comparison.
+        fileContent = fileContent.replace("\r\n", "\n");
+        // removing XML attributes which might change from run to run.
+        fileContent = fileContent.replaceAll("rsidR=\"([^\"]+)", "");
+        fileContent = fileContent.replaceAll("id=\"([^\"]+)", "");
+        fileContent = fileContent.replaceAll("descr=\"([^\"]+)", "");
+        fileContent = getPortableString(fileContent);
+        result.append(String.format("\n%s\n", fileContent));
+
+        return result.toString();
+    }
+
+    /**
+     * Gets the name and hash of the given {@link ZipEntry}.
+     * 
+     * @param zin
+     *            the {@link ZipInputStream}
+     * @param entry
+     *            the {@link ZipEntry}
+     * @throws IOException
+     *             if the {@link ZipInputStream} can't be read
+     * @return the name and hash of the given {@link ZipEntry}
+     */
+    private static String getZipEntryHash(ZipInputStream zin, ZipEntry entry) throws IOException {
+        final StringBuilder result = new StringBuilder();
+
+        final HashCode code = HF.hashBytes(ByteStreams.toByteArray(zin));
+        result.append(String.format("\n%s | ", entry.getName()));
+        result.append(String.format("\n md5:%s", code.toString()));
 
         return result.toString();
     }

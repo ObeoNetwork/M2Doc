@@ -246,7 +246,7 @@ public abstract class AbstractTemplatesTestSuite {
         }
 
         if (tempFile.length() != 0) {
-            M2DocTestUtils.assertDocx(expectedValidationFile.getAbsolutePath(), tempFile.getAbsolutePath(), true);
+            M2DocTestUtils.assertDocx(expectedValidationFile.getAbsolutePath(), tempFile.getAbsolutePath());
         } else {
             assertEquals(ValidationMessageLevel.OK, validationLevel);
             assertTrue(expectedValidationFile.exists());
@@ -287,8 +287,7 @@ public abstract class AbstractTemplatesTestSuite {
                         Files.copy(userContentFile, outputFile);
                     }
                     generateTemplate(templateFile, outputFile);
-                    M2DocTestUtils.assertDocx(expectedGeneratedFile.getAbsolutePath(), outputFile.getAbsolutePath(),
-                            true);
+                    M2DocTestUtils.assertDocx(expectedGeneratedFile.getAbsolutePath(), outputFile.getAbsolutePath());
                 }
             }
         } finally {
