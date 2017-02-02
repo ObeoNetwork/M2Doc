@@ -20,26 +20,26 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>../../releng/org.obeonetwork.m2doc.parent/targetplatforms/neon</module>
-		<module>../../releng/org.obeonetwork.m2doc.parent/targetplatforms/mars</module>
-		<module>../../releng/org.obeonetwork.m2doc.parent/targetplatforms/luna</module>
+		<module>releng/org.obeonetwork.m2doc.targetplatforms/neon</module>
+		<module>releng/org.obeonetwork.m2doc.targetplatforms/mars</module>
+		<module>releng/org.obeonetwork.m2doc.targetplatforms/luna</module>
 
-		<module>../../plugins/org.obeonetwork.m2doc</module>
-		<module>../../plugins/org.obeonetwork.m2doc.ui</module>
-		<module>../../plugins/org.obeonetwork.m2doc.genconf</module>
-		<module>../../plugins/org.obeonetwork.m2doc.genconf.edit</module>
-		<module>../../plugins/org.obeonetwork.m2doc.genconf.editor</module>
-		<module>../../plugins/org.obeonetwork.m2doc.genconf.design</module>
-		<module>../../plugins/org.obeonetwork.m2doc.genconf.emf.ui</module>
-		<module>../../plugins/org.obeonetwork.m2doc.tplconf</module>
-		<module>../../plugins/org.obeonetwork.m2doc.tplconf.edit</module>
-		<module>../../plugins/org.obeonetwork.m2doc.sirius</module>
-		<module>../../plugins/org.obeonetwork.m2doc.doc</module>
-		<module>../../features/org.obeonetwork.m2doc.feature</module>
-		<module>../../features/org.obeonetwork.m2doc.sirius.feature</module>
-		<module>../../features/org.obeonetwork.m2doc.sirius.addon.feature</module>
-		<module>../../dependencies/org.apache.poi</module>
-		<module>../../dependencies/org.apache.poi.feature</module>
+		<module>plugins/org.obeonetwork.m2doc</module>
+		<module>plugins/org.obeonetwork.m2doc.ui</module>
+		<module>plugins/org.obeonetwork.m2doc.genconf</module>
+		<module>plugins/org.obeonetwork.m2doc.genconf.edit</module>
+		<module>plugins/org.obeonetwork.m2doc.genconf.editor</module>
+		<module>plugins/org.obeonetwork.m2doc.genconf.design</module>
+		<module>plugins/org.obeonetwork.m2doc.genconf.emf.ui</module>
+		<module>plugins/org.obeonetwork.m2doc.tplconf</module>
+		<module>plugins/org.obeonetwork.m2doc.tplconf.edit</module>
+		<module>plugins/org.obeonetwork.m2doc.sirius</module>
+		<module>plugins/org.obeonetwork.m2doc.doc</module>
+		<module>features/org.obeonetwork.m2doc.feature</module>
+		<module>features/org.obeonetwork.m2doc.sirius.feature</module>
+		<module>features/org.obeonetwork.m2doc.sirius.addon.feature</module>
+		<module>dependencies/org.apache.poi</module>
+		<module>dependencies/org.apache.poi.feature</module>
 	</modules>
 
   <properties>
@@ -263,7 +263,7 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <modules>
-        <module>../../releng/org.obeonetwork.m2doc.update</module>
+        <module>releng/org.obeonetwork.m2doc.update</module>
       </modules>
     </profile>
     <profile>
@@ -272,8 +272,8 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <modules>
-        <module>../../tests/org.obeonetwork.m2doc.tests</module>
-        <module>../../tests/org.obeonetwork.m2doc.sirius.tests</module>
+        <module>tests/org.obeonetwork.m2doc.tests</module>
+        <module>tests/org.obeonetwork.m2doc.sirius.tests</module>
       </modules>
     </profile>
     <profile>

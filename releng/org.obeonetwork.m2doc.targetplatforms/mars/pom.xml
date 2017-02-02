@@ -7,7 +7,7 @@
 	<groupId>org.obeonetwork.m2doc</groupId>
 	<artifactId>org.obeonetwork.m2doc.parent</artifactId>
 	<version>0.9.6-SNAPSHOT</version>
-    <relativePath>../../</relativePath>
+    <relativePath>../../..</relativePath>
   </parent>
 
   <groupId>org.obeonetwork.m2doc</groupId>

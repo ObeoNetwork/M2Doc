@@ -18,10 +18,8 @@ before_script:
 - sh -e /etc/init.d/xvfb start
 - sleep 10
 script:
-- cd releng/org.obeonetwork.m2doc.parent/
 - mvn -v
 - mvn clean verify -fae -P$PROFILE
-- cd ../..
 - if [[ "$TRAVIS_TAG" != "" ]] && [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
   $TRAVIS_BUILD_DIR/$TRAVIS_TAG; export UPDATE_SITES=true; fi
 after_script:

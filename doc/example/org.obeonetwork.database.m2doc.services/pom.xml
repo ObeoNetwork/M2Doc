@@ -17,7 +17,7 @@
     <groupId>org.obeonetwork.m2doc</groupId>
     <artifactId>M2Doc</artifactId>
     <version>0.9.1-SNAPSHOT</version>
-    <relativePath>../../../</relativePath>
+    <relativePath>../..</relativePath>
   </parent>
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>org.obeonetwork.database.m2doc.services</artifactId>
