@@ -53,9 +53,7 @@ import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -143,10 +141,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * return before the {m:endfor} tag.
      */
     private boolean forceNewParagraph;
-    /**
-     * An EObject from the conf model from which the generation has been called.
-     */
-    private EObject targetConfObject;
 
     /**
      * The {@link Set} of used {@link AbstractDiagramProvider}.
@@ -183,18 +177,15 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      *            the query environment used to evaluate queries in the
      * @param destinationDocument
      *            the path to the destination document.
-     * @param theTargetConfObject
-     *            the root EObject of the gen conf model.
      */
     public TemplateProcessor(Map<String, Object> initialDefs, BookmarkManager bookmarkManager,
             UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment,
-            IBody destinationDocument, EObject theTargetConfObject) {
+            IBody destinationDocument) {
         variablesStack.push(initialDefs);
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
         this.generatedDocument = destinationDocument;
-        this.targetConfObject = theTargetConfObject;
     }
 
     @Override
@@ -798,7 +789,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         } else {
             Map<String, Object> parameters;
             try {
-                parameters = setupParametersMap(representation, provider);
+                parameters = setupParametersMapForRepresentation(representation, provider);
                 List<String> imagePaths = ((AbstractDiagramProvider) provider).getRepresentationImagePath(parameters);
                 usedProviders.add((AbstractDiagramProvider) provider);
                 for (String imagePathStr : imagePaths) {
@@ -878,33 +869,6 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             }
         }
         return tableClient;
-    }
-
-    /**
-     * Returns a map containing all parameters coming from the table tag
-     * and global variables available.
-     * 
-     * @param object
-     *            the {@link TableClient} object from which we extracts needed parameters.
-     * @param provider
-     *            the provider providing information regarding tag options.
-     * @return a map containing all parameters coming from the representation tag
-     *         and global variables available.
-     * @throws IllegalArgumentException
-     *             if the evaluation fails because error were present during parse time or evaluation time.
-     */
-    private Map<String, Object> setupParametersMap(TableClient object, IProvider provider)
-            throws IllegalArgumentException {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
-        if (targetConfObject instanceof Generation) {
-            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
-                    ((Generation) targetConfObject).isRefreshRepresentations());
-        } else {
-            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, false);
-        }
-        setGenericParameters(object, provider.getOptionTypes(), parameters);
-        return parameters;
     }
 
     @Override
@@ -988,10 +952,40 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     }
 
     /**
+     * Returns a map containing all parameters coming from the table tag
+     * and global variables available.
+     * 
+     * @param abstractProviderClient
+     *            the {@link AbstractProviderClient} object from which we extracts needed parameters.
+     * @param provider
+     *            the provider providing information regarding tag options.
+     * @return a map containing all parameters coming from the representation tag
+     *         and global variables available.
+     * @throws IllegalArgumentException
+     *             if the evaluation fails because error were present during parse time or evaluation time.
+     */
+    private Map<String, Object> setupParametersMap(AbstractProviderClient abstractProviderClient, IProvider provider)
+            throws IllegalArgumentException {
+        Map<String, Object> parameters = new HashMap<>();
+        if (variablesStack.peek().containsKey(ProviderConstants.CONF_ROOT_OBJECT_KEY)) {
+            parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY,
+                    variablesStack.peek().get(ProviderConstants.CONF_ROOT_OBJECT_KEY));
+        }
+        if (variablesStack.peek().containsKey(ProviderConstants.REFRESH_REPRESENTATIONS_KEY)) {
+            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
+                    variablesStack.peek().get(ProviderConstants.REFRESH_REPRESENTATIONS_KEY));
+        } else {
+            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, false);
+        }
+        setGenericParameters(abstractProviderClient, provider.getOptionTypes(), parameters);
+        return parameters;
+    }
+
+    /**
      * Returns a map containing all parameters coming from the representation tag
      * and global variables available.
      * 
-     * @param object
+     * @param representation
      *            the {@link Representation} object from which we extracts needed parameters.
      * @param provider
      *            the provider providing information regarding tag options.
@@ -1000,20 +994,12 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * @throws IllegalArgumentException
      *             if the evaluation fails because error were present during parse time or evaluation time.
      */
-    private Map<String, Object> setupParametersMap(Representation object, IProvider provider)
+    private Map<String, Object> setupParametersMapForRepresentation(Representation representation, IProvider provider)
             throws IllegalArgumentException {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, targetConfObject);
-        parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, object.getHeight());
-        parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, object.getWidth());
-        parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, object.getActivatedLayers());
-        if (targetConfObject instanceof Generation) {
-            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
-                    ((Generation) targetConfObject).isRefreshRepresentations());
-        } else {
-            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, false);
-        }
-        setGenericParameters(object, provider.getOptionTypes(), parameters);
+        Map<String, Object> parameters = new HashMap<>(setupParametersMap(representation, provider));
+        parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, representation.getHeight());
+        parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, representation.getWidth());
+        parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, representation.getActivatedLayers());
         return parameters;
     }
 

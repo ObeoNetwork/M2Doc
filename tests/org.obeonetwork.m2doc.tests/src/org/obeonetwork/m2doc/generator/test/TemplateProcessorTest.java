@@ -96,7 +96,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("part1\npart2\npart3\npart4", destinationDoc.getParagraphs().get(0).getText());
@@ -130,7 +130,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("\n\n\n", destinationDoc.getParagraphs().get(0).getText());
@@ -164,7 +164,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("\n\n\ntext", destinationDoc.getParagraphs().get(0).getText());
@@ -197,7 +197,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("text\n\n\n", destinationDoc.getParagraphs().get(0).getText());
@@ -229,7 +229,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("part1\npart2\npart3\npart4", destinationDoc.getParagraphs().get(0).getText());
@@ -261,7 +261,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("\n\n\n", destinationDoc.getParagraphs().get(0).getText());
@@ -293,7 +293,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("\n\n\ntext", destinationDoc.getParagraphs().get(0).getText());
@@ -325,7 +325,7 @@ public class TemplateProcessorTest {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(URI.createFileURI("noResult"));
             TemplateProcessor processor = new TemplateProcessor(definitions, bookmarkManager, userContentManager, env,
-                    destinationDoc, null);
+                    destinationDoc);
             processor.doSwitch(template);
             assertEquals(1, destinationDoc.getParagraphs().size());
             assertEquals("text\n\n\n", destinationDoc.getParagraphs().get(0).getText());

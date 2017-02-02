@@ -32,7 +32,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -423,14 +422,11 @@ public final class M2DocUtils {
      *            variables
      * @param destination
      *            the destination
-     * @param targetConfObject
-     *            the root EObject of the gen conf model
      * @throws DocumentGenerationException
      *             if the generation fails
      */
     public static void generate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment,
-            Map<String, Object> variables, URI destination, EObject targetConfObject)
-            throws DocumentGenerationException {
+            Map<String, Object> variables, URI destination) throws DocumentGenerationException {
 
         try (InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
@@ -444,7 +440,7 @@ public final class M2DocUtils {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(destination);
             TemplateProcessor processor = new TemplateProcessor(variables, bookmarkManager, userContentManager,
-                    queryEnvironment, destinationDocument, targetConfObject);
+                    queryEnvironment, destinationDocument);
             processor.doSwitch(documentTemplate);
 
             bookmarkManager.markDanglingReferences();

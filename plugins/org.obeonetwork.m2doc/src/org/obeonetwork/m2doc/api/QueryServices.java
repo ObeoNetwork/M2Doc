@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.api;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
+import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -77,6 +79,22 @@ public final class QueryServices {
         // register packages
         QueryServices.getInstance().registerPackages(generation.getPackagesNSURI(), queryEnvironment);
         return queryEnvironment;
+    }
+
+    /**
+     * Gets the provider variables for the given {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @return the provider variables for the given {@link Generation}
+     */
+    public Map<String, Object> getProviderVariables(Generation generation) {
+        final Map<String, Object> res = new LinkedHashMap<String, Object>();
+
+        res.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
+        res.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, generation.isRefreshRepresentations());
+
+        return res;
     }
 
     /**

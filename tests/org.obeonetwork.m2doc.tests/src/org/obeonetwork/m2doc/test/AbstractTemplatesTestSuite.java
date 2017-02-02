@@ -128,6 +128,8 @@ public abstract class AbstractTemplatesTestSuite {
         types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
         ConfigurationServices configurationServices = new ConfigurationServices();
         variables = configurationServices.createDefinitions(generation);
+        // add providers variables
+        variables.putAll(QueryServices.getInstance().getProviderVariables(generation));
     }
 
     /**
@@ -314,7 +316,7 @@ public abstract class AbstractTemplatesTestSuite {
     private void generateTemplate(final File templateFile, File outputFile)
             throws DocumentGenerationException, IOException, DocumentParserException {
         String outputPath = outputFile.getAbsolutePath();
-        M2DocUtils.generate(documentTemplate, queryEnvironment, variables, URI.createFileURI(outputPath), generation);
+        M2DocUtils.generate(documentTemplate, queryEnvironment, variables, URI.createFileURI(outputPath));
     }
 
     /**

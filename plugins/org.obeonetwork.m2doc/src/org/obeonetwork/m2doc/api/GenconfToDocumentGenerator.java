@@ -132,8 +132,10 @@ public class GenconfToDocumentGenerator {
             // validate template
             boolean inError = validate(generatedFile, template, generation);
 
+            // add providers variables
+            definitions.putAll(QueryServices.getInstance().getProviderVariables(generation));
             // launch generation
-            M2DocUtils.generate(template, queryEnvironment, definitions, generatedFile, generation);
+            M2DocUtils.generate(template, queryEnvironment, definitions, generatedFile);
 
             List<URI> generatedFiles = Lists.newArrayList(generatedFile);
             if (inError) {
