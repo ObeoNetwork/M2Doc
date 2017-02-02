@@ -32,8 +32,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.obeonetwork.m2doc.api.AQL4Compat;
-import org.obeonetwork.m2doc.api.QueryServices;
-import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.OptionType;
@@ -82,36 +80,6 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
      * AQL environment used to validate queries.
      */
     private IReadOnlyQueryEnvironment environment;
-
-    /**
-     * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
-     * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate}
-     * @param generation
-     *            Generation
-     * @return the {@link ValidationMessageLevel}
-     */
-    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, Generation generation) {
-        environment = QueryServices.getInstance().initAcceleoEnvironment(generation);
-
-        return internalValidate(documentTemplate, generation);
-    }
-
-    /**
-     * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
-     * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate}
-     * @param generation
-     *            Generation
-     * @return the {@link ValidationMessageLevel}
-     */
-    public ValidationMessageLevel internalValidate(DocumentTemplate documentTemplate, Generation generation) {
-        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(environment, generation);
-
-        return validate(documentTemplate, environment, types);
-    }
 
     /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.

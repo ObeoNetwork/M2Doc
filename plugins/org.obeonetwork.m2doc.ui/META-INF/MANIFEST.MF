@@ -22,6 +22,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.transaction,
  org.obeonetwork.m2doc.tplconf.edit;bundle-version="0.9.4",
  org.eclipse.draw2d,
- org.apache.poi;bundle-version="[3.15.0,3.16.0)"
+ org.apache.poi;bundle-version="[3.15.0,3.16.0)",
+ com.google.guava;bundle-version="[15.0.0,16.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

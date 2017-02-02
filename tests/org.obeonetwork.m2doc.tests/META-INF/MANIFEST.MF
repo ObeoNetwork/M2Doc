@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.query;bundle-version="[4.0.0,6.0.0)",
  org.antlr.runtime;bundle-version="4.3.0",
  org.obeonetwork.m2doc.tplconf;bundle-version="0.9.4",
- org.apache.poi;bundle-version="[3.15.0,3.16.0)"
+ org.apache.poi;bundle-version="[3.15.0,3.16.0)",
+ com.google.guava;bundle-version="[15.0.0,16.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName

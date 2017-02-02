@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.sirius.ext.base;bundle-version="[0.0.0,4.1.0)",
  org.eclipse.sirius.table;bundle-version="[0.0.0,4.1.0)",
  org.obeonetwork.m2doc,
- org.eclipse.ui
+ org.eclipse.ui,
+ com.google.guava;bundle-version="[15.0.0,16.0.0)",
+ org.obeonetwork.m2doc.genconf;bundle-version="0.9.6"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.sirius,
