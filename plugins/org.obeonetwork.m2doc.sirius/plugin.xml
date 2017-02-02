@@ -28,7 +28,7 @@
       </tableProvider>
    </extension>
    <extension
-         point="org.obeonetwork.m2doc.configuration">
+         point="org.obeonetwork.m2doc.genconf.configuration">
       <configuration
             providerClass="org.obeonetwork.m2doc.sirius.providers.configuration.SiriusConfigurationProvider">
       </configuration>

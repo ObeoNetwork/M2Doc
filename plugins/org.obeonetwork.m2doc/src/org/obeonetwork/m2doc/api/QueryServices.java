@@ -11,12 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.api;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -31,9 +27,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.obeonetwork.m2doc.M2DocPlugin;
-import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
-import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -62,39 +55,6 @@ public final class QueryServices {
      */
     public static QueryServices getInstance() {
         return eINSTANCE;
-    }
-
-    /**
-     * Init acceleo environment.
-     * 
-     * @param generation
-     *            Generation
-     * @return IQueryEnvironment
-     */
-    public IQueryEnvironment initAcceleoEnvironment(Generation generation) {
-        // get acceleo environment
-        IQueryEnvironment queryEnvironment = QueryServices.getInstance().getAcceleoEnvironment();
-        // register services
-        QueryServices.getInstance().registerServices(queryEnvironment);
-        // register packages
-        QueryServices.getInstance().registerPackages(generation.getPackagesNSURI(), queryEnvironment);
-        return queryEnvironment;
-    }
-
-    /**
-     * Gets the provider variables for the given {@link Generation}.
-     * 
-     * @param generation
-     *            the {@link Generation}
-     * @return the provider variables for the given {@link Generation}
-     */
-    public Map<String, Object> getProviderVariables(Generation generation) {
-        final Map<String, Object> res = new LinkedHashMap<String, Object>();
-
-        res.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
-        res.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, generation.isRefreshRepresentations());
-
-        return res;
     }
 
     /**
@@ -139,72 +99,6 @@ public final class QueryServices {
                 queryEnvironment.registerEPackage(p);
             }
         }
-    }
-
-    // /**
-    // * return eclassifier from string using aql.
-    // *
-    // * @param generation
-    // * Generation
-    // * @param type
-    // * string
-    // * @return eclassifier from string
-    // */
-    // public EClassifier getEClassifier(Generation generation, String type) {
-    // IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
-    // EClassifier eClassifier = queryEnvironment.getEPackageProvider().getType(type);
-    // return eClassifier;
-    // }
-    //
-    // /**
-    // * return eclassifier from string using aql.
-    // *
-    // * @param queryEnvironment
-    // * IQueryEnvironment
-    // * @param type
-    // * string
-    // * @return eclassifier from string
-    // */
-    // public EClassifier getEClassifier(IQueryEnvironment queryEnvironment, String type) {
-    // EClassifier eClassifier = queryEnvironment.getEPackageProvider().getType(type);
-    // return eClassifier;
-    // }
-
-    /**
-     * Gets the {@link IType} from variables.
-     * 
-     * @param generation
-     *            Generation
-     * @return the {@link IType} from variables
-     */
-    public Map<String, Set<IType>> getTypes(Generation generation) {
-        return getTypes(getAcceleoEnvironment(), generation);
-    }
-
-    /**
-     * Gets the {@link IType} from variables.
-     * 
-     * @param environment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param generation
-     *            Generation
-     * @return the {@link IType} from variables
-     */
-    public Map<String, Set<IType>> getTypes(IReadOnlyQueryEnvironment environment, Generation generation) {
-        final Map<String, Set<IType>> res = new HashMap<>();
-
-        // create definitions
-        ConfigurationServices configurationServices = new ConfigurationServices();
-        Map<String, Object> definitions = configurationServices.createDefinitions(generation);
-
-        // get types.
-        for (Entry<String, Object> entry : definitions.entrySet()) {
-            final Object value = entry.getValue();
-            final Set<IType> types = getTypes(environment, value);
-            res.put(entry.getKey(), types);
-        }
-
-        return res;
     }
 
     /**

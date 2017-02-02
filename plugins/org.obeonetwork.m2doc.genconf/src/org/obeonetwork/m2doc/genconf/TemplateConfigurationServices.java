@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.api;
+package org.obeonetwork.m2doc.genconf;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -18,14 +18,10 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
-import org.obeonetwork.m2doc.genconf.Definition;
-import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.genconf.ModelDefinition;
-import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
-import org.obeonetwork.m2doc.util.TemplateConfigUtil;
+import org.obeonetwork.m2doc.tplconf.TemplateConfigUtil;
 
 /**
  * Services for genconf metamodels.

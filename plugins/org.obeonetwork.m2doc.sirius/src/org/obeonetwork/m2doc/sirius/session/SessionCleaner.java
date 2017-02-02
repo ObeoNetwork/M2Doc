@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
-import org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**

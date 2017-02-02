@@ -29,9 +29,9 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
-import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -97,7 +97,7 @@ public class TemplateValidatorTests {
         final TemplateValidator validator = new TemplateValidator();
         Generation generation = GenconfFactory.eINSTANCE.createGeneration();
         validator.validate(documentTemplate, queryEnvironment,
-                QueryServices.getInstance().getTypes(queryEnvironment, generation));
+                new ConfigurationServices().getTypes(queryEnvironment, generation));
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,

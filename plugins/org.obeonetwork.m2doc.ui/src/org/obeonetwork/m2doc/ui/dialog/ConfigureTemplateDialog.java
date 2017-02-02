@@ -69,13 +69,13 @@ import org.obeonetwork.m2doc.genconf.emf.ui.celleditor.URIDialogCellEditor;
 import org.obeonetwork.m2doc.tplconf.EPackageMapping;
 import org.obeonetwork.m2doc.tplconf.StructuredType;
 import org.obeonetwork.m2doc.tplconf.TemplateConfig;
+import org.obeonetwork.m2doc.tplconf.TemplateConfigUtil;
 import org.obeonetwork.m2doc.tplconf.TemplateType;
 import org.obeonetwork.m2doc.tplconf.TemplateVariable;
 import org.obeonetwork.m2doc.tplconf.TplconfFactory;
 import org.obeonetwork.m2doc.tplconf.impl.TplconfFactoryImpl;
 import org.obeonetwork.m2doc.tplconf.provider.spec.TplconfItemProviderAdapterFactorySpec;
 import org.obeonetwork.m2doc.ui.Activator;
-import org.obeonetwork.m2doc.util.TemplateConfigUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

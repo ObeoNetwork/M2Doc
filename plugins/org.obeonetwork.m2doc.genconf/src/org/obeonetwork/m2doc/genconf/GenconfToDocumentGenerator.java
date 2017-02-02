@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.api;
+package org.obeonetwork.m2doc.genconf;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
@@ -22,21 +22,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
+import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
-import org.obeonetwork.m2doc.provider.configuration.ConfigurationProviderService;
-import org.obeonetwork.m2doc.provider.configuration.IConfigurationProvider;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -47,6 +46,11 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
 public class GenconfToDocumentGenerator {
+
+    /**
+     * The {@link ConfigurationServices}.
+     */
+    private final ConfigurationServices configurationServices = new ConfigurationServices();
 
     /**
      * Generate a document from the specified generation configuration.
@@ -90,6 +94,15 @@ public class GenconfToDocumentGenerator {
         return generate(generation, templateFile, generatedFile);
     }
 
+    /**
+     * Creates {@link URI} starting from the current model.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @param relativePath
+     *            the relative path
+     * @return the created {@link URI} starting from the current model
+     */
     private URI createURIStartingFromCurrentModel(Generation generation, String relativePath) {
         URI generationURI = generation.eResource().getURI().trimSegments(1);
         for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(relativePath)) {
@@ -120,10 +133,9 @@ public class GenconfToDocumentGenerator {
         // pre generation
         preGenerate(generation, templateFile, generatedFile);
 
-        IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
+        IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
         // create definitions
-        ConfigurationServices configurationServices = new ConfigurationServices();
         Map<String, Object> definitions = configurationServices.createDefinitions(generation);
 
         // create generated file
@@ -133,7 +145,7 @@ public class GenconfToDocumentGenerator {
             boolean inError = validate(generatedFile, template, generation);
 
             // add providers variables
-            definitions.putAll(QueryServices.getInstance().getProviderVariables(generation));
+            definitions.putAll(configurationServices.getProviderVariables(generation));
             // launch generation
             M2DocUtils.generate(template, queryEnvironment, definitions, generatedFile);
 
@@ -233,7 +245,6 @@ public class GenconfToDocumentGenerator {
         Resource resource = M2DocUtils.createResource(templateURI, genConfURI);
 
         // create initial model content.
-        ConfigurationServices configurationServices = new ConfigurationServices();
         Generation rootObject = configurationServices.createInitialModel(genConfURI.trimFileExtension().lastSegment(),
                 templateURI.deresolve(genConfURI).toString());
         // add docx properties
@@ -313,7 +324,7 @@ public class GenconfToDocumentGenerator {
             throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
         }
         // get acceleo environment
-        IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
+        IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
         // parse template
         try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment)) {
@@ -346,7 +357,7 @@ public class GenconfToDocumentGenerator {
      */
     public boolean validate(URI templateFile, DocumentTemplate documentTemplate, Generation generation)
             throws DocumentGenerationException, IOException {
-        final IQueryEnvironment queryEnvironment = QueryServices.getInstance().initAcceleoEnvironment(generation);
+        final IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
         return validate(templateFile, documentTemplate, generation, queryEnvironment);
     }
@@ -407,7 +418,7 @@ public class GenconfToDocumentGenerator {
             IReadOnlyQueryEnvironment queryEnvironment) throws DocumentGenerationException, IOException {
         URI validationFile = getValidationLogFile(templateFile);
 
-        Map<String, Set<IType>> types = QueryServices.getInstance().getTypes(queryEnvironment, generation);
+        Map<String, Set<IType>> types = configurationServices.getTypes(queryEnvironment, generation);
         final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment, types);
         M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
 

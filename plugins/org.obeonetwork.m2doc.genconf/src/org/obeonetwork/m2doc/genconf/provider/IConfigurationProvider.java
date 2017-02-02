@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.provider.configuration;
+package org.obeonetwork.m2doc.genconf.provider;
 
 import java.util.List;
 

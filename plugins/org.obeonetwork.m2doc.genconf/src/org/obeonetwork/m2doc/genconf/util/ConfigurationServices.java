@@ -12,18 +12,26 @@
 package org.obeonetwork.m2doc.genconf.util;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
+import org.obeonetwork.m2doc.provider.ProviderConstants;
 
 /**
  * Services for genconf metamodels.
@@ -32,14 +40,89 @@ import org.obeonetwork.m2doc.genconf.StringDefinition;
  */
 public class ConfigurationServices {
 
+    /**
+     * The genconf extension file.
+     */
     public static final String GENCONF_EXTENSION_FILE = "genconf";
+
+    /**
+     * Init acceleo environment.
+     * 
+     * @param generation
+     *            Generation
+     * @return IQueryEnvironment
+     */
+    public IQueryEnvironment initAcceleoEnvironment(Generation generation) {
+        // get acceleo environment
+        IQueryEnvironment queryEnvironment = QueryServices.getInstance().getAcceleoEnvironment();
+        // register services
+        QueryServices.getInstance().registerServices(queryEnvironment);
+        // register packages
+        QueryServices.getInstance().registerPackages(generation.getPackagesNSURI(), queryEnvironment);
+        return queryEnvironment;
+    }
+
+    /**
+     * Gets the provider variables for the given {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @return the provider variables for the given {@link Generation}
+     */
+    public Map<String, Object> getProviderVariables(Generation generation) {
+        final Map<String, Object> res = new LinkedHashMap<String, Object>();
+
+        res.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
+        res.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, generation.isRefreshRepresentations());
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link IType} from variables.
+     * 
+     * @param generation
+     *            Generation
+     * @return the {@link IType} from variables
+     */
+    public Map<String, Set<IType>> getTypes(Generation generation) {
+        return getTypes(QueryServices.getInstance().getAcceleoEnvironment(), generation);
+    }
+
+    /**
+     * Gets the {@link IType} from variables.
+     * 
+     * @param environment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param generation
+     *            Generation
+     * @return the {@link IType} from variables
+     */
+    public Map<String, Set<IType>> getTypes(IReadOnlyQueryEnvironment environment, Generation generation) {
+        final Map<String, Set<IType>> res = new HashMap<>();
+
+        // create definitions
+        ConfigurationServices configurationServices = new ConfigurationServices();
+        Map<String, Object> definitions = configurationServices.createDefinitions(generation);
+
+        // get types.
+        for (Entry<String, Object> entry : definitions.entrySet()) {
+            final Object value = entry.getValue();
+            final Set<IType> types = QueryServices.getInstance().getTypes(environment, value);
+            res.put(entry.getKey(), types);
+        }
+
+        return res;
+    }
 
     /**
      * Create generation eObject.
      * 
      * @param name
+     *            the name
      * @param templateFileName
-     * @return Generation
+     *            the template file name
+     * @return the created {@link Generation}
      */
     public Generation createInitialModel(String name, String templateFileName) {
         Generation generation = GenconfFactory.eINSTANCE.createGeneration();
@@ -49,9 +132,11 @@ public class ConfigurationServices {
     }
 
     /**
+     * Gets the Generation from the given {@link URI}.
+     * 
      * @param uri
-     *            URI
-     * @return generation element from URI.
+     *            the {@link URI}
+     * @return the Generation from the given {@link URI}
      */
     public static Generation getGeneration(URI uri) {
         ResourceSet rs = new ResourceSetImpl();

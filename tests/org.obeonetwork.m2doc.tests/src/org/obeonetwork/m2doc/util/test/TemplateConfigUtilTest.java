@@ -27,9 +27,9 @@ import org.obeonetwork.m2doc.tplconf.EPackageMapping;
 import org.obeonetwork.m2doc.tplconf.ScalarType;
 import org.obeonetwork.m2doc.tplconf.StructuredType;
 import org.obeonetwork.m2doc.tplconf.TemplateConfig;
+import org.obeonetwork.m2doc.tplconf.TemplateConfigUtil;
 import org.obeonetwork.m2doc.tplconf.TemplateVariable;
 import org.obeonetwork.m2doc.tplconf.TplconfFactory;
-import org.obeonetwork.m2doc.util.TemplateConfigUtil;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 import static org.junit.Assert.assertEquals;
