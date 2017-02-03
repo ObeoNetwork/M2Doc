@@ -25,6 +25,7 @@
 		<module>releng/org.obeonetwork.m2doc.targetplatforms/luna</module>
 
 		<module>plugins/org.obeonetwork.m2doc</module>
+		<module>plugins/org.obeonetwork.m2doc.ide</module>
 		<module>plugins/org.obeonetwork.m2doc.ui</module>
 		<module>plugins/org.obeonetwork.m2doc.genconf</module>
 		<module>plugins/org.obeonetwork.m2doc.genconf.edit</module>
@@ -273,6 +274,7 @@
       </activation>
       <modules>
         <module>tests/org.obeonetwork.m2doc.tests</module>
+        <module>tests/org.obeonetwork.m2doc.ide.tests</module>
         <module>tests/org.obeonetwork.m2doc.sirius.tests</module>
       </modules>
     </profile>

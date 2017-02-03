@@ -22,11 +22,9 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -92,10 +90,7 @@ public final class QueryServices {
     public void registerPackages(EList<String> packageURIs, IQueryEnvironment queryEnvironment) {
         for (String nsURI : packageURIs) {
             EPackage p = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-            if (p == null) {
-                M2DocPlugin.INSTANCE.log(
-                        new Status(Status.WARNING, M2DocPlugin.PLUGIN_ID, "Couldn't find package with nsURI " + nsURI));
-            } else {
+            if (p != null) {
                 queryEnvironment.registerEPackage(p);
             }
         }

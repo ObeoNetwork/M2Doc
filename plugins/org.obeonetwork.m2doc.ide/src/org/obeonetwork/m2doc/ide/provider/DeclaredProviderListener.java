@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.provider;
+package org.obeonetwork.m2doc.ide.provider;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -21,7 +21,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
+import org.obeonetwork.m2doc.provider.AbstractTableProvider;
+import org.obeonetwork.m2doc.provider.ProviderRegistry;
 
 /**
  * Listener that registers providers that are declared through an extension like diagram providers.
@@ -32,7 +35,7 @@ public class DeclaredProviderListener implements IRegistryEventListener {
     /**
      * Unique ID of the extension point.
      */
-    private static final String PROVIDER_REGISTERY_ID = "org.obeonetwork.m2doc.providers.register";
+    private static final String PROVIDER_REGISTERY_ID = "org.obeonetwork.m2doc.ide.providers.register";
     /**
      * Name of the extension element describing a diagram provider.
      */
@@ -76,7 +79,14 @@ public class DeclaredProviderListener implements IRegistryEventListener {
                 try {
                     AbstractDiagramProvider newDiagramProvider = (AbstractDiagramProvider) confElt
                             .createExecutableExtension(DIAGRAM_PROVIDER_CLASS_ATTR_NAME);
-                    ProviderRegistry.INSTANCE.registerProvider(newDiagramProvider);
+                    if (!ProviderRegistry.INSTANCE.containsProvider(newDiagramProvider)) {
+                        ProviderRegistry.INSTANCE.registerProvider(newDiagramProvider);
+                    } else {
+                        M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+                                "Problem while registering M2Doc Providers : the provider \""
+                                    + newDiagramProvider.getClass().getName()
+                                    + "\" is already registered. The current implementation will not be used."));
+                    }
                 } catch (CoreException e) {
                     // CHECKSTYLE:OFF
                     M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
@@ -93,7 +103,14 @@ public class DeclaredProviderListener implements IRegistryEventListener {
                 try {
                     AbstractTableProvider provider = (AbstractTableProvider) confElt
                             .createExecutableExtension(TABLE_PROVIDER_CLASS_ATTR_NAME);
-                    ProviderRegistry.INSTANCE.registerTableProvider(provider);
+                    if (!ProviderRegistry.INSTANCE.containsProvider(provider)) {
+                        ProviderRegistry.INSTANCE.registerProvider(provider);
+                    } else {
+                        M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
+                                "Problem while registering M2Doc Providers : the provider \""
+                                    + provider.getClass().getName()
+                                    + "\" is already registered. The current implementation will not be used."));
+                    }
                 } catch (CoreException e) {
                     // CHECKSTYLE:OFF
                     M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,

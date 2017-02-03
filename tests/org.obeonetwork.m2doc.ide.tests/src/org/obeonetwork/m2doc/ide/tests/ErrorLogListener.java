@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.test;
+package org.obeonetwork.m2doc.ide.tests;
 
 import java.util.ArrayList;
 import java.util.List;

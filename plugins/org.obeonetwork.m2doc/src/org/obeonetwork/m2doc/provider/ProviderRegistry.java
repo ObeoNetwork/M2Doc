@@ -18,9 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.Status;
-import org.obeonetwork.m2doc.M2DocPlugin;
-
 /**
  * {@link ProviderRegistry} is used to register {@link IProvider} like {@link AbstractDiagramProvider}. All providers' instances are stored
  * in a map
@@ -74,11 +71,7 @@ public final class ProviderRegistry {
      */
     public void registerProvider(IProvider provider) {
         String classQualifiedName = provider.getClass().getName();
-        if (registry.get(classQualifiedName) != null) {
-            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
-                    "Problem while registering M2Doc Providers : the provider \"" + classQualifiedName
-                        + "\" is already registered. The current implementation will not be used."));
-        } else {
+        if (!containsProvider(provider)) {
             registry.put(classQualifiedName, provider);
             if (provider instanceof AbstractDiagramProvider) {
                 if (((AbstractDiagramProvider) provider).isDefault()) {
@@ -86,26 +79,21 @@ public final class ProviderRegistry {
                 } else {
                     diagramProviders.add(provider);
                 }
+            } else if (provider instanceof AbstractTableProvider) {
+                tableProviders.add((AbstractTableProvider) provider);
             }
         }
     }
 
     /**
-     * Registers the given table provider in the cache map with its fully qualified name.
+     * Tells if the registry contains the given {@link IProvider}.
      * 
      * @param provider
-     *            The table provider to register.
+     *            the {@link IProvider} to check
+     * @return <code>true</code> if the registry contains the given {@link IProvider}, <code>false</code> otherwise
      */
-    public void registerTableProvider(AbstractTableProvider provider) {
-        String classQualifiedName = provider.getClass().getName();
-        if (registry.get(classQualifiedName) != null) {
-            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID,
-                    "Problem while registering M2Doc Providers : the provider \"" + classQualifiedName
-                        + "\" is already registered. The current implementation will not be used."));
-        } else {
-            registry.put(classQualifiedName, provider);
-            tableProviders.add(provider);
-        }
+    public boolean containsProvider(IProvider provider) {
+        return registry.containsKey(provider.getClass().getName());
     }
 
     /**

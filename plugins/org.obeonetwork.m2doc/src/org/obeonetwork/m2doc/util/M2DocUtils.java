@@ -29,7 +29,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -39,7 +38,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.obeonetwork.m2doc.M2DocPlugin;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -98,17 +96,12 @@ public final class M2DocUtils {
      * @param resource
      *            Resource
      * @throws IOException
+     *             if the resource can't be serialized
      */
-    public static void saveResource(Resource resource) {
+    public static void saveResource(Resource resource) throws IOException {
         Map<Object, Object> options = new HashMap<>();
         options.put(XMLResource.OPTION_ENCODING, "UTF-8");
-        try {
-            resource.save(options);
-        } catch (IOException exception) {
-            M2DocPlugin.INSTANCE.log(
-                    new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR, exception.getMessage(), exception));
-        }
-
+        resource.save(options);
     }
 
     /**

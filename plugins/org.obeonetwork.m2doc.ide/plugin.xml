@@ -17,18 +17,18 @@
 -->
 
 <plugin>
-   <extension-point id="org.obeonetwork.m2doc.services.register" name="M2Doc Service Register" schema="schema/org.obeonetwork.m2doc.services.register.exsd"/>
-   <extension-point id="org.obeonetwork.m2doc.providers.register" name="M2Doc Provider Register" schema="schema/org.obeonetwork.m2doc.providers.register.exsd"/>
+   <extension-point id="org.obeonetwork.m2doc.ide.services.register" name="M2Doc Service Register" schema="schema/org.obeonetwork.m2doc.ide.services.register.exsd"/>
+   <extension-point id="org.obeonetwork.m2doc.ide.providers.register" name="M2Doc Provider Register" schema="schema/org.obeonetwork.m2doc.ide.providers.register.exsd"/>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated Template -->
       <package
             uri="http://www.obeonetwork.org/m2doc/template/1.0"
             class="org.obeonetwork.m2doc.template.TemplatePackage"
-            genModel="model/Template.genmodel"/>
+            genModel="platform:/plugin/org.obeonetwork.m2doc/model/Template.genmodel"/>
    </extension>
    <extension
-         point="org.obeonetwork.m2doc.services.register">
+         point="org.obeonetwork.m2doc.ide.services.register">
       <service
             serviceClass="org.obeonetwork.m2doc.services.BooleanServiceHolder"
             serviceToken="default">

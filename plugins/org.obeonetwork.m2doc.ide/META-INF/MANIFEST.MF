@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: M2DOc Ide
+Bundle-SymbolicName: org.obeonetwork.m2doc.ide;singleton:=true
+Bundle-Version: 0.9.6.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.core.runtime,
+ org.obeonetwork.m2doc;bundle-version="0.9.6"
+Export-Package: org.obeonetwork.m2doc.ide,
+ org.obeonetwork.m2doc.ide.services
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.obeonetwork.m2doc.ide.M2DocPlugin$Implementation

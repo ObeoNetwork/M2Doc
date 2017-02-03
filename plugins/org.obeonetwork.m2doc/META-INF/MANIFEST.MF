@@ -1,22 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.obeonetwork.m2doc;singleton:=true
+Bundle-SymbolicName: org.obeonetwork.m2doc
 Bundle-Version: 0.9.6.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
+Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.acceleo.query;bundle-version="[4.0.0,6.0.0)",
  org.antlr.runtime;bundle-version="4.3.0",
  com.google.guava;bundle-version="[15.0.0,16.0.0)",
  org.apache.poi;bundle-version="[3.15.0,3.16.0)"
-Bundle-ActivationPolicy: lazy
-Export-Package: org.obeonetwork.m2doc,
- org.obeonetwork.m2doc.api,
+Export-Package: org.obeonetwork.m2doc.api,
  org.obeonetwork.m2doc.generator,
  org.obeonetwork.m2doc.parser,
  org.obeonetwork.m2doc.properties,
@@ -26,4 +23,3 @@ Export-Package: org.obeonetwork.m2doc,
  org.obeonetwork.m2doc.template.impl,
  org.obeonetwork.m2doc.template.util,
  org.obeonetwork.m2doc.util
-Bundle-Activator: org.obeonetwork.m2doc.M2DocPlugin$Implementation

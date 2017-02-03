@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
-import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.genconf.GenconfPlugin;
 
 /**
  * Register declared org.obeonetwork.m2doc.configuration extension point.
@@ -86,7 +86,7 @@ public final class ConfigurationProviderService {
      * Load all the providers registered by extension point.
      */
     private void configureService() {
-        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(M2DocPlugin.PLUGIN_ID,
+        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(GenconfPlugin.PLUGIN_ID,
                 CONFIGURATION_ELEMENT_NAME);
 
         if (extensionPoint != null) {

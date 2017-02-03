@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.obeonetwork.m2doc" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.obeonetwork.m2doc.ide" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.obeonetwork.m2doc" id="org.obeonetwork.m2doc.diagram.provider.register" name="M2Doc Diagram Provider Register"/>
+         <meta.schema plugin="org.obeonetwork.m2doc.ide" id="org.obeonetwork.m2doc.ide.diagram.provider.register" name="M2Doc Diagram Provider Register"/>
       </appinfo>
       <documentation>
          M2Doc Provider Regsitry Extension

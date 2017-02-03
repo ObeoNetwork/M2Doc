@@ -9,17 +9,16 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.provider.test;
+package org.obeonetwork.m2doc.ide.tests.provider;
 
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.junit.Before;
 import org.junit.Test;
-import org.obeonetwork.m2doc.provider.DeclaredProviderListener;
-import org.obeonetwork.m2doc.test.ErrorLogListener;
-import org.obeonetwork.m2doc.test.M2DocTestPlugin;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.ide.tests.ErrorLogListener;
+import org.obeonetwork.m2doc.ide.tests.M2DocTestPlugin;
 
 import static org.junit.Assert.assertTrue;
 
@@ -32,13 +31,12 @@ public class DeclaredProviderListenerTest {
     /**
      * Listener that catch exception that would be put in the error log.
      */
-    private ErrorLogListener errorLogListener;
+    private final ErrorLogListener errorLogListener = M2DocTestPlugin.getDefault().getErrorLogListener();
 
     @Before
     public void setUp() {
-        org.junit.Assume.assumeTrue(Platform.isRunning());
-        errorLogListener = M2DocTestPlugin.getDefault().getErrorLogListener();
-        Platform.addLogListener(errorLogListener);
+        // Make sure the plug-in is loaded
+        M2DocPlugin.getPlugin();
     }
 
     /**
@@ -47,7 +45,7 @@ public class DeclaredProviderListenerTest {
     @Test
     public void listenerInitializedErrorTest() {
         assertTrue(findErrorWithMessage(errorLogListener.getAllStatus(),
-                "Problem while registering M2Doc Providers : Plug-in org.obeonetwork.m2doc.tests was unable to load class org.obeonetwork.m2doc.test.Wrong."));
+                "Problem while registering M2Doc Providers : Plug-in org.obeonetwork.m2doc.ide.tests was unable to load class org.obeonetwork.m2doc.test.Wrong."));
         assertTrue(findErrorWithMessage(errorLogListener.getAllStatus(),
                 "Problem while registering M2Doc Providers : the provider \"org.obeonetwork.m2doc.provider.test.TestDiagramProvider\" is already registered. The current implementation will not be used."));
     }

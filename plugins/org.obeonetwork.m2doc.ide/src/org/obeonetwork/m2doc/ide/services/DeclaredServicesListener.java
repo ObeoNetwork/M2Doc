@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.services;
+package org.obeonetwork.m2doc.ide.services;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -19,7 +19,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.services.IServiceHolder;
+import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
  * Listener that registers services that are declared through an extension.

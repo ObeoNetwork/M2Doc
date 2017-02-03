@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IResource;
-import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 
 /**
  * Test if handler is launched on docx file.

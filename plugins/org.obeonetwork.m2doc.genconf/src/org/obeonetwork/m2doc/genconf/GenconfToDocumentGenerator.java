@@ -25,6 +25,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -253,13 +254,23 @@ public class GenconfToDocumentGenerator {
             resource.getContents().add(rootObject);
         }
         // Save the contents of the resource to the file system.
-        M2DocUtils.saveResource(resource);
+        try {
+            M2DocUtils.saveResource(resource);
+        } catch (IOException e) {
+            GenconfPlugin.INSTANCE
+                    .log(new Status(Status.ERROR, GenconfPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+        }
 
         // post model creation: by default nothing.
         postCreateConfigurationModel(templateInfo, templateURI, rootObject);
 
         // Save the contents of the resource to the file system.
-        M2DocUtils.saveResource(resource);
+        try {
+            M2DocUtils.saveResource(resource);
+        } catch (IOException e) {
+            GenconfPlugin.INSTANCE
+                    .log(new Status(Status.ERROR, GenconfPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+        }
         return resource;
     }
 

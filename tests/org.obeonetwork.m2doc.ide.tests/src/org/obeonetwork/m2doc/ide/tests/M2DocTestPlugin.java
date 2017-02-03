@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.test;
+package org.obeonetwork.m2doc.ide.tests;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.EMFPlugin;
@@ -26,7 +26,7 @@ public class M2DocTestPlugin extends EMFPlugin {
     /**
      * The plug-in ID.
      */
-    public static final String PLUGIN_ID = "org.obeonetwork.m2doc.tests"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "org.obeonetwork.m2doc.ide.tests"; //$NON-NLS-1$
 
     /**
      * The shared instance.

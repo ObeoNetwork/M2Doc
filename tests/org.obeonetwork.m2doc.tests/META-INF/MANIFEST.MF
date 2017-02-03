@@ -1,9 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.obeonetwork.m2doc.tests;singleton:=true
+Bundle-SymbolicName: org.obeonetwork.m2doc.tests
 Bundle-Version: 0.9.6.qualifier
-Bundle-Activator: org.obeonetwork.m2doc.test.M2DocTestPlugin$Implementation
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc;bundle-version="0.9.4",
  org.junit;bundle-version="4.11.0",
@@ -18,6 +17,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.poi;bundle-version="[3.15.0,3.16.0)",
  com.google.guava;bundle-version="[15.0.0,16.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
-Export-Package: org.obeonetwork.m2doc.test
+Export-Package: org.obeonetwork.m2doc.generator.test,
+ org.obeonetwork.m2doc.parser.test,
+ org.obeonetwork.m2doc.properties.test,
+ org.obeonetwork.m2doc.provider.test,
+ org.obeonetwork.m2doc.services.test,
+ org.obeonetwork.m2doc.test,
+ org.obeonetwork.m2doc.userdoc.test,
+ org.obeonetwork.m2doc.util.test

@@ -30,7 +30,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.obeonetwork.m2doc.M2DocPlugin;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.tplconf.TemplateConfig;
 import org.obeonetwork.m2doc.tplconf.TemplateConfigUtil;
 import org.obeonetwork.m2doc.ui.Activator;

@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.obeonetwork.m2doc.services.DeclaredServicesListener;
+import org.obeonetwork.m2doc.ide.services.DeclaredServicesListener;
 import org.osgi.framework.BundleContext;
 
 /**

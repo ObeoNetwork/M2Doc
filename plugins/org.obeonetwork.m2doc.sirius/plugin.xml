@@ -13,7 +13,7 @@
 
 <plugin>
    <extension
-         point="org.obeonetwork.m2doc.providers.register">
+         point="org.obeonetwork.m2doc.ide.providers.register">
       <diagramProvider
             diagramClass="org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider">
       </diagramProvider>
@@ -37,7 +37,7 @@
       </configuration>
    </extension>
    <extension
-         point="org.obeonetwork.m2doc.services.register">
+         point="org.obeonetwork.m2doc.ide.services.register">
       <service
             serviceClass="org.obeonetwork.m2doc.sirius.services.M2DocSiriusServiceHolder"
             serviceToken="default">
