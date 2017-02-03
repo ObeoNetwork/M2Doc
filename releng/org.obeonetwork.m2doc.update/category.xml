@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.apache.poi.feature_3.13.0.qualifier.jar" id="org.apache.poi.feature" version="3.13.0.qualifier">
+   <feature id="org.apache.poi.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
-   <feature url="features/org.obeonetwork.m2doc.feature_0.9.6.qualifier.jar" id="org.obeonetwork.m2doc.feature" version="0.9.6.qualifier">
+   <feature id="org.obeonetwork.m2doc.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
-   <feature url="features/org.obeonetwork.m2doc.sirius.addon.feature_0.9.6.qualifier.jar" id="org.obeonetwork.m2doc.sirius.addon.feature" version="0.9.6.qualifier">
+   <feature id="org.obeonetwork.m2doc.sirius.addon.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
-   <feature url="features/org.obeonetwork.m2doc.sirius.feature_0.9.6.qualifier.jar" id="org.obeonetwork.m2doc.sirius.feature" version="0.9.6.qualifier">
+   <feature id="org.obeonetwork.m2doc.sirius.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
    <feature id="org.eclipse.acceleo.query" version="0.0.0"/>
