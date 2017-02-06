@@ -11,7 +11,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.genconf.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
- org.obeonetwork.m2doc.genconf.edit;visibility:=reexport,
+ org.obeonetwork.m2doc.genconf.edit;bundle-version="[0.10.0,0.11.0)";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport

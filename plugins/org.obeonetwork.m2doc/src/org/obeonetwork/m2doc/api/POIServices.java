@@ -59,6 +59,7 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
+    @SuppressWarnings("resource")
     public XWPFDocument getXWPFDocument(URI templateFile) throws IOException {
         OPCPackage oPackage = getOPCPackage(templateFile);
         XWPFDocument document = new XWPFDocument(oPackage);
@@ -99,9 +100,12 @@ public final class POIServices {
      *             IOException
      */
     public TemplateInfo getTemplateInformations(URI templateFile) throws IOException {
-        XWPFDocument document = getXWPFDocument(templateFile);
-        TemplateInfo templateInfo = new TemplateInfo(document);
-        return templateInfo;
+        final TemplateInfo res;
+
+        try (XWPFDocument document = getXWPFDocument(templateFile);) {
+            res = new TemplateInfo(document);
+        }
+        return res;
     }
 
     /**

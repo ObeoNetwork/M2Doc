@@ -100,6 +100,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     /**
+     * The error copy message.
+     */
+    private static final String USERDOC_COPY_ERROR = "userdoc copy error : ";
+    /**
      * Error message when AQL query could not be evaluated.
      */
     private static final String QUERY_EVALERROR_MESSAGE = "Couldn't evaluate query.";
@@ -485,10 +489,13 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 }
             } catch (InvalidFormatException e) {
                 M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "userdoc copy error : " + e.getMessage());
+                        USERDOC_COPY_ERROR + e.getMessage());
             } catch (XmlException e) {
                 M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "userdoc copy error : " + e.getMessage());
+                        USERDOC_COPY_ERROR + e.getMessage());
+            } catch (IOException e) {
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        USERDOC_COPY_ERROR + e.getMessage());
             }
         }
 

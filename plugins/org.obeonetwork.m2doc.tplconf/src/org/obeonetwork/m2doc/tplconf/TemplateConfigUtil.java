@@ -243,11 +243,12 @@ public final class TemplateConfigUtil {
      *             If an I/O problem occurs while reading or writing the docx file.
      */
     public static void save(TemplateConfig config, URI templateFile) throws IOException {
-        XWPFDocument xwpfDocument = POIServices.getInstance().getXWPFDocument(templateFile);
+        try (XWPFDocument xwpfDocument = POIServices.getInstance().getXWPFDocument(templateFile);) {
 
-        store(config, xwpfDocument);
+            store(config, xwpfDocument);
 
-        POIServices.getInstance().saveFile(xwpfDocument, templateFile);
+            POIServices.getInstance().saveFile(xwpfDocument, templateFile);
+        }
     }
 
     /**

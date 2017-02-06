@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.tplconf;singleton:=true
 Bundle-Version: 0.10.0.qualifier
 Bundle-ClassPath: .
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.tplconf,
  org.obeonetwork.m2doc.tplconf.impl,
  org.obeonetwork.m2doc.tplconf.util

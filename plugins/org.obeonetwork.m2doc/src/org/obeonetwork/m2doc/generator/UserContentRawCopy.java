@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,9 +108,12 @@ public class UserContentRawCopy {
      *             InvalidFormatException
      * @throws XmlException
      *             XmlException
+     * @throws IOException
+     *             if the copy fails
      */
+    @SuppressWarnings("resource")
     public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent,
-            IBody outputBody) throws InvalidFormatException, XmlException {
+            IBody outputBody) throws InvalidFormatException, XmlException, IOException {
         XWPFDocument containerOutputDocument = outputParagraphBeforeUserDocContent.getDocument();
         // Test if run before userContent is in same XWPFParagraph than first run of userContent
         if (!userDocContentIsFirstRunOfParagraph(userContent)) {
@@ -221,21 +225,24 @@ public class UserContentRawCopy {
      *            input Table
      * @param outputDoc
      *            outputDoc where copy style
+     * @throws IOException
+     *             if the copy fails
      */
-    private static void copyTableStyle(XWPFTable inputTable, XWPFDocument outputDoc) {
-        XWPFDocument inputDoc = inputTable.getBody().getXWPFDocument();
-        XWPFStyle style = inputDoc.getStyles().getStyle(inputTable.getStyleID());
-        if (outputDoc == null || style == null) {
-            return;
-        }
+    private static void copyTableStyle(XWPFTable inputTable, XWPFDocument outputDoc) throws IOException {
+        try (XWPFDocument inputDoc = inputTable.getBody().getXWPFDocument();) {
+            XWPFStyle style = inputDoc.getStyles().getStyle(inputTable.getStyleID());
+            if (outputDoc == null || style == null) {
+                return;
+            }
 
-        if (outputDoc.getStyles() == null) {
-            outputDoc.createStyles();
-        }
+            if (outputDoc.getStyles() == null) {
+                outputDoc.createStyles();
+            }
 
-        List<XWPFStyle> usedStyleList = inputDoc.getStyles().getUsedStyleList(style);
-        for (XWPFStyle xwpfStyle : usedStyleList) {
-            outputDoc.getStyles().addStyle(xwpfStyle);
+            List<XWPFStyle> usedStyleList = inputDoc.getStyles().getUsedStyleList(style);
+            for (XWPFStyle xwpfStyle : usedStyleList) {
+                outputDoc.getStyles().addStyle(xwpfStyle);
+            }
         }
     }
 
