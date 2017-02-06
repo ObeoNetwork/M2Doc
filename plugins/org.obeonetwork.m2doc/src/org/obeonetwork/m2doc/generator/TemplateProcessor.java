@@ -414,8 +414,11 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 final List<Object> iteration = new ArrayList<>();
                 if (queryResult.getResult() instanceof Collection) {
                     iteration.addAll((Collection<?>) queryResult.getResult());
-                } else {
+                } else if (queryResult.getResult() != null) {
                     iteration.add(queryResult.getResult());
+                } else {
+                    M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
+                            repetition.getIterationVar() + " value is null.");
                 }
                 final Map<String, Object> newVariables = Maps.newHashMap(variablesStack.peek());
                 variablesStack.push(newVariables);
