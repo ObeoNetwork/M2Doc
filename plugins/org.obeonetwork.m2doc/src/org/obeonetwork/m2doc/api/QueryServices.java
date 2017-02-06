@@ -25,6 +25,7 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -63,6 +64,9 @@ public final class QueryServices {
     public IQueryEnvironment getAcceleoEnvironment() {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
+
+        AQL4Compat.register(queryEnvironment, BooleanServices.class);
+
         return queryEnvironment;
     }
 
