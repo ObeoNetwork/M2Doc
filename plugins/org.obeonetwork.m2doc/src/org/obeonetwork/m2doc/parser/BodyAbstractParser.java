@@ -156,55 +156,49 @@ public abstract class BodyAbstractParser {
      *            the run list to fill
      * @return the string present into the tag as typed by the template author.
      */
-    // CHECKSTYLE:OFF
     protected String readTag(IConstruct construct, List<XWPFRun> runsToFill) {
         XWPFRun run = this.runIterator.lookAhead(1).getRun();
         if (run == null) {
             throw new IllegalStateException("readTag shouldn't be called with a table in the lookahead window.");
-        }
-        XWPFRun styleRun = null;
-        boolean columnRead = false;
-        if (run != null && fieldUtils.isFieldBegin(run)) {
-            runsToFill.add(runIterator.next().getRun()); // Consume begin field
-            boolean finished = false;
-            StringBuilder builder = new StringBuilder();
-            while (runIterator.hasNext() && !finished) {
-                run = runIterator.next().getRun();
-                if (run == null) {
-                    // XXX : treat this as a proper parsing error.
-                    throw new IllegalArgumentException("table cannot be inserted into tags.");
-                }
-                runsToFill.add(run);
-                if (fieldUtils.isFieldEnd(run)) {
-                    finished = true;
-                } else {
-                    String runText = readUpInstrText(run).toString();
-                    builder.append(runText);
-                    // the style run hasn't been discovered yet.
-                    if (styleRun == null) {
-                        if (columnRead && !"".equals(runText)) {
-                            styleRun = run;
-                            construct.setStyleRun(styleRun);
-                        } else {
-                            int indexOfColumn = runText.indexOf(':');
-                            if (indexOfColumn >= 0) {
-                                columnRead = true;
-                                if (indexOfColumn < runText.length() - 1) {
-                                    styleRun = run;// ':' doesn't appear at the
-                                    construct.setStyleRun(styleRun);
-                                    // end of the string
-                                } // otherwise, use the next non empty run.
-                            }
-                        }
-                    }
-                }
-            }
-            return builder.toString();
-        } else {
+        } else if (!fieldUtils.isFieldBegin(run)) {
             throw new IllegalStateException("Shouldn't call readTag if the current run doesn't start a field");
         }
+
+        final StringBuilder result = new StringBuilder();
+
+        runsToFill.add(runIterator.next().getRun()); // Consume begin field
+        XWPFRun styleRun = null;
+        boolean columnRead = false;
+        while (runIterator.hasNext()) {
+            run = runIterator.next().getRun();
+            if (run == null) {
+                // XXX : treat this as a proper parsing error.
+                throw new IllegalArgumentException("table cannot be inserted into tags.");
+            }
+            runsToFill.add(run);
+            if (fieldUtils.isFieldEnd(run)) {
+                break;
+            }
+            final String runText = readUpInstrText(run).toString();
+            result.append(runText);
+            // the style run hasn't been discovered yet.
+            if (styleRun == null) {
+                if (columnRead && !runText.isEmpty()) {
+                    styleRun = run;
+                    construct.setStyleRun(styleRun);
+                } else {
+                    final int indexOfColumn = runText.indexOf(':');
+                    columnRead = indexOfColumn >= 0;
+                    if (columnRead && indexOfColumn < runText.length() - 1) {
+                        styleRun = run; // ':' doesn't appear at the end of the string
+                        construct.setStyleRun(styleRun);
+                    } // otherwise, use the next non empty run.
+                }
+            }
+        }
+
+        return result.toString();
     }
-    // CHECKSTYLE:ON
 
     /**
      * Gets the {@link List} of {@link TemplateValidationMessage} from the given {@link Diagnostic}.

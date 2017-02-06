@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -40,10 +39,16 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author ohaegi
  */
 public class UserContentManager {
+
     /**
      * Temporary Generated destination file name suffix.
      */
     public static final String TEMP_DEST_SUFFIX = "tmpDocDest";
+
+    /**
+     * Buffer size.
+     */
+    private static final int BUFFER_SIZE = 1024 * 8;
 
     /**
      * Generated file.
@@ -54,11 +59,6 @@ public class UserContentManager {
      * Map for id to UserContent EObject.
      */
     private Map<String, UserContent> mapIdUserContent;
-
-    /**
-     * Current document.
-     */
-    private XWPFDocument document;
 
     /**
      * Constructor.
@@ -165,10 +165,6 @@ public class UserContentManager {
             mapIdUserContent = null;
             generatedFileCopy.delete();
         }
-        // Close document
-        if (document != null) {
-            document.close();
-        }
     }
 
     /**
@@ -184,9 +180,7 @@ public class UserContentManager {
     private static void copyFile(URI source, File dest) throws IOException {
         try (InputStream is = URIConverter.INSTANCE.createInputStream(source);
                 OutputStream os = new FileOutputStream(dest);) {
-            // CHECKSTYLE:OFF
-            byte[] buffer = new byte[1024];
-            // CHECKSTYLE:ON
+            byte[] buffer = new byte[BUFFER_SIZE];
             int length;
             while ((length = is.read(buffer)) > 0) {
                 os.write(buffer, 0, length);

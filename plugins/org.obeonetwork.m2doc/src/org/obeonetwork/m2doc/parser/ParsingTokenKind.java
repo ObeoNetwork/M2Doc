@@ -11,13 +11,22 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+
 /**
  * Enum used to determine the kind of parsing token.
  * 
  * @author Romain Guider
  */
 public enum ParsingTokenKind {
-    // CHECKSTYLE:OFF
-    RUN, TABLE
-    // CHECKSTYLE:ON
+    /**
+     * {@link XWPFRun} kind.
+     */
+    RUN,
+
+    /**
+     * {@link XWPFTable} kind.
+     */
+    TABLE
 }

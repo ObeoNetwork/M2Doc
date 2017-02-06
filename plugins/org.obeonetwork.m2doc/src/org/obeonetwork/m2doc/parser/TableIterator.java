@@ -11,14 +11,12 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
-//CHECKSTYLE:OFF
 import com.google.common.collect.Lists;
 
 import java.util.Iterator;
 
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 
-//CHECKSTYLE:ON
 /**
  * Table iterator instances are only iterating over a single instance but they
  * are useful to simplify the code of the {@link TokenIterator} class.

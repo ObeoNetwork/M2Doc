@@ -317,7 +317,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                     fragmentStart = i + 1;
                     break;
                 case '\r':
-                    // CHECKSTYLE:OFF TODO update i++ to make cs happy !
+                    // CHECKSTYLE:OFF
                     if (i + 1 < text.length() && text.charAt(i + 1) == '\n') {
                         inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
                         inserted.addBreak();
