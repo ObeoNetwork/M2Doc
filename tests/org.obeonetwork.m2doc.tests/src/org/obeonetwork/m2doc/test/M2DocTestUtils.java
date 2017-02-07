@@ -199,6 +199,7 @@ public final class M2DocTestUtils {
         String res;
 
         res = textContent.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc");
+        res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory");
 
         return res;
     }
