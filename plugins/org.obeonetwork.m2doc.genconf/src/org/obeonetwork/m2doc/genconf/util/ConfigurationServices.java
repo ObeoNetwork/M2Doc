@@ -53,8 +53,9 @@ public class ConfigurationServices {
      * @return IQueryEnvironment
      */
     public IQueryEnvironment initAcceleoEnvironment(Generation generation) {
+        final URI teamplateURI = URI.createFileURI(generation.getTemplateFileName());
         // get acceleo environment
-        IQueryEnvironment queryEnvironment = QueryServices.getInstance().getAcceleoEnvironment();
+        IQueryEnvironment queryEnvironment = QueryServices.getInstance().getEnvironment(teamplateURI);
         // register services
         QueryServices.getInstance().registerServices(queryEnvironment);
         // register packages
@@ -86,7 +87,8 @@ public class ConfigurationServices {
      * @return the {@link IType} from variables
      */
     public Map<String, Set<IType>> getTypes(Generation generation) {
-        return getTypes(QueryServices.getInstance().getAcceleoEnvironment(), generation);
+        final URI teamplateURI = URI.createFileURI(generation.getTemplateFileName());
+        return getTypes(QueryServices.getInstance().getEnvironment(teamplateURI), generation);
     }
 
     /**

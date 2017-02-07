@@ -392,6 +392,9 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
+            } else if (queryResult.getResult() instanceof org.obeonetwork.m2doc.api.Image) {
+                final XWPFRun imageRun = insertFieldRunReplacement(query.getStyleRun(), "");
+                insertImage(query, imageRun, (org.obeonetwork.m2doc.api.Image) queryResult.getResult());
             } else if (queryResult.getResult() == null) {
                 insertFieldRunReplacement(query.getStyleRun(), "");
             } else {
@@ -400,6 +403,33 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         }
 
         return query;
+    }
+
+    /**
+     * Inserts the given {@link org.obeonetwork.m2doc.api.Image Image}.
+     * 
+     * @param query
+     *            the {@link Query} that produced the given {@link org.obeonetwork.m2doc.api.Image Image}
+     * @param run
+     *            the {@link XWPFRun} to insert to
+     * @param image
+     *            the {@link org.obeonetwork.m2doc.api.Image Image} to insert
+     */
+    private void insertImage(Query query, XWPFRun run, org.obeonetwork.m2doc.api.Image image) {
+        try {
+            int heigth = Units.toEMU(image.getHeight());
+            int width = Units.toEMU(image.getWidth());
+
+            try (InputStream imageStream = image.getInputStream()) {
+                run.addPicture(imageStream, getPictureType(image.getURI()), image.getURI().toString(), width, heigth);
+            }
+        } catch (InvalidFormatException e) {
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    "Picture in " + image.getURI().toString() + " has an invalid format.");
+        } catch (IOException e) {
+            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    image.getURI().toString() + " " + e.getMessage());
+        }
     }
 
     @Override
@@ -776,13 +806,10 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 }
             } catch (InvalidFormatException e) {
                 M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "Picture in " + image.getFileName() + " has an invalid format.");
-            } catch (FileNotFoundException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "File " + filePath + " cannot be found.");
+                        "Picture in " + filePath.toString() + " has an invalid format.");
             } catch (IOException e) {
                 M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "An I/O Problem occured while reading file.");
+                        "An I/O Problem occured while reading " + filePath.toString());
             }
         }
 

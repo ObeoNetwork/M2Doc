@@ -121,14 +121,28 @@ public abstract class AbstractTemplatesTestSuite {
         } else {
             generation = GenconfFactory.eINSTANCE.createGeneration();
         }
+        final String templateFileName = getTemplateFile(new File(testFolderPath)).getAbsolutePath();
+        setTemplateFileName(generation, templateFileName);
         ConfigurationServices configurationServices = new ConfigurationServices();
         queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
-        final URI templateURI = URI.createFileURI(getTemplateFile(new File(testFolderPath)).getAbsolutePath());
+        final URI templateURI = URI.createFileURI(templateFileName);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment);
         types = configurationServices.getTypes(queryEnvironment, generation);
         variables = configurationServices.createDefinitions(generation);
         // add providers variables
         variables.putAll(configurationServices.getProviderVariables(generation));
+    }
+
+    /**
+     * Sets the {@link Generation#getTemplateFileName() template file name}.
+     * 
+     * @param gen
+     *            the {@link Generation}
+     * @param templateFileName
+     *            the {@link Generation#getTemplateFileName() template file name}
+     */
+    protected void setTemplateFileName(Generation gen, final String templateFileName) {
+        gen.setTemplateFileName(templateFileName);
     }
 
     /**

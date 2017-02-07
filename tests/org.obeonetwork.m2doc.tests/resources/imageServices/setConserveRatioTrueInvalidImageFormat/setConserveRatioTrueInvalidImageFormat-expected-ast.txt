@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  Checks ImageServices registration :
+  [query: .setConserveRatio(.asImage('dh1.gif'), true) | TEXT]
+  End of demonstration.
+=== FOOTER ===

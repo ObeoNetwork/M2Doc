@@ -16,13 +16,14 @@ import java.util.Collection;
 
 import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.services.ImageServices;
 
 /**
- * Tests {@link org.obeonetwork.m2doc.template.Repetition Repetition}.
+ * Tests {@link ImageServices}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ServiceRegistrationTests extends AbstractTemplatesTestSuite {
+public class ImageServicesTests extends AbstractTemplatesTestSuite {
 
     /**
      * Constructor.
@@ -34,7 +35,7 @@ public class ServiceRegistrationTests extends AbstractTemplatesTestSuite {
      * @throws DocumentParserException
      *             if the tested template can't be parsed
      */
-    public ServiceRegistrationTests(String testFolder) throws IOException, DocumentParserException {
+    public ImageServicesTests(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
     }
 
@@ -45,7 +46,7 @@ public class ServiceRegistrationTests extends AbstractTemplatesTestSuite {
      */
     @Parameters(name = "{0}")
     public static Collection<Object[]> retrieveTestFolders() {
-        return retrieveTestFolders("resources/serviceRegistration");
+        return retrieveTestFolders("resources/imageServices");
     }
 
 }

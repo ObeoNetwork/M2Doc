@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  Checks ImageServices registration :
+  [query: .setWidth(.asImage('Mona_Lisa.jpg'), 100) | TEXT]
+  End of demonstration.
+=== FOOTER ===

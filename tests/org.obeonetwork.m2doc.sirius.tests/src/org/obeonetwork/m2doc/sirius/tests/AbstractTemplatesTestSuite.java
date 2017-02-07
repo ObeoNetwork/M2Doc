@@ -7,6 +7,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.junit.AfterClass;
@@ -50,6 +53,18 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     @AfterClass
     public static void afterClass() {
         ProviderRegistry.INSTANCE.removeProvider(PROVIDER);
+    }
+
+    @Override
+    protected void setTemplateFileName(final Generation gen, final String templateFileName) {
+        final TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(gen);
+        domain.getCommandStack().execute(new RecordingCommand(domain) {
+            @Override
+            protected void doExecute() {
+                AbstractTemplatesTestSuite.super.setTemplateFileName(gen, templateFileName);
+            }
+        });
+
     }
 
     private Session initSession() {

@@ -23,9 +23,11 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.obeonetwork.m2doc.services.BooleanServices;
+import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -57,15 +59,20 @@ public final class QueryServices {
     }
 
     /**
-     * get Acceleo environment.
+     * Gets {@link IQueryEnvironment} for M2Doc.
      * 
+     * @param templateURI
+     *            the template {@link URI}
      * @return IQueryEnvironment
      */
-    public IQueryEnvironment getAcceleoEnvironment() {
+    public IQueryEnvironment getEnvironment(URI templateURI) {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
         AQL4Compat.register(queryEnvironment, BooleanServices.class);
+        if (AQL4Compat.IS_AQL_5) {
+            AQL4Compat.register(queryEnvironment, new ImageServices(templateURI));
+        }
 
         return queryEnvironment;
     }

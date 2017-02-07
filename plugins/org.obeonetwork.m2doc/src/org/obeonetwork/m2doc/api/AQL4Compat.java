@@ -39,6 +39,11 @@ import org.eclipse.acceleo.query.validation.type.IType;
 public final class AQL4Compat {
 
     /**
+     * Tells if we are running with AQL 5.
+     */
+    public static final boolean IS_AQL_5;
+
+    /**
      * UNABLE_TO_INVOKE_VALIDATION_METHOD.
      */
     private static final String UNABLE_TO_INVOKE_VALIDATION_METHOD = "unable to invoke validation method";
@@ -62,11 +67,6 @@ public final class AQL4Compat {
      * "unable to register services " message.
      */
     private static final String UNABLE_TO_REGISTER_SERVICES = "unable to register services ";
-
-    /**
-     * Tells if we are running with AQL 5.
-     */
-    private static final boolean IS_AQL_5;
 
     /**
      * The method to register an {@link IService} (AQL 5) or a {@link Class} (AQL 4).
@@ -379,6 +379,23 @@ public final class AQL4Compat {
             } catch (InvocationTargetException e) {
                 throw new RuntimeException(UNABLE_TO_REGISTER_SERVICES + cls.getName(), e);
             }
+        }
+    }
+
+    /**
+     * Registers the given instance into the given {@link IQueryEnvironment}.
+     * 
+     * @param env
+     *            the {@link IQueryEnvironment}
+     * @param instance
+     *            the service instance
+     */
+    public static void register(IQueryEnvironment env, Object instance) {
+        if (IS_AQL_5) {
+            final Set<IService> iServices = getServicesFromInstance(env, instance.getClass(), instance);
+            registerServices(env, iServices);
+        } else {
+            throw new RuntimeException("only works with AQL 5.x and above");
         }
     }
 
