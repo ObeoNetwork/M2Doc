@@ -39,6 +39,7 @@ import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRelation;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -54,6 +55,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.obeonetwork.m2doc.api.HyperLink;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -87,9 +89,12 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 /**
  * The {@link TemplateProcessor} class implements a switch over template that generates the doc.
@@ -392,6 +397,11 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
+            } else if (queryResult.getResult() instanceof HyperLink) {
+                final XWPFRun linkRun = insertFieldRunReplacement(query.getStyleRun(), "");
+                insertHyperLink(linkRun, (HyperLink) queryResult.getResult());
+            } else if (queryResult.getResult() instanceof org.obeonetwork.m2doc.api.Bookmark) {
+                insertBookmark(query, (org.obeonetwork.m2doc.api.Bookmark) queryResult.getResult());
             } else if (queryResult.getResult() instanceof org.obeonetwork.m2doc.api.Image) {
                 final XWPFRun imageRun = insertFieldRunReplacement(query.getStyleRun(), "");
                 insertImage(query, imageRun, (org.obeonetwork.m2doc.api.Image) queryResult.getResult());
@@ -403,6 +413,47 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         }
 
         return query;
+    }
+
+    /**
+     * Inserts a {@link org.obeonetwork.m2doc.api.Bookmark Bookmark}.
+     * 
+     * @param query
+     *            the {@link Query}
+     * @param bookmark
+     *            the {@link org.obeonetwork.m2doc.api.Bookmark Bookmark}
+     */
+    private void insertBookmark(Query query, org.obeonetwork.m2doc.api.Bookmark bookmark) {
+        insertFieldRunReplacement(query.getStyleRun(), "");
+        if (bookmark.isReference()) {
+            bookmarkManager.insertReference(currentGeneratedParagraph, bookmark.getId(), bookmark.getText());
+        } else {
+            bookmarkManager.startBookmark(currentGeneratedParagraph, bookmark.getId());
+            insertFieldRunReplacement(query.getStyleRun(), bookmark.getText());
+            bookmarkManager.endBookmark(currentGeneratedParagraph, bookmark.getId());
+        }
+    }
+
+    /**
+     * Inserts the given {@link HyperLink}.
+     * 
+     * @param run
+     *            the {@link XWPFRun}
+     * @param hyperLink
+     *            the {@link HyperLink}
+     */
+    private void insertHyperLink(XWPFRun run, HyperLink hyperLink) {
+        final String id = currentGeneratedParagraph.getDocument().getPackagePart()
+                .addExternalRelationship(hyperLink.getUrl(), XWPFRelation.HYPERLINK.getRelation()).getId();
+        final CTHyperlink cLink = currentGeneratedParagraph.getCTP().addNewHyperlink();
+        cLink.setId(id);
+        CTText ctText = CTText.Factory.newInstance();
+        ctText.setStringValue(hyperLink.getText());
+
+        CTR ctr = CTR.Factory.newInstance();
+        ctr.setRPr((CTRPr) run.getCTR().getRPr().copy());
+        ctr.setTArray(new CTText[] {ctText });
+        cLink.setRArray(new CTR[] {ctr });
     }
 
     /**

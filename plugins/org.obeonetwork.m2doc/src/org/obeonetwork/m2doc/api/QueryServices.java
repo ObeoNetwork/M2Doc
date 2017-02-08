@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ImageServices;
+import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -70,6 +71,7 @@ public final class QueryServices {
                 .newEnvironmentWithDefaultServices(null);
 
         AQL4Compat.register(queryEnvironment, BooleanServices.class);
+        AQL4Compat.register(queryEnvironment, LinkServices.class);
         if (AQL4Compat.IS_AQL_5) {
             AQL4Compat.register(queryEnvironment, new ImageServices(templateURI));
         }

@@ -32,7 +32,7 @@ public class ImageServices {
     private final URI templateURI;
 
     /**
-     * Cosntructor.
+     * Constructor.
      * 
      * @param templateURI
      *            the template {@link URI}
@@ -43,7 +43,7 @@ public class ImageServices {
 
     // @formatter:off
 //    @Documentation(
-//        value = "Conert a String to an Image.",
+//        value = "Convert a String to an Image.",
 //        params = {
 //            @Param(name = "path", value = "The Image path"),
 //        },

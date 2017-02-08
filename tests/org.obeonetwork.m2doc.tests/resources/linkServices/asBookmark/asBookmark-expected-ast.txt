@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a bookmark:A reference before
+  [query: .asBookmarkRef('Artifact1', 'Art1') | TEXT]
+  The bookmark
+  [query: .asBookmark('Definition of Artifact1', 'Art1') | TEXT]
+  A reference after
+  [query: .asBookmarkRef('Artifact1', 'Art1') | TEXT]
+  End of demonstration.
+=== FOOTER ===
