@@ -107,15 +107,15 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     public ValidationMessageLevel caseDocumentTemplate(DocumentTemplate documentTemplate) {
         ValidationMessageLevel headerLevel = ValidationMessageLevel.OK;
         for (Template header : documentTemplate.getHeaders()) {
-            headerLevel = updateLevel(headerLevel, doSwitch(header));
+            headerLevel = ValidationMessageLevel.updateLevel(headerLevel, doSwitch(header));
         }
         final ValidationMessageLevel bodyLevel = doSwitch(documentTemplate.getBody());
         ValidationMessageLevel footerLevel = ValidationMessageLevel.OK;
         for (Template footer : documentTemplate.getFooters()) {
-            footerLevel = updateLevel(footerLevel, doSwitch(footer));
+            footerLevel = ValidationMessageLevel.updateLevel(footerLevel, doSwitch(footer));
         }
 
-        return updateLevel(headerLevel, bodyLevel, footerLevel);
+        return ValidationMessageLevel.updateLevel(headerLevel, bodyLevel, footerLevel);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         final ValidationMessageLevel parsingLevel = getHighestMessageLevel(template);
         final ValidationMessageLevel bodyLevel = doSwitch(template.getBody());
 
-        return updateLevel(parsingLevel, bodyLevel);
+        return ValidationMessageLevel.updateLevel(parsingLevel, bodyLevel);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
 
         final ValidationMessageLevel bodyLevel = doSwitch(bookmark.getBody());
 
-        return updateLevel(getHighestMessageLevel(bookmark), bodyLevel);
+        return ValidationMessageLevel.updateLevel(getHighestMessageLevel(bookmark), bodyLevel);
     }
 
     @Override
@@ -171,7 +171,8 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
             idLevel = ValidationMessageLevel.ERROR;
         }
 
-        return updateLevel(getHighestMessageLevel(userDoc), idLevel, doSwitch(userDoc.getBody()));
+        return ValidationMessageLevel.updateLevel(getHighestMessageLevel(userDoc), idLevel,
+                doSwitch(userDoc.getBody()));
     }
 
     @Override
@@ -179,7 +180,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         ValidationMessageLevel res = getHighestMessageLevel(block);
 
         for (IConstruct construct : block.getStatements()) {
-            res = updateLevel(res, doSwitch(construct));
+            res = ValidationMessageLevel.updateLevel(res, doSwitch(construct));
         }
 
         return res;
@@ -229,7 +230,8 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
             elseLevel = ValidationMessageLevel.OK;
         }
 
-        return updateLevel(getHighestMessageLevel(conditional), conditionLevel, thenLevel, elseLevel);
+        return ValidationMessageLevel.updateLevel(getHighestMessageLevel(conditional), conditionLevel, thenLevel,
+                elseLevel);
     }
 
     /**
@@ -329,7 +331,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
             iteratorLevel = ValidationMessageLevel.ERROR;
         }
         if (stack.peek().containsKey(repetition.getIterationVar())) {
-            iteratorLevel = updateLevel(iteratorLevel, ValidationMessageLevel.WARNING);
+            iteratorLevel = ValidationMessageLevel.updateLevel(iteratorLevel, ValidationMessageLevel.WARNING);
             repetition.getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                             String.format("The iteration variable mask an existing variable (%s).",
@@ -356,7 +358,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
             stack.pop();
         }
 
-        return updateLevel(getHighestMessageLevel(repetition), iteratorLevel, bodyLevel);
+        return ValidationMessageLevel.updateLevel(getHighestMessageLevel(repetition), iteratorLevel, bodyLevel);
     }
 
     /**
@@ -407,7 +409,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         ValidationMessageLevel res = ValidationMessageLevel.OK;
 
         for (Row row : table.getRows()) {
-            res = updateLevel(res, doSwitch(row));
+            res = ValidationMessageLevel.updateLevel(res, doSwitch(row));
         }
 
         return res;
@@ -418,7 +420,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         ValidationMessageLevel res = ValidationMessageLevel.OK;
 
         for (Cell cell : row.getCells()) {
-            res = updateLevel(res, doSwitch(cell));
+            res = ValidationMessageLevel.updateLevel(res, doSwitch(cell));
         }
 
         return res;
@@ -446,7 +448,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
                         addValidationMessages(providerClient, run, validationResult);
                         options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));
                     } else {
-                        optionsLevel = updateLevel(optionsLevel, ValidationMessageLevel.ERROR);
+                        optionsLevel = ValidationMessageLevel.updateLevel(optionsLevel, ValidationMessageLevel.ERROR);
                     }
                 } else {
                     options.put(entry.getKey(), entry.getValue());
@@ -460,7 +462,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
             }
         }
 
-        return updateLevel(res, getHighestMessageLevel(providerClient));
+        return ValidationMessageLevel.updateLevel(res, getHighestMessageLevel(providerClient));
     }
 
     /**
@@ -478,7 +480,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
             ValidationMessageLevel messageLevel = ValidationMessageLevel.OK;
             for (IValidationMessage message : validationResult.getMessages()) {
                 final ValidationMessageLevel level = getLevel(message);
-                messageLevel = updateLevel(messageLevel, level);
+                messageLevel = ValidationMessageLevel.updateLevel(messageLevel, level);
                 construct.getValidationMessages().add(new TemplateValidationMessage(level, message.getMessage(), run));
             }
         } else {
@@ -519,48 +521,6 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     }
 
     /**
-     * Gets the highest {@link ValidationMessageLevel} between the two given {@link ValidationMessageLevel}.
-     * 
-     * @param level1
-     *            the first {@link ValidationMessageLevel}
-     * @param levels
-     *            others {@link ValidationMessageLevel}
-     * @return the highest {@link ValidationMessageLevel} between the two given {@link ValidationMessageLevel}
-     */
-    protected ValidationMessageLevel updateLevel(ValidationMessageLevel level1, ValidationMessageLevel... levels) {
-        ValidationMessageLevel res = level1;
-
-        for (ValidationMessageLevel other : levels) {
-            if (res != ValidationMessageLevel.ERROR) {
-                switch (other) {
-                    case ERROR:
-                        res = ValidationMessageLevel.ERROR;
-                        break;
-
-                    case WARNING:
-                        if (res != ValidationMessageLevel.ERROR) {
-                            res = ValidationMessageLevel.WARNING;
-                        }
-                        break;
-
-                    case INFO:
-                        if (res == ValidationMessageLevel.OK) {
-                            res = ValidationMessageLevel.INFO;
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        return res;
-    }
-
-    /**
      * Gets the highest {@link ValidationMessageLevel} for the given {@link IConstruct}.
      * 
      * @param construct
@@ -571,7 +531,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         ValidationMessageLevel res = ValidationMessageLevel.OK;
 
         for (TemplateValidationMessage message : construct.getValidationMessages()) {
-            res = updateLevel(res, message.getLevel());
+            res = ValidationMessageLevel.updateLevel(res, message.getLevel());
         }
 
         return res;

@@ -173,28 +173,48 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     private final IQueryEvaluationEngine evaluator;
 
     /**
+     * The {@link GenerationResult}.
+     */
+    private GenerationResult result;
+
+    /**
      * Create a new {@link TemplateProcessor} instance given some definitions
      * and a query environment.
      * 
-     * @param initialDefs
-     *            the definitions used in queries and variable tags
      * @param bookmarkManager
      *            the {@link BookmarkManager}
      * @param userContentManager
      *            the {@link UserContentManager}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
-     * @param destinationDocument
-     *            the path to the destination document.
      */
-    public TemplateProcessor(Map<String, Object> initialDefs, BookmarkManager bookmarkManager,
-            UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment,
-            IBody destinationDocument) {
-        variablesStack.push(initialDefs);
+    public TemplateProcessor(BookmarkManager bookmarkManager, UserContentManager userContentManager,
+            IReadOnlyQueryEnvironment queryEnvironment) {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
+    }
+
+    /**
+     * Generates the given {@link DocumentTemplate}.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param variables
+     *            the variables
+     * @param destinationDocument
+     *            the destination document.
+     * @return the {@link GenerationResult}
+     */
+    public GenerationResult generate(DocumentTemplate documentTemplate, Map<String, Object> variables,
+            IBody destinationDocument) {
         this.generatedDocument = destinationDocument;
+        variablesStack.push(variables);
+        result = new GenerationResult();
+
+        doSwitch(documentTemplate);
+
+        return result;
     }
 
     @Override
@@ -428,9 +448,12 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (bookmark.isReference()) {
             bookmarkManager.insertReference(currentGeneratedParagraph, bookmark.getId(), bookmark.getText());
         } else {
-            bookmarkManager.startBookmark(currentGeneratedParagraph, bookmark.getId());
+            final ValidationMessageLevel levelStart = bookmarkManager.startBookmark(currentGeneratedParagraph,
+                    bookmark.getId());
             insertFieldRunReplacement(query.getStyleRun(), bookmark.getText());
-            bookmarkManager.endBookmark(currentGeneratedParagraph, bookmark.getId());
+            final ValidationMessageLevel levelEnd = bookmarkManager.endBookmark(currentGeneratedParagraph,
+                    bookmark.getId());
+            result.updateLevel(levelStart, levelEnd);
         }
     }
 
@@ -475,10 +498,10 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 run.addPicture(imageStream, getPictureType(image.getURI()), image.getURI().toString(), width, heigth);
             }
         } catch (InvalidFormatException e) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                     "Picture in " + image.getURI().toString() + " has an invalid format.");
         } catch (IOException e) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                     image.getURI().toString() + " " + e.getMessage());
         }
     }
@@ -498,7 +521,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 } else if (queryResult.getResult() != null) {
                     iteration.add(queryResult.getResult());
                 } else {
-                    M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
+                    insertMessage(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
                             repetition.getIterationVar() + " value is null.");
                 }
                 final Map<String, Object> newVariables = Maps.newHashMap(variablesStack.peek());
@@ -529,7 +552,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 insertQueryEvaluationMessages(userDoc, queryResult.getDiagnostic());
             } else {
                 if (queryResult.getResult() == null) {
-                    M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                             "User doc id can't be null.");
                 } else {
                     final String id = queryResult.getResult().toString();
@@ -572,13 +595,13 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                             .get(userDoc.getClosingRuns().size() - 1).getParent();
                 }
             } catch (InvalidFormatException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         USERDOC_COPY_ERROR + e.getMessage());
             } catch (XmlException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         USERDOC_COPY_ERROR + e.getMessage());
             } catch (IOException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         USERDOC_COPY_ERROR + e.getMessage());
             }
         }
@@ -617,7 +640,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             // insert the error message.
             String msgError = "The id '" + id
                 + "' is already used in generated document. Ids must be unique otherwise document part contained userContent could be lost at next generation.";
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR, msgError);
+            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, msgError);
 
             TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, msgError, userdoc.getRuns().get(userdoc.getRuns().size() - 1));
@@ -696,14 +719,14 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (conditional.getCondition().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(conditional, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult result = evaluator.eval(conditional.getCondition(), variablesStack.peek());
-            if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(conditional, result.getDiagnostic());
+            final EvaluationResult evaluationResult = evaluator.eval(conditional.getCondition(), variablesStack.peek());
+            if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(conditional, evaluationResult.getDiagnostic());
                 for (XWPFRun tagRun : conditional.getClosingRuns()) {
                     insertRun(tagRun);
                 }
-            } else if (result.getResult() instanceof Boolean) {
-                if ((Boolean) result.getResult()) {
+            } else if (evaluationResult.getResult() instanceof Boolean) {
+                if ((Boolean) evaluationResult.getResult()) {
                     doSwitch(conditional.getThen());
                 } else if (conditional.getElse() != null) {
                     doSwitch(conditional.getElse());
@@ -712,7 +735,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 for (XWPFRun tagRun : conditional.getRuns()) {
                     insertRun(tagRun);
                 }
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         "Condition evaluation result must be a boolean.");
                 for (XWPFRun tagRun : conditional.getClosingRuns()) {
                     insertRun(tagRun);
@@ -807,38 +830,38 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * @return the picture's file extension
      */
     private int getPictureType(URI fileName) {
-        int result;
+        int res;
         if (fileName.fileExtension() != null) {
             String extension = fileName.fileExtension();
             if ("jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_JPEG;
+                res = Document.PICTURE_TYPE_JPEG;
             } else if ("gif".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_GIF;
+                res = Document.PICTURE_TYPE_GIF;
             } else if ("png".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_PNG;
+                res = Document.PICTURE_TYPE_PNG;
             } else if ("emf".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_EMF;
+                res = Document.PICTURE_TYPE_EMF;
             } else if ("wmf".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_WMF;
+                res = Document.PICTURE_TYPE_WMF;
             } else if ("pict".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_PICT;
+                res = Document.PICTURE_TYPE_PICT;
             } else if ("dib".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_DIB;
+                res = Document.PICTURE_TYPE_DIB;
             } else if ("tiff".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_TIFF;
+                res = Document.PICTURE_TYPE_TIFF;
             } else if ("eps".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_EPS;
+                res = Document.PICTURE_TYPE_EPS;
             } else if ("bmp".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_BMP;
+                res = Document.PICTURE_TYPE_BMP;
             } else if ("wpg".equalsIgnoreCase(extension)) {
-                result = Document.PICTURE_TYPE_WPG;
+                res = Document.PICTURE_TYPE_WPG;
             } else {
-                result = 0;
+                res = 0;
             }
         } else {
-            result = 0;
+            res = 0;
         }
-        return result;
+        return res;
     }
 
     @Override
@@ -867,10 +890,10 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                     imageRun.addPicture(imageStream, getPictureType(filePath), image.getFileName(), width, heigth);
                 }
             } catch (InvalidFormatException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         "Picture in " + filePath.toString() + " has an invalid format.");
             } catch (IOException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         "An I/O Problem occured while reading " + filePath.toString());
             }
         }
@@ -883,7 +906,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         XWPFRun imageRun = insertRun(representation.getStyleRun());
         IProvider provider = representation.getProvider();
         if (provider == null) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                     representation.getValidationMessages().get(0).getMessage());
         } else {
             Map<String, Object> parameters;
@@ -923,20 +946,20 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                                     height);
                         }
                     } catch (InvalidFormatException e) {
-                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                                 "Picture in " + imagePath + " has an invalid format.");
                     } catch (FileNotFoundException e) {
-                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                                 "File " + imagePath + " cannot be found.");
                     } catch (IOException e) {
-                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                        insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                                 "An I/O Problem occured while reading file: " + e.getMessage());
                     }
                 }
             } catch (IllegalArgumentException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
             } catch (ProviderException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         "A problem occured while creating image from an diagram provider: " + e.getMessage());
             }
 
@@ -952,7 +975,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         tableRun.getCTR().getInstrTextList().clear();
         AbstractTableProvider provider = (AbstractTableProvider) tableClient.getProvider();
         if (provider == null) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                     tableClient.getValidationMessages().get(0).getMessage());
         } else {
             Map<String, Object> parameters;
@@ -961,9 +984,9 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters);
                 tableProcessor.generate(tableRun);
             } catch (IllegalArgumentException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
             } catch (ProviderException e) {
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                         "A problem occured while creating table from a table provider: " + e.getMessage());
             }
         }
@@ -975,13 +998,16 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (bookmark.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
             insertQuerySyntaxMessages(bookmark, QUERY_SYNTAX_ERROR_MESSAGE);
         } else {
-            final EvaluationResult result = evaluator.eval(bookmark.getName(), variablesStack.peek());
-            if (result.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(bookmark, result.getDiagnostic());
+            final EvaluationResult evaluationResult = evaluator.eval(bookmark.getName(), variablesStack.peek());
+            if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(bookmark, evaluationResult.getDiagnostic());
             } else {
-                bookmarkManager.startBookmark(currentGeneratedParagraph, result.getResult().toString());
+                final ValidationMessageLevel levelStart = bookmarkManager.startBookmark(currentGeneratedParagraph,
+                        evaluationResult.getResult().toString());
                 doSwitch(bookmark.getBody());
-                bookmarkManager.endBookmark(currentGeneratedParagraph, result.getResult().toString());
+                final ValidationMessageLevel levelEnd = bookmarkManager.endBookmark(currentGeneratedParagraph,
+                        evaluationResult.getResult().toString());
+                result.updateLevel(levelStart, levelEnd);
             }
         }
 
@@ -1000,7 +1026,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         for (XWPFRun tagRun : construct.getRuns()) {
             insertRun(tagRun);
         }
-        M2DocUtils.appendDiagnosticMessage(currentGeneratedParagraph, diagnostic);
+        result.updateLevel(M2DocUtils.appendDiagnosticMessage(currentGeneratedParagraph, diagnostic));
         for (XWPFRun tagRun : construct.getClosingRuns()) {
             insertRun(tagRun);
         }
@@ -1019,12 +1045,26 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             insertRun(tagRun);
         }
         for (TemplateValidationMessage message : construct.getValidationMessages()) {
-            M2DocUtils.appendMessageRun(currentGeneratedParagraph, message.getLevel(),
-                    errorPrefix + message.getMessage());
+            insertMessage(currentGeneratedParagraph, message.getLevel(), errorPrefix + message.getMessage());
         }
         for (XWPFRun tagRun : construct.getClosingRuns()) {
             insertRun(tagRun);
         }
+    }
+
+    /**
+     * Inserts the given message with the given {@link ValidationMessageLevel}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param level
+     *            the {@link ValidationMessageLevel}
+     * @param message
+     *            the message
+     */
+    private void insertMessage(XWPFParagraph paragraph, ValidationMessageLevel level, String message) {
+        M2DocUtils.appendMessageRun(paragraph, level, message);
+        result.updateLevel(level);
     }
 
     @Override
@@ -1151,15 +1191,15 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             throw new IllegalArgumentException(
                     QUERY_SYNTAX_ERROR_MESSAGE + templateProvider.getValidationMessages().get(0).getMessage());
         } else {
-            EvaluationResult result = evaluator.eval((AstResult) aqlEntry.getValue(), variablesStack.peek());
-            if (result == null) {
+            EvaluationResult evaluationResult = evaluator.eval((AstResult) aqlEntry.getValue(), variablesStack.peek());
+            if (evaluationResult == null) {
                 throw new IllegalArgumentException(QUERY_EVALERROR_MESSAGE);
-            } else if (result.getResult() == null) {
+            } else if (evaluationResult.getResult() == null) {
                 StringBuilder builder = new StringBuilder();
-                getDiagnostic(result.getDiagnostic(), builder);
+                getDiagnostic(evaluationResult.getDiagnostic(), builder);
                 throw new IllegalArgumentException(builder.toString());
             } else {
-                options.put(aqlEntry.getKey(), result.getResult());
+                options.put(aqlEntry.getKey(), evaluationResult.getResult());
             }
         }
     }

@@ -38,4 +38,46 @@ public enum ValidationMessageLevel {
      */
     ERROR;
 
+    /**
+     * Gets the highest {@link ValidationMessageLevel} between the two given {@link ValidationMessageLevel}.
+     * 
+     * @param level1
+     *            the first {@link ValidationMessageLevel}
+     * @param levels
+     *            others {@link ValidationMessageLevel}
+     * @return the highest {@link ValidationMessageLevel} between the two given {@link ValidationMessageLevel}
+     */
+    public static ValidationMessageLevel updateLevel(ValidationMessageLevel level1, ValidationMessageLevel... levels) {
+        ValidationMessageLevel res = level1;
+
+        for (ValidationMessageLevel other : levels) {
+            if (res != ValidationMessageLevel.ERROR) {
+                switch (other) {
+                    case ERROR:
+                        res = ValidationMessageLevel.ERROR;
+                        break;
+
+                    case WARNING:
+                        if (res != ValidationMessageLevel.ERROR) {
+                            res = ValidationMessageLevel.WARNING;
+                        }
+                        break;
+
+                    case INFO:
+                        if (res == ValidationMessageLevel.OK) {
+                            res = ValidationMessageLevel.INFO;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return res;
+    }
+
 }

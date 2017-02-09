@@ -80,11 +80,15 @@ public class BookmarkManager {
      *            the current {@link XWPFParagraph}
      * @param name
      *            the bookmark name
+     * @return the {@link ValidationMessageLevel}
      */
-    public void startBookmark(XWPFParagraph paragraph, String name) {
+    public ValidationMessageLevel startBookmark(XWPFParagraph paragraph, String name) {
+        final ValidationMessageLevel res;
+
         if (bookmarks.containsKey(name)) {
             M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
                     "Can't start duplicated bookmark " + name);
+            res = ValidationMessageLevel.ERROR;
         } else {
             final CTBookmark bookmark = paragraph.getCTP().addNewBookmarkStart();
             // we create a new run for future error messages.
@@ -108,7 +112,10 @@ public class BookmarkManager {
                     pendingRef.setStringValue(String.format(REF_TAG, bookmark.getName()));
                 }
             }
+            res = ValidationMessageLevel.OK;
         }
+
+        return res;
     }
 
     /**
@@ -118,8 +125,11 @@ public class BookmarkManager {
      *            the current {@link XWPFParagraph}
      * @param name
      *            the bookmark name
+     * @return the {@link ValidationMessageLevel}
      */
-    public void endBookmark(XWPFParagraph paragraph, String name) {
+    public ValidationMessageLevel endBookmark(XWPFParagraph paragraph, String name) {
+        final ValidationMessageLevel res;
+
         final CTBookmark bookmark = startedBookmarks.remove(name);
         if (bookmark != null) {
             final CTMarkupRange range = paragraph.getCTP().addNewBookmarkEnd();
@@ -132,13 +142,18 @@ public class BookmarkManager {
             } else {
                 throw new IllegalStateException("this should not happend");
             }
+            res = ValidationMessageLevel.OK;
         } else if (bookmarks.containsKey(name)) {
             M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
                     "Can't end already closed bookmark " + name);
+            res = ValidationMessageLevel.ERROR;
         } else {
             M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
                     "Can't end not existing bookmark " + name);
+            res = ValidationMessageLevel.ERROR;
         }
+
+        return res;
     }
 
     /**

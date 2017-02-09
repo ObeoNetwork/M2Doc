@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.generator.TemplateProcessor;
 import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
@@ -147,29 +148,38 @@ public final class M2DocUtils {
      *            the {@link XWPFParagraph}
      * @param diagnostic
      *            the {@link Diagnostic}
+     * @return the maximum {@link ValidationMessageLevel}
      */
-    public static void appendDiagnosticMessage(XWPFParagraph paragraph, Diagnostic diagnostic) {
+    public static ValidationMessageLevel appendDiagnosticMessage(XWPFParagraph paragraph, Diagnostic diagnostic) {
+        ValidationMessageLevel res = ValidationMessageLevel.OK;
+
         for (Diagnostic child : diagnostic.getChildren()) {
             switch (child.getSeverity()) {
                 case Diagnostic.INFO:
                     M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage());
+                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.INFO);
                     break;
                 case Diagnostic.WARNING:
                     M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING, child.getMessage());
+                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.WARNING);
                     break;
                 case Diagnostic.ERROR:
                     M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, child.getMessage());
+                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.ERROR);
                     break;
 
                 default:
                     M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage());
+                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.INFO);
                     break;
             }
             paragraph.getRuns().get(paragraph.getRuns().size() - 1).addBreak();
             if (!child.getChildren().isEmpty()) {
-                appendDiagnosticMessage(paragraph, child);
+                res = ValidationMessageLevel.updateLevel(res, appendDiagnosticMessage(paragraph, child));
             }
         }
+
+        return res;
     }
 
     /**
@@ -415,11 +425,13 @@ public final class M2DocUtils {
      *            variables
      * @param destination
      *            the destination
+     * @return the {@link GenerationResult}
      * @throws DocumentGenerationException
      *             if the generation fails
      */
-    public static void generate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment,
-            Map<String, Object> variables, URI destination) throws DocumentGenerationException {
+    public static GenerationResult generate(DocumentTemplate documentTemplate,
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URI destination)
+            throws DocumentGenerationException {
 
         try (InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
@@ -432,12 +444,16 @@ public final class M2DocUtils {
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(destination);
-            TemplateProcessor processor = new TemplateProcessor(variables, bookmarkManager, userContentManager,
-                    queryEnvironment, destinationDocument);
-            processor.doSwitch(documentTemplate);
+            TemplateProcessor processor = new TemplateProcessor(bookmarkManager, userContentManager, queryEnvironment);
 
-            bookmarkManager.markDanglingReferences();
-            bookmarkManager.markOpenBookmarks();
+            final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
+
+            if (bookmarkManager.markDanglingReferences()) {
+                result.updateLevel(ValidationMessageLevel.ERROR);
+            }
+            if (bookmarkManager.markOpenBookmarks()) {
+                result.updateLevel(ValidationMessageLevel.ERROR);
+            }
             // At this point, the document has been generated and just needs being
             // written on disk.
             POIServices.getInstance().saveFile(destinationDocument, destination);
@@ -445,6 +461,8 @@ public final class M2DocUtils {
             // Remove temporary last destination document
             userContentManager.dispose();
             processor.clear();
+
+            return result;
         } catch (IOException e) {
             throw new DocumentGenerationException("An I/O problem occured while creating the output document.", e);
         } catch (InvalidFormatException e) {
