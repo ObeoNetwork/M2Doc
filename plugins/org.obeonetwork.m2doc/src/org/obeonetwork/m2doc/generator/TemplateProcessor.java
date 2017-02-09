@@ -735,6 +735,17 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 currentGeneratedTable.removeRow(0);
             }
             currentGeneratedTable.getCTTbl().set(copy);
+        } else if (generatedDocument instanceof XWPFHeaderFooter) {
+            XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
+            final int index = headerFooter._getHdrFtr().getTblArray().length;
+            final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
+            XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
+            if (newTable.getRows().size() > 0) {
+                newTable.removeRow(0);
+            }
+            headerFooter.insertTable(index, newTable);
+            currentGeneratedTable = headerFooter.getTables().get(index);
+            currentGeneratedTable.getCTTbl().set(copy);
         } else if (generatedDocument instanceof XWPFTableCell) {
             XWPFTableCell tCell = (XWPFTableCell) generatedDocument;
             int tableRank = tCell.getTables().size();

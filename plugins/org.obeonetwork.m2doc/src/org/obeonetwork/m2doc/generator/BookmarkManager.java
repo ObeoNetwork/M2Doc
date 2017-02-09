@@ -27,7 +27,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.util.M2DocUtils;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBookmark;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTMarkupRange;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
@@ -75,7 +74,7 @@ public class BookmarkManager {
     private final Map<Object, XWPFRun> messagePositions = new HashMap<Object, XWPFRun>();
 
     /**
-     * Starts a bookmark in the given {@link CTBody} with the given name.
+     * Starts a bookmark in the given {@link XWPFParagraph} with the given name.
      * 
      * @param paragraph
      *            the current {@link XWPFParagraph}

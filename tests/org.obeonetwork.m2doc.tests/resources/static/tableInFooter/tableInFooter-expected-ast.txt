@@ -1,0 +1,52 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  
+=== FOOTER ===
+template null
+  A simple demonstration of a static table :
+  table
+    row
+      template null
+        A
+      template null
+        Z
+      template null
+        E
+      
+    row
+      template null
+        R
+      template null
+        T
+      template null
+        Y
+      
+    row
+      template null
+        U
+      template null
+        I
+      template null
+        O
+      
+    row
+      template null
+        P
+      template null
+        Q
+      template null
+        S
+      
+    row
+      template null
+        D
+      template null
+        F
+      template null
+        G
+      
+    
+  End of demonstration.
