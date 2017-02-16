@@ -32,7 +32,7 @@ public class DeclaredServicesListener implements IRegistryEventListener {
     /**
      * Unique ID of the extension point.
      */
-    private static final String SERVICEREGISTERY_ID = "org.obeonetwork.m2doc.services.register";
+    private static final String SERVICEREGISTERY_ID = "org.obeonetwork.m2doc.ide.services.register";
     /**
      * Name of the service element.
      */
