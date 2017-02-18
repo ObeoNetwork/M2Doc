@@ -48,7 +48,7 @@ public interface M2DocCustomProperties {
     /**
      * Prefix of the variable declaration custom properties.
      */
-    String VAR_PROPERTY_PREFIX = "m:var";
+    String VAR_PROPERTY_PREFIX = "m:var:";
     /**
      * Prefix of the uri declaration custom properties.
      */
@@ -56,5 +56,5 @@ public interface M2DocCustomProperties {
     /**
      * Prefix of the service declaration custom properties.
      */
-    String SERVICE_PROPERTY_PREFIX = "m:service";
+    String SERVICE_PROPERTY_PREFIX = "m:services";
 }

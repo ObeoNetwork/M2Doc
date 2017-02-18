@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
+import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.tplconf.EPackageMapping;
 import org.obeonetwork.m2doc.tplconf.ScalarType;
 import org.obeonetwork.m2doc.tplconf.StructuredType;
@@ -437,7 +438,7 @@ public class VariableEditDialog extends TitleAreaDialog {
     }
 
     protected void validate() {
-        if (!TemplateConfigUtil.isValidVariableName(variable.getName())) {
+        if (!TemplateInfo.isValidVariableName(variable.getName())) {
             blockWithMessage(
                     "The variable name must be valid (start with a letter or underscore, contain only letters, digits, or underscores)");
             return;

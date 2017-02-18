@@ -286,7 +286,7 @@ public final class TemplateConfigUtil {
         List<CTProperty> propertyList = customProperties.getUnderlyingProperties().getPropertyList();
         for (int i = 0; i < propertyList.size(); i++) {
             CTProperty prop = propertyList.get(i);
-            if (prop.getName() != null && prop.getName().startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX + ":")) {
+            if (prop.getName() != null && prop.getName().startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)) {
                 indicesToRemove.add(i);
             }
         }
@@ -325,17 +325,6 @@ public final class TemplateConfigUtil {
             }
         }
         return -1;
-    }
-
-    /**
-     * Check that a given name is a valid M2DOC (I.e. AQL) variable name.
-     * 
-     * @param name
-     *            The variable name to check
-     * @return <code>true</code> if the given name matches "[a-zA-Z_][a-zA-Z0-9_]*".
-     */
-    public static boolean isValidVariableName(String name) {
-        return name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*");
     }
 
     /**
