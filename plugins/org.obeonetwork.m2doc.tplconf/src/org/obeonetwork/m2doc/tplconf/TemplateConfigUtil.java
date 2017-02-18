@@ -265,12 +265,19 @@ public final class TemplateConfigUtil {
         for (EPackageMapping mm : config.getMappings()) {
             b.append(M2DocCustomProperties.SERVICETOKEN_SEPARATOR).append(mm.getUri());
         }
-        b.deleteCharAt(0);
+        if (b.length() > 0) {
+            b.deleteCharAt(0);
+        }
         CustomProperties customProperties = xwpfDocument.getProperties().getCustomProperties();
         if (customProperties.contains(M2DocCustomProperties.URI_PROPERTY_PREFIX)) {
             CTProperty uriProp = customProperties.getProperty(M2DocCustomProperties.URI_PROPERTY_PREFIX);
-            uriProp.setLpwstr(b.toString());
-        } else {
+            if (b.length() > 0) {
+                uriProp.setLpwstr(b.toString());
+            } else {
+                customProperties.getUnderlyingProperties()
+                        .removeProperty(indexOf(customProperties, M2DocCustomProperties.URI_PROPERTY_PREFIX));
+            }
+        } else if (b.length() > 0) {
             customProperties.addProperty(M2DocCustomProperties.URI_PROPERTY_PREFIX, b.toString());
         }
 
@@ -298,6 +305,26 @@ public final class TemplateConfigUtil {
                 customProperties.addProperty(key, typeName);
             }
         }
+    }
+
+    /**
+     * Index of a given name in a given list of properties, -1 if not found.
+     * 
+     * @param props
+     *            The custom properties to search in
+     * @param name
+     *            The property name to look for
+     * @return The index of the property with this name in the given properties.
+     */
+    public static int indexOf(CustomProperties props, String name) {
+        CTProperty[] properties = props.getUnderlyingProperties().getPropertyArray();
+        for (int i = 0; i < properties.length; i++) {
+            CTProperty p = properties[i];
+            if (p.getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

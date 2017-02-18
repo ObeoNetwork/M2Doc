@@ -67,21 +67,28 @@ public class TemplateInfo {
         List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
         for (CTProperty property : properties) {
             String name = property.getName();
-            int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length();
             if (name != null) {
-                if (name.startsWith(M2DocCustomProperties.SERVICE_PROPERTY_PREFIX)) {
-                    String[] tokens = property.getLpwstr().trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
-                    serviceTokens.addAll(Arrays.asList(tokens));
+                name = name.trim();
+                int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length() + 1;
+                if (M2DocCustomProperties.SERVICE_PROPERTY_PREFIX.equals(name)) {
+                    String serviceTokenList = property.getLpwstr();
+                    if (serviceTokenList != null) {
+                        String[] tokens = serviceTokenList.trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+                        serviceTokens.addAll(Arrays.asList(tokens));
+                    }
                 } else if (name.startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)
                     && name.length() > variablePrefixLength) {
-                    String variableName = name.substring(variablePrefixLength + 1);
+                    String variableName = name.substring(variablePrefixLength);
                     String type = property.getLpwstr();
                     if (!Strings.isNullOrEmpty(variableName)) {
                         variables.put(variableName, type);
                     }
-                } else if (name.startsWith(M2DocCustomProperties.URI_PROPERTY_PREFIX)) {
-                    String[] uris = property.getLpwstr().trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
-                    packageURIs.addAll(Arrays.asList(uris));
+                } else if (M2DocCustomProperties.URI_PROPERTY_PREFIX.equals(name)) {
+                    String uriList = property.getLpwstr();
+                    if (uriList != null) {
+                        String[] uris = uriList.trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+                        packageURIs.addAll(Arrays.asList(uris));
+                    }
                 }
             }
         }
