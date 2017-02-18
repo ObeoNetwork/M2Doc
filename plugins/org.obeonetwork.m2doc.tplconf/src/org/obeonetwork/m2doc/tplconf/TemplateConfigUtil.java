@@ -169,7 +169,7 @@ public final class TemplateConfigUtil {
         }
         if (mapping == null) {
             // Metamodel not registered yet => is it registered in the current eclipse version?
-            Set<String> uris = new LinkedHashSet<String>(Registry.INSTANCE.keySet()); // Avoid concurrent modification
+            Set<String> uris = new LinkedHashSet<>(Registry.INSTANCE.keySet()); // Avoid concurrent modification
             for (String nsURI : uris) {
                 EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
                 if (ePackage != null && mappingName.equals(ePackage.getName())) {
@@ -281,12 +281,12 @@ public final class TemplateConfigUtil {
             customProperties.addProperty(M2DocCustomProperties.URI_PROPERTY_PREFIX, b.toString());
         }
 
-        List<Integer> indicesToRemove = new ArrayList<Integer>();
+        List<Integer> indicesToRemove = new ArrayList<>();
         // Delete former variables
         List<CTProperty> propertyList = customProperties.getUnderlyingProperties().getPropertyList();
         for (int i = 0; i < propertyList.size(); i++) {
             CTProperty prop = propertyList.get(i);
-            if (prop.getName() != null && prop.getName().startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX + ":")) {
+            if (prop.getName() != null && prop.getName().startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)) {
                 indicesToRemove.add(i);
             }
         }
@@ -298,7 +298,7 @@ public final class TemplateConfigUtil {
         for (TemplateVariable var : config.getVariables()) {
             String name = var.getName();
             String typeName = var.getTypeName();
-            String key = M2DocCustomProperties.VAR_PROPERTY_PREFIX + ":" + name;
+            String key = M2DocCustomProperties.VAR_PROPERTY_PREFIX + name;
             if (customProperties.contains(key)) {
                 customProperties.getProperty(key).setLpwstr(typeName);
             } else {
@@ -325,17 +325,6 @@ public final class TemplateConfigUtil {
             }
         }
         return -1;
-    }
-
-    /**
-     * Check that a given name is a valid M2DOC (I.e. AQL) variable name.
-     * 
-     * @param name
-     *            The variable name to check
-     * @return <code>true</code> if the given name matches "[a-zA-Z_][a-zA-Z0-9_]*".
-     */
-    public static boolean isValidVariableName(String name) {
-        return name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*");
     }
 
     /**
