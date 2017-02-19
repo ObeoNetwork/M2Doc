@@ -90,6 +90,11 @@ public final class TemplateConfigurationServices {
                 }
             }
         }
+        for (String svcToken : templateInfo.getServiceTokens()) {
+            if (!svcToken.isEmpty()) {
+                generation.getServicesTokens().add(svcToken);
+            }
+        }
         for (String key : templateInfo.getVariables().keySet()) {
             String typeName = templateInfo.getVariables().get(key);
             Definition definition = null;

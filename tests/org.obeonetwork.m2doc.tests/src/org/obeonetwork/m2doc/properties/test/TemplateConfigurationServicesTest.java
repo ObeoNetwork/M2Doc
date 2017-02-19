@@ -31,6 +31,10 @@ public class TemplateConfigurationServicesTest {
         // Then
         assertTrue(gen.getPackagesNSURI().isEmpty());
 
+        assertEquals(2, gen.getServicesTokens().size());
+        assertEquals("token1", gen.getServicesTokens().get(0));
+        assertEquals("token2", gen.getServicesTokens().get(1));
+
         assertEquals(2, gen.getDefinitions().size());
         Definition def0 = gen.getDefinitions().get(0);
         Definition def1 = gen.getDefinitions().get(1);
