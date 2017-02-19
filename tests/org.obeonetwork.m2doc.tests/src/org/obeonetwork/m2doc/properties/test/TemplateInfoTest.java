@@ -35,10 +35,7 @@ public class TemplateInfoTest {
 
     @Test
     public void testServiceToken() throws IOException, InvalidFormatException {
-        FileInputStream is = new FileInputStream("resources/document/properties/properties-template.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        TemplateInfo info = new TemplateInfo(document);
+        TemplateInfo info = loadTemplateInfo("resources/document/properties/properties-template.docx");
         List<String> serviceTokens = info.getServiceTokens();
         assertTrue(serviceTokens.contains("token1"));
         assertTrue(serviceTokens.contains("token2"));
@@ -46,10 +43,7 @@ public class TemplateInfoTest {
 
     @Test
     public void testVariableMap() throws IOException, InvalidFormatException {
-        FileInputStream is = new FileInputStream("resources/document/properties/properties-template.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        TemplateInfo info = new TemplateInfo(document);
+        TemplateInfo info = loadTemplateInfo("resources/document/properties/properties-template.docx");
         Map<String, String> variables = info.getVariables();
         assertEquals("database.Table", variables.get("variable1"));
         assertEquals("database.Column", variables.get("variable2"));
@@ -66,10 +60,7 @@ public class TemplateInfoTest {
      */
     @Test
     public void testReadInvalidVariables() throws IOException, InvalidFormatException {
-        FileInputStream is = new FileInputStream("resources/document/properties/emptyVar.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        TemplateInfo info = new TemplateInfo(document);
+        TemplateInfo info = loadTemplateInfo("resources/document/properties/emptyVar.docx");
         Map<String, String> variables = info.getVariables();
         assertTrue(variables.isEmpty());
     }
@@ -85,10 +76,7 @@ public class TemplateInfoTest {
      */
     @Test
     public void testReadBlankMMUri() throws IOException, InvalidFormatException {
-        FileInputStream is = new FileInputStream("resources/document/properties/noUri.docx");
-        OPCPackage oPackage = OPCPackage.open(is);
-        XWPFDocument document = new XWPFDocument(oPackage);
-        TemplateInfo info = new TemplateInfo(document);
+        TemplateInfo info = loadTemplateInfo("resources/document/properties/noUri.docx");
         List<String> uris = info.getPackagesURIs();
         assertTrue(uris.isEmpty());
     }
@@ -109,5 +97,24 @@ public class TemplateInfoTest {
         assertFalse(TemplateInfo.isValidVariableName("-inv"));
         assertFalse(TemplateInfo.isValidVariableName("not-valid"));
         assertFalse(TemplateInfo.isValidVariableName("dfg$fsd"));
+    }
+
+    /**
+     * Load a given docx file path into a TemplateInfo.
+     * 
+     * @param path
+     *            The path to the docx file
+     * @return A new instance of TemplateInof loaded with the docx properties.
+     * @throws InvalidFormatException
+     *             If a format exception occurs
+     * @throws IOException
+     *             If an IO problem occurs
+     */
+    public static TemplateInfo loadTemplateInfo(String path) throws InvalidFormatException, IOException {
+        try (FileInputStream is = new FileInputStream(path);
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+            return new TemplateInfo(document);
+        }
     }
 }
