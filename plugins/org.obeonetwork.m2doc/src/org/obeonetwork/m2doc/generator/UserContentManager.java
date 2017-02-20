@@ -16,16 +16,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.UserContent;
@@ -41,6 +52,11 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 public class UserContentManager {
 
     /**
+     * The error copy message.
+     */
+    public static final String USERDOC_COPY_ERROR = "userdoc copy error : ";
+
+    /**
      * Temporary Generated destination file name suffix.
      */
     public static final String TEMP_DEST_SUFFIX = "tmpDocDest";
@@ -51,29 +67,50 @@ public class UserContentManager {
     private static final int BUFFER_SIZE = 1024 * 8;
 
     /**
-     * Generated file.
+     * The {@link DateFormat} used to log lost {@link UserContent}.
      */
-    private File generatedFileCopy;
+    private static final DateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     /**
-     * Map for id to UserContent EObject.
+     * Generated file.
      */
-    private Map<String, UserContent> mapIdUserContent;
+    private final File generatedFileCopy;
+
+    /**
+     * Map for id to the {@link List} of .
+     */
+    private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<String, List<UserContent>>();
+
+    /**
+     * The input {@link DocumentTemplate}.
+     */
+    private final DocumentTemplate documentTemplate;
+
+    /**
+     * The destination {@link URI}.
+     */
+    private final URI destination;
 
     /**
      * Constructor.
      * 
-     * @param destinationPathFileName
-     *            Generated path file name
+     * @param documentTemplate
+     *            the input {@link DocumentTemplate}
+     * @param destination
+     *            the destination {@link URI}
      * @throws IOException
-     *             IOException
+     *             IOException if the destination can't be copied to a temporary file
      */
-    public UserContentManager(URI destinationPathFileName) throws IOException {
-        if (URIConverter.INSTANCE.exists(destinationPathFileName, Collections.EMPTY_MAP)) {
+    public UserContentManager(DocumentTemplate documentTemplate, URI destination) throws IOException {
+        this.documentTemplate = documentTemplate;
+        this.destination = destination;
+        if (URIConverter.INSTANCE.exists(destination, Collections.EMPTY_MAP)) {
             // Copy file
-            generatedFileCopy = tempCopyFile(destinationPathFileName);
+            generatedFileCopy = tempCopyFile(destination);
             // Launch parsing
             launchParsing();
+        } else {
+            generatedFileCopy = null;
         }
     }
 
@@ -95,21 +132,13 @@ public class UserContentManager {
                 if (eObject instanceof UserContent) {
                     UserContent userContent = (UserContent) eObject;
                     if (userContent.getId() != null) {
-                        String id = userContent.getId();
-                        if (mapIdUserContent == null) {
-                            mapIdUserContent = new HashMap<>();
+                        final String id = userContent.getId();
+                        List<UserContent> userContents = mapIdUserContent.get(id);
+                        if (userContents == null) {
+                            userContents = new ArrayList<UserContent>();
+                            mapIdUserContent.put(id, userContents);
                         }
-                        if (mapIdUserContent.containsKey(id)) {
-                            // Mark message to generate lost part of document
-                            TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
-                                    ValidationMessageLevel.WARNING,
-                                    "The id " + id
-                                        + " is already used in generated document. Ids must be unique otherwise document part contained userContent will be lost.",
-                                    userContent.getRuns().get(0));
-                            userContent.getValidationMessages().add(templateValidationMessage);
-                        } else {
-                            mapIdUserContent.put(id, userContent);
-                        }
+                        userContents.add(userContent);
                     }
                 }
             }
@@ -123,17 +152,26 @@ public class UserContentManager {
     }
 
     /**
-     * Get User Doc Destination for an id.
+     * Consumes the next {@link UserContent} with the given {@link UserContent#getId() ID}.
      * 
      * @param id
-     *            id
-     * @return User Doc Destination
+     *            the {@link UserContent#getId() ID}
+     * @return the consumed {@link UserContent} if any, <code>null</code> otherwise
      */
-    public UserContent getUserContent(String id) {
-        if (mapIdUserContent != null && mapIdUserContent.containsKey(id)) {
-            return mapIdUserContent.get(id);
+    public UserContent consumeUserContent(String id) {
+        final UserContent res;
+
+        List<UserContent> userContents = mapIdUserContent.get(id);
+        if (userContents != null && !userContents.isEmpty()) {
+            res = userContents.remove(0);
+            if (userContents.isEmpty()) {
+                mapIdUserContent.remove(id);
+            }
+        } else {
+            res = null;
         }
-        return null;
+
+        return res;
     }
 
     /**
@@ -162,7 +200,6 @@ public class UserContentManager {
     public void dispose() throws IOException {
         // Delete Temp Generated File.
         if (generatedFileCopy != null && generatedFileCopy.exists() && generatedFileCopy.isFile()) {
-            mapIdUserContent = null;
             generatedFileCopy.delete();
         }
     }
@@ -187,4 +224,104 @@ public class UserContentManager {
             }
         }
     }
+
+    /**
+     * Gets the {@link List} of duplicated {@link UserContent#getId() user content ID}.
+     * 
+     * @return the {@link List} of duplicated {@link UserContent#getId() user content ID}
+     */
+    public List<String> getDuplicatedUserContentIDs() {
+        List<String> res = new ArrayList<String>();
+
+        for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
+            if (entry.getValue().size() > 1) {
+                res.add(entry.getKey());
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Generates lost files if needed and update given {@link GenerationResult}.
+     * 
+     * @param result
+     *            the {@link GenerationResult}
+     * @throws IOException
+     *             if the lost {@link UserContent} can't be written
+     * @throws InvalidFormatException
+     *             if the input {@link DocumentTemplate} can't be read
+     */
+    public void generateLostFiles(GenerationResult result) throws IOException, InvalidFormatException {
+        for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
+            final URI lostUserContentURI = getLostUserContentURI(destination, entry.getKey());
+            result.getLostUserContents().put(entry.getKey(), lostUserContentURI);
+            final boolean isNewUserContentLoss;
+            final URI inputURI;
+            if (URIConverter.INSTANCE.exists(lostUserContentURI, Collections.EMPTY_MAP)) {
+                inputURI = lostUserContentURI;
+                isNewUserContentLoss = false;
+            } else {
+                inputURI = documentTemplate.eResource().getURI();
+                isNewUserContentLoss = true;
+            }
+
+            try (InputStream is = URIConverter.INSTANCE.createInputStream(inputURI);
+                    OPCPackage oPackage = OPCPackage.open(is);
+                    XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
+                if (isNewUserContentLoss) {
+                    // clear the document
+                    int size = destinationDocument.getBodyElements().size();
+                    for (int i = 0; i < size; i++) {
+                        destinationDocument.removeBodyElement(0);
+                    }
+                }
+                XWPFParagraph currentGeneratedParagraph = destinationDocument.createParagraph();
+                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
+                        FORMAT.format(new Date()) + " - Lost user content " + entry.getKey());
+                result.updateLevel(ValidationMessageLevel.WARNING);
+                currentGeneratedParagraph = destinationDocument.createParagraph();
+
+                for (UserContent userContent : entry.getValue()) {
+                    final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
+                    try {
+                        currentGeneratedParagraph = destinationDocument.createParagraph();
+                        currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
+                                destinationDocument);
+                    } catch (InvalidFormatException e) {
+                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                                USERDOC_COPY_ERROR + e.getMessage());
+                        result.updateLevel(ValidationMessageLevel.ERROR);
+                    } catch (XmlException e) {
+                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                                USERDOC_COPY_ERROR + e.getMessage());
+                        result.updateLevel(ValidationMessageLevel.ERROR);
+                    } catch (IOException e) {
+                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                                USERDOC_COPY_ERROR + e.getMessage());
+                        result.updateLevel(ValidationMessageLevel.ERROR);
+                    }
+                }
+
+                POIServices.getInstance().saveFile(destinationDocument, lostUserContentURI);
+            }
+        }
+    }
+
+    /**
+     * Gets the lost {@link UserContent} {@link URI} for the given destination {@link URI} and {@link UserContent#getId() user content ID}.
+     * 
+     * @param dest
+     *            the destination {@link URI}
+     * @param id
+     *            the {@link UserContent#getId() user content ID}
+     * @return the lost {@link UserContent} {@link URI} for the given destination {@link URI} and {@link UserContent#getId() user content
+     *         ID}
+     */
+    protected URI getLostUserContentURI(URI dest, String id) {
+        final URI res = URI.createURI("./" + dest.lastSegment() + "-" + id + "-lost.docx");
+
+        return res.resolve(dest);
+    }
+
 }

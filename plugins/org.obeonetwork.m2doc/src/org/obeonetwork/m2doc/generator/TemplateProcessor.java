@@ -105,10 +105,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
     /**
-     * The error copy message.
-     */
-    private static final String USERDOC_COPY_ERROR = "userdoc copy error : ";
-    /**
      * Error message when AQL query could not be evaluated.
      */
     private static final String QUERY_EVALERROR_MESSAGE = "Couldn't evaluate query.";
@@ -116,6 +112,11 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * Error message when an AQL query contains syntax errors.
      */
     private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression: ";
+
+    /**
+     * Invalid format picture message.
+     */
+    private static final String PICTURE_INVALID_FORMAT = "Picture in %s has an invalid format.";
 
     /**
      * The {@link BookmarkManager}.
@@ -211,6 +212,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         this.generatedDocument = destinationDocument;
         variablesStack.push(variables);
         result = new GenerationResult();
+        result.getduplicatedUserContentIDs().addAll(userContentManager.getDuplicatedUserContentIDs());
 
         doSwitch(documentTemplate);
 
@@ -499,7 +501,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
             }
         } catch (InvalidFormatException e) {
             insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    "Picture in " + image.getURI().toString() + " has an invalid format.");
+                    String.format(PICTURE_INVALID_FORMAT, image.getURI().toString()));
         } catch (IOException e) {
             insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                     image.getURI().toString() + " " + e.getMessage());
@@ -578,13 +580,13 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         // manage user Doc Id Uniqueness
         manageUserDocIdUniqueness(id, userDoc);
         // Copy userdoc content
-        UserContent userContent = userContentManager.getUserContent(id);
+        UserContent userContent = userContentManager.consumeUserContent(id);
         boolean needNewParagraphBeforeEndTag = true;
         if (userContent == null) {
             doSwitch(userDoc.getBody());
             needNewParagraphBeforeEndTag = needNewParagraph(userDoc);
         } else {
-            UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
+            final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
             try {
                 currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
                         generatedDocument);
@@ -596,13 +598,13 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 }
             } catch (InvalidFormatException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        USERDOC_COPY_ERROR + e.getMessage());
+                        UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             } catch (XmlException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        USERDOC_COPY_ERROR + e.getMessage());
+                        UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             } catch (IOException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        USERDOC_COPY_ERROR + e.getMessage());
+                        UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             }
         }
 
@@ -872,29 +874,29 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         if (image.getFileName() == null) {
             insertQuerySyntaxMessages(image, "");
         } else {
-            URI filePath = URI.createFileURI(image.getFileName());
-            if (!filePath.hasAbsolutePath() && image.eResource() != null && image.eResource().getURI() != null) {
+            URI imageURI = URI.createFileURI(image.getFileName());
+            if (!imageURI.hasAbsolutePath() && image.eResource() != null && image.eResource().getURI() != null) {
                 /*
                  * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
                  */
-                filePath = image.eResource().getURI().trimSegments(1);
+                imageURI = image.eResource().getURI().trimSegments(1);
                 for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(image.getFileName())) {
-                    filePath = filePath.appendSegment(s);
+                    imageURI = imageURI.appendSegment(s);
                 }
             }
             try {
                 int heigth = Units.toEMU(image.getHeight());
                 int width = Units.toEMU(image.getWidth());
 
-                try (InputStream imageStream = URIConverter.INSTANCE.createInputStream(filePath)) {
-                    imageRun.addPicture(imageStream, getPictureType(filePath), image.getFileName(), width, heigth);
+                try (InputStream imageStream = URIConverter.INSTANCE.createInputStream(imageURI)) {
+                    imageRun.addPicture(imageStream, getPictureType(imageURI), image.getFileName(), width, heigth);
                 }
             } catch (InvalidFormatException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "Picture in " + filePath.toString() + " has an invalid format.");
+                        String.format(PICTURE_INVALID_FORMAT, imageURI.toString()));
             } catch (IOException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "An I/O Problem occured while reading " + filePath.toString());
+                        "An I/O Problem occured while reading " + imageURI.toString());
             }
         }
 
@@ -915,15 +917,15 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                 List<String> imagePaths = ((AbstractDiagramProvider) provider).getRepresentationImagePath(parameters);
                 usedProviders.add((AbstractDiagramProvider) provider);
                 for (String imagePathStr : imagePaths) {
-                    URI imagePath = URI.createFileURI(imagePathStr);
-                    if (!imagePath.hasAbsolutePath() && representation.eResource() != null
+                    URI imageURI = URI.createFileURI(imagePathStr);
+                    if (!imageURI.hasAbsolutePath() && representation.eResource() != null
                         && representation.eResource().getURI() != null) {
                         /*
                          * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
                          */
-                        imagePath = representation.eResource().getURI().trimSegments(1);
+                        imageURI = representation.eResource().getURI().trimSegments(1);
                         for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(imagePathStr)) {
-                            imagePath = imagePath.appendSegment(s);
+                            imageURI = imageURI.appendSegment(s);
                         }
                     }
 
@@ -941,16 +943,16 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                         int height = Units.toEMU(representation.getHeight());
                         int width = Units.toEMU(representation.getWidth());
 
-                        try (InputStream fileInputStream = URIConverter.INSTANCE.createInputStream(imagePath)) {
-                            imageRun.addPicture(fileInputStream, getPictureType(imagePath), imagePathStr, width,
+                        try (InputStream fileInputStream = URIConverter.INSTANCE.createInputStream(imageURI)) {
+                            imageRun.addPicture(fileInputStream, getPictureType(imageURI), imagePathStr, width,
                                     height);
                         }
                     } catch (InvalidFormatException e) {
                         insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                "Picture in " + imagePath + " has an invalid format.");
+                                String.format(PICTURE_INVALID_FORMAT, imageURI));
                     } catch (FileNotFoundException e) {
                         insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                "File " + imagePath + " cannot be found.");
+                                "File " + imageURI + " cannot be found.");
                     } catch (IOException e) {
                         insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                                 "An I/O Problem occured while reading file: " + e.getMessage());

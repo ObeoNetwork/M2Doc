@@ -27,11 +27,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
@@ -48,6 +48,7 @@ import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
@@ -66,6 +67,21 @@ import static org.junit.Assert.fail;
  */
 @RunWith(Parameterized.class)
 public abstract class AbstractTemplatesTestSuite {
+
+    /**
+     * Lost files suffix.
+     */
+    private static final String LOST_DOCX = "-lost.docx";
+
+    /**
+     * Doesn't exist message.
+     */
+    private static final String DOESN_T_EXISTS = " doesn't exists.";
+
+    /**
+     * User content tag in file name.
+     */
+    private static final String USER_CONTENT_TAG = "-userContent";
 
     /**
      * The {@link DocumentTemplate}.
@@ -222,7 +238,7 @@ public abstract class AbstractTemplatesTestSuite {
             try (FileOutputStream stream = new FileOutputStream(actualASTFile);) {
                 setContent(stream, "UTF-8", actualAst);
             }
-            fail(expectedASTFile.getAbsolutePath() + " doesn't exists.");
+            fail(expectedASTFile.getAbsolutePath() + DOESN_T_EXISTS);
         }
         try (FileInputStream stream = new FileInputStream(expectedASTFile)) {
             final String expectedAst = getContent(stream, "UTF-8");
@@ -257,7 +273,7 @@ public abstract class AbstractTemplatesTestSuite {
                 M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate,
                         URI.createFileURI(tempFile.getAbsolutePath()));
             }
-            fail(expectedValidationFile.getAbsolutePath() + " doesn't exists.");
+            fail(expectedValidationFile.getAbsolutePath() + DOESN_T_EXISTS);
         }
 
         if (tempFile.length() != 0) {
@@ -285,31 +301,72 @@ public abstract class AbstractTemplatesTestSuite {
 
         File outputFile = null;
         if (expectedGeneratedFile.exists()) {
-            outputFile = File.createTempFile(expectedGeneratedFile.getAbsolutePath(), "generated-test");
+            outputFile = File.createTempFile(expectedGeneratedFile.getAbsolutePath(), "generated-test.docx");
+            outputFile.deleteOnExit();
         } else {
             outputFile = getActualGeneratedFile(new File(testFolderPath));
             if (userContentFile.exists()) {
                 Files.copy(userContentFile, outputFile);
             }
+            for (File userContentLostFile : getUserContentLostFile(new File(testFolderPath))) {
+                final String destPath = outputFile.getAbsolutePath() + userContentLostFile.getName()
+                        .substring(userContentLostFile.getName().indexOf(USER_CONTENT_TAG) + USER_CONTENT_TAG.length());
+                Files.copy(userContentLostFile, new File(destPath));
+            }
             generateTemplate(templateFile, outputFile);
-            fail(expectedGeneratedFile.getAbsoluteFile() + " doesn't exists.");
+            fail(expectedGeneratedFile.getAbsoluteFile() + DOESN_T_EXISTS);
         }
 
-        try (FileInputStream is = new FileInputStream(templateFile)) {
-            try (OPCPackage oPackage = OPCPackage.open(is)) {
-                try (XWPFDocument document = new XWPFDocument(oPackage)) {
-                    if (userContentFile.exists()) {
-                        Files.copy(userContentFile, outputFile);
-                    }
-                    generateTemplate(templateFile, outputFile);
-                    M2DocTestUtils.assertDocx(expectedGeneratedFile.getAbsolutePath(), outputFile.getAbsolutePath());
-                }
-            }
-        } finally {
-            if (outputFile != null) {
-                outputFile.delete();
-            }
+        if (userContentFile.exists()) {
+            Files.copy(userContentFile, outputFile);
         }
+        for (File userContentLostFile : getUserContentLostFile(new File(testFolderPath))) {
+            final String destPath = outputFile.getAbsolutePath() + userContentLostFile.getName()
+                    .substring(userContentLostFile.getName().indexOf(USER_CONTENT_TAG) + USER_CONTENT_TAG.length());
+            Files.copy(userContentLostFile, new File(destPath));
+        }
+        final GenerationResult generationResult = generateTemplate(templateFile, outputFile);
+        M2DocTestUtils.assertDocx(expectedGeneratedFile.getAbsolutePath(), outputFile.getAbsolutePath());
+
+        List<String> expectedLostFiles = getExpectedLostFiles(testFolderPath);
+        for (Entry<String, URI> entry : generationResult.getLostUserContents().entrySet()) {
+            final String actualLostPath = entry.getValue().path();
+            new File(actualLostPath).deleteOnExit();
+            final String expectedLostPath = expectedGeneratedFile.getAbsolutePath() + "-" + entry.getKey() + LOST_DOCX;
+            M2DocTestUtils.assertDocx(expectedLostPath, actualLostPath);
+            expectedLostFiles.remove(expectedLostPath);
+        }
+        // make sure we didn't miss an expected lost file
+        assertTrue(Arrays.deepToString(expectedLostFiles.toArray()), expectedLostFiles.isEmpty());
+    }
+
+    /**
+     * Gets all expected lost files from the given folder path.
+     * 
+     * @param folderPath
+     *            the folder path
+     * @return the {@link List} of all expected lost files from the given folder path
+     */
+    private List<String> getExpectedLostFiles(String folderPath) {
+        final List<String> result = new ArrayList<String>();
+
+        File folder = new File(folderPath);
+        final File[] children = folder.listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isFile() && pathname.getName().contains("expected")
+                    && pathname.getName().contains(LOST_DOCX);
+            }
+
+        });
+        Arrays.sort(children);
+
+        for (File file : children) {
+            result.add(file.getAbsolutePath());
+        }
+
+        return result;
     }
 
     /**
@@ -319,6 +376,7 @@ public abstract class AbstractTemplatesTestSuite {
      *            the template .docx
      * @param outputFile
      *            the output file .docx
+     * @return the {@link GenerationResult}
      * @throws DocumentGenerationException
      *             if the document can't be generated
      * @throws IOException
@@ -326,10 +384,10 @@ public abstract class AbstractTemplatesTestSuite {
      * @throws DocumentParserException
      *             if the template can't be parsed
      */
-    private void generateTemplate(final File templateFile, File outputFile)
+    private GenerationResult generateTemplate(File templateFile, File outputFile)
             throws DocumentGenerationException, IOException, DocumentParserException {
         String outputPath = outputFile.getAbsolutePath();
-        M2DocUtils.generate(documentTemplate, queryEnvironment, variables, URI.createFileURI(outputPath));
+        return M2DocUtils.generate(documentTemplate, queryEnvironment, variables, URI.createFileURI(outputPath));
     }
 
     /**
@@ -418,6 +476,34 @@ public abstract class AbstractTemplatesTestSuite {
      */
     protected File getUserContentFile(File testFolder) {
         return new File(testFolder + File.separator + testFolder.getName() + "-userContent.docx");
+    }
+
+    /**
+     * Gets the user content file from the test folder path.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @return the user content file from the test folder path
+     */
+    protected List<File> getUserContentLostFile(File testFolder) {
+        final List<File> result = new ArrayList<File>();
+        new File(testFolder + File.separator + testFolder.getName() + "-userContent-id-lost.docx");
+
+        final File[] children = testFolder.listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                final String name = pathname.getName();
+                return name.contains("-userContent-") && name.contains(LOST_DOCX);
+            }
+
+        });
+        Arrays.sort(children);
+        for (File child : children) {
+            result.add(child);
+        }
+
+        return result;
     }
 
     /**

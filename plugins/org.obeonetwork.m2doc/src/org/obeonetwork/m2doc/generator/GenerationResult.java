@@ -11,11 +11,14 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 
 /**
@@ -35,7 +38,12 @@ public class GenerationResult {
     /**
      * Mapping of lost fragments from {@link UserDoc#getId() user doc ID} to fragment {@link URI}.
      */
-    private final Map<String, URI> losts = new HashMap<String, URI>();
+    private final Map<String, URI> lostUserContents = new HashMap<String, URI>();
+
+    /**
+     * The {@link List} of duplicated {@link UserContent#getId() user content ID}.
+     */
+    private final List<String> duplicatedUserContentIDs = new ArrayList<String>();
 
     /**
      * Updates the current {@link #getLevel() level} with the given {@link ValidationMessageLevel}.
@@ -55,8 +63,8 @@ public class GenerationResult {
      * 
      * @return the mapping of lost fragments from {@link UserDoc#getId() user doc ID} to fragment {@link URI}
      */
-    public Map<String, URI> getLosts() {
-        return losts;
+    public Map<String, URI> getLostUserContents() {
+        return lostUserContents;
     }
 
     /**
@@ -66,6 +74,15 @@ public class GenerationResult {
      */
     public ValidationMessageLevel getLevel() {
         return level;
+    }
+
+    /**
+     * Gets the {@link List} of duplicated {@link UserContent#getId() user content ID}.
+     * 
+     * @return the {@link List} of duplicated {@link UserContent#getId() user content ID}
+     */
+    public List<String> getduplicatedUserContentIDs() {
+        return duplicatedUserContentIDs;
     }
 
 }

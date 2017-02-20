@@ -443,8 +443,9 @@ public final class M2DocUtils {
             }
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(destination);
-            TemplateProcessor processor = new TemplateProcessor(bookmarkManager, userContentManager, queryEnvironment);
+            final UserContentManager userContentManager = new UserContentManager(documentTemplate, destination);
+            final TemplateProcessor processor = new TemplateProcessor(bookmarkManager, userContentManager,
+                    queryEnvironment);
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
 
@@ -454,12 +455,14 @@ public final class M2DocUtils {
             if (bookmarkManager.markOpenBookmarks()) {
                 result.updateLevel(ValidationMessageLevel.ERROR);
             }
+
+            userContentManager.generateLostFiles(result);
+            userContentManager.dispose();
+
             // At this point, the document has been generated and just needs being
             // written on disk.
             POIServices.getInstance().saveFile(destinationDocument, destination);
 
-            // Remove temporary last destination document
-            userContentManager.dispose();
             processor.clear();
 
             return result;

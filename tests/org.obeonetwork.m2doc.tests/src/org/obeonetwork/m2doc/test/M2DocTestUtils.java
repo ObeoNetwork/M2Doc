@@ -200,6 +200,7 @@ public final class M2DocTestUtils {
 
         res = textContent.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc");
         res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory");
+        res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");
 
         return res;
     }

@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.userdoc.test;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
@@ -20,7 +19,6 @@ import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 import static org.junit.Assert.assertNull;
-import static org.obeonetwork.m2doc.generator.UserContentManager.TEMP_DEST_SUFFIX;
 
 /**
  * Tests the {@link UserContentManager} class.
@@ -39,30 +37,10 @@ public class UserContentManagerTest {
      */
     @Test
     public void testWithNoExistLastDestinationFile() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager(URI.createFileURI("no_exist_file_path"));
+        UserContentManager userContentManager = new UserContentManager(null, URI.createFileURI("no_exist_file_path"));
 
-        assertNull(userContentManager.getUserContent("noExistid1"));
+        assertNull(userContentManager.consumeUserContent("noExistid1"));
 
-    }
-
-    /**
-     * Find First Temp File.
-     * 
-     * @param fileName
-     *            fileName
-     * @param destFile
-     *            destFile
-     * @return file with temp pattern in destFile folder
-     */
-    private File findFirstTempFile(String fileName, File destFile) {
-        File tempFile = null;
-        // Find first temp file
-        for (File file : destFile.getParentFile().listFiles()) {
-            if (file.getName().startsWith(fileName) && file.getName().endsWith(TEMP_DEST_SUFFIX)) {
-                tempFile = file;
-            }
-        }
-        return tempFile;
     }
 
     /**
@@ -75,10 +53,10 @@ public class UserContentManagerTest {
      */
     @Test
     public void testLastDestinationFileContainNoUserContent() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager(
+        UserContentManager userContentManager = new UserContentManager(null,
                 URI.createFileURI("userContent/testUserContent2.docx"));
         // CHECKSTYLE:OFF
-        assertNull(userContentManager.getUserContent("noExistid2"));
+        assertNull(userContentManager.consumeUserContent("noExistid2"));
         // CHECKSTYLE:ON
         userContentManager.dispose();
     }
