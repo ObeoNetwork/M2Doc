@@ -22,7 +22,6 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -100,7 +99,7 @@ public final class QueryServices {
      * @param queryEnvironment
      *            IQueryEnvironment
      */
-    public void registerPackages(EList<String> packageURIs, IQueryEnvironment queryEnvironment) {
+    public void registerPackages(List<String> packageURIs, IQueryEnvironment queryEnvironment) {
         for (String nsURI : packageURIs) {
             EPackage p = EPackage.Registry.INSTANCE.getEPackage(nsURI);
             if (p != null) {
