@@ -240,7 +240,7 @@ public class OptionParser {
             } else {
                 // we keep the spaces that we remove when the end key character is detected.
                 key += charAt;
-                if (!keyDetected && !" ".equals(charAt)) {
+                if (!keyDetected && ' ' != charAt) {
                     keyDetected = true;
                 }
             }

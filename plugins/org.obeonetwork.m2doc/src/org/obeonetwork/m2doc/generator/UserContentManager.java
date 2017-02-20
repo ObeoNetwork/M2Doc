@@ -69,7 +69,7 @@ public class UserContentManager {
     /**
      * The {@link DateFormat} used to log lost {@link UserContent}.
      */
-    private static final DateFormat FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private final DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     /**
      * Generated file.
@@ -278,7 +278,7 @@ public class UserContentManager {
                 }
                 XWPFParagraph currentGeneratedParagraph = destinationDocument.createParagraph();
                 M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
-                        FORMAT.format(new Date()) + " - Lost user content " + entry.getKey());
+                        format.format(new Date()) + " - Lost user content " + entry.getKey());
                 result.updateLevel(ValidationMessageLevel.WARNING);
                 currentGeneratedParagraph = destinationDocument.createParagraph();
 
