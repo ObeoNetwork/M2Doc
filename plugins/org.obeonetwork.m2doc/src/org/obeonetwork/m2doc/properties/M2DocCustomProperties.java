@@ -24,27 +24,27 @@ public interface M2DocCustomProperties {
     /**
      * id of the integer type to use in variable declaration properties (not supported yet).
      */
-    String INT_TYPE = "int";
+    String INT_TYPE = "Integer";
     /**
      * id of the real type to use in variable declaration properties (not supported yet).
      */
-    String REAL_TYPE = "real";
+    String REAL_TYPE = "Real";
     /**
      * id of the String type to use in variable declaration properties.
      */
-    String STRING_TYPE = "string";
+    String STRING_TYPE = "String";
     /**
      * id of the boolean type to use in variable declaration properties (not supported yet).
      */
-    String BOOLEAN_TYPE = "boolean";
+    String BOOLEAN_TYPE = "Boolean";
     /**
      * id of the date type to use in variable declaration properties (not supported yet).
      */
-    String DATE_TYPE = "date";
+    String DATE_TYPE = "Date";
     /**
      * id of the object type to use in variable declaration properties (not supported yet).
      */
-    String OBJECT_TYPE = "object";
+    String OBJECT_TYPE = "Object";
     /**
      * Prefix of the variable declaration custom properties.
      */

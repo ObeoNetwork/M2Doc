@@ -64,7 +64,7 @@ public class TemplateConfigUtilTest {
 
             @Override
             public Map<String, String> getVariables() {
-                return ImmutableMap.of("v1", "string", "v2", "ecore::EPackage");
+                return ImmutableMap.of("v1", "String", "v2", "ecore::EPackage");
             }
         };
         TemplateConfig config = TemplateConfigUtil.load(info);
@@ -76,9 +76,9 @@ public class TemplateConfigUtilTest {
         assertEquals(EcorePackage.eINSTANCE, mappingEcore.getEPackage());
 
         assertEquals(2, config.getTypesByName().size());
-        ScalarType typeString = (ScalarType) config.getTypesByName().get("string");
+        ScalarType typeString = (ScalarType) config.getTypesByName().get("String");
         StructuredType typeEPackage = (StructuredType) config.getTypesByName().get("ecore::EPackage");
-        assertEquals("string", typeString.getName());
+        assertEquals("String", typeString.getName());
         assertEquals("EPackage", typeEPackage.getName());
         assertEquals(EcorePackage.eINSTANCE.getEPackage(), typeEPackage.getEClassifier());
         assertEquals("ecore", typeEPackage.getMappingName());
@@ -87,7 +87,7 @@ public class TemplateConfigUtilTest {
         assertEquals(2, config.getVariables().size());
         TemplateVariable v1 = config.getVariables().get(0);
         assertEquals("v1", v1.getName());
-        assertEquals("string", v1.getTypeName());
+        assertEquals("String", v1.getTypeName());
         assertEquals(typeString, v1.getType());
 
         TemplateVariable v2 = config.getVariables().get(1);
@@ -106,7 +106,7 @@ public class TemplateConfigUtilTest {
 
             @Override
             public Map<String, String> getVariables() {
-                return ImmutableMap.of("v1", "string", "v2", "test::SomeClass");
+                return ImmutableMap.of("v1", "String", "v2", "test::SomeClass");
             }
         };
         TemplateConfig config = TemplateConfigUtil.load(info);
@@ -118,8 +118,8 @@ public class TemplateConfigUtilTest {
         assertEquals(EcorePackage.eINSTANCE, mappingEcore.getEPackage());
 
         assertEquals(2, config.getTypesByName().size());
-        ScalarType typeString = (ScalarType) config.getTypesByName().get("string");
-        assertEquals("string", typeString.getName());
+        ScalarType typeString = (ScalarType) config.getTypesByName().get("String");
+        assertEquals("String", typeString.getName());
         StructuredType typeSomeClass = (StructuredType) config.getTypesByName().get("test::SomeClass");
         assertEquals("SomeClass", typeSomeClass.getName());
         assertNull(typeSomeClass.getEClassifier());
@@ -129,7 +129,7 @@ public class TemplateConfigUtilTest {
         assertEquals(2, config.getVariables().size());
         TemplateVariable v1 = config.getVariables().get(0);
         assertEquals("v1", v1.getName());
-        assertEquals("string", v1.getTypeName());
+        assertEquals("String", v1.getTypeName());
         assertEquals(typeString, v1.getType());
 
         TemplateVariable v2 = config.getVariables().get(1);
@@ -148,7 +148,7 @@ public class TemplateConfigUtilTest {
 
             @Override
             public Map<String, String> getVariables() {
-                return ImmutableMap.of("v1", "string", "v2", "test::EPackage");
+                return ImmutableMap.of("v1", "String", "v2", "test::EPackage");
             }
         };
         TemplateConfig config = TemplateConfigUtil.load(info);
@@ -160,8 +160,8 @@ public class TemplateConfigUtilTest {
         assertNull(mapping.getName());
 
         assertEquals(2, config.getTypesByName().size());
-        ScalarType typeString = (ScalarType) config.getTypesByName().get("string");
-        assertEquals("string", typeString.getName());
+        ScalarType typeString = (ScalarType) config.getTypesByName().get("String");
+        assertEquals("String", typeString.getName());
         StructuredType typeUnknown = (StructuredType) config.getTypesByName().get("test::EPackage");
         assertEquals("EPackage", typeUnknown.getName());
         assertNull(typeUnknown.getEClassifier());
@@ -171,7 +171,7 @@ public class TemplateConfigUtilTest {
         assertEquals(2, config.getVariables().size());
         TemplateVariable v1 = config.getVariables().get(0);
         assertEquals("v1", v1.getName());
-        assertEquals("string", v1.getTypeName());
+        assertEquals("String", v1.getTypeName());
         assertEquals(typeString, v1.getType());
 
         TemplateVariable v2 = config.getVariables().get(1);
@@ -194,7 +194,7 @@ public class TemplateConfigUtilTest {
 
             @Override
             public Map<String, String> getVariables() {
-                return ImmutableMap.of("v1", "string", "v2", "ecore::EPackage");
+                return ImmutableMap.of("v1", "String", "v2", "ecore::EPackage");
             }
         };
         TemplateConfig config = TemplateConfigUtil.load(info);
@@ -206,9 +206,9 @@ public class TemplateConfigUtilTest {
         assertEquals(EcorePackage.eINSTANCE, mappingEcore.getEPackage());
 
         assertEquals(2, config.getTypesByName().size());
-        ScalarType typeString = (ScalarType) config.getTypesByName().get("string");
+        ScalarType typeString = (ScalarType) config.getTypesByName().get("String");
         StructuredType typeEPackage = (StructuredType) config.getTypesByName().get("ecore::EPackage");
-        assertEquals("string", typeString.getName());
+        assertEquals("String", typeString.getName());
         assertEquals("EPackage", typeEPackage.getName());
         assertEquals(EcorePackage.eINSTANCE.getEPackage(), typeEPackage.getEClassifier());
         assertEquals("ecore", typeEPackage.getMappingName());
@@ -217,7 +217,7 @@ public class TemplateConfigUtilTest {
         assertEquals(2, config.getVariables().size());
         TemplateVariable v1 = config.getVariables().get(0);
         assertEquals("v1", v1.getName());
-        assertEquals("string", v1.getTypeName());
+        assertEquals("String", v1.getTypeName());
         assertEquals(typeString, v1.getType());
 
         TemplateVariable v2 = config.getVariables().get(1);
@@ -243,7 +243,7 @@ public class TemplateConfigUtilTest {
 
         TemplateVariable v1 = TplconfFactory.eINSTANCE.createTemplateVariable();
         v1.setName("v1");
-        v1.setTypeName("string");
+        v1.setTypeName("String");
         config.getVariables().add(v1);
 
         StructuredType typeEClassifier = TplconfFactory.eINSTANCE.createStructuredType();
@@ -278,7 +278,7 @@ public class TemplateConfigUtilTest {
         assertTrue(propUriValue.indexOf(",") > 0);
 
         CTProperty propV1 = props.getProperty("m:var:v1");
-        assertEquals("string", propV1.getLpwstr());
+        assertEquals("String", propV1.getLpwstr());
 
         CTProperty propV2 = props.getProperty("m:var:v2");
         assertEquals("ecore::EClassifier", propV2.getLpwstr());
