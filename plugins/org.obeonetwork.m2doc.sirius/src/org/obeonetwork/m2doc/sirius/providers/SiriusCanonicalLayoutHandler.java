@@ -155,7 +155,7 @@ public final class SiriusCanonicalLayoutHandler {
         // just keep this order by using a linked Hashmap.
         Map<View, List<IAdaptable>> splitedViewAdaptersAccordingToParent = new LinkedHashMap<View, List<IAdaptable>>();
         for (IAdaptable viewAdapter : viewAdapters) {
-            View createdViewToLayout = viewAdapter.getAdapter(View.class);
+            View createdViewToLayout = (View)viewAdapter.getAdapter(View.class);
             EObject eContainer = createdViewToLayout.eContainer();
             if (eContainer instanceof View) {
                 View parentView = (View) eContainer;
