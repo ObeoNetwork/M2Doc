@@ -288,24 +288,6 @@ public class TemplateConfigUtilTest {
     }
 
     @Test
-    public void testIsValidVariableName() {
-        assertTrue(TemplateConfigUtil.isValidVariableName("v"));
-        assertTrue(TemplateConfigUtil.isValidVariableName("_valid"));
-        assertTrue(TemplateConfigUtil.isValidVariableName("valid_"));
-        assertTrue(TemplateConfigUtil.isValidVariableName("valid_123"));
-        assertTrue(TemplateConfigUtil.isValidVariableName("_VALID_1354"));
-
-        assertFalse(TemplateConfigUtil.isValidVariableName(null));
-        assertFalse(TemplateConfigUtil.isValidVariableName(""));
-        assertFalse(TemplateConfigUtil.isValidVariableName("not valid"));
-        assertFalse(TemplateConfigUtil.isValidVariableName("é"));
-        assertFalse(TemplateConfigUtil.isValidVariableName("3invalid"));
-        assertFalse(TemplateConfigUtil.isValidVariableName("-inv"));
-        assertFalse(TemplateConfigUtil.isValidVariableName("not-valid"));
-        assertFalse(TemplateConfigUtil.isValidVariableName("dfg$fsd"));
-    }
-
-    @Test
     public void testIsValidTypeName() {
         assertTrue(TemplateConfigUtil.isValidTypeName("string"));
         assertTrue(TemplateConfigUtil.isValidTypeName("a::v"));
