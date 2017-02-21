@@ -13,13 +13,11 @@ import org.eclipse.sirius.diagram.ui.provider.Messages;
 
 /**
  * This class is a copy of Sirius code modified to support synchronous arrange.
- * A feature request was created to support synchronous arrange aspect : 
+ * A feature request was created to support synchronous arrange aspect :
  * https://bugs.eclipse.org/bugs/show_bug.cgi?id=507026
  * When feature was implemented we could remove this class.
- * 
- * FIXME : Remove this class and used modified SiriusCanonicalLayoutHandler class in AbstractSiriusDiagramImagesProvider when 
- *          feature request will be resolved.
- *          
+ * FIXME : Remove this class and used modified SiriusCanonicalLayoutHandler class in AbstractSiriusDiagramImagesProvider when
+ * feature request will be resolved.
  * Specific Command to do layout for newly created views in pre-commit without
  * being in the IOperationHistory by being a {@link NonDirtying} . </br>
  * <b>NOTE
@@ -30,11 +28,20 @@ import org.eclipse.sirius.diagram.ui.provider.Messages;
  * @author <a href="mailto:esteban.dugueperoux@obeo.fr">Esteban Dugueperoux</a>
  */
 public class SiriusSynchronizeCanonicalLayoutCommand extends RecordingCommand implements NonDirtying {
-    // CHECKSTYLE:OFF
+
+    /**
+     * The {@link IGraphicalEditPart}.
+     */
     private IGraphicalEditPart diagramEditPart;
 
+    /**
+     * The {@link List} of {@link IAdaptable} for normal layout.
+     */
     private List<IAdaptable> childViewsAdapters;
 
+    /**
+     * The {@link List} of {@link IAdaptable} for center layout.
+     */
     private List<IAdaptable> childViewsAdaptersForCenterLayout;
 
     /**
@@ -88,6 +95,9 @@ public class SiriusSynchronizeCanonicalLayoutCommand extends RecordingCommand im
         }
     }
 
+    /**
+     * Executes layout on diagram opening.
+     */
     private void executeLayoutOnDiagramOpening() {
         org.eclipse.gef.commands.Command arrangeCmd = SiriusLayoutDataManager.INSTANCE
                 .getArrangeCreatedViewsOnOpeningCommand(diagramEditPart);
@@ -96,6 +106,9 @@ public class SiriusSynchronizeCanonicalLayoutCommand extends RecordingCommand im
         }
     }
 
+    /**
+     * Executes layout due to external changes.
+     */
     private void executeLayoutDueToExternalChanges() {
         org.eclipse.gef.commands.Command arrangeCmd = SiriusLayoutDataManager.INSTANCE
                 .getArrangeCreatedViewsCommand(childViewsAdapters, childViewsAdaptersForCenterLayout, diagramEditPart);
@@ -103,5 +116,5 @@ public class SiriusSynchronizeCanonicalLayoutCommand extends RecordingCommand im
             arrangeCmd.execute();
         }
     }
-    // CHECKSTYLE:ON
+
 }

@@ -76,12 +76,68 @@ import org.obeonetwork.m2doc.sirius.commands.ExportRepresentationCommand;
 public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagramProvider {
 
     /**
+     * Use the DiagramEditPartService to use the figure validation
+     * infinite loop safe ViewpointDiagramGraphicalViewer.
+     * redefine sirius DiagramEditPartService to get image size.
+     * 
+     * @author pguilet<pierre.guilet@obeo.fr>
+     */
+    private final class InfinitLoopSafeService extends DiagramEditPartService {
+        @SuppressWarnings("unchecked")
+        @Override
+        public List<Object> copyToImage(Diagram diagram, IPath destination, ImageFileFormat format,
+                IProgressMonitor monitor, PreferencesHint preferencesHint) throws CoreException {
+
+            List<Object> partInfo = Collections.EMPTY_LIST;
+
+            DiagramEditor openedDiagramEditor = DiagramEditorUtil
+                    .findOpenedDiagramEditorForID(ViewUtil.getIdStr(diagram));
+            if (openedDiagramEditor != null) {
+                DiagramGenerator generator = copyToImage(openedDiagramEditor.getDiagramEditPart(), destination, format,
+                        monitor);
+                partInfo = generator.getDiagramPartInfo(openedDiagramEditor.getDiagramEditPart());
+                // begin added code
+                Rectangle rectangle = generator
+                        .calculateImageRectangle(openedDiagramEditor.getDiagramEditPart().getPrimaryEditParts());
+                setHeight(rectangle.height);
+                setWidth(rectangle.width);
+                // end added code
+            } else {
+
+                Shell shell = new Shell();
+                try {
+                    DiagramEditPart diagramEditPart = createDiagramEditPart(diagram, shell, preferencesHint);
+                    SiriusCanonicalLayoutHandler.launchSynchroneArrangeCommand(diagramEditPart);
+                    diagramEditPart.getViewer().flush();
+                    Assert.isNotNull(diagramEditPart);
+                    DiagramGenerator generator = copyToImage(diagramEditPart, destination, format, monitor);
+                    partInfo = generator.getDiagramPartInfo(diagramEditPart);
+
+                    Dimension size = DiagramImageUtils.calculateImageRectangle(diagramEditPart.getPrimaryEditParts(),
+                            0.0, new Dimension(100, 100)).getSize();
+                    // begin added code
+                    setHeight(size.height);
+                    setWidth(size.width);
+                    // end added code
+                } finally {
+                    shell.dispose();
+                }
+            }
+
+            return partInfo;
+        }
+    }
+
+    /**
      * Boolean to know if diagram should be refresh before M2Doc generation.
      * True mean refresh, and default value is false.
      */
     protected boolean refreshRepresentations;
 
-    private Set<File> foldersToCleanup = Sets.newLinkedHashSet();
+    /**
+     * The {@link Set} of directory to cleanup.
+     */
+    private Set<File> directoryToCleanup = Sets.newLinkedHashSet();
 
     /**
      * Replace forbidden characters with "_" in a filename.
@@ -204,59 +260,7 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
                 final IPath path = new Path(filePath);
                 final Diagram gmfDiagram = getGmfDiagram(diagramtoExport);
 
-                // Use the DiagramEditPartService to use the figure validation
-                // infinite loop safe ViewpointDiagramGraphicalViewer.
-                // redefine sirius DiagramEditPartService to get image size.
-                // CHECKSTYLE:OFF
-                final CopyToImageUtil imageUtility = new DiagramEditPartService() {
-
-                    @SuppressWarnings({"rawtypes", "unchecked" })
-                    @Override
-                    public List copyToImage(Diagram diagram, IPath destination, ImageFileFormat format,
-                            IProgressMonitor monitor, PreferencesHint preferencesHint) throws CoreException {
-
-                        List partInfo = Collections.EMPTY_LIST;
-
-                        DiagramEditor openedDiagramEditor = DiagramEditorUtil
-                                .findOpenedDiagramEditorForID(ViewUtil.getIdStr(diagram));
-                        if (openedDiagramEditor != null) {
-                            DiagramGenerator generator = copyToImage(openedDiagramEditor.getDiagramEditPart(),
-                                    destination, format, monitor);
-                            partInfo = generator.getDiagramPartInfo(openedDiagramEditor.getDiagramEditPart());
-                            // begin added code
-                            Rectangle rectangle = generator.calculateImageRectangle(
-                                    openedDiagramEditor.getDiagramEditPart().getPrimaryEditParts());
-                            setHeight(rectangle.height);
-                            setWidth(rectangle.width);
-                            // end added code
-                        } else {
-
-                            Shell shell = new Shell();
-                            try {
-                                DiagramEditPart diagramEditPart = createDiagramEditPart(diagram, shell,
-                                        preferencesHint);
-                                SiriusCanonicalLayoutHandler.launchSynchroneArrangeCommand(diagramEditPart);
-                                diagramEditPart.getViewer().flush();
-                                Assert.isNotNull(diagramEditPart);
-                                DiagramGenerator generator = copyToImage(diagramEditPart, destination, format, monitor);
-                                partInfo = generator.getDiagramPartInfo(diagramEditPart);
-
-                                Dimension size = DiagramImageUtils.calculateImageRectangle(
-                                        diagramEditPart.getPrimaryEditParts(), 0.0, new Dimension(100, 100)).getSize();
-                                // begin added code
-                                setHeight(size.height);
-                                setWidth(size.width);
-                                // end added code
-                            } finally {
-                                shell.dispose();
-                            }
-                        }
-
-                        return partInfo;
-                    }
-
-                };
-                // CHECKSTYLE:ON
+                final CopyToImageUtil imageUtility = new InfinitLoopSafeService();
 
                 final EditingDomain editingDomain = session.getTransactionalEditingDomain();
                 final Diagram realOne = (Diagram) editingDomain.getResourceSet()
@@ -358,33 +362,41 @@ public abstract class AbstractSiriusDiagramImagesProvider extends AbstractDiagra
     }
 
     /**
-     * @return
+     * Creates a temporary directory.
+     * 
+     * @return the {@link File} corresponding to the created directory
      */
-    protected String createTempFolderPath() {
+    protected String createTempDirectoryPath() {
         File tempFolder = Files.createTempDir();
-        foldersToCleanup.add(tempFolder);
+        directoryToCleanup.add(tempFolder);
         return tempFolder.getAbsolutePath();
     }
 
     @Override
     public void clear() {
         super.clear();
-        for (File file : foldersToCleanup) {
-            removeDirectory(file);
+        for (File file : directoryToCleanup) {
+            deleteDirectory(file);
         }
     }
 
-    private void removeDirectory(File dir) {
-        if (dir.isDirectory()) {
-            File[] files = dir.listFiles();
+    /**
+     * Recursively deletes the given folder.
+     * 
+     * @param folder
+     *            the folder to delete
+     */
+    private void deleteDirectory(File folder) {
+        if (folder.isDirectory()) {
+            File[] files = folder.listFiles();
             if (files != null && files.length > 0) {
                 for (File aFile : files) {
-                    removeDirectory(aFile);
+                    deleteDirectory(aFile);
                 }
             }
-            dir.delete();
+            folder.delete();
         } else {
-            dir.delete();
+            folder.delete();
         }
     }
 

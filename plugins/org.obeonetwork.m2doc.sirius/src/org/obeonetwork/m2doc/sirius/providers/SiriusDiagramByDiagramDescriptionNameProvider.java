@@ -68,7 +68,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         Generation generation = (Generation) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
 
-        String rootPath = createTempFolderPath();
+        String rootPath = createTempDirectoryPath();
         Object diagramDescriptionName = parameters.get(DIAGRAM_DESCRIPTION_ID_KEY);
         Object targetRootObject = parameters.get(TARGET_ROOT_OBJECT_KEY);
         boolean createIfAbsent = CREATE_VALUE.equals(parameters.get(CREATE_ID_KEY));

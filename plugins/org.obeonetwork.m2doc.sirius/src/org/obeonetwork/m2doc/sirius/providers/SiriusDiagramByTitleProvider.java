@@ -63,7 +63,7 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
     @Override
     public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
         EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
-        String rootPath = createTempFolderPath();
+        String rootPath = createTempDirectoryPath();
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
         Session session = SessionManager.INSTANCE.getSession(rootObject);

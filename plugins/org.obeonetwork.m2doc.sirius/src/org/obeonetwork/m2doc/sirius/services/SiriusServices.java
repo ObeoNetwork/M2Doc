@@ -135,11 +135,14 @@ public class SiriusServices {
     }
 
     /**
-     * Returns the specified diagram representation.
+     * Gets the {@link RepresentationDescription} with the given {@link RepresentationDescription#getName() diagram description name}.
      * 
      * @param session
+     *            the {@link Session}
      * @param diagramDescriptionName
-     * @return
+     *            the {@link RepresentationDescription#getName() diagram description name}
+     * @return the {@link RepresentationDescription} with the given {@link RepresentationDescription#getName() diagram description name} if
+     *         any found, <code>null</code> otherwise
      * @throws ProviderException
      *             if the specified representation doesn't exist.
      */

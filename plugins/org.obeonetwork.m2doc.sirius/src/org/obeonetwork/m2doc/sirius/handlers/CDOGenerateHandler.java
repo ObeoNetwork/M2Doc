@@ -96,57 +96,55 @@ public class CDOGenerateHandler extends AbstractHandler {
                         "Document generation action can only be triggered on Generation object.");
                 return null;
             }
-            // CHECKSTYLE:OFF
-            if (generation != null) {
-                try {
-                    IProject project = findProject(generation);
-                    if (project != null) {
-                        IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
-                        IFile generatedFile = project.getFile(new Path(generation.getResultFileName()));
-                        GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                        List<URI> generatedfiles = generator.generate(generation,
-                                URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true),
-                                URI.createPlatformResourceURI(generatedFile.getFullPath().toString(), true));
-                        if (generatedfiles.size() == 1) {
-                            MessageDialog.openInformation(shell, "M2Doc generation",
-                                    "The document '" + generatedfiles.get(0).toString() + "' is generated.");
-                        } else if (generatedfiles.size() == 2) {
-                            MessageDialog.openInformation(shell, "M2Doc generation",
-                                    "The document '" + generatedfiles.get(0).toString()
-                                        + "' is generated. \n\n The template file contains validation errors, please read '"
-                                        + generatedfiles.get(1).toString() + "'.");
-                        }
-
-                    } else {
-                        MessageDialog.openError(shell, "Generation Error",
-                                "Couldn't find a project where to locate the template file");
+            try {
+                IProject project = findProject(generation);
+                if (project != null) {
+                    IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
+                    IFile generatedFile = project.getFile(new Path(generation.getResultFileName()));
+                    GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
+                    List<URI> generatedfiles = generator.generate(generation,
+                            URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true),
+                            URI.createPlatformResourceURI(generatedFile.getFullPath().toString(), true));
+                    if (generatedfiles.size() == 1) {
+                        MessageDialog.openInformation(shell, "M2Doc generation",
+                                "The document '" + generatedfiles.get(0).toString() + "' is generated.");
+                    } else if (generatedfiles.size() == 2) {
+                        MessageDialog.openInformation(shell, "M2Doc generation",
+                                "The document '" + generatedfiles.get(0).toString()
+                                    + "' is generated. \n\n The template file contains validation errors, please read '"
+                                    + generatedfiles.get(1).toString() + "'.");
                     }
-                } catch (IOException e) {
-                    M2DocSiriusPlugin.getDefault().getLog().log(
-                            new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-                    MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
-                } catch (DocumentParserException e) {
-                    M2DocSiriusPlugin.getDefault().getLog().log(
-                            new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-                    MessageDialog.openError(shell, "Template parsing problem. See the error log for details",
-                            e.getMessage());
-                } catch (DocumentGenerationException e) {
-                    M2DocSiriusPlugin.getDefault().getLog().log(
-                            new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-                    MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
-                } catch (RuntimeException e) {// do not let exception leak out.
-                    String msg = e.getMessage();
-                    M2DocSiriusPlugin.getDefault().getLog().log(new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID,
-                            Status.ERROR, "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
-                    MessageDialog.openError(shell, "Generation problem. See the error log for details",
-                            "A technical error occured. Please log a bug (see the error log for details)");
+
+                } else {
+                    MessageDialog.openError(shell, "Generation Error",
+                            "Couldn't find a project where to locate the template file");
                 }
+            } catch (IOException e) {
+                M2DocSiriusPlugin.getDefault().getLog()
+                        .log(new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
+            } catch (DocumentParserException e) {
+                M2DocSiriusPlugin.getDefault().getLog()
+                        .log(new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                MessageDialog.openError(shell, "Template parsing problem. See the error log for details",
+                        e.getMessage());
+            } catch (DocumentGenerationException e) {
+                M2DocSiriusPlugin.getDefault().getLog()
+                        .log(new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
+                // CHECKSTYLE:OFF
+            } catch (RuntimeException e) { // do not let exception leak out.
+                // CHECKSTYLE:ON
+                String msg = e.getMessage();
+                M2DocSiriusPlugin.getDefault().getLog().log(new Status(Status.ERROR, M2DocSiriusPlugin.PLUGIN_ID,
+                        Status.ERROR, "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
+                MessageDialog.openError(shell, "Generation problem. See the error log for details",
+                        "A technical error occured. Please log a bug (see the error log for details)");
             }
         } else {
             MessageDialog.openError(shell, "Bad selection",
                     "Document generation action can only be triggered on Generation object.");
         }
         return null;
-        // CHECKSTYLE:OFF
     }
 }

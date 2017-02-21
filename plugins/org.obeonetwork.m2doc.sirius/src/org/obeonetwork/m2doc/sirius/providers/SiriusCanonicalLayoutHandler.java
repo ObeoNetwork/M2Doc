@@ -27,24 +27,23 @@ import org.eclipse.sirius.diagram.ui.internal.edit.parts.DNodeContainerViewNodeC
 //import org.obeonetwork.m2doc.sirius.providers.AbstractSiriusDiagramImagesProvider.SiriusSynchroneCanonicalLayoutCommand;
 
 /**
- * 
  * This class is a copy of Sirius code modified to support synchronous arrange.
  * A feature request was created to support synchronous arrange aspect :
  * https://bugs.eclipse.org/bugs/show_bug.cgi?id=507026
  * When feature was implemented we could remove this class.
- * 
  * FIXME : Remove this class and used modified SiriusCanonicalLayoutHandler class in AbstractSiriusDiagramImagesProvider when
  * feature request will be resolved.
- * 
  * Helper to execute a ArrangeRequest's {@link Command} for created views (in
  * the DDiagramCanonicalSynchronizer ) to arrange.
  * 
  * @author <a href="mailto:esteban.dugueperoux@obeo.fr">Esteban Dugueperoux</a>
  */
-// CHECKSTYLE:OFF
 @SuppressWarnings("restriction")
 public final class SiriusCanonicalLayoutHandler {
 
+    /**
+     * Constructor.
+     */
     private SiriusCanonicalLayoutHandler() {
         // Helper to not instantiate
     }
@@ -62,68 +61,93 @@ public final class SiriusCanonicalLayoutHandler {
         Map<IGraphicalEditPart, List<IAdaptable>> createdViewsToLayoutMap = getCreatedViewsToLayoutMap(diagramEditPart);
         Map<IGraphicalEditPart, List<IAdaptable>> createdViewsWithSpecialLayoutMap = getCreatedViewsWithSpecialLayoutMap(
                 diagramEditPart);
-        Command layoutCommand = getSynchroneLayoutCommand(createdViewsToLayoutMap, createdViewsWithSpecialLayoutMap,
+        Command layoutCommand = getSynchronousLayoutCommand(createdViewsToLayoutMap, createdViewsWithSpecialLayoutMap,
                 editingDomain);
         if (layoutCommand.canExecute()) {
             editingDomain.getCommandStack().execute(layoutCommand);
         }
     }
 
+    /**
+     * Gets created views to layout {@link Map}.
+     * 
+     * @param diagramEditPart
+     *            the {@link DiagramEditPart}
+     * @return created views to layout {@link Map}
+     */
     private static Map<IGraphicalEditPart, List<IAdaptable>> getCreatedViewsToLayoutMap(
             DiagramEditPart diagramEditPart) {
         // For a more predictable result (and constant), the hashMap must be
         // sorted from the highest level container to the lowest level
         // container. The viewAdapters seems to be already sorted so we must
         // just keep this order by using a linked Hashmap.
-        Map<IGraphicalEditPart, List<IAdaptable>> createdViewsToLayoutMap = new LinkedHashMap<IGraphicalEditPart, List<IAdaptable>>();
         Map<Diagram, Set<View>> createdViewsToLayout = SiriusLayoutDataManager.INSTANCE.getCreatedViewsToLayout();
 
-        getCreatedViewToLayoutMap(diagramEditPart, createdViewsToLayoutMap, createdViewsToLayout);
-        return createdViewsToLayoutMap;
+        return getCreatedViewToLayoutMap(diagramEditPart, createdViewsToLayout);
     }
 
+    /**
+     * Gets created views to special layout {@link Map}.
+     * 
+     * @param diagramEditPart
+     *            the {@link DiagramEditPart}
+     * @return created views to special layout {@link Map}
+     */
     private static Map<IGraphicalEditPart, List<IAdaptable>> getCreatedViewsWithSpecialLayoutMap(
             DiagramEditPart diagramEditPart) {
         // For a more predictable result (and constant), the hashMap must be
         // sorted from the highest level container to the lowest level
         // container. The viewAdapters seems to be already sorted so we must
         // just keep this order by using a linked Hashmap.
-        Map<IGraphicalEditPart, List<IAdaptable>> createdViewsToLayoutMap = new LinkedHashMap<IGraphicalEditPart, List<IAdaptable>>();
         Map<Diagram, Set<View>> createdViewsToLayout = SiriusLayoutDataManager.INSTANCE
                 .getCreatedViewWithCenterLayout();
 
-        getCreatedViewToLayoutMap(diagramEditPart, createdViewsToLayoutMap, createdViewsToLayout);
-        return createdViewsToLayoutMap;
+        return getCreatedViewToLayoutMap(diagramEditPart, createdViewsToLayout);
     }
 
-    private static void getCreatedViewToLayoutMap(DiagramEditPart diagramEditPart,
-            Map<IGraphicalEditPart, List<IAdaptable>> createdViewsToLayoutMap,
+    /**
+     * Gets the {@link Map} from {@link IGraphicalEditPart} to {@link IAdaptable}.
+     * 
+     * @param diagramEditPart
+     *            the {@link DiagramEditPart}
+     * @param createdViewsToLayout
+     *            the {@link Map} from {@link Diagram} to {@link View}
+     * @return the {@link Map} from {@link IGraphicalEditPart} to {@link IAdaptable}
+     */
+    private static Map<IGraphicalEditPart, List<IAdaptable>> getCreatedViewToLayoutMap(DiagramEditPart diagramEditPart,
             Map<Diagram, Set<View>> createdViewsToLayout) {
-        if (!createdViewsToLayout.isEmpty()) {
+        final Map<IGraphicalEditPart, List<IAdaptable>> createdViewsToLayoutMap = new LinkedHashMap<IGraphicalEditPart, List<IAdaptable>>();
+
+        if (!createdViewsToLayout.isEmpty() && diagramEditPart != null) {
 
             Diagram diagramOfOpenedEditor = diagramEditPart.getDiagramView();
             if (diagramOfOpenedEditor != null && createdViewsToLayout.containsKey(diagramOfOpenedEditor)) {
 
-                if (diagramEditPart != null) {
-                    Map<?, ?> editPartRegistry = diagramEditPart.getViewer().getEditPartRegistry();
-                    List<IAdaptable> viewAdapters = getAdapters(createdViewsToLayout.get(diagramOfOpenedEditor));
-                    Map<View, List<IAdaptable>> splitedViewAdapters = splitViewAdaptersAccordingToParent(viewAdapters);
-                    for (Entry<View, List<IAdaptable>> viewAdaptersWithSameParent : splitedViewAdapters.entrySet()) {
-                        View parentView = viewAdaptersWithSameParent.getKey();
-                        List<IAdaptable> childViewsAdapters = viewAdaptersWithSameParent.getValue();
-                        IGraphicalEditPart parentEditPart = (IGraphicalEditPart) editPartRegistry.get(parentView);
-                        // CHECKSTYLE:OFF
-                        if (parentEditPart != null) {
-                            createdViewsToLayoutMap.put(parentEditPart, childViewsAdapters);
-                        }
-                        // CHECKSTYLE:ON
+                Map<?, ?> editPartRegistry = diagramEditPart.getViewer().getEditPartRegistry();
+                List<IAdaptable> viewAdapters = getAdapters(createdViewsToLayout.get(diagramOfOpenedEditor));
+                Map<View, List<IAdaptable>> splitedViewAdapters = splitViewAdaptersAccordingToParent(viewAdapters);
+                for (Entry<View, List<IAdaptable>> viewAdaptersWithSameParent : splitedViewAdapters.entrySet()) {
+                    View parentView = viewAdaptersWithSameParent.getKey();
+                    List<IAdaptable> childViewsAdapters = viewAdaptersWithSameParent.getValue();
+                    IGraphicalEditPart parentEditPart = (IGraphicalEditPart) editPartRegistry.get(parentView);
+                    if (parentEditPart != null) {
+                        createdViewsToLayoutMap.put(parentEditPart, childViewsAdapters);
                     }
                 }
                 createdViewsToLayout.remove(diagramOfOpenedEditor);
             }
         }
+
+        return createdViewsToLayoutMap;
     }
 
+    /**
+     * Maps a {@link View} to its {@link IAdaptable}.
+     * 
+     * @param viewAdapters
+     *            the {@link List} of {@link IAdaptable}
+     * @return the {@link Map} of {@link View} to its {@link IAdaptable}
+     */
     private static Map<View, List<IAdaptable>> splitViewAdaptersAccordingToParent(List<IAdaptable> viewAdapters) {
         // For a more predictable result (and constant), the hashMap must be
         // sorted from the highest level container to the lowest level
@@ -131,7 +155,7 @@ public final class SiriusCanonicalLayoutHandler {
         // just keep this order by using a linked Hashmap.
         Map<View, List<IAdaptable>> splitedViewAdaptersAccordingToParent = new LinkedHashMap<View, List<IAdaptable>>();
         for (IAdaptable viewAdapter : viewAdapters) {
-            View createdViewToLayout = (View) viewAdapter.getAdapter(View.class);
+            View createdViewToLayout = viewAdapter.getAdapter(View.class);
             EObject eContainer = createdViewToLayout.eContainer();
             if (eContainer instanceof View) {
                 View parentView = (View) eContainer;
@@ -147,6 +171,13 @@ public final class SiriusCanonicalLayoutHandler {
         return splitedViewAdaptersAccordingToParent;
     }
 
+    /**
+     * Gets the {@link List} of {@link IAdaptable} for the given {@link Set} of {@link View}.
+     * 
+     * @param createdViewsToLayout
+     *            the {@link Set} of {@link View}
+     * @return the {@link List} of {@link IAdaptable} for the given {@link Set} of {@link View}
+     */
     private static List<IAdaptable> getAdapters(Set<View> createdViewsToLayout) {
         List<IAdaptable> viewAdapters = new ArrayList<IAdaptable>();
         for (View createdViewToLayout : createdViewsToLayout) {
@@ -155,7 +186,19 @@ public final class SiriusCanonicalLayoutHandler {
         return viewAdapters;
     }
 
-    private static Command getSynchroneLayoutCommand(Map<IGraphicalEditPart, List<IAdaptable>> createdViewsToLayoutMap,
+    /**
+     * Gets the synchronous layout {@link Command}.
+     * 
+     * @param createdViewsToLayoutMap
+     *            the mapping for standard layout
+     * @param createdViewsWithSpecialLayoutMap
+     *            the mapping for special layout
+     * @param editingDomain
+     *            the {@link TransactionalEditingDomain}
+     * @return the synchronous layout {@link Command}
+     */
+    private static Command getSynchronousLayoutCommand(
+            Map<IGraphicalEditPart, List<IAdaptable>> createdViewsToLayoutMap,
             Map<IGraphicalEditPart, List<IAdaptable>> createdViewsWithSpecialLayoutMap,
             TransactionalEditingDomain editingDomain) {
         final CompoundCommand compoundCommand = new CompoundCommand();
@@ -193,5 +236,5 @@ public final class SiriusCanonicalLayoutHandler {
         }
         return compoundCommand;
     }
-    // CHECKSTYLE:ON
+
 }

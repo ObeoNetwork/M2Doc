@@ -46,27 +46,30 @@ public class TeamGenerationPropertyTester extends PropertyTester {
         return CDO_SCHEME_PREFIX.equals(uri.scheme());
     }
 
-    // CHECKSTYLE:OFF
     /**
      * (non-Javadoc).
      * 
      * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String, java.lang.Object[], java.lang.Object)
      */
-    @SuppressWarnings("rawtypes")
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+        final boolean res;
+
         if (receiver instanceof Generation && isCDO((Generation) receiver)) {
-            return true;
-        }
-        if (receiver instanceof List) {
-            for (Object object : (List) receiver) {
+            res = true;
+        } else if (receiver instanceof List) {
+            boolean testElement = true;
+            for (Object object : (List<?>) receiver) {
                 if (!test(object, property, args, expectedValue)) {
-                    return false;
+                    testElement = false;
+                    break;
                 }
             }
-            return true;
+            res = testElement;
+        } else {
+            res = false;
         }
-        return false;
+
+        return res;
     }
-    // CHECKSTYLE:ON
 }

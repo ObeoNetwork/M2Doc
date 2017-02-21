@@ -14,9 +14,9 @@ public interface ICleaningJob {
     void doClean();
 
     /**
-     * Returns the Sirius session in which the Job has been created.
+     * Gets the Sirius session in which the Job has been created.
      * 
-     * @return
+     * @return the Sirius session in which the Job has been created
      */
     Session getSession();
 }

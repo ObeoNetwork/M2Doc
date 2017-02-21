@@ -15,10 +15,6 @@ import org.eclipse.sirius.viewpoint.DRepresentation;
 public class CleaningAIRDJob implements Runnable {
 
     /**
-     * The semantic object associated with the representation.
-     */
-    private final EObject semantic;
-    /**
      * The session where the representation has been created and must be deleted.
      */
     private final Session session;
@@ -41,7 +37,6 @@ public class CleaningAIRDJob implements Runnable {
         if (semantic == null || session == null || representation == null) {
             throw new IllegalArgumentException("a null argument has been passed to the CleaningAIRDJob constructor");
         }
-        this.semantic = semantic;
         this.session = session;
         this.representation = representation;
     }
