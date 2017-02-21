@@ -75,16 +75,24 @@ public final class TemplateConfigurationServices {
      *            Generation
      * @param templateInfo
      *            TemplateInfo
-     * @return generation eObject with definitions template information.
+     * @return The given generation eObject with definitions template information.
      */
     public Generation addProperties(Generation generation, TemplateInfo templateInfo) {
         Multimap<String, EPackage> packagesByName = ArrayListMultimap.create();
         for (String uri : templateInfo.getPackagesURIs()) {
-            if (EPackage.Registry.INSTANCE.containsKey(uri)) {
-                EPackage p = EPackage.Registry.INSTANCE.getEPackage(uri);
-                if (p != null && p.getName() != null) {
-                    packagesByName.put(p.getName(), p);
+            if (!uri.isEmpty()) {
+                generation.getPackagesNSURI().add(uri);
+                if (EPackage.Registry.INSTANCE.containsKey(uri)) {
+                    EPackage p = EPackage.Registry.INSTANCE.getEPackage(uri);
+                    if (p != null && p.getName() != null) {
+                        packagesByName.put(p.getName(), p);
+                    }
                 }
+            }
+        }
+        for (String svcToken : templateInfo.getServiceTokens()) {
+            if (!svcToken.isEmpty()) {
+                generation.getServicesTokens().add(svcToken);
             }
         }
         for (String key : templateInfo.getVariables().keySet()) {

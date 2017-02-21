@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.properties;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -67,21 +66,33 @@ public class TemplateInfo {
         List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
         for (CTProperty property : properties) {
             String name = property.getName();
+            if (name == null) {
+                continue;
+            }
+            name = name.trim();
             int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length();
-            if (name != null) {
-                if (name.startsWith(M2DocCustomProperties.SERVICE_PROPERTY_PREFIX)) {
-                    String[] tokens = property.getLpwstr().trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+            if (M2DocCustomProperties.SERVICE_PROPERTY_PREFIX.equals(name)) {
+                String serviceTokenList = property.getLpwstr();
+                if (serviceTokenList != null) {
+                    String[] tokens = serviceTokenList.trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
                     serviceTokens.addAll(Arrays.asList(tokens));
-                } else if (name.startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)
-                    && name.length() > variablePrefixLength) {
-                    String variableName = name.substring(variablePrefixLength + 1);
-                    String type = property.getLpwstr();
-                    if (!Strings.isNullOrEmpty(variableName)) {
-                        variables.put(variableName, type);
+                }
+            } else if (name.startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)
+                && name.length() > variablePrefixLength) {
+                String variableName = name.substring(variablePrefixLength);
+                String type = property.getLpwstr();
+                if (isValidVariableName(variableName)) {
+                    variables.put(variableName, type);
+                }
+            } else if (M2DocCustomProperties.URI_PROPERTY_PREFIX.equals(name)) {
+                String uriList = property.getLpwstr();
+                if (uriList != null) {
+                    String[] uris = uriList.trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+                    for (String uri : uris) {
+                        if (!uri.trim().isEmpty()) {
+                            packageURIs.add(uri.trim());
+                        }
                     }
-                } else if (name.startsWith(M2DocCustomProperties.URI_PROPERTY_PREFIX)) {
-                    String[] uris = property.getLpwstr().trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
-                    packageURIs.addAll(Arrays.asList(uris));
                 }
             }
         }
@@ -112,5 +123,16 @@ public class TemplateInfo {
      */
     public Map<String, String> getVariables() {
         return Collections.unmodifiableMap(variables);
+    }
+
+    /**
+     * Check that a given name is a valid M2DOC (I.e. AQL) variable name.
+     * 
+     * @param name
+     *            The variable name to check
+     * @return <code>true</code> if the given name matches "[a-zA-Z_][a-zA-Z0-9_]*".
+     */
+    public static boolean isValidVariableName(String name) {
+        return name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*");
     }
 }
