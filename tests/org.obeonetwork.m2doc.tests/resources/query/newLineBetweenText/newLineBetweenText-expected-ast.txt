@@ -4,7 +4,6 @@
 === BODY ===
 template null
   A simple demonstration of a query :
-  [query: 'prefix
-suffix' | TEXT]
+  [query: 'prefix\nsuffix' | TEXT]
   End of demonstration.
 === FOOTER ===

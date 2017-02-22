@@ -247,7 +247,8 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         @Override
         public Void caseStringLiteral(StringLiteral stringLiteral) {
             builder.append("'");
-            builder.append(stringLiteral.getValue());
+            builder.append(stringLiteral.getValue().replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r").replaceAll("\t",
+                    "\\\\t"));
             builder.append("'");
             return null;
         }
