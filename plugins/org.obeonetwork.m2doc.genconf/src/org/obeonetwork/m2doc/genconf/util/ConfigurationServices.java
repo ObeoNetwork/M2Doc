@@ -53,9 +53,9 @@ public class ConfigurationServices {
      * @return IQueryEnvironment
      */
     public IQueryEnvironment initAcceleoEnvironment(Generation generation) {
-        final URI teamplateURI = URI.createFileURI(generation.getTemplateFileName());
+        final URI templateURI = URI.createFileURI(generation.getTemplateFileName());
         // get acceleo environment
-        IQueryEnvironment queryEnvironment = QueryServices.getInstance().getEnvironment(teamplateURI);
+        IQueryEnvironment queryEnvironment = QueryServices.getInstance().getEnvironment(templateURI);
         // register services
         QueryServices.getInstance().registerServices(queryEnvironment);
         // register packages

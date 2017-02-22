@@ -56,7 +56,7 @@ public class TemplateInfo {
     }
 
     /**
-     * Extract meta datas.
+     * Extracts meta data.
      * 
      * @param document
      *            XWPFDocument
@@ -117,7 +117,7 @@ public class TemplateInfo {
     }
 
     /**
-     * REturns an unmodifiable copy of the variable type map.
+     * Returns an unmodifiable copy of the variable type map.
      * 
      * @return the variable type map.
      */
