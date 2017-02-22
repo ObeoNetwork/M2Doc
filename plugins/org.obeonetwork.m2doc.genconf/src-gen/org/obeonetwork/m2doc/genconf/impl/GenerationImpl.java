@@ -14,8 +14,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -37,8 +35,6 @@ import org.obeonetwork.m2doc.genconf.Generation;
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isTimeStamped <em>Time Stamped</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isRefreshRepresentations <em>Refresh Representations</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getDefinitions <em>Definitions</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getPackagesNSURI <em>Packages NSURI</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getServicesTokens <em>Services Tokens</em>}</li>
  * </ul>
  *
  * @generated
@@ -153,26 +149,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * @ordered
      */
 	protected EList<Definition> definitions;
-
-	/**
-     * The cached value of the '{@link #getPackagesNSURI() <em>Packages NSURI</em>}' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see #getPackagesNSURI()
-     * @generated
-     * @ordered
-     */
-	protected EList<String> packagesNSURI;
-
-	/**
-     * The cached value of the '{@link #getServicesTokens() <em>Services Tokens</em>}' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see #getServicesTokens()
-     * @generated
-     * @ordered
-     */
-	protected EList<String> servicesTokens;
 
 	/**
      * <!-- begin-user-doc -->
@@ -315,30 +291,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public EList<String> getPackagesNSURI() {
-        if (packagesNSURI == null) {
-            packagesNSURI = new EDataTypeUniqueEList<String>(String.class, this, GenconfPackage.GENERATION__PACKAGES_NSURI);
-        }
-        return packagesNSURI;
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public EList<String> getServicesTokens() {
-        if (servicesTokens == null) {
-            servicesTokens = new EDataTypeUniqueEList<String>(String.class, this, GenconfPackage.GENERATION__SERVICES_TOKENS);
-        }
-        return servicesTokens;
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -368,10 +320,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return isRefreshRepresentations();
             case GenconfPackage.GENERATION__DEFINITIONS:
                 return getDefinitions();
-            case GenconfPackage.GENERATION__PACKAGES_NSURI:
-                return getPackagesNSURI();
-            case GenconfPackage.GENERATION__SERVICES_TOKENS:
-                return getServicesTokens();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -404,14 +352,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 getDefinitions().clear();
                 getDefinitions().addAll((Collection<? extends Definition>)newValue);
                 return;
-            case GenconfPackage.GENERATION__PACKAGES_NSURI:
-                getPackagesNSURI().clear();
-                getPackagesNSURI().addAll((Collection<? extends String>)newValue);
-                return;
-            case GenconfPackage.GENERATION__SERVICES_TOKENS:
-                getServicesTokens().clear();
-                getServicesTokens().addAll((Collection<? extends String>)newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -442,12 +382,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__DEFINITIONS:
                 getDefinitions().clear();
                 return;
-            case GenconfPackage.GENERATION__PACKAGES_NSURI:
-                getPackagesNSURI().clear();
-                return;
-            case GenconfPackage.GENERATION__SERVICES_TOKENS:
-                getServicesTokens().clear();
-                return;
         }
         super.eUnset(featureID);
     }
@@ -472,10 +406,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return refreshRepresentations != REFRESH_REPRESENTATIONS_EDEFAULT;
             case GenconfPackage.GENERATION__DEFINITIONS:
                 return definitions != null && !definitions.isEmpty();
-            case GenconfPackage.GENERATION__PACKAGES_NSURI:
-                return packagesNSURI != null && !packagesNSURI.isEmpty();
-            case GenconfPackage.GENERATION__SERVICES_TOKENS:
-                return servicesTokens != null && !servicesTokens.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -500,10 +430,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
         result.append(timeStamped);
         result.append(", refreshRepresentations: ");
         result.append(refreshRepresentations);
-        result.append(", packagesNSURI: ");
-        result.append(packagesNSURI);
-        result.append(", servicesTokens: ");
-        result.append(servicesTokens);
         result.append(')');
         return result.toString();
     }

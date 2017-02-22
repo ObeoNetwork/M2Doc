@@ -184,24 +184,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public EAttribute getGeneration_PackagesNSURI() {
-        return (EAttribute)generationEClass.getEStructuralFeatures().get(6);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public EAttribute getGeneration_ServicesTokens() {
-        return (EAttribute)generationEClass.getEStructuralFeatures().get(7);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
 	public EClass getDefinition() {
         return definitionEClass;
     }
@@ -295,8 +277,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
         createEAttribute(generationEClass, GENERATION__TIME_STAMPED);
         createEAttribute(generationEClass, GENERATION__REFRESH_REPRESENTATIONS);
         createEReference(generationEClass, GENERATION__DEFINITIONS);
-        createEAttribute(generationEClass, GENERATION__PACKAGES_NSURI);
-        createEAttribute(generationEClass, GENERATION__SERVICES_TOKENS);
 
         definitionEClass = createEClass(DEFINITION);
         createEAttribute(definitionEClass, DEFINITION__KEY);
@@ -351,8 +331,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
         initEAttribute(getGeneration_TimeStamped(), ecorePackage.getEBoolean(), "timeStamped", "true", 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGeneration_RefreshRepresentations(), theEcorePackage.getEBoolean(), "refreshRepresentations", "false", 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getGeneration_Definitions(), this.getDefinition(), null, "definitions", null, 0, -1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getGeneration_PackagesNSURI(), ecorePackage.getEString(), "packagesNSURI", null, 0, -1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getGeneration_ServicesTokens(), ecorePackage.getEString(), "servicesTokens", null, 0, -1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(definitionEClass, Definition.class, "Definition", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDefinition_Key(), ecorePackage.getEString(), "key", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

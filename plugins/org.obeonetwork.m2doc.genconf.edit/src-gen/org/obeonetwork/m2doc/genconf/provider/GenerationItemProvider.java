@@ -68,8 +68,6 @@ public class GenerationItemProvider
             addResultFileNamePropertyDescriptor(object);
             addTimeStampedPropertyDescriptor(object);
             addRefreshRepresentationsPropertyDescriptor(object);
-            addPackagesNSURIPropertyDescriptor(object);
-            addServicesTokensPropertyDescriptor(object);
         }
         return itemPropertyDescriptors;
     }
@@ -185,50 +183,6 @@ public class GenerationItemProvider
     }
 
     /**
-     * This adds a property descriptor for the Packages NSURI feature.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	protected void addPackagesNSURIPropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_Generation_packagesNSURI_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_packagesNSURI_feature", "_UI_Generation_type"),
-                 GenconfPackage.Literals.GENERATION__PACKAGES_NSURI,
-                 true,
-                 false,
-                 false,
-                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-                 null,
-                 null));
-    }
-
-	/**
-     * This adds a property descriptor for the Services Tokens feature.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	protected void addServicesTokensPropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_Generation_servicesTokens_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_servicesTokens_feature", "_UI_Generation_type"),
-                 GenconfPackage.Literals.GENERATION__SERVICES_TOKENS,
-                 true,
-                 false,
-                 false,
-                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-                 null,
-                 null));
-    }
-
-	/**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -311,8 +265,6 @@ public class GenerationItemProvider
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
             case GenconfPackage.GENERATION__TIME_STAMPED:
             case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
-            case GenconfPackage.GENERATION__PACKAGES_NSURI:
-            case GenconfPackage.GENERATION__SERVICES_TOKENS:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case GenconfPackage.GENERATION__DEFINITIONS:

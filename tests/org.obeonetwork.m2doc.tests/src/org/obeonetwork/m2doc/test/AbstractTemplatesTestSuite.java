@@ -43,6 +43,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Generation;
@@ -139,10 +140,10 @@ public abstract class AbstractTemplatesTestSuite {
         }
         final String templateFileName = getTemplateFile(new File(testFolderPath)).getAbsolutePath();
         setTemplateFileName(generation, templateFileName);
-        ConfigurationServices configurationServices = new ConfigurationServices();
-        queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
         final URI templateURI = URI.createFileURI(templateFileName);
+        queryEnvironment = QueryServices.getInstance().getEnvironment(templateURI);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment);
+        ConfigurationServices configurationServices = new ConfigurationServices();
         types = configurationServices.getTypes(queryEnvironment, generation);
         variables = configurationServices.createDefinitions(generation);
         // add providers variables

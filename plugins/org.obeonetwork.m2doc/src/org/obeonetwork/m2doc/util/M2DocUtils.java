@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -38,6 +40,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -52,6 +55,8 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.services.ServiceRegistry;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -306,6 +311,16 @@ public final class M2DocUtils {
             final InputStream is = URIConverter.INSTANCE.createInputStream(templateURI);
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
+            final TemplateInfo info = new TemplateInfo(document);
+            for (String nsURI : info.getPackagesURIs()) {
+                queryEnvironment.registerEPackage(EPackage.Registry.INSTANCE.getEPackage(nsURI));
+            }
+            for (String token : info.getServiceTokens()) {
+                List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(token);
+                for (Class<?> cls : services) {
+                    AQL4Compat.register(queryEnvironment, cls);
+                }
+            }
             r.getContents().add(result);
             final BodyTemplateParser parser = new BodyTemplateParser(document, queryEnvironment);
             result.setBody(parser.parseTemplate());

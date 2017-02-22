@@ -74,21 +74,12 @@ public final class QueryServices {
         if (AQL4Compat.IS_AQL_5) {
             AQL4Compat.register(queryEnvironment, new ImageServices(templateURI));
         }
-
-        return queryEnvironment;
-    }
-
-    /**
-     * Registers services for use by the AQL evaluation engine.
-     * 
-     * @param env
-     *            registers the services
-     */
-    public void registerServices(IQueryEnvironment env) {
         List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
         for (Class<?> cls : services) {
-            AQL4Compat.register(env, cls);
+            AQL4Compat.register(queryEnvironment, cls);
         }
+
+        return queryEnvironment;
     }
 
     /**

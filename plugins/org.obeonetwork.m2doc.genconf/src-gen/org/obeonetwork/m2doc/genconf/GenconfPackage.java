@@ -121,31 +121,13 @@ public interface GenconfPackage extends EPackage {
 	int GENERATION__DEFINITIONS = 5;
 
 	/**
-     * The feature id for the '<em><b>Packages NSURI</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int GENERATION__PACKAGES_NSURI = 6;
-
-	/**
-     * The feature id for the '<em><b>Services Tokens</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int GENERATION__SERVICES_TOKENS = 7;
-
-	/**
      * The number of structural features of the '<em>Generation</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int GENERATION_FEATURE_COUNT = 8;
+	int GENERATION_FEATURE_COUNT = 6;
 
 	/**
      * The number of operations of the '<em>Generation</em>' class.
@@ -372,28 +354,6 @@ public interface GenconfPackage extends EPackage {
 	EReference getGeneration_Definitions();
 
 	/**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.Generation#getPackagesNSURI <em>Packages NSURI</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Packages NSURI</em>'.
-     * @see org.obeonetwork.m2doc.genconf.Generation#getPackagesNSURI()
-     * @see #getGeneration()
-     * @generated
-     */
-	EAttribute getGeneration_PackagesNSURI();
-
-	/**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.Generation#getServicesTokens <em>Services Tokens</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Services Tokens</em>'.
-     * @see org.obeonetwork.m2doc.genconf.Generation#getServicesTokens()
-     * @see #getGeneration()
-     * @generated
-     */
-	EAttribute getGeneration_ServicesTokens();
-
-	/**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.Definition <em>Definition</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -547,22 +507,6 @@ public interface GenconfPackage extends EPackage {
          * @generated
          */
 		EReference GENERATION__DEFINITIONS = eINSTANCE.getGeneration_Definitions();
-
-		/**
-         * The meta object literal for the '<em><b>Packages NSURI</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute GENERATION__PACKAGES_NSURI = eINSTANCE.getGeneration_PackagesNSURI();
-
-		/**
-         * The meta object literal for the '<em><b>Services Tokens</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute GENERATION__SERVICES_TOKENS = eINSTANCE.getGeneration_ServicesTokens();
 
 		/**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.DefinitionImpl <em>Definition</em>}' class.

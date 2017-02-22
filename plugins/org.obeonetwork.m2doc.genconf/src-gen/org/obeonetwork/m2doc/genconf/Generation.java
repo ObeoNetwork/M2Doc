@@ -21,8 +21,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#isTimeStamped <em>Time Stamped</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#isRefreshRepresentations <em>Refresh Representations</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getDefinitions <em>Definitions</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getPackagesNSURI <em>Packages NSURI</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getServicesTokens <em>Services Tokens</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getGeneration()
@@ -177,37 +175,5 @@ public interface Generation extends EObject {
      * @generated
      */
 	EList<Definition> getDefinitions();
-
-	/**
-     * Returns the value of the '<em><b>Packages NSURI</b></em>' attribute list.
-     * The list contents are of type {@link java.lang.String}.
-     * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Packages NSURI</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Packages NSURI</em>' attribute list.
-     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getGeneration_PackagesNSURI()
-     * @model
-     * @generated
-     */
-	EList<String> getPackagesNSURI();
-
-	/**
-     * Returns the value of the '<em><b>Services Tokens</b></em>' attribute list.
-     * The list contents are of type {@link java.lang.String}.
-     * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Services Tokens</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Services Tokens</em>' attribute list.
-     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getGeneration_ServicesTokens()
-     * @model
-     * @generated
-     */
-	EList<String> getServicesTokens();
 
 } // Generation

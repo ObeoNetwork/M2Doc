@@ -16,7 +16,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.sirius.ext.emf.ui.ICellEditorProvider;
 import org.eclipse.swt.widgets.Composite;
-import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Generation;
 
 /**
@@ -40,8 +39,7 @@ public class URIDialogCellEditorProvider implements ICellEditorProvider {
      */
     @Override
     public boolean provides(EObject eObject, IItemPropertyDescriptor itemPropertyDescriptor) {
-        return eObject instanceof Generation && GenconfPackage.eINSTANCE.getGeneration_PackagesNSURI()
-                .equals(itemPropertyDescriptor.getFeature(itemPropertyDescriptor));
+        return eObject instanceof Generation;
     }
 
     /**

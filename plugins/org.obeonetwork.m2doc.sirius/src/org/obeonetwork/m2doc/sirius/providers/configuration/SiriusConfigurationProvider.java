@@ -56,27 +56,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
             if (session != null) {
                 // add semantic resource to session
                 addConfigurationModelToSession(generation, session);
-
-                // add EPackage URIs to configuration.
-                addURIsToGeneration(generation, session);
             }
-        }
-
-    }
-
-    /**
-     * Add uris to Generation.
-     * 
-     * @param generation
-     *            Generation
-     * @param session
-     *            Session
-     */
-    protected void addURIsToGeneration(Generation generation, Session session) {
-        List<String> uris = addURIs(session);
-        // add found uris to generation.
-        if (!uris.isEmpty()) {
-            generation.getPackagesNSURI().addAll(uris);
         }
     }
 
