@@ -295,13 +295,15 @@ public final class M2DocUtils {
      *            URI for the template, used when external links (images, includes) have to be resolved
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
+     * @param classLoader
+     *            the {@link ClassLoader} to use for service Loading
      * @return the {@link DocumentTemplate} resulting from parsing the specified
      *         document
      * @throws DocumentParserException
      *             if a problem occurs while parsing the document.
      */
     @SuppressWarnings("resource")
-    public static DocumentTemplate parse(URI templateURI, IQueryEnvironment queryEnvironment)
+    public static DocumentTemplate parse(URI templateURI, IQueryEnvironment queryEnvironment, ClassLoader classLoader)
             throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         final ResourceImpl r = new ResourceImpl(templateURI);
@@ -311,29 +313,11 @@ public final class M2DocUtils {
             final InputStream is = URIConverter.INSTANCE.createInputStream(templateURI);
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
-            final TemplateInfo info = new TemplateInfo(document);
-            final List<String> invalidEPackages = new ArrayList<String>();
-            for (String nsURI : info.getPackagesURIs()) {
-                final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-                if (ePackage != null) {
-                    queryEnvironment.registerEPackage(ePackage);
-                } else {
-                    invalidEPackages.add(nsURI);
-                }
-            }
-            for (String token : info.getServiceTokens()) {
-                List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(token);
-                for (Class<?> cls : services) {
-                    AQL4Compat.register(queryEnvironment, cls);
-                }
-            }
+            final List<TemplateValidationMessage> messages = parseTemplateInfo(queryEnvironment, classLoader, document);
             r.getContents().add(result);
             final BodyTemplateParser parser = new BodyTemplateParser(document, queryEnvironment);
             final Template documentBody = parser.parseTemplate();
-            for (String nsURI : invalidEPackages) {
-                final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
-                final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
-                        ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
+            for (TemplateValidationMessage validationMessage : messages) {
                 documentBody.getValidationMessages().add(validationMessage);
             }
             result.setBody(documentBody);
@@ -356,6 +340,52 @@ public final class M2DocUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Parses {@link TemplateInfo} for the given {@link XWPFDocument} and initializes the given {@link IQueryEnvironment}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment}
+     * @param classLoader
+     *            the {@link ClassLoader} to use for service Loading
+     * @param document
+     *            the {@link XWPFDocument}
+     * @return the {@link List} of {@link TemplateValidationMessage} produced while reading the {@link TemplateInfo}
+     */
+    private static List<TemplateValidationMessage> parseTemplateInfo(IQueryEnvironment queryEnvironment,
+            ClassLoader classLoader, final XWPFDocument document) {
+        final TemplateInfo info = new TemplateInfo(document);
+        final List<TemplateValidationMessage> messages = new ArrayList<TemplateValidationMessage>();
+        for (String nsURI : info.getPackagesURIs()) {
+            final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
+            if (ePackage != null) {
+                queryEnvironment.registerEPackage(ePackage);
+            } else {
+                final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
+                final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
+                        ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
+                messages.add(validationMessage);
+            }
+        }
+        for (String token : info.getServiceTokens()) {
+            List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(token);
+            for (Class<?> cls : services) {
+                AQL4Compat.register(queryEnvironment, cls);
+            }
+        }
+        for (String serviceClass : info.getServiceClasses()) {
+            try {
+                final Class<?> cls = classLoader.loadClass(serviceClass);
+                AQL4Compat.register(queryEnvironment, cls);
+            } catch (ClassNotFoundException e) {
+                final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
+                final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
+                        ValidationMessageLevel.ERROR, "can't load service class: " + serviceClass, run);
+                messages.add(validationMessage);
+            }
+        }
+        return messages;
     }
 
     /**

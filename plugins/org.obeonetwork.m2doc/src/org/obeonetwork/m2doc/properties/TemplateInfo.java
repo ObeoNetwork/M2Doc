@@ -29,18 +29,26 @@ import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProper
  * @author Romain Guider
  */
 public class TemplateInfo {
+
     /**
      * The list of service tokens declared in the template.
      */
-    private List<String> serviceTokens;
+    private final List<String> serviceTokens = Lists.newArrayList();
+
     /**
      * A map that associates variables declared in the template with their intended type.
      */
-    private Map<String, String> variables;
+    private final Map<String, String> variables = Maps.newHashMap();
+
     /**
      * The list of nsURIs declared in the template.
      */
-    private List<String> packageURIs;
+    private final List<String> packageURIs = Lists.newArrayList();
+
+    /**
+     * The {@link List} of service {@link Class#getName() class names}.
+     */
+    private final List<String> serviceClasses = Lists.newArrayList();
 
     /**
      * Constructor.
@@ -49,9 +57,6 @@ public class TemplateInfo {
      *            XWPFDocument
      */
     public TemplateInfo(XWPFDocument document) {
-        this.serviceTokens = Lists.newArrayList();
-        this.variables = Maps.newHashMap();
-        this.packageURIs = Lists.newArrayList();
         extractMetaData(document);
     }
 
@@ -62,15 +67,15 @@ public class TemplateInfo {
      *            XWPFDocument
      */
     private void extractMetaData(XWPFDocument document) {
-        CustomProperties props = document.getProperties().getCustomProperties();
-        List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
+        final CustomProperties props = document.getProperties().getCustomProperties();
+        final List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
+        final int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length();
         for (CTProperty property : properties) {
             String name = property.getName();
             if (name == null) {
                 continue;
             }
             name = name.trim();
-            int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length();
             if (M2DocCustomProperties.SERVICE_PROPERTY_PREFIX.equals(name)) {
                 String serviceTokenList = property.getLpwstr();
                 if (serviceTokenList != null) {
@@ -85,14 +90,44 @@ public class TemplateInfo {
                     variables.put(variableName, type);
                 }
             } else if (M2DocCustomProperties.URI_PROPERTY_PREFIX.equals(name)) {
-                String uriList = property.getLpwstr();
-                if (uriList != null) {
-                    String[] uris = uriList.trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
-                    for (String uri : uris) {
-                        if (!uri.trim().isEmpty()) {
-                            packageURIs.add(uri.trim());
-                        }
-                    }
+                extractEPackages(property);
+            } else if (M2DocCustomProperties.SERVICE_IMPORT_PROPERTY_PREFIX.equals(name)) {
+                extractServiceImports(property);
+            }
+        }
+    }
+
+    /**
+     * Extracts {@link org.eclipse.emf.ecore.EPackage EPackage} imports.
+     * 
+     * @param property
+     *            the property to parse
+     */
+    private void extractEPackages(CTProperty property) {
+        String uriList = property.getLpwstr();
+        if (uriList != null) {
+            String[] uris = uriList.trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+            for (String uri : uris) {
+                if (!uri.trim().isEmpty()) {
+                    packageURIs.add(uri.trim());
+                }
+            }
+        }
+    }
+
+    /**
+     * Extracts service imports.
+     * 
+     * @param property
+     *            the property to parse
+     */
+    private void extractServiceImports(CTProperty property) {
+        String uriList = property.getLpwstr();
+        if (uriList != null) {
+            String[] uris = uriList.trim().split(M2DocCustomProperties.SERVICETOKEN_SEPARATOR);
+            for (String uri : uris) {
+                if (!uri.trim().isEmpty()) {
+                    serviceClasses.add(uri.trim());
                 }
             }
         }
@@ -123,6 +158,15 @@ public class TemplateInfo {
      */
     public Map<String, String> getVariables() {
         return Collections.unmodifiableMap(variables);
+    }
+
+    /**
+     * Gets the {@link List} of service {@link Class#getName() class names}.
+     * 
+     * @return the {@link List} of service {@link Class#getName() class names}
+     */
+    public List<String> getServiceClasses() {
+        return serviceClasses;
     }
 
     /**

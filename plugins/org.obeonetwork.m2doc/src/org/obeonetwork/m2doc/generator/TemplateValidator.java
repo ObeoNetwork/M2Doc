@@ -44,11 +44,15 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
@@ -116,10 +120,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         final TemplateInfo info = new TemplateInfo(documentTemplate.getDocument());
         Map<String, Set<IType>> types = Maps.newLinkedHashMap();
         for (Entry<String, String> entry : info.getVariables().entrySet()) {
-            final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, entry.getValue());
-            final IValidationResult validationResult = AQL4Compat.validate(astResult,
-                    Collections.<String, Set<IType>> emptyMap(), environment);
-            final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
+            final Set<IType> variableTypes = getVariableTypes(queryEnvironment, entry.getValue());
             types.put(entry.getKey(), variableTypes);
         }
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
@@ -135,6 +136,33 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         }
 
         return result;
+    }
+
+    /**
+     * @param queryEnvironment
+     * @param type
+     * @return
+     */
+    private Set<IType> getVariableTypes(IReadOnlyQueryEnvironment queryEnvironment, String type) {
+        final Set<IType> res = new LinkedHashSet<IType>();
+
+        final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
+        final IValidationResult validationResult = AQL4Compat.validate(astResult,
+                Collections.<String, Set<IType>> emptyMap(), environment);
+        final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
+        for (IType iType : variableTypes) {
+            if (iType instanceof EClassifierLiteralType) {
+                res.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType) iType).getType()));
+            } else if (iType instanceof EClassifierSetLiteralType) {
+                for (EClassifier eClassifier : ((EClassifierSetLiteralType) iType).getEClassifiers()) {
+                    res.add(new EClassifierType(queryEnvironment, eClassifier));
+                }
+            } else {
+                res.add(iType);
+            }
+        }
+
+        return res;
     }
 
     /**

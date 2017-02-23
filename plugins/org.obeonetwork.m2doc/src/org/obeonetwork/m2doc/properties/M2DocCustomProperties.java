@@ -57,4 +57,8 @@ public interface M2DocCustomProperties {
      * Prefix of the service declaration custom properties.
      */
     String SERVICE_PROPERTY_PREFIX = "m:services";
+    /**
+     * Prefix of the service import custom properties.
+     */
+    String SERVICE_IMPORT_PROPERTY_PREFIX = "m:import";
 }

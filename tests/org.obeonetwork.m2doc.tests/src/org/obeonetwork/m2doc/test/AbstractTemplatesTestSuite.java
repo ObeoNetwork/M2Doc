@@ -135,7 +135,7 @@ public abstract class AbstractTemplatesTestSuite {
         setTemplateFileName(generation, templateFileName);
         final URI templateURI = URI.createFileURI(templateFileName);
         queryEnvironment = QueryServices.getInstance().getEnvironment(templateURI);
-        documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment);
+        documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment, this.getClass().getClassLoader());
         ConfigurationServices configurationServices = new ConfigurationServices();
         variables = configurationServices.createDefinitions(generation);
         // add providers variables

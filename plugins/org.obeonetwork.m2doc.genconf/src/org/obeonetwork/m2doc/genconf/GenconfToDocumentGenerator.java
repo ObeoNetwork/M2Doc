@@ -138,7 +138,8 @@ public class GenconfToDocumentGenerator {
         Map<String, Object> definitions = configurationServices.createDefinitions(generation);
 
         // create generated file
-        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment,
+                this.getClass().getClassLoader())) {
 
             // validate template
             boolean inError = validate(generatedFile, template, generation);
@@ -336,7 +337,8 @@ public class GenconfToDocumentGenerator {
         IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
         // parse template
-        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment,
+                this.getClass().getClassLoader())) {
 
             // validate template
             if (template != null) {

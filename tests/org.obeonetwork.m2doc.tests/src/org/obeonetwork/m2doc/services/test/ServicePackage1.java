@@ -11,12 +11,24 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services.test;
 
+import org.eclipse.emf.ecore.EPackage;
+
 /**
  * Test class used to test the service registry.
  * 
  * @author Romain Guider
- *
  */
 public class ServicePackage1 {
+
+    /**
+     * A custom service.
+     * 
+     * @param ePkg
+     *            the {@link EPackage}
+     * @return <code>"That's a custom service call."</code>
+     */
+    public String someCustomService(EPackage ePkg) {
+        return "That's a custom service call.";
+    }
 
 }

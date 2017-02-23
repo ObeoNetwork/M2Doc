@@ -58,8 +58,9 @@ public class TemplateValidationGeneratorTest {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils
-                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils.parse(
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
+                this.getClass().getClassLoader())) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -96,8 +97,9 @@ public class TemplateValidationGeneratorTest {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils
-                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils.parse(
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
+                this.getClass().getClassLoader())) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -134,8 +136,9 @@ public class TemplateValidationGeneratorTest {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils
-                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils.parse(
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
+                this.getClass().getClassLoader())) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -172,8 +175,9 @@ public class TemplateValidationGeneratorTest {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils
-                .parse(URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment)) {
+        try (DocumentTemplate template = M2DocUtils.parse(
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
+                this.getClass().getClassLoader())) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "AAAA", location));
