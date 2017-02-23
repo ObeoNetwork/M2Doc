@@ -20,11 +20,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -429,8 +427,7 @@ public class GenconfToDocumentGenerator {
             IReadOnlyQueryEnvironment queryEnvironment) throws DocumentGenerationException, IOException {
         URI validationFile = getValidationLogFile(templateFile);
 
-        Map<String, Set<IType>> types = configurationServices.getTypes(queryEnvironment, generation);
-        final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment, types);
+        final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment);
         M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
 
         return validationResult == ValidationMessageLevel.ERROR

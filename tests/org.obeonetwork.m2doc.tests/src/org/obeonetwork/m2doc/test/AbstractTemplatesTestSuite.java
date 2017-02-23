@@ -30,10 +30,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -105,11 +103,6 @@ public abstract class AbstractTemplatesTestSuite {
     private final Generation generation;
 
     /**
-     * Variable types.
-     */
-    private final Map<String, Set<IType>> types;
-
-    /**
      * The {@link IQueryEnvironment}.
      */
     private final IQueryEnvironment queryEnvironment;
@@ -144,7 +137,6 @@ public abstract class AbstractTemplatesTestSuite {
         queryEnvironment = QueryServices.getInstance().getEnvironment(templateURI);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment);
         ConfigurationServices configurationServices = new ConfigurationServices();
-        types = configurationServices.getTypes(queryEnvironment, generation);
         variables = configurationServices.createDefinitions(generation);
         // add providers variables
         variables.putAll(configurationServices.getProviderVariables(generation));
@@ -257,7 +249,7 @@ public abstract class AbstractTemplatesTestSuite {
      */
     @Test
     public void validation() throws IOException, DocumentGenerationException {
-        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment, types);
+        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment);
 
         final File expectedValidationFile = getExpectedValidatedFile(new File(testFolderPath));
         final File tempFile;

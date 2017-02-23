@@ -11,6 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
+import com.google.common.collect.Maps;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -20,7 +25,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.CommonTokenFactory;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.UnbufferedCharStream;
+import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.QueryLexer;
+import org.eclipse.acceleo.query.parser.QueryParser;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -30,10 +47,13 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
@@ -88,19 +108,76 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
-     * @param types
-     *            the variables types
      * @return the {@link ValidationMessageLevel}
      */
     public ValidationMessageLevel validate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
+            IReadOnlyQueryEnvironment queryEnvironment) {
         environment = queryEnvironment;
+        final TemplateInfo info = new TemplateInfo(documentTemplate.getDocument());
+        Map<String, Set<IType>> types = Maps.newLinkedHashMap();
+        for (Entry<String, String> entry : info.getVariables().entrySet()) {
+            final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, entry.getValue());
+            final IValidationResult validationResult = AQL4Compat.validate(astResult,
+                    Collections.<String, Set<IType>> emptyMap(), environment);
+            final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
+            types.put(entry.getKey(), variableTypes);
+        }
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
         booleanType = new ClassType(queryEnvironment, boolean.class);
         stack.clear();
         stack.push(types);
 
-        return doSwitch(documentTemplate);
+        final ValidationMessageLevel result;
+        try {
+            result = doSwitch(documentTemplate);
+        } finally {
+            stack.pop();
+        }
+
+        return result;
+    }
+
+    /**
+     * Parses while matching an AQL expression.
+     * 
+     * @param expression
+     *            the expression to parse
+     * @return the corresponding {@link AstResult}
+     */
+    private AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String expression) {
+        final IQueryBuilderEngine.AstResult result;
+
+        if (expression != null && expression.length() > 0) {
+            AstBuilderListener astBuilder = new AstBuilderListener((IQueryEnvironment) queryEnvironment);
+            CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
+            QueryLexer lexer = new QueryLexer(input);
+            lexer.setTokenFactory(new CommonTokenFactory(true));
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(astBuilder.getErrorListener());
+            TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
+            QueryParser parser = new QueryParser(tokens);
+            parser.addParseListener(astBuilder);
+            parser.removeErrorListeners();
+            parser.addErrorListener(astBuilder.getErrorListener());
+            // parser.setTrace(true);
+            parser.typeLiteral();
+            result = astBuilder.getAstResult();
+        } else {
+            ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral) EcoreUtil
+                    .create(AstPackage.eINSTANCE.getErrorTypeLiteral());
+            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
+            errors.add(errorTypeLiteral);
+            final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+            if (expression != null) {
+                positions.put(errorTypeLiteral, Integer.valueOf(0));
+            }
+            final BasicDiagnostic diagnostic = new BasicDiagnostic();
+            diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0, "null or empty type.",
+                    new Object[] {errorTypeLiteral }));
+            result = new AstResult(errorTypeLiteral, positions, positions, errors, diagnostic);
+        }
+
+        return result;
     }
 
     @Override

@@ -14,10 +14,10 @@ package org.obeonetwork.m2doc.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -29,7 +29,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -59,6 +58,7 @@ import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 
@@ -312,8 +312,14 @@ public final class M2DocUtils {
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
             final TemplateInfo info = new TemplateInfo(document);
+            final List<String> invalidEPackages = new ArrayList<String>();
             for (String nsURI : info.getPackagesURIs()) {
-                queryEnvironment.registerEPackage(EPackage.Registry.INSTANCE.getEPackage(nsURI));
+                final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
+                if (ePackage != null) {
+                    queryEnvironment.registerEPackage(ePackage);
+                } else {
+                    invalidEPackages.add(nsURI);
+                }
             }
             for (String token : info.getServiceTokens()) {
                 List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(token);
@@ -323,7 +329,14 @@ public final class M2DocUtils {
             }
             r.getContents().add(result);
             final BodyTemplateParser parser = new BodyTemplateParser(document, queryEnvironment);
-            result.setBody(parser.parseTemplate());
+            final Template documentBody = parser.parseTemplate();
+            for (String nsURI : invalidEPackages) {
+                final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
+                final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
+                        ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
+                documentBody.getValidationMessages().add(validationMessage);
+            }
+            result.setBody(documentBody);
             result.setInputStream(is);
             result.setOpcPackage(oPackage);
             result.setDocument(document);
@@ -400,14 +413,12 @@ public final class M2DocUtils {
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
-     * @param types
-     *            variables types
      * @return the {@link ValidationMessageLevel}
      */
     public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Set<IType>> types) {
+            IReadOnlyQueryEnvironment queryEnvironment) {
         final TemplateValidator validator = new TemplateValidator();
-        return validator.validate(documentTemplate, queryEnvironment, types);
+        return validator.validate(documentTemplate, queryEnvironment);
     }
 
     /**

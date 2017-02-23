@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator.test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -26,12 +27,9 @@ import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.obeonetwork.m2doc.genconf.GenconfFactory;
-import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.TemplateValidator;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -42,7 +40,6 @@ import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Image;
-import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableMerge;
@@ -60,120 +57,7 @@ import static org.obeonetwork.m2doc.test.M2DocTestUtils.assertTemplateValidation
  */
 public class TemplateValidatorTests {
 
-    @Test
-    public void documentTemplateHeader() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self"));
-        final Template header = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        header.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        header.getBody().getStatements().add(query);
-        final Template bodyTemplate = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        bodyTemplate.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(bodyTemplate);
-        documentTemplate.getHeaders().add(header);
-
-        final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", query.getStyleRun());
-    }
-
-    @Test
-    public void documentTemplateBody() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(query);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-        Generation generation = GenconfFactory.eINSTANCE.createGeneration();
-        validator.validate(documentTemplate, queryEnvironment,
-                new ConfigurationServices().getTypes(queryEnvironment, generation));
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", query.getStyleRun());
-    }
-
-    @Test
-    public void documentTemplateFooter() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self"));
-        final Template footer = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        footer.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        footer.getBody().getStatements().add(query);
-        final Template bodyTemplate = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        bodyTemplate.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(bodyTemplate);
-        documentTemplate.getFooters().add(footer);
-
-        final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", query.getStyleRun());
-    }
-
-    @Test
-    public void templateSubConstruct() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(query);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", query.getStyleRun());
-    }
-
-    @Test
-    public void conditionalConditionNotBoolean() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
-        conditional.setCondition(engine.build("self"));
-        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        conditional.setThen(thenCompound);
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(conditional);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new ClassType(queryEnvironment, String.class));
-
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, conditional.getValidationMessages().size());
-        assertTemplateValidationMessage(conditional.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "The predicate never evaluates to a boolean type ([java.lang.String]).", conditional.getRuns().get(1));
-    }
-
+    @Ignore("This test can't be implemented. We need to fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=512569 before.")
     @Test
     public void conditionalSelectorNotOnlyBoolean() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
@@ -195,7 +79,7 @@ public class TemplateValidatorTests {
         selfTypes.add(new ClassType(queryEnvironment, String.class));
         selfTypes.add(new ClassType(queryEnvironment, Boolean.class));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(1, conditional.getValidationMessages().size());
         assertTemplateValidationMessage(conditional.getValidationMessages().get(0), ValidationMessageLevel.WARNING,
@@ -203,34 +87,7 @@ public class TemplateValidatorTests {
                 conditional.getRuns().get(1));
     }
 
-    @Test
-    public void conditionalSelectorAlwaysTrue() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
-        conditional.setCondition(engine.build("self.oclIsKindOf(String)"));
-        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        conditional.setThen(thenCompound);
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(conditional);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new ClassType(queryEnvironment, String.class));
-
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, conditional.getValidationMessages().size());
-        assertTemplateValidationMessage(conditional.getValidationMessages().get(0), ValidationMessageLevel.INFO,
-                "Always true:\nNothing inferred when self (java.lang.String) is not kind of java.lang.String",
-                conditional.getRuns().get(1));
-    }
-
+    @Ignore("This test can't be implemented. We need to fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=512569 before.")
     @Test
     public void conditionalInferedTypeInThen() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
@@ -254,7 +111,7 @@ public class TemplateValidatorTests {
         types.put("self", selfTypes);
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(0, conditional.getValidationMessages().size());
 
@@ -264,6 +121,7 @@ public class TemplateValidatorTests {
                 query.getStyleRun());
     }
 
+    @Ignore("This test can't be implemented. We need to fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=512569 before.")
     @Test
     public void conditionalInferedTypeInElse() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
@@ -292,7 +150,7 @@ public class TemplateValidatorTests {
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
         selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(0, conditional.getValidationMessages().size());
 
@@ -303,97 +161,7 @@ public class TemplateValidatorTests {
     }
 
     @Test
-    public void repetitionMaskVariable() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Repetition repetition = TemplatePackage.eINSTANCE.getTemplateFactory().createRepetition();
-        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        repetition.setBody(body);
-        repetition.setIterationVar("self");
-        repetition.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(repetition);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, String.class)));
-
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, repetition.getValidationMessages().size());
-        assertTemplateValidationMessage(repetition.getValidationMessages().get(0), ValidationMessageLevel.WARNING,
-                "The iteration variable mask an existing variable (self).", repetition.getRuns().get(1));
-    }
-
-    @Test
-    public void repetitionNotCollection() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Repetition repetition = TemplatePackage.eINSTANCE.getTemplateFactory().createRepetition();
-        repetition.setIterationVar("i");
-        repetition.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        repetition.setBody(body);
-        template.getBody().getStatements().add(repetition);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new ClassType(queryEnvironment, String.class));
-
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, repetition.getValidationMessages().size());
-        assertTemplateValidationMessage(repetition.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "The iteration variable types must be collections ([java.lang.String]).", repetition.getRuns().get(1));
-    }
-
-    @Test
-    public void repetition() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Repetition repetition = TemplatePackage.eINSTANCE.getTemplateFactory().createRepetition();
-        repetition.setIterationVar("i");
-        repetition.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(repetition);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("i.oclIsKindOf(String)"));
-        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        body.getStatements().add(query);
-        repetition.setBody(body);
-
-        final TemplateValidator validator = new TemplateValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, String.class)));
-
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(0, repetition.getValidationMessages().size());
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.INFO,
-                "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String",
-                query.getStyleRun());
-    }
-
-    @Test
-    public void tableMergeSubConstruct() {
+    public void tableMergeSubConstruct() throws IOException {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
@@ -405,31 +173,11 @@ public class TemplateValidatorTests {
         tableMerge.setBody(body);
         tableMerge.getBody().getStatements().add(query);
         template.getBody().getStatements().add(query);
+        @SuppressWarnings("resource")
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", query.getStyleRun());
-    }
-
-    @Test
-    public void query() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(query);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -454,11 +202,11 @@ public class TemplateValidatorTests {
         cellTemplate.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
         cellTemplate.getBody().getStatements().add(query);
         cell.setTemplate(cellTemplate);
+        @SuppressWarnings("resource")
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
@@ -498,69 +246,17 @@ public class TemplateValidatorTests {
         image.getOptionValueMap().put("query", engine.build("self"));
 
         template.getBody().getStatements().add(image);
+        @SuppressWarnings("resource")
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
         final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
+        validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(2, image.getValidationMessages().size());
         assertTemplateValidationMessage(image.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Couldn't find the 'self' variable", image.getStyleRun());
         assertTemplateValidationMessage(image.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
                 "option variable: error with ...", image.getStyleRun());
-    }
-
-    @Test
-    public void userDocWrongVariable() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.UserDoc userDoc = TemplatePackage.eINSTANCE.getTemplateFactory()
-                .createUserDoc();
-        userDoc.setId(engine.build("self"));
-        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        userDoc.setBody(body);
-
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(userDoc);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, userDoc.getValidationMessages().size());
-        assertTemplateValidationMessage(userDoc.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", userDoc.getRuns().get(1));
-    }
-
-    @Test
-    public void userDocWithAQLResultAsCollectionType() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.UserDoc userDoc = TemplatePackage.eINSTANCE.getTemplateFactory()
-                .createUserDoc();
-        userDoc.setId(engine.build("collection"));
-        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        userDoc.setBody(body);
-
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(userDoc);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final TemplateValidator validator = new TemplateValidator();
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("collection", selfTypes);
-        selfTypes.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
-
-        validator.validate(documentTemplate, queryEnvironment, types);
-
-        assertEquals(1, userDoc.getValidationMessages().size());
-        assertTemplateValidationMessage(userDoc.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "The id type must not be a collection (Sequence(java.lang.Object)).", userDoc.getRuns().get(1));
     }
 
 }

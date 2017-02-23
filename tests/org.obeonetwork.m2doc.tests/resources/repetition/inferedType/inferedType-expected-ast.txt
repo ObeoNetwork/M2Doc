@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  Basic for demonstration : 
+  
+  for v | .aqlFeatureAccess(self, 'eClassifiers') do
+    [query: .oclIsKindOf(v, EClassifier) | TEXT]
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===

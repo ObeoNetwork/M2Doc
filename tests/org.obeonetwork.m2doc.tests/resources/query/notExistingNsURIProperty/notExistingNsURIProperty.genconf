@@ -8,6 +8,6 @@
   <definitions
       xsi:type="genconf:ModelDefinition"
       key="self">
-    <value href="NSURIProperty.genconf#/"/>
+    <value href="nsURIProperty.genconf#/"/>
   </definitions>
 </genconf:Generation>
