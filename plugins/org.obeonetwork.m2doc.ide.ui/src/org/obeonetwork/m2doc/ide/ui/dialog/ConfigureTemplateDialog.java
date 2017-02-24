@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ui.dialog;
+package org.obeonetwork.m2doc.ide.ui.dialog;
 
 import java.util.EventObject;
 import java.util.LinkedHashMap;
@@ -66,6 +66,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.obeonetwork.m2doc.genconf.emf.ui.celleditor.URIDialogCellEditor;
+import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.properties.TemplateInfo;
 import org.obeonetwork.m2doc.tplconf.EPackageMapping;
 import org.obeonetwork.m2doc.tplconf.StructuredType;
@@ -76,7 +77,6 @@ import org.obeonetwork.m2doc.tplconf.TemplateVariable;
 import org.obeonetwork.m2doc.tplconf.TplconfFactory;
 import org.obeonetwork.m2doc.tplconf.impl.TplconfFactoryImpl;
 import org.obeonetwork.m2doc.tplconf.provider.spec.TplconfItemProviderAdapterFactorySpec;
-import org.obeonetwork.m2doc.ui.Activator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

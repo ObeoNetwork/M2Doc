@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ui.command;
+package org.obeonetwork.m2doc.ide.ui.command;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,8 +27,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.ui.Activator;
 
 /**
  * Generate docx from docx template.

@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ui;
+package org.obeonetwork.m2doc.ide.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,7 +35,7 @@ public class Activator extends AbstractUIPlugin {
     /**
      * The plug-in ID.
      */
-    public static final String PLUGIN_ID = "org.obeonetwork.m2doc.ui"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "org.obeonetwork.m2doc.ide.ui"; //$NON-NLS-1$
 
     /**
      * The shared instance.
@@ -99,9 +99,9 @@ public class Activator extends AbstractUIPlugin {
     protected void initializeImageRegistry(ImageRegistry reg) {
         try {
             reg.put(ADD_IMG_KEY,
-                    ImageDescriptor.createFromURL(new URL("platform:/plugin/org.obeonetwork.m2doc.ui/icons/add.gif")));
+                    ImageDescriptor.createFromURL(new URL("platform:/plugin/org.obeonetwork.m2doc.ide.ui/icons/add.gif")));
             reg.put(DELETE_IMG_KEY, ImageDescriptor
-                    .createFromURL(new URL("platform:/plugin/org.obeonetwork.m2doc.ui/icons/delete.gif")));
+                    .createFromURL(new URL("platform:/plugin/org.obeonetwork.m2doc.ide.ui/icons/delete.gif")));
         } catch (MalformedURLException e) {
             getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
         }

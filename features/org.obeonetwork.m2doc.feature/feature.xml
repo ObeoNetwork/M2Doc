@@ -238,7 +238,7 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.m2doc.ui"
+         id="org.obeonetwork.m2doc.ide.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

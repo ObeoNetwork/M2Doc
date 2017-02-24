@@ -9,25 +9,37 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ui.propertyTester;
+package org.obeonetwork.m2doc.ide.ui.propertyTester;
 
 import java.util.List;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.core.resources.IResource;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.eclipse.emf.common.util.URI;
+import org.obeonetwork.m2doc.genconf.Generation;
 
 /**
- * Test if handler is launched on docx file.
+ * Test if handler is launched on genconf file.
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
-public class TemplatePropertyTester extends PropertyTester {
+public class GenerationPropertyTester extends PropertyTester {
 
     /**
      * Constructor
      */
-    public TemplatePropertyTester() {
+    public GenerationPropertyTester() {
+    }
+
+    /**
+     * Returns <code>true</code> when the generation has a local URI (platform or file)
+     * 
+     * @param generation
+     *            the tested generation.
+     * @return <code>true</code> for local objects.
+     */
+    private boolean isLocal(Generation generation) {
+        URI uri = generation.eResource().getURI();
+        return uri.isFile() || uri.isPlatform();
     }
 
     /**
@@ -38,8 +50,7 @@ public class TemplatePropertyTester extends PropertyTester {
     @SuppressWarnings("rawtypes")
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-        if (receiver instanceof IResource
-            && M2DocPlugin.DOCX_EXTENSION_FILE.equals(((IResource) receiver).getFileExtension())) {
+        if (receiver instanceof Generation && isLocal((Generation) receiver)) {
             return true;
         }
         if (receiver instanceof List) {

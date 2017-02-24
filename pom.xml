@@ -26,7 +26,7 @@
 
 		<module>plugins/org.obeonetwork.m2doc</module>
 		<module>plugins/org.obeonetwork.m2doc.ide</module>
-		<module>plugins/org.obeonetwork.m2doc.ui</module>
+		<module>plugins/org.obeonetwork.m2doc.ide.ui</module>
 		<module>plugins/org.obeonetwork.m2doc.genconf</module>
 		<module>plugins/org.obeonetwork.m2doc.genconf.edit</module>
 		<module>plugins/org.obeonetwork.m2doc.genconf.editor</module>

@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ui.dialog;
+package org.obeonetwork.m2doc.ide.ui.dialog;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
