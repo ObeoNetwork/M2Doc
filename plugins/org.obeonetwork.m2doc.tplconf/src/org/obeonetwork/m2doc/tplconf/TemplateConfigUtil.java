@@ -263,7 +263,7 @@ public final class TemplateConfigUtil {
         // Metamodel URIs
         StringBuilder b = new StringBuilder(1000);
         for (EPackageMapping mm : config.getMappings()) {
-            b.append(M2DocCustomProperties.SERVICETOKEN_SEPARATOR).append(mm.getUri());
+            b.append(M2DocCustomProperties.SEPARATOR).append(mm.getUri());
         }
         if (b.length() > 0) {
             b.deleteCharAt(0);

@@ -20,7 +20,7 @@ public interface M2DocCustomProperties {
     /**
      * Separator used to provide several service tokens through the m:service custom property.
      */
-    String SERVICETOKEN_SEPARATOR = ",";
+    String SEPARATOR = ",";
     /**
      * id of the integer type to use in variable declaration properties (not supported yet).
      */
