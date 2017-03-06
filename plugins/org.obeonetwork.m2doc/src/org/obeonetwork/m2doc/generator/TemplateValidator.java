@@ -57,7 +57,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
@@ -117,9 +117,10 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     public ValidationMessageLevel validate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment) {
         environment = queryEnvironment;
-        final TemplateInfo info = new TemplateInfo(documentTemplate.getDocument());
+        final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
+                documentTemplate.getDocument());
         Map<String, Set<IType>> types = Maps.newLinkedHashMap();
-        for (Entry<String, String> entry : info.getVariables().entrySet()) {
+        for (Entry<String, String> entry : templateProperties.getVariables().entrySet()) {
             final Set<IType> variableTypes = getVariableTypes(queryEnvironment, entry.getValue());
             types.put(entry.getKey(), variableTypes);
         }
@@ -139,9 +140,13 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     }
 
     /**
+     * Gets the {@link Set} of variable declaration {@link IType}.
+     * 
      * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
      * @param type
-     * @return
+     *            the {@link String} representation of a type
+     * @return the {@link Set} of variable declaration {@link IType}
      */
     private Set<IType> getVariableTypes(IReadOnlyQueryEnvironment queryEnvironment, String type) {
         final Set<IType> res = new LinkedHashSet<IType>();
@@ -149,6 +154,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
         final IValidationResult validationResult = AQL4Compat.validate(astResult,
                 Collections.<String, Set<IType>> emptyMap(), environment);
+        // TODO replace with AstValidator.getDeclarationTypes()
         final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
         for (IType iType : variableTypes) {
             if (iType instanceof EClassifierLiteralType) {
@@ -168,16 +174,19 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     /**
      * Parses while matching an AQL expression.
      * 
-     * @param expression
-     *            the expression to parse
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param type
+     *            the type to parse
      * @return the corresponding {@link AstResult}
      */
-    private AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String expression) {
+    @SuppressWarnings("restriction")
+    private AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String type) {
         final IQueryBuilderEngine.AstResult result;
 
-        if (expression != null && expression.length() > 0) {
+        if (type != null && type.length() > 0) {
             AstBuilderListener astBuilder = new AstBuilderListener((IQueryEnvironment) queryEnvironment);
-            CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
+            CharStream input = new UnbufferedCharStream(new StringReader(type), type.length());
             QueryLexer lexer = new QueryLexer(input);
             lexer.setTokenFactory(new CommonTokenFactory(true));
             lexer.removeErrorListeners();
@@ -196,7 +205,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
             List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
             errors.add(errorTypeLiteral);
             final Map<Object, Integer> positions = new HashMap<Object, Integer>();
-            if (expression != null) {
+            if (type != null) {
                 positions.put(errorTypeLiteral, Integer.valueOf(0));
             }
             final BasicDiagnostic diagnostic = new BasicDiagnostic();

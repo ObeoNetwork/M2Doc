@@ -54,7 +54,7 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -343,7 +343,7 @@ public final class M2DocUtils {
     }
 
     /**
-     * Parses {@link TemplateInfo} for the given {@link XWPFDocument} and initializes the given {@link IQueryEnvironment}.
+     * Parses {@link TemplateCustomProperties} for the given {@link XWPFDocument} and initializes the given {@link IQueryEnvironment}.
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
@@ -351,13 +351,13 @@ public final class M2DocUtils {
      *            the {@link ClassLoader} to use for service Loading
      * @param document
      *            the {@link XWPFDocument}
-     * @return the {@link List} of {@link TemplateValidationMessage} produced while reading the {@link TemplateInfo}
+     * @return the {@link List} of {@link TemplateValidationMessage} produced while reading the {@link TemplateCustomProperties}
      */
     private static List<TemplateValidationMessage> parseTemplateInfo(IQueryEnvironment queryEnvironment,
             ClassLoader classLoader, final XWPFDocument document) {
-        final TemplateInfo info = new TemplateInfo(document);
+        final TemplateCustomProperties properties = new TemplateCustomProperties(document);
         final List<TemplateValidationMessage> messages = new ArrayList<TemplateValidationMessage>();
-        for (String nsURI : info.getPackagesURIs()) {
+        for (String nsURI : properties.getPackagesURIs()) {
             final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
             if (ePackage != null) {
                 queryEnvironment.registerEPackage(ePackage);
@@ -368,13 +368,13 @@ public final class M2DocUtils {
                 messages.add(validationMessage);
             }
         }
-        for (String token : info.getServiceTokens()) {
+        for (String token : properties.getServiceTokens()) {
             List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(token);
             for (Class<?> cls : services) {
                 AQL4Compat.register(queryEnvironment, cls);
             }
         }
-        for (String serviceClass : info.getServiceClasses()) {
+        for (String serviceClass : properties.getServiceClasses()) {
             try {
                 final Class<?> cls = classLoader.loadClass(serviceClass);
                 AQL4Compat.register(queryEnvironment, cls);

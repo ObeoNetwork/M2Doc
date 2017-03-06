@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.tplconf.TemplateConfigUtil;
 
 /**
@@ -73,13 +73,13 @@ public final class TemplateConfigurationServices {
      * 
      * @param generation
      *            Generation
-     * @param templateInfo
+     * @param templateProperties
      *            TemplateInfo
      * @return generation eObject with definitions template information.
      */
-    public Generation addProperties(Generation generation, TemplateInfo templateInfo) {
+    public Generation addProperties(Generation generation, TemplateCustomProperties templateProperties) {
         Multimap<String, EPackage> packagesByName = ArrayListMultimap.create();
-        for (String uri : templateInfo.getPackagesURIs()) {
+        for (String uri : templateProperties.getPackagesURIs()) {
             if (EPackage.Registry.INSTANCE.containsKey(uri)) {
                 EPackage p = EPackage.Registry.INSTANCE.getEPackage(uri);
                 if (p != null && p.getName() != null) {
@@ -87,8 +87,8 @@ public final class TemplateConfigurationServices {
                 }
             }
         }
-        for (String key : templateInfo.getVariables().keySet()) {
-            String typeName = templateInfo.getVariables().get(key);
+        for (String key : templateProperties.getVariables().keySet()) {
+            String typeName = templateProperties.getVariables().get(key);
             Definition definition = null;
             // The only currently supported scalar type is 'string'
             if (M2DocCustomProperties.STRING_TYPE.equals(typeName)) {

@@ -21,25 +21,25 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.obeonetwork.m2doc.api.POIServices;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for the {@link TemplateInfo}.
+ * Test class for the {@link TemplateCustomProperties}.
  * 
  * @author Romain Guider
  */
-public class TemplateInfoTest {
+public class TemplateCustomPropertiesTest {
 
     @Test
     public void parseServiceToken() throws IOException, InvalidFormatException {
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
-            final List<String> serviceTokens = info.getServiceTokens();
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> serviceTokens = properties.getServiceTokens();
             assertEquals(2, serviceTokens.size());
             assertTrue(serviceTokens.contains("token1"));
             assertTrue(serviceTokens.contains("token2"));
@@ -50,8 +50,8 @@ public class TemplateInfoTest {
     public void parseVariable() throws IOException, InvalidFormatException {
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
-            final Map<String, String> variables = info.getVariables();
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final Map<String, String> variables = properties.getVariables();
             assertEquals(2, variables.size());
             assertEquals("database.Table", variables.get("variable1"));
             assertEquals("database.Column", variables.get("variable2"));
@@ -62,8 +62,8 @@ public class TemplateInfoTest {
     public void parseImport() throws IOException, InvalidFormatException {
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
-            final List<String> serviceClasses = info.getServiceClasses();
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> serviceClasses = properties.getServiceClasses();
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));
         }
@@ -82,8 +82,8 @@ public class TemplateInfoTest {
     public void parseInvalidVariables() throws IOException, InvalidFormatException {
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/emptyVar.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
-            final Map<String, String> variables = info.getVariables();
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final Map<String, String> variables = properties.getVariables();
             assertTrue(variables.isEmpty());
         }
     }
@@ -101,8 +101,8 @@ public class TemplateInfoTest {
     public void testReadBlankMMUri() throws IOException, InvalidFormatException {
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/noUri.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
-            final List<String> uris = info.getPackagesURIs();
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> uris = properties.getPackagesURIs();
             assertTrue(uris.isEmpty());
         }
     }
@@ -114,30 +114,30 @@ public class TemplateInfoTest {
         tempFile.deleteOnExit();
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/noProperties.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
-            assertTrue(info.getPackagesURIs().isEmpty());
-            info.getPackagesURIs().add("http://www.eclipse.org/meta100");
-            info.getPackagesURIs().add("http://www.eclipse.org/meta200");
+            assertTrue(properties.getPackagesURIs().isEmpty());
+            properties.getPackagesURIs().add("http://www.eclipse.org/meta100");
+            properties.getPackagesURIs().add("http://www.eclipse.org/meta200");
 
-            assertTrue(info.getServiceTokens().isEmpty());
-            info.getServiceTokens().add("token100");
-            info.getServiceTokens().add("token200");
+            assertTrue(properties.getServiceTokens().isEmpty());
+            properties.getServiceTokens().add("token100");
+            properties.getServiceTokens().add("token200");
 
-            assertTrue(info.getServiceClasses().isEmpty());
-            info.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
-            info.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
+            assertTrue(properties.getServiceClasses().isEmpty());
+            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
+            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
 
-            assertTrue(info.getVariables().isEmpty());
-            info.getVariables().put("var100", "String");
-            info.getVariables().put("var200", "Integer");
+            assertTrue(properties.getVariables().isEmpty());
+            properties.getVariables().put("var100", "String");
+            properties.getVariables().put("var200", "Integer");
 
-            info.save();
+            properties.save();
             POIServices.getInstance().saveFile(document, tempFileURI);
         }
 
         try (final XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
-            final TemplateInfo info = new TemplateInfo(document);
+            final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(2, info.getPackagesURIs().size());
             assertEquals("http://www.eclipse.org/meta100", info.getPackagesURIs().get(0));
@@ -164,26 +164,26 @@ public class TemplateInfoTest {
         tempFile.deleteOnExit();
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
-            assertEquals(2, info.getPackagesURIs().size());
-            info.getPackagesURIs().clear();
+            assertEquals(2, properties.getPackagesURIs().size());
+            properties.getPackagesURIs().clear();
 
-            assertEquals(2, info.getServiceTokens().size());
-            info.getServiceTokens().clear();
+            assertEquals(2, properties.getServiceTokens().size());
+            properties.getServiceTokens().clear();
 
-            assertEquals(2, info.getServiceClasses().size());
-            info.getServiceClasses().clear();
+            assertEquals(2, properties.getServiceClasses().size());
+            properties.getServiceClasses().clear();
 
-            assertEquals(2, info.getVariables().size());
-            info.getVariables().clear();
+            assertEquals(2, properties.getVariables().size());
+            properties.getVariables().clear();
 
-            info.save();
+            properties.save();
             POIServices.getInstance().saveFile(document, tempFileURI);
         }
 
         try (final XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
-            final TemplateInfo info = new TemplateInfo(document);
+            final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(0, info.getPackagesURIs().size());
 
@@ -202,30 +202,30 @@ public class TemplateInfoTest {
         tempFile.deleteOnExit();
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
-            final TemplateInfo info = new TemplateInfo(document);
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
-            assertEquals(2, info.getPackagesURIs().size());
-            info.getPackagesURIs().add("http://www.eclipse.org/meta100");
-            info.getPackagesURIs().add("http://www.eclipse.org/meta200");
+            assertEquals(2, properties.getPackagesURIs().size());
+            properties.getPackagesURIs().add("http://www.eclipse.org/meta100");
+            properties.getPackagesURIs().add("http://www.eclipse.org/meta200");
 
-            assertEquals(2, info.getServiceTokens().size());
-            info.getServiceTokens().add("token100");
-            info.getServiceTokens().add("token200");
+            assertEquals(2, properties.getServiceTokens().size());
+            properties.getServiceTokens().add("token100");
+            properties.getServiceTokens().add("token200");
 
-            assertEquals(2, info.getServiceClasses().size());
-            info.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
-            info.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
+            assertEquals(2, properties.getServiceClasses().size());
+            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
+            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
 
-            assertEquals(2, info.getVariables().size());
-            info.getVariables().put("var100", "String");
-            info.getVariables().put("var200", "Integer");
+            assertEquals(2, properties.getVariables().size());
+            properties.getVariables().put("var100", "String");
+            properties.getVariables().put("var200", "Integer");
 
-            info.save();
+            properties.save();
             POIServices.getInstance().saveFile(document, tempFileURI);
         }
 
         try (final XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
-            final TemplateInfo info = new TemplateInfo(document);
+            final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(4, info.getPackagesURIs().size());
             assertEquals("http://www.eclipse.org/meta1", info.getPackagesURIs().get(0));
@@ -255,19 +255,19 @@ public class TemplateInfoTest {
 
     @Test
     public void testIsValidVariableName() {
-        assertTrue(TemplateInfo.isValidVariableName("v"));
-        assertTrue(TemplateInfo.isValidVariableName("_valid"));
-        assertTrue(TemplateInfo.isValidVariableName("valid_"));
-        assertTrue(TemplateInfo.isValidVariableName("valid_123"));
-        assertTrue(TemplateInfo.isValidVariableName("_VALID_1354"));
+        assertTrue(TemplateCustomProperties.isValidVariableName("v"));
+        assertTrue(TemplateCustomProperties.isValidVariableName("_valid"));
+        assertTrue(TemplateCustomProperties.isValidVariableName("valid_"));
+        assertTrue(TemplateCustomProperties.isValidVariableName("valid_123"));
+        assertTrue(TemplateCustomProperties.isValidVariableName("_VALID_1354"));
 
-        assertFalse(TemplateInfo.isValidVariableName(null));
-        assertFalse(TemplateInfo.isValidVariableName(""));
-        assertFalse(TemplateInfo.isValidVariableName("not valid"));
-        assertFalse(TemplateInfo.isValidVariableName("é"));
-        assertFalse(TemplateInfo.isValidVariableName("3invalid"));
-        assertFalse(TemplateInfo.isValidVariableName("-inv"));
-        assertFalse(TemplateInfo.isValidVariableName("not-valid"));
-        assertFalse(TemplateInfo.isValidVariableName("dfg$fsd"));
+        assertFalse(TemplateCustomProperties.isValidVariableName(null));
+        assertFalse(TemplateCustomProperties.isValidVariableName(""));
+        assertFalse(TemplateCustomProperties.isValidVariableName("not valid"));
+        assertFalse(TemplateCustomProperties.isValidVariableName("é"));
+        assertFalse(TemplateCustomProperties.isValidVariableName("3invalid"));
+        assertFalse(TemplateCustomProperties.isValidVariableName("-inv"));
+        assertFalse(TemplateCustomProperties.isValidVariableName("not-valid"));
+        assertFalse(TemplateCustomProperties.isValidVariableName("dfg$fsd"));
     }
 }

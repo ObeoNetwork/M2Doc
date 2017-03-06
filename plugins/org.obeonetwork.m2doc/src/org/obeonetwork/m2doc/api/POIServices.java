@@ -20,7 +20,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 /**
  * POI services.
@@ -99,11 +99,11 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
-    public TemplateInfo getTemplateInformations(URI templateFile) throws IOException {
-        final TemplateInfo res;
+    public TemplateCustomProperties getTemplateInformations(URI templateFile) throws IOException {
+        final TemplateCustomProperties res;
 
         try (XWPFDocument document = getXWPFDocument(templateFile);) {
-            res = new TemplateInfo(document);
+            res = new TemplateCustomProperties(document);
         }
         return res;
     }

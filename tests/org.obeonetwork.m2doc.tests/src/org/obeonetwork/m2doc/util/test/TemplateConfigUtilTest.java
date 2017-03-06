@@ -22,7 +22,7 @@ import org.apache.poi.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.tplconf.EPackageMapping;
 import org.obeonetwork.m2doc.tplconf.ScalarType;
 import org.obeonetwork.m2doc.tplconf.StructuredType;
@@ -56,7 +56,7 @@ public class TemplateConfigUtilTest {
 
     @Test
     public void testLoad() {
-        TemplateInfo info = new TemplateInfo(new XWPFDocument()) {
+        TemplateCustomProperties properties = new TemplateCustomProperties(new XWPFDocument()) {
             @Override
             public List<String> getPackagesURIs() {
                 return Arrays.asList(EcorePackage.eNS_URI);
@@ -67,7 +67,7 @@ public class TemplateConfigUtilTest {
                 return ImmutableMap.of("v1", "String", "v2", "ecore::EPackage");
             }
         };
-        TemplateConfig config = TemplateConfigUtil.load(info);
+        TemplateConfig config = TemplateConfigUtil.load(properties);
 
         assertEquals(1, config.getMappings().size());
         EPackageMapping mappingEcore = config.getMappings().get(0);
@@ -98,7 +98,7 @@ public class TemplateConfigUtilTest {
 
     @Test
     public void testLoadWithUnknownVariableType() {
-        TemplateInfo info = new TemplateInfo(new XWPFDocument()) {
+        TemplateCustomProperties properties = new TemplateCustomProperties(new XWPFDocument()) {
             @Override
             public List<String> getPackagesURIs() {
                 return Arrays.asList(EcorePackage.eNS_URI);
@@ -109,7 +109,7 @@ public class TemplateConfigUtilTest {
                 return ImmutableMap.of("v1", "String", "v2", "test::SomeClass");
             }
         };
-        TemplateConfig config = TemplateConfigUtil.load(info);
+        TemplateConfig config = TemplateConfigUtil.load(properties);
 
         assertEquals(1, config.getMappings().size());
         EPackageMapping mappingEcore = config.getMappings().get(0);
@@ -140,7 +140,7 @@ public class TemplateConfigUtilTest {
 
     @Test
     public void testLoadWithUnknownUri() {
-        TemplateInfo info = new TemplateInfo(new XWPFDocument()) {
+        TemplateCustomProperties properties = new TemplateCustomProperties(new XWPFDocument()) {
             @Override
             public List<String> getPackagesURIs() {
                 return Arrays.asList("http://www.test.com/some/test/uri");
@@ -151,7 +151,7 @@ public class TemplateConfigUtilTest {
                 return ImmutableMap.of("v1", "String", "v2", "test::EPackage");
             }
         };
-        TemplateConfig config = TemplateConfigUtil.load(info);
+        TemplateConfig config = TemplateConfigUtil.load(properties);
 
         assertEquals(1, config.getMappings().size());
 
@@ -186,7 +186,7 @@ public class TemplateConfigUtilTest {
      */
     @Test
     public void testLoadVariableWithUndeclaredButRegisteredUri() {
-        TemplateInfo info = new TemplateInfo(new XWPFDocument()) {
+        TemplateCustomProperties properties = new TemplateCustomProperties(new XWPFDocument()) {
             @Override
             public List<String> getPackagesURIs() {
                 return Collections.emptyList();
@@ -197,7 +197,7 @@ public class TemplateConfigUtilTest {
                 return ImmutableMap.of("v1", "String", "v2", "ecore::EPackage");
             }
         };
-        TemplateConfig config = TemplateConfigUtil.load(info);
+        TemplateConfig config = TemplateConfigUtil.load(properties);
 
         assertEquals(1, config.getMappings().size());
         EPackageMapping mappingEcore = config.getMappings().get(0);

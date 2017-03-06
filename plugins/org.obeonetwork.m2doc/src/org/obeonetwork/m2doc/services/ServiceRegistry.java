@@ -17,6 +17,7 @@ import com.google.common.collect.Maps;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * {@link ServiceRegistry} is used to register AQL services. When launching a
@@ -39,7 +40,7 @@ public final class ServiceRegistry {
     /**
      * The central map holding the services.
      */
-    private Map<String, List<Class<?>>> registry = Maps.newHashMap();
+    private Map<String, List<Class<?>>> registry = Maps.newLinkedHashMap();
 
     /**
      * Private constructor to prevent creation of other instances.
@@ -108,4 +109,14 @@ public final class ServiceRegistry {
     public void clear() {
         this.registry.clear();
     }
+
+    /**
+     * Gets the {@link Set} of {@link ServiceRegistry#registerServicePackage(Class, String) registered} service tokens.
+     * 
+     * @return the {@link Set} of {@link ServiceRegistry#registerServicePackage(Class, String) registered} service tokens
+     */
+    public Set<String> getRegisteredTokens() {
+        return registry.keySet();
+    }
+
 }

@@ -34,7 +34,7 @@ import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -217,11 +217,11 @@ public class GenconfToDocumentGenerator {
      */
     public Resource createConfigurationModel(URI templateFile) throws IOException {
         Resource resource = null;
-        TemplateInfo templateInfo = POIServices.getInstance().getTemplateInformations(templateFile);
+        TemplateCustomProperties templateProperties = POIServices.getInstance().getTemplateInformations(templateFile);
 
         // create genconf model
-        if (templateInfo != null) {
-            resource = createConfigurationModel(templateInfo, templateFile);
+        if (templateProperties != null) {
+            resource = createConfigurationModel(templateProperties, templateFile);
         }
         return resource;
     }
@@ -229,15 +229,15 @@ public class GenconfToDocumentGenerator {
     /**
      * Create genconf model from templateInfo information.
      * 
-     * @param templateInfo
+     * @param templateProperties
      *            TemplateInfo
      * @param templateURI
      *            File
      * @return configuration model
      */
-    public Resource createConfigurationModel(TemplateInfo templateInfo, final URI templateURI) {
+    public Resource createConfigurationModel(TemplateCustomProperties templateProperties, final URI templateURI) {
         // pre model creation: by default nothing.
-        preCreateConfigurationModel(templateInfo, templateURI);
+        preCreateConfigurationModel(templateProperties, templateURI);
 
         // create genconf resource.
         URI genConfURI = templateURI.trimFileExtension()
@@ -248,7 +248,7 @@ public class GenconfToDocumentGenerator {
         Generation rootObject = configurationServices.createInitialModel(genConfURI.trimFileExtension().lastSegment(),
                 templateURI.deresolve(genConfURI).toString());
         // add docx properties
-        TemplateConfigurationServices.getInstance().addProperties(rootObject, templateInfo);
+        TemplateConfigurationServices.getInstance().addProperties(rootObject, templateProperties);
         if (rootObject != null) {
             resource.getContents().add(rootObject);
         }
@@ -261,7 +261,7 @@ public class GenconfToDocumentGenerator {
         }
 
         // post model creation: by default nothing.
-        postCreateConfigurationModel(templateInfo, templateURI, rootObject);
+        postCreateConfigurationModel(templateProperties, templateURI, rootObject);
 
         // Save the contents of the resource to the file system.
         try {
@@ -276,30 +276,30 @@ public class GenconfToDocumentGenerator {
     /**
      * Post configuration model creation.
      * 
-     * @param templateInfo
+     * @param templateProperties
      *            TemplateInfo
      * @param templateFile
      *            File
      * @param generation
      *            Generation
      */
-    public void postCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile, Generation generation) {
+    public void postCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateFile, Generation generation) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            configurationProvider.postCreateConfigurationModel(templateInfo, templateFile, generation);
+            configurationProvider.postCreateConfigurationModel(templateProperties, templateFile, generation);
         }
     }
 
     /**
      * Pre configuration model creation.
      * 
-     * @param templateInfo
+     * @param templateProperties
      *            TemplateInfo
      * @param templateFile
      *            File
      */
-    public void preCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile) {
+    public void preCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateFile) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            configurationProvider.preCreateConfigurationModel(templateInfo, templateFile);
+            configurationProvider.preCreateConfigurationModel(templateProperties, templateFile);
         }
     }
 

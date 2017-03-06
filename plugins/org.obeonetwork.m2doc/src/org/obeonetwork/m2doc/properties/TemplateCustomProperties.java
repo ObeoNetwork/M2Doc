@@ -27,11 +27,11 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
- * Template information grouping the variable and service declaration in templates.
+ * Template properties grouping the variable and service declaration in templates.
  * 
  * @author Romain Guider
  */
-public class TemplateInfo {
+public class TemplateCustomProperties {
 
     /**
      * The list of service tokens declared in the template.
@@ -64,7 +64,7 @@ public class TemplateInfo {
      * @param document
      *            the {@link XWPFDocument}
      */
-    public TemplateInfo(XWPFDocument document) {
+    public TemplateCustomProperties(XWPFDocument document) {
         this.document = document;
         parseProperties(document);
     }

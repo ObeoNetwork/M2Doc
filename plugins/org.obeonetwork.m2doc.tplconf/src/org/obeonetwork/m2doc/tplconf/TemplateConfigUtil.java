@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.util.EcoreValidator;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
@@ -81,29 +81,29 @@ public final class TemplateConfigUtil {
     /**
      * Load a template configuration (metamodel URIs, declared variables) from a given docx template file.
      * 
-     * @param templateFile
+     * @param templateURI
      *            The docx template file, must not be <code>null</code> and must be a valid docx file
      * @return A new instance of {@link TemplateConfig} that contains the metamodel URIs and the declared variables extracted from the given
      *         docx file's custom properties.
      * @throws IOException
      *             If a I/O problem occurs while reading the given docx file.
      */
-    public static TemplateConfig load(URI templateFile) throws IOException {
-        TemplateInfo info = POIServices.getInstance().getTemplateInformations(templateFile);
-        return load(info);
+    public static TemplateConfig load(URI templateURI) throws IOException {
+        TemplateCustomProperties properties = POIServices.getInstance().getTemplateInformations(templateURI);
+        return load(properties);
     }
 
     /**
-     * Load a template configuration from a given {@link TemplateInfo} object.
+     * Load a template configuration from a given {@link TemplateCustomProperties} object.
      * 
-     * @param info
-     *            The template info
+     * @param properties
+     *            The {@link TemplateCustomProperties}
      * @return A new instance of {@link TemplateConfig} that contains the relevant information.
      */
-    public static TemplateConfig load(TemplateInfo info) {
+    public static TemplateConfig load(TemplateCustomProperties properties) {
         TemplateConfig config = TplconfFactory.eINSTANCE.createTemplateConfig();
         createSupportedScalarTypes(config);
-        for (String uri : info.getPackagesURIs()) {
+        for (String uri : properties.getPackagesURIs()) {
             EPackageMapping mm = TplconfFactory.eINSTANCE.createEPackageMapping();
             mm.setUri(uri);
             EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(uri);
@@ -113,7 +113,7 @@ public final class TemplateConfigUtil {
             }
             config.getMappings().add(mm);
         }
-        for (Map.Entry<String, String> entry : info.getVariables().entrySet()) {
+        for (Map.Entry<String, String> entry : properties.getVariables().entrySet()) {
             TemplateVariable var = TplconfFactory.eINSTANCE.createTemplateVariable();
             var.setName(entry.getKey());
             String typeName = entry.getValue();

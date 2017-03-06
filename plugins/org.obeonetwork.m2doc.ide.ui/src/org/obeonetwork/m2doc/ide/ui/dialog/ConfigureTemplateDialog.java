@@ -67,7 +67,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.obeonetwork.m2doc.genconf.emf.ui.celleditor.URIDialogCellEditor;
 import org.obeonetwork.m2doc.ide.ui.Activator;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.tplconf.EPackageMapping;
 import org.obeonetwork.m2doc.tplconf.StructuredType;
 import org.obeonetwork.m2doc.tplconf.TemplateConfig;
@@ -458,7 +458,7 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
                     public String isValid(Object value) {
                         if (value instanceof String) {
                             String s = (String) value;
-                            if (TemplateInfo.isValidVariableName(s)) {
+                            if (TemplateCustomProperties.isValidVariableName(s)) {
                                 return null;
                             }
                             return "Variable name is not valid.";
@@ -654,7 +654,7 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
     protected void validate() {
         boolean valid = true;
         for (TemplateVariable var : config.getVariables()) {
-            if (!TemplateInfo.isValidVariableName(var.getName())
+            if (!TemplateCustomProperties.isValidVariableName(var.getName())
                 || !TemplateConfigUtil.isValidTypeName(var.getTypeName())) {
                 valid = false;
             }

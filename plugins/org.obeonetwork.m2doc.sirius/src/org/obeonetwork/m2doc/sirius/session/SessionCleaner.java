@@ -6,7 +6,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
@@ -18,34 +18,34 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 public class SessionCleaner implements IConfigurationProvider {
 
     @Override
-    public void postCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile, Generation generation) {
+    public void postCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateURI, Generation generation) {
         // unused.
 
     }
 
     @Override
-    public void preCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile) {
+    public void preCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateURI) {
         // unused.
     }
 
     @Override
-    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
+    public boolean postValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation) {
         // unused.
         return false;
     }
 
     @Override
-    public void preValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
+    public void preValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation) {
         // unused.
     }
 
     @Override
-    public void preGenerate(Generation generation, URI templateFile, URI generatedFile) {
+    public void preGenerate(Generation generation, URI templateURI, URI generatedURI) {
         // unused.
     }
 
     @Override
-    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile,
+    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI,
             DocumentTemplate template) {
         CleaningJobRegistry.INSTANCE.clean(generation);
         return Collections.emptyList();

@@ -15,14 +15,16 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.properties.TemplateInfo;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
  * Provider for pre and post configuration operations.
- * - configuration model creation
- * - template validation
- * - template generation
+ * <ul>
+ * <li>configuration model creation</li>
+ * <li>template validation</li>
+ * <li>template generation</li>
+ * </ul>
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
@@ -31,75 +33,76 @@ public interface IConfigurationProvider {
     /**
      * Post operation after configuration model creation.
      * 
-     * @param templateInfo
-     *            TemplateInfo
-     * @param templateFile
-     *            IFile
+     * @param templateProperties
+     *            the {@link TemplateCustomProperties}
+     * @param templateURI
+     *            the {@link URI}
      * @param generation
-     *            Generation
+     *            the {@link Generation}
      */
-    void postCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile, Generation generation);
+    void postCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateURI,
+            Generation generation);
 
     /**
      * Pre operation before configuration model creation.
      * 
-     * @param templateInfo
-     *            TemplateInfo
-     * @param templateFile
-     *            IFile
+     * @param templateProperties
+     *            the {@link TemplateCustomProperties}
+     * @param templateURI
+     *            the template {@link URI}
      */
-    void preCreateConfigurationModel(TemplateInfo templateInfo, URI templateFile);
+    void preCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateURI);
 
     /**
      * Post operation after template validation.
      * 
-     * @param templateFile
-     *            IFile
+     * @param templateURI
+     *            the template {@link URI}
      * @param template
-     *            DocumentTemplate
+     *            the {@link DocumentTemplate}
      * @param generation
-     *            Generation
+     *            the {@link Generation}
      * @return validation result, must return true by default.
      */
-    boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation);
+    boolean postValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation);
 
     /**
      * Pre operation before template validation.
      * 
-     * @param templateFile
-     *            IFile
+     * @param templateURI
+     *            the template {@link URI}
      * @param template
-     *            DocumentTemplate
+     *            the {@link DocumentTemplate}
      * @param generation
-     *            Generation
+     *            the {@link Generation}
      */
-    void preValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation);
+    void preValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation);
 
     /**
      * Pre operation before generation.
      * 
      * @param generation
-     *            Generation
-     * @param templateFile
-     *            IFile
-     * @param generatedFile
-     *            IFile
+     *            the {@link Generation}
+     * @param templateURI
+     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated {@link URI}
      */
-    void preGenerate(Generation generation, URI templateFile, URI generatedFile);
+    void preGenerate(Generation generation, URI templateURI, URI generatedURI);
 
     /**
      * Post operation after generation.
      * 
      * @param generation
-     *            Generation
-     * @param templateFile
-     *            IFile
-     * @param generatedFile
-     *            IFile
+     *            the {@link Generation}
+     * @param templateURI
+     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated {@link URI}
      * @param template
-     *            DocumentTemplate
+     *            the {@link DocumentTemplate}
      * @return URI list to return after the generation. Generation result and validation log are already in there.
      */
-    List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template);
+    List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate template);
 
 }
