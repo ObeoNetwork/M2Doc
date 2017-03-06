@@ -20,9 +20,9 @@ import com.google.common.io.CharStreams;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -44,7 +44,9 @@ import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -171,21 +173,21 @@ public final class M2DocTestUtils {
     /**
      * Asserts that the given expected .docx and given actual .docx are the same.
      * 
-     * @param expectedPath
-     *            the expected .docx path
-     * @param actualPath
-     *            the actual .docx path
+     * @param expectedURI
+     *            the expected .docx {@link URI}
+     * @param actualURI
+     *            the actual .docx path {@link URI}
      * @throws FileNotFoundException
      *             if .docx files can't be found
      * @throws IOException
      *             if .docx files can't be read
      */
-    public static void assertDocx(String expectedPath, String actualPath) throws FileNotFoundException, IOException {
-        final String expectedTextContent = getPortableString(getTextContent(expectedPath));
-        final String actualTextContent = getPortableString(getTextContent(actualPath));
+    public static void assertDocx(URI expectedURI, URI actualURI) throws FileNotFoundException, IOException {
+        final String expectedTextContent = getPortableString(getTextContent(expectedURI));
+        final String actualTextContent = getPortableString(getTextContent(actualURI));
         assertEquals(expectedTextContent, actualTextContent);
 
-        assertArchiveContent(expectedPath, actualPath);
+        assertArchiveContent(expectedURI, actualURI);
     }
 
     /**
@@ -207,16 +209,16 @@ public final class M2DocTestUtils {
     }
 
     /**
-     * Gets the textual element of the .docx at the given path.
+     * Gets the textual element of the .docx at the given {@link URI}.
      * 
-     * @param path
-     *            the .docx path
-     * @return the textual element of the .docx at the given path
+     * @param uri
+     *            the .docx {@link URI}
+     * @return the textual element of the .docx at the given {@link URI}
      */
-    public static String getTextContent(String path) {
+    public static String getTextContent(URI uri) {
         String result = "";
 
-        try (FileInputStream is = new FileInputStream(path);
+        try (InputStream is = URIConverter.INSTANCE.createInputStream(uri);
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
                 XWPFWordExtractor ex = new XWPFWordExtractor(document);) {
@@ -236,21 +238,20 @@ public final class M2DocTestUtils {
     /**
      * Asserts the archive content of expected and actual .docx.
      * 
-     * @param expectedPath
-     *            the expected path
-     * @param actualPath
-     *            the actual path
+     * @param expectedURI
+     *            the expected {@link URI}
+     * @param actualURI
+     *            the actual {@link URI}
      * @throws IOException
      *             if .docx can't be read
      * @throws FileNotFoundException
      *             if .docx can't be found
      */
-    public static void assertArchiveContent(String expectedPath, String actualPath)
-            throws IOException, FileNotFoundException {
+    public static void assertArchiveContent(URI expectedURI, URI actualURI) throws IOException, FileNotFoundException {
 
-        try (FileInputStream expectedIs = new FileInputStream(expectedPath);
+        try (InputStream expectedIs = URIConverter.INSTANCE.createInputStream(expectedURI);
                 ZipInputStream expectedZin = new ZipInputStream(new BufferedInputStream(expectedIs));
-                FileInputStream actualIs = new FileInputStream(actualPath);
+                InputStream actualIs = URIConverter.INSTANCE.createInputStream(actualURI);
                 ZipInputStream actualZin = new ZipInputStream(new BufferedInputStream(actualIs))) {
 
             ZipEntry expectedEntry;
@@ -262,13 +263,13 @@ public final class M2DocTestUtils {
                     final String actualXMLContent = getXMLContent(actualZin, actualEntry);
                     assertEquals(expectedXMLContent, actualXMLContent);
                 } else if (expectedEntry.getName().endsWith(".jpeg") || expectedEntry.getName().endsWith(".jpg")) {
-                    final File imageDiff = getDiffImageFile(expectedPath, expectedEntry);
+                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), expectedEntry);
                     ImageTestUtils.assertJPG(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
                 } else if (expectedEntry.getName().endsWith(".gif")) {
-                    final File imageDiff = getDiffImageFile(expectedPath, expectedEntry);
+                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), expectedEntry);
                     ImageTestUtils.assertGIF(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
                 } else if (expectedEntry.getName().endsWith(".png")) {
-                    final File imageDiff = getDiffImageFile(expectedPath, expectedEntry);
+                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), expectedEntry);
                     ImageTestUtils.assertPNG(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
                 } else {
                     final String expectedHash = getZipEntryHash(expectedZin, expectedEntry);
