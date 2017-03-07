@@ -30,10 +30,9 @@ import java.util.Map.Entry;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.AfterClass;
@@ -88,6 +87,11 @@ public abstract class AbstractTemplatesTestSuite {
     private static final String USER_CONTENT_TAG = "-userContent";
 
     /**
+     * The {@link URIHandler} that check we don't have adherence to {@link File}.
+     */
+    private static MemoryURIHandler uriHandler = new MemoryURIHandler();
+
+    /**
      * The {@link DocumentTemplate}.
      */
     private static DocumentTemplate documentTemplate;
@@ -128,8 +132,6 @@ public abstract class AbstractTemplatesTestSuite {
      *             if the tested template can't be parsed
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
-        EPackage.Registry.INSTANCE.put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
-        URIConverter.INSTANCE.getURIHandlers().add(0, new MemoryURIHandler());
         this.testFolderPath = testFolder;
         final URI genconfURI = getGenconfURI(new File(testFolderPath));
         if (URIConverter.INSTANCE.exists(genconfURI, Collections.EMPTY_MAP)) {
@@ -167,6 +169,8 @@ public abstract class AbstractTemplatesTestSuite {
     public static void beforeClass() {
         ProviderRegistry.INSTANCE.clear();
         ProviderRegistry.INSTANCE.registerProvider(new TestDiagramProvider());
+        URIConverter.INSTANCE.getURIHandlers().add(0, uriHandler);
+        uriHandler.clear();
     }
 
     /**
@@ -179,6 +183,7 @@ public abstract class AbstractTemplatesTestSuite {
     public static void afterClass() throws IOException {
         documentTemplate.close();
         ProviderRegistry.INSTANCE.clear();
+        URIConverter.INSTANCE.getURIHandlers().remove(uriHandler);
     }
 
     /**

@@ -44,6 +44,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      */
     @BeforeClass
     public static void beforeClass() {
+        org.obeonetwork.m2doc.test.AbstractTemplatesTestSuite.beforeClass();
         ProviderRegistry.INSTANCE.registerProvider(PROVIDER);
     }
 
@@ -51,7 +52,8 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      * 
      */
     @AfterClass
-    public static void afterClass() {
+    public static void afterClass() throws IOException {
+        org.obeonetwork.m2doc.test.AbstractTemplatesTestSuite.afterClass();
         ProviderRegistry.INSTANCE.removeProvider(PROVIDER);
     }
 

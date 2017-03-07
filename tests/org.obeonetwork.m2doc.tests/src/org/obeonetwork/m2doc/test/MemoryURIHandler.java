@@ -35,6 +35,13 @@ public class MemoryURIHandler implements URIHandler {
      */
     private final Map<URI, ByteArrayOutputStream> resources = new HashMap<URI, ByteArrayOutputStream>();
 
+    /**
+     * Clears the memory.
+     */
+    public void clear() {
+        resources.clear();
+    }
+
     @Override
     public boolean canHandle(URI uri) {
         return "m2doctests".equals(uri.scheme());
