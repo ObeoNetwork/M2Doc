@@ -98,13 +98,11 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     }
 
     @Override
-    protected Generation getGeneration(File genconfFile, ResourceSet rs) {
+    protected Generation getGeneration(URI genconfURI, ResourceSet rs) {
         final Generation res;
 
         if (session != null) {
-            session.addSemanticResource(
-                    URI.createFileURI(getGenconfFile(new File(getTestFolderPath())).getAbsolutePath()),
-                    new NullProgressMonitor());
+            session.addSemanticResource(getGenconfURI(new File(getTestFolderPath())), new NullProgressMonitor());
             Generation foundGeneration = null;
             for (Resource r : session.getSemanticResources()) {
                 if (r.getURI().toString().endsWith(".genconf")) {
@@ -114,10 +112,10 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
             if (foundGeneration != null) {
                 res = foundGeneration;
             } else {
-                res = super.getGeneration(genconfFile, rs);
+                res = super.getGeneration(genconfURI, rs);
             }
         } else {
-            res = super.getGeneration(genconfFile, rs);
+            res = super.getGeneration(genconfURI, rs);
         }
 
         return res;

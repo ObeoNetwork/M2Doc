@@ -265,6 +265,8 @@ public abstract class AbstractTemplatesTestSuite {
             tempURI = getActualValidatedURI(new File(testFolderPath));
             if (validationLevel != ValidationMessageLevel.OK) {
                 M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, tempURI);
+            } else {
+                touch(tempURI);
             }
             fail(expectedValidationURI + DOESN_T_EXISTS);
         }
@@ -325,6 +327,10 @@ public abstract class AbstractTemplatesTestSuite {
             final URI actualLostURI = entry.getValue();
             final URI expectedLostURI = URI
                     .createURI(expectedGeneratedURI.toString() + "-" + entry.getKey() + LOST_DOCX);
+            if (!URIConverter.INSTANCE.exists(expectedLostURI, Collections.emptyMap())) {
+                copy(actualLostURI, URI.createURI(expectedLostURI.toString().replace("-expected-", "-actual-")));
+                fail(expectedLostURI + DOESN_T_EXISTS);
+            }
             M2DocTestUtils.assertDocx(expectedLostURI, actualLostURI);
             expectedLostFiles.remove(expectedLostURI);
         }
@@ -610,6 +616,20 @@ public abstract class AbstractTemplatesTestSuite {
             throws UnsupportedEncodingException, IOException {
         stream.write(content.getBytes(charsetName));
         stream.flush();
+    }
+
+    /**
+     * Creates an empty content at the given {@link URI}.
+     * 
+     * @param uri
+     *            the {@link URI}
+     * @throws IOException
+     *             if the content can't be written
+     */
+    private void touch(URI uri) throws IOException {
+        try (OutputStream dest = URIConverter.INSTANCE.createOutputStream(uri);) {
+            dest.write(new byte[] {});
+        }
     }
 
     /**
