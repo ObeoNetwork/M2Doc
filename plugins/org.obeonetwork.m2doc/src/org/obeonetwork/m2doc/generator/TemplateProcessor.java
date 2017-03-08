@@ -944,8 +944,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
                         int width = Units.toEMU(representation.getWidth());
 
                         try (InputStream fileInputStream = URIConverter.INSTANCE.createInputStream(imageURI)) {
-                            imageRun.addPicture(fileInputStream, getPictureType(imageURI), imagePathStr, width,
-                                    height);
+                            imageRun.addPicture(fileInputStream, getPictureType(imageURI), imagePathStr, width, height);
                         }
                     } catch (InvalidFormatException e) {
                         insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,

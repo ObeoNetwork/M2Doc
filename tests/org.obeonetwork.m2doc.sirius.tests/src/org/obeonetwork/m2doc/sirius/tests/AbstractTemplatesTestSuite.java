@@ -2,11 +2,13 @@ package org.obeonetwork.m2doc.sirius.tests;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -72,10 +74,9 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     private Session initSession() {
         final Session res;
 
-        final File sessionFile = getSessionFile(new File(getTestFolderPath()));
-        if (sessionFile.exists()) {
-            final Session s = SessionManager.INSTANCE.getSession(URI.createFileURI(sessionFile.getAbsolutePath()),
-                    new NullProgressMonitor());
+        final URI sessionURI = getSessionURI(new File(getTestFolderPath()));
+        if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
+            final Session s = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
             s.open(new NullProgressMonitor());
             res = s;
         } else {
@@ -100,11 +101,18 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     }
 
     @Override
-    protected Generation getGeneration(URI genconfURI, ResourceSet rs) {
+    protected Generation getGeneration(final URI genconfURI, ResourceSet rs) {
         final Generation res;
 
         if (session != null) {
-            session.addSemanticResource(getGenconfURI(new File(getTestFolderPath())), new NullProgressMonitor());
+            session.getTransactionalEditingDomain().getCommandStack()
+                    .execute(new RecordingCommand(session.getTransactionalEditingDomain()) {
+
+                        @Override
+                        protected void doExecute() {
+                            session.addSemanticResource(genconfURI, new NullProgressMonitor());
+                        }
+                    });
             Generation foundGeneration = null;
             for (Resource r : session.getSemanticResources()) {
                 if (r.getURI().toString().endsWith(".genconf")) {
@@ -124,14 +132,14 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     }
 
     /**
-     * Gets the session file from the test folder path.
+     * Gets the session {@link URI} from the test folder path.
      * 
      * @param testFolder
      *            the test folder path
-     * @return the session file from the test folder path
+     * @return the session {@link URI} from the test folder path
      */
-    protected File getSessionFile(File testFolder) {
-        return new File(testFolder + File.separator + testFolder.getName() + ".aird");
+    protected URI getSessionURI(File testFolder) {
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + ".aird");
     }
 
 }

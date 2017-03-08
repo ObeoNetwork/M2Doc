@@ -110,7 +110,7 @@ public class TemplateCustomPropertiesTest {
     @Test
     public void addProperties() throws IOException {
         final File tempFile = File.createTempFile("properties", "-add.docx");
-        final URI tempFileURI = URI.createFileURI(tempFile.getAbsolutePath());
+        final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/noProperties.docx"));) {
@@ -160,7 +160,7 @@ public class TemplateCustomPropertiesTest {
     @Test
     public void deleteProperties() throws IOException {
         final File tempFile = File.createTempFile("properties", "-add.docx");
-        final URI tempFileURI = URI.createFileURI(tempFile.getAbsolutePath());
+        final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
@@ -198,7 +198,7 @@ public class TemplateCustomPropertiesTest {
     @Test
     public void updateProperties() throws IOException {
         final File tempFile = File.createTempFile("properties", "-add.docx");
-        final URI tempFileURI = URI.createFileURI(tempFile.getAbsolutePath());
+        final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
         try (final XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {

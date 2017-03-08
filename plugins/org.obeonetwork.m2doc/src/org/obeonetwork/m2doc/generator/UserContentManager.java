@@ -125,7 +125,7 @@ public class UserContentManager {
                 .newEnvironmentWithDefaultServices(null);
 
         try (DocumentTemplate userDocDocument = M2DocUtils
-                .parseUserContent(URI.createFileURI(generatedFileCopy.getAbsolutePath()), queryEnvironment);) {
+                .parseUserContent(URI.createURI(generatedFileCopy.toURI().toString()), queryEnvironment);) {
             final TreeIterator<EObject> iter = userDocDocument.eAllContents();
             while (iter.hasNext()) {
                 EObject eObject = iter.next();

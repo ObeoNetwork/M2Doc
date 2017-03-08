@@ -132,7 +132,7 @@ public abstract class AbstractTemplatesTestSuite {
      *             if the tested template can't be parsed
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
-        this.testFolderPath = testFolder;
+        this.testFolderPath = testFolder.replaceAll("\\\\", "/");
         final URI genconfURI = getGenconfURI(new File(testFolderPath));
         if (URIConverter.INSTANCE.exists(genconfURI, Collections.EMPTY_MAP)) {
             final ResourceSet rs = getResourceSet();
@@ -243,7 +243,7 @@ public abstract class AbstractTemplatesTestSuite {
         }
         try (final InputStream stream = URIConverter.INSTANCE.createInputStream(expectedASTURI)) {
             final String expectedAst = getContent(stream, "UTF-8");
-            assertEquals(expectedAst, actualAst);
+            assertEquals(expectedAst.replaceAll("\r\n", "\n"), actualAst.replaceAll("\r\n", "\n"));
         }
     }
 
@@ -391,7 +391,7 @@ public abstract class AbstractTemplatesTestSuite {
         Arrays.sort(children);
 
         for (File file : children) {
-            result.add(URI.createFileURI(file.getAbsolutePath()));
+            result.add(URI.createURI(file.toURI().toString()));
         }
 
         return result;
@@ -405,7 +405,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the template file from the test folder path
      */
     protected final URI getTemplateURI(File testFolder) {
-        return URI.createFileURI(getTemplateFileInternal(testFolder).getAbsolutePath());
+        return URI.createURI(getTemplateFileInternal(testFolder).toURI().toString());
     }
 
     /**
@@ -416,8 +416,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the template file from the test folder path
      */
     protected URI getExpectedASTURI(File testFolder) {
-        return URI.createFileURI(
-                testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-expected-ast.txt");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-ast.txt");
     }
 
     /**
@@ -428,8 +427,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the actual file from the test folder path
      */
     protected URI getActualASTURI(File testFolder) {
-        return URI.createFileURI(
-                testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-actual-ast.txt");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-ast.txt");
     }
 
     /**
@@ -440,8 +438,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the expected template file from the test folder path
      */
     protected URI getExpectedValidatedURI(File testFolder) {
-        return URI.createFileURI(
-                testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-expected-validation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-validation.docx");
     }
 
     /**
@@ -452,8 +449,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the actual template file from the test folder path
      */
     protected URI getActualValidatedURI(File testFolder) {
-        return URI.createFileURI(
-                testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-actual-validation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-validation.docx");
     }
 
     /**
@@ -464,8 +460,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the expected template file from the test folder path
      */
     protected URI getExpectedGeneratedURI(File testFolder) {
-        return URI.createFileURI(
-                testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-expected-generation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-generation.docx");
     }
 
     /**
@@ -476,8 +471,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the actual generated file from the test folder path
      */
     protected URI getActualGeneratedURI(File testFolder) {
-        return URI.createFileURI(
-                testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-actual-generation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-generation.docx");
     }
 
     /**
@@ -488,8 +482,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the user content file from the test folder path
      */
     protected URI getUserContentURI(File testFolder) {
-        return URI.createFileURI(
-                testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-userContent.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-userContent.docx");
     }
 
     /**
@@ -513,7 +506,7 @@ public abstract class AbstractTemplatesTestSuite {
         });
         Arrays.sort(children);
         for (File child : children) {
-            result.add(URI.createFileURI(child.getAbsolutePath()));
+            result.add(URI.createURI(child.toURI().toString()));
         }
 
         return result;
@@ -527,7 +520,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the genconf file from the test folder path
      */
     protected URI getGenconfURI(File testFolder) {
-        return URI.createFileURI(testFolder.getAbsolutePath() + File.separator + testFolder.getName() + ".genconf");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + ".genconf");
     }
 
     /**
