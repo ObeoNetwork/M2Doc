@@ -1,0 +1,39 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  Basic if demonstration :
+  table
+    row
+      template null
+        
+      template null
+        
+      template null
+        
+      
+    row
+      template null
+        
+      template null
+        
+        if false then
+          The THEN paragraph.
+        endif
+        
+        
+      template null
+        
+      
+    row
+      template null
+        
+      template null
+        
+      template null
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===

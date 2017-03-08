@@ -213,13 +213,16 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         @Override
         public Void caseSequenceInExtensionLiteral(SequenceInExtensionLiteral sequenceInExtensionLiteral) {
             builder.append("Sequence{");
-            final StringBuilder previousBuilder = builder;
-            builder = new StringBuilder();
-            for (Expression value : sequenceInExtensionLiteral.getValues()) {
-                doSwitch(value);
-                builder.append(", ");
+            if (!sequenceInExtensionLiteral.getValues().isEmpty()) {
+                final StringBuilder previousBuilder = builder;
+                builder = new StringBuilder();
+                for (Expression value : sequenceInExtensionLiteral.getValues()) {
+                    doSwitch(value);
+                    builder.append(", ");
+                }
+                previousBuilder.append(builder.substring(0, builder.length() - 2));
+                builder = previousBuilder;
             }
-            previousBuilder.append(builder.substring(0, builder.length() - 2));
             builder.append("}");
             return null;
         }
@@ -233,13 +236,16 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         @Override
         public Void caseSetInExtensionLiteral(SetInExtensionLiteral setInExtensionLiteral) {
             builder.append("OrderedSet{");
-            final StringBuilder previousBuilder = builder;
-            builder = new StringBuilder();
-            for (Expression value : setInExtensionLiteral.getValues()) {
-                doSwitch(value);
-                builder.append(", ");
+            if (!setInExtensionLiteral.getValues().isEmpty()) {
+                final StringBuilder previousBuilder = builder;
+                builder = new StringBuilder();
+                for (Expression value : setInExtensionLiteral.getValues()) {
+                    doSwitch(value);
+                    builder.append(", ");
+                }
+                previousBuilder.append(builder.substring(0, builder.length() - 2));
+                builder = previousBuilder;
             }
-            previousBuilder.append(builder.substring(0, builder.length() - 2));
             builder.append("}");
             return null;
         }

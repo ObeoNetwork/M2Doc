@@ -1,0 +1,38 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  Basic for demonstration :
+  table
+    row
+      template null
+        
+      template null
+        
+      template null
+        
+      
+    row
+      template null
+        
+      template null
+        
+        for v | Sequence{} do
+        endfor
+        
+        
+      template null
+        
+      
+    row
+      template null
+        
+      template null
+        
+      template null
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===

@@ -5,7 +5,7 @@
 template null
   A simple demonstration of a user doc :
   
-  userdoc 'zone1', 'zone2', } do
+  userdoc OrderedSet{'zone1', 'zone2'} do
     
       Some protected text.
   enduserdoc
