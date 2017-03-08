@@ -74,7 +74,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
 
         final File sessionFile = getSessionFile(new File(getTestFolderPath()));
         if (sessionFile.exists()) {
-            final Session s = SessionManager.INSTANCE.getSession(URI.createFileURI(sessionFile.getAbsolutePath()),
+            final Session s = SessionManager.INSTANCE.getSession(URI.createFileURI(sessionFile.toURI().toString()),
                     new NullProgressMonitor());
             s.open(new NullProgressMonitor());
             res = s;

@@ -79,7 +79,7 @@ public class UserContentManager {
     /**
      * Map for id to the {@link List} of .
      */
-    private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<String, List<UserContent>>();
+    private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<>();
 
     /**
      * The input {@link DocumentTemplate}.
@@ -125,7 +125,7 @@ public class UserContentManager {
                 .newEnvironmentWithDefaultServices(null);
 
         try (DocumentTemplate userDocDocument = M2DocUtils
-                .parseUserContent(URI.createFileURI(generatedFileCopy.getAbsolutePath()), queryEnvironment);) {
+                .parseUserContent(URI.createURI(generatedFileCopy.toURI().toString()), queryEnvironment);) {
             final TreeIterator<EObject> iter = userDocDocument.eAllContents();
             while (iter.hasNext()) {
                 EObject eObject = iter.next();
@@ -135,7 +135,7 @@ public class UserContentManager {
                         final String id = userContent.getId();
                         List<UserContent> userContents = mapIdUserContent.get(id);
                         if (userContents == null) {
-                            userContents = new ArrayList<UserContent>();
+                            userContents = new ArrayList<>();
                             mapIdUserContent.put(id, userContents);
                         }
                         userContents.add(userContent);
@@ -231,7 +231,7 @@ public class UserContentManager {
      * @return the {@link List} of duplicated {@link UserContent#getId() user content ID}
      */
     public List<String> getDuplicatedUserContentIDs() {
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
 
         for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
             if (entry.getValue().size() > 1) {
