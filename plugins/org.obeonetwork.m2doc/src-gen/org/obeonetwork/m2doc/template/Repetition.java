@@ -27,7 +27,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='pour chaque valeur v dans le r\351sultat de l\'\351valuation de query, \r\n- un nouveau contexte est cr\351e en ajoutant la d\351finition \'var =v\' au contexte courant\r\n- le r\351sultat du traitement du corps runs est ins\351r\351 dans le document \r\nles balises {m:for} et {m:endfor} sont supprim\351es.\r\nSi la balise {m:for} est imm\351diatement suivie d\'un retour chariot alors l\'ensemble du paragraphe la contenant est supprim\351e du r\351sultat sinon, le paragraphe duquel on a supprim\351 la balise est ins\351r\351 dans le r\351sultat. Le m\352me traitement est appliqu\351 \340 la balise {m:endfor}' syntax='{m:for var | query} body {m:endfor}'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.' syntax='{m:for var | query} body {m:endfor}'"
  * @generated
  */
 public interface Repetition extends Statement {

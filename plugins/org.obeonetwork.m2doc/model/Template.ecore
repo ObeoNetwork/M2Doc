@@ -3,7 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="template" nsURI="http://www.obeonetwork.org/m2doc/template/1.0"
     nsPrefix="template">
   <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-    <details key="documentation" value="Le méta modèle 'template' représente les concepts produit par le parsing &#xD;&#xA;des templates de génération documentaire.&#xD;&#xA;&#xD;&#xA;Les modèles instances sont utilisés pour la génération."/>
+    <details key="documentation" value="This metamodel describes the M2Doc abstract syntax tree."/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="IConstruct" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="styleRun" eType="#//Run"/>
@@ -12,6 +12,13 @@
         eType="#//Run"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="validationMessages" upperBound="-1"
         eType="#//TemplateValidationMessage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//Statement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="documentation" value="A comment produce nothing in the generated document."/>
+      <details key="syntax" value="{m:comment &lt;comment text>}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conditional" eSuperTypes="#//Statement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
@@ -39,7 +46,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Repetition" eSuperTypes="#//Statement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="documentation" value="pour chaque valeur v dans le résultat de l'évaluation de query, &#xD;&#xA;- un nouveau contexte est crée en ajoutant la définition 'var =v' au contexte courant&#xD;&#xA;- le résultat du traitement du corps runs est inséré dans le document &#xD;&#xA;les balises {m:for} et {m:endfor} sont supprimées.&#xD;&#xA;Si la balise {m:for} est immédiatement suivie d'un retour chariot alors l'ensemble du paragraphe la contenant est supprimée du résultat sinon, le paragraphe duquel on a supprimé la balise est inséré dans le résultat. Le même traitement est appliqué à la balise {m:endfor}"/>
+      <details key="documentation" value="This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about &lt;a href=&quot;https://www.eclipse.org/acceleo/documentation/aql.html&quot;>Acceleo Query Language&lt;/a>."/>
       <details key="syntax" value="{m:for var | query} body {m:endfor}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iterationVar" lowerBound="1"
@@ -78,8 +85,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="#//Statement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="documentation" value="La balise est remplacée dans le document par la représentation en &#xD;&#xA;chaine de caractère du résultat de l'évaluation de l'expression dans le &#xD;&#xA;contexte courant. La style du premier run contenant query est utilisé pour générer le document. Il n'y a pas de sens à utiliser plusieurs styles différents dans une requête si bien que seul le premier est utilisé si plusieurs sont présents.&#xD;&#xA;- Lorsque le modifier icon est précisé, l'icone de l'élément évalué telle que définie dans le .edit correspondant  est insérée à la place du run&#xD;&#xA;- Lorsque le modifier label est précisé, le label de l'élément évalué tel que définin dans le .edit correspondant est inséré à la place du run.&#xD;&#xA;- Lorsque le modifier text ou qu'aucun modifier n'apparait, la représentation en chaine de caractère de l'évaluation du résultat est inséré."/>
-      <details key="syntax" value="{aql:query [icon, label,text]}"/>
+      <details key="documentation" value="The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about &lt;a href=&quot;https://www.eclipse.org/acceleo/documentation/aql.html&quot;>Acceleo Query Language&lt;/a>."/>
+      <details key="syntax" value="{m:&lt;aql query>}"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="behavior" eType="#//QueryBehavior"
         defaultValueLiteral="TEXT"/>
@@ -90,7 +97,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Block"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-        <details key="documentation" value="The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to &lt;code>true&lt;/code>."/>
+        <details key="documentation" value="The {@link Block} of {@link Statement}."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

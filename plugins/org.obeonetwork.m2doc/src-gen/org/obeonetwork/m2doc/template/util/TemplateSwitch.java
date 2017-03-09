@@ -89,6 +89,14 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case TemplatePackage.COMMENT: {
+                Comment comment = (Comment)theEObject;
+                T result = caseComment(comment);
+                if (result == null) result = caseStatement(comment);
+                if (result == null) result = caseIConstruct(comment);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case TemplatePackage.CONDITIONAL: {
                 Conditional conditional = (Conditional)theEObject;
                 T result = caseConditional(conditional);
@@ -276,6 +284,21 @@ public class TemplateSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseIConstruct(IConstruct object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Comment</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Comment</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseComment(Comment object) {
         return null;
     }
 

@@ -74,7 +74,7 @@ public interface TableMerge extends Statement {
      * @see #setBody(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getTableMerge_Body()
      * @model containment="true" required="true"
-     *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>true</code>.'"
+     *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Block} of {@link Statement}.'"
      * @generated
      */
     Block getBody();

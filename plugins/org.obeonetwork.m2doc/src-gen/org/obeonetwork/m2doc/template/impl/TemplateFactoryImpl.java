@@ -89,6 +89,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
+            case TemplatePackage.COMMENT: return createComment();
             case TemplatePackage.CONDITIONAL: return createConditional();
             case TemplatePackage.REPETITION: return createRepetition();
             case TemplatePackage.USER_DOC: return createUserDoc();
@@ -189,6 +190,16 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Comment createComment() {
+        CommentImpl comment = new CommentImpl();
+        return comment;
     }
 
     /**

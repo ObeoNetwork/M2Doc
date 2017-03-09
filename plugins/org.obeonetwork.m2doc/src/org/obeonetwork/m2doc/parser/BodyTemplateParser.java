@@ -57,6 +57,7 @@ import org.obeonetwork.m2doc.template.AbstractImage;
 import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
+import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
@@ -241,6 +242,8 @@ public class BodyTemplateParser extends BodyAbstractParser {
                     result = TokenType.ENDBOOKMARK;
                 } else if (code.startsWith(TokenType.LINK.getValue())) {
                     result = TokenType.LINK;
+                } else if (code.startsWith(TokenType.COMMENT.getValue())) {
+                    result = TokenType.COMMENT;
                 } else if (code.startsWith(TokenType.AQL.getValue())) {
                     result = TokenType.AQL;
                 } else {
@@ -271,6 +274,9 @@ public class BodyTemplateParser extends BodyAbstractParser {
                     break;
                 case USERDOC:
                     res.getStatements().add(parseUserDoc());
+                    break;
+                case COMMENT:
+                    res.getStatements().add(parseComment());
                     break;
                 case ELSEIF:
                 case ELSE:
@@ -374,6 +380,23 @@ public class BodyTemplateParser extends BodyAbstractParser {
             query.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryText, lastRun));
         }
         return query;
+    }
+
+    /**
+     * Parses a comment construct.
+     * 
+     * @return the created object
+     * @throws DocumentParserException
+     *             if a problem occurs while parsing.
+     */
+    private Comment parseComment() throws DocumentParserException {
+        final Comment comment = (Comment) EcoreUtil.create(TemplatePackage.Literals.COMMENT);
+        final String commentText = readTag(comment, comment.getRuns()).trim()
+                .substring(TokenType.COMMENT.getValue().length());
+
+        comment.setText(commentText.trim());
+
+        return comment;
     }
 
     /**

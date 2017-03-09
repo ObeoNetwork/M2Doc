@@ -69,6 +69,7 @@ import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -435,6 +436,12 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
         }
 
         return query;
+    }
+
+    @Override
+    public IConstruct caseComment(Comment comment) {
+        // nothing to do here
+        return comment;
     }
 
     /**

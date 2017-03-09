@@ -64,6 +64,7 @@ import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -516,6 +517,12 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         }
 
         return getHighestMessageLevel(query);
+    }
+
+    @Override
+    public ValidationMessageLevel caseComment(Comment comment) {
+        // noting to do here
+        return ValidationMessageLevel.OK;
     }
 
     @Override

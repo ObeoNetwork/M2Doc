@@ -35,6 +35,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//IConstruct/closingRuns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//IConstruct/validationMessages"/>
     </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Comment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Comment/text"/>
+    </genClasses>
     <genClasses ecoreClass="Template.ecore#//Conditional">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Conditional/condition"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Conditional/then"/>

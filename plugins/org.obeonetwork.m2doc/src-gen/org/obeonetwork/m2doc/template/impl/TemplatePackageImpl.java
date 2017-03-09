@@ -41,6 +41,7 @@ import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -82,6 +83,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EClass iConstructEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass commentEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -432,6 +440,24 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      */
     public EAttribute getIConstruct_ValidationMessages() {
         return (EAttribute)iConstructEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getComment() {
+        return commentEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getComment_Text() {
+        return (EAttribute)commentEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1206,6 +1232,9 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(iConstructEClass, ICONSTRUCT__CLOSING_RUNS);
         createEAttribute(iConstructEClass, ICONSTRUCT__VALIDATION_MESSAGES);
 
+        commentEClass = createEClass(COMMENT);
+        createEAttribute(commentEClass, COMMENT__TEXT);
+
         conditionalEClass = createEClass(CONDITIONAL);
         createEAttribute(conditionalEClass, CONDITIONAL__CONDITION);
         createEReference(conditionalEClass, CONDITIONAL__THEN);
@@ -1343,6 +1372,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         // Set bounds for type parameters
 
         // Add supertypes to classes
+        commentEClass.getESuperTypes().add(this.getStatement());
         conditionalEClass.getESuperTypes().add(this.getStatement());
         repetitionEClass.getESuperTypes().add(this.getStatement());
         userDocEClass.getESuperTypes().add(this.getStatement());
@@ -1368,6 +1398,9 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEAttribute(getIConstruct_Runs(), this.getRun(), "runs", null, 0, -1, IConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getIConstruct_ClosingRuns(), this.getRun(), "closingRuns", null, 0, -1, IConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getIConstruct_ValidationMessages(), this.getTemplateValidationMessage(), "validationMessages", null, 0, -1, IConstruct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(commentEClass, Comment.class, "Comment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getComment_Text(), ecorePackage.getEString(), "text", null, 0, 1, Comment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(conditionalEClass, Conditional.class, "Conditional", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getConditional_Condition(), this.getAstResult(), "condition", null, 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1503,7 +1536,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
           (this, 
            source, 
            new String[] {
-             "documentation", "Le m\u00e9ta mod\u00e8le \'template\' repr\u00e9sente les concepts produit par le parsing \r\ndes templates de g\u00e9n\u00e9ration documentaire.\r\n\r\nLes mod\u00e8les instances sont utilis\u00e9s pour la g\u00e9n\u00e9ration."
+             "documentation", "This metamodel describes the M2Doc abstract syntax tree."
+           });	
+        addAnnotation
+          (commentEClass, 
+           source, 
+           new String[] {
+             "documentation", "A comment produce nothing in the generated document.",
+             "syntax", "{m:comment <comment text>}"
            });	
         addAnnotation
           (conditionalEClass, 
@@ -1534,7 +1574,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
           (repetitionEClass, 
            source, 
            new String[] {
-             "documentation", "pour chaque valeur v dans le r\u00e9sultat de l\'\u00e9valuation de query, \r\n- un nouveau contexte est cr\u00e9e en ajoutant la d\u00e9finition \'var =v\' au contexte courant\r\n- le r\u00e9sultat du traitement du corps runs est ins\u00e9r\u00e9 dans le document \r\nles balises {m:for} et {m:endfor} sont supprim\u00e9es.\r\nSi la balise {m:for} est imm\u00e9diatement suivie d\'un retour chariot alors l\'ensemble du paragraphe la contenant est supprim\u00e9e du r\u00e9sultat sinon, le paragraphe duquel on a supprim\u00e9 la balise est ins\u00e9r\u00e9 dans le r\u00e9sultat. Le m\u00eame traitement est appliqu\u00e9 \u00e0 la balise {m:endfor}",
+             "documentation", "This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
              "syntax", "{m:for var | query} body {m:endfor}"
            });	
         addAnnotation
@@ -1571,14 +1611,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
           (queryEClass, 
            source, 
            new String[] {
-             "documentation", "La balise est remplac\u00e9e dans le document par la repr\u00e9sentation en \r\nchaine de caract\u00e8re du r\u00e9sultat de l\'\u00e9valuation de l\'expression dans le \r\ncontexte courant. La style du premier run contenant query est utilis\u00e9 pour g\u00e9n\u00e9rer le document. Il n\'y a pas de sens \u00e0 utiliser plusieurs styles diff\u00e9rents dans une requ\u00eate si bien que seul le premier est utilis\u00e9 si plusieurs sont pr\u00e9sents.\r\n- Lorsque le modifier icon est pr\u00e9cis\u00e9, l\'icone de l\'\u00e9l\u00e9ment \u00e9valu\u00e9 telle que d\u00e9finie dans le .edit correspondant  est ins\u00e9r\u00e9e \u00e0 la place du run\r\n- Lorsque le modifier label est pr\u00e9cis\u00e9, le label de l\'\u00e9l\u00e9ment \u00e9valu\u00e9 tel que d\u00e9finin dans le .edit correspondant est ins\u00e9r\u00e9 \u00e0 la place du run.\r\n- Lorsque le modifier text ou qu\'aucun modifier n\'apparait, la repr\u00e9sentation en chaine de caract\u00e8re de l\'\u00e9valuation du r\u00e9sultat est ins\u00e9r\u00e9.",
-             "syntax", "{aql:query [icon, label,text]}"
+             "documentation", "The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
+             "syntax", "{m:<aql query>}"
            });	
         addAnnotation
           (getTableMerge_Body(), 
            source, 
            new String[] {
-             "documentation", "The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>true</code>."
+             "documentation", "The {@link Block} of {@link Statement}."
            });	
         addAnnotation
           (getTemplate_Body(), 

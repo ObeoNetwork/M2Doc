@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -399,6 +400,12 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         for (XWPFRun run : staticFragment.getRuns()) {
             builder.append(run.text().replaceAll("\r\n", "\n" + indentation).replaceAll("\r", "\n" + indentation));
         }
+        return null;
+    }
+
+    @Override
+    public Void caseComment(Comment comment) {
+        builder.append(String.format("comment: %s", comment.getText()));
         return null;
     }
 

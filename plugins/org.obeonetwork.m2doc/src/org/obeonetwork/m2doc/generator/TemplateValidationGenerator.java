@@ -24,6 +24,7 @@ import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -138,6 +139,13 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     @Override
     public Void caseQuery(Query query) {
         insertErrorMessages(query);
+
+        return null;
+    }
+
+    @Override
+    public Void caseComment(Comment comment) {
+        insertErrorMessages(comment);
 
         return null;
     }

@@ -89,6 +89,10 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
                 return createIConstructAdapter();
             }
             @Override
+            public Adapter caseComment(Comment object) {
+                return createCommentAdapter();
+            }
+            @Override
             public Adapter caseConditional(Conditional object) {
                 return createConditionalAdapter();
             }
@@ -207,6 +211,20 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createIConstructAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Comment <em>Comment</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Comment
+     * @generated
+     */
+    public Adapter createCommentAdapter() {
         return null;
     }
 

@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  A simple demonstration of a comment :
+  comment: some important comment
+  End of demonstration.
+=== FOOTER ===
