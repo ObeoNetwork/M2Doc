@@ -11,17 +11,32 @@
 package org.obeonetwork.m2doc.launcher.internal;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.StringArrayOptionHandler;
+import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
+import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.parser.DocumentParserException;
+
+import com.google.common.collect.Iterables;
 
 /**
  * Application class for the M2Doc Launcher. Parses the arguments and launch
@@ -80,21 +95,72 @@ public class M2DocLauncher implements IApplication {
 					+ "   \\ \\/  \\/ / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\  | |\\/| | / // _` |/ _ \\ / __|\n"
 					+ "    \\  /\\  /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |  | |/ /| (_| | (_) | (__ \n"
 					+ "     \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/  |_|  |_|____\\__,_|\\___/ \\___|");
-			System.out.println("This is a command-line launcher to generate .docx from your models.");
+			System.out.println("The command-line launcher to generate .docx from your models.");
 			parser.parseArgument(args);
-			
-			System.out.println("<TODO> implementation to actually launch the generators (but that's the easy part).");
 
-			validateArguments(parser);
+			Collection<URI> genconfs = validateArguments(parser);
+			Collection<Generation> loadedGenConfs = new ArrayList<Generation>();
+
+			ResourceSet s = new ResourceSetImpl();
+			for (URI uri : genconfs) {
+				if (s.getURIConverter().exists(uri, Collections.EMPTY_MAP)) {
+					try {
+						Resource r = s.getResource(uri, true);
+						r.load(Collections.EMPTY_MAP);
+						Iterables.addAll(loadedGenConfs, Iterables.filter(r.getContents(), Generation.class));
+					} catch (IOException e) {
+						somethingWentWrong = true;
+						M2DocLauncherPlugin.INSTANCE
+								.log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
+										"Error loading genconf: '" + uri.toString() + "' : " + e.getMessage(), e));
+					} catch (RuntimeException e) {
+						somethingWentWrong = true;
+						M2DocLauncherPlugin.INSTANCE
+								.log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
+										"Error loading genconf: '" + uri.toString() + "' : " + e.getMessage(), e));
+					}
+				} else {
+					M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
+							M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
+							"Error loading genconf: '" + uri.toString() + "' : does not exist or is not accessible."));
+				}
+			}
 
 			final Monitor monitor = new BasicMonitor.Printing(System.out);
+			GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
 
-		} catch (CmdLineException e) {
-			/*
-			 * problem in the command line
-			 */
-			M2DocLauncherPlugin.INSTANCE
-					.log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), e.getMessage(), e));
+			monitor.beginTask("Generating .docx documents", loadedGenConfs.size());
+			for (Generation generation : loadedGenConfs) {
+				try {
+
+					System.out.println("Input: " + generation.eResource().getURI());
+					List<URI> generated = generator.generate(generation);
+					for (URI uri : generated) {
+						System.out.println("Output: " + uri.toString());
+					}
+					monitor.worked(1);
+
+				} catch (DocumentGenerationException e) {
+					M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
+							M2DocLauncherPlugin.INSTANCE.getSymbolicName(), "Error launching genconf: '"
+									+ generation.eResource().getURI().toString() + "' : " + e.getMessage(),
+							e));
+				} catch (IOException e) {
+					M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
+							M2DocLauncherPlugin.INSTANCE.getSymbolicName(), "Error launching genconf: '"
+									+ generation.eResource().getURI().toString() + "' : " + e.getMessage(),
+							e));
+				} catch (DocumentParserException e) {
+					M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
+							M2DocLauncherPlugin.INSTANCE.getSymbolicName(), "Error launching genconf: '"
+									+ generation.eResource().getURI().toString() + "' : " + e.getMessage(),
+							e));
+				}
+			}
+
+		} catch (
+
+		CmdLineException e) {
 
 			/*
 			 * print the list of available options
@@ -102,6 +168,12 @@ public class M2DocLauncher implements IApplication {
 			parser.printUsage(System.err);
 			System.err.println();
 			somethingWentWrong = true;
+
+			/*
+			 * problem in the command line
+			 */
+			M2DocLauncherPlugin.INSTANCE
+					.log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), e.getMessage(), e));
 		}
 
 		if (somethingWentWrong) {
@@ -116,11 +188,13 @@ public class M2DocLauncher implements IApplication {
 	 * 
 	 * @param parser
 	 *            the command line parser.
+	 * @return
 	 * 
 	 * @throws CmdLineException
 	 *             if the arguments are not valid.
 	 */
-	private void validateArguments(CmdLineParser parser) throws CmdLineException {
+	private Collection<URI> validateArguments(CmdLineParser parser) throws CmdLineException {
+		Collection<URI> result = new ArrayList<URI>();
 		/*
 		 * some arguments are required if one is missing or invalid throw a
 		 * CmdLineException
@@ -128,18 +202,26 @@ public class M2DocLauncher implements IApplication {
 		if (genconfs == null || genconfs.length == 0) {
 			throw new CmdLineException(parser, "You must specify genconfs models.");
 		}
+		for (String modelPath : genconfs) {
 
-	}
+			URI rawURI = null;
+			try {
+				rawURI = URI.createURI(modelPath, true);
+			} catch (IllegalArgumentException e) {
+				/*
+				 * the passed uri is not in the URI format and should be
+				 * considered as a direct file denotation.
+				 */
+			}
 
-	/**
-	 * Log a message as an info.
-	 * 
-	 * @param message
-	 *            the error message.
-	 */
-	private void info(String message) {
-		M2DocLauncherPlugin.INSTANCE
-				.log(new Status(IStatus.INFO, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), message));
+			if (rawURI != null && !rawURI.hasAbsolutePath()) {
+				rawURI = URI.createFileURI(modelPath);
+			}
+			result.add(rawURI);
+		}
+
+		return result;
+
 	}
 
 	@Override
