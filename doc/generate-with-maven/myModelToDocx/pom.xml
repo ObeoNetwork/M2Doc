@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <name>Export Website from Modeling Project</name>
+  <groupId>org.eclipse.acceleo.examples</groupId>
+  <artifactId>org.eclipse.acceleo.examples.equinox.launcher.aird
+  </artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <tycho-version>0.24.0</tycho-version>
+  </properties>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>tycho-eclipserun-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <repositories>
+            <repository>
+              <id>Neon update site </id>
+              <layout>p2</layout>
+              <url>http://download.eclipse.org/releases/neon/</url>
+            </repository>
+            <repository>
+              <id>Website Generator</id>
+              <layout>p2</layout>
+              <url>https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/M2Doc_0.10.0_beta/repository</url>
+            </repository>
+          </repositories>
+          <applicationsArgs>
+            <args>-consoleLog</args>
+            <args>-application</args>
+            <args>org.obeonetwork.m2doc.launcher.M2DocLauncher</args>
+            <args>-data</args>
+            <args>${project.build.directory}/wks</args>
+            <args>-genconfs</args>
+            <args>.//model2docx.genconf</args>
+          </applicationsArgs>
+          <dependencies>
+            <!-- We need the actual launcher application -->
+            <dependency>
+              <artifactId>org.obeonetwork.m2doc.launcher.feature</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>        
+            <!-- The project containing the .aird model needs EcoreTools 
+              to be resolved correctly -->
+            <dependency>
+              <artifactId>org.eclipse.emf.ecoretools.design</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.eclipse.rcp</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>
+          </dependencies>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>eclipse-run</goal>
+            </goals>
+            <phase>generate-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
