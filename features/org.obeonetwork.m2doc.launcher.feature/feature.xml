@@ -16,6 +16,14 @@
       [Enter License Description here.]
    </license>
 
+   <includes
+         id="org.eclipse.equinox.core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.emf.common"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.core.contenttype"/>
       <import plugin="org.eclipse.core.jobs"/>
@@ -28,8 +36,10 @@
       <import plugin="org.eclipse.equinox.simpleconfigurator"/>
       <import plugin="org.eclipse.osgi"/>
       <import plugin="org.eclipse.osgi.services"/>
-      <import feature="org.eclipse.equinox.core.feature"/>
-      <import feature="org.eclipse.emf.common" version="2.12.0.v20160420-0247"/>
+      <import plugin="org.eclipse.acceleo.query"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.emf.ecore.edit"/>
    </requires>
 
    <plugin
@@ -41,6 +51,83 @@
 
    <plugin
          id="org.kohsuke.args4j"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.obeonetwork.m2doc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.obeonetwork.m2doc.genconf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.obeonetwork.m2doc.genconf.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.obeonetwork.m2doc.tplconf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.poi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.acceleo.query"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.antlr.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.acceleo.annotations"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.ecore.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.edit"
          download-size="0"
          install-size="0"
          version="0.0.0"
