@@ -36,9 +36,13 @@
 		<module>plugins/org.obeonetwork.m2doc.tplconf.edit</module>
 		<module>plugins/org.obeonetwork.m2doc.sirius</module>
 		<module>plugins/org.obeonetwork.m2doc.doc</module>
+        <module>plugins/org.obeonetwork.m2doc.launcher</module>
+        
 		<module>features/org.obeonetwork.m2doc.feature</module>
 		<module>features/org.obeonetwork.m2doc.sirius.feature</module>
 		<module>features/org.obeonetwork.m2doc.sirius.addon.feature</module>
+        <module>features/org.obeonetwork.m2doc.launcher.feature</module>
+        
 		<module>dependencies/org.apache.poi</module>
 		<module>dependencies/org.apache.poi.feature</module>
 	</modules>

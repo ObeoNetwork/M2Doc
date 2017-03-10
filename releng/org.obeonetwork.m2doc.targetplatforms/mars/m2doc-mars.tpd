@@ -6,6 +6,8 @@ with source requirements
 
 location Eclipse "http://download.eclipse.org/releases/mars" {
 	org.eclipse.platform.sdk lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
 	org.eclipse.core.runtime lazy
 	org.eclipse.emf.sdk.feature.group lazy
 	

@@ -2,3 +2,6 @@ target "common"
 
 with source requirements
 
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/" {    
+    org.kohsuke.args4j [2.0.21,2.1.0)
+}
