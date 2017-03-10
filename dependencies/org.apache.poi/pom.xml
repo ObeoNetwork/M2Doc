@@ -32,7 +32,7 @@
             <id>copy</id>
             <phase>process-resources</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>unpack</goal>
             </goals>
             <configuration>
               <artifactItems>
@@ -42,7 +42,7 @@
                   <version>${poiVersion}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${project.basedir}/lib</outputDirectory>
+                  <outputDirectory>${project.basedir}/classes</outputDirectory>
                 </artifactItem>
 
                 <artifactItem>
@@ -51,7 +51,7 @@
                   <version>${poiVersion}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${project.basedir}/lib</outputDirectory>
+                  <outputDirectory>${project.basedir}/classes</outputDirectory>
                 </artifactItem>
 
                 <artifactItem>
@@ -60,7 +60,7 @@
                   <version>${poiVersion}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${project.basedir}/lib</outputDirectory>
+                  <outputDirectory>${project.basedir}/classes</outputDirectory>
                 </artifactItem>
 
                 <artifactItem>
@@ -69,7 +69,7 @@
                   <version>${poiVersion}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${project.basedir}/lib</outputDirectory>
+                  <outputDirectory>${project.basedir}/classes</outputDirectory>
                 </artifactItem>
 
                 <artifactItem>
@@ -78,7 +78,7 @@
                   <version>${ooxmlSchemasVersion}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${project.basedir}/lib</outputDirectory>
+                  <outputDirectory>${project.basedir}/classes</outputDirectory>
                 </artifactItem>
 
                 <artifactItem>
@@ -87,10 +87,10 @@
                   <version>${xmlbeans}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${project.basedir}/lib</outputDirectory>
+                  <outputDirectory>${project.basedir}/classes</outputDirectory>
                 </artifactItem>
               </artifactItems>
-              <outputDirectory>${project.basedir}/lib</outputDirectory>
+              <outputDirectory>${project.basedir}/classes</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
             </configuration>
