@@ -25,7 +25,7 @@ public class M2DocSiriusServices {
         if (representationDescriptionName != null || eObject != null) {
             Session session = SessionManager.INSTANCE.getSession(eObject);
             if (session != null) {
-                result = new SiriusServices().getAssociatedRepresentationByDiagramDescriptionAndName(eObject,
+                result = SiriusDiagramUtils.getAssociatedRepresentationByDiagramDescriptionAndName(eObject,
                         representationDescriptionName, session).size() > 0;
             }
         }
@@ -48,7 +48,7 @@ public class M2DocSiriusServices {
         if (representationName != null && eObject != null) {
             Session session = SessionManager.INSTANCE.getSession(eObject);
             if (session != null) {
-                result = new SiriusServices().getAssociatedRepresentationByName(representationName, session) != null;
+                result = SiriusDiagramUtils.getAssociatedRepresentationByName(representationName, session) != null;
             }
         }
         return result;

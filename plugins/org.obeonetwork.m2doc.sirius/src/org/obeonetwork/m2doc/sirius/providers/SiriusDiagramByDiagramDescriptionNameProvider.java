@@ -29,7 +29,7 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
-import org.obeonetwork.m2doc.sirius.services.SiriusServices;
+import org.obeonetwork.m2doc.sirius.services.SiriusDiagramUtils;
 import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
@@ -84,20 +84,32 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
                     "Image cannot be computed because no root EObject has been provided to the provider \""
                         + this.getClass().getName() + "\"");
         } else {
+            final InfinitLoopSafeService imageUtility = new InfinitLoopSafeService();
             EObject targetRootEObject = (EObject) targetRootObject;
-            Session session = SessionManager.INSTANCE.getSession((EObject) targetRootObject);
+            Session session = SessionManager.INSTANCE.getSession(targetRootEObject);
             if (session == null) {
                 throw new ProviderException("Cannot find session associated to the conf model root element.");
             }
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
-            List<DRepresentation> representations = new SiriusServices()
+            List<DRepresentation> representations = SiriusDiagramUtils
                     .getAssociatedRepresentationByDiagramDescriptionAndName(generation, targetRootEObject,
                             (String) diagramDescriptionName, session, createIfAbsent);
+
+            final List<String> result;
             if (!representations.isEmpty() && representations.get(0) instanceof DDiagram) {
-                return generateAndReturnDiagramImages(rootPath, session, representations,
+                result = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session, imageUtility,
+                        createIfAbsent, representations,
                         getLayers((DDiagram) representations.get(0), diagramActivatedLayers));
+            } else {
+                result = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session, imageUtility,
+                        createIfAbsent, representations, Lists.<Layer> newArrayList());
             }
-            return generateAndReturnDiagramImages(rootPath, session, representations, Lists.<Layer> newArrayList());
+            // This is totally boggus since more than one image can be generated.
+            // But I'll keep it iso bug.
+            setHeight(imageUtility.getHeight());
+            setWidth(imageUtility.getWidth());
+
+            return result;
         }
     }
 
@@ -111,8 +123,9 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
      * @throws ProviderException
      *             if the diagram description does not exist in the session.
      */
-    private void checkDiagramDescriptionExist(Session session, String diagramDescriptionName) throws ProviderException {
-        if (new SiriusServices().findDiagramDescription(session, diagramDescriptionName) == null) {
+    private static void checkDiagramDescriptionExist(Session session, String diagramDescriptionName)
+            throws ProviderException {
+        if (SiriusDiagramUtils.findDiagramDescription(session, diagramDescriptionName) == null) {
             throw new ProviderException("The provided diagram description '" + diagramDescriptionName
                 + "' does not exist in the loaded aird");
         }

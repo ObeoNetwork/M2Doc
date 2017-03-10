@@ -26,7 +26,7 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
-import org.obeonetwork.m2doc.sirius.services.SiriusServices;
+import org.obeonetwork.m2doc.sirius.services.SiriusDiagramUtils;
 import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
@@ -77,14 +77,21 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
                     "Image cannot be computed because no representation title has been provided to the provider \""
                         + this.getClass().getName() + "\"");
         } else {
-            DRepresentation representation = new SiriusServices()
+            DRepresentation representation = SiriusDiagramUtils
                     .getAssociatedRepresentationByName((String) representationTitle, session);
             if (representation instanceof DDiagram) {
                 DDiagram dsd = (DDiagram) representation;
                 List<DRepresentation> representations = new ArrayList<>(1);
                 representations.add(dsd);
-                List<String> resultList = generateAndReturnDiagramImages(rootPath, session, representations,
-                        getLayers(dsd, diagramActivatedLayers));
+                final InfinitLoopSafeService imageUtility = new InfinitLoopSafeService();
+                List<String> resultList = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session,
+                        imageUtility, refreshRepresentations, representations, getLayers(dsd, diagramActivatedLayers));
+
+                // This is totally boggus since more than one image can be generated.
+                // But I'll keep it iso bug.
+                setHeight(imageUtility.getHeight());
+                setWidth(imageUtility.getWidth());
+
                 return resultList;
             } else {
                 throw new ProviderException("Representation with title '" + representationTitle + "' not found");
