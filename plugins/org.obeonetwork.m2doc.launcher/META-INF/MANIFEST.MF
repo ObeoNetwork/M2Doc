@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Equinox Launcher for M2doc
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.launcher;singleton:=true
 Bundle-Version: 0.10.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -16,3 +16,4 @@ Require-Bundle: org.kohsuke.args4j;bundle-version="2.0.21",
  org.eclipse.core.runtime
 Bundle-Activator: org.obeonetwork.m2doc.launcher.internal.M2DocLauncherPlugin$Implementation
 Bundle-Localization: plugin
+Bundle-Vendor: %providerName
