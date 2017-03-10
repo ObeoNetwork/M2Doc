@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: M2Doc Sirius Integration UI
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.sirius.ui;singleton:=true
 Bundle-Version: 0.10.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.ui,
  org.obeonetwork.m2doc.genconf,
  org.obeonetwork.m2doc
 Bundle-Activator: org.obeonetwork.m2doc.sirius.ui.M2DocSiriusUIPlugin
+Bundle-Vendor: %providerName
