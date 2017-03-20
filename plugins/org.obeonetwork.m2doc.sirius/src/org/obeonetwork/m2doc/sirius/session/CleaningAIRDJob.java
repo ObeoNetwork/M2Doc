@@ -5,7 +5,7 @@ import com.google.common.collect.Sets;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.dialect.command.DeleteRepresentationCommand;
 import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.viewpoint.DRepresentation;
+import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 
 /**
  * A {@link CleaningAIRDJob} contains the necessary information to clean a representation after generation.
@@ -21,7 +21,7 @@ public class CleaningAIRDJob implements Runnable {
     /**
      * The representation that must be cleaned.
      */
-    private final DRepresentation representation;
+    private final DRepresentationDescriptor representation;
 
     /**
      * Create a new {@link CleaningAIRDJob} instance given a semantic object a session and a representation.
@@ -33,7 +33,7 @@ public class CleaningAIRDJob implements Runnable {
      * @param representation
      *            the representation to delete.
      */
-    public CleaningAIRDJob(EObject semantic, Session session, DRepresentation representation) {
+    public CleaningAIRDJob(EObject semantic, Session session, DRepresentationDescriptor representation) {
         if (semantic == null || session == null || representation == null) {
             throw new IllegalArgumentException("a null argument has been passed to the CleaningAIRDJob constructor");
         }
