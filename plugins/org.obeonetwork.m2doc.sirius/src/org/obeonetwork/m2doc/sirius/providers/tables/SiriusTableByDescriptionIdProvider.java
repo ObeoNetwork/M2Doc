@@ -27,8 +27,8 @@ import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationComma
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.table.metamodel.table.DTable;
-import org.eclipse.sirius.viewpoint.DRepresentation;
-import org.eclipse.sirius.viewpoint.DView;
+import org.eclipse.sirius.table.metamodel.table.description.TableDescription;
+import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.obeonetwork.m2doc.genconf.Generation;
@@ -81,21 +81,21 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
      */
     private List<DTable> getAssociatedTablesByDiagramDescriptionAndName(EObject targetRootObject,
             String diagramDescriptionName, Session session, Boolean refreshTables) {
-        List<DTable> result = new ArrayList<DTable>();
+        List<DTable> result = new ArrayList<>();
         if (diagramDescriptionName != null) {
-            Collection<DRepresentation> representations = DialectManager.INSTANCE.getRepresentations(targetRootObject,
-                    session);
+            Collection<DRepresentationDescriptor> representations = DialectManager.INSTANCE
+                    .getRepresentationDescriptors(targetRootObject, session);
             // Filter representations to keep only those in a selected viewpoint
             Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-            for (DRepresentation representation : representations) {
-                if (representation instanceof DTable
-                    && diagramDescriptionName.equals(((DTable) representation).getDescription().getName())
-                    && representation.eContainer() instanceof DView) {
-                    DView dView = (DView) representation.eContainer();
-                    Viewpoint vp = dView.getViewpoint();
+            for (DRepresentationDescriptor representation : representations) {
+                if (representation != null && representation.getDescription() instanceof TableDescription
+                    && diagramDescriptionName.equals(representation.getDescription().getName())
+                    && representation.getDescription().eContainer() instanceof Viewpoint) {
+                    Viewpoint vp = (Viewpoint) representation.getDescription().eContainer();
                     if (selectedViewpoints.contains(vp)) {
-                        refreshTable(representation, session, refreshTables);
-                        result.add((DTable) representation);
+                        DTable table = (DTable) representation.getRepresentation();
+                        refreshTable(table, session, refreshTables);
+                        result.add(table);
                     }
                 }
             }
@@ -137,7 +137,8 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
             session.getTransactionalEditingDomain().getCommandStack().execute(new CreateRepresentationCommand(session,
                     description, eTarget, (String) tableId, new NullProgressMonitor()));
             result = Collections.emptyList();
-            for (DRepresentation representation : DialectManager.INSTANCE.getRepresentations(eTarget, session)) {
+            for (DRepresentationDescriptor representation : DialectManager.INSTANCE
+                    .getRepresentationDescriptors(eTarget, session)) {
                 if (representation instanceof DTable && ((DTable) representation).getDescription() == description) {
                     CleaningJobRegistry.INSTANCE.registerJob(generation,
                             new CleaningAIRDJob(eTarget, session, representation));
@@ -196,7 +197,7 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
 
     @Override
     public Map<String, OptionType> getOptionTypes() {
-        Map<String, OptionType> optionsMap = new HashMap<String, OptionType>();
+        Map<String, OptionType> optionsMap = new HashMap<>();
         optionsMap.put(TARGET_ROOT_OBJECT_KEY, OptionType.AQL_EXPRESSION);
         optionsMap.put(DESCRIPTION_ID_KEY, OptionType.STRING);
         return optionsMap;

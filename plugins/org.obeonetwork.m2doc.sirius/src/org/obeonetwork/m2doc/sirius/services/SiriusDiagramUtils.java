@@ -22,12 +22,13 @@ import org.eclipse.gmf.runtime.diagram.ui.render.util.CopyToImageUtil;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
-import org.eclipse.sirius.business.api.query.DRepresentationQuery;
+import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
 import org.eclipse.sirius.business.api.session.CustomDataConstants;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionStatus;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.business.api.query.DDiagramQuery;
+import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.ui.internal.refresh.SiriusDiagramSessionEventBroker;
 import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
@@ -35,7 +36,7 @@ import org.eclipse.sirius.ui.business.api.dialect.DialectEditor;
 import org.eclipse.sirius.ui.business.api.session.IEditingSession;
 import org.eclipse.sirius.ui.business.api.session.SessionUIManager;
 import org.eclipse.sirius.viewpoint.DRepresentation;
-import org.eclipse.sirius.viewpoint.DView;
+import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
@@ -70,8 +71,8 @@ public final class SiriusDiagramUtils {
      *            the Sirius session from which we want to find the representation with the given name.
      * @return all representations whose target is the specified EObject
      */
-    public static List<DRepresentation> getAssociatedRepresentationByDiagramDescriptionAndName(EObject targetRootObject,
-            String diagramId, Session session) {
+    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDiagramDescriptionAndName(
+            EObject targetRootObject, String diagramId, Session session) {
         return getAssociatedRepresentationByDiagramDescriptionAndName(null, targetRootObject, diagramId, session,
                 false);
     }
@@ -93,22 +94,22 @@ public final class SiriusDiagramUtils {
      *            doc generation.
      * @return all representations whose target is the specified EObject
      */
-    public static List<DRepresentation> getAssociatedRepresentationByDiagramDescriptionAndName(Generation generation,
-            EObject targetRootObject, String diagramId, Session session, boolean createIfAbsent) {
-        List<DRepresentation> result = new ArrayList<DRepresentation>();
+    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDiagramDescriptionAndName(
+            Generation generation, EObject targetRootObject, String diagramId, Session session,
+            boolean createIfAbsent) {
+        List<DRepresentationDescriptor> result = new ArrayList<>();
         if (diagramId != null && targetRootObject != null && session != null) {
-            Collection<DRepresentation> representations = DialectManager.INSTANCE.getRepresentations(targetRootObject,
-                    session);
+            Collection<DRepresentationDescriptor> representations = DialectManager.INSTANCE
+                    .getRepresentationDescriptors(targetRootObject, session);
             // Filter representations to keep only those in a selected viewpoint
             Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
 
-            for (DRepresentation representation : representations) {
-                boolean isDangling = new DRepresentationQuery(representation).isDanglingRepresentation();
-                if (!isDangling && representation instanceof DDiagram
-                    && diagramId.equals(((DDiagram) representation).getDescription().getName())
-                    && representation.eContainer() instanceof DView) {
-                    DView dView = (DView) representation.eContainer();
-                    Viewpoint vp = dView.getViewpoint();
+            for (DRepresentationDescriptor representation : representations) {
+                boolean isDangling = new DRepresentationDescriptorQuery(representation).isDangling();
+                if (!isDangling && representation.getDescription() instanceof DiagramDescription
+                    && diagramId.equals(representation.getDescription().getName())
+                    && representation.getDescription().eContainer() instanceof Viewpoint) {
+                    Viewpoint vp = (Viewpoint) representation.getDescription().eContainer();
                     if (selectedViewpoints.contains(vp)) {
                         result.add(representation);
                     }
@@ -119,9 +120,10 @@ public final class SiriusDiagramUtils {
             RepresentationDescription description = findDiagramDescription(session, diagramId);
             session.getTransactionalEditingDomain().getCommandStack().execute(new CreateRepresentationCommand(session,
                     description, targetRootObject, diagramId, new NullProgressMonitor()));
-            for (DRepresentation representation : DialectManager.INSTANCE.getRepresentations(targetRootObject,
-                    session)) {
-                if (representation instanceof DDiagram && ((DDiagram) representation).getDescription() == description) {
+            for (DRepresentationDescriptor representation : DialectManager.INSTANCE
+                    .getRepresentationDescriptors(targetRootObject, session)) {
+                if (representation != null && representation.getDescription() instanceof DiagramDescription
+                    && representation.getDescription() == description) {
                     CleaningJobRegistry.INSTANCE.registerJob(generation,
                             new CleaningAIRDJob(targetRootObject, session, representation));
                     result = Lists.newArrayList(representation);
@@ -141,19 +143,21 @@ public final class SiriusDiagramUtils {
      *            the Sirius session from which we want to find the representation with the given name.
      * @return the corresponding representation.
      */
-    public static DRepresentation getAssociatedRepresentationByName(String representationName, Session session) {
+    public static DRepresentationDescriptor getAssociatedRepresentationByName(String representationName,
+            Session session) {
         if (representationName != null) {
-            Collection<DRepresentation> representations = DialectManager.INSTANCE.getAllRepresentations(session);
+            Collection<DRepresentationDescriptor> representations = DialectManager.INSTANCE
+                    .getAllRepresentationDescriptors(session);
 
             // Filter representations to keep only those in a selected viewpoint
             Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
 
-            for (DRepresentation representation : representations) {
-                boolean isDangling = new DRepresentationQuery(representation).isDanglingRepresentation();
-                if (!isDangling && representationName.equals(representation.getName())
-                    && representation.eContainer() instanceof DView) {
-                    DView dView = (DView) representation.eContainer();
-                    Viewpoint vp = dView.getViewpoint();
+            for (DRepresentationDescriptor representation : representations) {
+                boolean isDangling = new DRepresentationDescriptorQuery(representation).isDangling();
+                if (!isDangling && representation != null && representationName.equals(representation.getName())
+                    && representation.getDescription() instanceof DiagramDescription
+                    && representation.getDescription().eContainer() instanceof Viewpoint) {
+                    Viewpoint vp = (Viewpoint) representation.getDescription().eContainer();
                     if (selectedViewpoints.contains(vp)) {
                         return representation;
                     }
@@ -303,11 +307,12 @@ public final class SiriusDiagramUtils {
      *             if the image generation fails.
      */
     public static List<String> generateAndReturnDiagramImages(String rootPath, final Session session,
-            CopyToImageUtil imageUtility, boolean refreshRepresentations, List<DRepresentation> representations,
-            List<Layer> layers) throws ProviderException {
+            CopyToImageUtil imageUtility, boolean refreshRepresentations,
+            List<DRepresentationDescriptor> representations, List<Layer> layers) throws ProviderException {
         List<String> resultList = new ArrayList<>();
         boolean isSessionDirtyBeforeExport = SessionStatus.DIRTY.equals(session.getStatus());
-        for (DRepresentation dRepresentation : representations) {
+        for (DRepresentationDescriptor descriptor : representations) {
+            DRepresentation dRepresentation = descriptor.getRepresentation();
             if (dRepresentation instanceof DDiagram) {
                 final DDiagram dsd = (DDiagram) dRepresentation;
                 DDiagram diagramtoExport = getDDiagramToExport(dsd, refreshRepresentations, layers, session,

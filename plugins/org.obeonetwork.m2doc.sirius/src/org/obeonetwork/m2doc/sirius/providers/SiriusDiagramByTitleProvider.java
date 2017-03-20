@@ -20,7 +20,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
-import org.eclipse.sirius.viewpoint.DRepresentation;
+import org.eclipse.sirius.diagram.description.DiagramDescription;
+import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
@@ -77,15 +78,16 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
                     "Image cannot be computed because no representation title has been provided to the provider \""
                         + this.getClass().getName() + "\"");
         } else {
-            DRepresentation representation = SiriusDiagramUtils
+            DRepresentationDescriptor representation = SiriusDiagramUtils
                     .getAssociatedRepresentationByName((String) representationTitle, session);
-            if (representation instanceof DDiagram) {
-                DDiagram dsd = (DDiagram) representation;
-                List<DRepresentation> representations = new ArrayList<>(1);
-                representations.add(dsd);
+            if (representation != null && representation.getDescription() instanceof DiagramDescription) {
+                DDiagram resolvedDiagram = (DDiagram) representation.getRepresentation();
+                List<DRepresentationDescriptor> representations = new ArrayList<>(1);
+                representations.add(representation);
                 final InfinitLoopSafeService imageUtility = new InfinitLoopSafeService();
                 List<String> resultList = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session,
-                        imageUtility, refreshRepresentations, representations, getLayers(dsd, diagramActivatedLayers));
+                        imageUtility, refreshRepresentations, representations,
+                        getLayers(resolvedDiagram, diagramActivatedLayers));
 
                 // This is totally boggus since more than one image can be generated.
                 // But I'll keep it iso bug.

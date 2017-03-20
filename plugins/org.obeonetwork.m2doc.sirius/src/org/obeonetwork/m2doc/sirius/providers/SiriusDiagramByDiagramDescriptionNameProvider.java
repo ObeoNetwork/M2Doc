@@ -21,8 +21,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
-import org.eclipse.sirius.viewpoint.DRepresentation;
+import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
@@ -91,15 +92,15 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
                 throw new ProviderException("Cannot find session associated to the conf model root element.");
             }
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
-            List<DRepresentation> representations = SiriusDiagramUtils
+            List<DRepresentationDescriptor> representations = SiriusDiagramUtils
                     .getAssociatedRepresentationByDiagramDescriptionAndName(generation, targetRootEObject,
                             (String) diagramDescriptionName, session, createIfAbsent);
 
             final List<String> result;
-            if (!representations.isEmpty() && representations.get(0) instanceof DDiagram) {
+            if (!representations.isEmpty() && representations.get(0).getDescription() instanceof DiagramDescription) {
+                DDiagram resolvedDiagram = (DDiagram) representations.get(0).getRepresentation();
                 result = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session, imageUtility,
-                        createIfAbsent, representations,
-                        getLayers((DDiagram) representations.get(0), diagramActivatedLayers));
+                        createIfAbsent, representations, getLayers(resolvedDiagram, diagramActivatedLayers));
             } else {
                 result = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session, imageUtility,
                         createIfAbsent, representations, Lists.<Layer> newArrayList());

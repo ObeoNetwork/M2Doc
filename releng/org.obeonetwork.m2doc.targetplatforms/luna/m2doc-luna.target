@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Luna Target Platform" sequenceNumber="1489078166">
+<target name="M2Doc Luna Target Platform" sequenceNumber="1490018673">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.sirius" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram.ui" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.table" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.table.ui" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/sirius/updates/nightly/4.1.x/neon"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
+      <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
+      <repository id="Acceleo-3.7" location="http://download.eclipse.org/acceleo/updates/milestones/3.7/S201701271332"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
@@ -18,18 +33,6 @@
       <unit id="org.eclipse.gmf.runtime.diagram.ui" version="0.0.0"/>
       <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
       <repository id="Eclipse" location="http://download.eclipse.org/releases/luna"/>
-    </location>
-    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.sirius" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.diagram.ui" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.table" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.table.ui" version="0.0.0"/>
-      <repository id="Sirius" location="http://download.eclipse.org/sirius/updates/releases/3.1.1/luna"/>
-    </location>
-    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
-      <repository id="AQL.4.0.0" location="http://download.eclipse.org/acceleo/updates/releases/3.6/R201510121214"/>
     </location>
   </locations>
 </target>

@@ -10,18 +10,10 @@ location Eclipse "http://download.eclipse.org/releases/mars" {
 	org.eclipse.equinox.executable.feature.group lazy
 	org.eclipse.core.runtime lazy
 	org.eclipse.emf.sdk.feature.group lazy
-	
 	org.junit [4.0.0,5.0.0)
-	
 	org.eclipse.gmf lazy
 	org.eclipse.gmf.runtime.diagram.ui lazy
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
-
-	org.eclipse.sirius lazy
-	org.eclipse.sirius.diagram lazy
-	org.eclipse.sirius.diagram.ui lazy
-	org.eclipse.sirius.table lazy
-	org.eclipse.sirius.table.ui lazy
-	
-	org.eclipse.acceleo.query.feature.group lazy
 }
+
+

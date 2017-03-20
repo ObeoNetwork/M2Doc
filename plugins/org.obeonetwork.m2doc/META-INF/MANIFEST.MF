@@ -9,7 +9,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
- org.eclipse.acceleo.query;bundle-version="[4.0.0,6.0.0)",
+ org.eclipse.acceleo.query;bundle-version="[6.0.0,7.0.0)",
  org.antlr.runtime;bundle-version="4.3.0",
  com.google.guava;bundle-version="[15.0.0,16.0.0)",
  org.apache.poi;bundle-version="[3.15.0,3.16.0)"
