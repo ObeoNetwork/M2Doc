@@ -1,0 +1,17 @@
+#Organize Import Order
+#Wed Feb 17 11:52:42 CET 2016
+9=org
+8=n4ds
+7=junit
+6=javax
+14=\#org
+5=java
+13=\#java
+4=fr
+12=\#fr
+3=dk
+11=\#com
+2=dsn
+10=validatortest
+1=com
+0=au
