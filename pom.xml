@@ -2,51 +2,52 @@
     Copyright (c) 2016 Obeo. 
        All rights reserved. This program and the accompanying materials
        are made available under the terms of the Eclipse Public License v1.0
-       which accompanies this distribution, and is a	vailable at
+       which accompanies this distribution, and is a  vailable at
        http://www.eclipse.org/legal/epl-v10.html
         
         Contributors:
             Obeo - initial API annd implementation
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<prerequisites>
-		<maven>3.2</maven>
-	</prerequisites>
-	<groupId>org.obeonetwork.m2doc</groupId>
-	<artifactId>org.obeonetwork.m2doc.parent</artifactId>
-	<version>0.10.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <prerequisites>
+    <maven>3.2</maven>
+  </prerequisites>
+  <groupId>org.obeonetwork.m2doc</groupId>
+  <artifactId>org.obeonetwork.m2doc.parent</artifactId>
+  <version>0.10.2-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
-	<modules>
-		<module>releng/org.obeonetwork.m2doc.targetplatforms/neon</module>
-		<module>releng/org.obeonetwork.m2doc.targetplatforms/mars</module>
-		<module>releng/org.obeonetwork.m2doc.targetplatforms/luna</module>
+  <modules>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/neon</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/mars</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/luna</module>
 
-		<module>plugins/org.obeonetwork.m2doc</module>
-		<module>plugins/org.obeonetwork.m2doc.ide</module>
-		<module>plugins/org.obeonetwork.m2doc.ide.ui</module>
-		<module>plugins/org.obeonetwork.m2doc.genconf</module>
-		<module>plugins/org.obeonetwork.m2doc.genconf.edit</module>
-		<module>plugins/org.obeonetwork.m2doc.genconf.editor</module>
-		<module>plugins/org.obeonetwork.m2doc.genconf.design</module>
-		<module>plugins/org.obeonetwork.m2doc.genconf.emf.ui</module>
-		<module>plugins/org.obeonetwork.m2doc.tplconf</module>
-		<module>plugins/org.obeonetwork.m2doc.tplconf.edit</module>
-		<module>plugins/org.obeonetwork.m2doc.sirius</module>
-		<module>plugins/org.obeonetwork.m2doc.sirius.ui</module>
-		<module>plugins/org.obeonetwork.m2doc.doc</module>
-        <module>plugins/org.obeonetwork.m2doc.launcher</module>
+    <module>plugins/org.obeonetwork.m2doc</module>
+    <module>plugins/org.obeonetwork.m2doc.ide</module>
+    <module>plugins/org.obeonetwork.m2doc.ide.ui</module>
+    <module>plugins/org.obeonetwork.m2doc.genconf</module>
+    <module>plugins/org.obeonetwork.m2doc.genconf.edit</module>
+    <module>plugins/org.obeonetwork.m2doc.genconf.editor</module>
+    <module>plugins/org.obeonetwork.m2doc.genconf.design</module>
+    <module>plugins/org.obeonetwork.m2doc.genconf.emf.ui</module>
+    <module>plugins/org.obeonetwork.m2doc.tplconf</module>
+    <module>plugins/org.obeonetwork.m2doc.tplconf.edit</module>
+    <module>plugins/org.obeonetwork.m2doc.sirius</module>
+    <module>plugins/org.obeonetwork.m2doc.sirius.ui</module>
+    <module>plugins/org.obeonetwork.m2doc.doc</module>
+    <module>plugins/org.obeonetwork.m2doc.launcher</module>
         
-		<module>features/org.obeonetwork.m2doc.feature</module>
-		<module>features/org.obeonetwork.m2doc.sirius.feature</module>
-		<module>features/org.obeonetwork.m2doc.sirius.addon.feature</module>
-        <module>features/org.obeonetwork.m2doc.launcher.feature</module>
+    <module>features/org.obeonetwork.m2doc.feature</module>
+    <module>features/org.obeonetwork.m2doc.ui.feature</module>
+    <module>features/org.obeonetwork.m2doc.sirius.feature</module>
+    <module>features/org.obeonetwork.m2doc.sirius.addon.feature</module>
+    <module>features/org.obeonetwork.m2doc.launcher.feature</module>
         
-		<module>dependencies/org.apache.poi</module>
-		<module>dependencies/org.apache.poi.feature</module>
-	</modules>
+    <module>dependencies/org.apache.poi</module>
+    <module>dependencies/org.apache.poi.feature</module>
+  </modules>
 
   <properties>
     <tycho-version>0.24.0</tycho-version>
@@ -59,23 +60,23 @@
     <developerConnection>scm:git:git://github.com/ObeoNetwork/M2Doc.git</developerConnection>
   </scm>
 
-	<build>
-		<plugins>
-			<plugin>
-				<!-- enable tycho build extension -->
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-compiler-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <!-- enable tycho build extension -->
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
       <!-- enable source bundle generation -->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -251,7 +252,7 @@
         </plugin>
       </plugins>
     </pluginManagement>
-	</build>
+  </build>
   <profiles>
     <profile>
       <id>updatesites</id>
@@ -292,7 +293,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-neon</artifactId>
-                  <version>0.10.0-SNAPSHOT</version>
+                  <version>0.10.2-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -319,7 +320,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-mars</artifactId>
-                  <version>0.10.0-SNAPSHOT</version>
+                  <version>0.10.2-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -346,7 +347,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-luna</artifactId>
-                  <version>0.10.0-SNAPSHOT</version>
+                  <version>0.10.2-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>

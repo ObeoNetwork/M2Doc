@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.ide.tests;singleton:=true
-Bundle-Version: 0.10.0.qualifier
+Bundle-Version: 0.10.2.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.obeonetwork.m2doc;bundle-version="[0.10.0,0.11.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[0.10.0,0.11.0)",

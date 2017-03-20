@@ -11,9 +11,9 @@
      
  -->
 <feature
-      id="org.obeonetwork.m2doc.ide.feature"
+      id="org.obeonetwork.m2doc.ui.feature"
       label="M2Doc UI"
-      version="0.10.0.qualifier"
+      version="0.10.2.qualifier"
       provider-name="Obeonetwork">
 
    <description url="http://www.obeo.fr">
@@ -229,6 +229,10 @@ Agreement more than one year after the cause of action arose.
 Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
+
+   <includes
+         id="org.obeonetwork.m2doc.feature"
+         version="0.0.0"/>
 
    <plugin
          id="org.obeonetwork.m2doc.ide.ui"
