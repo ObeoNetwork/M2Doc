@@ -18,3 +18,7 @@ location Acceleo-3.7 "http://download.eclipse.org/acceleo/updates/milestones/3.7
 	org.eclipse.acceleo.query.source.feature.group lazy
 	org.antlr.runtime [4.3.0,4.4.0)
 }
+
+location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
+	org.apache.poi.feature.feature.group lazy
+}
