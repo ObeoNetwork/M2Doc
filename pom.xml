@@ -44,9 +44,7 @@
     <module>features/org.obeonetwork.m2doc.sirius.feature</module>
     <module>features/org.obeonetwork.m2doc.sirius.addon.feature</module>
     <module>features/org.obeonetwork.m2doc.launcher.feature</module>
-        
-    <module>dependencies/org.apache.poi</module>
-    <module>dependencies/org.apache.poi.feature</module>
+    
   </modules>
 
   <properties>
