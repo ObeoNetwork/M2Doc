@@ -255,7 +255,7 @@
     <profile>
       <id>updatesites</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
         <module>releng/org.obeonetwork.m2doc.update</module>
@@ -264,7 +264,7 @@
     <profile>
       <id>tests</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
         <module>tests/org.obeonetwork.m2doc.tests</module>
@@ -275,7 +275,7 @@
     <profile>
       <id>platform-neon</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
           <value>neon</value>
