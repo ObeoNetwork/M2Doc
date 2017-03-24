@@ -9,9 +9,6 @@
    <feature id="org.obeonetwork.m2doc.ui.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
-   <feature id="org.obeonetwork.m2doc.sirius.addon.feature" version="0.0.0">
-      <category name="M2Doc"/>
-   </feature>
    <feature id="org.obeonetwork.m2doc.sirius.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>

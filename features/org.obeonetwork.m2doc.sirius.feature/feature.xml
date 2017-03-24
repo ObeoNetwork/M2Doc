@@ -11,7 +11,7 @@
  -->
 <feature
       id="org.obeonetwork.m2doc.sirius.feature"
-      label="M2Doc Sirius provider"
+      label="M2Doc Sirius Integration"
       version="0.10.2.qualifier"
       provider-name="Obeonetwork">
 
@@ -248,5 +248,12 @@ litigation.
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+         
+   <plugin
+         id="org.obeonetwork.m2doc.genconf.emf.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
