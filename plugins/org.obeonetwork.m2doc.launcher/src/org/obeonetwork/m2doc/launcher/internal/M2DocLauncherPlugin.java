@@ -11,8 +11,8 @@ package org.obeonetwork.m2doc.launcher.internal;
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-
 import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.Logger;
 import org.eclipse.emf.common.util.ResourceLocator;
 
 /**
@@ -70,6 +70,20 @@ public final class M2DocLauncherPlugin extends EMFPlugin {
 			// Remember the static instance.
 			//
 			plugin = this;
+		}
+	}
+
+	@Override
+	public void log(Object logEntry) {
+		Logger logger = getPluginLogger();
+		if (logger == null) {
+			if (logEntry instanceof Throwable) {
+				((Throwable) logEntry).printStackTrace(System.err);
+			} else {
+				System.err.println(CLIUtils.getDecorator().red(logEntry.toString()));
+			}
+		} else {
+			logger.log(logEntry);
 		}
 	}
 

@@ -89,15 +89,16 @@ public class M2DocLauncher implements IApplication {
 
 		boolean somethingWentWrong = false;
 		try {
-			System.out.println(" __          __  _                            _          __  __ ___     _            \n"
-					+ " \\ \\        / / | |                          | |        |  \\/  |__ \\   | |           \n"
-					+ "  \\ \\  /\\  / /__| | ___ ___  _ __ ___   ___  | |_ ___   | \\  / |  ) |__| | ___   ___ \n"
-					+ "   \\ \\/  \\/ / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\  | |\\/| | / // _` |/ _ \\ / __|\n"
-					+ "    \\  /\\  /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |  | |/ /| (_| | (_) | (__ \n"
-					+ "     \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/  |_|  |_|____\\__,_|\\___/ \\___|");
-			System.out.println("The command-line launcher to generate .docx from your models.");
+			System.out.println(CLIUtils.getDecorator()
+					.purple(" __          __  _                            _          __  __ ___     _            \n"
+							+ " \\ \\        / / | |                          | |        |  \\/  |__ \\   | |           \n"
+							+ "  \\ \\  /\\  / /__| | ___ ___  _ __ ___   ___  | |_ ___   | \\  / |  ) |__| | ___   ___ \n"
+							+ "   \\ \\/  \\/ / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\  | |\\/| | / // _` |/ _ \\ / __|\n"
+							+ "    \\  /\\  /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |  | |/ /| (_| | (_) | (__ \n"
+							+ "     \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/  |_|  |_|____\\__,_|\\___/ \\___|"));
+			System.out.println(CLIUtils.getDecorator().yellow("The command-line launcher to generate .docx from your models."));
 			parser.parseArgument(args);
-
+			System.out.println(CLIUtils.RESET);
 			Collection<URI> genconfs = validateArguments(parser);
 			Collection<Generation> loadedGenConfs = new ArrayList<Generation>();
 
@@ -126,7 +127,7 @@ public class M2DocLauncher implements IApplication {
 				}
 			}
 
-			final Monitor monitor = new BasicMonitor.Printing(System.out);
+			final Monitor monitor = new CLIUtils.ColoredPrinting(System.out);
 			GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
 
 			monitor.beginTask("Generating .docx documents", loadedGenConfs.size());

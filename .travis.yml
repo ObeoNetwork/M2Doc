@@ -20,10 +20,12 @@ before_script:
 script:
 - mvn -v
 - mvn clean verify -fae -P$PROFILE
-- if [[ "$TRAVIS_TAG" != "" ]] && [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
+- export TAG_OR_BRANCH="${TRAVIS_BRANCH}/nightly"
+- if [[ "$TRAVIS_TAG" != "" ]]; then export TAG_OR_BRANCH="${TRAVIS_TAG}"; fi
+- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
   $TRAVIS_BUILD_DIR/$TRAVIS_TAG; export UPDATE_SITES=true; fi
 after_script:
-- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh;
+- if [[ "$TAG_OR_BRANCH" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh;
   fi
 deploy:
 - provider: s3
@@ -31,11 +33,11 @@ deploy:
   secret_access_key:
     secure: A2AARWNQrm5bddsfzArzH8miOVvoTjT/Y1P6CMUHqiwKRE46mYEPqVxy+CIPtVa8SmvFTL/IRxb8zQ8FPBSTasB0vzz94yxtVJvwn+kkPM+z0YdzOfonJo4BjKO+NHzgncOpvBngMqboU5RzS+pqQ6xUhALhHEATCARsYF0NUgsEjGZ8JJJSzAbfQ7oaL6xbuon/72ABJOIQbg9sesq7YFl+/9bHcOl1SU5owF9hIa/b6IB3iEmg1L2vzYP2L/x+BGPwpMkDfRGMUBJByf3e8q6mvPYU/5XVQrqo2WnD9JGQB62OOi/DlRQ0cHxXP9x5iRd1hVqMJZMduAAa5ymK8UOV5h1+xkBFJMQZ3UQbZ3FEG/0rYFEVZ/ynj8H05/nO1DxqTiGSaCIlbF8hEWvcqfoK/cT+v+9i4GJ3jael03Um90U7L2fI098VYJmAuWqcYyNTqDVb5hwD77ULvT2b13vtVAGEJO1h3UoAy4xOMuOCCw3JezAA0UOL3mw2+F9syZ68Sm5yUXRZHuajSzAdpeD3X7tOO4cC6YCvUVkBXRLWozWmI64/6WL/FhNdux/GMlRqWGbxQPg43pZfGs6VQD/p1BGpZTFk9zuQix0UMLPxfvjwkLYt97KK6KmbCv1YE8IedhkdBeVDh9OETPFa5/N9lGxocpraVivYYzmyHDg=
   bucket: obeo-m2doc-releases
-  local-dir: "${TRAVIS_BUILD_DIR}/${TRAVIS_TAG}"
+  local-dir: "${TRAVIS_BUILD_DIR}/${TAG_OR_BRANCH}"
   acl: public_read
   skip_cleanup: true
   region: eu-west-1
-  upload-dir: ${TRAVIS_TAG}
+  upload-dir: ${TAG_OR_BRANCH}
   on:
     tags: true
     all_branches: true
