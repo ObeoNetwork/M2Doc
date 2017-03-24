@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ObeoNetwork/M2Doc.svg?branch=master)](https://travis-ci.org/ObeoNetwork/M2Doc)
+
 # M2Doc
 The M2Doc technology enables the generation of [Office Open XML](https://fr.wikipedia.org/wiki/Office_Open_XML) documents from Ecore models.
 
