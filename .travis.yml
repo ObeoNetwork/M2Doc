@@ -39,7 +39,7 @@ deploy:
   region: eu-west-1
   upload-dir: ${TAG_OR_BRANCH}
   on:
-    tags: true
+    all_branches: true
     repo: ObeoNetwork/M2Doc
     condition: $UPDATE_SITES = true
 
