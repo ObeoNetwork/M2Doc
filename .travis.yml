@@ -23,7 +23,7 @@ script:
 - export TAG_OR_BRANCH="${TRAVIS_BRANCH}/nightly"
 - if [[ "$TRAVIS_TAG" != "" ]]; then export TAG_OR_BRANCH="${TRAVIS_TAG}"; fi
 - if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x prepare-deploy-local-dir.sh && ./prepare-deploy-local-dir.sh
-  $TRAVIS_BUILD_DIR/$TRAVIS_TAG; export UPDATE_SITES=true; fi
+  $TRAVIS_BUILD_DIR/$TAG_OR_BRANCH; export UPDATE_SITES=true; fi
 after_script:
 - if [[ "$TAG_OR_BRANCH" != "" ]]; then chmod a+x travis-promote.sh && ./travis-promote.sh;
   fi
