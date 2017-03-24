@@ -57,11 +57,12 @@ The workflow of M2Doc is depicted below:
 
 ## Download & Installation
 
-Update sites:
+Releases (update sites):
 * [M2Doc 0.10.2](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/0.10.2/repository)
 * [M2Doc 0.9.7](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/M2Doc_0.9.7/repository)
 * [M2Doc 0.9.6](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/M2Doc_0.9.6/repository)
 * [M2Doc 0.9.5](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/0.9.5)
 
-
+Nighlty builds (update sites):
+* [master branch](https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/master/nightly/repository)
 
