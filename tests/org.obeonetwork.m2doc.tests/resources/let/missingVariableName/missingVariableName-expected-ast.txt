@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  Basic let demonstration :
+  
+  let null = .aqlFeatureAccess(self, 'name') in
+    name = 
+    [query: v | TEXT]
+    ,
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===

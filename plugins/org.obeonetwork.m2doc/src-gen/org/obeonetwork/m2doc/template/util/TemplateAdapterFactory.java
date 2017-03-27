@@ -177,6 +177,10 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
                 return createLinkAdapter();
             }
             @Override
+            public Adapter caseLet(Let object) {
+                return createLetAdapter();
+            }
+            @Override
             public Adapter caseTableClient(TableClient object) {
                 return createTableClientAdapter();
             }
@@ -519,6 +523,20 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLinkAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Let <em>Let</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Let
+     * @generated
+     */
+    public Adapter createLetAdapter() {
         return null;
     }
 

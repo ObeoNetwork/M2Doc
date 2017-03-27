@@ -60,13 +60,13 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Image;
+import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.POSITION;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Representation;
-import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
@@ -347,9 +347,52 @@ public class BodyTemplateParser extends BodyAbstractParser {
      * @throws DocumentParserException
      *             if a problem occurs while parsing.
      */
-    private Statement parseLet() throws DocumentParserException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("not implemented yet");
+    private Let parseLet() throws DocumentParserException {
+        Let let = (Let) EcoreUtil.create(TemplatePackage.Literals.LET);
+
+        String letText = readTag(let, let.getRuns()).trim().substring(TokenType.LET.getValue().length());
+        letText = letText.trim();
+
+        int currentIndex = 0;
+        if (currentIndex < letText.length() && Character.isJavaIdentifierStart(letText.charAt(currentIndex))) {
+            currentIndex++;
+            while (currentIndex < letText.length() && Character.isJavaIdentifierPart(letText.charAt(currentIndex))) {
+                currentIndex++;
+            }
+            let.setName(letText.substring(0, currentIndex));
+        } else {
+            validationError(let, "Missing identifier");
+        }
+
+        while (currentIndex < letText.length() && Character.isWhitespace(letText.charAt(currentIndex))) {
+            currentIndex++;
+        }
+
+        if (currentIndex < letText.length() && letText.charAt(currentIndex) == '=') {
+            currentIndex++;
+        } else {
+            validationError(let, "Missing =");
+        }
+
+        while (currentIndex < letText.length() && Character.isWhitespace(letText.charAt(currentIndex))) {
+            currentIndex++;
+        }
+
+        final String queryString = letText.substring(currentIndex);
+        final AstResult result = queryParser.build(queryString);
+        let.setValue(result);
+        if (!result.getErrors().isEmpty()) {
+            final XWPFRun lastRun = let.getRuns().get(let.getRuns().size() - 1);
+            let.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryString, lastRun));
+        }
+
+        final Block body = parseBlock(TokenType.ENDLET);
+        let.setBody(body);
+        if (getNextTokenType() != TokenType.EOF) {
+            readTag(let, let.getClosingRuns());
+        }
+
+        return let;
     }
 
     /**

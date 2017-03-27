@@ -108,6 +108,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
             case TemplatePackage.OPTION_VALUE_MAP: return (EObject)createOptionValueMap();
             case TemplatePackage.BOOKMARK: return createBookmark();
             case TemplatePackage.LINK: return createLink();
+            case TemplatePackage.LET: return createLet();
             case TemplatePackage.TABLE_CLIENT: return createTableClient();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -380,6 +381,16 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     public Link createLink() {
         LinkImpl link = new LinkImpl();
         return link;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Let createLet() {
+        LetImpl let = new LetImpl();
+        return let;
     }
 
     /**

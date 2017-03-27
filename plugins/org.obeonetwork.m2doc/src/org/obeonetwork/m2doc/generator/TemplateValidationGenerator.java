@@ -28,6 +28,7 @@ import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -124,6 +125,14 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     public Void caseRepetition(Repetition repetition) {
         insertErrorMessages(repetition);
         doSwitch(repetition.getBody());
+
+        return null;
+    }
+
+    @Override
+    public Void caseLet(Let let) {
+        insertErrorMessages(let);
+        doSwitch(let.getBody());
 
         return null;
     }

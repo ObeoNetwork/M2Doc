@@ -74,6 +74,7 @@ import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Image;
+import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -549,6 +550,34 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
 
         return repetition;
 
+    }
+
+    @Override
+    public IConstruct caseLet(Let let) {
+        if (let.getValue().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
+            insertQuerySyntaxMessages(let, QUERY_SYNTAX_ERROR_MESSAGE);
+        } else {
+            final EvaluationResult queryResult = evaluator.eval(let.getValue(), variablesStack.peek());
+            if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+                insertQueryEvaluationMessages(let, queryResult.getDiagnostic());
+            } else {
+                if (queryResult.getResult() == null) {
+                    insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                            "User doc id can't be null.");
+                } else {
+                    final Map<String, Object> newVariables = Maps.newHashMap(variablesStack.peek());
+                    variablesStack.push(newVariables);
+                    try {
+                        newVariables.put(let.getName(), queryResult.getResult());
+                        doSwitch(let.getBody());
+                    } finally {
+                        variablesStack.pop();
+                    }
+                }
+            }
+        }
+
+        return let;
     }
 
     @Override

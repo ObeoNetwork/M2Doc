@@ -125,6 +125,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Link/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Link/text"/>
     </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Let">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Let/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Let/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Let/body"/>
+    </genClasses>
     <genClasses ecoreClass="Template.ecore#//TableClient"/>
   </genPackages>
 </genmodel:GenModel>

@@ -46,6 +46,7 @@ import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Image;
+import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.QueryBehavior;
@@ -237,6 +238,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EClass linkEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass letEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1077,6 +1085,42 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getLet() {
+        return letEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getLet_Name() {
+        return (EAttribute)letEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getLet_Value() {
+        return (EAttribute)letEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getLet_Body() {
+        return (EReference)letEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getTableClient() {
         return tableClientEClass;
     }
@@ -1324,6 +1368,11 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(linkEClass, LINK__NAME);
         createEAttribute(linkEClass, LINK__TEXT);
 
+        letEClass = createEClass(LET);
+        createEAttribute(letEClass, LET__NAME);
+        createEAttribute(letEClass, LET__VALUE);
+        createEReference(letEClass, LET__BODY);
+
         tableClientEClass = createEClass(TABLE_CLIENT);
 
         // Create enums
@@ -1390,6 +1439,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         abstractProviderClientEClass.getESuperTypes().add(this.getStatement());
         bookmarkEClass.getESuperTypes().add(this.getStatement());
         linkEClass.getESuperTypes().add(this.getStatement());
+        letEClass.getESuperTypes().add(this.getStatement());
         tableClientEClass.getESuperTypes().add(this.getAbstractProviderClient());
 
         // Initialize classes, features, and operations; add parameters
@@ -1490,6 +1540,11 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getLink_Name(), this.getAstResult(), "name", null, 1, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getLink_Text(), this.getAstResult(), "text", null, 1, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(letEClass, Let.class, "Let", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getLet_Name(), ecorePackage.getEString(), "name", null, 1, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getLet_Value(), this.getAstResult(), "value", null, 1, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getLet_Body(), this.getBlock(), null, "body", null, 1, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(tableClientEClass, TableClient.class, "TableClient", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1628,6 +1683,12 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
            });	
         addAnnotation
           (getBookmark_Body(), 
+           source, 
+           new String[] {
+             "documentation", "The {@link Block} of {@link Statement}."
+           });	
+        addAnnotation
+          (getLet_Body(), 
            source, 
            new String[] {
              "documentation", "The {@link Block} of {@link Statement}."

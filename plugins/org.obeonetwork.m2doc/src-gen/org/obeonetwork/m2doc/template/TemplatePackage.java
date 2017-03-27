@@ -1961,6 +1961,97 @@ public interface TemplatePackage extends EPackage {
     int LINK_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.LetImpl <em>Let</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.template.impl.LetImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLet()
+     * @generated
+     */
+    int LET = 23;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET__STYLE_RUN = STATEMENT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET__RUNS = STATEMENT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET__NAME = STATEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET__VALUE = STATEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET__BODY = STATEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Let</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Let</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int LET_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableClientImpl <em>Table Client</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1968,7 +2059,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableClient()
      * @generated
      */
-    int TABLE_CLIENT = 23;
+    int TABLE_CLIENT = 24;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -2050,7 +2141,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-    int QUERY_BEHAVIOR = 24;
+    int QUERY_BEHAVIOR = 25;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
@@ -2060,7 +2151,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-    int POSITION = 25;
+    int POSITION = 26;
 
     /**
      * The meta object id for the '<em>Input Stream</em>' data type.
@@ -2070,7 +2161,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getInputStream()
      * @generated
      */
-    int INPUT_STREAM = 26;
+    int INPUT_STREAM = 27;
 
     /**
      * The meta object id for the '<em>OPC Package</em>' data type.
@@ -2080,7 +2171,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOPCPackage()
      * @generated
      */
-    int OPC_PACKAGE = 27;
+    int OPC_PACKAGE = 28;
 
     /**
      * The meta object id for the '<em>Document</em>' data type.
@@ -2090,7 +2181,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 28;
+    int DOCUMENT = 29;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -2100,7 +2191,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-    int WTABLE = 29;
+    int WTABLE = 30;
 
     /**
      * The meta object id for the '<em>Run</em>' data type.
@@ -2110,7 +2201,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-    int RUN = 30;
+    int RUN = 31;
 
     /**
      * The meta object id for the '<em>Ast Result</em>' data type.
@@ -2120,7 +2211,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-    int AST_RESULT = 31;
+    int AST_RESULT = 32;
 
     /**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -2130,7 +2221,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 32;
+    int TEMPLATE_VALIDATION_MESSAGE = 33;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -2140,7 +2231,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-    int WTABLE_ROW = 33;
+    int WTABLE_ROW = 34;
 
     /**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -2150,7 +2241,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-    int WTABLE_CELL = 34;
+    int WTABLE_CELL = 35;
 
     /**
      * The meta object id for the '<em>Provider</em>' data type.
@@ -2160,7 +2251,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
      * @generated
      */
-    int PROVIDER = 35;
+    int PROVIDER = 36;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -2170,7 +2261,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 36;
+    int BODY = 37;
 
 
     /**
@@ -2976,6 +3067,49 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EAttribute getLink_Text();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Let <em>Let</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Let</em>'.
+     * @see org.obeonetwork.m2doc.template.Let
+     * @generated
+     */
+    EClass getLet();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Let#getName <em>Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.obeonetwork.m2doc.template.Let#getName()
+     * @see #getLet()
+     * @generated
+     */
+    EAttribute getLet_Name();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Let#getValue <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.template.Let#getValue()
+     * @see #getLet()
+     * @generated
+     */
+    EAttribute getLet_Value();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.Let#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Body</em>'.
+     * @see org.obeonetwork.m2doc.template.Let#getBody()
+     * @see #getLet()
+     * @generated
+     */
+    EReference getLet_Body();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.TableClient <em>Table Client</em>}'.
@@ -3796,6 +3930,40 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute LINK__TEXT = eINSTANCE.getLink_Text();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.LetImpl <em>Let</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.template.impl.LetImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLet()
+         * @generated
+         */
+        EClass LET = eINSTANCE.getLet();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute LET__NAME = eINSTANCE.getLet_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute LET__VALUE = eINSTANCE.getLet_Value();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference LET__BODY = eINSTANCE.getLet_Body();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.TableClientImpl <em>Table Client</em>}' class.

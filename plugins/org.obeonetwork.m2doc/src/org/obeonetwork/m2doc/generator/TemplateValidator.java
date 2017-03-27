@@ -69,6 +69,7 @@ import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
@@ -472,6 +473,38 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         return ValidationMessageLevel.updateLevel(getHighestMessageLevel(repetition), iteratorLevel, bodyLevel);
     }
 
+    @Override
+    public ValidationMessageLevel caseLet(Let let) {
+        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), let.getValue());
+        final Set<IType> types = validationResult.getPossibleTypes(let.getValue().getAst());
+
+        final XWPFRun run = let.getRuns().get(1);
+        ValidationMessageLevel variableLevel;
+        if (let.getValue().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
+            addValidationMessages(let, run, validationResult);
+            variableLevel = ValidationMessageLevel.OK;
+        } else {
+            variableLevel = ValidationMessageLevel.ERROR;
+        }
+        if (stack.peek().containsKey(let.getName())) {
+            variableLevel = ValidationMessageLevel.updateLevel(variableLevel, ValidationMessageLevel.WARNING);
+            let.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
+                    String.format("The variable mask an existing variable (%s).", let.getName()), run));
+        }
+
+        final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
+        iterationVariables.put(let.getName(), types);
+        stack.push(iterationVariables);
+        final ValidationMessageLevel bodyLevel;
+        try {
+            bodyLevel = doSwitch(let.getBody());
+        } finally {
+            stack.pop();
+        }
+
+        return ValidationMessageLevel.updateLevel(getHighestMessageLevel(let), variableLevel, bodyLevel);
+    }
+
     /**
      * Validates the {@link Repetition#getQuery() query}.
      * 
@@ -592,14 +625,16 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
      *            the {@link IValidationResult}
      */
     private void addValidationMessages(IConstruct construct, XWPFRun run, IValidationResult validationResult) {
+        ValidationMessageLevel messageLevel = ValidationMessageLevel.OK;
+
         if (validationResult != null) {
-            ValidationMessageLevel messageLevel = ValidationMessageLevel.OK;
             for (IValidationMessage message : validationResult.getMessages()) {
                 final ValidationMessageLevel level = getLevel(message);
                 messageLevel = ValidationMessageLevel.updateLevel(messageLevel, level);
                 construct.getValidationMessages().add(new TemplateValidationMessage(level, message.getMessage(), run));
             }
         } else {
+            messageLevel = ValidationMessageLevel.ERROR;
             construct.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "Couldn't validate the expression", run));
         }

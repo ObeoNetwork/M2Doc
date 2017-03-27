@@ -434,6 +434,21 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     }
 
     @Override
+    public Void caseLet(org.obeonetwork.m2doc.template.Let let) {
+        newLine();
+        builder.append("let ");
+        builder.append(let.getName());
+        builder.append(" = ");
+        builder.append(querySerializer.serialize(let.getValue().getAst()));
+        builder.append(" in");
+        doSwitch(let.getBody());
+        newLine();
+        builder.append("endfor");
+        newLine();
+        return null;
+    }
+
+    @Override
     public Void caseUserDoc(UserDoc userDoc) {
         newLine();
         builder.append("userdoc ");
