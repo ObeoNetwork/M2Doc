@@ -11,29 +11,32 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+
 //@formatter:off
-//@ServiceProvider(
-//  value = "Services available for Booleans"
-//)
+@ServiceProvider(
+  value = "Services available for Booleans"
+)
 //@formatter:on
-// TODO activate documentation when changing AQL dependency
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class BooleanServices {
 
     // @formatter:off
-//    @Documentation(
-//        value = "Returns \"X\" for boolean true.",
-//        params = {
-//            @Param(name = "value", value = "The boolean value"),
-//        },
-//        result = "\"X\" when the boolean value is true, \"\" otherwise.",
-//        examples = {
-//            @Example(expression = "true.check()", result = "X"),
-//            @Example(expression = "false.check()", result = ""),
-//        }
-//    )
+    @Documentation(
+        value = "Returns \"X\" for boolean true.",
+        params = {
+            @Param(name = "value", value = "The boolean value"),
+        },
+        result = "\"X\" when the boolean value is true, \"\" otherwise.",
+        examples = {
+            @Example(expression = "true.check()", result = "X"),
+            @Example(expression = "false.check()", result = ""),
+        }
+    )
     // @formatter:on
-    // TODO activate documentation when changing AQL dependency
     /**
      * return X if true else empty.
      * 
@@ -54,19 +57,18 @@ public class BooleanServices {
     }
 
     // @formatter:off
-//    @Documentation(
-//        value = "Returns \"Yes\" for boolean true, \"No\" otherwise.",
-//        params = {
-//            @Param(name = "value", value = "The boolean value"),
-//        },
-//        result = "\"Yes\" when the boolean value is true, \"No\" otherwise.",
-//        examples = {
-//            @Example(expression = "true.yesNo()", result = "Yes"),
-//            @Example(expression = "false.yesNo()", result = "No"),
-//        }
-//    )
+    @Documentation(
+        value = "Returns \"Yes\" for boolean true, \"No\" otherwise.",
+        params = {
+            @Param(name = "value", value = "The boolean value"),
+        },
+        result = "\"Yes\" when the boolean value is true, \"No\" otherwise.",
+        examples = {
+            @Example(expression = "true.yesNo()", result = "Yes"),
+            @Example(expression = "false.yesNo()", result = "No"),
+        }
+    )
     // @formatter:on
-    // TODO activate documentation when changing AQL dependency
     /**
      * return yes if true else no.
      * 

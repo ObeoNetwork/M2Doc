@@ -35,6 +35,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
@@ -43,6 +44,7 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
@@ -54,7 +56,6 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -102,9 +103,9 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     private final Stack<Map<String, Set<IType>>> stack = new Stack<Map<String, Set<IType>>>();
 
     /**
-     * AQL environment used to validate queries.
+     * AQL {@link AstValidator}.
      */
-    private IReadOnlyQueryEnvironment environment;
+    private AstValidator aqlValidator;
 
     /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
@@ -117,7 +118,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
      */
     public ValidationMessageLevel validate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment) {
-        environment = queryEnvironment;
+        aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
                 documentTemplate.getDocument());
         Map<String, Set<IType>> types = Maps.newLinkedHashMap();
@@ -153,8 +154,8 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
         final Set<IType> res = new LinkedHashSet<IType>();
 
         final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
-        final IValidationResult validationResult = AQL4Compat.validate(astResult,
-                Collections.<String, Set<IType>> emptyMap(), environment);
+        final IValidationResult validationResult = aqlValidator.validate(Collections.<String, Set<IType>> emptyMap(),
+                astResult);
         // TODO replace with AstValidator.getDeclarationTypes()
         final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
         for (IType iType : variableTypes) {
@@ -244,8 +245,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseBookmark(Bookmark bookmark) {
         if (bookmark.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult validationResult = AQL4Compat.validate(bookmark.getName(), stack.peek(),
-                    environment);
+            final IValidationResult validationResult = aqlValidator.validate(stack.peek(), bookmark.getName());
             final XWPFRun run = bookmark.getRuns().get(1);
             addValidationMessages(bookmark, run, validationResult);
         }
@@ -258,15 +258,13 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseLink(Link link) {
         if (link.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult nameValidationResult = AQL4Compat.validate(link.getName(), stack.peek(),
-                    environment);
+            final IValidationResult nameValidationResult = aqlValidator.validate(stack.peek(), link.getName());
             final XWPFRun run = link.getRuns().get(1);
             addValidationMessages(link, run, nameValidationResult);
         }
 
         if (link.getText().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult textValidationResult = AQL4Compat.validate(link.getText(), stack.peek(),
-                    environment);
+            final IValidationResult textValidationResult = aqlValidator.validate(stack.peek(), link.getText());
             final XWPFRun run = link.getRuns().get(1);
             addValidationMessages(link, run, textValidationResult);
         }
@@ -278,7 +276,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     public ValidationMessageLevel caseUserDoc(UserDoc userDoc) {
         final ValidationMessageLevel idLevel;
         if (userDoc.getId().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult validationResult = AQL4Compat.validate(userDoc.getId(), stack.peek(), environment);
+            final IValidationResult validationResult = aqlValidator.validate(stack.peek(), userDoc.getId());
             final XWPFRun run = userDoc.getRuns().get(1);
             addValidationMessages(userDoc, run, validationResult);
             idLevel = checkUserDocIdTypes(userDoc, run, validationResult);
@@ -308,8 +306,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseConditional(Conditional conditional) {
-        final IValidationResult validationResult = AQL4Compat.validate(conditional.getCondition(), stack.peek(),
-                environment);
+        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), conditional.getCondition());
         final Set<IType> types = validationResult.getPossibleTypes(conditional.getCondition().getAst());
         final ValidationMessageLevel conditionLevel;
         if (conditional.getCondition().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
@@ -434,8 +431,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseRepetition(Repetition repetition) {
 
-        final IValidationResult validationResult = AQL4Compat.validate(repetition.getQuery(), stack.peek(),
-                environment);
+        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), repetition.getQuery());
         final Set<IType> types = validationResult.getPossibleTypes(repetition.getQuery().getAst());
         final XWPFRun run = repetition.getRuns().get(1);
         ValidationMessageLevel iteratorLevel;
@@ -511,7 +507,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseQuery(Query query) {
         if (query.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult validationResult = AQL4Compat.validate(query.getQuery(), stack.peek(), environment);
+            final IValidationResult validationResult = aqlValidator.validate(stack.peek(), query.getQuery());
             final XWPFRun run = query.getStyleRun();
             addValidationMessages(query, run, validationResult);
         }
@@ -564,8 +560,7 @@ public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
                 if (providerClient.getProvider().getOptionTypes().get(entry.getKey()) == OptionType.AQL_EXPRESSION) {
                     final AstResult astResult = (AstResult) entry.getValue();
                     if (astResult.getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-                        final IValidationResult validationResult = AQL4Compat.validate(astResult, stack.peek(),
-                                environment);
+                        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), astResult);
                         addValidationMessages(providerClient, run, validationResult);
                         options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));
                     } else {

@@ -779,7 +779,6 @@ public class BodyTemplateParser extends BodyAbstractParser {
                 conditional.setElse(elseIfCompound);
                 break;
             case ELSE:
-                // TODO we should be able to do this an other way...
                 final Block block = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
                 readTag(block, block.getRuns());
                 final Block elseCompound = parseBlock(TokenType.ENDIF);

@@ -17,6 +17,8 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -69,14 +71,16 @@ public final class QueryServices {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
-        AQL4Compat.register(queryEnvironment, BooleanServices.class);
-        AQL4Compat.register(queryEnvironment, LinkServices.class);
-        if (AQL4Compat.IS_AQL_5) {
-            AQL4Compat.register(queryEnvironment, new ImageServices(templateURI));
-        }
-        List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
-        for (Class<?> cls : services) {
-            AQL4Compat.register(queryEnvironment, cls);
+        Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
+        ServiceUtils.registerServices(queryEnvironment, services);
+        services = ServiceUtils.getServices(queryEnvironment, LinkServices.class);
+        ServiceUtils.registerServices(queryEnvironment, services);
+        services = ServiceUtils.getServices(queryEnvironment, new ImageServices(templateURI));
+        ServiceUtils.registerServices(queryEnvironment, services);
+        List<Class<?>> defaultClasses = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
+        for (Class<?> cls : defaultClasses) {
+            services = ServiceUtils.getServices(queryEnvironment, cls);
+            ServiceUtils.registerServices(queryEnvironment, services);
         }
 
         return queryEnvironment;

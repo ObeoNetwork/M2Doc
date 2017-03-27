@@ -14,15 +14,18 @@ package org.obeonetwork.m2doc.services;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.api.Image;
 
 //@formatter:off
-//@ServiceProvider(
-//  value = "Services available for Images"
-//)
+@ServiceProvider(
+  value = "Services available for Images"
+)
 //@formatter:on
-// TODO activate documentation when changing AQL dependency
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class ImageServices {
 
@@ -42,18 +45,17 @@ public class ImageServices {
     }
 
     // @formatter:off
-//    @Documentation(
-//        value = "Convert a String to an Image.",
-//        params = {
-//            @Param(name = "path", value = "The Image path"),
-//        },
-//        result = "insert the image",
-//        examples = {
-//            @Example(expression = "'image.png'.asImage()", result = "insert the image 'image.png'"),
-//        }
-//    )
+    @Documentation(
+        value = "Convert a String to an Image.",
+        params = {
+            @Param(name = "uri", value = "The Image uri, it can be relative to the template"),
+        },
+        result = "insert the image",
+        examples = {
+            @Example(expression = "'image.png'.asImage()", result = "insert the image 'image.png'"),
+        }
+    )
     // @formatter:on
-    // TODO activate documentation when changing AQL dependency
     /**
      * Gets the {@link Image} corresponding to the given path.
      * 
@@ -61,10 +63,10 @@ public class ImageServices {
      *            the path
      * @return the {@link Image} corresponding to the given path
      */
-    public Image asImage(String path) {
+    public Image asImage(String uriStr) {
         final Image res;
 
-        final URI imageURI = URI.createURI(path);
+        final URI imageURI = URI.createURI(uriStr);
 
         URI uri;
         if (!imageURI.hasAbsolutePath()) {
@@ -72,7 +74,7 @@ public class ImageServices {
              * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
              */
             uri = templateURI.trimSegments(1);
-            for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(path)) {
+            for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(uriStr)) {
                 uri = uri.appendSegment(s);
             }
         } else {
@@ -83,6 +85,19 @@ public class ImageServices {
         return res;
     }
 
+    // @formatter:off
+    @Documentation(
+        value = "Sets the width of the image.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+            @Param(name = "width", value = "The width"),
+        },
+        result = "sets the width of the image",
+        examples = {
+            @Example(expression = "myImage.setWidth(300)", result = "set the witdh to 300"),
+        }
+    )
+    // @formatter:on
     /**
      * Sets the given width to the image.
      * 
@@ -92,13 +107,25 @@ public class ImageServices {
      *            the width
      * @return the given {@link Image} with the new width
      */
-    // TODO activate documentation when changing AQL dependency
     public Image setWidth(Image image, Integer width) {
         image.setWidth(width);
 
         return image;
     }
 
+    // @formatter:off
+    @Documentation(
+        value = "Sets the height of the image.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+            @Param(name = "height", value = "The height"),
+        },
+        result = "sets the height of the image",
+        examples = {
+            @Example(expression = "myImage.setHeight(300)", result = "set the height to 300"),
+        }
+    )
+    // @formatter:on
     /**
      * Sets the given height to the image.
      * 
@@ -108,13 +135,24 @@ public class ImageServices {
      *            the height
      * @return the given {@link Image} with the new height
      */
-    // TODO activate documentation when changing AQL dependency
     public Image setHeight(Image image, Integer height) {
         image.setHeight(height);
 
         return image;
     }
 
+    // @formatter:off
+    @Documentation(
+        value = "Sets the conserve ratio of the image.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+            @Param(name = "conserve", value = "A Boolean"),
+        },
+        result = "sets the conserve ratio of the image",
+        examples = {
+            @Example(expression = "myImage.setConserveRatio(false)", result = "set the conserve ratio to false"),
+        }
+    )
     /**
      * Sets the conserve aspect ratio to the given {@link Image}.
      * 
@@ -124,7 +162,6 @@ public class ImageServices {
      *            <code>true</code> to conserve the aspect ratio, <code>false</code> otherwise
      * @return the given {@link Image} with the new conserve aspect ratio
      */
-    // TODO activate documentation when changing AQL dependency
     public Image setConserveRatio(Image image, Boolean conserve) {
         image.setConserveRatio(conserve);
 

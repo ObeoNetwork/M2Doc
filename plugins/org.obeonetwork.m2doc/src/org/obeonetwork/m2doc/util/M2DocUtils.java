@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -29,6 +30,8 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -39,7 +42,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.obeonetwork.m2doc.api.AQL4Compat;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -371,13 +373,15 @@ public final class M2DocUtils {
         for (String token : properties.getServiceTokens()) {
             List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(token);
             for (Class<?> cls : services) {
-                AQL4Compat.register(queryEnvironment, cls);
+                final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
+                ServiceUtils.registerServices(queryEnvironment, s);
             }
         }
         for (String serviceClass : properties.getServiceClasses()) {
             try {
                 final Class<?> cls = classLoader.loadClass(serviceClass);
-                AQL4Compat.register(queryEnvironment, cls);
+                final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
+                ServiceUtils.registerServices(queryEnvironment, s);
             } catch (ClassNotFoundException e) {
                 final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
                 final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
