@@ -79,7 +79,7 @@ public abstract class BodyAbstractParser {
     protected final FieldUtils fieldUtils;
 
     /**
-     * Creates a new {@link BodyTemplateParser} instance.
+     * Creates a new {@link M2DocParser} instance.
      * 
      * @param inputDocument
      *            the input template to parser
@@ -95,7 +95,7 @@ public abstract class BodyAbstractParser {
     }
 
     /**
-     * Creates a new {@link BodyTemplateParser} instance.
+     * Creates a new {@link M2DocParser} instance.
      * 
      * @param inputDocument
      *            the input template to parser

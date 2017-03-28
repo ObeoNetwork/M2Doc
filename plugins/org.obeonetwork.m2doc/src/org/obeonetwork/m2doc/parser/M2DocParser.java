@@ -83,8 +83,7 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
  * 
  * @author Romain Guider
  */
-@SuppressWarnings("restriction")
-public class BodyTemplateParser extends BodyAbstractParser {
+public class M2DocParser extends BodyAbstractParser {
 
     /**
      * Label modifier constant.
@@ -163,19 +162,19 @@ public class BodyTemplateParser extends BodyAbstractParser {
     private static final int OPTION_GROUP_RANK = 1;
 
     /**
-     * Creates a new {@link BodyTemplateParser} instance.
+     * Creates a new {@link M2DocParser} instance.
      * 
      * @param inputDocument
      *            the input template to parser
      * @param queryEnvironment
      *            the query environment to used during parsing.
      */
-    public BodyTemplateParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
+    public M2DocParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
         super(inputDocument, queryEnvironment);
     }
 
     /**
-     * Creates a new {@link BodyTemplateParser} instance.
+     * Creates a new {@link M2DocParser} instance.
      * 
      * @param inputDocument
      *            the input template to parser
@@ -184,8 +183,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
      * @param queryEnvironment
      *            The {@link IQueryEnvironment}
      */
-    private BodyTemplateParser(IBody inputDocument, IQueryBuilderEngine queryParser,
-            IQueryEnvironment queryEnvironment) {
+    private M2DocParser(IBody inputDocument, IQueryBuilderEngine queryParser, IQueryEnvironment queryEnvironment) {
         super(inputDocument, queryParser, queryEnvironment);
     }
 
@@ -1037,7 +1035,7 @@ public class BodyTemplateParser extends BodyAbstractParser {
      */
     @Override
     protected BodyAbstractParser getNewParser(IBody inputDocument) {
-        BodyAbstractParser parser = new BodyTemplateParser(inputDocument, this.queryParser, this.queryEnvironment);
+        BodyAbstractParser parser = new M2DocParser(inputDocument, this.queryParser, this.queryEnvironment);
         return parser;
     }
 }

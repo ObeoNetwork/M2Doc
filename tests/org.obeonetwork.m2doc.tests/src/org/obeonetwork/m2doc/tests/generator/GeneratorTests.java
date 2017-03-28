@@ -23,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses(value = {DocumentGeneratorTests.class, TableClientProcessorSeveralTablesTests.class,
     TableClientProcessorTests.class, TableClientProcessorWithStyleTests.class, TemplateValidationGeneratorTests.class,
-    TemplateValidatorTests.class, })
+    M2DocValidatorTests.class, })
 public class GeneratorTests {
 
 }

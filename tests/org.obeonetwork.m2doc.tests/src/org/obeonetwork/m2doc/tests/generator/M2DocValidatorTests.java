@@ -30,7 +30,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.obeonetwork.m2doc.generator.TemplateValidator;
+import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
@@ -51,11 +51,11 @@ import static org.junit.Assert.assertEquals;
 import static org.obeonetwork.m2doc.tests.M2DocTestUtils.assertTemplateValidationMessage;
 
 /**
- * Test {@link TemplateValidator}.
+ * Test {@link M2DocValidator}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class TemplateValidatorTests {
+public class M2DocValidatorTests {
 
     @Ignore("This test can't be implemented. We need to fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=512569 before.")
     @Test
@@ -71,7 +71,7 @@ public class TemplateValidatorTests {
         template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
-        final TemplateValidator validator = new TemplateValidator();
+        final M2DocValidator validator = new M2DocValidator();
 
         final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
         final Set<IType> selfTypes = new LinkedHashSet<IType>();
@@ -104,7 +104,7 @@ public class TemplateValidatorTests {
         template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
-        final TemplateValidator validator = new TemplateValidator();
+        final M2DocValidator validator = new M2DocValidator();
 
         final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
         final Set<IType> selfTypes = new LinkedHashSet<IType>();
@@ -142,7 +142,7 @@ public class TemplateValidatorTests {
         template.getBody().getStatements().add(conditional);
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
-        final TemplateValidator validator = new TemplateValidator();
+        final M2DocValidator validator = new M2DocValidator();
 
         final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
         final Set<IType> selfTypes = new LinkedHashSet<IType>();
@@ -176,7 +176,7 @@ public class TemplateValidatorTests {
         @SuppressWarnings("resource")
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
-        final TemplateValidator validator = new TemplateValidator();
+        final M2DocValidator validator = new M2DocValidator();
         validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
@@ -205,7 +205,7 @@ public class TemplateValidatorTests {
         @SuppressWarnings("resource")
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
-        final TemplateValidator validator = new TemplateValidator();
+        final M2DocValidator validator = new M2DocValidator();
         validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(1, query.getValidationMessages().size());
@@ -249,7 +249,7 @@ public class TemplateValidatorTests {
         @SuppressWarnings("resource")
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
 
-        final TemplateValidator validator = new TemplateValidator();
+        final M2DocValidator validator = new M2DocValidator();
         validator.validate(documentTemplate, queryEnvironment);
 
         assertEquals(2, image.getValidationMessages().size());

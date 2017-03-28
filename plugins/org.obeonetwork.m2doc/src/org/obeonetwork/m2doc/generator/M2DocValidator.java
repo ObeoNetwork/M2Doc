@@ -86,7 +86,7 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class TemplateValidator extends TemplateSwitch<ValidationMessageLevel> {
+public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     /**
      * {@link Boolean} {@link IType}.

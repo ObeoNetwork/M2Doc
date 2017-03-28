@@ -99,12 +99,12 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 /**
- * The {@link TemplateProcessor} class implements a switch over template that generates the doc.
+ * The {@link M2DocEvaluator} class implements a switch over template that generates the doc.
  * 
  * @author Romain Guider
  */
 @SuppressWarnings("restriction")
-public class TemplateProcessor extends TemplateSwitch<IConstruct> {
+public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     /**
      * Error message when AQL query could not be evaluated.
@@ -181,7 +181,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     private GenerationResult result;
 
     /**
-     * Create a new {@link TemplateProcessor} instance given some definitions
+     * Create a new {@link M2DocEvaluator} instance given some definitions
      * and a query environment.
      * 
      * @param bookmarkManager
@@ -191,7 +191,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
      */
-    public TemplateProcessor(BookmarkManager bookmarkManager, UserContentManager userContentManager,
+    public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager,
             IReadOnlyQueryEnvironment queryEnvironment) {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
@@ -1276,7 +1276,7 @@ public class TemplateProcessor extends TemplateSwitch<IConstruct> {
     }
 
     /**
-     * Should be called when the {@link TemplateProcessor} is no longer needed so that it can cleanup temporary files used during the
+     * Should be called when the {@link M2DocEvaluator} is no longer needed so that it can cleanup temporary files used during the
      * generation.
      */
     public void clear() {

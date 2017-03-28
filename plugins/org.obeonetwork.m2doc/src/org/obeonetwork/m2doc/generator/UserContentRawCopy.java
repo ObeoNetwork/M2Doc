@@ -100,7 +100,7 @@ public class UserContentRawCopy {
      * @param userContent
      *            UserContent EObject
      * @param outputParagraphBeforeUserDocContent
-     *            Output Paragraph Before User Doc Dest content (User Code dest is writen by {@link TemplateProcessor} )
+     *            Output Paragraph Before User Doc Dest content (User Code dest is writen by {@link M2DocEvaluator} )
      * @param outputBody
      *            output body
      * @return last paragraph created by copy

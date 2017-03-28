@@ -46,12 +46,12 @@ import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
-import org.obeonetwork.m2doc.generator.TemplateProcessor;
+import org.obeonetwork.m2doc.generator.M2DocEvaluator;
 import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
-import org.obeonetwork.m2doc.generator.TemplateValidator;
+import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
-import org.obeonetwork.m2doc.parser.BodyTemplateParser;
+import org.obeonetwork.m2doc.parser.M2DocParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
@@ -317,7 +317,7 @@ public final class M2DocUtils {
             final XWPFDocument document = new XWPFDocument(oPackage);
             final List<TemplateValidationMessage> messages = parseTemplateInfo(queryEnvironment, classLoader, document);
             r.getContents().add(result);
-            final BodyTemplateParser parser = new BodyTemplateParser(document, queryEnvironment);
+            final M2DocParser parser = new M2DocParser(document, queryEnvironment);
             final Template documentBody = parser.parseTemplate();
             for (TemplateValidationMessage validationMessage : messages) {
                 documentBody.getValidationMessages().add(validationMessage);
@@ -327,11 +327,11 @@ public final class M2DocUtils {
             result.setOpcPackage(oPackage);
             result.setDocument(document);
             for (XWPFFooter footer : document.getFooterList()) {
-                final BodyTemplateParser footerParser = new BodyTemplateParser(footer, queryEnvironment);
+                final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
                 result.getFooters().add(footerParser.parseTemplate());
             }
             for (XWPFHeader header : document.getHeaderList()) {
-                final BodyTemplateParser headerParser = new BodyTemplateParser(header, queryEnvironment);
+                final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
                 result.getHeaders().add(headerParser.parseTemplate());
             }
 
@@ -451,7 +451,7 @@ public final class M2DocUtils {
      */
     public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment) {
-        final TemplateValidator validator = new TemplateValidator();
+        final M2DocValidator validator = new M2DocValidator();
         return validator.validate(documentTemplate, queryEnvironment);
     }
 
@@ -504,7 +504,7 @@ public final class M2DocUtils {
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(documentTemplate, destination);
-            final TemplateProcessor processor = new TemplateProcessor(bookmarkManager, userContentManager,
+            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager,
                     queryEnvironment);
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
