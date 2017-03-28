@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+template null
+  Basic if demonstration :
+  
+  if .not(.oclIsKindOf(self, EClass)) then
+  else
+    [query: .oclIsKindOf(self, EClass) | TEXT]
+  endif
+  
+  End of demonstration.
+=== FOOTER ===

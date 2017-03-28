@@ -24,11 +24,9 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
-import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -57,72 +55,6 @@ import static org.obeonetwork.m2doc.tests.M2DocTestUtils.assertTemplateValidatio
  */
 public class M2DocValidatorTests {
 
-    @Ignore("This test can't be implemented. We need to fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=512569 before.")
-    @Test
-    public void conditionalSelectorNotOnlyBoolean() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
-        conditional.setCondition(engine.build("self"));
-        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        conditional.setThen(thenCompound);
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(conditional);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final M2DocValidator validator = new M2DocValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new ClassType(queryEnvironment, String.class));
-        selfTypes.add(new ClassType(queryEnvironment, Boolean.class));
-
-        validator.validate(documentTemplate, queryEnvironment);
-
-        assertEquals(1, conditional.getValidationMessages().size());
-        assertTemplateValidationMessage(conditional.getValidationMessages().get(0), ValidationMessageLevel.WARNING,
-                "The predicate may evaluate to a value that is not a boolean type ([java.lang.String, java.lang.Boolean]).",
-                conditional.getRuns().get(1));
-    }
-
-    @Ignore("This test can't be implemented. We need to fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=512569 before.")
-    @Test
-    public void conditionalInferedTypeInThen() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
-        conditional.setCondition(engine.build("self.oclIsKindOf(ecore::EClass)"));
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self.oclIsKindOf(ecore::EClass)"));
-        final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        thenCompound.getStatements().add(query);
-        conditional.setThen(thenCompound);
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        template.getBody().getStatements().add(conditional);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final M2DocValidator validator = new M2DocValidator();
-
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
-
-        validator.validate(documentTemplate, queryEnvironment);
-
-        assertEquals(0, conditional.getValidationMessages().size());
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.INFO,
-                "Always true:\nNothing inferred when self (EClassifier=EClass) is not kind of EClassifierLiteral=EClass",
-                query.getStyleRun());
-    }
-
-    @Ignore("This test can't be implemented. We need to fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=512569 before.")
-    @Test
     public void conditionalInferedTypeInElse() {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
