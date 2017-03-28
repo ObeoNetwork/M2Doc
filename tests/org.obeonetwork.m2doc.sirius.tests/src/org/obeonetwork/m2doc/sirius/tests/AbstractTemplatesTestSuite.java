@@ -21,7 +21,7 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
 
-public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.test.AbstractTemplatesTestSuite {
+public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite {
 
     private final static SiriusDiagramByTitleProvider PROVIDER = new SiriusDiagramByTitleProvider();
 
@@ -46,7 +46,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      */
     @BeforeClass
     public static void beforeClass() {
-        org.obeonetwork.m2doc.test.AbstractTemplatesTestSuite.beforeClass();
+        org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite.beforeClass();
         ProviderRegistry.INSTANCE.registerProvider(PROVIDER);
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      */
     @AfterClass
     public static void afterClass() throws IOException {
-        org.obeonetwork.m2doc.test.AbstractTemplatesTestSuite.afterClass();
+        org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite.afterClass();
         ProviderRegistry.INSTANCE.removeProvider(PROVIDER);
     }
 

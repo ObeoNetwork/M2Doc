@@ -17,11 +17,11 @@ Require-Bundle: org.eclipse.core.runtime,
  com.google.guava;bundle-version="[15.0.0,16.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %providerName
-Export-Package: org.obeonetwork.m2doc.generator.test,
- org.obeonetwork.m2doc.parser.test,
- org.obeonetwork.m2doc.properties.test,
- org.obeonetwork.m2doc.provider.test,
- org.obeonetwork.m2doc.services.test,
- org.obeonetwork.m2doc.test,
- org.obeonetwork.m2doc.userdoc.test,
- org.obeonetwork.m2doc.util.test
+Export-Package: org.obeonetwork.m2doc.tests,
+ org.obeonetwork.m2doc.tests.generator,
+ org.obeonetwork.m2doc.tests.parser,
+ org.obeonetwork.m2doc.tests.properties,
+ org.obeonetwork.m2doc.tests.provider,
+ org.obeonetwork.m2doc.tests.services,
+ org.obeonetwork.m2doc.tests.userdoc,
+ org.obeonetwork.m2doc.tests.util
