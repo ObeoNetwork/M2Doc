@@ -4,8 +4,8 @@ env:
   - DISPLAY=:99.0
   - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
   matrix:
-  - PROFILE=platform-luna
-  - PROFILE=platform-mars
+  - PROFILE=platform-luna,tests
+  - PROFILE=platform-mars,tests
   - PROFILE=platform-neon,tests,updatesites
 jdk:
 - oraclejdk8
