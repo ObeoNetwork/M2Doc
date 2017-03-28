@@ -18,10 +18,10 @@
             diagramClass="org.obeonetwork.m2doc.test.Wrong">
       </diagramProvider>
       <diagramProvider
-            diagramClass="org.obeonetwork.m2doc.provider.test.TestDiagramProvider">
+            diagramClass="org.obeonetwork.m2doc.tests.provider.TestDiagramProvider">
       </diagramProvider>
       <diagramProvider
-            diagramClass="org.obeonetwork.m2doc.provider.test.TestDiagramProvider">
+            diagramClass="org.obeonetwork.m2doc.tests.provider.TestDiagramProvider">
       </diagramProvider>
    </extension>
 </plugin>

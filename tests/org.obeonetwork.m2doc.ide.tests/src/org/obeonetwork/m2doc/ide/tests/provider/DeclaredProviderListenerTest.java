@@ -47,7 +47,7 @@ public class DeclaredProviderListenerTest {
         assertTrue(findErrorWithMessage(errorLogListener.getAllStatus(),
                 "Problem while registering M2Doc Providers : Plug-in org.obeonetwork.m2doc.ide.tests was unable to load class org.obeonetwork.m2doc.test.Wrong."));
         assertTrue(findErrorWithMessage(errorLogListener.getAllStatus(),
-                "Problem while registering M2Doc Providers : the provider \"org.obeonetwork.m2doc.provider.test.TestDiagramProvider\" is already registered. The current implementation will not be used."));
+                "Problem while registering M2Doc Providers : the provider \"org.obeonetwork.m2doc.tests.provider.TestDiagramProvider\" is already registered. The current implementation will not be used."));
     }
 
     /**
