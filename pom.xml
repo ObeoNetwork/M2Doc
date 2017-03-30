@@ -93,7 +93,6 @@
           </execution>
         </executions>
       </plugin>
-<!--
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
         <artifactId>tycho-source-feature-plugin</artifactId>
@@ -102,6 +101,15 @@
           <archive>
             <addMavenDescriptor>false</addMavenDescriptor>
           </archive>
+          <excludes>
+            <plugin id="org.obeonetwork.m2doc.doc"/>
+            <plugin id="org.kohsuke.args4j"/>
+            <plugin id="org.apache.poi"/>
+            <plugin id="com.google.guava"/>
+            <plugin id="org.antlr.runtime"/>
+            <feature id="org.eclipse.equinox.core.feature"/>
+            <feature id="org.eclipse.emf.common"/>
+        </excludes>
         </configuration>
         <executions>
           <execution>
@@ -113,7 +121,6 @@
           </execution>
         </executions>
       </plugin>
--->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-packaging-plugin</artifactId>
