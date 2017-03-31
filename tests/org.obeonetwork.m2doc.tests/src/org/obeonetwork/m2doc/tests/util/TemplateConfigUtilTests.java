@@ -289,7 +289,7 @@ public class TemplateConfigUtilTests {
 
     @Test
     public void testIsValidTypeName() {
-        assertTrue(TemplateConfigUtil.isValidTypeName("string"));
+        assertTrue(TemplateConfigUtil.isValidTypeName("String"));
         assertTrue(TemplateConfigUtil.isValidTypeName("a::v"));
         assertTrue(TemplateConfigUtil.isValidTypeName("_valid::Abc"));
         assertTrue(TemplateConfigUtil.isValidTypeName("valid_::abc"));

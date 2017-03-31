@@ -206,7 +206,7 @@ public final class TemplateConfigUtil {
     }
 
     /**
-     * Create the list of supported scalar types, currently only "string".
+     * Create the list of supported scalar types, currently only "String".
      * 
      * @param config
      *            The config
@@ -328,13 +328,13 @@ public final class TemplateConfigUtil {
     }
 
     /**
-     * Check that a given name is a valid type name, i.e. either "string" or a complex name made of a prefix that represents a package name
+     * Check that a given name is a valid type name, i.e. either "String" or a complex name made of a prefix that represents a package name
      * and a suffix that represents a classifier name, separated by "::". For example, "ecore::EClass" is valid, and so is
      * "çà:StràngeLéttèrs", but "e-core::EClass", "ecore::", "ecore:", "ecore::E-Class" are not.
      * 
      * @param typeName
      *            The type name to check
-     * @return <code>true</code> if the typeName is not <code>null</code>, and is either "string" or a valid type name, made of two valid
+     * @return <code>true</code> if the typeName is not <code>null</code>, and is either "String" or a valid type name, made of two valid
      *         (as EMF means it) ENamedElement
      *         names separated by "::".
      */
@@ -343,7 +343,7 @@ public final class TemplateConfigUtil {
         if (typeName == null) {
             return false;
         }
-        if ("string".equals(typeName)) {
+        if (M2DocCustomProperties.STRING_TYPE.equals(typeName)) {
             return true;
         }
         int index = typeName.indexOf(METAMODEL_TYPE_SEPARATOR);
