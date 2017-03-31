@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gmf.runtime.diagram.ui.render.util.CopyToImageUtil;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
@@ -85,7 +86,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
                     "Image cannot be computed because no root EObject has been provided to the provider \""
                         + this.getClass().getName() + "\"");
         } else {
-            final InfinitLoopSafeService imageUtility = new InfinitLoopSafeService();
+            final CopyToImageUtil imageUtility = new CopyToImageUtil();
             EObject targetRootEObject = (EObject) targetRootObject;
             Session session = SessionManager.INSTANCE.getSession(targetRootEObject);
             if (session == null) {
@@ -105,10 +106,6 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
                 result = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session, imageUtility,
                         createIfAbsent, representations, Lists.<Layer> newArrayList());
             }
-            // This is totally boggus since more than one image can be generated.
-            // But I'll keep it iso bug.
-            setHeight(imageUtility.getHeight());
-            setWidth(imageUtility.getWidth());
 
             return result;
         }

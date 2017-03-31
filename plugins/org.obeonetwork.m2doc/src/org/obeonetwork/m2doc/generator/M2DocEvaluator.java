@@ -16,7 +16,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -428,7 +427,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 insertBookmark(query, (org.obeonetwork.m2doc.api.Bookmark) queryResult.getResult());
             } else if (queryResult.getResult() instanceof org.obeonetwork.m2doc.api.Image) {
                 final XWPFRun imageRun = insertFieldRunReplacement(query.getStyleRun(), "");
-                insertImage(query, imageRun, (org.obeonetwork.m2doc.api.Image) queryResult.getResult());
+                insertImage(imageRun, (org.obeonetwork.m2doc.api.Image) queryResult.getResult());
             } else if (queryResult.getResult() == null) {
                 insertFieldRunReplacement(query.getStyleRun(), "");
             } else {
@@ -492,14 +491,12 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Inserts the given {@link org.obeonetwork.m2doc.api.Image Image}.
      * 
-     * @param query
-     *            the {@link Query} that produced the given {@link org.obeonetwork.m2doc.api.Image Image}
      * @param run
      *            the {@link XWPFRun} to insert to
      * @param image
      *            the {@link org.obeonetwork.m2doc.api.Image Image} to insert
      */
-    private void insertImage(Query query, XWPFRun run, org.obeonetwork.m2doc.api.Image image) {
+    private void insertImage(XWPFRun run, org.obeonetwork.m2doc.api.Image image) {
         try {
             int heigth = Units.toEMU(image.getHeight());
             int width = Units.toEMU(image.getWidth());
@@ -965,33 +962,19 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                         }
                     }
 
-                    try {
-                        imageRun.setText("");
-                        imageRun.getCTR().getInstrTextList().clear();
+                    imageRun.setText("");
+                    imageRun.getCTR().getInstrTextList().clear();
 
-                        // get default image size if needed
-                        if (representation.getHeight() == 0) {
-                            representation.setHeight(((AbstractDiagramProvider) provider).getHeight());
-                        }
-                        if (representation.getWidth() == 0) {
-                            representation.setWidth(((AbstractDiagramProvider) provider).getWidth());
-                        }
-                        int height = Units.toEMU(representation.getHeight());
-                        int width = Units.toEMU(representation.getWidth());
-
-                        try (InputStream fileInputStream = URIConverter.INSTANCE.createInputStream(imageURI)) {
-                            imageRun.addPicture(fileInputStream, getPictureType(imageURI), imagePathStr, width, height);
-                        }
-                    } catch (InvalidFormatException e) {
-                        insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                String.format(PICTURE_INVALID_FORMAT, imageURI));
-                    } catch (FileNotFoundException e) {
-                        insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                "File " + imageURI + " cannot be found.");
-                    } catch (IOException e) {
-                        insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                "An I/O Problem occured while reading file: " + e.getMessage());
+                    final org.obeonetwork.m2doc.api.Image image = new org.obeonetwork.m2doc.api.Image(imageURI);
+                    // get default image size if needed
+                    image.setConserveRatio(representation.getHeight() == 0 || representation.getWidth() == 0);
+                    if (representation.getHeight() != 0) {
+                        image.setHeight(representation.getHeight());
                     }
+                    if (representation.getWidth() != 0) {
+                        image.setWidth(representation.getWidth());
+                    }
+                    insertImage(imageRun, image);
                 }
             } catch (IllegalArgumentException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());

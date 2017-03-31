@@ -47,12 +47,12 @@ import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.generator.M2DocEvaluator;
-import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
+import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
 import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
-import org.obeonetwork.m2doc.parser.M2DocParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.M2DocParser;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -504,8 +504,7 @@ public final class M2DocUtils {
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(documentTemplate, destination);
-            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager,
-                    queryEnvironment);
+            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment);
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
 
