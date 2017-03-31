@@ -210,13 +210,15 @@ public final class SiriusDiagramUtils {
      * 
      * @param diagram
      *            the diagram from which we want to create an image.
+     * @param format
+     *            the {@link ImageFileFormat}
      * @param rootPath
      *            the project root path from which document generation has been launched.
      * @return Full path starting from root folder
      */
-    private static String getDiagramImageFilename(DDiagram diagram, String rootPath) {
+    private static String getDiagramImageFilename(DDiagram diagram, ImageFileFormat format, String rootPath) {
         return rootPath + "/.generated/images/representations/diagram_"
-            + sanitizeFilename(diagram.eResource().getURIFragment(diagram)) + "." + ImageFileFormat.JPEG.getName();
+            + sanitizeFilename(diagram.eResource().getURIFragment(diagram)) + "." + format.getName();
     }
 
     /**
@@ -317,7 +319,8 @@ public final class SiriusDiagramUtils {
                 final DDiagram dsd = (DDiagram) dRepresentation;
                 DDiagram diagramtoExport = getDDiagramToExport(dsd, refreshRepresentations, layers, session,
                         getEditor(session, dsd) != null);
-                String filePath = getDiagramImageFilename(diagramtoExport, rootPath);
+                final ImageFileFormat format = ImageFileFormat.JPG;
+                String filePath = getDiagramImageFilename(diagramtoExport, format, rootPath);
                 File file = new File(filePath);
                 file.getParentFile().mkdirs();
                 final IPath path = new Path(filePath);
@@ -327,7 +330,7 @@ public final class SiriusDiagramUtils {
                 final Diagram realOne = (Diagram) editingDomain.getResourceSet()
                         .getEObject(EcoreUtil.getURI(gmfDiagram), true);
                 try {
-                    imageUtility.copyToImage(realOne, path, ImageFileFormat.JPEG, new NullProgressMonitor(),
+                    imageUtility.copyToImage(realOne, path, format, new NullProgressMonitor(),
                             PreferencesHint.USE_DEFAULTS);
 
                     resultList.add(filePath);
