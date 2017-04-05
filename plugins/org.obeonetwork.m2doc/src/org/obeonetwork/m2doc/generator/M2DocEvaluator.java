@@ -30,7 +30,6 @@ import java.util.Stack;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
@@ -87,6 +86,7 @@ import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.obeonetwork.m2doc.util.PictureType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
@@ -502,7 +502,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             int width = Units.toEMU(image.getWidth());
 
             try (InputStream imageStream = image.getInputStream()) {
-                run.addPicture(imageStream, getPictureType(image.getURI()), image.getURI().toString(), width, heigth);
+                run.addPicture(imageStream, image.getType().getPoiType(), image.getURI().toString(), width, heigth);
             }
         } catch (InvalidFormatException e) {
             insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
@@ -857,48 +857,6 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         return null;
     }
 
-    /**
-     * Returns the picture type based on the filename's extension.
-     * 
-     * @param fileName
-     *            the picture file
-     * @return the picture's file extension
-     */
-    private int getPictureType(URI fileName) {
-        int res;
-        if (fileName.fileExtension() != null) {
-            String extension = fileName.fileExtension();
-            if ("jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_JPEG;
-            } else if ("gif".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_GIF;
-            } else if ("png".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_PNG;
-            } else if ("emf".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_EMF;
-            } else if ("wmf".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_WMF;
-            } else if ("pict".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_PICT;
-            } else if ("dib".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_DIB;
-            } else if ("tiff".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_TIFF;
-            } else if ("eps".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_EPS;
-            } else if ("bmp".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_BMP;
-            } else if ("wpg".equalsIgnoreCase(extension)) {
-                res = Document.PICTURE_TYPE_WPG;
-            } else {
-                res = 0;
-            }
-        } else {
-            res = 0;
-        }
-        return res;
-    }
-
     @Override
     public IConstruct caseImage(Image image) {
         XWPFRun imageRun = insertRun(image.getStyleRun());
@@ -922,7 +880,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 int width = Units.toEMU(image.getWidth());
 
                 try (InputStream imageStream = URIConverter.INSTANCE.createInputStream(imageURI)) {
-                    imageRun.addPicture(imageStream, getPictureType(imageURI), image.getFileName(), width, heigth);
+                    imageRun.addPicture(imageStream, PictureType.toType(imageURI).getPoiType(), image.getFileName(),
+                            width, heigth);
                 }
             } catch (InvalidFormatException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,

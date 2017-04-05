@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.obeonetwork.m2doc.util.PictureType;
 
 /**
  * An image that can be returned by services.
@@ -53,13 +54,35 @@ public class Image {
     private double ratio;
 
     /**
-     * Constructor.
+     * The type.
+     */
+    private PictureType type;
+
+    /**
+     * Default constructor.
+     * <p>
+     * The image type is deducted from the image {@link URI} file extension. If the extension is unknown, jpeg format will be selected by
+     * default.
+     * </p>
      * 
      * @param uri
      *            the {@link URI}
      */
     public Image(URI uri) {
+        this(uri, PictureType.toType(uri));
+    }
+
+    /**
+     * Constructor with enforced image type.
+     * 
+     * @param uri
+     *            the {@link URI}
+     * @param type
+     *            the picture {@link PictureType type}.
+     */
+    public Image(URI uri, PictureType type) {
         this.uri = uri;
+        this.type = type;
         try {
             final BufferedImage image = ImageIO.read(getInputStream());
             if (image != null) {
@@ -170,6 +193,15 @@ public class Image {
      */
     public InputStream getInputStream() throws IOException {
         return URIConverter.INSTANCE.createInputStream(uri);
+    }
+
+    /**
+     * Gets the {@link PictureType}.
+     * 
+     * @return the type the {@link PictureType}.
+     */
+    public PictureType getType() {
+        return type;
     }
 
     @Override

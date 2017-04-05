@@ -20,6 +20,7 @@ import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.api.Image;
+import org.obeonetwork.m2doc.util.PictureType;
 
 //@formatter:off
 @ServiceProvider(
@@ -56,14 +57,45 @@ public class ImageServices {
         }
     )
     // @formatter:on
+
     /**
      * Gets the {@link Image} corresponding to the given path.
+     * <p>
+     * Picture type is deducted from the file extension.
+     * </p>
      * 
-     * @param path
-     *            the path
+     * @param uriStr
+     *            the uri.
      * @return the {@link Image} corresponding to the given path
      */
     public Image asImage(String uriStr) {
+        final URI imageURI = URI.createURI(uriStr);
+        return asImage(uriStr, PictureType.toType(imageURI));
+    }
+
+    /**
+     * Gets the {@link Image} corresponding to the given path.
+     * 
+     * @param uriStr
+     *            the uri.
+     * @param type
+     *            the picture {@link PictureType type}.
+     * @return the {@link Image} corresponding to the given path
+     */
+    public Image asImage(String uriStr, String type) {
+        return asImage(uriStr, PictureType.valueOf(type.toUpperCase()));
+    }
+
+    /**
+     * Gets the {@link Image} corresponding to the given path.
+     * 
+     * @param uriStr
+     *            the uri.
+     * @param type
+     *            the picture {@link PictureType type}.
+     * @return the {@link Image} corresponding to the given path
+     */
+    private Image asImage(String uriStr, PictureType type) {
         final Image res;
 
         final URI imageURI = URI.createURI(uriStr);
@@ -80,7 +112,7 @@ public class ImageServices {
         } else {
             uri = imageURI;
         }
-        res = new Image(uri);
+        res = new Image(uri, type);
 
         return res;
     }
