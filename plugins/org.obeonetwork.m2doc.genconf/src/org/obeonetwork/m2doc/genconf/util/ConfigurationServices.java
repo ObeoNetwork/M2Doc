@@ -14,17 +14,19 @@ package org.obeonetwork.m2doc.genconf.util;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
@@ -99,17 +101,21 @@ public class ConfigurationServices {
     public Map<String, Set<IType>> getTypes(IReadOnlyQueryEnvironment environment, Generation generation) {
         final Map<String, Set<IType>> res = new HashMap<>();
 
-        // create definitions
-        ConfigurationServices configurationServices = new ConfigurationServices();
-        Map<String, Object> definitions = configurationServices.createDefinitions(generation);
+        for (Definition def : generation.getDefinitions()) {
+            if (def instanceof ModelDefinition) {
+                final Object value = ((ModelDefinition) def).getValue();
+                final Set<IType> types = QueryServices.getInstance().getTypes(environment, value);
+                res.put(def.getKey(), types);
+            } else if (def instanceof StringDefinition) {
+                final Object value = ((StringDefinition) def).getValue();
+                final Set<IType> types = QueryServices.getInstance().getTypes(environment, value);
+                res.put(def.getKey(), types);
 
-        // get types.
-        for (Entry<String, Object> entry : definitions.entrySet()) {
-            final Object value = entry.getValue();
-            final Set<IType> types = QueryServices.getInstance().getTypes(environment, value);
-            res.put(entry.getKey(), types);
+            } else {
+                throw new UnsupportedOperationException();
+            }
+
         }
-
         return res;
     }
 
@@ -153,13 +159,30 @@ public class ConfigurationServices {
      * 
      * @param generation
      *            the instance holding the definitions.
+     * @param resourcesetForModels
+     *            the resourceset used to load the model instances
      * @return the created map.
      */
-    public Map<String, Object> createDefinitions(Generation generation) {
+    public Map<String, Object> createDefinitions(Generation generation, ResourceSet resourcesetForModels) {
         Map<String, Object> result = new HashMap<String, Object>();
         for (Definition def : generation.getDefinitions()) {
             if (def instanceof ModelDefinition) {
-                result.put(((ModelDefinition) def).getKey(), ((ModelDefinition) def).getValue());
+                URI uri = EcoreUtil.getURI(((ModelDefinition) def).getValue());
+                EObject val = null;
+                try {
+                    val = resourcesetForModels.getEObject(uri, true);
+                } catch (WrappedException e) {
+                    /*
+                     * The resource could not be loaded, in that case the value is reset to a proxy with the same uri.
+                     */
+                    if (((ModelDefinition) def).getValue() != null) {
+                        InternalEObject eobj = (InternalEObject) EcoreUtil
+                                .create(((ModelDefinition) def).getValue().eClass());
+                        eobj.eSetProxyURI(uri);
+                        val = eobj;
+                    }
+                }
+                result.put(((ModelDefinition) def).getKey(), val);
             } else if (def instanceof StringDefinition) {
                 result.put(((StringDefinition) def).getKey(), ((StringDefinition) def).getValue());
             } else {

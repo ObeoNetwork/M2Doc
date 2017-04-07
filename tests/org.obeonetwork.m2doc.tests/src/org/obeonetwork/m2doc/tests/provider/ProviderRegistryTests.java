@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
@@ -66,7 +67,8 @@ public class ProviderRegistryTests {
          * @see org.obeonetwork.m2doc.provider.DiagramProvider#getRepresentationImagePath(java.util.Map)
          */
         @Override
-        public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
+        public List<String> getRepresentationImagePath(ResourceSet resourceSetForModels, Map<String, Object> parameters)
+                throws ProviderException {
             return null;
         }
 
