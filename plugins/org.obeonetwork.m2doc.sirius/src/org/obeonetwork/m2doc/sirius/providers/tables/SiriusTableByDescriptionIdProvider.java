@@ -22,10 +22,12 @@ import java.util.Map;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
+import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.table.metamodel.table.DTable;
 import org.eclipse.sirius.table.metamodel.table.description.TableDescription;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
@@ -105,7 +107,8 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
     }
 
     @Override
-    public List<MTable> getTables(Map<String, Object> parameters) throws ProviderException {
+    public List<MTable> getTables(ResourceSet resourceSetForModels, Map<String, Object> parameters)
+            throws ProviderException {
         Object tableId = parameters.get(DESCRIPTION_ID_KEY);
         Object target = parameters.get(TARGET_ROOT_OBJECT_KEY);
         boolean refreshTables = OptionUtil.mustRefreshRepresentation(parameters);
@@ -123,10 +126,13 @@ public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvi
                         + this.getClass().getName() + ")");
         }
         EObject eTarget = (EObject) target;
-        Session session = SessionManager.INSTANCE.getSession(eTarget);
-        if (session == null) {
-            throw new ProviderException("Cannot find the session associated to the model root element.");
+
+        Option<SessionTransientAttachment> attachement = SessionTransientAttachment
+                .getSessionTransientAttachement(resourceSetForModels);
+        if (!attachement.some()) {
+            throw new ProviderException("Cannot find session associated to the models.");
         }
+        Session session = attachement.get().getSession();
         checkDiagramDescriptionExist(session, (String) tableId);
         List<DTable> tables = getAssociatedTablesByDiagramDescriptionAndName(eTarget, (String) tableId, session,
                 refreshTables);

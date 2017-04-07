@@ -1011,7 +1011,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             Map<String, Object> parameters;
             try {
                 parameters = setupParametersMap(tableClient, provider);
-                TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters);
+                TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters,
+                        resourceSetForModels);
                 tableProcessor.generate(tableRun);
             } catch (IllegalArgumentException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.TableClientProcessor;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider.MTable;
@@ -35,8 +36,8 @@ public class TableClientProcessorSeveralTablesTests extends TableClientProcessor
     @Override
     @Test
     public void testWithoutAnyParameter() throws ProviderException {
-        Map<String, Object> arguments = new HashMap<String, Object>();
-        processor = new TableClientProcessor(doc, provider, arguments);
+        Map<String, Object> arguments = new HashMap<>();
+        processor = new TableClientProcessor(doc, provider, arguments, new ResourceSetImpl());
         processor.generate(run);
 
         checkParagraph(paragraph, "Test Table");
@@ -51,7 +52,7 @@ public class TableClientProcessorSeveralTablesTests extends TableClientProcessor
     public void testWithParamHideTitleFalse() throws ProviderException {
         Map<String, Object> arguments = new HashMap<String, Object>();
         arguments.put("hideTitle", "false");
-        processor = new TableClientProcessor(doc, provider, arguments);
+        processor = new TableClientProcessor(doc, provider, arguments, new ResourceSetImpl());
         processor.generate(run);
 
         checkParagraph(paragraph, "Test Table");
@@ -66,7 +67,7 @@ public class TableClientProcessorSeveralTablesTests extends TableClientProcessor
     public void testWithParamHideTitleTrue() throws ProviderException {
         Map<String, Object> arguments = new HashMap<String, Object>();
         arguments.put("hideTitle", "true");
-        processor = new TableClientProcessor(doc, provider, arguments);
+        processor = new TableClientProcessor(doc, provider, arguments, new ResourceSetImpl());
         processor.generate(run);
 
         assertEquals("", paragraph.getText());
