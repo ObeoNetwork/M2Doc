@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getName <em>Name</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getTemplateFileName <em>Template File Name</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getResultFileName <em>Result File Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getRepresentationsFileName <em>Representations File Name</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#isTimeStamped <em>Time Stamped</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#isRefreshRepresentations <em>Refresh Representations</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.Generation#getDefinitions <em>Definitions</em>}</li>
@@ -107,6 +108,32 @@ public interface Generation extends EObject {
 	void setResultFileName(String value);
 
 	/**
+     * Returns the value of the '<em><b>Representations File Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Representations File Name</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Representations File Name</em>' attribute.
+     * @see #setRepresentationsFileName(String)
+     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getGeneration_RepresentationsFileName()
+     * @model
+     * @generated
+     */
+    String getRepresentationsFileName();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.Generation#getRepresentationsFileName <em>Representations File Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Representations File Name</em>' attribute.
+     * @see #getRepresentationsFileName()
+     * @generated
+     */
+    void setRepresentationsFileName(String value);
+
+    /**
      * Returns the value of the '<em><b>Time Stamped</b></em>' attribute.
      * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
