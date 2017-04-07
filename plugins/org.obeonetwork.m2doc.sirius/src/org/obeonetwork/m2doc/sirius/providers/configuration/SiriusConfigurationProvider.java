@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.sirius.providers.configuration;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -23,10 +24,15 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
+import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
 import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
+import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -173,10 +179,26 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      *      org.obeonetwork.m2doc.template.DocumentTemplate)
      */
     @Override
-    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI,
-            DocumentTemplate template) {
+    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate template) {
         // do nothing.
         return Lists.newArrayList();
+    }
+
+    @Override
+    public ResourceSet createResourceSetForModels(Generation generation) {
+        ResourceSet created = null;
+        if (generation.getRepresentationsFileName() != null
+            && generation.getRepresentationsFileName().endsWith("aird")) {
+            final URI sessionURI = GenconfToDocumentGenerator.createURIStartingFromCurrentModel(generation,
+                    generation.getRepresentationsFileName());
+            if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
+                final Session s = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
+                s.open(new NullProgressMonitor());
+                created = s.getTransactionalEditingDomain().getResourceSet();
+                created.eAdapters().add(new SessionTransientAttachment(s));
+            }
+        }
+        return created;
     }
 
 }
