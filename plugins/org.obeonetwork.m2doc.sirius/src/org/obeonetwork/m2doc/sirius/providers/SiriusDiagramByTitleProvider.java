@@ -17,10 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
+import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
@@ -62,15 +64,18 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
+    public List<String> getRepresentationImagePath(ResourceSet resourceSetForModel, Map<String, Object> parameters)
+            throws ProviderException {
         EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
         String rootPath = createTempDirectoryPath();
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
-        Session session = SessionManager.INSTANCE.getSession(rootObject);
-        if (session == null) {
-            throw new ProviderException("Cannot find session associated to the conf model root element.");
+        Option<SessionTransientAttachment> attachement = SessionTransientAttachment
+                .getSessionTransientAttachement(resourceSetForModel);
+        if (!attachement.some()) {
+            throw new ProviderException("Cannot find session associated to the models.");
         }
+        Session session = attachement.get().getSession();
         Object representationTitle = parameters.get(REPRESENTATION_TITLE_KEY);
         refreshRepresentations = OptionUtil.mustRefreshRepresentation(parameters);
         if (!(representationTitle instanceof String)) {
