@@ -13,6 +13,8 @@ package org.obeonetwork.m2doc.provider;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 /**
  * {@link IDiagramProvider} instances are used to provide diagram's image file from any modeling tool or technology that porvides graphical
  * representations of models.
@@ -24,6 +26,8 @@ public abstract class AbstractDiagramProvider implements IProvider {
     /**
      * Returns the path to the image file of the diagram.
      * 
+     * @param resourceSetForModels
+     *            the resourceset used for loading the models.
      * @param parameters
      *            a map of all parameter name to the corresponding object the provider can use. Global parameters always available are
      *            {@link ProviderConstants#CONF_ROOT_OBJECT_KEY} which give the EObject of the Genconf model from which the generation has
@@ -32,7 +36,8 @@ public abstract class AbstractDiagramProvider implements IProvider {
      * @throws ProviderException
      *             if a problem occurs during retrieving.
      */
-    public abstract List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException;
+    public abstract List<String> getRepresentationImagePath(ResourceSet resourceSetForModels,
+            Map<String, Object> parameters) throws ProviderException;
 
     /**
      * Return if the provider is a default one.

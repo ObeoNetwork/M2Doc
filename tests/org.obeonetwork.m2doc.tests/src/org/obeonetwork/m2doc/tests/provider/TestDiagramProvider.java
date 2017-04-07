@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderException;
@@ -72,7 +73,8 @@ public class TestDiagramProvider extends AbstractDiagramProvider {
      * @see org.obeonetwork.m2doc.provider.DiagramProvider#getRepresentationImagePath(java.util.Map)
      */
     @Override
-    public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
+    public List<String> getRepresentationImagePath(ResourceSet resourceSetForModels, Map<String, Object> parameters)
+            throws ProviderException {
         String resultKind = (String) parameters.get(RESULT_KIND_KEY);
         String aqlExpression = (String) parameters.get(AQL_EXPRESSION_OPTION_KEY);
         List<String> imagesPaths = new ArrayList<>();

@@ -16,8 +16,10 @@ import java.util.Collection;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
 import org.junit.Before;
 
 /**
@@ -42,6 +44,8 @@ public abstract class AbstractM2DocSiriusTest {
         URI uri = URI.createPlatformPluginURI(getAirdPluginPath(), true);
         session = SessionManager.INSTANCE.getSession(uri, new NullProgressMonitor());
         session.open(new NullProgressMonitor());
+        session.getTransactionalEditingDomain().getResourceSet().eAdapters()
+                .add(new SessionTransientAttachment(session));
     }
 
     /**
@@ -65,4 +69,9 @@ public abstract class AbstractM2DocSiriusTest {
         }
         return resource;
     }
+
+    protected ResourceSet getResourceSet() {
+        return session.getTransactionalEditingDomain().getResourceSet();
+    }
+
 }
