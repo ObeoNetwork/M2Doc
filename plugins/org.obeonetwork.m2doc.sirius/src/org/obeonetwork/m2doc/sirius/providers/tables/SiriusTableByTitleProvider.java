@@ -17,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
+import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.table.metamodel.table.DTable;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DView;
@@ -42,13 +44,17 @@ public class SiriusTableByTitleProvider extends AbstractSiriusTableProvider {
     private static final String TITLE_OBJECT_KEY = "title";
 
     @Override
-    public List<MTable> getTables(Map<String, Object> parameters) throws ProviderException {
+    public List<MTable> getTables(ResourceSet resourceSetForModels, Map<String, Object> parameters)
+            throws ProviderException {
         EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
         boolean refreshTables = OptionUtil.mustRefreshRepresentation(parameters);
-        Session session = SessionManager.INSTANCE.getSession(rootObject);
-        if (session == null) {
-            throw new ProviderException("Cannot find session associated to the conf model root element.");
+        Option<SessionTransientAttachment> attachement = SessionTransientAttachment
+                .getSessionTransientAttachement(resourceSetForModels);
+        if (!attachement.some()) {
+            throw new ProviderException("Cannot find session associated to the models.");
         }
+        Session session = attachement.get().getSession();
+
         Object tableTitle = parameters.get(TITLE_OBJECT_KEY);
         if (!(tableTitle instanceof String)) {
             throw new ProviderException(

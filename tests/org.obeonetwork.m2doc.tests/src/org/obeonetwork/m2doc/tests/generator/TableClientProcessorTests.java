@@ -22,6 +22,8 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.TableClientProcessor;
@@ -55,8 +57,8 @@ public class TableClientProcessorTests {
 
     @Test
     public void testWithoutAnyParameter() throws ProviderException {
-        Map<String, Object> arguments = new HashMap<String, Object>();
-        processor = new TableClientProcessor(doc, provider, arguments);
+        Map<String, Object> arguments = new HashMap<>();
+        processor = new TableClientProcessor(doc, provider, arguments, new ResourceSetImpl());
         processor.generate(run);
 
         checkParagraph(paragraph, "Test Table");
@@ -68,9 +70,9 @@ public class TableClientProcessorTests {
 
     @Test
     public void testWithParamHideTitleFalse() throws ProviderException {
-        Map<String, Object> arguments = new HashMap<String, Object>();
+        Map<String, Object> arguments = new HashMap<>();
         arguments.put("hideTitle", "false");
-        processor = new TableClientProcessor(doc, provider, arguments);
+        processor = new TableClientProcessor(doc, provider, arguments, new ResourceSetImpl());
         processor.generate(run);
 
         checkParagraph(paragraph, "Test Table");
@@ -82,9 +84,9 @@ public class TableClientProcessorTests {
 
     @Test
     public void testWithParamHideTitleTrue() throws ProviderException {
-        Map<String, Object> arguments = new HashMap<String, Object>();
+        Map<String, Object> arguments = new HashMap<>();
         arguments.put("hideTitle", "true");
-        processor = new TableClientProcessor(doc, provider, arguments);
+        processor = new TableClientProcessor(doc, provider, arguments, new ResourceSetImpl());
         processor.generate(run);
 
         assertEquals("", paragraph.getText());
@@ -130,7 +132,7 @@ public class TableClientProcessorTests {
             }
 
             @Override
-            public List<MTable> getTables(Map<String, Object> parameters) throws ProviderException {
+            public List<MTable> getTables(ResourceSet set, Map<String, Object> parameters) throws ProviderException {
                 return getTestTables();
             }
 
@@ -147,7 +149,7 @@ public class TableClientProcessorTests {
      * @return The list of tables to use in this test class. Can be overridden.
      */
     protected List<MTable> getTestTables() {
-        List<MTable> result = new ArrayList<MTable>();
+        List<MTable> result = new ArrayList<>();
         result.add(getTestTable());
         return result;
     }
@@ -228,8 +230,8 @@ public class TableClientProcessorTests {
     }
 
     public static class TestTable extends TestLabeledElement implements MTable {
-        protected final List<TestColumn> columns = new ArrayList<TestColumn>();
-        protected final List<TestRow> rows = new ArrayList<TestRow>();
+        protected final List<TestColumn> columns = new ArrayList<>();
+        protected final List<TestRow> rows = new ArrayList<>();
 
         public TestTable(String label) {
             super(label);
@@ -249,7 +251,7 @@ public class TableClientProcessorTests {
 
     public static class TestRow extends TestStyledElement implements MRow {
 
-        protected final List<TestCell> cells = new ArrayList<TestCell>();
+        protected final List<TestCell> cells = new ArrayList<>();
 
         public TestRow(String label) {
             super(label);

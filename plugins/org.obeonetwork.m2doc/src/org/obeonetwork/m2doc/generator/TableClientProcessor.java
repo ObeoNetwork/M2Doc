@@ -26,6 +26,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider.MCell;
@@ -54,6 +55,8 @@ public final class TableClientProcessor {
     /** The table provider. */
     private final AbstractTableProvider provider;
 
+    private final ResourceSet resourceSetForModels;
+
     /**
      * Constructor.
      * 
@@ -63,11 +66,15 @@ public final class TableClientProcessor {
      *            The table provider, must not be <code>null</code>
      * @param arguments
      *            The map of arguments, cannot be <code>null</code>
+     * @param resourceSetForModels
+     *            the resourceset keeping the model instances.
      */
-    public TableClientProcessor(IBody body, AbstractTableProvider provider, Map<String, Object> arguments) {
+    public TableClientProcessor(IBody body, AbstractTableProvider provider, Map<String, Object> arguments,
+            ResourceSet resourceSetForModels) {
         this.body = checkNotNull(body);
         this.provider = checkNotNull(provider);
         this.parameters = checkNotNull(arguments);
+        this.resourceSetForModels = resourceSetForModels;
     }
 
     /**
@@ -79,7 +86,7 @@ public final class TableClientProcessor {
      *             If the retrieval of the tables from the provider goes wrong.
      */
     public void generate(XWPFRun run) throws ProviderException {
-        List<MTable> tables = provider.getTables(parameters);
+        List<MTable> tables = provider.getTables(resourceSetForModels, parameters);
         boolean first = true;
         for (MTable mtable : tables) {
             XWPFTable table = createTable(run, first, mtable);
