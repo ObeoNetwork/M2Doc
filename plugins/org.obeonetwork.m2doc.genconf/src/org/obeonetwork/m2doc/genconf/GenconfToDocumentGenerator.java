@@ -18,6 +18,7 @@ import com.google.common.io.Files;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,10 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.obeonetwork.m2doc.api.POIServices;
 import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
@@ -102,7 +106,7 @@ public class GenconfToDocumentGenerator {
      *            the relative path
      * @return the created {@link URI} starting from the current model
      */
-    private URI createURIStartingFromCurrentModel(Generation generation, String relativePath) {
+    public static URI createURIStartingFromCurrentModel(Generation generation, String relativePath) {
         URI generationURI = generation.eResource().getURI().trimSegments(1);
         for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(relativePath)) {
             generationURI = generationURI.appendSegment(s);
@@ -134,8 +138,10 @@ public class GenconfToDocumentGenerator {
 
         IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
+        ResourceSet resourceSetForModels = createResourceSetForModels(generation);
+
         // create definitions
-        Map<String, Object> definitions = configurationServices.createDefinitions(generation);
+        Map<String, Object> definitions = configurationServices.createDefinitions(generation, resourceSetForModels);
 
         // create generated file
         try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment,
@@ -147,7 +153,7 @@ public class GenconfToDocumentGenerator {
             // add providers variables
             definitions.putAll(configurationServices.getProviderVariables(generation));
             // launch generation
-            M2DocUtils.generate(template, queryEnvironment, definitions, generatedFile);
+            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, generatedFile);
 
             List<URI> generatedFiles = Lists.newArrayList(generatedFile);
             if (inError) {
@@ -176,6 +182,30 @@ public class GenconfToDocumentGenerator {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
             configurationProvider.preGenerate(generation, templateFile, generatedFile);
         }
+    }
+
+    /**
+     * Create a new resourceSet suitable for loading the models specified in the Generation objects.
+     * 
+     * @param generation
+     *            the generation object.
+     * @return a resourceset suitable for loading the models specified in the Generation object.
+     */
+    public ResourceSet createResourceSetForModels(Generation generation) {
+        ResourceSet created = null;
+        Iterator<IConfigurationProvider> it = ConfigurationProviderService.getInstance().getProviders().iterator();
+        while (created == null && it.hasNext()) {
+            IConfigurationProvider cur = it.next();
+            created = cur.createResourceSetForModels(generation);
+        }
+        if (created == null) {
+            created = new ResourceSetImpl();
+
+            created.getPackageRegistry().put(GenconfPackage.eNS_URI, GenconfPackage.eINSTANCE);
+            created.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+
+        }
+        return created;
     }
 
     /**

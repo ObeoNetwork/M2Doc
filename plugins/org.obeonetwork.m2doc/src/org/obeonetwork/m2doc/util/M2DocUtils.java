@@ -358,7 +358,7 @@ public final class M2DocUtils {
     private static List<TemplateValidationMessage> parseTemplateInfo(IQueryEnvironment queryEnvironment,
             ClassLoader classLoader, final XWPFDocument document) {
         final TemplateCustomProperties properties = new TemplateCustomProperties(document);
-        final List<TemplateValidationMessage> messages = new ArrayList<TemplateValidationMessage>();
+        final List<TemplateValidationMessage> messages = new ArrayList<>();
         for (String nsURI : properties.getPackagesURIs()) {
             final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
             if (ePackage != null) {
@@ -481,6 +481,8 @@ public final class M2DocUtils {
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
+     * @param resourceSetForModels
+     *            the resourceset used to load and process the user models.
      * @param variables
      *            variables
      * @param destination
@@ -490,8 +492,8 @@ public final class M2DocUtils {
      *             if the generation fails
      */
     public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URI destination)
-            throws DocumentGenerationException {
+            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
+            URI destination) throws DocumentGenerationException {
 
         try (InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
@@ -504,7 +506,8 @@ public final class M2DocUtils {
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(documentTemplate, destination);
-            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment);
+            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
+                    resourceSetForModels);
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
 
