@@ -43,6 +43,7 @@ import org.junit.runners.Parameterized;
 import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
+import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -135,7 +136,7 @@ public abstract class AbstractTemplatesTestSuite {
         this.testFolderPath = testFolder.replaceAll("\\\\", "/");
         final URI genconfURI = getGenconfURI(new File(testFolderPath));
         if (URIConverter.INSTANCE.exists(genconfURI, Collections.EMPTY_MAP)) {
-            final ResourceSet rs = getResourceSet();
+            final ResourceSet rs = getResourceSetForGenconf();
             generation = getGeneration(genconfURI, rs);
         } else {
             generation = GenconfFactory.eINSTANCE.createGeneration();
@@ -145,7 +146,8 @@ public abstract class AbstractTemplatesTestSuite {
         queryEnvironment = QueryServices.getInstance().getEnvironment(templateURI);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment, this.getClass().getClassLoader());
         ConfigurationServices configurationServices = new ConfigurationServices();
-        variables = configurationServices.createDefinitions(generation);
+        ResourceSet resourceSetForModels = new GenconfToDocumentGenerator().createResourceSetForModels(generation);
+        variables = configurationServices.createDefinitions(generation, resourceSetForModels);
         // add providers variables
         variables.putAll(configurationServices.getProviderVariables(generation));
     }
@@ -213,7 +215,7 @@ public abstract class AbstractTemplatesTestSuite {
      * 
      * @return the {@link ResourceSet}
      */
-    protected ResourceSet getResourceSet() {
+    protected ResourceSet getResourceSetForGenconf() {
         ResourceSetImpl res = new ResourceSetImpl();
 
         res.getPackageRegistry().put(GenconfPackage.eNS_URI, GenconfPackage.eINSTANCE);
@@ -363,8 +365,8 @@ public abstract class AbstractTemplatesTestSuite {
                     .substring(userContentLostURI.lastSegment().indexOf(USER_CONTENT_TAG) + USER_CONTENT_TAG.length()));
             copy(userContentLostURI, destURI);
         }
-        final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment, variables,
-                outputURI);
+        final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment,
+                new GenconfToDocumentGenerator().createResourceSetForModels(generation), variables, outputURI);
         return generationResult;
     }
 

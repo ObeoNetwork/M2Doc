@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.genconf.provider;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -105,4 +106,13 @@ public interface IConfigurationProvider {
      */
     List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate template);
 
+    /**
+     * Create a new resourceSet which would need specific initialization for loading the models specified in the Generation objects.
+     * 
+     * @param generation
+     *            the generation object containing all the parameters of the document generation.
+     * @return null if no specific resourceset has to be created for this genconf, a ResourceSet instance already configured and ready to
+     *         load models if some specific setup needed to be done.
+     */
+    ResourceSet createResourceSetForModels(Generation generation);
 }
