@@ -32,6 +32,7 @@ import org.obeonetwork.m2doc.genconf.Generation;
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getTemplateFileName <em>Template File Name</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getResultFileName <em>Result File Name</em>}</li>
+ *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getRepresentationsFileName <em>Representations File Name</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isTimeStamped <em>Time Stamped</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isRefreshRepresentations <em>Refresh Representations</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getDefinitions <em>Definitions</em>}</li>
@@ -101,6 +102,26 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
 	protected String resultFileName = RESULT_FILE_NAME_EDEFAULT;
 
 	/**
+     * The default value of the '{@link #getRepresentationsFileName() <em>Representations File Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRepresentationsFileName()
+     * @generated
+     * @ordered
+     */
+    protected static final String REPRESENTATIONS_FILE_NAME_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getRepresentationsFileName() <em>Representations File Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRepresentationsFileName()
+     * @generated
+     * @ordered
+     */
+    protected String representationsFileName = REPRESENTATIONS_FILE_NAME_EDEFAULT;
+
+    /**
      * The default value of the '{@link #isTimeStamped() <em>Time Stamped</em>}' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -234,6 +255,27 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getRepresentationsFileName() {
+        return representationsFileName;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setRepresentationsFileName(String newRepresentationsFileName) {
+        String oldRepresentationsFileName = representationsFileName;
+        representationsFileName = newRepresentationsFileName;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__REPRESENTATIONS_FILE_NAME, oldRepresentationsFileName, representationsFileName));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -314,6 +356,8 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return getTemplateFileName();
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 return getResultFileName();
+            case GenconfPackage.GENERATION__REPRESENTATIONS_FILE_NAME:
+                return getRepresentationsFileName();
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 return isTimeStamped();
             case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
@@ -341,6 +385,9 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return;
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 setResultFileName((String)newValue);
+                return;
+            case GenconfPackage.GENERATION__REPRESENTATIONS_FILE_NAME:
+                setRepresentationsFileName((String)newValue);
                 return;
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 setTimeStamped((Boolean)newValue);
@@ -373,6 +420,9 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 setResultFileName(RESULT_FILE_NAME_EDEFAULT);
                 return;
+            case GenconfPackage.GENERATION__REPRESENTATIONS_FILE_NAME:
+                setRepresentationsFileName(REPRESENTATIONS_FILE_NAME_EDEFAULT);
+                return;
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 setTimeStamped(TIME_STAMPED_EDEFAULT);
                 return;
@@ -400,6 +450,8 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return TEMPLATE_FILE_NAME_EDEFAULT == null ? templateFileName != null : !TEMPLATE_FILE_NAME_EDEFAULT.equals(templateFileName);
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 return RESULT_FILE_NAME_EDEFAULT == null ? resultFileName != null : !RESULT_FILE_NAME_EDEFAULT.equals(resultFileName);
+            case GenconfPackage.GENERATION__REPRESENTATIONS_FILE_NAME:
+                return REPRESENTATIONS_FILE_NAME_EDEFAULT == null ? representationsFileName != null : !REPRESENTATIONS_FILE_NAME_EDEFAULT.equals(representationsFileName);
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 return timeStamped != TIME_STAMPED_EDEFAULT;
             case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
@@ -426,6 +478,8 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
         result.append(templateFileName);
         result.append(", resultFileName: ");
         result.append(resultFileName);
+        result.append(", representationsFileName: ");
+        result.append(representationsFileName);
         result.append(", timeStamped: ");
         result.append(timeStamped);
         result.append(", refreshRepresentations: ");

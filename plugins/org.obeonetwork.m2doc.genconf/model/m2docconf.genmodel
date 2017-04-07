@@ -13,6 +13,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/templateFileName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/resultFileName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/representationsFileName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/timeStamped"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Generation/refreshRepresentations"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference m2docconf.ecore#//Generation/definitions"/>
