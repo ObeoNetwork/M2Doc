@@ -51,7 +51,9 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.api.HyperLink;
@@ -185,6 +187,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      */
     private ResourceSet resourceSetForModels;
 
+    private Monitor monitor;
+
     /**
      * Create a new {@link M2DocEvaluator} instance given some definitions
      * and a query environment.
@@ -197,13 +201,16 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      *            the query environment used to evaluate queries in the
      * @param resourceSetForModels
      *            the resourceset to use for loading the models.
+     * @param monitor
+     *            used to track the progress will generating.
      */
     public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager,
-            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
+            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Monitor monitor) {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
         this.resourceSetForModels = resourceSetForModels;
+        this.monitor = monitor;
     }
 
     /**
@@ -555,6 +562,15 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         }
 
         return repetition;
+
+    }
+
+    @Override
+    public IConstruct doSwitch(EObject eObject) {
+        if (!monitor.isCanceled()) {
+            return super.doSwitch(eObject);
+        }
+        return null;
 
     }
 

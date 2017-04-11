@@ -23,6 +23,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -83,7 +84,7 @@ public class GenerateHandler extends AbstractHandler {
                         public void run(IProgressMonitor pm) throws InvocationTargetException {
                             try {
                                 GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                                generatedfiles.addAll(generator.generate(toLaunch));
+                                generatedfiles.addAll(generator.generate(toLaunch, BasicMonitor.toMonitor(pm)));
 
                             } catch (IOException e) {
                                 throw new InvocationTargetException(e);

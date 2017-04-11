@@ -25,6 +25,8 @@ import java.util.Map;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -67,8 +69,30 @@ public class GenconfToDocumentGenerator {
      *             DocumentParserException
      * @throws IOException
      *             IOException
+     * @deprecated the method with a monitor parameter should be prefered.
      */
+    @Deprecated
     public List<URI> generate(Generation generation)
+            throws DocumentGenerationException, IOException, DocumentParserException {
+        return generate(generation, new BasicMonitor());
+    }
+
+    /**
+     * Generate a document from the specified generation configuration.
+     * 
+     * @param generation
+     *            the generation configuration
+     * @param monitor
+     *            used to track the progress will generating.
+     * @return generated file
+     * @throws DocumentGenerationException
+     *             DocumentGenerationException
+     * @throws DocumentParserException
+     *             DocumentParserException
+     * @throws IOException
+     *             IOException
+     */
+    public List<URI> generate(Generation generation, Monitor monitor)
             throws DocumentGenerationException, IOException, DocumentParserException {
         if (generation == null) {
             throw new IllegalArgumentException("Null configuration object passed.");
@@ -94,7 +118,7 @@ public class GenconfToDocumentGenerator {
         }
 
         // generate result file.
-        return generate(generation, templateFile, generatedFile);
+        return generate(generation, templateFile, generatedFile, monitor);
     }
 
     /**
@@ -130,30 +154,62 @@ public class GenconfToDocumentGenerator {
      *             if the document coulnd'nt be parsed.
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
+     * @deprecated the method with a monitor parameter should be prefered.
      */
+    @Deprecated
     public List<URI> generate(Generation generation, URI templateFile, URI generatedFile)
             throws IOException, DocumentParserException, DocumentGenerationException {
+        return generate(generation, templateFile, generatedFile, new BasicMonitor());
+    }
+
+    /**
+     * Launch the documentation generation.
+     * 
+     * @param generation
+     *            the generation configuration object
+     * @param templateFile
+     *            template file
+     * @param generatedFile
+     *            generated file
+     * @param monitor
+     *            used to track the progress will generating.
+     * @return generated file and validation file if exists
+     * @throws IOException
+     *             if an I/O problem occurs
+     * @throws DocumentParserException
+     *             if the document coulnd'nt be parsed.
+     * @throws DocumentGenerationException
+     *             if the document couldn't be generated
+     */
+    public List<URI> generate(Generation generation, URI templateFile, URI generatedFile, Monitor monitor)
+            throws IOException, DocumentParserException, DocumentGenerationException {
         // pre generation
-        preGenerate(generation, templateFile, generatedFile);
+        preGenerate(generation, templateFile, generatedFile, monitor);
 
         IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
+        monitor.beginTask("Loading models.", 2);
         ResourceSet resourceSetForModels = createResourceSetForModels(generation);
+        monitor.worked(1);
 
         // create definitions
         Map<String, Object> definitions = configurationServices.createDefinitions(generation, resourceSetForModels);
+        monitor.done();
 
         // create generated file
         try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment,
                 this.getClass().getClassLoader())) {
 
             // validate template
+            monitor.beginTask("Validating template.", 1);
             boolean inError = validate(generatedFile, template, generation);
+            monitor.done();
 
             // add providers variables
             definitions.putAll(configurationServices.getProviderVariables(generation));
+
             // launch generation
-            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, generatedFile);
+            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, generatedFile, monitor);
 
             List<URI> generatedFiles = Lists.newArrayList(generatedFile);
             if (inError) {
@@ -162,7 +218,7 @@ public class GenconfToDocumentGenerator {
             }
 
             // post generation
-            generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template));
+            generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template, monitor));
 
             return generatedFiles;
         }
@@ -177,11 +233,19 @@ public class GenconfToDocumentGenerator {
      *            File
      * @param generatedFile
      *            File
+     * @param monitor
+     *            used to track the progress will generating.
      */
-    public void preGenerate(Generation generation, URI templateFile, URI generatedFile) {
-        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            configurationProvider.preGenerate(generation, templateFile, generatedFile);
+    public void preGenerate(Generation generation, URI templateFile, URI generatedFile, Monitor monitor) {
+        List<IConfigurationProvider> providers = ConfigurationProviderService.getInstance().getProviders();
+        monitor.beginTask("Preparign document generation", providers.size());
+        for (IConfigurationProvider configurationProvider : providers) {
+            if (!monitor.isCanceled()) {
+                configurationProvider.preGenerate(generation, templateFile, generatedFile);
+                monitor.worked(1);
+            }
         }
+        monitor.done();
     }
 
     /**
@@ -219,19 +283,28 @@ public class GenconfToDocumentGenerator {
      *            File
      * @param template
      *            DocumentTemplate
+     * @param monitor
+     *            used to track the progress will generating.
      * @return File list to return after the generation. Generation result and validation log are already in there.
      */
-    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile,
-            DocumentTemplate template) {
+    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
+            Monitor monitor) {
         List<URI> files = Lists.newArrayList();
-        for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            List<URI> postGenerateFiles = configurationProvider.postGenerate(generation, templateFile, generatedFile,
-                    template);
-            if (postGenerateFiles != null) {
-                files.addAll(postGenerateFiles);
+        List<IConfigurationProvider> providers = ConfigurationProviderService.getInstance().getProviders();
+        monitor.beginTask("Launching post-generation tasks.", providers.size());
+        for (IConfigurationProvider configurationProvider : providers) {
+            if (!monitor.isCanceled()) {
+                List<URI> postGenerateFiles = configurationProvider.postGenerate(generation, templateFile,
+                        generatedFile, template);
+                monitor.worked(1);
+                if (postGenerateFiles != null) {
+                    files.addAll(postGenerateFiles);
+                }
             }
         }
+        monitor.done();
         return files;
+
     }
 
     /**
@@ -313,7 +386,8 @@ public class GenconfToDocumentGenerator {
      * @param generation
      *            Generation
      */
-    public void postCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateFile, Generation generation) {
+    public void postCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateFile,
+            Generation generation) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
             configurationProvider.postCreateConfigurationModel(templateProperties, templateFile, generation);
         }
