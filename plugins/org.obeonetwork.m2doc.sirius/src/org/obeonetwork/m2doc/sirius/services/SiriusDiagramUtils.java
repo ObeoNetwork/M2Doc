@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -15,10 +14,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
 import org.eclipse.gmf.runtime.diagram.core.util.ViewUtil;
 import org.eclipse.gmf.runtime.diagram.ui.image.ImageFileFormat;
-import org.eclipse.gmf.runtime.diagram.ui.render.util.CopyToImageUtil;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
@@ -33,13 +30,18 @@ import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.ui.internal.refresh.SiriusDiagramSessionEventBroker;
 import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
 import org.eclipse.sirius.ui.business.api.dialect.DialectEditor;
+import org.eclipse.sirius.ui.business.api.dialect.DialectUIManager;
+import org.eclipse.sirius.ui.business.api.dialect.ExportFormat;
+import org.eclipse.sirius.ui.business.api.dialect.ExportFormat.ExportDocumentFormat;
 import org.eclipse.sirius.ui.business.api.session.IEditingSession;
 import org.eclipse.sirius.ui.business.api.session.SessionUIManager;
+import org.eclipse.sirius.ui.tools.api.actions.export.SizeTooLargeException;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
+import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.sirius.commands.ExportRepresentationCommand;
@@ -296,8 +298,6 @@ public final class SiriusDiagramUtils {
      *            the path of the project were to generate images.
      * @param session
      *            the Sirius session containing the representations from which we generate images.
-     * @param imageUtility
-     *            the {@link CopyToImageUtil}
      * @param refreshRepresentations
      *            should we refresh the representations
      * @param representations
@@ -309,15 +309,15 @@ public final class SiriusDiagramUtils {
      *             if the image generation fails.
      */
     public static List<String> generateAndReturnDiagramImages(String rootPath, final Session session,
-            CopyToImageUtil imageUtility, boolean refreshRepresentations,
-            List<DRepresentationDescriptor> representations, List<Layer> layers) throws ProviderException {
+            boolean refreshRepresentations, List<DRepresentationDescriptor> representations, List<Layer> layers)
+            throws ProviderException {
         List<String> resultList = new ArrayList<>();
         boolean isSessionDirtyBeforeExport = SessionStatus.DIRTY.equals(session.getStatus());
         for (DRepresentationDescriptor descriptor : representations) {
             DRepresentation dRepresentation = descriptor.getRepresentation();
             if (dRepresentation instanceof DDiagram) {
                 final DDiagram dsd = (DDiagram) dRepresentation;
-                DDiagram diagramtoExport = getDDiagramToExport(dsd, refreshRepresentations, layers, session,
+                final DDiagram diagramtoExport = getDDiagramToExport(dsd, refreshRepresentations, layers, session,
                         getEditor(session, dsd) != null);
                 final ImageFileFormat format = ImageFileFormat.JPG;
                 String filePath = getDiagramImageFilename(diagramtoExport, format, rootPath);
@@ -330,16 +330,33 @@ public final class SiriusDiagramUtils {
                 final Diagram realOne = (Diagram) editingDomain.getResourceSet()
                         .getEObject(EcoreUtil.getURI(gmfDiagram), true);
                 try {
-                    imageUtility.copyToImage(realOne, path, format, new NullProgressMonitor(),
-                            PreferencesHint.USE_DEFAULTS);
+                    Runnable exportDiagUnitOfWork = new Runnable() {
 
+                        @Override
+                        public void run() {
+                            try {
+                                DialectUIManager.INSTANCE.export(diagramtoExport, session, path,
+                                        new ExportFormat(ExportDocumentFormat.NONE,
+                                                org.eclipse.sirius.common.tools.api.resource.ImageFileFormat.JPG),
+                                        new NullProgressMonitor());
+                            } catch (SizeTooLargeException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+                    };
+                    if (Display.getDefault() != null) {
+                        Display.getDefault().syncExec(exportDiagUnitOfWork);
+                    } else {
+                        exportDiagUnitOfWork.run();
+                    }
                     resultList.add(filePath);
 
                     // remove representation copy if needed
                     if (!diagramtoExport.equals(dsd)) {
                         session.getTransactionalEditingDomain().getCommandStack().undo();
                     }
-                } catch (CoreException e) {
+                } catch (RuntimeException e) {
                     throw new ProviderException("Image creation from diagram '" + dRepresentation.getName()
                         + "' to the file '" + filePath + "' failed.", e);
                 }
