@@ -32,7 +32,9 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -490,10 +492,40 @@ public final class M2DocUtils {
      * @return the {@link GenerationResult}
      * @throws DocumentGenerationException
      *             if the generation fails
+     * @deprecated the method with a monitor parameter should be prefered.
      */
+    @Deprecated
     public static GenerationResult generate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
             URI destination) throws DocumentGenerationException {
+        return generate(documentTemplate, queryEnvironment, resourceSetForModels, variables, destination,
+                new BasicMonitor());
+    }
+
+    /**
+     * Generates the given template into the given destination.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param resourceSetForModels
+     *            the resourceset used to load and process the user models.
+     * @param variables
+     *            variables
+     * @param destination
+     *            the destination
+     * @param monitor
+     *            used to track the progress will generating.
+     * @return the {@link GenerationResult}
+     * @throws DocumentGenerationException
+     *             if the generation fails
+     */
+    public static GenerationResult generate(DocumentTemplate documentTemplate,
+            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
+            URI destination, Monitor monitor) throws DocumentGenerationException {
+
+        monitor.beginTask("Generating " + destination.lastSegment(), 1);
 
         try (InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
@@ -507,7 +539,7 @@ public final class M2DocUtils {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(documentTemplate, destination);
             final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
-                    resourceSetForModels);
+                    resourceSetForModels, monitor);
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
 
@@ -532,6 +564,8 @@ public final class M2DocUtils {
             throw new DocumentGenerationException("An I/O problem occured while creating the output document.", e);
         } catch (InvalidFormatException e) {
             throw new DocumentGenerationException("Input document seems to have an invalid format.", e);
+        } finally {
+            monitor.done();
         }
     }
 

@@ -135,7 +135,7 @@ public class M2DocLauncher implements IApplication {
 				try {
 
 					System.out.println("Input: " + generation.eResource().getURI());
-					List<URI> generated = generator.generate(generation);
+					List<URI> generated = generator.generate(generation, monitor);
 					for (URI uri : generated) {
 						System.out.println("Output: " + uri.toString());
 					}
