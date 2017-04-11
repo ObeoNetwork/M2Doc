@@ -11,20 +11,28 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.ide.ui.command;
 
+import com.google.common.collect.Lists;
+
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.progress.IProgressService;
 import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
@@ -51,7 +59,7 @@ public class GenerateHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getCurrentSelection(event);
-        Shell shell = HandlerUtil.getActiveShell(event);
+        final Shell shell = HandlerUtil.getActiveShell(event);
         if (selection instanceof IStructuredSelection) {
             Object selected = ((IStructuredSelection) selection).getFirstElement();
             Generation generation = null;
@@ -65,9 +73,29 @@ public class GenerateHandler extends AbstractHandler {
             }
 
             if (generation != null) {
+                final Generation toLaunch = generation;
+                final List<URI> generatedfiles = Lists.newArrayList();
+                IWorkbench wb = PlatformUI.getWorkbench();
+                IProgressService ps = wb.getProgressService();
                 try {
-                    GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    List<URI> generatedfiles = generator.generate(generation);
+                    ps.busyCursorWhile(new IRunnableWithProgress() {
+                        @Override
+                        public void run(IProgressMonitor pm) throws InvocationTargetException {
+                            try {
+                                GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
+                                generatedfiles.addAll(generator.generate(toLaunch));
+
+                            } catch (IOException e) {
+                                throw new InvocationTargetException(e);
+                            } catch (DocumentParserException e) {
+                                throw new InvocationTargetException(e);
+                            } catch (DocumentGenerationException e) {
+                                throw new InvocationTargetException(e);
+                            } catch (RuntimeException e) {// do not let exception leak out.
+                                throw new InvocationTargetException(e);
+                            }
+                        }
+                    });
                     if (generatedfiles.size() == 1) {
                         MessageDialog.openInformation(shell, "M2Doc generation",
                                 "The document '" + generatedfiles.get(0) + "' is generated.");
@@ -77,21 +105,7 @@ public class GenerateHandler extends AbstractHandler {
                                     + "' is generated. \n\n The template file contains validation errors, please read '"
                                     + generatedfiles.get(1) + "'.");
                     }
-
-                } catch (IOException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-                    MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
-                } catch (DocumentParserException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-                    MessageDialog.openError(shell, "Template parsing problem. See the error log for details",
-                            e.getMessage());
-                } catch (DocumentGenerationException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-                    MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
-                } catch (RuntimeException e) {// do not let exception leak out.
+                } catch (InvocationTargetException | InterruptedException e) {
                     String msg = e.getMessage();
                     Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR,
                             "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
