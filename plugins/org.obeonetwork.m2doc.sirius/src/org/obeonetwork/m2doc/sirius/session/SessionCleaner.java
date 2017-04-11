@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -49,6 +50,12 @@ public class SessionCleaner implements IConfigurationProvider {
             DocumentTemplate template) {
         CleaningJobRegistry.INSTANCE.clean(generation);
         return Collections.emptyList();
+    }
+
+    @Override
+    public ResourceSet createResourceSetForModels(Generation generation) {
+        // unused
+        return null;
     }
 
 }

@@ -89,7 +89,8 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
         // CHECKSTYLE:ON
         options.put("title", "new GenerationDiagram");
         options.put("layers", Collections.EMPTY_LIST);
-        List<String> representationImagePaths = siriusDiagramByTitleProvider.getRepresentationImagePath(options);
+        List<String> representationImagePaths = siriusDiagramByTitleProvider
+                .getRepresentationImagePath(getResourceSet(), options);
         assertEquals(1, representationImagePaths.size());
         File imageFile = new File(representationImagePaths.get(0));
         assertTrue(imageFile.exists());
@@ -112,7 +113,7 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
         // CHECKSTYLE:ON
         options.put("title", "wrongReference");
         try {
-            siriusDiagramByTitleProvider.getRepresentationImagePath(options);
+            siriusDiagramByTitleProvider.getRepresentationImagePath(getResourceSet(), options);
             throw new AssertionFailedError("An exception should have been thrown");
         } catch (ProviderException e) {
             assertEquals("Representation with title 'wrongReference' not found", e.getMessage());
@@ -135,7 +136,7 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
         // CHECKSTYLE:ON
         options.put("title", 0);
         try {
-            siriusDiagramByTitleProvider.getRepresentationImagePath(options);
+            siriusDiagramByTitleProvider.getRepresentationImagePath(getResourceSet(), options);
             throw new AssertionFailedError("An exception should have been thrown");
         } catch (ProviderException e) {
             assertEquals(
@@ -159,7 +160,7 @@ public class SiriusDiagramByTitleProviderTest extends AbstractM2DocSiriusTest {
         options.put(ProviderConstants.IMAGE_WIDTH_KEY, 500);
         // CHECKSTYLE:ON
         try {
-            siriusDiagramByTitleProvider.getRepresentationImagePath(options);
+            siriusDiagramByTitleProvider.getRepresentationImagePath(getResourceSet(), options);
             throw new AssertionFailedError("An exception should have been thrown");
         } catch (ProviderException e) {
             assertEquals(

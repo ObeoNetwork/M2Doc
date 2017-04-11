@@ -70,10 +70,16 @@
                      <iterate
                            ifEmpty="false"
                            operator="or">
-                         <test
-                               forcePluginActivation="true"
-                               property="org.obeonetwork.m2doc.ide.ui.testGeneration">
-                        </test>
+                         <or>
+                            <test
+                                  forcePluginActivation="true"
+                                  property="org.obeonetwork.m2doc.ide.ui.testGeneration">
+                            </test>
+                            <test
+                                  property="org.eclipse.core.resources.extension"
+                                  value="genconf">
+                            </test>
+                         </or>
                      </iterate>
                   </with>
             </visibleWhen>

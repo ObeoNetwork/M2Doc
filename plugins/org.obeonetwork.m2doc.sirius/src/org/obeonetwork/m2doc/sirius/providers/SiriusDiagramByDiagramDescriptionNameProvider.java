@@ -18,12 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.gmf.runtime.diagram.ui.render.util.CopyToImageUtil;
 import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
+import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.IProvider;
@@ -67,7 +69,8 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<String> getRepresentationImagePath(Map<String, Object> parameters) throws ProviderException {
+    public List<String> getRepresentationImagePath(ResourceSet resourceSetForModel, Map<String, Object> parameters)
+            throws ProviderException {
         Generation generation = (Generation) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
 
         String rootPath = createTempDirectoryPath();
@@ -88,10 +91,12 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
         } else {
             final CopyToImageUtil imageUtility = new CopyToImageUtil();
             EObject targetRootEObject = (EObject) targetRootObject;
-            Session session = SessionManager.INSTANCE.getSession(targetRootEObject);
-            if (session == null) {
-                throw new ProviderException("Cannot find session associated to the conf model root element.");
+            Option<SessionTransientAttachment> attachement = SessionTransientAttachment
+                    .getSessionTransientAttachement(resourceSetForModel);
+            if (!attachement.some()) {
+                throw new ProviderException("Cannot find session associated to the models.");
             }
+            Session session = attachement.get().getSession();
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
             List<DRepresentationDescriptor> representations = SiriusDiagramUtils
                     .getAssociatedRepresentationByDiagramDescriptionAndName(generation, targetRootEObject,

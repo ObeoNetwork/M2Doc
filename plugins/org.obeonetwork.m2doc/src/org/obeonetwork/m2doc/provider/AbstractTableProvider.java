@@ -14,6 +14,8 @@ package org.obeonetwork.m2doc.provider;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 /**
  * Abstract super-implementation of all table providers.
  * 
@@ -26,11 +28,14 @@ public abstract class AbstractTableProvider implements IProvider {
      * 
      * @param parameters
      *            Map of arguments
+     * @param resourceSetForModels
+     *            the resourceset used for loading the models.
      * @return The list of table to insert, may be empty but should not be <code>null</code>.
      * @throws ProviderException
      *             If something goes wrong during the computation of the tables.
      */
-    public abstract List<MTable> getTables(Map<String, Object> parameters) throws ProviderException;
+    public abstract List<MTable> getTables(ResourceSet resourceSetForModels, Map<String, Object> parameters)
+            throws ProviderException;
 
     /**
      * Interface that represents a table that can be inserted in a word document.

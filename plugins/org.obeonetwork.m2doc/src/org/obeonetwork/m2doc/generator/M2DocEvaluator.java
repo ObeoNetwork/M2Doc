@@ -53,6 +53,7 @@ import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.api.HyperLink;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
@@ -126,7 +127,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * variable definition used during generation.
      */
-    private final Stack<Map<String, Object>> variablesStack = new Stack<Map<String, Object>>();
+    private final Stack<Map<String, Object>> variablesStack = new Stack<>();
     /**
      * The generated document.
      */
@@ -180,6 +181,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     private GenerationResult result;
 
     /**
+     * The ResourceSet used to keep the models.
+     */
+    private ResourceSet resourceSetForModels;
+
+    /**
      * Create a new {@link M2DocEvaluator} instance given some definitions
      * and a query environment.
      * 
@@ -189,12 +195,15 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      *            the {@link UserContentManager}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
+     * @param resourceSetForModels
+     *            the resourceset to use for loading the models.
      */
     public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager,
-            IReadOnlyQueryEnvironment queryEnvironment) {
+            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
+        this.resourceSetForModels = resourceSetForModels;
     }
 
     /**
@@ -947,7 +956,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             Map<String, Object> parameters;
             try {
                 parameters = setupParametersMapForRepresentation(representation, provider);
-                List<String> imagePaths = ((AbstractDiagramProvider) provider).getRepresentationImagePath(parameters);
+                List<String> imagePaths = ((AbstractDiagramProvider) provider)
+                        .getRepresentationImagePath(resourceSetForModels, parameters);
                 usedProviders.add((AbstractDiagramProvider) provider);
                 for (String imagePathStr : imagePaths) {
                     URI imageURI = URI.createFileURI(imagePathStr);
@@ -1001,7 +1011,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             Map<String, Object> parameters;
             try {
                 parameters = setupParametersMap(tableClient, provider);
-                TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters);
+                TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters,
+                        resourceSetForModels);
                 tableProcessor.generate(tableRun);
             } catch (IllegalArgumentException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
