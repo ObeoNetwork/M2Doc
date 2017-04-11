@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.gmf.runtime.diagram.ui.render.util.CopyToImageUtil;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.diagram.DDiagram;
@@ -85,10 +84,8 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
                 DDiagram resolvedDiagram = (DDiagram) representation.getRepresentation();
                 List<DRepresentationDescriptor> representations = new ArrayList<>(1);
                 representations.add(representation);
-                final CopyToImageUtil imageUtility = new CopyToImageUtil();
                 List<String> resultList = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session,
-                        imageUtility, refreshRepresentations, representations,
-                        getLayers(resolvedDiagram, diagramActivatedLayers));
+                        refreshRepresentations, representations, getLayers(resolvedDiagram, diagramActivatedLayers));
 
                 return resultList;
             } else {
