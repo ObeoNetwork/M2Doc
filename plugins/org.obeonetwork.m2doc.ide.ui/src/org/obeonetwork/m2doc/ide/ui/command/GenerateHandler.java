@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -46,18 +48,20 @@ public class GenerateHandler extends AbstractHandler {
      * the command has been executed, so extract extract the needed information
      * from the application context.
      */
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getCurrentSelection(event);
         Shell shell = HandlerUtil.getActiveShell(event);
         if (selection instanceof IStructuredSelection) {
             Object selected = ((IStructuredSelection) selection).getFirstElement();
             Generation generation = null;
+            if (selected instanceof IFile && "genconf".equals(((IFile) selected).getFileExtension())) {
+                URI genconfURI = URI.createPlatformResourceURI(((IFile) selected).getFullPath().toString(), true);
+                generation = ConfigurationServices.getGeneration(genconfURI);
+
+            }
             if (selected instanceof Generation) {
                 generation = (Generation) selected;
-            } else {
-                MessageDialog.openError(shell, "Bad selection",
-                        "Document generation action can only be triggered on Generation object.");
-                return null;
             }
 
             if (generation != null) {
@@ -94,6 +98,10 @@ public class GenerateHandler extends AbstractHandler {
                     MessageDialog.openError(shell, "Generation problem. See the error log for details",
                             "A technical error occured. Please log a bug (see the error log for details)");
                 }
+            } else {
+                MessageDialog.openError(shell, "Bad selection",
+                        "Document generation action can only be triggered on Generation object.");
+                return null;
             }
         } else {
             MessageDialog.openError(shell, "Bad selection",
