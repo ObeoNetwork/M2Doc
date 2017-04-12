@@ -59,6 +59,9 @@ import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.services.BooleanServices;
+import org.obeonetwork.m2doc.services.ImageServices;
+import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -289,6 +292,29 @@ public final class M2DocUtils {
      */
     public static String message(ParsingErrorMessage message, Object... objects) {
         return MessageFormat.format(message.getMessage(), objects);
+    }
+
+    /**
+     * Prepares the given {@link IQueryEnvironment} for M2Doc services.
+     * 
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment}
+     * @param templateURI
+     *            the template {@link URI}
+     */
+    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, URI templateURI) {
+
+        Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
+        ServiceUtils.registerServices(queryEnvironment, services);
+        services = ServiceUtils.getServices(queryEnvironment, LinkServices.class);
+        ServiceUtils.registerServices(queryEnvironment, services);
+        services = ServiceUtils.getServices(queryEnvironment, new ImageServices(templateURI));
+        ServiceUtils.registerServices(queryEnvironment, services);
+        List<Class<?>> defaultClasses = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
+        for (Class<?> cls : defaultClasses) {
+            services = ServiceUtils.getServices(queryEnvironment, cls);
+            ServiceUtils.registerServices(queryEnvironment, services);
+        }
     }
 
     /**

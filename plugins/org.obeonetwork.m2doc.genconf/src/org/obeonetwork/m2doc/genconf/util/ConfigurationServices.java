@@ -14,11 +14,8 @@ package org.obeonetwork.m2doc.genconf.util;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
@@ -27,13 +24,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.obeonetwork.m2doc.api.QueryServices;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Services for genconf metamodels.
@@ -56,7 +53,10 @@ public class ConfigurationServices {
      */
     public IQueryEnvironment initAcceleoEnvironment(Generation generation) {
         final URI templateURI = URI.createFileURI(generation.getTemplateFileName());
-        final IQueryEnvironment queryEnvironment = QueryServices.getInstance().getEnvironment(templateURI);
+        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(null);
+
+        M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI);
 
         return queryEnvironment;
     }
@@ -74,48 +74,6 @@ public class ConfigurationServices {
         res.put(ProviderConstants.CONF_ROOT_OBJECT_KEY, generation);
         res.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, generation.isRefreshRepresentations());
 
-        return res;
-    }
-
-    /**
-     * Gets the {@link IType} from variables.
-     * 
-     * @param generation
-     *            Generation
-     * @return the {@link IType} from variables
-     */
-    public Map<String, Set<IType>> getTypes(Generation generation) {
-        final URI teamplateURI = URI.createFileURI(generation.getTemplateFileName());
-        return getTypes(QueryServices.getInstance().getEnvironment(teamplateURI), generation);
-    }
-
-    /**
-     * Gets the {@link IType} from variables.
-     * 
-     * @param environment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param generation
-     *            Generation
-     * @return the {@link IType} from variables
-     */
-    public Map<String, Set<IType>> getTypes(IReadOnlyQueryEnvironment environment, Generation generation) {
-        final Map<String, Set<IType>> res = new HashMap<>();
-
-        for (Definition def : generation.getDefinitions()) {
-            if (def instanceof ModelDefinition) {
-                final Object value = ((ModelDefinition) def).getValue();
-                final Set<IType> types = QueryServices.getInstance().getTypes(environment, value);
-                res.put(def.getKey(), types);
-            } else if (def instanceof StringDefinition) {
-                final Object value = ((StringDefinition) def).getValue();
-                final Set<IType> types = QueryServices.getInstance().getTypes(environment, value);
-                res.put(def.getKey(), types);
-
-            } else {
-                throw new UnsupportedOperationException();
-            }
-
-        }
         return res;
     }
 
