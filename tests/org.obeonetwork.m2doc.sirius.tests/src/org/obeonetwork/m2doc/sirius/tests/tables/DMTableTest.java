@@ -28,6 +28,14 @@ import static org.junit.Assert.assertSame;
 
 public class DMTableTest {
 
+    private static final int BROWN = 0x804000;
+
+    private static final int WHITE = 0xffffff;
+
+    private static final int GRAY = 0x404040;
+
+    private static final int BLACK = 0x000000;
+
     private DTable dtable;
 
     private DTableElementStyle styleRow;
@@ -47,8 +55,9 @@ public class DMTableTest {
         assertEquals("Col One", col1.getLabel());
         MStyle style = col1.getStyle();
         assertEquals(6, style.getFontSize());
-        assertEquals(0x404040, style.getBackgroundColor());
-        assertEquals(0x000000, style.getForegroundColor());
+
+        assertEquals(GRAY, style.getBackgroundColor());
+        assertEquals(BLACK, style.getForegroundColor());
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -75,8 +84,8 @@ public class DMTableTest {
         assertEquals("Row Two", row.getLabel());
         style = row.getStyle();
         assertEquals(3, style.getFontSize());
-        assertEquals(0xffffff, style.getBackgroundColor());
-        assertEquals(0x000000, style.getForegroundColor());
+        assertEquals(WHITE, style.getBackgroundColor());
+        assertEquals(BLACK, style.getForegroundColor());
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -87,9 +96,11 @@ public class DMTableTest {
         assertSame(col2, cell22.getColumn());
         assertEquals("Cell Two Two", cell22.getLabel());
         style = cell22.getStyle();
+        // CHECKSTYLE:OFF
         assertEquals(9, style.getFontSize());
-        assertEquals(0xffffff, style.getBackgroundColor());
-        assertEquals(0x804000, style.getForegroundColor());
+        // CHECKSTYLE:ON
+        assertEquals(WHITE, style.getBackgroundColor());
+        assertEquals(BROWN, style.getForegroundColor());
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -106,6 +117,7 @@ public class DMTableTest {
 
         styleCol = TableFactory.eINSTANCE.createDTableElementStyle();
         styleCol.setLabelSize(6);
+        // CHECKSTYLE:OFF
         styleCol.setBackgroundColor(RGBValues.create(0x40, 0x40, 0x40));
         styleCol.getLabelFormat().add(FontFormat.ITALIC_LITERAL);
 
@@ -113,7 +125,7 @@ public class DMTableTest {
         styleCell.setLabelSize(9);
         styleCell.setForegroundColor(RGBValues.create(0x80, 0x40, 0));
         styleCell.getLabelFormat().add(FontFormat.BOLD_LITERAL);
-
+        // CHECKSTYLE:ON
         DColumn col1 = TableFactory.eINSTANCE.createDFeatureColumn();
         col1.setLabel("Col One");
         col1.setCurrentStyle(styleCol);
