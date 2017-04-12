@@ -1,0 +1,18 @@
+target "sirius41" with source requirements
+
+
+location "http://download.eclipse.org/sirius/updates/nightly/5.0.x/oxygen" {
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius lazy
+	org.eclipse.sirius.diagram lazy
+	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
+}
+
+location Acceleo-3.7 "http://download.eclipse.org/acceleo/updates/milestones/3.7/S201701271332" {
+	org.eclipse.acceleo.query.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
+	org.antlr.runtime [4.3.0,4.4.0)
+}
+

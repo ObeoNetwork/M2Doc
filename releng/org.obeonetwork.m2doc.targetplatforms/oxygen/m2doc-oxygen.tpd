@@ -1,11 +1,11 @@
-target "M2Doc Neon Target Platform"
+target "M2Doc Oxygen Target Platform"
 
 include "../common/common.tpd"
-include "../common/sirius41.tpd"
+include "../common/sirius50.tpd"
 
 with source requirements
 
-location Eclipse "http://download.eclipse.org/releases/neon" {
+location Eclipse "http://download.eclipse.org/releases/oxygen" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
