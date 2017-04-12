@@ -54,7 +54,7 @@ public class ConfigureTemplateHandler extends AbstractHandler {
                 try {
                     final IFile templateFile = (IFile) selected;
                     final TemplateConfig config = TemplateConfigUtil
-                            .load(URI.createPlatformResourceURI((templateFile.getFullPath().toString()), true));
+                            .load(URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true));
                     Shell shell = HandlerUtil.getActiveShell(event);
                     ConfigureTemplateDialog dlg = new ConfigureTemplateDialog(shell, config);
                     if (dlg.open() == Dialog.OK) {
@@ -79,8 +79,7 @@ public class ConfigureTemplateHandler extends AbstractHandler {
 
     protected void saveTemplate(TemplateConfig config, IFile templateFile) {
         try {
-            TemplateConfigUtil.save(config,
-                    URI.createPlatformResourceURI((templateFile.getFullPath().toString()), true));
+            TemplateConfigUtil.save(config, URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true));
         } catch (IOException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }

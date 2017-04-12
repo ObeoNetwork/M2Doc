@@ -92,7 +92,9 @@ public class GenerateHandler extends AbstractHandler {
                                 throw new InvocationTargetException(e);
                             } catch (DocumentGenerationException e) {
                                 throw new InvocationTargetException(e);
+                                // CHECKSTYLE:OFF any error should be reported back.
                             } catch (RuntimeException e) {// do not let exception leak out.
+                                // CHECKSTYLE:ON
                                 throw new InvocationTargetException(e);
                             }
                         }

@@ -36,7 +36,7 @@ public class TemplateCustomPropertiesTests {
 
     @Test
     public void parseServiceToken() throws IOException, InvalidFormatException {
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> serviceTokens = properties.getServiceTokens();
@@ -48,7 +48,7 @@ public class TemplateCustomPropertiesTests {
 
     @Test
     public void parseVariable() throws IOException, InvalidFormatException {
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final Map<String, String> variables = properties.getVariables();
@@ -60,7 +60,7 @@ public class TemplateCustomPropertiesTests {
 
     @Test
     public void parseImport() throws IOException, InvalidFormatException {
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> serviceClasses = properties.getServiceClasses();
@@ -80,7 +80,7 @@ public class TemplateCustomPropertiesTests {
      */
     @Test
     public void parseInvalidVariables() throws IOException, InvalidFormatException {
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/emptyVar.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final Map<String, String> variables = properties.getVariables();
@@ -99,7 +99,7 @@ public class TemplateCustomPropertiesTests {
      */
     @Test
     public void testReadBlankMMUri() throws IOException, InvalidFormatException {
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/noUri.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> uris = properties.getPackagesURIs();
@@ -112,7 +112,7 @@ public class TemplateCustomPropertiesTests {
         final File tempFile = File.createTempFile("properties", "-add.docx");
         final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/noProperties.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
@@ -136,7 +136,7 @@ public class TemplateCustomPropertiesTests {
             POIServices.getInstance().saveFile(document, tempFileURI);
         }
 
-        try (final XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
             final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(2, info.getPackagesURIs().size());
@@ -162,7 +162,7 @@ public class TemplateCustomPropertiesTests {
         final File tempFile = File.createTempFile("properties", "-add.docx");
         final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
@@ -182,7 +182,7 @@ public class TemplateCustomPropertiesTests {
             POIServices.getInstance().saveFile(document, tempFileURI);
         }
 
-        try (final XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
             final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(0, info.getPackagesURIs().size());
@@ -200,7 +200,7 @@ public class TemplateCustomPropertiesTests {
         final File tempFile = File.createTempFile("properties", "-add.docx");
         final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
-        try (final XWPFDocument document = POIServices.getInstance()
+        try (XWPFDocument document = POIServices.getInstance()
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
@@ -224,7 +224,7 @@ public class TemplateCustomPropertiesTests {
             POIServices.getInstance().saveFile(document, tempFileURI);
         }
 
-        try (final XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
             final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(4, info.getPackagesURIs().size());

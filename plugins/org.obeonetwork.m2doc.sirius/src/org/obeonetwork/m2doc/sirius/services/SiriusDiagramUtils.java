@@ -356,7 +356,9 @@ public final class SiriusDiagramUtils {
                     if (!diagramtoExport.equals(dsd)) {
                         session.getTransactionalEditingDomain().getCommandStack().undo();
                     }
+                    // CHECKSTYLE:OFF introducing a dedicated runtimexception just for this case seems overkill
                 } catch (RuntimeException e) {
+                    // CHECKSTYLE:ON
                     throw new ProviderException("Image creation from diagram '" + dRepresentation.getName()
                         + "' to the file '" + filePath + "' failed.", e);
                 }

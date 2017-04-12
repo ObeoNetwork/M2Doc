@@ -238,12 +238,12 @@ public abstract class AbstractTemplatesTestSuite {
         final String actualAst = templateAstSerializer.serialize(documentTemplate);
         if (!URIConverter.INSTANCE.exists(expectedASTURI, Collections.EMPTY_MAP)) {
             final URI actualASTURI = getActualASTURI(new File(testFolderPath));
-            try (final OutputStream stream = URIConverter.INSTANCE.createOutputStream(actualASTURI);) {
+            try (OutputStream stream = URIConverter.INSTANCE.createOutputStream(actualASTURI);) {
                 setContent(stream, "UTF-8", actualAst);
             }
             fail(expectedASTURI + DOESN_T_EXISTS);
         }
-        try (final InputStream stream = URIConverter.INSTANCE.createInputStream(expectedASTURI)) {
+        try (InputStream stream = URIConverter.INSTANCE.createInputStream(expectedASTURI)) {
             final String expectedAst = getContent(stream, "UTF-8");
             assertEquals(expectedAst.replaceAll("\r\n", "\n"), actualAst.replaceAll("\r\n", "\n"));
         }
@@ -378,7 +378,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the {@link List} of all expected lost files from the given folder path
      */
     private List<URI> getExpectedLostURIs(String folderPath) {
-        final List<URI> result = new ArrayList<URI>();
+        final List<URI> result = new ArrayList<>();
 
         File folder = new File(folderPath);
         final File[] children = folder.listFiles(new FileFilter() {
@@ -495,7 +495,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the user content file from the test folder path
      */
     protected List<URI> getUserContentLostURI(File testFolder) {
-        final List<URI> result = new ArrayList<URI>();
+        final List<URI> result = new ArrayList<>();
 
         final File[] children = testFolder.listFiles(new FileFilter() {
 
@@ -544,7 +544,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the {@link Collection} of test folders from the given folder path
      */
     public static Collection<Object[]> retrieveTestFolders(String folderPath) {
-        Collection<Object[]> parameters = new ArrayList<Object[]>();
+        Collection<Object[]> parameters = new ArrayList<>();
 
         File folder = new File(folderPath);
         final File[] children = folder.listFiles(new FileFilter() {
