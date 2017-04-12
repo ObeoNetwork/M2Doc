@@ -36,6 +36,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ICellEditorValidator;
@@ -86,6 +87,302 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author ldelaigue
  */
 public class ConfigureTemplateDialog extends TitleAreaDialog {
+    /**
+     * 
+     */
+    private static final int COLUMN_WIDTH = 250;
+    /**
+     * 
+     */
+    private static final int HALF_COLUMN_WIDTH = 110;
+
+    /**
+     * @author cedric
+     */
+    private final class VarTypeTVColumnEditingSupport extends EditingSupport {
+        /**
+         * @param viewer
+         */
+        private VarTypeTVColumnEditingSupport(ColumnViewer viewer) {
+            super(viewer);
+        }
+
+        @Override
+        protected void setValue(final Object element, final Object value) {
+            if (element instanceof TemplateVariable && value instanceof TemplateVariable) {
+                editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+                    @Override
+                    protected void doExecute() {
+                        TemplateVariable toUpdate = (TemplateVariable) element;
+                        TemplateVariable copy = (TemplateVariable) value;
+                        String oldName = toUpdate.getName();
+                        if (copy.getName() != null && !copy.getName().equals(oldName)) {
+                            toUpdate.setName(copy.getName());
+                        }
+                        toUpdate.setTypeName(copy.getTypeName());
+                        toUpdate.setType(copy.getType());
+                        postVariableChange(toUpdate);
+                    }
+                });
+            }
+        }
+
+        @Override
+        protected Object getValue(Object element) {
+            if (element instanceof TemplateVariable) {
+                return ((TemplateVariable) element).getTypeName();
+            }
+            return null;
+        }
+
+        @Override
+        protected CellEditor getCellEditor(Object element) {
+            if (element instanceof TemplateVariable) {
+                TemplateVariable var = (TemplateVariable) element;
+                final TemplateVariable copy = TplconfFactoryImpl.eINSTANCE.createTemplateVariable();
+                copy.setName(var.getName());
+                copy.setTypeName(var.getTypeName());
+                copy.setType(var.getType());
+                return new DialogCellEditor(varTable, SWT.NONE) {
+                    @Override
+                    protected Object openDialogBox(Control cellEditorWindow) {
+                        VariableEditDialog dlg = new VariableEditDialog(getParentShell(), copy, config, adapterFactory);
+                        if (dlg.open() == Dialog.OK) {
+                            return copy;
+                        }
+                        return null;
+                    }
+                };
+            }
+            return null;
+        }
+
+        @Override
+        protected boolean canEdit(Object element) {
+            return true;
+        }
+    }
+
+    /**
+     * @author cedric
+     */
+    private final class VarNameTVColumnEditingSupport extends EditingSupport {
+        /**
+         * @param viewer
+         */
+        private VarNameTVColumnEditingSupport(ColumnViewer viewer) {
+            super(viewer);
+        }
+
+        @Override
+        protected void setValue(final Object element, final Object value) {
+            if (element instanceof TemplateVariable && value instanceof String) {
+                editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+                    @Override
+                    protected void doExecute() {
+                        ((TemplateVariable) element).setName((String) value);
+                    }
+                });
+            }
+        }
+
+        @Override
+        protected Object getValue(Object element) {
+            if (element instanceof TemplateVariable) {
+                return ((TemplateVariable) element).getName();
+            }
+            return null;
+        }
+
+        @Override
+        protected CellEditor getCellEditor(Object element) {
+            TextCellEditor editor = new TextCellEditor(varTable);
+            editor.setValidator(new ICellEditorValidator() {
+
+                @Override
+                public String isValid(Object value) {
+                    String result = "Value must be a String.";
+                    if (value instanceof String) {
+                        String s = (String) value;
+                        if (TemplateCustomProperties.isValidVariableName(s)) {
+                            result = null;
+                        } else {
+                            result = "Variable name is not valid.";
+                        }
+                    }
+                    return result;
+                }
+            });
+            return editor;
+        }
+
+        @Override
+        protected boolean canEdit(Object element) {
+            return true;
+        }
+    }
+
+    /**
+     * @author cedric
+     */
+    private final class MMURITVEditingSupport extends EditingSupport {
+        /**
+         * @param viewer
+         */
+        private MMURITVEditingSupport(ColumnViewer viewer) {
+            super(viewer);
+        }
+
+        @Override
+        protected void setValue(final Object element, final Object value) {
+            if (element instanceof EPackageMapping && value instanceof String) {
+                editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+                    @Override
+                    protected void doExecute() {
+                        String uri = (String) value;
+                        EPackageMapping mm = (EPackageMapping) element;
+                        EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(uri);
+                        if (uri != null && !uri.equals(mm.getUri())) {
+                            mappingsByUri.remove(mm.getUri());
+                            mappingsByUri.put(uri, mm);
+                        }
+                        if (ePackage == null) {
+                            mm.setName(null);
+                            mm.setEPackage(null);
+                        } else {
+                            mm.setName(ePackage.getName());
+                            mm.setEPackage(ePackage);
+                        }
+                        mm.setUri(uri);
+                    }
+                });
+            }
+        }
+
+        @Override
+        protected Object getValue(Object element) {
+            if (element instanceof EPackageMapping) {
+                return ((EPackageMapping) element).getUri();
+            }
+            return null;
+        }
+
+        @Override
+        protected CellEditor getCellEditor(Object element) {
+            return new TextCellEditor(mmTable);
+        }
+
+        @Override
+        protected boolean canEdit(Object element) {
+            return true;
+        }
+    }
+
+    /**
+     * @author cedric
+     */
+    private final class AddURIButtonAdapter extends SelectionAdapter {
+        /**
+         * @author cedric
+         */
+        private final class AddEPackageMappingCommand extends RecordingCommand {
+            /**
+             * 
+             */
+            private final EPackage ePackage;
+
+            /**
+             * @param domain
+             * @param ePackage
+             */
+            private AddEPackageMappingCommand(TransactionalEditingDomain domain, EPackage ePackage) {
+                super(domain);
+                this.ePackage = ePackage;
+            }
+
+            @Override
+            protected void doExecute() {
+                // Check whether this mapping is already here...
+                if (mappingsByUri.containsKey(ePackage.getNsURI())) {
+                    // Just update the existing mapping
+                    EPackageMapping mapping = mappingsByUri.get(ePackage.getNsURI());
+                    mapping.setEPackage(ePackage);
+                    mapping.setName(ePackage.getName());
+                    mapping.setUri(ePackage.getNsURI());
+                } else {
+                    EPackageMapping newMM = TplconfFactory.eINSTANCE.createEPackageMapping();
+                    newMM.setName(ePackage.getName());
+                    newMM.setUri(ePackage.getNsURI());
+                    newMM.setEPackage(ePackage);
+                    config.getMappings().add(newMM);
+                    mappingsByUri.put(ePackage.getNsURI(), newMM);
+                }
+            }
+        }
+
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            RegisteredPackageDialog dialog = new RegisteredPackageDialog(Display.getCurrent().getActiveShell());
+            dialog.setMultipleSelection(false);
+            dialog.open();
+            if (dialog.getReturnCode() == Dialog.OK) {
+                Object firstResult = dialog.getFirstResult();
+                if (firstResult instanceof String) {
+                    String uri = (String) firstResult;
+                    final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(uri);
+                    if (ePackage != null) {
+                        editingDomain.getCommandStack().execute(new AddEPackageMappingCommand(editingDomain, ePackage));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @author cedric
+     */
+    private final class TableViewerEditingSupport extends EditingSupport {
+        /**
+         * @param viewer
+         */
+        private TableViewerEditingSupport(ColumnViewer viewer) {
+            super(viewer);
+        }
+
+        @Override
+        protected void setValue(Object element, Object value) {
+            if (element instanceof EPackageMapping && value instanceof EPackage) {
+                EPackage ePackage = (EPackage) value;
+                EPackageMapping toUpdate = (EPackageMapping) element;
+                if (!ePackage.getNsURI().equals(toUpdate.getUri())) {
+                    mappingsByUri.remove(toUpdate.getUri());
+                    mappingsByUri.put(ePackage.getNsURI(), toUpdate);
+                }
+                toUpdate.setName(ePackage.getName());
+                toUpdate.setEPackage(ePackage);
+                toUpdate.setUri(ePackage.getNsURI());
+            }
+        }
+
+        @Override
+        protected Object getValue(Object element) {
+            if (element instanceof EPackageMapping) {
+                return ((EPackageMapping) element).getName();
+            }
+            return null;
+        }
+
+        @Override
+        protected CellEditor getCellEditor(Object element) {
+            return new URIDialogCellEditor(mmTable);
+        }
+
+        @Override
+        protected boolean canEdit(Object element) {
+            return true;
+        }
+    }
+
     private final TemplateConfig config;
     private ComposedAdapterFactory adapterFactory;
     private Table mmTable;
@@ -94,7 +391,7 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
     private TableViewer mmTableViewer;
     private TransactionalEditingDomain editingDomain;
 
-    private Map<String, EPackageMapping> mappingsByUri = new LinkedHashMap<String, EPackageMapping>();
+    private Map<String, EPackageMapping> mappingsByUri = new LinkedHashMap<>();
 
     /**
      * Create the dialog.
@@ -137,9 +434,9 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
         editingDomain.getCommandStack().flush();
         Composite area = (Composite) super.createDialogArea(parent);
         Composite container = new Composite(area, SWT.NONE);
-        FillLayout fl_container = new FillLayout();
-        fl_container.type = SWT.VERTICAL;
-        container.setLayout(fl_container);
+        FillLayout flContainer = new FillLayout();
+        flContainer.type = SWT.VERTICAL;
+        container.setLayout(flContainer);
         container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         CTabFolder tabFolder = new CTabFolder(container, SWT.BORDER);
@@ -195,7 +492,7 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
 
         TableViewerColumn mmNameTVColumn = new TableViewerColumn(mmTableViewer, SWT.NONE);
         TableColumn mmNameColumn = mmNameTVColumn.getColumn();
-        mmNameColumn.setWidth(110);
+        mmNameColumn.setWidth(HALF_COLUMN_WIDTH);
         mmNameColumn.setText("Name");
         mmNameTVColumn.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -206,45 +503,11 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
                 return super.getText(element);
             }
         });
-        mmNameTVColumn.setEditingSupport(new EditingSupport(mmTableViewer) {
-
-            @Override
-            protected void setValue(Object element, Object value) {
-                if (element instanceof EPackageMapping && value instanceof EPackage) {
-                    EPackage ePackage = (EPackage) value;
-                    EPackageMapping toUpdate = (EPackageMapping) element;
-                    if (!ePackage.getNsURI().equals(toUpdate.getUri())) {
-                        mappingsByUri.remove(toUpdate.getUri());
-                        mappingsByUri.put(ePackage.getNsURI(), toUpdate);
-                    }
-                    toUpdate.setName(ePackage.getName());
-                    toUpdate.setEPackage(ePackage);
-                    toUpdate.setUri(ePackage.getNsURI());
-                }
-            }
-
-            @Override
-            protected Object getValue(Object element) {
-                if (element instanceof EPackageMapping) {
-                    return ((EPackageMapping) element).getName();
-                }
-                return null;
-            }
-
-            @Override
-            protected CellEditor getCellEditor(Object element) {
-                return new URIDialogCellEditor(mmTable);
-            }
-
-            @Override
-            protected boolean canEdit(Object element) {
-                return true;
-            }
-        });
+        mmNameTVColumn.setEditingSupport(new TableViewerEditingSupport(mmTableViewer));
 
         TableViewerColumn mmURITVColumn = new TableViewerColumn(mmTableViewer, SWT.NONE);
         TableColumn mmURIColumn = mmURITVColumn.getColumn();
-        mmURIColumn.setWidth(250);
+        mmURIColumn.setWidth(COLUMN_WIDTH);
         mmURIColumn.setText("nsURI");
         mmURITVColumn.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -255,51 +518,7 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
                 return super.getText(element);
             }
         });
-        mmURITVColumn.setEditingSupport(new EditingSupport(mmTableViewer) {
-            @Override
-            protected void setValue(final Object element, final Object value) {
-                if (element instanceof EPackageMapping && value instanceof String) {
-                    editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
-                        @Override
-                        protected void doExecute() {
-                            String uri = (String) value;
-                            EPackageMapping mm = (EPackageMapping) element;
-                            EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(uri);
-                            if (uri != null && !uri.equals(mm.getUri())) {
-                                mappingsByUri.remove(mm.getUri());
-                                mappingsByUri.put(uri, mm);
-                            }
-                            if (ePackage == null) {
-                                mm.setName(null);
-                                mm.setEPackage(null);
-                            } else {
-                                mm.setName(ePackage.getName());
-                                mm.setEPackage(ePackage);
-                            }
-                            mm.setUri(uri);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            protected Object getValue(Object element) {
-                if (element instanceof EPackageMapping) {
-                    return ((EPackageMapping) element).getUri();
-                }
-                return null;
-            }
-
-            @Override
-            protected CellEditor getCellEditor(Object element) {
-                return new TextCellEditor(mmTable);
-            }
-
-            @Override
-            protected boolean canEdit(Object element) {
-                return true;
-            }
-        });
+        mmURITVColumn.setEditingSupport(new MMURITVEditingSupport(mmTableViewer));
 
         mmTableViewer.setContentProvider(new IStructuredContentProvider() {
             @Override
@@ -323,53 +542,25 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
         });
         mmTableViewer.setInput(config);
 
+        createButtons(mmScrolledComposite, mmComposite);
+    }
+
+    /**
+     * @param mmScrolledComposite
+     * @param mmComposite
+     */
+    private void createButtons(ScrolledComposite mmScrolledComposite, Composite mmComposite) {
         Composite mmButtonsComp = new Composite(mmComposite, SWT.NONE);
-        RowLayout rl_mmButtonsComp = new RowLayout(SWT.VERTICAL);
-        rl_mmButtonsComp.center = true;
-        rl_mmButtonsComp.justify = true;
-        rl_mmButtonsComp.fill = true;
-        mmButtonsComp.setLayout(rl_mmButtonsComp);
+        RowLayout rlMmButtonsComp = new RowLayout(SWT.VERTICAL);
+        rlMmButtonsComp.center = true;
+        rlMmButtonsComp.justify = true;
+        rlMmButtonsComp.fill = true;
+        mmButtonsComp.setLayout(rlMmButtonsComp);
         mmButtonsComp.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
 
         Button btnAddURI = new Button(mmButtonsComp, SWT.NONE);
         btnAddURI.setImage(Activator.getDefault().getImageRegistry().get(Activator.ADD_IMG_KEY));
-        btnAddURI.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                RegisteredPackageDialog dialog = new RegisteredPackageDialog(Display.getCurrent().getActiveShell());
-                dialog.setMultipleSelection(false);
-                dialog.open();
-                if (dialog.getReturnCode() == Dialog.OK) {
-                    Object firstResult = dialog.getFirstResult();
-                    if (firstResult instanceof String) {
-                        String uri = (String) firstResult;
-                        final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(uri);
-                        if (ePackage != null) {
-                            editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
-                                @Override
-                                protected void doExecute() {
-                                    // Check whether this mapping is already here...
-                                    if (mappingsByUri.containsKey(ePackage.getNsURI())) {
-                                        // Just update the existing mapping
-                                        EPackageMapping mapping = mappingsByUri.get(ePackage.getNsURI());
-                                        mapping.setEPackage(ePackage);
-                                        mapping.setName(ePackage.getName());
-                                        mapping.setUri(ePackage.getNsURI());
-                                    } else {
-                                        EPackageMapping newMM = TplconfFactory.eINSTANCE.createEPackageMapping();
-                                        newMM.setName(ePackage.getName());
-                                        newMM.setUri(ePackage.getNsURI());
-                                        newMM.setEPackage(ePackage);
-                                        config.getMappings().add(newMM);
-                                        mappingsByUri.put(ePackage.getNsURI(), newMM);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-        });
+        btnAddURI.addSelectionListener(new AddURIButtonAdapter());
 
         final Button btnDelURI = new Button(mmButtonsComp, SWT.NONE);
         btnDelURI.setImage(Activator.getDefault().getImageRegistry().get(Activator.DELETE_IMG_KEY));
@@ -417,7 +608,7 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
 
         TableViewerColumn varNameTVColumn = new TableViewerColumn(varTableViewer, SWT.NONE);
         TableColumn varNameColumn = varNameTVColumn.getColumn();
-        varNameColumn.setWidth(110);
+        varNameColumn.setWidth(HALF_COLUMN_WIDTH);
         varNameColumn.setText("Name");
         varNameTVColumn.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -428,56 +619,11 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
                 return super.getText(element);
             }
         });
-        varNameTVColumn.setEditingSupport(new EditingSupport(varTableViewer) {
-            @Override
-            protected void setValue(final Object element, final Object value) {
-                if (element instanceof TemplateVariable && value instanceof String) {
-                    editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
-                        @Override
-                        protected void doExecute() {
-                            ((TemplateVariable) element).setName((String) value);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            protected Object getValue(Object element) {
-                if (element instanceof TemplateVariable) {
-                    return ((TemplateVariable) element).getName();
-                }
-                return null;
-            }
-
-            @Override
-            protected CellEditor getCellEditor(Object element) {
-                TextCellEditor editor = new TextCellEditor(varTable);
-                editor.setValidator(new ICellEditorValidator() {
-
-                    @Override
-                    public String isValid(Object value) {
-                        if (value instanceof String) {
-                            String s = (String) value;
-                            if (TemplateCustomProperties.isValidVariableName(s)) {
-                                return null;
-                            }
-                            return "Variable name is not valid.";
-                        }
-                        return "Value must be a String.";
-                    }
-                });
-                return editor;
-            }
-
-            @Override
-            protected boolean canEdit(Object element) {
-                return true;
-            }
-        });
+        varNameTVColumn.setEditingSupport(new VarNameTVColumnEditingSupport(varTableViewer));
 
         TableViewerColumn varTypeTVColumn = new TableViewerColumn(varTableViewer, SWT.NONE);
         TableColumn varTypeColumn = varTypeTVColumn.getColumn();
-        varTypeColumn.setWidth(250);
+        varTypeColumn.setWidth(COLUMN_WIDTH);
         varTypeColumn.setText("Type");
         varTypeTVColumn.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -488,63 +634,7 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
                 return super.getText(element);
             }
         });
-        varTypeTVColumn.setEditingSupport(new EditingSupport(varTableViewer) {
-            @Override
-            protected void setValue(final Object element, final Object value) {
-                if (element instanceof TemplateVariable && value instanceof TemplateVariable) {
-                    editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
-                        @Override
-                        protected void doExecute() {
-                            TemplateVariable toUpdate = (TemplateVariable) element;
-                            TemplateVariable copy = (TemplateVariable) value;
-                            String oldName = toUpdate.getName();
-                            if (copy.getName() != null && !copy.getName().equals(oldName)) {
-                                toUpdate.setName(copy.getName());
-                            }
-                            toUpdate.setTypeName(copy.getTypeName());
-                            toUpdate.setType(copy.getType());
-                            postVariableChange(toUpdate);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            protected Object getValue(Object element) {
-                if (element instanceof TemplateVariable) {
-                    return ((TemplateVariable) element).getTypeName();
-                }
-                return null;
-            }
-
-            @Override
-            protected CellEditor getCellEditor(Object element) {
-                if (element instanceof TemplateVariable) {
-                    TemplateVariable var = (TemplateVariable) element;
-                    final TemplateVariable copy = TplconfFactoryImpl.eINSTANCE.createTemplateVariable();
-                    copy.setName(var.getName());
-                    copy.setTypeName(var.getTypeName());
-                    copy.setType(var.getType());
-                    return new DialogCellEditor(varTable, SWT.NONE) {
-                        @Override
-                        protected Object openDialogBox(Control cellEditorWindow) {
-                            VariableEditDialog dlg = new VariableEditDialog(getParentShell(), copy, config,
-                                    adapterFactory);
-                            if (dlg.open() == Dialog.OK) {
-                                return copy;
-                            }
-                            return null;
-                        }
-                    };
-                }
-                return null;
-            }
-
-            @Override
-            protected boolean canEdit(Object element) {
-                return true;
-            }
-        });
+        varTypeTVColumn.setEditingSupport(new VarTypeTVColumnEditingSupport(varTableViewer));
 
         varTableViewer.setContentProvider(new IStructuredContentProvider() {
             @Override
@@ -571,11 +661,11 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
 
         Composite varButtonsComp = new Composite(varComposite, SWT.NONE);
         varButtonsComp.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
-        RowLayout rl_varButtonsComp = new RowLayout(SWT.VERTICAL);
-        rl_varButtonsComp.justify = true;
-        rl_varButtonsComp.fill = true;
-        rl_varButtonsComp.center = true;
-        varButtonsComp.setLayout(rl_varButtonsComp);
+        RowLayout rlVarButtonsComp = new RowLayout(SWT.VERTICAL);
+        rlVarButtonsComp.justify = true;
+        rlVarButtonsComp.fill = true;
+        rlVarButtonsComp.center = true;
+        varButtonsComp.setLayout(rlVarButtonsComp);
 
         Button btnAddVar = new Button(varButtonsComp, SWT.NONE);
         btnAddVar.setImage(Activator.getDefault().getImageRegistry().get(Activator.ADD_IMG_KEY));
@@ -684,6 +774,8 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
      */
     @Override
     protected Point getInitialSize() {
+        // CHECKSTYLE:OFF These values are only used once.
         return new Point(470, 400);
+        // CHECKSTYLE:ON
     }
 }

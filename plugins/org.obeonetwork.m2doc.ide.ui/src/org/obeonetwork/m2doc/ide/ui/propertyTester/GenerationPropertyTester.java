@@ -50,18 +50,19 @@ public class GenerationPropertyTester extends PropertyTester {
     @SuppressWarnings("rawtypes")
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+        boolean isApplicable = false;
         if (receiver instanceof Generation && isLocal((Generation) receiver)) {
-            return true;
-        }
-        if (receiver instanceof List) {
+            isApplicable = true;
+        } else if (receiver instanceof List) {
             for (Object object : (List) receiver) {
                 if (!test(object, property, args, expectedValue)) {
-                    return false;
+                    isApplicable = false;
+                    break;
                 }
             }
-            return true;
+
         }
-        return false;
+        return isApplicable;
     }
 
 }
