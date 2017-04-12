@@ -10,7 +10,7 @@ import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
 
 public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite {
 
-    private final static SiriusDiagramByTitleProvider PROVIDER = new SiriusDiagramByTitleProvider();
+    private static final SiriusDiagramByTitleProvider PROVIDER = new SiriusDiagramByTitleProvider();
 
     /**
      * Constructor.

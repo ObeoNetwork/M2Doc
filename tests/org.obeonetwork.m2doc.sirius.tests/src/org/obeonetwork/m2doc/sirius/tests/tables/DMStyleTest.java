@@ -20,8 +20,10 @@ public class DMStyleTest {
     @Test
     public void testStyle() {
         assertEquals(6, style.getFontSize());
+        // CHECKSTYLE:OFF
         assertEquals(0 << 16 | 128 << 8 | 255, style.getBackgroundColor());
         assertEquals(255 << 16 | 128 << 8 | 0, style.getForegroundColor());
+        // CHECKSTYLE:ON
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -72,8 +74,10 @@ public class DMStyleTest {
     public void setUp() {
         dstyle = TableFactory.eINSTANCE.createDTableElementStyle();
         dstyle.setLabelSize(6);
+        // CHECKSTYLE:OFF
         dstyle.setBackgroundColor(RGBValues.create(0, 128, 255));
         dstyle.setForegroundColor(RGBValues.create(255, 128, 0));
+        // CHECKSTYLE:ON
         style = new DMStyle(dstyle);
     }
 }
