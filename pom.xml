@@ -151,6 +151,28 @@
           </includes>
        </configuration>
     </plugin>
+    <plugin>
+   <groupId>org.apache.maven.plugins</groupId>
+   <artifactId>maven-checkstyle-plugin</artifactId>
+   <version>2.17</version>
+   <executions>
+     <execution>
+       <id>validate</id>
+       <phase>validate</phase>
+       <configuration>
+         <configLocation>./features/org.obeonetwork.m2doc.feature/codestyle/m2docCheckstyleConfiguration.xml</configLocation>
+         <suppressionsLocation>./features/org.obeonetwork.m2doc.feature/codestyle/m2docCheckstyleSuppressions.xml</suppressionsLocation>
+         <encoding>UTF-8</encoding>
+         <consoleOutput>true</consoleOutput>
+         <failsOnError>true</failsOnError>
+         <linkXRef>false</linkXRef>
+       </configuration>
+       <goals>
+         <goal>check</goal>
+       </goals>
+     </execution>
+   </executions>
+ </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -188,6 +210,18 @@
             <source>1.7</source>
             <target>1.7</target>
           </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>2.17</version>
+            <dependencies>
+                <dependency>
+                    <groupId>com.puppycrawl.tools</groupId>
+                    <artifactId>checkstyle</artifactId>
+                    <version>6.19</version>
+                </dependency>
+            </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
