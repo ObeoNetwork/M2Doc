@@ -20,6 +20,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/neon</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/mars</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/luna</module>
@@ -311,6 +312,33 @@
         <module>tests/org.obeonetwork.m2doc.ide.tests</module>
         <module>tests/org.obeonetwork.m2doc.sirius.tests</module>
       </modules>
+    </profile>
+    <profile>
+      <id>platform-oxygen</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>oxygen</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-oxygen</artifactId>
+                  <version>0.10.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>platform-neon</id>

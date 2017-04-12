@@ -1,6 +1,7 @@
 target "M2Doc Luna Target Platform"
 
 include "../common/common.tpd"
+include "../common/sirius41.tpd"
 
 with source requirements
 
