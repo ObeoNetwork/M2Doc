@@ -55,7 +55,7 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
                 try {
                     GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
                     Resource configurationModel = generator.createConfigurationModel(
-                            URI.createPlatformResourceURI((((IFile) selected).getFullPath().toString()), true));
+                            URI.createPlatformResourceURI(((IFile) selected).getFullPath().toString(), true));
                     MessageDialog.openInformation(shell, "M2Doc generation", "The configuration file '"
                         + configurationModel.getURI().toPlatformString(true) + "' is created.");
                 } catch (FileNotFoundException e) {
