@@ -38,19 +38,20 @@ public class TemplatePropertyTester extends PropertyTester {
     @SuppressWarnings("rawtypes")
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+        boolean isApplicable = false;
         if (receiver instanceof IResource
             && M2DocPlugin.DOCX_EXTENSION_FILE.equals(((IResource) receiver).getFileExtension())) {
-            return true;
-        }
-        if (receiver instanceof List) {
+            isApplicable = true;
+        } else if (receiver instanceof List) {
             for (Object object : (List) receiver) {
                 if (!test(object, property, args, expectedValue)) {
-                    return false;
+                    isApplicable = false;
+                    break;
                 }
             }
-            return true;
+
         }
-        return false;
+        return isApplicable;
     }
 
 }

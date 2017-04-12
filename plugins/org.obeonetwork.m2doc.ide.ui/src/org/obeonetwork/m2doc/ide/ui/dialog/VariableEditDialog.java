@@ -74,6 +74,195 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author ldelaigue
  */
 public class VariableEditDialog extends TitleAreaDialog {
+    /**
+     * @author cedric
+     */
+    private final class ClassifierTreeSelectionListener implements ISelectionChangedListener {
+        @Override
+        public void selectionChanged(SelectionChangedEvent event) {
+            Object firstElement = ((IStructuredSelection) event.getSelection()).getFirstElement();
+            final TemplateType type;
+            if (firstElement instanceof EClassifier) {
+                EClassifier eClassifier = (EClassifier) firstElement;
+                final String typeName = TemplateConfigUtil.typeName(eClassifier);
+                if (config.getTypesByName().containsKey(typeName)) {
+                    type = config.getTypesByName().get(typeName);
+                } else {
+                    type = TplconfFactoryImpl.eINSTANCE.createStructuredType();
+                    final StructuredType newType = (StructuredType) type;
+                    newType.setName(eClassifier.getName());
+                    newType.setEClassifier(eClassifier);
+                    newType.setMappingName(eClassifier.getEPackage().getName());
+                    newType.setMapping(mappingsByUri.get(eClassifier.getEPackage().getName()));
+                }
+            } else if (firstElement instanceof ScalarType) {
+                type = (ScalarType) firstElement;
+            } else {
+                type = null;
+            }
+            variable.setType(type);
+            if (type != null) {
+                setTypeName(type);
+            }
+            validate();
+        }
+    }
+
+    /**
+     * @author cedric
+     */
+    private final class TypeNameModifyListener implements ModifyListener {
+        @Override
+        public void modifyText(ModifyEvent e) {
+            final String typeName = txtTypeName.getText();
+            variable.setTypeName(typeName);
+            if (typeName == null || typeName.length() == 0) {
+                mmComboViewer.setSelection(new StructuredSelection());
+                classifierTreeViewer.setSelection(new StructuredSelection());
+            } else if (typeName.indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR) > 0) {
+                int index = typeName.indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR);
+                String mmName = typeName.substring(0, index);
+                EPackageMapping mapping = findMappingByName(mmName);
+                if (mapping != null) {
+                    mmComboViewer.setSelection(new StructuredSelection(mapping), true);
+                }
+                if (config.getTypesByName().containsKey(typeName)) {
+                    selectGivenType(typeName);
+                } else {
+                    String classifierName = typeName.substring(index + 2);
+                    filteredTree.getFilterControl().setText(classifierName);
+                    if (mmName != null && mapping != null) {
+                        selectClassifierIfFound(mmName, mapping, classifierName);
+                    } else {
+                        classifierTreeViewer.setSelection(new StructuredSelection(), true);
+                    }
+                }
+            } else {
+                // scalar type?
+                mmComboViewer.setSelection(new StructuredSelection(config));
+                TemplateType type = config.getTypesByName().get(typeName);
+                if (type instanceof ScalarType) {
+                    classifierTreeViewer.setSelection(new StructuredSelection(type), true);
+                } else {
+                    classifierTreeViewer.setSelection(new StructuredSelection(), true);
+                }
+            }
+            validate();
+        }
+
+        /**
+         * @param typeName
+         */
+        private void selectGivenType(final String typeName) {
+            TemplateType type = config.getTypesByName().get(typeName);
+            if (type instanceof ScalarType) {
+                classifierTreeViewer.setSelection(new StructuredSelection(type), true);
+            } else if (type instanceof StructuredType) {
+                if (((StructuredType) type).getEClassifier() != null) {
+                    classifierTreeViewer.setSelection(
+                            new StructuredSelection(((StructuredType) type).getEClassifier()), true);
+                } else {
+                    classifierTreeViewer.setSelection(new StructuredSelection(), true);
+                }
+            }
+        }
+
+        private void selectClassifierIfFound(String mmName, EPackageMapping mapping, String classifierName) {
+            if (mapping.getEPackage() != null) {
+                EClassifier eClassifier = ((EPackage) mapping.getEPackage()).getEClassifier(classifierName);
+                if (eClassifier != null) {
+                    final StructuredType mmType = TplconfFactory.eINSTANCE.createStructuredType();
+                    mmType.setEClassifier(eClassifier);
+                    mmType.setMapping(mapping);
+                    mmType.setMappingName(mmName);
+                    mmType.setName(classifierName);
+                    classifierTreeViewer.setSelection(new StructuredSelection(eClassifier), true);
+                } else {
+                    classifierTreeViewer.setSelection(new StructuredSelection(), true);
+                }
+            } else {
+                classifierTreeViewer.setSelection(new StructuredSelection(), true);
+            }
+        }
+    }
+
+    /**
+     * @author cedric
+     */
+    private final class ClassifierTreeContentProvider implements ITreeContentProvider {
+        @Override
+        public boolean hasChildren(Object element) {
+            return false;
+        }
+
+        @Override
+        public Object getParent(Object element) {
+            return null;
+        }
+
+        @Override
+        public Object[] getElements(Object inputElement) {
+            Object[] result = new Object[0];
+            if (inputElement instanceof EPackageMapping) {
+                EPackageMapping mm = (EPackageMapping) inputElement;
+                if (mm.getEPackage() instanceof EPackage) {
+                    EList<EClassifier> eClassifiers = ((EPackage) mm.getEPackage()).getEClassifiers();
+                    result = eClassifiers.toArray(new Object[eClassifiers.size()]);
+                }
+            } else if (inputElement instanceof TemplateConfig) {
+                Collection<TemplateType> allTypes = ((TemplateConfig) inputElement).getTypesByName().values();
+                result = Collections2.filter(allTypes, Predicates.instanceOf(ScalarType.class)).toArray();
+            }
+            return result;
+        }
+
+        @Override
+        public Object[] getChildren(Object parentElement) {
+            return null;
+        }
+
+        @Override
+        public void dispose() {
+            // Nothing
+        }
+
+        @Override
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+            // Nothing
+        }
+    }
+
+    /**
+     * @author cedric
+     */
+    private final class BtnAddMetamodelSelectionListener extends SelectionAdapter {
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            RegisteredPackageDialog dialog = new RegisteredPackageDialog(Display.getCurrent().getActiveShell());
+            dialog.setMultipleSelection(false);
+            dialog.open();
+            if (dialog.getReturnCode() == Dialog.OK) {
+                Object firstResult = dialog.getFirstResult();
+                if (firstResult instanceof String) {
+                    String uri = (String) firstResult;
+                    if (mappingsByUri.containsKey(uri)) {
+                        // Reuse the one that's already registered
+                        mmComboViewer.setSelection(new StructuredSelection(mappingsByUri.get(uri)), true);
+                    } else if (EPackage.Registry.INSTANCE.getEPackage(uri) != null) {
+                        final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(uri);
+                        EPackageMapping newMapping = TplconfFactory.eINSTANCE.createEPackageMapping();
+                        newMapping.setName(ePackage.getName());
+                        newMapping.setUri(ePackage.getNsURI());
+                        newMapping.setEPackage(ePackage);
+                        mappingsByUri.put(uri, newMapping);
+                        mmComboViewer.refresh();
+                        mmComboViewer.setSelection(new StructuredSelection(newMapping), true);
+                    }
+                }
+            }
+        }
+    }
+
     private final TemplateConfig config;
     private final TemplateVariable variable;
     private final AdapterFactory adapterFactory;
@@ -132,12 +321,12 @@ public class VariableEditDialog extends TitleAreaDialog {
 
         Composite composite = new Composite(container, SWT.NONE);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-        GridLayout gl_composite = new GridLayout(2, false);
-        gl_composite.verticalSpacing = 0;
-        gl_composite.marginHeight = 0;
-        gl_composite.marginWidth = 0;
-        gl_composite.horizontalSpacing = 0;
-        composite.setLayout(gl_composite);
+        GridLayout glComposite = new GridLayout(2, false);
+        glComposite.verticalSpacing = 0;
+        glComposite.marginHeight = 0;
+        glComposite.marginWidth = 0;
+        glComposite.horizontalSpacing = 0;
+        composite.setLayout(glComposite);
 
         Combo combo = new Combo(composite, SWT.NONE);
         combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1));
@@ -173,35 +362,7 @@ public class VariableEditDialog extends TitleAreaDialog {
 
         Button btnAddMetamodel = new Button(composite, SWT.NONE);
         btnAddMetamodel.setText("...");
-        btnAddMetamodel.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                RegisteredPackageDialog dialog = new RegisteredPackageDialog(Display.getCurrent().getActiveShell());
-                dialog.setMultipleSelection(false);
-                dialog.open();
-                if (dialog.getReturnCode() == Dialog.OK) {
-                    Object firstResult = dialog.getFirstResult();
-                    if (firstResult instanceof String) {
-                        String uri = (String) firstResult;
-                        if (mappingsByUri.containsKey(uri)) {
-                            // Reuse the one that's already registered
-                            mmComboViewer.setSelection(new StructuredSelection(mappingsByUri.get(uri)), true);
-                        } else {
-                            final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(uri);
-                            if (ePackage != null) {
-                                EPackageMapping newMapping = TplconfFactory.eINSTANCE.createEPackageMapping();
-                                newMapping.setName(ePackage.getName());
-                                newMapping.setUri(ePackage.getNsURI());
-                                newMapping.setEPackage(ePackage);
-                                mappingsByUri.put(uri, newMapping);
-                                mmComboViewer.refresh();
-                                mmComboViewer.setSelection(new StructuredSelection(newMapping), true);
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        btnAddMetamodel.addSelectionListener(new BtnAddMetamodelSelectionListener());
 
         Label lblType = new Label(container, SWT.NONE);
         lblType.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -218,48 +379,7 @@ public class VariableEditDialog extends TitleAreaDialog {
         txtTypeName = new Text(container, SWT.BORDER);
         txtTypeName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-        classifierTreeViewer.setContentProvider(new ITreeContentProvider() {
-
-            @Override
-            public boolean hasChildren(Object element) {
-                return false;
-            }
-
-            @Override
-            public Object getParent(Object element) {
-                return null;
-            }
-
-            @Override
-            public Object[] getElements(Object inputElement) {
-                if (inputElement instanceof EPackageMapping) {
-                    EPackageMapping mm = ((EPackageMapping) inputElement);
-                    if (mm.getEPackage() instanceof EPackage) {
-                        EList<EClassifier> eClassifiers = ((EPackage) mm.getEPackage()).getEClassifiers();
-                        return eClassifiers.toArray(new Object[eClassifiers.size()]);
-                    }
-                } else if (inputElement instanceof TemplateConfig) {
-                    Collection<TemplateType> allTypes = ((TemplateConfig) inputElement).getTypesByName().values();
-                    return Collections2.filter(allTypes, Predicates.instanceOf(ScalarType.class)).toArray();
-                }
-                return new Object[0];
-            }
-
-            @Override
-            public Object[] getChildren(Object parentElement) {
-                return null;
-            }
-
-            @Override
-            public void dispose() {
-                // Nothing
-            }
-
-            @Override
-            public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-                // Nothing
-            }
-        });
+        classifierTreeViewer.setContentProvider(new ClassifierTreeContentProvider());
         classifierTreeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
 
         // Set initial values
@@ -296,101 +416,9 @@ public class VariableEditDialog extends TitleAreaDialog {
             }
         });
 
-        txtTypeName.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                final String typeName = txtTypeName.getText();
-                variable.setTypeName(typeName);
-                if (typeName == null || typeName.length() == 0) {
-                    mmComboViewer.setSelection(new StructuredSelection());
-                    classifierTreeViewer.setSelection(new StructuredSelection());
-                } else if (typeName.indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR) > 0) {
-                    int index = typeName.indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR);
-                    String mmName = typeName.substring(0, index);
-                    EPackageMapping mapping = findMappingByName(mmName);
-                    if (mapping != null) {
-                        mmComboViewer.setSelection(new StructuredSelection(mapping), true);
-                    }
-                    if (config.getTypesByName().containsKey(typeName)) {
-                        TemplateType type = config.getTypesByName().get(typeName);
-                        if (type instanceof ScalarType) {
-                            classifierTreeViewer.setSelection(new StructuredSelection(type), true);
-                        } else if (type instanceof StructuredType) {
-                            if (((StructuredType) type).getEClassifier() != null) {
-                                classifierTreeViewer.setSelection(
-                                        new StructuredSelection(((StructuredType) type).getEClassifier()), true);
-                            } else {
-                                classifierTreeViewer.setSelection(new StructuredSelection(), true);
-                            }
-                        }
-                    } else {
-                        String classifierName = typeName.substring(index + 2);
-                        filteredTree.getFilterControl().setText(classifierName);
-                        if (mmName != null && mapping != null) {
-                            if (mapping.getEPackage() != null) {
-                                EClassifier eClassifier = ((EPackage) mapping.getEPackage())
-                                        .getEClassifier(classifierName);
-                                if (eClassifier != null) {
-                                    final StructuredType mmType = TplconfFactory.eINSTANCE.createStructuredType();
-                                    mmType.setEClassifier(eClassifier);
-                                    mmType.setMapping(mapping);
-                                    mmType.setMappingName(mmName);
-                                    mmType.setName(classifierName);
-                                    classifierTreeViewer.setSelection(new StructuredSelection(eClassifier), true);
-                                } else {
-                                    classifierTreeViewer.setSelection(new StructuredSelection(), true);
-                                }
-                            } else {
-                                classifierTreeViewer.setSelection(new StructuredSelection(), true);
-                            }
-                        } else {
-                            classifierTreeViewer.setSelection(new StructuredSelection(), true);
-                        }
-                    }
-                } else {
-                    // scalar type?
-                    mmComboViewer.setSelection(new StructuredSelection(config));
-                    TemplateType type = config.getTypesByName().get(typeName);
-                    if (type instanceof ScalarType) {
-                        classifierTreeViewer.setSelection(new StructuredSelection(type), true);
-                    } else {
-                        classifierTreeViewer.setSelection(new StructuredSelection(), true);
-                    }
-                }
-                validate();
-            }
-        });
+        txtTypeName.addModifyListener(new TypeNameModifyListener());
 
-        classifierTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                Object firstElement = ((IStructuredSelection) event.getSelection()).getFirstElement();
-                final TemplateType type;
-                if (firstElement instanceof EClassifier) {
-                    EClassifier eClassifier = (EClassifier) firstElement;
-                    final String typeName = TemplateConfigUtil.typeName(eClassifier);
-                    if (config.getTypesByName().containsKey(typeName)) {
-                        type = config.getTypesByName().get(typeName);
-                    } else {
-                        type = TplconfFactoryImpl.eINSTANCE.createStructuredType();
-                        final StructuredType newType = (StructuredType) type;
-                        newType.setName(eClassifier.getName());
-                        newType.setEClassifier(eClassifier);
-                        newType.setMappingName(eClassifier.getEPackage().getName());
-                        newType.setMapping(mappingsByUri.get(eClassifier.getEPackage().getName()));
-                    }
-                } else if (firstElement instanceof ScalarType) {
-                    type = (ScalarType) firstElement;
-                } else {
-                    type = null;
-                }
-                variable.setType(type);
-                if (type != null) {
-                    setTypeName(type);
-                }
-                validate();
-            }
-        });
+        classifierTreeViewer.addSelectionChangedListener(new ClassifierTreeSelectionListener());
 
         mmComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
@@ -438,26 +466,26 @@ public class VariableEditDialog extends TitleAreaDialog {
     }
 
     protected void validate() {
-        if (!TemplateCustomProperties.isValidVariableName(variable.getName())) {
-            blockWithMessage(
-                    "The variable name must be valid (start with a letter or underscore, contain only letters, digits, or underscores)");
-            return;
-        }
+        String blockingMessage = null;
         if (variable.getTypeName() == null || variable.getTypeName().length() == 0) {
-            blockWithMessage("The variable type name must be set");
-            return;
+            blockingMessage = "The variable type name must be set";
         }
         if (variable.getType() == null
             && variable.getTypeName().indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR) <= 0) {
-            blockWithMessage("The scalar type of the variable is not supported");
-            return;
+            blockingMessage = "The scalar type of the variable is not supported";
         }
         if (!TemplateConfigUtil.isValidTypeName(variable.getTypeName())) {
-            blockWithMessage("The variable type is not valid");
-            return;
+            blockingMessage = "The variable type is not valid";
         }
-        getButton(IDialogConstants.OK_ID).setEnabled(true);
-        setErrorMessage(null);
+        if (!TemplateCustomProperties.isValidVariableName(variable.getName())) {
+            blockingMessage = "The variable name must be valid (start with a letter or underscore, contain only letters, digits, or underscores)";
+        }
+        if (blockingMessage != null) {
+            blockWithMessage(blockingMessage);
+        } else {
+            getButton(IDialogConstants.OK_ID).setEnabled(true);
+            setErrorMessage(null);
+        }
     }
 
     private void blockWithMessage(String message) {
