@@ -15,9 +15,24 @@ import java.io.PrintStream;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 
-public class CLIUtils {
+public final class CLIUtils {
+	
+	public static final String RESET = "\u001B[0m";
+	public static final String BLACK = "\u001B[30;40;1m";
+	public static final String RED = "\u001B[31;40;1m";
+	public static final String GREEN = "\u001B[32;40;1m";
+	public static final String YELLOW = "\u001B[33;40;1m";
+	public static final String BLUE = "\u001B[34;40;1m";
+	public static final String PURPLE = "\u001B[35;40;1m";
+	public static final String CYAN = "\u001B[36;40;1m";
+	public static final String WHITE = "\u001B[37;40;1m";
+
 
 	private static CLIDecorator decorator;
+	
+	private CLIUtils() {
+
+	}
 
 	public static CLIDecorator getDecorator() {
 		if (decorator == null) {
@@ -99,17 +114,8 @@ public class CLIUtils {
 			return txt;
 		}
 	}
-
-	public static final String RESET = "\u001B[0m";
-	public static final String BLACK = "\u001B[30;40;1m";
-	public static final String RED = "\u001B[31;40;1m";
-	public static final String GREEN = "\u001B[32;40;1m";
-	public static final String YELLOW = "\u001B[33;40;1m";
-	public static final String BLUE = "\u001B[34;40;1m";
-	public static final String PURPLE = "\u001B[35;40;1m";
-	public static final String CYAN = "\u001B[36;40;1m";
-	public static final String WHITE = "\u001B[37;40;1m";
-
+	
+	
 	/**
 	 * A simple monitor that prints progress to a print stream.
 	 */
