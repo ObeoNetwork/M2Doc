@@ -22,7 +22,7 @@ import org.obeonetwork.m2doc.ide.tests.provider.DeclaredProviderListenerTest;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {DeclaredProviderListenerTest.class, BundleTests.class,})
+@SuiteClasses(value = {DeclaredProviderListenerTest.class, BundleTests.class, })
 public class AllTests {
 
 }
