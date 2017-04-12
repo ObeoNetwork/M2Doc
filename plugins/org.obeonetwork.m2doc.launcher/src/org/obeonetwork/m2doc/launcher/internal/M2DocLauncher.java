@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.launcher.internal;
 
+import com.google.common.collect.Iterables;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -36,7 +36,7 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
-import com.google.common.collect.Iterables;
+
 
 /**
  * Application class for the M2Doc Launcher. Parses the arguments and launch
@@ -99,11 +99,11 @@ public class M2DocLauncher implements IApplication {
 			System.out.println(CLIUtils.getDecorator().yellow("The command-line launcher to generate .docx from your models."));
 			parser.parseArgument(args);
 			System.out.println(CLIUtils.RESET);
-			Collection<URI> genconfs = validateArguments(parser);
+			Collection<URI> genconfsURIs = validateArguments(parser);
 			Collection<Generation> loadedGenConfs = new ArrayList<Generation>();
 
 			ResourceSet s = new ResourceSetImpl();
-			for (URI uri : genconfs) {
+			for (URI uri : genconfsURIs) {
 				if (s.getURIConverter().exists(uri, Collections.EMPTY_MAP)) {
 					try {
 						Resource r = s.getResource(uri, true);
@@ -114,7 +114,9 @@ public class M2DocLauncher implements IApplication {
 						M2DocLauncherPlugin.INSTANCE
 								.log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
 										"Error loading genconf: '" + uri.toString() + "' : " + e.getMessage(), e));
+						//CHECKSTYLE:OFF we want to report any error
 					} catch (RuntimeException e) {
+						//CHECKSTYLE:ON
 						somethingWentWrong = true;
 						M2DocLauncherPlugin.INSTANCE
 								.log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
