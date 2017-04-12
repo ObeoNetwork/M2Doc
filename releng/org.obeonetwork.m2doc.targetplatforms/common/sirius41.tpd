@@ -1,0 +1,18 @@
+target "sirius41" with source requirements
+
+
+location "http://download.eclipse.org/sirius/updates/nightly/4.1.x/neon" {
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius lazy
+	org.eclipse.sirius.diagram lazy
+	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
+}
+
+location Acceleo-3.6 "http://download.eclipse.org/acceleo/updates/releases/3.6/R201610060831" {
+	org.eclipse.acceleo.query.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
+	org.antlr.runtime [4.3.0,4.4.0)
+}
+
