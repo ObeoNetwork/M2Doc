@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
@@ -131,11 +129,10 @@ public class GenconfToDocumentGenerator {
      * @return the created {@link URI} starting from the current model
      */
     public static URI createURIStartingFromCurrentModel(Generation generation, String relativePath) {
-        URI generationURI = generation.eResource().getURI().trimSegments(1);
-        for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(relativePath)) {
-            generationURI = generationURI.appendSegment(s);
-        }
-        return generationURI;
+        URI generationURI = generation.eResource().getURI();
+        URI relativeURI = URI.createURI(relativePath);
+
+        return relativeURI.resolve(generationURI);
     }
 
     /**

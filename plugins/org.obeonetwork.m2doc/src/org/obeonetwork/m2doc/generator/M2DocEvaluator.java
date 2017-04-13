@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -891,15 +889,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             insertQuerySyntaxMessages(image, "");
         } else {
             URI imageURI = URI.createFileURI(image.getFileName());
-            if (!imageURI.hasAbsolutePath() && image.eResource() != null && image.eResource().getURI() != null) {
-                /*
-                 * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
-                 */
-                imageURI = image.eResource().getURI().trimSegments(1);
-                for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(image.getFileName())) {
-                    imageURI = imageURI.appendSegment(s);
-                }
-            }
+            imageURI = imageURI.resolve(image.eResource().getURI());
             try {
                 int heigth = Units.toEMU(image.getHeight());
                 int width = Units.toEMU(image.getWidth());
@@ -936,16 +926,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 usedProviders.add((AbstractDiagramProvider) provider);
                 for (String imagePathStr : imagePaths) {
                     URI imageURI = URI.createFileURI(imagePathStr);
-                    if (!imageURI.hasAbsolutePath() && representation.eResource() != null
-                        && representation.eResource().getURI() != null) {
-                        /*
-                         * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
-                         */
-                        imageURI = representation.eResource().getURI().trimSegments(1);
-                        for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(imagePathStr)) {
-                            imageURI = imageURI.appendSegment(s);
-                        }
-                    }
+                    imageURI = imageURI.resolve(representation.eResource().getURI());
 
                     imageRun.setText("");
                     imageRun.getCTR().getInstrTextList().clear();

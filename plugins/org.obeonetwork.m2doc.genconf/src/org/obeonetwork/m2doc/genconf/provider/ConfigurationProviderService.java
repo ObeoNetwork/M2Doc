@@ -86,27 +86,29 @@ public final class ConfigurationProviderService {
      * Load all the providers registered by extension point.
      */
     private void configureService() {
-        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(GenconfPlugin.PLUGIN_ID,
-                CONFIGURATION_ELEMENT_NAME);
+        if (Platform.getExtensionRegistry() != null) {
+            IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(GenconfPlugin.PLUGIN_ID,
+                    CONFIGURATION_ELEMENT_NAME);
 
-        if (extensionPoint != null) {
-            IExtension[] extensions = extensionPoint.getExtensions();
-            for (int extensionIndex = 0; extensionIndex < extensions.length; extensionIndex++) {
-                IExtension extension = extensions[extensionIndex];
-                IConfigurationElement[] configurationElements = extension.getConfigurationElements();
-                for (int i = 0; i < configurationElements.length; i++) {
-                    IConfigurationElement cfg = configurationElements[i];
+            if (extensionPoint != null) {
+                IExtension[] extensions = extensionPoint.getExtensions();
+                for (int extensionIndex = 0; extensionIndex < extensions.length; extensionIndex++) {
+                    IExtension extension = extensions[extensionIndex];
+                    IConfigurationElement[] configurationElements = extension.getConfigurationElements();
+                    for (int i = 0; i < configurationElements.length; i++) {
+                        IConfigurationElement cfg = configurationElements[i];
 
-                    if (CONFIGURATION_ELEMENT_NAME.equals(cfg.getName())) {
-                        try {
-                            register((IConfigurationProvider) cfg.createExecutableExtension(PROVIDER_CLASS_ATTR_NAME));
-                        } catch (CoreException e) {
-                            e.printStackTrace();
+                        if (CONFIGURATION_ELEMENT_NAME.equals(cfg.getName())) {
+                            try {
+                                register((IConfigurationProvider) cfg
+                                        .createExecutableExtension(PROVIDER_CLASS_ATTR_NAME));
+                            } catch (CoreException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
             }
-
         }
 
     }

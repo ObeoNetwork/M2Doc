@@ -11,9 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
-
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
@@ -96,25 +93,11 @@ public class ImageServices {
      * @return the {@link Image} corresponding to the given path
      */
     private Image asImage(String uriStr, PictureType type) {
-        final Image res;
-
         final URI imageURI = URI.createURI(uriStr);
 
-        URI uri;
-        if (!imageURI.hasAbsolutePath()) {
-            /*
-             * it is expected that we have an EResource and URI for the current template to resolve relative URIs from it.
-             */
-            uri = templateURI.trimSegments(1);
-            for (String s : Splitter.on(CharMatcher.anyOf("/\\")).split(uriStr)) {
-                uri = uri.appendSegment(s);
-            }
-        } else {
-            uri = imageURI;
-        }
-        res = new Image(uri, type);
+        URI uri = imageURI.resolve(templateURI);
 
-        return res;
+        return new Image(uri, type);
     }
 
     // @formatter:off

@@ -75,7 +75,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     @Override
     protected void setTemplateFileName(Generation gen, String templateFileName) {
         super.setTemplateFileName(gen, templateFileName);
-        gen.setRepresentationsFileName(getSessionURI(new File(getTestFolderPath())).lastSegment());
+        gen.setRepresentationsFileName(getSessionURI(new File(getTestFolderPath())).toString());
     }
 
     @Override
