@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.Test;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -36,8 +37,8 @@ public class TemplateCustomPropertiesTests {
 
     @Test
     public void parseServiceToken() throws IOException, InvalidFormatException {
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> serviceTokens = properties.getServiceTokens();
             assertEquals(2, serviceTokens.size());
@@ -48,8 +49,8 @@ public class TemplateCustomPropertiesTests {
 
     @Test
     public void parseVariable() throws IOException, InvalidFormatException {
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final Map<String, String> variables = properties.getVariables();
             assertEquals(2, variables.size());
@@ -60,8 +61,8 @@ public class TemplateCustomPropertiesTests {
 
     @Test
     public void parseImport() throws IOException, InvalidFormatException {
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> serviceClasses = properties.getServiceClasses();
             assertEquals(2, serviceClasses.size());
@@ -81,8 +82,8 @@ public class TemplateCustomPropertiesTests {
      */
     @Test
     public void parseInvalidVariables() throws IOException, InvalidFormatException {
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/emptyVar.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/emptyVar.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final Map<String, String> variables = properties.getVariables();
             assertTrue(variables.isEmpty());
@@ -100,8 +101,8 @@ public class TemplateCustomPropertiesTests {
      */
     @Test
     public void testReadBlankMMUri() throws IOException, InvalidFormatException {
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/noUri.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/noUri.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> uris = properties.getPackagesURIs();
             assertTrue(uris.isEmpty());
@@ -113,8 +114,8 @@ public class TemplateCustomPropertiesTests {
         final File tempFile = File.createTempFile("properties", "-add.docx");
         final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/noProperties.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/noProperties.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
             assertTrue(properties.getPackagesURIs().isEmpty());
@@ -134,10 +135,10 @@ public class TemplateCustomPropertiesTests {
             properties.getVariables().put("var200", "Integer");
 
             properties.save();
-            POIServices.getInstance().saveFile(document, tempFileURI);
+            POIServices.getInstance().saveFile(URIConverter.INSTANCE, document, tempFileURI);
         }
 
-        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE, tempFileURI);) {
             final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(2, info.getPackagesURIs().size());
@@ -163,8 +164,8 @@ public class TemplateCustomPropertiesTests {
         final File tempFile = File.createTempFile("properties", "-add.docx");
         final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
             assertEquals(2, properties.getPackagesURIs().size());
@@ -180,10 +181,10 @@ public class TemplateCustomPropertiesTests {
             properties.getVariables().clear();
 
             properties.save();
-            POIServices.getInstance().saveFile(document, tempFileURI);
+            POIServices.getInstance().saveFile(URIConverter.INSTANCE, document, tempFileURI);
         }
 
-        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE, tempFileURI);) {
             final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(0, info.getPackagesURIs().size());
@@ -201,8 +202,8 @@ public class TemplateCustomPropertiesTests {
         final File tempFile = File.createTempFile("properties", "-add.docx");
         final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
         tempFile.deleteOnExit();
-        try (XWPFDocument document = POIServices.getInstance()
-                .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
             assertEquals(2, properties.getPackagesURIs().size());
@@ -222,10 +223,10 @@ public class TemplateCustomPropertiesTests {
             properties.getVariables().put("var200", "Integer");
 
             properties.save();
-            POIServices.getInstance().saveFile(document, tempFileURI);
+            POIServices.getInstance().saveFile(URIConverter.INSTANCE, document, tempFileURI);
         }
 
-        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(tempFileURI);) {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE, tempFileURI);) {
             final TemplateCustomProperties info = new TemplateCustomProperties(document);
 
             assertEquals(4, info.getPackagesURIs().size());

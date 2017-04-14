@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.genconf.Definition;
@@ -67,7 +68,7 @@ public class ConfigurationServices {
                 .newEnvironmentWithDefaultServices(null);
 
         final Map<String, String> options = getOptions(generation);
-        M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI, options);
+        M2DocUtils.prepareEnvironmentServices(queryEnvironment, URIConverter.INSTANCE, templateURI, options);
 
         return queryEnvironment;
     }

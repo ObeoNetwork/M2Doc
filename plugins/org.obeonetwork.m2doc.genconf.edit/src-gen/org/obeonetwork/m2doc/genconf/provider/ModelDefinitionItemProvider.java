@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
@@ -101,7 +102,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                 try {
                                     final IQueryEnvironment queryEnvironment = Query.newEnvironment();
                                     properties = POIServices.getInstance().getTemplateCustomProperties(
-                                            URI.createURI(generation.getTemplateFileName()));
+                                            URIConverter.INSTANCE, URI.createURI(generation.getTemplateFileName()));
                                     for (String nsURI : properties.getPackagesURIs()) {
                                         final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
                                         queryEnvironment.registerEPackage(ePackage);

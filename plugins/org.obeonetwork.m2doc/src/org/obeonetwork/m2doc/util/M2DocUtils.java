@@ -308,12 +308,14 @@ public final class M2DocUtils {
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            the template {@link URI}
      * @param options
      *            the {@link Map} of options
      */
-    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, URI templateURI,
+    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, URIConverter uriConverter, URI templateURI,
             Map<String, String> options) {
 
         Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
@@ -322,7 +324,7 @@ public final class M2DocUtils {
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, PaginationServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
-        services = ServiceUtils.getServices(queryEnvironment, new ImageServices(templateURI));
+        services = ServiceUtils.getServices(queryEnvironment, new ImageServices(uriConverter, templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
         List<Class<?>> defaultClasses = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
         for (Class<?> cls : defaultClasses) {
@@ -338,6 +340,8 @@ public final class M2DocUtils {
      * Parses a template document and returns the {@link DocumentTemplate} resulting from
      * this parsing.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            URI for the template, used when external links (images, includes) have to be resolved
      * @param queryEnvironment
@@ -350,14 +354,14 @@ public final class M2DocUtils {
      *             if a problem occurs while parsing the document.
      */
     @SuppressWarnings("resource")
-    public static DocumentTemplate parse(URI templateURI, IQueryEnvironment queryEnvironment, ClassLoader classLoader)
-            throws DocumentParserException {
+    public static DocumentTemplate parse(URIConverter uriConverter, URI templateURI, IQueryEnvironment queryEnvironment,
+            ClassLoader classLoader) throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         final ResourceImpl r = new ResourceImpl(templateURI);
 
         try {
             // resources are closed in DocumentTemplate.close()
-            final InputStream is = URIConverter.INSTANCE.createInputStream(templateURI);
+            final InputStream is = uriConverter.createInputStream(templateURI);
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
             final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment,
@@ -442,6 +446,8 @@ public final class M2DocUtils {
      * Parses a document for {@link UserContent} and returns the {@link DocumentTemplate} resulting from
      * this parsing.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param documentURI
      *            URI for the document
      * @param queryEnvironment
@@ -452,14 +458,14 @@ public final class M2DocUtils {
      *             if a problem occurs while parsing the document.
      */
     @SuppressWarnings("resource")
-    public static DocumentTemplate parseUserContent(URI documentURI, IQueryEnvironment queryEnvironment)
-            throws DocumentParserException {
+    public static DocumentTemplate parseUserContent(URIConverter uriConverter, URI documentURI,
+            IQueryEnvironment queryEnvironment) throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         final ResourceImpl r = new ResourceImpl(documentURI);
 
         try {
             // resources are closed in DocumentTemplate.close()
-            final InputStream is = URIConverter.INSTANCE.createInputStream(documentURI);
+            final InputStream is = uriConverter.createInputStream(documentURI);
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
             r.getContents().add(result);
@@ -505,6 +511,8 @@ public final class M2DocUtils {
      * Serializes the given {@link M2DocUtils#validate(DocumentTemplate, IReadOnlyQueryEnvironment, Map) validated} {@link DocumentTemplate}
      * to the given destination.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param documentTemplate
      *            the {@link M2DocUtils#validate(DocumentTemplate, IReadOnlyQueryEnvironment, Map) validated} {@link DocumentTemplate}
      * @param destination
@@ -512,12 +520,12 @@ public final class M2DocUtils {
      * @throws IOException
      *             if the {@link DocumentTemplate} can't be serialized to the given destination
      */
-    public static void serializeValidatedDocumentTemplate(DocumentTemplate documentTemplate, URI destination)
-            throws IOException {
+    public static void serializeValidatedDocumentTemplate(URIConverter uriConverter, DocumentTemplate documentTemplate,
+            URI destination) throws IOException {
         TemplateValidationGenerator generator = new TemplateValidationGenerator();
 
         generator.doSwitch(documentTemplate);
-        POIServices.getInstance().saveFile(documentTemplate.getDocument(), destination);
+        POIServices.getInstance().saveFile(uriConverter, documentTemplate.getDocument(), destination);
     }
 
     /**
@@ -531,6 +539,8 @@ public final class M2DocUtils {
      *            the resourceset used to load and process the user models.
      * @param variables
      *            variables
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param destination
      *            the destination
      * @return the {@link GenerationResult}
@@ -541,8 +551,8 @@ public final class M2DocUtils {
     @Deprecated
     public static GenerationResult generate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
-            URI destination) throws DocumentGenerationException {
-        return generate(documentTemplate, queryEnvironment, resourceSetForModels, variables, destination,
+            URIConverter uriConverter, URI destination) throws DocumentGenerationException {
+        return generate(documentTemplate, queryEnvironment, resourceSetForModels, variables, uriConverter, destination,
                 new BasicMonitor());
     }
 
@@ -557,6 +567,8 @@ public final class M2DocUtils {
      *            the resourceset used to load and process the user models.
      * @param variables
      *            variables
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param destination
      *            the destination
      * @param monitor
@@ -567,11 +579,11 @@ public final class M2DocUtils {
      */
     public static GenerationResult generate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
-            URI destination, Monitor monitor) throws DocumentGenerationException {
+            URIConverter uriConverter, URI destination, Monitor monitor) throws DocumentGenerationException {
 
         monitor.beginTask("Generating " + destination.lastSegment(), 1);
 
-        try (InputStream is = URIConverter.INSTANCE.createInputStream(documentTemplate.eResource().getURI());
+        try (InputStream is = uriConverter.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
             // clear the document
@@ -581,9 +593,10 @@ public final class M2DocUtils {
             }
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(documentTemplate, destination);
-            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
-                    resourceSetForModels, monitor);
+            final UserContentManager userContentManager = new UserContentManager(uriConverter, documentTemplate,
+                    destination);
+            final M2DocEvaluator processor = new M2DocEvaluator(uriConverter, bookmarkManager, userContentManager,
+                    queryEnvironment, resourceSetForModels, monitor);
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
 
@@ -602,7 +615,7 @@ public final class M2DocUtils {
 
             // At this point, the document has been generated and just needs being
             // written on disk.
-            POIServices.getInstance().saveFile(destinationDocument, destination);
+            POIServices.getInstance().saveFile(uriConverter, destinationDocument, destination);
 
             processor.clear();
 

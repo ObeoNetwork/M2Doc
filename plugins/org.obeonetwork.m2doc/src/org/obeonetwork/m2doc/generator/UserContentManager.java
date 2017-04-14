@@ -92,8 +92,15 @@ public class UserContentManager {
     private final URI destination;
 
     /**
+     * The URI converter to use.
+     */
+    private URIConverter uriConverter;
+
+    /**
      * Constructor.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param documentTemplate
      *            the input {@link DocumentTemplate}
      * @param destination
@@ -101,10 +108,12 @@ public class UserContentManager {
      * @throws IOException
      *             IOException if the destination can't be copied to a temporary file
      */
-    public UserContentManager(DocumentTemplate documentTemplate, URI destination) throws IOException {
+    public UserContentManager(URIConverter uriConverter, DocumentTemplate documentTemplate, URI destination)
+            throws IOException {
+        this.uriConverter = uriConverter;
         this.documentTemplate = documentTemplate;
         this.destination = destination;
-        if (URIConverter.INSTANCE.exists(destination, Collections.EMPTY_MAP)) {
+        if (uriConverter.exists(destination, Collections.EMPTY_MAP)) {
             // Copy file
             generatedFileCopy = tempCopyFile(destination);
             // Launch parsing
@@ -124,8 +133,8 @@ public class UserContentManager {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
-        try (DocumentTemplate userDocDocument = M2DocUtils
-                .parseUserContent(URI.createURI(generatedFileCopy.toURI().toString()), queryEnvironment);) {
+        try (DocumentTemplate userDocDocument = M2DocUtils.parseUserContent(uriConverter,
+                URI.createURI(generatedFileCopy.toURI().toString()), queryEnvironment);) {
             final TreeIterator<EObject> iter = userDocDocument.eAllContents();
             while (iter.hasNext()) {
                 EObject eObject = iter.next();
@@ -214,8 +223,8 @@ public class UserContentManager {
      * @throws IOException
      *             IOException
      */
-    private static void copyFile(URI source, File dest) throws IOException {
-        try (InputStream is = URIConverter.INSTANCE.createInputStream(source);
+    private void copyFile(URI source, File dest) throws IOException {
+        try (InputStream is = uriConverter.createInputStream(source); //
                 OutputStream os = new FileOutputStream(dest);) {
             byte[] buffer = new byte[BUFFER_SIZE];
             int length;
@@ -258,7 +267,7 @@ public class UserContentManager {
             result.getLostUserContents().put(entry.getKey(), lostUserContentURI);
             final boolean isNewUserContentLoss;
             final URI inputURI;
-            if (URIConverter.INSTANCE.exists(lostUserContentURI, Collections.EMPTY_MAP)) {
+            if (uriConverter.exists(lostUserContentURI, Collections.EMPTY_MAP)) {
                 inputURI = lostUserContentURI;
                 isNewUserContentLoss = false;
             } else {
@@ -266,7 +275,7 @@ public class UserContentManager {
                 isNewUserContentLoss = true;
             }
 
-            try (InputStream is = URIConverter.INSTANCE.createInputStream(inputURI);
+            try (InputStream is = uriConverter.createInputStream(inputURI);
                     OPCPackage oPackage = OPCPackage.open(is);
                     XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
                 if (isNewUserContentLoss) {
@@ -303,7 +312,7 @@ public class UserContentManager {
                     }
                 }
 
-                POIServices.getInstance().saveFile(destinationDocument, lostUserContentURI);
+                POIServices.getInstance().saveFile(uriConverter, destinationDocument, lostUserContentURI);
             }
         }
     }
