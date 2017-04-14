@@ -16,6 +16,7 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.util.PictureType;
@@ -29,6 +30,11 @@ import org.obeonetwork.m2doc.util.PictureType;
 public class ImageServices {
 
     /**
+     * The URI converter to use.
+     */
+    private URIConverter uriConverter;
+
+    /**
      * The template URI.
      */
     private final URI templateURI;
@@ -36,10 +42,13 @@ public class ImageServices {
     /**
      * Constructor.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            the template {@link URI}
      */
-    public ImageServices(URI templateURI) {
+    public ImageServices(URIConverter uriConverter, URI templateURI) {
+        this.uriConverter = uriConverter;
         this.templateURI = templateURI;
     }
 
@@ -90,7 +99,7 @@ public class ImageServices {
 
         URI uri = imageURI.resolve(templateURI);
 
-        return new MImageImpl(uri, type);
+        return new MImageImpl(uriConverter, uri, type);
     }
 
     // @formatter:off

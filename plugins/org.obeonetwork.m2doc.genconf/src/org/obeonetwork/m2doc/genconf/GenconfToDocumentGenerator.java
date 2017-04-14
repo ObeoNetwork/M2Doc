@@ -194,7 +194,7 @@ public class GenconfToDocumentGenerator {
         monitor.done();
 
         // create generated file
-        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
+        try (DocumentTemplate template = M2DocUtils.parse(URIConverter.INSTANCE, templateURI, queryEnvironment,
                 this.getClass().getClassLoader())) {
 
             // validate template
@@ -206,7 +206,8 @@ public class GenconfToDocumentGenerator {
             definitions.putAll(configurationServices.getProviderVariables(generation));
 
             // launch generation
-            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, generatedURI, monitor);
+            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, URIConverter.INSTANCE,
+                    generatedURI, monitor);
 
             List<URI> generatedFiles = Lists.newArrayList(generatedURI);
             if (inError) {
@@ -318,7 +319,7 @@ public class GenconfToDocumentGenerator {
     public Resource createConfigurationModel(URI templateURI) throws IOException {
         Resource resource = null;
         TemplateCustomProperties templateProperties = POIServices.getInstance()
-                .getTemplateCustomProperties(templateURI);
+                .getTemplateCustomProperties(URIConverter.INSTANCE, templateURI);
 
         // create genconf model
         if (templateProperties != null) {
@@ -439,7 +440,7 @@ public class GenconfToDocumentGenerator {
         IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
         // parse template
-        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
+        try (DocumentTemplate template = M2DocUtils.parse(URIConverter.INSTANCE, templateURI, queryEnvironment,
                 this.getClass().getClassLoader())) {
 
             // validate template
@@ -476,7 +477,7 @@ public class GenconfToDocumentGenerator {
         URI validationFile = getValidationLogFile(templateURI);
 
         final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment);
-        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
+        M2DocUtils.serializeValidatedDocumentTemplate(URIConverter.INSTANCE, documentTemplate, validationFile);
 
         return validationResult == ValidationMessageLevel.ERROR
             && postValidateTemplate(templateURI, documentTemplate, generation);

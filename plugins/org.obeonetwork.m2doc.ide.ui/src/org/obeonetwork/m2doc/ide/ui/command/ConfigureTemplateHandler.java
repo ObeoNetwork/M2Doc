@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -79,7 +80,8 @@ public class ConfigureTemplateHandler extends AbstractHandler {
 
     protected void saveTemplate(TemplateConfig config, IFile templateFile) {
         try {
-            TemplateConfigUtil.save(config, URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true));
+            TemplateConfigUtil.save(URIConverter.INSTANCE, config,
+                    URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true));
         } catch (IOException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }

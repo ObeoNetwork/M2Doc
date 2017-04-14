@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.tests.userdoc;
 import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -37,7 +38,8 @@ public class UserContentManagerTests {
      */
     @Test
     public void testWithNoExistLastDestinationFile() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager(null, URI.createFileURI("no_exist_file_path"));
+        UserContentManager userContentManager = new UserContentManager(URIConverter.INSTANCE, null,
+                URI.createFileURI("no_exist_file_path"));
 
         assertNull(userContentManager.consumeUserContent("noExistid1"));
 
@@ -53,7 +55,7 @@ public class UserContentManagerTests {
      */
     @Test
     public void testLastDestinationFileContainNoUserContent() throws IOException, DocumentParserException {
-        UserContentManager userContentManager = new UserContentManager(null,
+        UserContentManager userContentManager = new UserContentManager(URIConverter.INSTANCE, null,
                 URI.createFileURI("userContent/testUserContent2.docx"));
         // CHECKSTYLE:OFF
         assertNull(userContentManager.consumeUserContent("noExistid2"));

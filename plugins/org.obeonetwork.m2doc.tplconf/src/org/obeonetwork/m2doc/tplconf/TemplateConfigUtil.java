@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.util.EcoreValidator;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -84,7 +85,7 @@ public final class TemplateConfigUtil {
      *             If a I/O problem occurs while reading the given docx file.
      */
     public static TemplateConfig load(URI templateURI) throws IOException {
-        TemplateCustomProperties properties = POIServices.getInstance().getTemplateCustomProperties(templateURI);
+        TemplateCustomProperties properties = POIServices.getInstance().getTemplateCustomProperties(URIConverter.INSTANCE, templateURI);
         return load(properties);
     }
 
@@ -230,6 +231,8 @@ public final class TemplateConfigUtil {
     /**
      * Save the given configuration in the custom properties of the given docx file.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param config
      *            The configuration to save, must not be <code>null</code>
      * @param templateFile
@@ -237,12 +240,13 @@ public final class TemplateConfigUtil {
      * @throws IOException
      *             If an I/O problem occurs while reading or writing the docx file.
      */
-    public static void save(TemplateConfig config, URI templateFile) throws IOException {
-        try (XWPFDocument xwpfDocument = POIServices.getInstance().getXWPFDocument(templateFile);) {
+    public static void save(URIConverter uriConverter, TemplateConfig config, URI templateFile) throws IOException {
+        try (XWPFDocument xwpfDocument = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                templateFile);) {
 
             store(config, xwpfDocument);
 
-            POIServices.getInstance().saveFile(xwpfDocument, templateFile);
+            POIServices.getInstance().saveFile(uriConverter, xwpfDocument, templateFile);
         }
     }
 

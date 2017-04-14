@@ -195,6 +195,9 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      */
     private GenerationResult result;
 
+    /** The URI converter. */
+    private URIConverter uriConverter;
+
     /**
      * The ResourceSet used to keep the models.
      */
@@ -209,6 +212,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      * Create a new {@link M2DocEvaluator} instance given some definitions
      * and a query environment.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param bookmarkManager
      *            the {@link BookmarkManager}
      * @param userContentManager
@@ -220,8 +225,9 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      * @param monitor
      *            used to track the progress will generating.
      */
-    public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager,
+    public M2DocEvaluator(URIConverter uriConverter, BookmarkManager bookmarkManager, UserContentManager userContentManager,
             IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Monitor monitor) {
+        this.uriConverter = uriConverter;
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
@@ -1172,7 +1178,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 int heigth = Units.toEMU(image.getHeight());
                 int width = Units.toEMU(image.getWidth());
 
-                try (InputStream imageStream = URIConverter.INSTANCE.createInputStream(imageURI)) {
+                try (InputStream imageStream = uriConverter.createInputStream(imageURI)) {
                     imageRun.addPicture(imageStream, PictureType.toType(imageURI).getPoiType(), image.getFileName(),
                             width, heigth);
                 }
@@ -1209,7 +1215,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                     imageRun.setText("");
                     imageRun.getCTR().getInstrTextList().clear();
 
-                    final MImage image = new MImageImpl(imageURI);
+                    final MImage image = new MImageImpl(uriConverter, imageURI);
                     // get default image size if needed
                     image.setConserveRatio(representation.getHeight() == 0 || representation.getWidth() == 0);
                     if (representation.getHeight() != 0) {

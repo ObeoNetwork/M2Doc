@@ -60,28 +60,38 @@ public class MImageImpl implements MImage {
     private PictureType type;
 
     /**
+     * The URI converter to use.
+     */
+    private URIConverter uriConverter;
+
+    /**
      * Default constructor.
      * <p>
      * The image type is deducted from the image {@link URI} file extension. If the extension is unknown, jpeg format will be selected by
      * default.
      * </p>
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param uri
      *            the {@link URI}
      */
-    public MImageImpl(URI uri) {
-        this(uri, PictureType.toType(uri));
+    public MImageImpl(URIConverter uriConverter, URI uri) {
+        this(uriConverter, uri, PictureType.toType(uri));
     }
 
     /**
      * Constructor with enforced image type.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param uri
      *            the {@link URI}
      * @param type
      *            the picture {@link PictureType type}.
      */
-    public MImageImpl(URI uri, PictureType type) {
+    public MImageImpl(URIConverter uriConverter, URI uri, PictureType type) {
+        this.uriConverter = uriConverter;
         this.uri = uri;
         this.type = type;
         try {
@@ -156,7 +166,7 @@ public class MImageImpl implements MImage {
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return URIConverter.INSTANCE.createInputStream(uri);
+        return uriConverter.createInputStream(uri);
     }
 
     @Override

@@ -53,6 +53,8 @@ public final class POIServices {
     /**
      * Get XWPFDocument from template file.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            the template {@link URI}
      * @return XWPFDocument
@@ -60,8 +62,8 @@ public final class POIServices {
      *             IOException
      */
     @SuppressWarnings("resource")
-    public XWPFDocument getXWPFDocument(URI templateURI) throws IOException {
-        OPCPackage oPackage = getOPCPackage(templateURI);
+    public XWPFDocument getXWPFDocument(URIConverter uriConverter, URI templateURI) throws IOException {
+        OPCPackage oPackage = getOPCPackage(uriConverter, templateURI);
         XWPFDocument document = new XWPFDocument(oPackage);
         return document;
     }
@@ -69,15 +71,17 @@ public final class POIServices {
     /**
      * Get OPCPackage from template file.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            the template {@link URI}
      * @return OPCPackage
      * @throws IOException
      *             IOException
      */
-    public OPCPackage getOPCPackage(URI templateURI) throws IOException {
+    private OPCPackage getOPCPackage(URIConverter uriConverter, URI templateURI) throws IOException {
         OPCPackage oPackage;
-        try (InputStream is = URIConverter.INSTANCE.createInputStream(templateURI)) {
+        try (InputStream is = uriConverter.createInputStream(templateURI)) {
             try {
                 oPackage = OPCPackage.open(is);
 
@@ -91,6 +95,8 @@ public final class POIServices {
     /**
      * Get template informations.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            the template {@link URI}
      * @return TemplateInfo
@@ -99,10 +105,10 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
-    public TemplateCustomProperties getTemplateCustomProperties(URI templateURI) throws IOException {
+    public TemplateCustomProperties getTemplateCustomProperties(URIConverter uriConverter, URI templateURI) throws IOException {
         final TemplateCustomProperties res;
 
-        try (XWPFDocument document = getXWPFDocument(templateURI);) {
+        try (XWPFDocument document = getXWPFDocument(uriConverter, templateURI);) {
             res = new TemplateCustomProperties(document);
         }
         return res;
@@ -111,6 +117,8 @@ public final class POIServices {
     /**
      * Save the document into the file pointing at the given path.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
      * @param document
      *            the validated document to save.
      * @param theDestinationURI
@@ -118,8 +126,8 @@ public final class POIServices {
      * @throws IOException
      *             throws if the writing of the {@link URI} fails.
      */
-    public void saveFile(XWPFDocument document, URI theDestinationURI) throws IOException {
-        try (OutputStream os = URIConverter.INSTANCE.createOutputStream(theDestinationURI)) {
+    public void saveFile(URIConverter uriConverter, XWPFDocument document, URI theDestinationURI) throws IOException {
+        try (OutputStream os = uriConverter.createOutputStream(theDestinationURI)) {
             document.write(os);
         }
     }
