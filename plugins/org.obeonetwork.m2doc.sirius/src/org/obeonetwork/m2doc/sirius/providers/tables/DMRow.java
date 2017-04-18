@@ -16,8 +16,9 @@ import java.util.List;
 import org.eclipse.sirius.table.metamodel.table.DCell;
 import org.eclipse.sirius.table.metamodel.table.DLine;
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MRow;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -37,7 +38,7 @@ public class DMRow implements MRow {
      */
     private MStyle style;
     /** The list of non-null cells of this row. */
-    private List<DMCell> cells;
+    private List<MCell> cells;
 
     /**
      * Constructor.
@@ -67,13 +68,23 @@ public class DMRow implements MRow {
     }
 
     @Override
-    public Iterable<DMCell> getCells() {
+    public List<MCell> getCells() {
         if (cells == null) {
-            cells = new ArrayList<DMCell>();
+            cells = new ArrayList<MCell>();
             for (DCell dcell : line.getCells()) {
                 cells.add(new DMCell(dcell, table));
             }
         }
         return cells;
+    }
+
+    @Override
+    public void setStyle(MStyle style) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setLabel(String label) {
+        throw new UnsupportedOperationException();
     }
 }

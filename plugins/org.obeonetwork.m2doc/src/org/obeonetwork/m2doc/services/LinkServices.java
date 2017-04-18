@@ -17,8 +17,10 @@ import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
-import org.obeonetwork.m2doc.api.Bookmark;
-import org.obeonetwork.m2doc.api.HyperLink;
+import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MHyperLink;
+import org.obeonetwork.m2doc.element.impl.MBookmarkImpl;
+import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
 
 //@formatter:off
 @ServiceProvider(
@@ -42,16 +44,16 @@ public class LinkServices {
     )
     // @formatter:on
     /**
-     * Converts to an {@link HyperLink} with the given text and url.
+     * Converts to an {@link MHyperLink} with the given text and url.
      * 
      * @param text
      *            the text
      * @param url
      *            the url
-     * @return the {@link HyperLink} with the given text and url
+     * @return the {@link MHyperLink} with the given text and url
      */
-    public HyperLink asLink(String text, String url) {
-        return new HyperLink(Strings.nullToEmpty(text), Strings.nullToEmpty(url));
+    public MHyperLink asLink(String text, String url) {
+        return new MHyperLinkImpl(Strings.nullToEmpty(text), Strings.nullToEmpty(url));
     }
 
     // @formatter:off
@@ -68,16 +70,16 @@ public class LinkServices {
     )
     // @formatter:on
     /**
-     * Converts to a {@link Bookmark} with the given text and ID.
+     * Converts to a {@link MBookmark} with the given text and ID.
      * 
      * @param text
      *            the text
      * @param id
      *            the ID
-     * @return the {@link Bookmark} with the given text and ID
+     * @return the {@link MBookmark} with the given text and ID
      */
-    public Bookmark asBookmark(String text, String id) {
-        return new Bookmark(text, id, false);
+    public MBookmark asBookmark(String text, String id) {
+        return new MBookmarkImpl(text, id, false);
     }
 
     // @formatter:off
@@ -94,16 +96,16 @@ public class LinkServices {
     )
     // @formatter:on
     /**
-     * Converts to a {@link Bookmark} reference with the given text and ID.
+     * Converts to a {@link MBookmark} reference with the given text and ID.
      * 
      * @param text
      *            the text
      * @param id
      *            the ID
-     * @return the {@link Bookmark} reference with the given text and ID
+     * @return the {@link MBookmark} reference with the given text and ID
      */
-    public Bookmark asBookmarkRef(String text, String id) {
-        return new Bookmark(text, id, true);
+    public MBookmark asBookmarkRef(String text, String id) {
+        return new MBookmarkImpl(text, id, true);
     }
 
 }

@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.generator;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ import java.util.Stack;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.IRunBody;
+import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
@@ -54,7 +57,15 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.obeonetwork.m2doc.api.HyperLink;
+import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MHyperLink;
+import org.obeonetwork.m2doc.element.MImage;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MColumn;
+import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -227,7 +238,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         this.generatedDocument = destinationDocument;
         variablesStack.push(variables);
         result = new GenerationResult();
-        result.getduplicatedUserContentIDs().addAll(userContentManager.getDuplicatedUserContentIDs());
+        result.getDuplicatedUserContentIDs().addAll(userContentManager.getDuplicatedUserContentIDs());
 
         doSwitch(documentTemplate);
 
@@ -434,14 +445,18 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
-            } else if (queryResult.getResult() instanceof HyperLink) {
+            } else if (queryResult.getResult() instanceof MHyperLink) {
                 final XWPFRun linkRun = insertFieldRunReplacement(query.getStyleRun(), "");
-                insertHyperLink(linkRun, (HyperLink) queryResult.getResult());
-            } else if (queryResult.getResult() instanceof org.obeonetwork.m2doc.api.Bookmark) {
-                insertBookmark(query, (org.obeonetwork.m2doc.api.Bookmark) queryResult.getResult());
-            } else if (queryResult.getResult() instanceof org.obeonetwork.m2doc.api.Image) {
+                insertMHyperLink(linkRun, (MHyperLink) queryResult.getResult());
+            } else if (queryResult.getResult() instanceof MBookmark) {
+                insertMBookmark(query, (MBookmark) queryResult.getResult());
+            } else if (queryResult.getResult() instanceof MImage) {
                 final XWPFRun imageRun = insertFieldRunReplacement(query.getStyleRun(), "");
-                insertImage(imageRun, (org.obeonetwork.m2doc.api.Image) queryResult.getResult());
+                insertMImage(imageRun, (MImage) queryResult.getResult());
+            } else if (queryResult.getResult() instanceof MTable) {
+                XWPFRun tableRun = query.getStyleRun();
+                tableRun.getCTR().getInstrTextList().clear();
+                insertMTable(tableRun, (MTable) queryResult.getResult());
             } else if (queryResult.getResult() == null) {
                 insertFieldRunReplacement(query.getStyleRun(), "");
             } else {
@@ -459,14 +474,14 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     /**
-     * Inserts a {@link org.obeonetwork.m2doc.api.Bookmark Bookmark}.
+     * Inserts a {@link MBookmark}.
      * 
      * @param query
      *            the {@link Query}
      * @param bookmark
-     *            the {@link org.obeonetwork.m2doc.api.Bookmark Bookmark}
+     *            the {@link MBookmark}
      */
-    private void insertBookmark(Query query, org.obeonetwork.m2doc.api.Bookmark bookmark) {
+    private void insertMBookmark(Query query, MBookmark bookmark) {
         insertFieldRunReplacement(query.getStyleRun(), "");
         if (bookmark.isReference()) {
             bookmarkManager.insertReference(currentGeneratedParagraph, bookmark.getId(), bookmark.getText());
@@ -481,14 +496,14 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     /**
-     * Inserts the given {@link HyperLink}.
+     * Inserts the given {@link MHyperLink}.
      * 
      * @param run
      *            the {@link XWPFRun}
      * @param hyperLink
-     *            the {@link HyperLink}
+     *            the {@link MHyperLink}
      */
-    private void insertHyperLink(XWPFRun run, HyperLink hyperLink) {
+    private void insertMHyperLink(XWPFRun run, MHyperLink hyperLink) {
         final String id = currentGeneratedParagraph.getDocument().getPackagePart()
                 .addExternalRelationship(hyperLink.getUrl(), XWPFRelation.HYPERLINK.getRelation()).getId();
         final CTHyperlink cLink = currentGeneratedParagraph.getCTP().addNewHyperlink();
@@ -503,14 +518,14 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     /**
-     * Inserts the given {@link org.obeonetwork.m2doc.api.Image Image}.
+     * Inserts the given {@link MImage}.
      * 
      * @param run
      *            the {@link XWPFRun} to insert to
      * @param image
-     *            the {@link org.obeonetwork.m2doc.api.Image Image} to insert
+     *            the {@link MImage} to insert
      */
-    private void insertImage(XWPFRun run, org.obeonetwork.m2doc.api.Image image) {
+    private void insertMImage(XWPFRun run, MImage image) {
         try {
             int heigth = Units.toEMU(image.getHeight());
             int width = Units.toEMU(image.getWidth());
@@ -525,6 +540,201 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                     image.getURI().toString() + " " + e.getMessage());
         }
+    }
+
+    /**
+     * Inserts the given {@link MTable}.
+     * 
+     * @param run
+     *            the {@link XWPFRun} to insert to
+     * @param table
+     *            the {@link MTable} to insert
+     */
+    private void insertMTable(XWPFRun run, MTable table) {
+        final XWPFTable docTable;
+        if (generatedDocument instanceof XWPFDocument) {
+            if (table.getLabel() != null) {
+                XWPFRun captionRun;
+                captionRun = run;
+                IRunBody runBody = captionRun.getParent();
+                if (runBody instanceof XWPFParagraph) {
+                    ((XWPFParagraph) runBody).setSpacingAfter(0);
+                }
+                captionRun.setText(table.getLabel());
+                captionRun.setBold(true);
+            }
+            docTable = ((XWPFDocument) generatedDocument).createTable();
+        } else if (generatedDocument instanceof XWPFHeaderFooter) {
+            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
+            final int index = headerFooter._getHdrFtr().getTblArray().length;
+            final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
+            docTable = new XWPFTable(cttbl, headerFooter);
+            headerFooter.insertTable(index, docTable);
+        } else if (generatedDocument instanceof XWPFTableCell) {
+            XWPFTableCell tcell = (XWPFTableCell) generatedDocument;
+            if (table.getLabel() != null) {
+                final XWPFRun captionRun = run;
+                IRunBody runBody = captionRun.getParent();
+                if (runBody instanceof XWPFParagraph) {
+                    ((XWPFParagraph) runBody).setSpacingAfter(0);
+                }
+                captionRun.setText(table.getLabel());
+                captionRun.setBold(true);
+            }
+            CTTbl ctTbl = tcell.getCTTc().addNewTbl();
+            docTable = new XWPFTable(ctTbl, tcell);
+            int tableRank = tcell.getTables().size();
+            tcell.insertTable(tableRank, docTable);
+            // A paragraph is mandatory at the end of a cell, so let's always add one.
+            tcell.addParagraph();
+        } else {
+            docTable = null;
+            M2DocUtils.appendMessageRun((XWPFParagraph) run.getParent(), ValidationMessageLevel.ERROR,
+                    "m:table can't be inserted here.");
+        }
+
+        if (docTable != null) {
+            fillTable(docTable, table);
+        }
+    }
+
+    /**
+     * Fill a newly created word table with the data from an MTable.
+     * 
+     * @param table
+     *            The newly created word table
+     * @param mtable
+     *            The MTable that describes the data and styles to insert
+     */
+    private void fillTable(XWPFTable table, MTable mtable) {
+        XWPFTableRow headerRow = table.getRow(0);
+        initializeEmptyTableCell(headerRow.getCell(0), null, null);
+        final Map<MTable.MColumn, Integer> columnToIndex = new HashMap<MTable.MColumn, Integer>();
+        int index = 0;
+        for (MColumn mcol : mtable.getColumns()) {
+            XWPFTableCell cell;
+            cell = headerRow.addNewTableCell();
+            initializeEmptyTableCell(cell, null, null);
+            setCellContent(cell, mcol.getLabel(), mcol.getStyle());
+            columnToIndex.put(mcol, index++);
+        }
+        for (MRow mrow : mtable.getRows()) {
+            XWPFTableRow row = table.createRow();
+            List<XWPFTableCell> cells = row.getTableCells();
+            for (int i = 0; i < cells.size(); i++) {
+                XWPFTableCell cell = cells.get(i);
+                // Make sure empty cells are empty and have the right style
+                if (i > 0) {
+                    initializeEmptyTableCell(cell, mrow, mtable.getColumns().get(i - 1));
+                } else {
+                    initializeEmptyTableCell(cell, null, null);
+                }
+            }
+            XWPFTableCell cell0 = row.getCell(0);
+            setCellContent(cell0, mrow.getLabel(), mrow.getStyle());
+            for (MCell mcell : mrow.getCells()) {
+                MColumn mcol = mcell.getColumn();
+                if (mcol != null) {
+                    Integer i = columnToIndex.get(mcol);
+                    if (i == null) {
+                        i = -1;
+                    }
+                    XWPFTableCell cell = row.getCell(i + 1);
+                    setCellContent(cell, mcell.getLabel(), mcell.getStyle());
+                }
+            }
+        }
+    }
+
+    /**
+     * Initialize properly a new table cell to make it easy to insert the data in this cell. Deals with the style to apply to this cell
+     * depending on the row and column it belongs to.
+     * 
+     * @param cell
+     *            Newly created cell to initialize
+     * @param row
+     *            The row the cell belongs to, the style of which will be used for the cell if defined.
+     * @param column
+     *            The column the cell belongs to, the style of which will be used for the cell if defined and the row's style is
+     *            <code>null</code>.
+     * @return The paragraph of the cell after initialization.
+     */
+    private XWPFParagraph initializeEmptyTableCell(XWPFTableCell cell, MRow row, MColumn column) {
+        XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
+        cellParagraph.setSpacingBefore(0);
+        cellParagraph.setSpacingAfter(0);
+        final MStyle style;
+        if (row != null) {
+            style = row.getStyle();
+        } else if (column != null) {
+            style = column.getStyle();
+        } else {
+            style = null;
+        }
+        if (style != null) {
+            if (style.getBackgroundColor() != null) {
+                cell.setColor(hexColor(style.getBackgroundColor()));
+            }
+        }
+        return cellParagraph;
+    }
+
+    /**
+     * Create a new run in the cell's paragraph and set this run's text, and apply the given style to the cell and its paragraph.
+     * 
+     * @param cell
+     *            Cell to fill in
+     * @param text
+     *            Text to set in the cell
+     * @param style
+     *            Style to use, can be <code>null</code>
+     */
+    private void setCellContent(XWPFTableCell cell, String text, MStyle style) {
+        XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
+        XWPFRun cellRun = cellParagraph.createRun();
+        cellRun.setText(text);
+        if (style != null) {
+            if (style.getBackgroundColor() != null) {
+                cell.setColor(hexColor(style.getBackgroundColor()));
+            }
+            applyMStyle(cellRun, style);
+        }
+    }
+
+    /**
+     * Apply the given style to the given run. Background color is not taken into account here since it does not apply to runs.
+     * 
+     * @param run
+     *            The run to style
+     * @param style
+     *            The style to apply, can be <code>null</code>
+     */
+    private void applyMStyle(XWPFRun run, MStyle style) {
+        if (style.getFontSize() != -1) {
+            run.setFontSize(style.getFontSize());
+        }
+        if (style.getFontModifiers() != -1) {
+            run.setBold((style.getFontModifiers() & MStyle.FONT_BOLD) != 0);
+            run.setItalic((style.getFontModifiers() & MStyle.FONT_ITALIC) != 0);
+            if ((style.getFontModifiers() & MStyle.FONT_UNDERLINE) != 0) {
+                run.setUnderline(UnderlinePatterns.SINGLE);
+            }
+            run.setStrikeThrough((style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH) != 0);
+        }
+        if (style.getForegroundColor() != null) {
+            run.setColor(hexColor(style.getForegroundColor()));
+        }
+    }
+
+    /**
+     * Translate a {@link Color} to the word format.
+     * 
+     * @param color
+     *            the {@link Color}
+     * @return The color as a 6-digits string.
+     */
+    private static String hexColor(Color color) {
+        return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
 
     @Override
@@ -817,7 +1027,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             }
             currentGeneratedTable.getCTTbl().set(copy);
         } else if (generatedDocument instanceof XWPFHeaderFooter) {
-            XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
+            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
             final int index = headerFooter._getHdrFtr().getTblArray().length;
             final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
             XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
@@ -931,7 +1141,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                     imageRun.setText("");
                     imageRun.getCTR().getInstrTextList().clear();
 
-                    final org.obeonetwork.m2doc.api.Image image = new org.obeonetwork.m2doc.api.Image(imageURI);
+                    final MImage image = new MImageImpl(imageURI);
                     // get default image size if needed
                     image.setConserveRatio(representation.getHeight() == 0 || representation.getWidth() == 0);
                     if (representation.getHeight() != 0) {
@@ -940,7 +1150,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                     if (representation.getWidth() != 0) {
                         image.setWidth(representation.getWidth());
                     }
-                    insertImage(imageRun, image);
+                    insertMImage(imageRun, image);
                 }
             } catch (IllegalArgumentException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());

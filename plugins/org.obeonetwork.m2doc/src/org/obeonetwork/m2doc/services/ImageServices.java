@@ -16,7 +16,8 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.emf.common.util.URI;
-import org.obeonetwork.m2doc.api.Image;
+import org.obeonetwork.m2doc.element.MImage;
+import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.util.PictureType;
 
 //@formatter:off
@@ -65,39 +66,39 @@ public class ImageServices {
      *            the uri.
      * @return the {@link Image} corresponding to the given path
      */
-    public Image asImage(String uriStr) {
+    public MImage asImage(String uriStr) {
         final URI imageURI = URI.createURI(uriStr);
         return asImage(uriStr, PictureType.toType(imageURI));
     }
 
     /**
-     * Gets the {@link Image} corresponding to the given path.
+     * Gets the {@link MImage} corresponding to the given path.
      * 
      * @param uriStr
      *            the uri.
      * @param type
      *            the picture {@link PictureType type}.
-     * @return the {@link Image} corresponding to the given path
+     * @return the {@link MImage} corresponding to the given path
      */
-    public Image asImage(String uriStr, String type) {
+    public MImage asImage(String uriStr, String type) {
         return asImage(uriStr, PictureType.valueOf(type.toUpperCase()));
     }
 
     /**
-     * Gets the {@link Image} corresponding to the given path.
+     * Gets the {@link MImage} corresponding to the given path.
      * 
      * @param uriStr
      *            the uri.
      * @param type
      *            the picture {@link PictureType type}.
-     * @return the {@link Image} corresponding to the given path
+     * @return the {@link MImage} corresponding to the given path
      */
-    private Image asImage(String uriStr, PictureType type) {
+    private MImage asImage(String uriStr, PictureType type) {
         final URI imageURI = URI.createURI(uriStr);
 
         URI uri = imageURI.resolve(templateURI);
 
-        return new Image(uri, type);
+        return new MImageImpl(uri, type);
     }
 
     // @formatter:off
@@ -122,7 +123,7 @@ public class ImageServices {
      *            the width
      * @return the given {@link Image} with the new width
      */
-    public Image setWidth(Image image, Integer width) {
+    public MImage setWidth(MImage image, Integer width) {
         image.setWidth(width);
 
         return image;
@@ -150,7 +151,7 @@ public class ImageServices {
      *            the height
      * @return the given {@link Image} with the new height
      */
-    public Image setHeight(Image image, Integer height) {
+    public MImage setHeight(MImage image, Integer height) {
         image.setHeight(height);
 
         return image;
@@ -177,7 +178,7 @@ public class ImageServices {
      *            <code>true</code> to conserve the aspect ratio, <code>false</code> otherwise
      * @return the given {@link Image} with the new conserve aspect ratio
      */
-    public Image setConserveRatio(Image image, Boolean conserve) {
+    public MImage setConserveRatio(MImage image, Boolean conserve) {
         image.setConserveRatio(conserve);
 
         return image;

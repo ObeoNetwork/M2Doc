@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.generator;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +28,13 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MColumn;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MCell;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MRow;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MTable;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
@@ -132,7 +133,7 @@ public final class TableClientProcessor {
             table = createTableInCell(tableRun, first, mtable, tcell);
         } else {
             M2DocUtils.appendMessageRun((XWPFParagraph) tableRun.getParent(), ValidationMessageLevel.ERROR,
-                    "m:table is not supported in headers, footers, or footnotes.");
+                    "m:table can't be inserted here.");
         }
         return table;
     }
@@ -322,20 +323,13 @@ public final class TableClientProcessor {
     }
 
     /**
-     * Translate an int color from the {@link MStyle} format to the word format.
+     * Translate a {@link Color} to the word format.
      * 
      * @param color
-     *            The color, as an int
+     *            the {@link Color}
      * @return The color as a 6-digits string.
      */
-    private static String hexColor(int color) {
-        String result = Integer.toHexString(color);
-        while (result.length() < 6) {
-            result = "0" + result;
-        }
-        if (result.length() > 6) {
-            result = result.substring(result.length() - 6);
-        }
-        return result;
+    private static String hexColor(Color color) {
+        return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
 }

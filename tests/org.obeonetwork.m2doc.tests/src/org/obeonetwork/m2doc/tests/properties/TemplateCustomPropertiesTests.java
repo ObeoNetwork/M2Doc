@@ -20,7 +20,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
-import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 import static org.junit.Assert.assertEquals;

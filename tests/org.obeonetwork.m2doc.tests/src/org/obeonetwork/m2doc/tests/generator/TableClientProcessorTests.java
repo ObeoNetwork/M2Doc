@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests.generator;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,13 +27,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MColumn;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.generator.TableClientProcessor;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MCell;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MRow;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MTable;
 import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
@@ -200,7 +201,7 @@ public class TableClientProcessorTests {
     }
 
     public abstract static class TestLabeledElement {
-        protected final String label;
+        protected String label;
 
         public TestLabeledElement(String label) {
             this.label = label;
@@ -208,6 +209,10 @@ public class TableClientProcessorTests {
 
         public String getLabel() {
             return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
         }
 
     }
@@ -230,20 +235,20 @@ public class TableClientProcessorTests {
     }
 
     public static class TestTable extends TestLabeledElement implements MTable {
-        protected final List<TestColumn> columns = new ArrayList<>();
-        protected final List<TestRow> rows = new ArrayList<>();
+        protected final List<MColumn> columns = new ArrayList<>();
+        protected final List<MRow> rows = new ArrayList<>();
 
         public TestTable(String label) {
             super(label);
         }
 
         @Override
-        public List<TestColumn> getColumns() {
+        public List<MColumn> getColumns() {
             return columns;
         }
 
         @Override
-        public List<TestRow> getRows() {
+        public List<MRow> getRows() {
             return rows;
         }
 
@@ -251,14 +256,14 @@ public class TableClientProcessorTests {
 
     public static class TestRow extends TestStyledElement implements MRow {
 
-        protected final List<TestCell> cells = new ArrayList<>();
+        protected final List<MCell> cells = new ArrayList<>();
 
         public TestRow(String label) {
             super(label);
         }
 
         @Override
-        public List<TestCell> getCells() {
+        public List<MCell> getCells() {
             return cells;
         }
 
@@ -274,7 +279,7 @@ public class TableClientProcessorTests {
 
     public static class TestCell extends TestStyledElement implements MCell {
 
-        private final TestColumn column;
+        private MColumn column;
 
         public TestCell(String label, TestColumn column) {
             super(label);
@@ -283,48 +288,54 @@ public class TableClientProcessorTests {
 
         @Override
         public TestColumn getColumn() {
-            return column;
+            return (TestColumn) column;
+        }
+
+        @Override
+        public void setColumn(MColumn column) {
+            this.column = column;
         }
 
     }
 
     public static class TestStyle implements MStyle {
-        private int backgroundColor;
-        private int foregroundColor;
+        private Color backgroundColor;
+        private Color foregroundColor;
         private int fontModifiers;
         private int fontSize;
 
         public void setBackgroundColor(String color) {
-            this.backgroundColor = Integer.parseInt(color, 16);
+            this.backgroundColor = new Color(Integer.parseInt(color, 16));
         }
 
         public void setForegroundColor(String color) {
-            this.foregroundColor = Integer.parseInt(color, 16);
+            this.foregroundColor = new Color(Integer.parseInt(color, 16));
         }
 
         public void setBackgroundColor(int bg) {
-            this.backgroundColor = bg;
+            this.backgroundColor = new Color(bg);
         }
 
         public void setForegroundColor(int fg) {
-            this.foregroundColor = fg;
+            this.foregroundColor = new Color(fg);
         }
 
         public void setFontModifiers(int fontModifiers) {
             this.fontModifiers = fontModifiers;
         }
 
+        @Override
         public void setFontSize(int fontSize) {
             this.fontSize = fontSize;
         }
 
         @Override
-        public int getBackgroundColor() {
+        public Color getBackgroundColor() {
             return backgroundColor;
         }
 
         @Override
-        public int getForegroundColor() {
+        public Color getForegroundColor() {
             return foregroundColor;
         }
 
@@ -336,6 +347,21 @@ public class TableClientProcessorTests {
         @Override
         public int getFontSize() {
             return fontSize;
+        }
+
+        @Override
+        public void setForegroundColor(Color color) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setBackgroundColor(Color color) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setModifiers(int modifiers) {
+            throw new UnsupportedOperationException();
         }
     }
 }

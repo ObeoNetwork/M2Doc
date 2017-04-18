@@ -1,12 +1,14 @@
 package org.obeonetwork.m2doc.sirius.tests.tables;
 
+import java.awt.Color;
+
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
 import org.eclipse.sirius.table.metamodel.table.TableFactory;
 import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.viewpoint.RGBValues;
 import org.junit.Before;
 import org.junit.Test;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
+import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.sirius.providers.tables.DMStyle;
 
 import static org.junit.Assert.assertEquals;
@@ -21,8 +23,8 @@ public class DMStyleTest {
     public void testStyle() {
         assertEquals(6, style.getFontSize());
         // CHECKSTYLE:OFF
-        assertEquals(0 << 16 | 128 << 8 | 255, style.getBackgroundColor());
-        assertEquals(255 << 16 | 128 << 8 | 0, style.getForegroundColor());
+        assertEquals(new Color(0 << 16 | 128 << 8 | 255), style.getBackgroundColor());
+        assertEquals(new Color(255 << 16 | 128 << 8 | 0), style.getForegroundColor());
         // CHECKSTYLE:ON
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);

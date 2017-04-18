@@ -20,6 +20,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.junit.Test;
+import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.generator.TableClientProcessor;
 import org.obeonetwork.m2doc.provider.ProviderException;
 
@@ -27,9 +28,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle.FONT_BOLD;
-import static org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle.FONT_ITALIC;
-import static org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle.FONT_UNDERLINE;
 
 /**
  * Tests of {@link TableClientProcessor} with tables that have styles.
@@ -172,30 +170,30 @@ public class TableClientProcessorWithStyleTests extends TableClientProcessorTest
         return table;
     }
 
-    protected TestStyle getColumnStyle() {
+    protected MStyle getColumnStyle() {
         TestStyle style = new TestStyle();
         style.setBackgroundColor(COL_BG_COLOR);
         style.setForegroundColor(COL_FG_COLOR);
         style.setFontSize(COL_FONT_SIZE);
-        style.setFontModifiers(FONT_BOLD);
+        style.setFontModifiers(MStyle.FONT_BOLD);
         return style;
     }
 
-    protected TestStyle getRowStyle() {
+    protected MStyle getRowStyle() {
         TestStyle style = new TestStyle();
         style.setBackgroundColor(ROW_BG_COLOR);
         style.setForegroundColor(ROW_FG_COLOR);
         style.setFontSize(ROW_FONT_SIZE);
-        style.setFontModifiers(FONT_ITALIC);
+        style.setFontModifiers(MStyle.FONT_ITALIC);
         return style;
     }
 
-    protected TestStyle getCellStyle() {
+    protected MStyle getCellStyle() {
         TestStyle style = new TestStyle();
         style.setBackgroundColor(CELL_BG_COLOR);
         style.setForegroundColor(CELL_FG_COLOR);
         style.setFontSize(CELL_FONT_SIZE);
-        style.setFontModifiers(FONT_UNDERLINE | FONT_BOLD);
+        style.setFontModifiers(MStyle.FONT_UNDERLINE | MStyle.FONT_BOLD);
         return style;
     }
 }

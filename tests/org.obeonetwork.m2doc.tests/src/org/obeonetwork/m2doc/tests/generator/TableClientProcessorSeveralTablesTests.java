@@ -19,8 +19,8 @@ import java.util.Map;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Test;
+import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.generator.TableClientProcessor;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MTable;
 import org.obeonetwork.m2doc.provider.ProviderException;
 
 import static org.junit.Assert.assertEquals;

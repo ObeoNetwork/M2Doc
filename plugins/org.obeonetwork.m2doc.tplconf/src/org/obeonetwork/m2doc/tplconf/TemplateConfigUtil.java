@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.util.EcoreValidator;
-import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;

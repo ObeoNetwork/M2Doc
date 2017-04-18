@@ -33,6 +33,7 @@ import org.eclipse.sirius.table.metamodel.table.description.TableDescription;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
+import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.obeonetwork.m2doc.provider.OptionType;

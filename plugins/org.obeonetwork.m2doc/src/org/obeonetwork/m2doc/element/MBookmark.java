@@ -9,54 +9,35 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.api;
+package org.obeonetwork.m2doc.element;
 
 /**
- * An hyper link that can be returned by services.
+ * An bookmark that can be returned by services.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class HyperLink {
+public interface MBookmark extends MElemement {
 
     /**
-     * The text.
-     */
-    private final String text;
-
-    /**
-     * The url.
-     */
-    private final String url;
-
-    /**
-     * Constructor.
+     * Gets the text to display.
      * 
-     * @param text
-     *            the text
-     * @param url
-     *            the url
+     * @return the text to display
      */
-    public HyperLink(String text, String url) {
-        this.text = text;
-        this.url = url;
-    }
+    String getText();
 
     /**
-     * Gets the text.
+     * Gets the bookmark ID.
      * 
-     * @return the text
+     * @return the bookmark ID
      */
-    public String getText() {
-        return text;
-    }
+    String getId();
 
     /**
-     * Gets the url.
+     * Tells if this is a reference to a {@link MBookmark} or a {@link MBookmark} declaration.
      * 
-     * @return the url
+     * @return <code>true</code> if this is a reference to a {@link MBookmark}, <code>false</code> if it's a {@link MBookmark}
+     *         declaration
      */
-    public String getUrl() {
-        return url;
-    }
+    boolean isReference();
 
 }

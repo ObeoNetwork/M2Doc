@@ -2,6 +2,7 @@ package org.obeonetwork.m2doc.sirius.tests.tables;
 
 import com.google.common.collect.Iterables;
 
+import java.awt.Color;
 import java.util.Iterator;
 
 import org.eclipse.sirius.table.metamodel.table.DCell;
@@ -15,10 +16,10 @@ import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.viewpoint.RGBValues;
 import org.junit.Before;
 import org.junit.Test;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MCell;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MRow;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MColumn;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.sirius.providers.tables.DMTable;
 
 import static org.junit.Assert.assertEquals;
@@ -56,8 +57,8 @@ public class DMTableTest {
         MStyle style = col1.getStyle();
         assertEquals(6, style.getFontSize());
 
-        assertEquals(GRAY, style.getBackgroundColor());
-        assertEquals(BLACK, style.getForegroundColor());
+        assertEquals(new Color(GRAY), style.getBackgroundColor());
+        assertEquals(new Color(BLACK), style.getForegroundColor());
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -84,8 +85,8 @@ public class DMTableTest {
         assertEquals("Row Two", row.getLabel());
         style = row.getStyle();
         assertEquals(3, style.getFontSize());
-        assertEquals(WHITE, style.getBackgroundColor());
-        assertEquals(BLACK, style.getForegroundColor());
+        assertEquals(new Color(WHITE), style.getBackgroundColor());
+        assertEquals(new Color(BLACK), style.getForegroundColor());
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -99,8 +100,8 @@ public class DMTableTest {
         // CHECKSTYLE:OFF
         assertEquals(9, style.getFontSize());
         // CHECKSTYLE:ON
-        assertEquals(WHITE, style.getBackgroundColor());
-        assertEquals(BROWN, style.getForegroundColor());
+        assertEquals(new Color(WHITE), style.getBackgroundColor());
+        assertEquals(new Color(BROWN), style.getForegroundColor());
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);

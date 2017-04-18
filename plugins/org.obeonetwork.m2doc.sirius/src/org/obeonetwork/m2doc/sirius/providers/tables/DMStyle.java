@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.providers.tables;
 
+import java.awt.Color;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
 import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.viewpoint.RGBValues;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
+import org.obeonetwork.m2doc.element.MStyle;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -68,25 +70,34 @@ public class DMStyle implements MStyle {
     }
 
     @Override
-    public int getForegroundColor() {
-        RGBValues rgb = style.getForegroundColor();
-        return rgbToInt(rgb);
+    public Color getForegroundColor() {
+        final RGBValues rgb = style.getForegroundColor();
+        return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
     }
 
     @Override
-    public int getBackgroundColor() {
-        RGBValues rgb = style.getBackgroundColor();
-        return rgbToInt(rgb);
+    public Color getBackgroundColor() {
+        final RGBValues rgb = style.getBackgroundColor();
+        return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
     }
 
-    /**
-     * Convert the given RGB values to an int in the format expected by M2Doc.
-     * 
-     * @param rgb
-     *            The rgb values to convert
-     * @return A int that represents the color in the format expected by M2Doc.
-     */
-    private int rgbToInt(RGBValues rgb) {
-        return rgb.getRed() << Byte.SIZE * 2 | rgb.getGreen() << Byte.SIZE | rgb.getBlue();
+    @Override
+    public void setFontSize(int fontSize) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setForegroundColor(Color color) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setBackgroundColor(Color color) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setModifiers(int modifiers) {
+        throw new UnsupportedOperationException();
     }
 }

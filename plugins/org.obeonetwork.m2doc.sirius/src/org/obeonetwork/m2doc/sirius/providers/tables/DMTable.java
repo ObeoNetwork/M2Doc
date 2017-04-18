@@ -18,9 +18,7 @@ import java.util.Map;
 import org.eclipse.sirius.table.metamodel.table.DColumn;
 import org.eclipse.sirius.table.metamodel.table.DLine;
 import org.eclipse.sirius.table.metamodel.table.DTable;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MRow;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MTable;
+import org.obeonetwork.m2doc.element.MTable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -58,12 +56,12 @@ public class DMTable implements MTable {
     }
 
     @Override
-    public Iterable<? extends MColumn> getColumns() {
-        return columnsByDColumns.values();
+    public List<MColumn> getColumns() {
+        return new ArrayList<MTable.MColumn>(columnsByDColumns.values());
     }
 
     @Override
-    public Iterable<? extends MRow> getRows() {
+    public List<MRow> getRows() {
         List<MRow> result = new ArrayList<MRow>();
         for (DLine line : table.getLines()) {
             if (line.isVisible()) {
@@ -82,5 +80,10 @@ public class DMTable implements MTable {
      */
     protected DMColumn getColumn(DColumn dcol) {
         return columnsByDColumns.get(dcol);
+    }
+
+    @Override
+    public void setLabel(String label) {
+        throw new UnsupportedOperationException();
     }
 }

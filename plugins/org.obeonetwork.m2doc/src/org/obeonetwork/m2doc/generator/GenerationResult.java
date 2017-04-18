@@ -81,7 +81,7 @@ public class GenerationResult {
      * 
      * @return the {@link List} of duplicated {@link UserContent#getId() user content ID}
      */
-    public List<String> getduplicatedUserContentIDs() {
+    public List<String> getDuplicatedUserContentIDs() {
         return duplicatedUserContentIDs;
     }
 

@@ -1,0 +1,10 @@
+
+=== HEADER ===
+template null
+  A simple demonstration of a query :
+  [query: .emptyTable('') | TEXT]
+  End of demonstration.
+=== BODY ===
+template null
+  
+=== FOOTER ===

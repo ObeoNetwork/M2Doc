@@ -24,7 +24,8 @@ import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
-import org.obeonetwork.m2doc.api.Image;
+import org.obeonetwork.m2doc.element.MImage;
+import org.obeonetwork.m2doc.element.impl.MImageImpl;
 
 /**
  * AQL Services for Sirius representations.
@@ -104,30 +105,31 @@ public class M2DocSiriusServices {
     }
 
     /**
-     * Gets the {@link Image} from the given {@link DRepresentation}.
+     * Gets the {@link MImage} from the given {@link DRepresentation}.
      * 
      * @param representation
      *            the {@link DRepresentation}
-     * @return the {@link Image} from the given {@link DRepresentation}
+     * @return the {@link MImage} from the given {@link DRepresentation}
      * @throws SizeTooLargeException
      *             if the image is too large in memory
      * @throws IOException
      *             if the image can't be serialized
      */
-    public Image asImage(DRepresentation representation) throws SizeTooLargeException, IOException {
-        final Image res;
+    public MImage asImage(DRepresentation representation) throws SizeTooLargeException, IOException {
+        final MImage res;
 
         final File tmpFile = File.createTempFile(representation.getName(), ".jpg");
         tmpFiles.add(tmpFile);
         DialectUIManager.INSTANCE.export(representation, session, new Path(tmpFile.getAbsolutePath()), FORMAT,
                 new NullProgressMonitor());
-        res = new Image(URI.createFileURI(tmpFile.getAbsolutePath()));
+        res = new MImageImpl(URI.createFileURI(tmpFile.getAbsolutePath()));
 
         return res;
     }
 
     /**
-     * Gets the {@link List} of {@link Image} for the given {@link EObject} and {@link RepresentationDescription#getName() representation
+     * Gets the {@link List} of {@link MImage} for the given {@link EObject} and {@link RepresentationDescription#getName()
+     * representation
      * description name}
      * .
      * 
@@ -135,7 +137,8 @@ public class M2DocSiriusServices {
      *            the {@link EObject}
      * @param descriptionName
      *            the {@link RepresentationDescription#getName() description name}
-     * @return the {@link List} of {@link Image} for the given {@link EObject} and {@link RepresentationDescription#getName() representation
+     * @return the {@link List} of {@link MImage} for the given {@link EObject} and {@link RepresentationDescription#getName()
+     *         representation
      *         description
      *         name}
      * @throws SizeTooLargeException
@@ -143,9 +146,9 @@ public class M2DocSiriusServices {
      * @throws IOException
      *             if the image can't be serialized
      */
-    public List<Image> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName)
+    public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName)
             throws SizeTooLargeException, IOException {
-        final List<Image> res = new ArrayList<Image>();
+        final List<MImage> res = new ArrayList<MImage>();
 
         final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
                 .getRepresentationDescriptors(eObj, session);
@@ -168,18 +171,18 @@ public class M2DocSiriusServices {
     }
 
     /**
-     * Gets the {@link Image} for the given {@link DRepresentation#getName() representation name}.
+     * Gets the {@link MImage} for the given {@link DRepresentation#getName() representation name}.
      * 
      * @param representationName
      *            the {@link DRepresentation#getName() representation name}
-     * @return the {@link Image} for the given {@link EObject} and {@link DRepresentation#getName() representation name}
+     * @return the {@link MImage} for the given {@link EObject} and {@link DRepresentation#getName() representation name}
      * @throws SizeTooLargeException
      *             if the image is too large in memory
      * @throws IOException
      *             if the image can't be serialized
      */
-    public Image asImageByRepresentationName(String representationName) throws SizeTooLargeException, IOException {
-        final Image res;
+    public MImage asImageByRepresentationName(String representationName) throws SizeTooLargeException, IOException {
+        final MImage res;
 
         final DRepresentationDescriptor description = SiriusDiagramUtils
                 .getAssociatedRepresentationByName(representationName, session);

@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;

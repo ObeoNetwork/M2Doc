@@ -9,14 +9,16 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.api;
+package org.obeonetwork.m2doc.element.impl;
+
+import org.obeonetwork.m2doc.element.MBookmark;
 
 /**
  * An bookmark that can be returned by services.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class Bookmark {
+public class MBookmarkImpl implements MBookmark {
 
     /**
      * The text to display.
@@ -29,7 +31,7 @@ public class Bookmark {
     private String id;
 
     /**
-     * <code>true</code> if this is a reference to a {@link Bookmark}, <code>false</code> if it's a {@link Bookmark} declaration.
+     * <code>true</code> if this is a reference to a {@link MBookmarkImpl}, <code>false</code> if it's a {@link MBookmarkImpl} declaration.
      */
     private final boolean reference;
 
@@ -41,37 +43,26 @@ public class Bookmark {
      * @param id
      *            the id
      * @param reference
-     *            <code>true</code> if this is a reference to a {@link Bookmark}, <code>false</code> if it's a {@link Bookmark} declaration
+     *            <code>true</code> if this is a reference to a {@link MBookmarkImpl}, <code>false</code> if it's a {@link MBookmarkImpl}
+     *            declaration
      */
-    public Bookmark(String text, String id, boolean reference) {
+    public MBookmarkImpl(String text, String id, boolean reference) {
         this.text = text;
         this.id = id;
         this.reference = reference;
     }
 
-    /**
-     * Gets the text to display.
-     * 
-     * @return the text to display
-     */
+    @Override
     public String getText() {
         return text;
     }
 
-    /**
-     * Gets the bookmark ID.
-     * 
-     * @return the bookmark ID
-     */
+    @Override
     public String getId() {
         return id;
     }
 
-    /**
-     * Tells if this is a reference to a {@link Bookmark} or a {@link Bookmark} declaration.
-     * 
-     * @return <code>true</code> if this is a reference to a {@link Bookmark}, <code>false</code> if it's a {@link Bookmark} declaration
-     */
+    @Override
     public boolean isReference() {
         return reference;
     }

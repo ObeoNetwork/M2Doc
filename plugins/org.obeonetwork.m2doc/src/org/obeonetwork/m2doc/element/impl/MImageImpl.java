@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.api;
+package org.obeonetwork.m2doc.element.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.util.PictureType;
 
 /**
@@ -26,7 +27,7 @@ import org.obeonetwork.m2doc.util.PictureType;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class Image {
+public class MImageImpl implements MImage {
 
     /**
      * The {@link URI} to retrieve the content of the image.
@@ -68,7 +69,7 @@ public class Image {
      * @param uri
      *            the {@link URI}
      */
-    public Image(URI uri) {
+    public MImageImpl(URI uri) {
         this(uri, PictureType.toType(uri));
     }
 
@@ -80,7 +81,7 @@ public class Image {
      * @param type
      *            the picture {@link PictureType type}.
      */
-    public Image(URI uri, PictureType type) {
+    public MImageImpl(URI uri, PictureType type) {
         this.uri = uri;
         this.type = type;
         try {
@@ -100,21 +101,12 @@ public class Image {
         }
     }
 
-    /**
-     * Gets the image width.
-     * 
-     * @return the image width
-     */
+    @Override
     public int getWidth() {
         return width;
     }
 
-    /**
-     * Sets the image width.
-     * 
-     * @param width
-     *            the image width
-     */
+    @Override
     public void setWidth(int width) {
         this.width = width;
         if (conserveRatio) {
@@ -122,21 +114,12 @@ public class Image {
         }
     }
 
-    /**
-     * Gets the image height.
-     * 
-     * @return the image height
-     */
+    @Override
     public int getHeight() {
         return height;
     }
 
-    /**
-     * Sets the image height.
-     * 
-     * @param height
-     *            the image height
-     */
+    @Override
     public void setHeight(int height) {
         this.height = height;
         if (conserveRatio) {
@@ -144,21 +127,12 @@ public class Image {
         }
     }
 
-    /**
-     * Tells if we conserve aspect ratio.
-     * 
-     * @return <code>true</code> if we conserve aspect ratio, <code>false</code> otherwise
-     */
+    @Override
     public boolean conserveRatio() {
         return conserveRatio;
     }
 
-    /**
-     * Sets the aspect ratio.
-     * 
-     * @param conserveRatio
-     *            <code>true</code> to conserve the {@link #getRatio() aspect ration}, <code>false</code> otherwise
-     */
+    @Override
     public void setConserveRatio(boolean conserveRatio) {
         if (conserveRatio && ratio < 0) {
             throw new IllegalStateException("Can't conserve ratio: unknown ratio");
@@ -171,35 +145,21 @@ public class Image {
      * 
      * @return the aspect ratio
      */
-    public double getRatio() {
+    protected double getRatio() {
         return ratio;
     }
 
-    /**
-     * Gets the {@link URI}.
-     * 
-     * @return the {@link URI}
-     */
+    @Override
     public URI getURI() {
         return uri;
     }
 
-    /**
-     * Gets the {@link InputStream}.
-     * 
-     * @return the {@link InputStream}
-     * @throws IOException
-     *             if the {@link InputStream} can't be created.
-     */
+    @Override
     public InputStream getInputStream() throws IOException {
         return URIConverter.INSTANCE.createInputStream(uri);
     }
 
-    /**
-     * Gets the {@link PictureType}.
-     * 
-     * @return the type the {@link PictureType}.
-     */
+    @Override
     public PictureType getType() {
         return type;
     }

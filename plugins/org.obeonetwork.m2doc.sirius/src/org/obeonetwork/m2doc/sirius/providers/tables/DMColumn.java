@@ -12,8 +12,8 @@ package org.obeonetwork.m2doc.sirius.providers.tables;
 
 import org.eclipse.sirius.table.metamodel.table.DColumn;
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable.MColumn;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -53,5 +53,15 @@ public class DMColumn implements MColumn {
     @Override
     public String getLabel() {
         return column.getLabel();
+    }
+
+    @Override
+    public void setStyle(MStyle style) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setLabel(String label) {
+        throw new UnsupportedOperationException();
     }
 }

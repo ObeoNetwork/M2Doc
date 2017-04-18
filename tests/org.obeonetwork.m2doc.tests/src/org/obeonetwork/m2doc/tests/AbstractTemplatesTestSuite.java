@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -380,7 +381,8 @@ public abstract class AbstractTemplatesTestSuite {
             copy(userContentLostURI, destURI);
         }
         final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment,
-                new GenconfToDocumentGenerator().createResourceSetForModels(generation), variables, outputURI);
+                new GenconfToDocumentGenerator().createResourceSetForModels(generation), variables, outputURI,
+                new BasicMonitor());
         return generationResult;
     }
 

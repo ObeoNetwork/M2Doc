@@ -12,9 +12,9 @@ package org.obeonetwork.m2doc.sirius.providers.tables;
 
 import org.eclipse.sirius.table.metamodel.table.DCell;
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MCell;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MColumn;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider.MStyle;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MColumn;
 
 /**
  * Implementation of {@link MCell} based on a {@link DCell}.
@@ -62,5 +62,20 @@ public class DMCell implements MCell {
     @Override
     public MColumn getColumn() {
         return table.getColumn(cell.getColumn());
+    }
+
+    @Override
+    public void setStyle(MStyle style) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setLabel(String label) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setColumn(MColumn column) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -44,7 +44,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.obeonetwork.m2doc.api.POIServices;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
@@ -343,7 +343,7 @@ public final class M2DocUtils {
             final InputStream is = URIConverter.INSTANCE.createInputStream(templateURI);
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
-            final List<TemplateValidationMessage> messages = parseTemplateInfo(queryEnvironment, classLoader, document);
+            final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment, classLoader, document);
             r.getContents().add(result);
             final M2DocParser parser = new M2DocParser(document, queryEnvironment);
             final Template documentBody = parser.parseTemplate();
@@ -383,7 +383,7 @@ public final class M2DocUtils {
      *            the {@link XWPFDocument}
      * @return the {@link List} of {@link TemplateValidationMessage} produced while reading the {@link TemplateCustomProperties}
      */
-    private static List<TemplateValidationMessage> parseTemplateInfo(IQueryEnvironment queryEnvironment,
+    private static List<TemplateValidationMessage> parseTemplateCustomProperties(IQueryEnvironment queryEnvironment,
             ClassLoader classLoader, final XWPFDocument document) {
         final TemplateCustomProperties properties = new TemplateCustomProperties(document);
         final List<TemplateValidationMessage> messages = new ArrayList<>();
