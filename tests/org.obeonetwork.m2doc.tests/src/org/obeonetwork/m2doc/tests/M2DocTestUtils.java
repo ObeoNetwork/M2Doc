@@ -26,6 +26,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -253,6 +257,31 @@ public final class M2DocTestUtils {
                 ZipInputStream expectedZin = new ZipInputStream(new BufferedInputStream(expectedIs));
                 InputStream actualIs = URIConverter.INSTANCE.createInputStream(actualURI);
                 ZipInputStream actualZin = new ZipInputStream(new BufferedInputStream(actualIs))) {
+
+            List<ZipEntry> expectedEntries = new ArrayList<>();
+            ZipEntry anExpectedEntry;
+            while ((anExpectedEntry = expectedZin.getNextEntry()) != null) {
+                expectedEntries.add(anExpectedEntry);
+            }
+
+            List<ZipEntry> actualEntries = new ArrayList<>();
+            ZipEntry anActualEntry;
+            while ((anActualEntry = actualZin.getNextEntry()) != null) {
+                actualEntries.add(anActualEntry);
+            }
+
+            assertEquals(expectedEntries.size(), actualEntries.size());
+
+            // Build a map in order to make sure we iterate on equivalent files (i.e. with the same name), because the order of iteration
+            // from ZipInputStream depends on the order of creation.
+            Map<ZipEntry, ZipEntry> entryMap = new HashMap<>();
+            for (ZipEntry expectedEntry : expectedEntries) {
+                for (ZipEntry actualEntry : actualEntries) {
+                    if (expectedEntry.getName().equals(actualEntry.getName())) {
+                        entryMap.put(expectedEntry, actualEntry);
+                    }
+                }
+            }
 
             ZipEntry expectedEntry;
             ZipEntry actualEntry;
