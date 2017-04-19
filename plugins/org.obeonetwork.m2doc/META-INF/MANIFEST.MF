@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.acceleo.query;bundle-version="[5.0.0,6.0.0)",
  org.antlr.runtime;bundle-version="4.3.0",
  com.google.guava;bundle-version="[15.0.0,16.0.0)",
- org.apache.poi;bundle-version="[3.15.0,3.16.0)",
+ org.apache.poi;bundle-version="[3.16.0,3.17.0)",
  org.eclipse.acceleo.annotations;bundle-version="[5.0.0,6.0.0)"
 Export-Package: org.obeonetwork.m2doc,
  org.obeonetwork.m2doc.element,

@@ -14,7 +14,7 @@ Require-Bundle: org.junit,
  org.eclipse.sirius.table;bundle-version="[4.1.0,5.0.0)",
  org.eclipse.sirius.common;bundle-version="[4.1.0,5.0.0)",
  org.obeonetwork.m2doc.tests;bundle-version="[0.10.0,0.11.0)",
- org.apache.poi;bundle-version="[3.15.0,3.16.0)",
+ org.apache.poi;bundle-version="[3.16.0,3.17.0)",
  com.google.guava;bundle-version="[15.0.0,16.0.0)",
  org.eclipse.emf.transaction,
  org.eclipse.acceleo.query
