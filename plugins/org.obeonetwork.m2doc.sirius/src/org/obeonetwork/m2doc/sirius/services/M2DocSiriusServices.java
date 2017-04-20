@@ -17,6 +17,8 @@ import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.common.tools.api.resource.ImageFileFormat;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
+import org.eclipse.sirius.table.metamodel.table.DTable;
+import org.eclipse.sirius.table.metamodel.table.description.TableDescription;
 import org.eclipse.sirius.ui.business.api.dialect.DialectUIManager;
 import org.eclipse.sirius.ui.business.api.dialect.ExportFormat;
 import org.eclipse.sirius.ui.tools.api.actions.export.SizeTooLargeException;
@@ -25,7 +27,9 @@ import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.obeonetwork.m2doc.element.MImage;
+import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
+import org.obeonetwork.m2doc.sirius.providers.tables.DMTable;
 
 /**
  * AQL Services for Sirius representations.
@@ -74,7 +78,7 @@ public class M2DocSiriusServices {
         final boolean result;
 
         if (representationDescriptionName != null) {
-            result = SiriusDiagramUtils.getAssociatedRepresentationByDiagramDescriptionAndName(eObject,
+            result = SiriusRepresentationUtils.getAssociatedRepresentationByDescriptionAndName(eObject,
                     representationDescriptionName, session).size() > 0;
         } else {
             result = false;
@@ -96,7 +100,7 @@ public class M2DocSiriusServices {
         final boolean result;
 
         if (representationName != null) {
-            result = SiriusDiagramUtils.getAssociatedRepresentationByName(representationName, session) != null;
+            result = SiriusRepresentationUtils.getAssociatedRepresentationByName(representationName, session) != null;
         } else {
             result = false;
         }
@@ -125,6 +129,17 @@ public class M2DocSiriusServices {
         res = new MImageImpl(URI.createFileURI(tmpFile.getAbsolutePath()));
 
         return res;
+    }
+
+    /**
+     * Gets the {@link MTable} from the given {@link DTable}.
+     * 
+     * @param table
+     *            the {@link DTable}
+     * @return the {@link MTable} from the given {@link DTable}
+     */
+    public MTable asTable(DTable table) {
+        return new DMTable(table);
     }
 
     /**
@@ -171,6 +186,49 @@ public class M2DocSiriusServices {
     }
 
     /**
+     * Gets the {@link List} of {@link MTable} for the given {@link EObject} and {@link RepresentationDescription#getName()
+     * representation
+     * description name}
+     * .
+     * 
+     * @param eObj
+     *            the {@link EObject}
+     * @param descriptionName
+     *            the {@link RepresentationDescription#getName() description name}
+     * @return the {@link List} of {@link MImage} for the given {@link EObject} and {@link RepresentationDescription#getName()
+     *         representation
+     *         description
+     *         name}
+     * @throws SizeTooLargeException
+     *             if the image is too large in memory
+     * @throws IOException
+     *             if the image can't be serialized
+     */
+    public List<MTable> asTableByRepresentationDescriptionName(EObject eObj, String descriptionName)
+            throws SizeTooLargeException, IOException {
+        final List<MTable> res = new ArrayList<MTable>();
+
+        final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
+                .getRepresentationDescriptors(eObj, session);
+        // Filter representations to keep only those in a selected viewpoint
+        final Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
+
+        for (DRepresentationDescriptor repDesc : repDescs) {
+            boolean isDangling = new DRepresentationDescriptorQuery(repDesc).isDangling();
+            if (!isDangling && repDesc.getDescription() instanceof TableDescription
+                && descriptionName.equals(repDesc.getDescription().getName())
+                && repDesc.getDescription().eContainer() instanceof Viewpoint) {
+                Viewpoint vp = (Viewpoint) repDesc.getDescription().eContainer();
+                if (selectedViewpoints.contains(vp)) {
+                    res.add(asTable((DTable) repDesc.getRepresentation()));
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /**
      * Gets the {@link MImage} for the given {@link DRepresentation#getName() representation name}.
      * 
      * @param representationName
@@ -184,10 +242,31 @@ public class M2DocSiriusServices {
     public MImage asImageByRepresentationName(String representationName) throws SizeTooLargeException, IOException {
         final MImage res;
 
-        final DRepresentationDescriptor description = SiriusDiagramUtils
+        final DRepresentationDescriptor description = SiriusRepresentationUtils
                 .getAssociatedRepresentationByName(representationName, session);
         if (description != null) {
             res = asImage(description.getRepresentation());
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link MTable} for the given {@link DRepresentation#getName() representation name}.
+     * 
+     * @param representationName
+     *            the {@link DRepresentation#getName() representation name}
+     * @return the {@link MTable} for the given {@link EObject} and {@link DRepresentation#getName() representation name}
+     */
+    public MTable asTableByRepresentationName(String representationName) {
+        final MTable res;
+
+        final DRepresentationDescriptor description = SiriusRepresentationUtils
+                .getAssociatedRepresentationByName(representationName, session);
+        if (description != null && description.getRepresentation() instanceof DTable) {
+            res = asTable((DTable) description.getRepresentation());
         } else {
             res = null;
         }

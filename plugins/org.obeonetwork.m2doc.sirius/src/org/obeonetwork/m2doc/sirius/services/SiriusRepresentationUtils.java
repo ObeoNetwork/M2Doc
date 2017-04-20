@@ -25,7 +25,6 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionStatus;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.business.api.query.DDiagramQuery;
-import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.ui.internal.refresh.SiriusDiagramSessionEventBroker;
 import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
@@ -53,42 +52,42 @@ import org.obeonetwork.m2doc.sirius.session.CleaningJobRegistry;
  * 
  * @author Romain Guider
  */
-public final class SiriusDiagramUtils {
+public final class SiriusRepresentationUtils {
 
     /**
      * Constructor.
      */
-    private SiriusDiagramUtils() {
+    private SiriusRepresentationUtils() {
         // nothing to do here
     }
 
     /**
-     * Retrieve all representations whose target is the specified EObject and diagram description the given one.
+     * Retrieve all representations whose target is the specified EObject and description the given one.
      * 
      * @param targetRootObject
      *            Object which is the target of the representations.
-     * @param diagramId
+     * @param representationId
      *            the diagram description from which we want to retrieve representations.
      * @param session
      *            the Sirius session from which we want to find the representation with the given name.
      * @return all representations whose target is the specified EObject
      */
-    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDiagramDescriptionAndName(
-            EObject targetRootObject, String diagramId, Session session) {
-        return getAssociatedRepresentationByDiagramDescriptionAndName(null, targetRootObject, diagramId, session,
+    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDescriptionAndName(
+            EObject targetRootObject, String representationId, Session session) {
+        return getAssociatedRepresentationByDescriptionAndName(null, targetRootObject, representationId, session,
                 false);
     }
 
     /**
-     * Retrieve all representations whose target is the specified EObject and diagram description the given one. If no representation is
+     * Retrieve all representations whose target is the specified EObject and description the given one. If no representation is
      * found and createIfAbsent is <code>true</code> the create the representation.
      * 
      * @param generation
      *            the generation configuration object this generation has been launched on.
      * @param targetRootObject
      *            Object which is the target of the representations.
-     * @param diagramId
-     *            the diagram description from which we want to retrieve representations.
+     * @param representationId
+     *            the description from which we want to retrieve representations.
      * @param session
      *            the Sirius session from which we want to find the representation with the given name.
      * @param createIfAbsent
@@ -96,11 +95,10 @@ public final class SiriusDiagramUtils {
      *            doc generation.
      * @return all representations whose target is the specified EObject
      */
-    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDiagramDescriptionAndName(
-            Generation generation, EObject targetRootObject, String diagramId, Session session,
-            boolean createIfAbsent) {
+    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDescriptionAndName(Generation generation,
+            EObject targetRootObject, String representationId, Session session, boolean createIfAbsent) {
         List<DRepresentationDescriptor> result = new ArrayList<>();
-        if (diagramId != null && targetRootObject != null && session != null) {
+        if (representationId != null && targetRootObject != null && session != null) {
             Collection<DRepresentationDescriptor> representations = DialectManager.INSTANCE
                     .getRepresentationDescriptors(targetRootObject, session);
             // Filter representations to keep only those in a selected viewpoint
@@ -108,8 +106,7 @@ public final class SiriusDiagramUtils {
 
             for (DRepresentationDescriptor representation : representations) {
                 boolean isDangling = new DRepresentationDescriptorQuery(representation).isDangling();
-                if (!isDangling && representation.getDescription() instanceof DiagramDescription
-                    && diagramId.equals(representation.getDescription().getName())
+                if (!isDangling && representationId.equals(representation.getDescription().getName())
                     && representation.getDescription().eContainer() instanceof Viewpoint) {
                     Viewpoint vp = (Viewpoint) representation.getDescription().eContainer();
                     if (selectedViewpoints.contains(vp)) {
@@ -119,13 +116,12 @@ public final class SiriusDiagramUtils {
             }
         }
         if (generation != null && result.isEmpty() && createIfAbsent) {
-            RepresentationDescription description = findDiagramDescription(session, diagramId);
+            RepresentationDescription description = findDescription(session, representationId);
             session.getTransactionalEditingDomain().getCommandStack().execute(new CreateRepresentationCommand(session,
-                    description, targetRootObject, diagramId, new NullProgressMonitor()));
+                    description, targetRootObject, representationId, new NullProgressMonitor()));
             for (DRepresentationDescriptor representation : DialectManager.INSTANCE
                     .getRepresentationDescriptors(targetRootObject, session)) {
-                if (representation != null && representation.getDescription() instanceof DiagramDescription
-                    && representation.getDescription() == description) {
+                if (representation != null && representation.getDescription() == description) {
                     CleaningJobRegistry.INSTANCE.registerJob(generation,
                             new CleaningAIRDJob(targetRootObject, session, representation));
                     result = Lists.newArrayList(representation);
@@ -157,7 +153,6 @@ public final class SiriusDiagramUtils {
             for (DRepresentationDescriptor representation : representations) {
                 boolean isDangling = new DRepresentationDescriptorQuery(representation).isDangling();
                 if (!isDangling && representation != null && representationName.equals(representation.getName())
-                    && representation.getDescription() instanceof DiagramDescription
                     && representation.getDescription().eContainer() instanceof Viewpoint) {
                     Viewpoint vp = (Viewpoint) representation.getDescription().eContainer();
                     if (selectedViewpoints.contains(vp)) {
@@ -171,23 +166,23 @@ public final class SiriusDiagramUtils {
     }
 
     /**
-     * Gets the {@link RepresentationDescription} with the given {@link RepresentationDescription#getName() diagram description name}.
+     * Gets the {@link RepresentationDescription} with the given {@link RepresentationDescription#getName() description name}.
      * 
      * @param session
      *            the {@link Session}
-     * @param diagramDescriptionName
-     *            the {@link RepresentationDescription#getName() diagram description name}
-     * @return the {@link RepresentationDescription} with the given {@link RepresentationDescription#getName() diagram description name} if
+     * @param descriptionName
+     *            the {@link RepresentationDescription#getName() description name}
+     * @return the {@link RepresentationDescription} with the given {@link RepresentationDescription#getName() description name} if
      *         any found, <code>null</code> otherwise
      * @throws ProviderException
      *             if the specified representation doesn't exist.
      */
-    public static RepresentationDescription findDiagramDescription(Session session, String diagramDescriptionName) {
+    public static RepresentationDescription findDescription(Session session, String descriptionName) {
         Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
         for (Viewpoint viewpoint : selectedViewpoints) {
             EList<RepresentationDescription> ownedRepresentations = viewpoint.getOwnedRepresentations();
             for (RepresentationDescription representationDescription : ownedRepresentations) {
-                if (diagramDescriptionName.equals(representationDescription.getName())) {
+                if (descriptionName.equals(representationDescription.getName())) {
                     return representationDescription;
                 }
             }
@@ -218,7 +213,7 @@ public final class SiriusDiagramUtils {
      *            the project root path from which document generation has been launched.
      * @return Full path starting from root folder
      */
-    private static String getDiagramImageFilename(DDiagram diagram, ImageFileFormat format, String rootPath) {
+    private static String getDiagramImageFileName(DDiagram diagram, ImageFileFormat format, String rootPath) {
         return rootPath + "/.generated/images/representations/diagram_"
             + sanitizeFilename(diagram.eResource().getURIFragment(diagram)) + "." + format.getName();
     }
@@ -320,7 +315,7 @@ public final class SiriusDiagramUtils {
                 final DDiagram diagramtoExport = getDDiagramToExport(dsd, refreshRepresentations, layers, session,
                         getEditor(session, dsd) != null);
                 final ImageFileFormat format = ImageFileFormat.JPG;
-                String filePath = getDiagramImageFilename(diagramtoExport, format, rootPath);
+                String filePath = getDiagramImageFileName(diagramtoExport, format, rootPath);
                 File file = new File(filePath);
                 file.getParentFile().mkdirs();
                 final IPath path = new Path(filePath);

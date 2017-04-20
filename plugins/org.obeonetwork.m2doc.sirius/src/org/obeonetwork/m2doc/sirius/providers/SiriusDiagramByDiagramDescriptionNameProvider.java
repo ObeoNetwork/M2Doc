@@ -32,7 +32,7 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
-import org.obeonetwork.m2doc.sirius.services.SiriusDiagramUtils;
+import org.obeonetwork.m2doc.sirius.services.SiriusRepresentationUtils;
 import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
@@ -96,17 +96,17 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
             }
             Session session = attachement.get().getSession();
             checkDiagramDescriptionExist(session, (String) diagramDescriptionName);
-            List<DRepresentationDescriptor> representations = SiriusDiagramUtils
-                    .getAssociatedRepresentationByDiagramDescriptionAndName(generation, targetRootEObject,
+            List<DRepresentationDescriptor> representations = SiriusRepresentationUtils
+                    .getAssociatedRepresentationByDescriptionAndName(generation, targetRootEObject,
                             (String) diagramDescriptionName, session, createIfAbsent);
 
             final List<String> result;
             if (!representations.isEmpty() && representations.get(0).getDescription() instanceof DiagramDescription) {
                 DDiagram resolvedDiagram = (DDiagram) representations.get(0).getRepresentation();
-                result = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session, createIfAbsent,
+                result = SiriusRepresentationUtils.generateAndReturnDiagramImages(rootPath, session, createIfAbsent,
                         representations, getLayers(resolvedDiagram, diagramActivatedLayers));
             } else {
-                result = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session, createIfAbsent,
+                result = SiriusRepresentationUtils.generateAndReturnDiagramImages(rootPath, session, createIfAbsent,
                         representations, Lists.<Layer> newArrayList());
             }
 
@@ -126,7 +126,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
      */
     private static void checkDiagramDescriptionExist(Session session, String diagramDescriptionName)
             throws ProviderException {
-        if (SiriusDiagramUtils.findDiagramDescription(session, diagramDescriptionName) == null) {
+        if (SiriusRepresentationUtils.findDescription(session, diagramDescriptionName) == null) {
             throw new ProviderException("The provided diagram description '" + diagramDescriptionName
                 + "' does not exist in the loaded aird");
         }

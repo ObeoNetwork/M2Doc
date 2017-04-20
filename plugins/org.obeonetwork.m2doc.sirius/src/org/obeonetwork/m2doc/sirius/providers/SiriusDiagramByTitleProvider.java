@@ -29,7 +29,7 @@ import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
-import org.obeonetwork.m2doc.sirius.services.SiriusDiagramUtils;
+import org.obeonetwork.m2doc.sirius.services.SiriusRepresentationUtils;
 import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
 /**
@@ -83,13 +83,13 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
                     "Image cannot be computed because no representation title has been provided to the provider \""
                         + this.getClass().getName() + "\"");
         } else {
-            DRepresentationDescriptor representation = SiriusDiagramUtils
+            DRepresentationDescriptor representation = SiriusRepresentationUtils
                     .getAssociatedRepresentationByName((String) representationTitle, session);
             if (representation != null && representation.getDescription() instanceof DiagramDescription) {
                 DDiagram resolvedDiagram = (DDiagram) representation.getRepresentation();
                 List<DRepresentationDescriptor> representations = new ArrayList<>(1);
                 representations.add(representation);
-                List<String> resultList = SiriusDiagramUtils.generateAndReturnDiagramImages(rootPath, session,
+                List<String> resultList = SiriusRepresentationUtils.generateAndReturnDiagramImages(rootPath, session,
                         refreshRepresentations, representations, getLayers(resolvedDiagram, diagramActivatedLayers));
 
                 return resultList;
