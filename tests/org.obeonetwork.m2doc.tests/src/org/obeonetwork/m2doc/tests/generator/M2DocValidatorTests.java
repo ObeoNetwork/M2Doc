@@ -158,10 +158,13 @@ public class M2DocValidatorTests {
         final M2DocValidator validator = new M2DocValidator();
         validator.validate(documentTemplate, queryEnvironment);
 
-        assertEquals(2, image.getValidationMessages().size());
-        assertTemplateValidationMessage(image.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", image.getStyleRun());
+        assertEquals(3, image.getValidationMessages().size());
+        assertTemplateValidationMessage(image.getValidationMessages().get(0), ValidationMessageLevel.WARNING,
+                "Providers are deprecated use services instead:\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/ImageServices.java\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/M2DocSiriusServices.java",
+                image.getStyleRun());
         assertTemplateValidationMessage(image.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
+                "Couldn't find the 'self' variable", image.getStyleRun());
+        assertTemplateValidationMessage(image.getValidationMessages().get(2), ValidationMessageLevel.ERROR,
                 "option variable: error with ...", image.getStyleRun());
     }
 
