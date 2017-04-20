@@ -57,7 +57,6 @@ import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TableClient;
-import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplateFactory;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -126,13 +125,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EClass queryEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass tableMergeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -619,33 +611,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      */
     public EAttribute getQuery_Query() {
         return (EAttribute)queryEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getTableMerge() {
-        return tableMergeEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getTableMerge_Legend() {
-        return (EAttribute)tableMergeEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getTableMerge_Body() {
-        return (EReference)tableMergeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1301,10 +1266,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(queryEClass, QUERY__BEHAVIOR);
         createEAttribute(queryEClass, QUERY__QUERY);
 
-        tableMergeEClass = createEClass(TABLE_MERGE);
-        createEAttribute(tableMergeEClass, TABLE_MERGE__LEGEND);
-        createEReference(tableMergeEClass, TABLE_MERGE__BODY);
-
         imageEClass = createEClass(IMAGE);
         createEAttribute(imageEClass, IMAGE__FILE_NAME);
 
@@ -1427,7 +1388,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         userDocEClass.getESuperTypes().add(this.getStatement());
         userContentEClass.getESuperTypes().add(this.getStatement());
         queryEClass.getESuperTypes().add(this.getStatement());
-        tableMergeEClass.getESuperTypes().add(this.getStatement());
         imageEClass.getESuperTypes().add(this.getAbstractImage());
         blockEClass.getESuperTypes().add(this.getIConstruct());
         statementEClass.getESuperTypes().add(this.getIConstruct());
@@ -1473,10 +1433,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEClass(queryEClass, Query.class, "Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getQuery_Behavior(), this.getQueryBehavior(), "behavior", "TEXT", 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getQuery_Query(), this.getAstResult(), "query", null, 1, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(tableMergeEClass, TableMerge.class, "TableMerge", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getTableMerge_Legend(), ecorePackage.getEString(), "legend", null, 0, 1, TableMerge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getTableMerge_Body(), this.getBlock(), null, "body", null, 1, 1, TableMerge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(imageEClass, Image.class, "Image", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getImage_FileName(), ecorePackage.getEString(), "fileName", null, 0, 1, Image.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1668,12 +1624,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
            new String[] {
              "documentation", "The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
              "syntax", "{m:<aql query>}"
-           });	
-        addAnnotation
-          (getTableMerge_Body(), 
-           source, 
-           new String[] {
-             "documentation", "The {@link Block} of {@link Statement}."
            });	
         addAnnotation
           (getTemplate_Body(), 

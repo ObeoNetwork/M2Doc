@@ -34,7 +34,6 @@ import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
-import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
@@ -133,14 +132,6 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     public Void caseLet(Let let) {
         insertErrorMessages(let);
         doSwitch(let.getBody());
-
-        return null;
-    }
-
-    @Override
-    public Void caseTableMerge(TableMerge tableMerge) {
-        insertErrorMessages(tableMerge);
-        doSwitch(tableMerge.getBody());
 
         return null;
     }

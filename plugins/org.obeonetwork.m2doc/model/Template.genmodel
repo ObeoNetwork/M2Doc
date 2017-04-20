@@ -60,10 +60,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/behavior"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/query"/>
     </genClasses>
-    <genClasses ecoreClass="Template.ecore#//TableMerge">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//TableMerge/legend"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//TableMerge/body"/>
-    </genClasses>
     <genClasses ecoreClass="Template.ecore#//Image">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Image/fileName"/>
     </genClasses>

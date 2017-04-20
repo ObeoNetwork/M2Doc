@@ -146,7 +146,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStatement()
      * @generated
      */
-    int STATEMENT = 10;
+    int STATEMENT = 9;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -704,88 +704,6 @@ public interface TemplatePackage extends EPackage {
     int QUERY_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.TableMergeImpl <em>Table Merge</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.obeonetwork.m2doc.template.impl.TableMergeImpl
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableMerge()
-     * @generated
-     */
-    int TABLE_MERGE = 7;
-
-    /**
-     * The feature id for the '<em><b>Style Run</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE__STYLE_RUN = STATEMENT__STYLE_RUN;
-
-    /**
-     * The feature id for the '<em><b>Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE__RUNS = STATEMENT__RUNS;
-
-    /**
-     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
-
-    /**
-     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
-
-    /**
-     * The feature id for the '<em><b>Legend</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE__LEGEND = STATEMENT_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Body</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE__BODY = STATEMENT_FEATURE_COUNT + 1;
-
-    /**
-     * The number of structural features of the '<em>Table Merge</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
-
-    /**
-     * The number of operations of the '<em>Table Merge</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TABLE_MERGE_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
-
-    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.AbstractProviderClientImpl <em>Abstract Provider Client</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -793,7 +711,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractProviderClient()
      * @generated
      */
-    int ABSTRACT_PROVIDER_CLIENT = 20;
+    int ABSTRACT_PROVIDER_CLIENT = 19;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -875,7 +793,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAbstractImage()
      * @generated
      */
-    int ABSTRACT_IMAGE = 19;
+    int ABSTRACT_IMAGE = 18;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -993,7 +911,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getImage()
      * @generated
      */
-    int IMAGE = 8;
+    int IMAGE = 7;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1120,7 +1038,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBlock()
      * @generated
      */
-    int BLOCK = 9;
+    int BLOCK = 8;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1193,7 +1111,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplate()
      * @generated
      */
-    int TEMPLATE = 11;
+    int TEMPLATE = 10;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1284,7 +1202,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRepresentation()
      * @generated
      */
-    int REPRESENTATION = 12;
+    int REPRESENTATION = 11;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1438,7 +1356,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getStaticFragment()
      * @generated
      */
-    int STATIC_FRAGMENT = 13;
+    int STATIC_FRAGMENT = 12;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1502,7 +1420,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTable()
      * @generated
      */
-    int TABLE = 14;
+    int TABLE = 13;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1584,7 +1502,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRow()
      * @generated
      */
-    int ROW = 15;
+    int ROW = 14;
 
     /**
      * The feature id for the '<em><b>Cells</b></em>' containment reference list.
@@ -1630,7 +1548,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCell()
      * @generated
      */
-    int CELL = 16;
+    int CELL = 15;
 
     /**
      * The feature id for the '<em><b>Template</b></em>' containment reference.
@@ -1676,7 +1594,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocumentTemplate()
      * @generated
      */
-    int DOCUMENT_TEMPLATE = 17;
+    int DOCUMENT_TEMPLATE = 16;
 
     /**
      * The feature id for the '<em><b>Headers</b></em>' containment reference list.
@@ -1758,7 +1676,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOptionValueMap()
      * @generated
      */
-    int OPTION_VALUE_MAP = 18;
+    int OPTION_VALUE_MAP = 17;
 
     /**
      * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -1804,7 +1722,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBookmark()
      * @generated
      */
-    int BOOKMARK = 21;
+    int BOOKMARK = 20;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1886,7 +1804,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLink()
      * @generated
      */
-    int LINK = 22;
+    int LINK = 21;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -1968,7 +1886,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getLet()
      * @generated
      */
-    int LET = 23;
+    int LET = 22;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -2059,7 +1977,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableClient()
      * @generated
      */
-    int TABLE_CLIENT = 24;
+    int TABLE_CLIENT = 23;
 
     /**
      * The feature id for the '<em><b>Style Run</b></em>' attribute.
@@ -2141,7 +2059,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-    int QUERY_BEHAVIOR = 25;
+    int QUERY_BEHAVIOR = 24;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
@@ -2151,7 +2069,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-    int POSITION = 26;
+    int POSITION = 25;
 
     /**
      * The meta object id for the '<em>Input Stream</em>' data type.
@@ -2161,7 +2079,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getInputStream()
      * @generated
      */
-    int INPUT_STREAM = 27;
+    int INPUT_STREAM = 26;
 
     /**
      * The meta object id for the '<em>OPC Package</em>' data type.
@@ -2171,7 +2089,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOPCPackage()
      * @generated
      */
-    int OPC_PACKAGE = 28;
+    int OPC_PACKAGE = 27;
 
     /**
      * The meta object id for the '<em>Document</em>' data type.
@@ -2181,7 +2099,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 29;
+    int DOCUMENT = 28;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -2191,7 +2109,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-    int WTABLE = 30;
+    int WTABLE = 29;
 
     /**
      * The meta object id for the '<em>Run</em>' data type.
@@ -2201,7 +2119,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-    int RUN = 31;
+    int RUN = 30;
 
     /**
      * The meta object id for the '<em>Ast Result</em>' data type.
@@ -2211,7 +2129,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-    int AST_RESULT = 32;
+    int AST_RESULT = 31;
 
     /**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -2221,7 +2139,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 33;
+    int TEMPLATE_VALIDATION_MESSAGE = 32;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -2231,7 +2149,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-    int WTABLE_ROW = 34;
+    int WTABLE_ROW = 33;
 
     /**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -2241,7 +2159,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-    int WTABLE_CELL = 35;
+    int WTABLE_CELL = 34;
 
     /**
      * The meta object id for the '<em>Provider</em>' data type.
@@ -2251,7 +2169,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getProvider()
      * @generated
      */
-    int PROVIDER = 36;
+    int PROVIDER = 35;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -2261,7 +2179,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 37;
+    int BODY = 36;
 
 
     /**
@@ -2520,38 +2438,6 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EAttribute getQuery_Query();
-
-    /**
-     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.TableMerge <em>Table Merge</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Table Merge</em>'.
-     * @see org.obeonetwork.m2doc.template.TableMerge
-     * @generated
-     */
-    EClass getTableMerge();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.TableMerge#getLegend <em>Legend</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Legend</em>'.
-     * @see org.obeonetwork.m2doc.template.TableMerge#getLegend()
-     * @see #getTableMerge()
-     * @generated
-     */
-    EAttribute getTableMerge_Legend();
-
-    /**
-     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.TableMerge#getBody <em>Body</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Body</em>'.
-     * @see org.obeonetwork.m2doc.template.TableMerge#getBody()
-     * @see #getTableMerge()
-     * @generated
-     */
-    EReference getTableMerge_Body();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Image <em>Image</em>}'.
@@ -3490,32 +3376,6 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute QUERY__QUERY = eINSTANCE.getQuery_Query();
-
-        /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.TableMergeImpl <em>Table Merge</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see org.obeonetwork.m2doc.template.impl.TableMergeImpl
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTableMerge()
-         * @generated
-         */
-        EClass TABLE_MERGE = eINSTANCE.getTableMerge();
-
-        /**
-         * The meta object literal for the '<em><b>Legend</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute TABLE_MERGE__LEGEND = eINSTANCE.getTableMerge_Legend();
-
-        /**
-         * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference TABLE_MERGE__BODY = eINSTANCE.getTableMerge_Body();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ImageImpl <em>Image</em>}' class.

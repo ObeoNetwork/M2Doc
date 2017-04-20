@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests.generator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -40,7 +39,6 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
-import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.tests.M2DocTestUtils;
@@ -90,30 +88,6 @@ public class M2DocValidatorTests {
         assertTemplateValidationMessage(alternative.getValidationMessages().get(0), ValidationMessageLevel.INFO,
                 "Always true:\nNothing inferred when self (EClassifier=EPackage) is not kind of EClassifierLiteral=EPackage",
                 alternative.getRuns().get(1));
-    }
-
-    @Test
-    public void tableMergeSubConstruct() throws IOException {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
-        query.setQuery(engine.build("self"));
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        final TableMerge tableMerge = TemplatePackage.eINSTANCE.getTemplateFactory().createTableMerge();
-        final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
-        tableMerge.setBody(body);
-        tableMerge.getBody().getStatements().add(query);
-        template.getBody().getStatements().add(query);
-        @SuppressWarnings("resource")
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final M2DocValidator validator = new M2DocValidator();
-        validator.validate(documentTemplate, queryEnvironment);
-
-        assertEquals(1, query.getValidationMessages().size());
-        assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", query.getStyleRun());
     }
 
     @Test

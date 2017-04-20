@@ -92,15 +92,6 @@
         defaultValueLiteral="TEXT"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="#//AstResult"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TableMerge" eSuperTypes="#//Statement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legend" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Block"
-        containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-        <details key="documentation" value="The {@link Block} of {@link Statement}."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//AbstractImage">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

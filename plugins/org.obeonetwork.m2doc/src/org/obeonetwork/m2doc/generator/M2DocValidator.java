@@ -76,7 +76,6 @@ import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
-import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
@@ -530,11 +529,6 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         }
 
         return res;
-    }
-
-    @Override
-    public ValidationMessageLevel caseTableMerge(TableMerge tableMerge) {
-        return doSwitch(tableMerge.getBody());
     }
 
     @Override

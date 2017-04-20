@@ -91,15 +91,6 @@ public interface TemplateFactory extends EFactory {
     Query createQuery();
 
     /**
-     * Returns a new object of class '<em>Table Merge</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Table Merge</em>'.
-     * @generated
-     */
-    TableMerge createTableMerge();
-
-    /**
      * Returns a new object of class '<em>Image</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
