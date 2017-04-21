@@ -64,7 +64,6 @@ import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.POSITION;
 import org.obeonetwork.m2doc.template.Query;
-import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.TableClient;
@@ -85,18 +84,6 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
  */
 public class M2DocParser extends BodyAbstractParser {
 
-    /**
-     * Label modifier constant.
-     */
-    private static final String LABEL_MODIFIER = " label";
-    /**
-     * Icon modifier constant.
-     */
-    private static final String ICON_MODIFIER = " icon";
-    /**
-     * text modifier constant.
-     */
-    private static final String TEXT_MODIFIER = " text";
     /**
      * Image file name option name.
      */
@@ -401,19 +388,9 @@ public class M2DocParser extends BodyAbstractParser {
      *             if a problem occurs while parsing.
      */
     private Query parseQuery() throws DocumentParserException {
-        Query query = (Query) EcoreUtil.create(TemplatePackage.Literals.QUERY);
-        String queryText = readTag(query, query.getRuns()).trim().substring(TokenType.AQL.getValue().length());
-        int tagLength = queryText.length();
-        if (queryText.endsWith(LABEL_MODIFIER)) {
-            queryText = queryText.substring(0, tagLength - LABEL_MODIFIER.length());
-            query.setBehavior(QueryBehavior.LABEL);
-        } else if (queryText.endsWith(ICON_MODIFIER)) {
-            queryText = queryText.substring(0, tagLength - ICON_MODIFIER.length());
-            query.setBehavior(QueryBehavior.ICON);
-        } else if (queryText.endsWith(TEXT_MODIFIER)) {
-            queryText = queryText.substring(0, tagLength - TEXT_MODIFIER.length());
-        }
-        queryText = queryText.trim();
+        final Query query = (Query) EcoreUtil.create(TemplatePackage.Literals.QUERY);
+        final String queryText = readTag(query, query.getRuns()).trim().substring(TokenType.AQL.getValue().length())
+                .trim();
         final AstResult result = queryParser.build(queryText);
         query.setQuery(result);
         if (!result.getErrors().isEmpty()) {

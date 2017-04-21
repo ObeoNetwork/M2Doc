@@ -7,7 +7,7 @@ template null
   
   for v | self do
      name = 
-    [query: .aqlFeatureAccess(v, 'name') | TEXT]
+    [query: .aqlFeatureAccess(v, 'name')]
     ,
   endfor
   

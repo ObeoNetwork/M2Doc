@@ -7,7 +7,7 @@ template null
   
   let v = ***ERROR***.aqlFeatureAccess(self) in
      name = 
-    [query: v | TEXT]
+    [query: v]
     ,
   endfor
   

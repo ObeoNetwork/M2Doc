@@ -5,7 +5,7 @@ template null
 === BODY ===
 template null
   This demonstrate the simple usage of asTableByRepresentationDescriptionName service :
-  [query: ->first(.asTableByRepresentationDescriptionName(self, 'Names')) | TEXT]
+  [query: ->first(.asTableByRepresentationDescriptionName(self, 'Names'))]
   End of demonstration.
 === FOOTER ===
 template null

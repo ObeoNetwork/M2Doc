@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 
 import org.obeonetwork.m2doc.template.Query;
-import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
 /**
@@ -45,7 +44,6 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getRuns <em>Runs</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getClosingRuns <em>Closing Runs</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getValidationMessages <em>Validation Messages</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getBehavior <em>Behavior</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getQuery <em>Query</em>}</li>
  * </ul>
  *
@@ -108,26 +106,6 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * @ordered
      */
     protected EList<TemplateValidationMessage> validationMessages;
-
-    /**
-     * The default value of the '{@link #getBehavior() <em>Behavior</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getBehavior()
-     * @generated
-     * @ordered
-     */
-    protected static final QueryBehavior BEHAVIOR_EDEFAULT = QueryBehavior.TEXT;
-
-    /**
-     * The cached value of the '{@link #getBehavior() <em>Behavior</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getBehavior()
-     * @generated
-     * @ordered
-     */
-    protected QueryBehavior behavior = BEHAVIOR_EDEFAULT;
 
     /**
      * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
@@ -230,27 +208,6 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * <!-- end-user-doc -->
      * @generated
      */
-    public QueryBehavior getBehavior() {
-        return behavior;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setBehavior(QueryBehavior newBehavior) {
-        QueryBehavior oldBehavior = behavior;
-        behavior = newBehavior == null ? BEHAVIOR_EDEFAULT : newBehavior;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.QUERY__BEHAVIOR, oldBehavior, behavior));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public AstResult getQuery() {
         return query;
     }
@@ -283,8 +240,6 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
                 return getClosingRuns();
             case TemplatePackage.QUERY__VALIDATION_MESSAGES:
                 return getValidationMessages();
-            case TemplatePackage.QUERY__BEHAVIOR:
-                return getBehavior();
             case TemplatePackage.QUERY__QUERY:
                 return getQuery();
         }
@@ -315,9 +270,6 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
                 getValidationMessages().clear();
                 getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>)newValue);
                 return;
-            case TemplatePackage.QUERY__BEHAVIOR:
-                setBehavior((QueryBehavior)newValue);
-                return;
             case TemplatePackage.QUERY__QUERY:
                 setQuery((AstResult)newValue);
                 return;
@@ -345,9 +297,6 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
             case TemplatePackage.QUERY__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 return;
-            case TemplatePackage.QUERY__BEHAVIOR:
-                setBehavior(BEHAVIOR_EDEFAULT);
-                return;
             case TemplatePackage.QUERY__QUERY:
                 setQuery(QUERY_EDEFAULT);
                 return;
@@ -371,8 +320,6 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
                 return closingRuns != null && !closingRuns.isEmpty();
             case TemplatePackage.QUERY__VALIDATION_MESSAGES:
                 return validationMessages != null && !validationMessages.isEmpty();
-            case TemplatePackage.QUERY__BEHAVIOR:
-                return behavior != BEHAVIOR_EDEFAULT;
             case TemplatePackage.QUERY__QUERY:
                 return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
         }
@@ -397,8 +344,6 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
         result.append(closingRuns);
         result.append(", validationMessages: ");
         result.append(validationMessages);
-        result.append(", behavior: ");
-        result.append(behavior);
         result.append(", query: ");
         result.append(query);
         result.append(')');

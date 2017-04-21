@@ -4,6 +4,6 @@
 === BODY ===
 template null
   Checks ImageServices registration :
-  [query: Sequence{.setWidth(.asImage('dh1.gif'), 50), .setWidth(.asImage('dh1.gif'), 50), .setWidth(.asImage('dh1.gif'), 50)} | TEXT]
+  [query: Sequence{.setWidth(.asImage('dh1.gif'), 50), .setWidth(.asImage('dh1.gif'), 50), .setWidth(.asImage('dh1.gif'), 50)}]
   End of demonstration.
 === FOOTER ===

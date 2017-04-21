@@ -4,6 +4,6 @@
 === BODY ===
 template null
   Checks BooleanServices registration :
-  [query: .check(false) | TEXT]
+  [query: .check(false)]
   End of demonstration.
 === FOOTER ===

@@ -57,7 +57,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//UserContent/body"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Query">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/behavior"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/query"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Image">

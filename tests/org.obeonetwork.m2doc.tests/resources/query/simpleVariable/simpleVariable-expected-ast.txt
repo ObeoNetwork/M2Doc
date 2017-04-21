@@ -4,6 +4,6 @@
 === BODY ===
 template null
   A simple demonstration of a simple variable query :
-  [query: x | TEXT]
+  [query: x]
   End of demonstration.
 === FOOTER ===

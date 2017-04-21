@@ -88,8 +88,6 @@
       <details key="documentation" value="The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about &lt;a href=&quot;https://www.eclipse.org/acceleo/documentation/aql.html&quot;>Acceleo Query Language&lt;/a>."/>
       <details key="syntax" value="{m:&lt;aql query>}"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="behavior" eType="#//QueryBehavior"
-        defaultValueLiteral="TEXT"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="#//AstResult"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//AbstractImage">

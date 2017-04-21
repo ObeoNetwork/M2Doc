@@ -7,5 +7,5 @@ template null
 === FOOTER ===
 template null
   A simple demonstration of a query :
-  [query: .sampleTable('') | TEXT]
+  [query: .sampleTable('')]
   End of demonstration.

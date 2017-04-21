@@ -4,6 +4,6 @@
 === BODY ===
 template null
   Checks ImageServices registration :
-  [query: .asImage('dh1.gif') | TEXT]
+  [query: .asImage('dh1.gif')]
   End of demonstration.
 === FOOTER ===

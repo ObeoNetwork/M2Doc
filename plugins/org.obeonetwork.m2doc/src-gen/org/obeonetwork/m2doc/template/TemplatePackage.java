@@ -668,22 +668,13 @@ public interface TemplatePackage extends EPackage {
     int QUERY__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
-     * The feature id for the '<em><b>Behavior</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int QUERY__BEHAVIOR = STATEMENT_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>Query</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int QUERY__QUERY = STATEMENT_FEATURE_COUNT + 1;
+    int QUERY__QUERY = STATEMENT_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Query</em>' class.
@@ -692,7 +683,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int QUERY_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
+    int QUERY_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Query</em>' class.
@@ -2418,17 +2409,6 @@ public interface TemplatePackage extends EPackage {
     EClass getQuery();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Query#getBehavior <em>Behavior</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Behavior</em>'.
-     * @see org.obeonetwork.m2doc.template.Query#getBehavior()
-     * @see #getQuery()
-     * @generated
-     */
-    EAttribute getQuery_Behavior();
-
-    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Query#getQuery <em>Query</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3360,14 +3340,6 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EClass QUERY = eINSTANCE.getQuery();
-
-        /**
-         * The meta object literal for the '<em><b>Behavior</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute QUERY__BEHAVIOR = eINSTANCE.getQuery_Behavior();
 
         /**
          * The meta object literal for the '<em><b>Query</b></em>' attribute feature.

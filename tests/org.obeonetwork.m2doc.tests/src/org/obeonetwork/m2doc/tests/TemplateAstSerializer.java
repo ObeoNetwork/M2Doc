@@ -411,8 +411,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
 
     @Override
     public Void caseQuery(Query query) {
-        builder.append(String.format("[query: %s | %s]", querySerializer.serialize(query.getQuery().getAst()),
-                query.getBehavior()));
+        builder.append(String.format("[query: %s]", querySerializer.serialize(query.getQuery().getAst())));
 
         return null;
     }

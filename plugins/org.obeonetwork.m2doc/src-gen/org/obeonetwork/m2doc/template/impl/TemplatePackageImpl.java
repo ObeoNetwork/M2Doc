@@ -600,17 +600,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getQuery_Behavior() {
-        return (EAttribute)queryEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EAttribute getQuery_Query() {
-        return (EAttribute)queryEClass.getEStructuralFeatures().get(1);
+        return (EAttribute)queryEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1263,7 +1254,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEReference(userContentEClass, USER_CONTENT__BODY);
 
         queryEClass = createEClass(QUERY);
-        createEAttribute(queryEClass, QUERY__BEHAVIOR);
         createEAttribute(queryEClass, QUERY__QUERY);
 
         imageEClass = createEClass(IMAGE);
@@ -1431,7 +1421,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEReference(getUserContent_Body(), this.getBlock(), null, "body", null, 1, 1, UserContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(queryEClass, Query.class, "Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getQuery_Behavior(), this.getQueryBehavior(), "behavior", "TEXT", 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getQuery_Query(), this.getAstResult(), "query", null, 1, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(imageEClass, Image.class, "Image", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

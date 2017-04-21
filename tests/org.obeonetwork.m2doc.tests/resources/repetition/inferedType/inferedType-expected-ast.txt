@@ -6,7 +6,7 @@ template null
   Basic for demonstration : 
   
   for v | .aqlFeatureAccess(self, 'eClassifiers') do
-    [query: .oclIsKindOf(v, EClassifier) | TEXT]
+    [query: .oclIsKindOf(v, EClassifier)]
   endfor
   
   End of demonstration.
