@@ -59,17 +59,5 @@
             </command>
          </menu>
       </menuContribution>
-      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="org.obeonetwork.m2doc.sirius.toolbars.sampleToolbar">
-            <command
-                  commandId="org.obeonetwork.m2doc.sirius.commands.sampleCommand"
-                  icon="icons/m2doc.gif"
-                  id="org.obeonetwork.m2doc.sirius.toolbars.sampleCommand"
-                  tooltip="Say hello world">
-            </command>
-         </toolbar>
-      </menuContribution>
    </extension>
 </plugin>
