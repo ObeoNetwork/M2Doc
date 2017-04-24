@@ -2,6 +2,6 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a query :End of demonstration.
 === FOOTER ===

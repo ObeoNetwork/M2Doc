@@ -663,7 +663,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getTemplate_TemplateName() {
+    public EAttribute getTemplate_XWPFBody() {
         return (EAttribute)templateEClass.getEStructuralFeatures().get(0);
     }
 
@@ -672,17 +672,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getTemplate_XWPFBody() {
-        return (EAttribute)templateEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EReference getTemplate_Body() {
-        return (EReference)templateEClass.getEStructuralFeatures().get(2);
+        return (EReference)templateEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1265,7 +1256,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         statementEClass = createEClass(STATEMENT);
 
         templateEClass = createEClass(TEMPLATE);
-        createEAttribute(templateEClass, TEMPLATE__TEMPLATE_NAME);
         createEAttribute(templateEClass, TEMPLATE__XWPF_BODY);
         createEReference(templateEClass, TEMPLATE__BODY);
 
@@ -1432,7 +1422,6 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEClass(statementEClass, Statement.class, "Statement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getTemplate_TemplateName(), ecorePackage.getEString(), "templateName", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getTemplate_XWPFBody(), this.getBody(), "XWPFBody", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getTemplate_Body(), this.getBlock(), null, "body", null, 1, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

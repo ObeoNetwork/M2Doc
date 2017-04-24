@@ -2,12 +2,12 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a query :
   [query: .aqlFeatureAccess(self, 'name')]
   End of demonstration.
 === FOOTER ===
-template null
+template
   A simple demonstration of a query in footer :
   [query: .aqlFeatureAccess(self, 'name')]
   End of demonstration.

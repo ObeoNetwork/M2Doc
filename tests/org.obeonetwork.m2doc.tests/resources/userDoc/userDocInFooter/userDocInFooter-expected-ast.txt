@@ -2,10 +2,10 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a user doc :End of demonstration.
 === FOOTER ===
-template null
+template
   
   userdoc 'zone1' do
     

@@ -100,7 +100,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="Statement" abstract="true" interface="true"
       eSuperTypes="#//IConstruct"/>
   <eClassifiers xsi:type="ecore:EClass" name="Template" eSuperTypes="#//IConstruct">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="templateName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="XWPFBody" eType="#//Body"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Block"
         containment="true">

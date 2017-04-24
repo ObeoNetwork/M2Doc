@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Invalid start tag : 
   [query: fr]
   name = 

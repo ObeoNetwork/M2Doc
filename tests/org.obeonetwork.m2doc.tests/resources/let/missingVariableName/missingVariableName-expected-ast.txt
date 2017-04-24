@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Basic let demonstration :
   
   let null = .aqlFeatureAccess(self, 'name') in

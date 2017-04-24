@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Basic for demonstration : 
   
   for v | self do

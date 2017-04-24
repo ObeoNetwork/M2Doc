@@ -46,7 +46,6 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getRuns <em>Runs</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getClosingRuns <em>Closing Runs</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getValidationMessages <em>Validation Messages</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getTemplateName <em>Template Name</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getXWPFBody <em>XWPF Body</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getBody <em>Body</em>}</li>
  * </ul>
@@ -110,26 +109,6 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * @ordered
      */
     protected EList<TemplateValidationMessage> validationMessages;
-
-    /**
-     * The default value of the '{@link #getTemplateName() <em>Template Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getTemplateName()
-     * @generated
-     * @ordered
-     */
-    protected static final String TEMPLATE_NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getTemplateName() <em>Template Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getTemplateName()
-     * @generated
-     * @ordered
-     */
-    protected String templateName = TEMPLATE_NAME_EDEFAULT;
 
     /**
      * The default value of the '{@link #getXWPFBody() <em>XWPF Body</em>}' attribute.
@@ -242,27 +221,6 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setTemplateName(String newTemplateName) {
-        String oldTemplateName = templateName;
-        templateName = newTemplateName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__TEMPLATE_NAME, oldTemplateName, templateName));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public IBody getXWPFBody() {
         return xwpfBody;
     }
@@ -352,8 +310,6 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 return getClosingRuns();
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 return getValidationMessages();
-            case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
-                return getTemplateName();
             case TemplatePackage.TEMPLATE__XWPF_BODY:
                 return getXWPFBody();
             case TemplatePackage.TEMPLATE__BODY:
@@ -386,9 +342,6 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 getValidationMessages().clear();
                 getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>)newValue);
                 return;
-            case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
-                setTemplateName((String)newValue);
-                return;
             case TemplatePackage.TEMPLATE__XWPF_BODY:
                 setXWPFBody((IBody)newValue);
                 return;
@@ -419,9 +372,6 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 return;
-            case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
-                setTemplateName(TEMPLATE_NAME_EDEFAULT);
-                return;
             case TemplatePackage.TEMPLATE__XWPF_BODY:
                 setXWPFBody(XWPF_BODY_EDEFAULT);
                 return;
@@ -448,8 +398,6 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 return closingRuns != null && !closingRuns.isEmpty();
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 return validationMessages != null && !validationMessages.isEmpty();
-            case TemplatePackage.TEMPLATE__TEMPLATE_NAME:
-                return TEMPLATE_NAME_EDEFAULT == null ? templateName != null : !TEMPLATE_NAME_EDEFAULT.equals(templateName);
             case TemplatePackage.TEMPLATE__XWPF_BODY:
                 return XWPF_BODY_EDEFAULT == null ? xwpfBody != null : !XWPF_BODY_EDEFAULT.equals(xwpfBody);
             case TemplatePackage.TEMPLATE__BODY:
@@ -476,8 +424,6 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
         result.append(closingRuns);
         result.append(", validationMessages: ");
         result.append(validationMessages);
-        result.append(", templateName: ");
-        result.append(templateName);
         result.append(", XWPFBody: ");
         result.append(xwpfBody);
         result.append(')');

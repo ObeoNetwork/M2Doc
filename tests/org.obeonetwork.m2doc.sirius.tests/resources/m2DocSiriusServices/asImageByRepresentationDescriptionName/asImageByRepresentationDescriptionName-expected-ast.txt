@@ -1,12 +1,12 @@
 
 === HEADER ===
-template null
+template
   
 === BODY ===
-template null
+template
   This demonstrate the simple usage of isRepresentationDescriptionName service :
   [query: ->first(.asImageByRepresentationDescriptionName(self, 'Entities'))]
   End of demonstration.
 === FOOTER ===
-template null
+template
   

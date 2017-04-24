@@ -67,7 +67,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="Template.ecore#//Statement"/>
     <genClasses ecoreClass="Template.ecore#//Template">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Template/templateName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Template/XWPFBody"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference Template.ecore#//Template/body"/>
     </genClasses>

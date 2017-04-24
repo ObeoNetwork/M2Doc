@@ -1,11 +1,11 @@
 
 === HEADER ===
-template null
+template
   A simple demonstration of a query in header :
   [query: .aqlFeatureAccess(self, 'name')]
   End of demonstration.
 === BODY ===
-template null
+template
   A simple demonstration of a query :
   [query: .aqlFeatureAccess(self, 'name')]
   End of demonstration.

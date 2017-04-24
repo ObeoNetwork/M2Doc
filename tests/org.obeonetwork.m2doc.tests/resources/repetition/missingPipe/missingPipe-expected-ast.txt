@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Missing pipe arter variable name :
   
   for null | ***ERROR*** do

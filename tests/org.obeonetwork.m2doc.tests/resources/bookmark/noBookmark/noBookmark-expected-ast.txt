@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Test link without bookmark : 
   
   link 'bookmark1' 'a reference to bookmark1' endlink

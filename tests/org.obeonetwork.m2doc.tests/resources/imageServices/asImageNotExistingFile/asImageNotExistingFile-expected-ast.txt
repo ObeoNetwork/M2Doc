@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Checks ImageServices registration :
   [query: .asImage('dh1.gif')]
   End of demonstration.

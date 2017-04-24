@@ -1,16 +1,16 @@
 
 === HEADER ===
-template null
-  template null
-  template null
+template
+  template
+  template
   A simple demonstration of a query :
   [query: Sequence{.sampleTable(''), .sampleTable(''), .sampleTable('')}]
   End of demonstration.
 === BODY ===
-template null
+template
   
 === FOOTER ===
-template null
-  template null
-  template null
+template
+  template
+  template
   

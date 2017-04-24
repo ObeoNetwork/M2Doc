@@ -1141,22 +1141,13 @@ public interface TemplatePackage extends EPackage {
     int TEMPLATE__VALIDATION_MESSAGES = ICONSTRUCT__VALIDATION_MESSAGES;
 
     /**
-     * The feature id for the '<em><b>Template Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int TEMPLATE__TEMPLATE_NAME = ICONSTRUCT_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>XWPF Body</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int TEMPLATE__XWPF_BODY = ICONSTRUCT_FEATURE_COUNT + 1;
+    int TEMPLATE__XWPF_BODY = ICONSTRUCT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1165,7 +1156,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEMPLATE__BODY = ICONSTRUCT_FEATURE_COUNT + 2;
+    int TEMPLATE__BODY = ICONSTRUCT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Template</em>' class.
@@ -1174,7 +1165,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEMPLATE_FEATURE_COUNT = ICONSTRUCT_FEATURE_COUNT + 3;
+    int TEMPLATE_FEATURE_COUNT = ICONSTRUCT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Template</em>' class.
@@ -2482,17 +2473,6 @@ public interface TemplatePackage extends EPackage {
     EClass getTemplate();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getTemplateName <em>Template Name</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Template Name</em>'.
-     * @see org.obeonetwork.m2doc.template.Template#getTemplateName()
-     * @see #getTemplate()
-     * @generated
-     */
-    EAttribute getTemplate_TemplateName();
-
-    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getXWPFBody <em>XWPF Body</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3404,14 +3384,6 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EClass TEMPLATE = eINSTANCE.getTemplate();
-
-        /**
-         * The meta object literal for the '<em><b>Template Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute TEMPLATE__TEMPLATE_NAME = eINSTANCE.getTemplate_TemplateName();
 
         /**
          * The meta object literal for the '<em><b>XWPF Body</b></em>' attribute feature.

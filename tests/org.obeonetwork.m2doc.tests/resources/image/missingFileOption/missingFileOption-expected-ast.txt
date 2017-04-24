@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of an image :
   
   image null provider null height 0 width 0 legend null legendpos BELOW

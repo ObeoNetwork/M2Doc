@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of an http hyperlink:
   [query: .asLink('Obeo's website', 'http://www.obeo.fr')]
   End of demonstration.

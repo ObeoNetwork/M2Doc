@@ -1,10 +1,10 @@
 
 === HEADER ===
-template null
+template
   Checks ImageServices registration :
   [query: .setWidth(.asImage('dh1.gif'), 50)]
   End of demonstration.
 === BODY ===
-template null
+template
   
 === FOOTER ===

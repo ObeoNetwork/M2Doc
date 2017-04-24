@@ -2,13 +2,13 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Demonstrate the For with a table: 
   table
     row
-      template null
+      template
         Label
-      template null
+      template
         Name
       
     
@@ -18,9 +18,9 @@ template null
   for v | .aqlFeatureAccess(self, 'eClassifiers') do
     table
       row
-        template null
+        template
           Name :
-        template null
+        template
           [query: .aqlFeatureAccess(v, 'name')]
         
       

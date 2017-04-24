@@ -1,12 +1,12 @@
 
 === HEADER ===
-template null
+template
   
 === BODY ===
-template null
+template
   This demonstrate the simple usage of isRepresentationName service :
   [query: .isRepresentationName('not existing class diagram')]
   End of demonstration.
 === FOOTER ===
-template null
+template
   

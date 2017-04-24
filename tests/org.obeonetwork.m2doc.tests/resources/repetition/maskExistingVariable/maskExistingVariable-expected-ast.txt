@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Basic for demonstration : 
   
   for v | .aqlFeatureAccess(self, 'eClassifiers') do

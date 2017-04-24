@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a simple variable query :
   [query: x]
   End of demonstration.

@@ -2,35 +2,35 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Basic for demonstration :
   table
     row
-      template null
+      template
         
-      template null
+      template
         
-      template null
+      template
         
       
     row
-      template null
+      template
         
-      template null
+      template
         
         for v | Sequence{} do
         endfor
         
         
-      template null
+      template
         
       
     row
-      template null
+      template
         
-      template null
+      template
         
-      template null
+      template
         
       
     

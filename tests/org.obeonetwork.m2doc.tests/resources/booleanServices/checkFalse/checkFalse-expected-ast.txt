@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Checks BooleanServices registration :
   [query: .check(false)]
   End of demonstration.

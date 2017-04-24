@@ -390,7 +390,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
 
     @Override
     public Void caseTemplate(Template template) {
-        builder.append(String.format("template %s", template.getTemplateName()));
+        builder.append("template");
         doSwitch(template.getBody());
         return null;
     }

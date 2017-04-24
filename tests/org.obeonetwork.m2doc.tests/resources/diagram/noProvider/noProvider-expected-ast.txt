@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a diagram:
   
   representation null title null provider null height 200 width 200 legend the diagram legend legendpos BELOW

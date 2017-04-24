@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Basic if demonstration :
   
   if .not(.oclIsKindOf(self, EClass)) then

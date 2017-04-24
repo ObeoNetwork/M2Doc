@@ -2,36 +2,36 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Basic if demonstration :
   table
     row
-      template null
+      template
         
-      template null
+      template
         
-      template null
+      template
         
       
     row
-      template null
+      template
         
-      template null
+      template
         
         if false then
           The THEN paragraph.
         endif
         
         
-      template null
+      template
         
       
     row
-      template null
+      template
         
-      template null
+      template
         
-      template null
+      template
         
       
     

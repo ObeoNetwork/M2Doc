@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   Checks BooleanServices registration :
   [query: .yesNo(null)]
   End of demonstration.

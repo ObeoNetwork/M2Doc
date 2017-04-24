@@ -2,50 +2,50 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a user doc :
   
   userdoc 'zone1' do
     
       table
         row
-          template null
+          template
             A
-          template null
+          template
             B
-          template null
+          template
             C
-          template null
+          template
             D
           
         row
-          template null
+          template
             E
-          template null
+          template
             F
-          template null
+          template
             G
-          template null
+          template
             H
           
         row
-          template null
+          template
             I
-          template null
+          template
             J
-          template null
+          template
             K
-          template null
+          template
             L
           
         row
-          template null
+          template
             
-          template null
+          template
             
-          template null
+          template
             
-          template null
+          template
             
           
         

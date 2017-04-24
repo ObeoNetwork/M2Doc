@@ -2,25 +2,25 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a query :
   table
     row
-      template null
+      template
         
-      template null
-        
-      
-    row
-      template null
-        
-      template null
+      template
         
       
     row
-      template null
+      template
         
-      template null
+      template
+        
+      
+    row
+      template
+        
+      template
         [query: .aqlFeatureAccess(self, 'name')]
       
     

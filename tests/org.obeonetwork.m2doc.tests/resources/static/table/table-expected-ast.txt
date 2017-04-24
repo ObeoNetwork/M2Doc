@@ -2,47 +2,47 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a static table :
   table
     row
-      template null
+      template
         A
-      template null
+      template
         Z
-      template null
+      template
         E
       
     row
-      template null
+      template
         R
-      template null
+      template
         T
-      template null
+      template
         Y
       
     row
-      template null
+      template
         U
-      template null
+      template
         I
-      template null
+      template
         O
       
     row
-      template null
+      template
         P
-      template null
+      template
         Q
-      template null
+      template
         S
       
     row
-      template null
+      template
         D
-      template null
+      template
         F
-      template null
+      template
         G
       
     

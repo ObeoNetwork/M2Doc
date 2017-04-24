@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template null
+template
   A simple demonstration of a comment :
   comment: some important commentand even more commenton a new line
   End of demonstration.
