@@ -1,0 +1,16 @@
+
+=== HEADER ===
+template null
+  template null
+  template null
+  A simple demonstration of a query :
+  [query: Sequence{.sampleTable(''), .sampleTable(''), .sampleTable('')}]
+  End of demonstration.
+=== BODY ===
+template null
+  
+=== FOOTER ===
+template null
+  template null
+  template null
+  

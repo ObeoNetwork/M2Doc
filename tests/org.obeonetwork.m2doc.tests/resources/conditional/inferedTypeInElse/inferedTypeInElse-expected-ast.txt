@@ -7,7 +7,7 @@ template null
   
   if .not(.oclIsKindOf(self, EClass)) then
   else
-    [query: .oclIsKindOf(self, EClass) | TEXT]
+    [query: .oclIsKindOf(self, EClass)]
   endif
   
   End of demonstration.

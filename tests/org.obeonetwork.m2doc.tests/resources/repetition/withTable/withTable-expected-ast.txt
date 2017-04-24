@@ -13,7 +13,7 @@ template null
       
     
   Tableau 1 package classes 
-  [query: .aqlFeatureAccess(self, 'name') | TEXT]
+  [query: .aqlFeatureAccess(self, 'name')]
   
   for v | .aqlFeatureAccess(self, 'eClassifiers') do
     table
@@ -21,7 +21,7 @@ template null
         template null
           Name :
         template null
-          [query: .aqlFeatureAccess(v, 'name') | TEXT]
+          [query: .aqlFeatureAccess(v, 'name')]
         
       
   endfor

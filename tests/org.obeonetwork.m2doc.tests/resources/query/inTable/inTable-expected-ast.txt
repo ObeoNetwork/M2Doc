@@ -21,7 +21,7 @@ template null
       template null
         
       template null
-        [query: .aqlFeatureAccess(self, 'name') | TEXT]
+        [query: .aqlFeatureAccess(self, 'name')]
       
     
   End of demonstration.

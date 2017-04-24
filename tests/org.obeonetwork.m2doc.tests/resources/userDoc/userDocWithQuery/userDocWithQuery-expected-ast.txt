@@ -7,7 +7,7 @@ template null
   
   userdoc 'zone1' do
     
-      [query: .aqlFeatureAccess(self, 'name') | TEXT]
+      [query: .aqlFeatureAccess(self, 'name')]
   enduserdoc
   
   End of demonstration.

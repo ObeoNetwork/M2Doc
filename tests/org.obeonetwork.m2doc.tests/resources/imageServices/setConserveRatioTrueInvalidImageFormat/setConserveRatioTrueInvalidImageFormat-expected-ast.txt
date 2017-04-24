@@ -4,6 +4,6 @@
 === BODY ===
 template null
   Checks ImageServices registration :
-  [query: .setConserveRatio(.asImage('dh1.gif'), true) | TEXT]
+  [query: .setConserveRatio(.asImage('dh1.gif'), true)]
   End of demonstration.
 === FOOTER ===

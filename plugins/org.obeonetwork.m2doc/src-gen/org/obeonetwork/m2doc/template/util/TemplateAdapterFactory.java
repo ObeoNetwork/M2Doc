@@ -113,10 +113,6 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
                 return createQueryAdapter();
             }
             @Override
-            public Adapter caseTableMerge(TableMerge object) {
-                return createTableMergeAdapter();
-            }
-            @Override
             public Adapter caseImage(Image object) {
                 return createImageAdapter();
             }
@@ -299,20 +295,6 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createQueryAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.TableMerge <em>Table Merge</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.obeonetwork.m2doc.template.TableMerge
-     * @generated
-     */
-    public Adapter createTableMergeAdapter() {
         return null;
     }
 

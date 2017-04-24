@@ -445,26 +445,47 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
-            } else if (queryResult.getResult() instanceof MHyperLink) {
-                final XWPFRun linkRun = insertFieldRunReplacement(query.getStyleRun(), "");
-                insertMHyperLink(linkRun, (MHyperLink) queryResult.getResult());
-            } else if (queryResult.getResult() instanceof MBookmark) {
-                insertMBookmark(query, (MBookmark) queryResult.getResult());
-            } else if (queryResult.getResult() instanceof MImage) {
-                final XWPFRun imageRun = insertFieldRunReplacement(query.getStyleRun(), "");
-                insertMImage(imageRun, (MImage) queryResult.getResult());
-            } else if (queryResult.getResult() instanceof MTable) {
-                XWPFRun tableRun = query.getStyleRun();
-                tableRun.getCTR().getInstrTextList().clear();
-                insertMTable(tableRun, (MTable) queryResult.getResult());
-            } else if (queryResult.getResult() == null) {
-                insertFieldRunReplacement(query.getStyleRun(), "");
             } else {
-                insertFieldRunReplacement(query.getStyleRun(), queryResult.getResult().toString());
+                final Object value = queryResult.getResult();
+                final XWPFRun styleRun = query.getStyleRun();
+                insertObject(value, styleRun);
             }
         }
 
         return query;
+    }
+
+    /**
+     * Inserts the given {@link Object} in the given {@link XWPFRun}.
+     * 
+     * @param object
+     *            the {@link Object} to insert
+     * @param run
+     *            the {@link XWPFRun}
+     */
+    private void insertObject(Object object, XWPFRun run) {
+        if (object instanceof Collection<?>) {
+            for (Object child : (Collection<?>) object) {
+                insertObject(child, run);
+                // TODO insert Run ?
+            }
+        } else if (object instanceof MHyperLink) {
+            final XWPFRun linkRun = insertFieldRunReplacement(run, "");
+            insertMHyperLink(linkRun, (MHyperLink) object);
+        } else if (object instanceof MBookmark) {
+            insertMBookmark(run, (MBookmark) object);
+        } else if (object instanceof MImage) {
+            final XWPFRun imageRun = insertFieldRunReplacement(run, "");
+            insertMImage(imageRun, (MImage) object);
+        } else if (object instanceof MTable) {
+            XWPFRun tableRun = run;
+            tableRun.getCTR().getInstrTextList().clear();
+            insertMTable(tableRun, (MTable) object);
+        } else if (object == null) {
+            insertFieldRunReplacement(run, "");
+        } else {
+            insertFieldRunReplacement(run, object.toString());
+        }
     }
 
     @Override
@@ -474,21 +495,21 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     /**
-     * Inserts a {@link MBookmark}.
+     * Inserts a {@link MBookmark} in the given {@link XWPFRun}.
      * 
-     * @param query
-     *            the {@link Query}
+     * @param run
+     *            the {@link XWPFRun}
      * @param bookmark
      *            the {@link MBookmark}
      */
-    private void insertMBookmark(Query query, MBookmark bookmark) {
-        insertFieldRunReplacement(query.getStyleRun(), "");
+    private void insertMBookmark(XWPFRun run, MBookmark bookmark) {
+        insertFieldRunReplacement(run, "");
         if (bookmark.isReference()) {
             bookmarkManager.insertReference(currentGeneratedParagraph, bookmark.getId(), bookmark.getText());
         } else {
             final ValidationMessageLevel levelStart = bookmarkManager.startBookmark(currentGeneratedParagraph,
                     bookmark.getId());
-            insertFieldRunReplacement(query.getStyleRun(), bookmark.getText());
+            insertFieldRunReplacement(run, bookmark.getText());
             final ValidationMessageLevel levelEnd = bookmarkManager.endBookmark(currentGeneratedParagraph,
                     bookmark.getId());
             result.updateLevel(levelStart, levelEnd);

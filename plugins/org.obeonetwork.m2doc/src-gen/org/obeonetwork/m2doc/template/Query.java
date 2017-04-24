@@ -21,7 +21,6 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.Query#getBehavior <em>Behavior</em>}</li>
  *   <li>{@link org.obeonetwork.m2doc.template.Query#getQuery <em>Query</em>}</li>
  * </ul>
  *
@@ -36,36 +35,6 @@ public interface Query extends Statement {
      * @generated
      */
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
-
-    /**
-     * Returns the value of the '<em><b>Behavior</b></em>' attribute.
-     * The default value is <code>"TEXT"</code>.
-     * The literals are from the enumeration {@link org.obeonetwork.m2doc.template.QueryBehavior}.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Behavior</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Behavior</em>' attribute.
-     * @see org.obeonetwork.m2doc.template.QueryBehavior
-     * @see #setBehavior(QueryBehavior)
-     * @see org.obeonetwork.m2doc.template.TemplatePackage#getQuery_Behavior()
-     * @model default="TEXT"
-     * @generated
-     */
-    QueryBehavior getBehavior();
-
-    /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Query#getBehavior <em>Behavior</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Behavior</em>' attribute.
-     * @see org.obeonetwork.m2doc.template.QueryBehavior
-     * @see #getBehavior()
-     * @generated
-     */
-    void setBehavior(QueryBehavior value);
 
     /**
      * Returns the value of the '<em><b>Query</b></em>' attribute.

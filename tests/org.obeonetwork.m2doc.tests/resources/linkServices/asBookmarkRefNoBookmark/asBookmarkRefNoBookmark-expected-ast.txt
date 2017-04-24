@@ -4,6 +4,6 @@
 === BODY ===
 template null
   A simple demonstration of a bookmark:
-  [query: .asBookmarkRef('Artifact1', 'Art1') | TEXT]
+  [query: .asBookmarkRef('Artifact1', 'Art1')]
   End of demonstration.
 === FOOTER ===

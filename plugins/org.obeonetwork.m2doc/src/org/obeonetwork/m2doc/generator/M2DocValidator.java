@@ -76,7 +76,6 @@ import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
-import org.obeonetwork.m2doc.template.TableMerge;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
@@ -533,11 +532,6 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     }
 
     @Override
-    public ValidationMessageLevel caseTableMerge(TableMerge tableMerge) {
-        return doSwitch(tableMerge.getBody());
-    }
-
-    @Override
     public ValidationMessageLevel caseQuery(Query query) {
         if (query.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult validationResult = aqlValidator.validate(stack.peek(), query.getQuery());
@@ -583,9 +577,13 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseAbstractProviderClient(AbstractProviderClient providerClient) {
-        ValidationMessageLevel res = ValidationMessageLevel.OK;
-
+        ValidationMessageLevel res = ValidationMessageLevel.WARNING;
         final XWPFRun run = providerClient.getStyleRun();
+        providerClient.getValidationMessages()
+                .add(new TemplateValidationMessage(res,
+                        "Providers are deprecated use services instead:\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/ImageServices.java\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/M2DocSiriusServices.java",
+                        run));
+
         if (providerClient.getProvider() != null) {
             ValidationMessageLevel optionsLevel = ValidationMessageLevel.OK;
             Map<String, Object> options = new LinkedHashMap<String, Object>(providerClient.getOptionValueMap().size());

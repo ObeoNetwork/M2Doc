@@ -7,9 +7,9 @@ template null
   
   for v | .aqlFeatureAccess(self, 'eClassifiers') do
     name = 
-    [query: .aqlFeatureAccess(v, 'name') | TEXT]
+    [query: .aqlFeatureAccess(v, 'name')]
     ,
-    [query: enfor | TEXT]
+    [query: enfor]
     End of demonstration.
   endfor
   

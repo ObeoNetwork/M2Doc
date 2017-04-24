@@ -5,7 +5,7 @@ template null
 === BODY ===
 template null
   This demonstrate the simple usage of isRepresentationDescriptionName service :
-  [query: ->first(.asImageByRepresentationDescriptionName(self, 'Entities')) | TEXT]
+  [query: ->first(.asImageByRepresentationDescriptionName(self, 'Entities'))]
   End of demonstration.
 === FOOTER ===
 template null

@@ -258,6 +258,7 @@ public abstract class AbstractTemplatesTestSuite {
             }
             fail(expectedASTURI + DOESN_T_EXISTS);
         }
+
         try (InputStream stream = URIConverter.INSTANCE.createInputStream(expectedASTURI)) {
             final String expectedAst = getContent(stream, "UTF-8");
             assertEquals(expectedAst.replaceAll("\r\n", "\n"), actualAst.replaceAll("\r\n", "\n"));

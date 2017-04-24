@@ -2,11 +2,11 @@
 === HEADER ===
 template null
   A simple demonstration of a query :
-  [query: ***ERROR***.aqlFeatureAccess(self) | TEXT]
+  [query: ***ERROR***.aqlFeatureAccess(self)]
   End of demonstration.
 === BODY ===
 template null
   A simple demonstration of a query :
-  [query: ***ERROR***.aqlFeatureAccess(self) | TEXT]
+  [query: ***ERROR***.aqlFeatureAccess(self)]
   End of demonstration.
 === FOOTER ===

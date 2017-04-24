@@ -95,7 +95,6 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
             case TemplatePackage.USER_DOC: return createUserDoc();
             case TemplatePackage.USER_CONTENT: return createUserContent();
             case TemplatePackage.QUERY: return createQuery();
-            case TemplatePackage.TABLE_MERGE: return createTableMerge();
             case TemplatePackage.IMAGE: return createImage();
             case TemplatePackage.BLOCK: return createBlock();
             case TemplatePackage.TEMPLATE: return createTemplate();
@@ -251,16 +250,6 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     public Query createQuery() {
         QueryImpl query = new QueryImpl();
         return query;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public TableMerge createTableMerge() {
-        TableMergeImpl tableMerge = new TableMergeImpl();
-        return tableMerge;
     }
 
     /**

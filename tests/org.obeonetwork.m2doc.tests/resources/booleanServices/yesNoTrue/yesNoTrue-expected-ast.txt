@@ -4,6 +4,6 @@
 === BODY ===
 template null
   Checks BooleanServices registration :
-  [query: .yesNo(true) | TEXT]
+  [query: .yesNo(true)]
   End of demonstration.
 === FOOTER ===

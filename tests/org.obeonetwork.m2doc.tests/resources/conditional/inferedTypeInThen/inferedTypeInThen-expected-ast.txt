@@ -6,7 +6,7 @@ template null
   Basic if demonstration :
   
   if .oclIsKindOf(self, EClass) then
-    [query: .oclIsKindOf(self, EClass) | TEXT]
+    [query: .oclIsKindOf(self, EClass)]
   endif
   
   End of demonstration.

@@ -4,9 +4,9 @@
 === BODY ===
 template null
   Invalid start tag : 
-  [query: fr | TEXT]
+  [query: fr]
   name = 
-  [query: .aqlFeatureAccess(v, 'name') | TEXT]
+  [query: .aqlFeatureAccess(v, 'name')]
   ,
   End of demonstration.
 === FOOTER ===

@@ -5,7 +5,7 @@ template null
 === BODY ===
 template null
   This demonstrate the simple usage of isRepresentationDescriptionName service :
-  [query: .isRepresentationDescriptionName(self, 'Entities') | TEXT]
+  [query: .isRepresentationDescriptionName(self, 'Entities')]
   End of demonstration.
 === FOOTER ===
 template null

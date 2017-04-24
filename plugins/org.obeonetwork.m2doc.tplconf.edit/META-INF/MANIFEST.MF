@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.tplconf.edit;singleton:=true
-Bundle-Version: 0.10.2.qualifier
+Bundle-Version: 0.11.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.obeonetwork.m2doc.tplconf.provider.TplconfEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -11,6 +11,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.obeonetwork.m2doc.tplconf.provider,
  org.obeonetwork.m2doc.tplconf.provider.spec
 Require-Bundle: org.eclipse.core.runtime,
- org.obeonetwork.m2doc.tplconf;bundle-version="[0.10.0,0.11.0)";visibility:=reexport,
+ org.obeonetwork.m2doc.tplconf;bundle-version="[0.11.0,0.12.0)";visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport
 Bundle-ActivationPolicy: lazy
