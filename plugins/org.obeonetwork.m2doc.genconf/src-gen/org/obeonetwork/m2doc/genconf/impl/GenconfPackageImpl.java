@@ -226,15 +226,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
 	/**
      * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getModelDefinition_Type() {
-        return (EReference)modelDefinitionEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -293,7 +284,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
         modelDefinitionEClass = createEClass(MODEL_DEFINITION);
         createEReference(modelDefinitionEClass, MODEL_DEFINITION__VALUE);
-        createEReference(modelDefinitionEClass, MODEL_DEFINITION__TYPE);
 
         stringDefinitionEClass = createEClass(STRING_DEFINITION);
         createEAttribute(stringDefinitionEClass, STRING_DEFINITION__VALUE);
@@ -348,7 +338,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
         initEClass(modelDefinitionEClass, ModelDefinition.class, "ModelDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getModelDefinition_Value(), ecorePackage.getEObject(), null, "value", null, 0, 1, ModelDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getModelDefinition_Type(), theEcorePackage.getEClassifier(), null, "type", null, 0, 1, ModelDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(stringDefinitionEClass, StringDefinition.class, "StringDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getStringDefinition_Value(), ecorePackage.getEString(), "value", null, 0, 1, StringDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

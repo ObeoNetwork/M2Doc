@@ -343,7 +343,8 @@ public final class M2DocUtils {
             final InputStream is = URIConverter.INSTANCE.createInputStream(templateURI);
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
-            final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment, classLoader, document);
+            final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment,
+                    classLoader, document);
             r.getContents().add(result);
             final M2DocParser parser = new M2DocParser(document, queryEnvironment);
             final Template documentBody = parser.parseTemplate();

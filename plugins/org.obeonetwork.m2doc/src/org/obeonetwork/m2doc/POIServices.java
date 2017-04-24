@@ -53,15 +53,15 @@ public final class POIServices {
     /**
      * Get XWPFDocument from template file.
      * 
-     * @param templateFile
-     *            IFile
+     * @param templateURI
+     *            the template {@link URI}
      * @return XWPFDocument
      * @throws IOException
      *             IOException
      */
     @SuppressWarnings("resource")
-    public XWPFDocument getXWPFDocument(URI templateFile) throws IOException {
-        OPCPackage oPackage = getOPCPackage(templateFile);
+    public XWPFDocument getXWPFDocument(URI templateURI) throws IOException {
+        OPCPackage oPackage = getOPCPackage(templateURI);
         XWPFDocument document = new XWPFDocument(oPackage);
         return document;
     }
@@ -69,15 +69,15 @@ public final class POIServices {
     /**
      * Get OPCPackage from template file.
      * 
-     * @param templateFile
-     *            IFile
+     * @param templateURI
+     *            the template {@link URI}
      * @return OPCPackage
      * @throws IOException
      *             IOException
      */
-    public OPCPackage getOPCPackage(URI templateFile) throws IOException {
+    public OPCPackage getOPCPackage(URI templateURI) throws IOException {
         OPCPackage oPackage;
-        try (InputStream is = URIConverter.INSTANCE.createInputStream(templateFile)) {
+        try (InputStream is = URIConverter.INSTANCE.createInputStream(templateURI)) {
             try {
                 oPackage = OPCPackage.open(is);
 
@@ -91,18 +91,18 @@ public final class POIServices {
     /**
      * Get template informations.
      * 
-     * @param templateFile
-     *            IFile
+     * @param templateURI
+     *            the template {@link URI}
      * @return TemplateInfo
      * @throws InvalidFormatException
      *             InvalidFormatException
      * @throws IOException
      *             IOException
      */
-    public TemplateCustomProperties getTemplateInformations(URI templateFile) throws IOException {
+    public TemplateCustomProperties getTemplateInformations(URI templateURI) throws IOException {
         final TemplateCustomProperties res;
 
-        try (XWPFDocument document = getXWPFDocument(templateFile);) {
+        try (XWPFDocument document = getXWPFDocument(templateURI);) {
             res = new TemplateCustomProperties(document);
         }
         return res;
@@ -113,13 +113,13 @@ public final class POIServices {
      * 
      * @param document
      *            the validated document to save.
-     * @param theDestinationFileName
-     *            the file were to save the content of the validated document.
+     * @param theDestinationURI
+     *            the {@link URI} were to save the content of the validated document.
      * @throws IOException
-     *             throws if the writing of the document on the file system fails.
+     *             throws if the writing of the {@link URI} fails.
      */
-    public void saveFile(XWPFDocument document, URI theDestinationFileName) throws IOException {
-        try (OutputStream os = URIConverter.INSTANCE.createOutputStream(theDestinationFileName)) {
+    public void saveFile(XWPFDocument document, URI theDestinationURI) throws IOException {
+        try (OutputStream os = URIConverter.INSTANCE.createOutputStream(theDestinationURI)) {
             document.write(os);
         }
     }

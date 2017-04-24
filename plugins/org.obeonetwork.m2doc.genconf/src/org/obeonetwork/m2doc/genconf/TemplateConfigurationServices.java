@@ -11,17 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
-import java.util.Collection;
-
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EPackage;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.tplconf.TemplateConfigUtil;
 
 /**
  * Services for genconf metamodels.
@@ -78,15 +70,6 @@ public final class TemplateConfigurationServices {
      * @return generation eObject with definitions template information.
      */
     public Generation addProperties(Generation generation, TemplateCustomProperties templateProperties) {
-        Multimap<String, EPackage> packagesByName = ArrayListMultimap.create();
-        for (String uri : templateProperties.getPackagesURIs()) {
-            if (EPackage.Registry.INSTANCE.containsKey(uri)) {
-                EPackage p = EPackage.Registry.INSTANCE.getEPackage(uri);
-                if (p != null && p.getName() != null) {
-                    packagesByName.put(p.getName(), p);
-                }
-            }
-        }
         for (String key : templateProperties.getVariables().keySet()) {
             String typeName = templateProperties.getVariables().get(key);
             Definition definition = null;
@@ -95,25 +78,7 @@ public final class TemplateConfigurationServices {
                 StringDefinition sdefinition = getConfigurationServices().createStringDefinition(generation);
                 sdefinition.setValue(typeName);
                 definition = sdefinition;
-            } else if (TemplateConfigUtil.isValidClassifierTypeName(typeName)) {
-                int index = typeName.indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR);
-                String packageName = typeName.substring(0, index);
-                String classifierName = typeName.substring(index + 2);
-                ModelDefinition mdefinition = getConfigurationServices().createModelDefinition(generation);
-                if (packagesByName.containsKey(packageName)) {
-                    Collection<EPackage> packages = packagesByName.get(packageName);
-                    // We'll use the first matching classifier we find with that name among the packages with this name
-                    for (EPackage pack : packages) {
-                        EClassifier eClassifier = pack.getEClassifier(classifierName);
-                        if (eClassifier != null) {
-                            mdefinition.setType(eClassifier);
-                            break;
-                        }
-                    }
-                }
-                definition = mdefinition;
             } else {
-                // Create untyped definition
                 definition = getConfigurationServices().createModelDefinition(generation);
             }
             if (definition != null) {

@@ -123,7 +123,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                 documentTemplate.getDocument());
         Map<String, Set<IType>> types = Maps.newLinkedHashMap();
         for (Entry<String, String> entry : templateProperties.getVariables().entrySet()) {
-            final Set<IType> variableTypes = getVariableTypes(queryEnvironment, entry.getValue());
+            final Set<IType> variableTypes = getVariableTypes(aqlValidator, queryEnvironment, entry.getValue());
             types.put(entry.getKey(), variableTypes);
         }
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
@@ -144,17 +144,20 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     /**
      * Gets the {@link Set} of variable declaration {@link IType}.
      * 
+     * @param validator
+     *            the {@link AstValidator}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
      * @param type
      *            the {@link String} representation of a type
      * @return the {@link Set} of variable declaration {@link IType}
      */
-    private Set<IType> getVariableTypes(IReadOnlyQueryEnvironment queryEnvironment, String type) {
+    public static Set<IType> getVariableTypes(AstValidator validator, IReadOnlyQueryEnvironment queryEnvironment,
+            String type) {
         final Set<IType> res = new LinkedHashSet<IType>();
 
         final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
-        final IValidationResult validationResult = aqlValidator.validate(Collections.<String, Set<IType>> emptyMap(),
+        final IValidationResult validationResult = validator.validate(Collections.<String, Set<IType>> emptyMap(),
                 astResult);
         // TODO replace with AstValidator.getDeclarationTypes()
         final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
@@ -183,7 +186,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      * @return the corresponding {@link AstResult}
      */
     @SuppressWarnings("restriction")
-    private AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String type) {
+    private static AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String type) {
         final IQueryBuilderEngine.AstResult result;
 
         if (type != null && type.length() > 0) {
