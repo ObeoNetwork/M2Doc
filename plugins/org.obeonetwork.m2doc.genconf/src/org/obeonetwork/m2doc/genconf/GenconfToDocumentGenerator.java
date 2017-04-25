@@ -430,20 +430,20 @@ public class GenconfToDocumentGenerator {
         URI generationURI = generation.eResource().getURI();
 
         // get template and result file
-        URI templateFile = generationURI.trimSegments(1).appendSegment(generation.getTemplateFileName());
-        if (!URIConverter.INSTANCE.exists(templateFile, Collections.EMPTY_MAP)) {
-            throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
+        URI templateURI = URI.createFileURI(generation.getTemplateFileName()).resolve(generationURI);
+        if (!URIConverter.INSTANCE.exists(templateURI, Collections.EMPTY_MAP)) {
+            throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
         }
         // get acceleo environment
         IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
         // parse template
-        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment,
+        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
                 this.getClass().getClassLoader())) {
 
             // validate template
             if (template != null) {
-                res = validate(templateFile, template, generation);
+                res = validate(templateURI, template, generation);
             } else {
                 res = true;
             }
