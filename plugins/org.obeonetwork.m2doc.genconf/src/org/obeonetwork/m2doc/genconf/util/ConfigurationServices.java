@@ -52,7 +52,11 @@ public class ConfigurationServices {
      * @return IQueryEnvironment
      */
     public IQueryEnvironment initAcceleoEnvironment(Generation generation) {
-        final URI templateURI = URI.createFileURI(generation.getTemplateFileName());
+        URI templateURI = URI.createFileURI(generation.getTemplateFileName());
+        if (generation.eResource() != null) {
+            templateURI = templateURI.resolve(generation.eResource().getURI());
+        }
+
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
