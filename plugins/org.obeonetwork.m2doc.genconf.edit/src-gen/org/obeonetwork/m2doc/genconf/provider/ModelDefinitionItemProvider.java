@@ -100,7 +100,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                 try {
                                     final IQueryEnvironment queryEnvironment = Query.newEnvironment();
                                     properties = POIServices.getInstance()
-                                            .getTemplateInformations(URI.createURI(generation.getTemplateFileName()));
+                                            .getTemplateCustomProperties(URI.createURI(generation.getTemplateFileName()));
                                     for (String nsURI : properties.getPackagesURIs()) {
                                         final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
                                         queryEnvironment.registerEPackage(ePackage);

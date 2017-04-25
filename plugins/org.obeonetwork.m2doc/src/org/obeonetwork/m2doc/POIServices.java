@@ -99,7 +99,7 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
-    public TemplateCustomProperties getTemplateInformations(URI templateURI) throws IOException {
+    public TemplateCustomProperties getTemplateCustomProperties(URI templateURI) throws IOException {
         final TemplateCustomProperties res;
 
         try (XWPFDocument document = getXWPFDocument(templateURI);) {

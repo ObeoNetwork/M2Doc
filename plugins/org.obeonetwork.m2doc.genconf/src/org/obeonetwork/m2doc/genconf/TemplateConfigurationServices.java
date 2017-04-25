@@ -12,7 +12,6 @@
 package org.obeonetwork.m2doc.genconf;
 
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
-import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 /**
@@ -74,7 +73,7 @@ public final class TemplateConfigurationServices {
             String typeName = templateProperties.getVariables().get(key);
             Definition definition = null;
             // The only currently supported scalar type is 'string'
-            if (M2DocCustomProperties.STRING_TYPE.equals(typeName)) {
+            if (TemplateCustomProperties.STRING_TYPE.equals(typeName)) {
                 StringDefinition sdefinition = getConfigurationServices().createStringDefinition(generation);
                 sdefinition.setValue(typeName);
                 definition = sdefinition;

@@ -11,12 +11,10 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.properties;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +22,7 @@ import java.util.Map.Entry;
 
 import org.apache.poi.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.emf.ecore.EPackage;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
@@ -32,6 +31,76 @@ import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProper
  * @author Romain Guider
  */
 public class TemplateCustomProperties {
+
+    /**
+     * id of the integer type to use in variable declaration properties (not supported yet).
+     */
+    public static final String INT_TYPE = "Integer";
+
+    /**
+     * id of the real type to use in variable declaration properties (not supported yet).
+     */
+    public static final String REAL_TYPE = "Real";
+
+    /**
+     * id of the String type to use in variable declaration properties.
+     */
+    public static final String STRING_TYPE = "String";
+
+    /**
+     * id of the boolean type to use in variable declaration properties (not supported yet).
+     */
+    public static final String BOOLEAN_TYPE = "Boolean";
+
+    /**
+     * id of the date type to use in variable declaration properties (not supported yet).
+     */
+    public static final String DATE_TYPE = "Date";
+
+    /**
+     * id of the object type to use in variable declaration properties (not supported yet).
+     */
+    public static final String OBJECT_TYPE = "Object";
+
+    /**
+     * Prefix of the variable declaration custom properties.
+     */
+    public static final String VAR_PROPERTY_PREFIX = "m:var:";
+
+    /**
+     * Prefix of the variable declaration custom properties length.
+     */
+    public static final int VAR_PROPERTY_PREFIX_LENGTH = VAR_PROPERTY_PREFIX.length();
+
+    /**
+     * Prefix of the uri declaration custom properties.
+     */
+    public static final String URI_PROPERTY_PREFIX = "m:uri:";
+
+    /**
+     * Prefix of the uri declaration custom properties length.
+     */
+    public static final int URI_PROPERTY_PREFIX_LENGTH = URI_PROPERTY_PREFIX.length();
+
+    /**
+     * Prefix of the service declaration custom properties.
+     */
+    public static final String SERVICE_PROPERTY_PREFIX = "m:services:";
+
+    /**
+     * Prefix of the service declaration custom properties.
+     */
+    public static final int SERVICE_PROPERTY_PREFIX_LENGTH = SERVICE_PROPERTY_PREFIX.length();
+
+    /**
+     * Prefix of the service import custom properties.
+     */
+    public static final String SERVICE_IMPORT_PROPERTY_PREFIX = "m:import:";
+
+    /**
+     * Prefix of the service import custom properties length.
+     */
+    public static final int SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH = SERVICE_IMPORT_PROPERTY_PREFIX.length();
 
     /**
      * The list of service tokens declared in the template.
@@ -46,7 +115,7 @@ public class TemplateCustomProperties {
     /**
      * The list of nsURIs declared in the template.
      */
-    private final List<String> packageURIs = Lists.newArrayList();
+    private final List<String> nsURIs = Lists.newArrayList();
 
     /**
      * The {@link List} of service {@link Class#getName() class names}.
@@ -78,66 +147,33 @@ public class TemplateCustomProperties {
     private void parseProperties(XWPFDocument doc) {
         final CustomProperties props = doc.getProperties().getCustomProperties();
         final List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
-        final int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length();
         for (CTProperty property : properties) {
             String propertyName = property.getName();
             if (propertyName == null) {
                 continue;
             }
             propertyName = propertyName.trim();
-            if (M2DocCustomProperties.SERVICE_PROPERTY_PREFIX.equals(propertyName)) {
-                String serviceTokenList = property.getLpwstr();
-                if (serviceTokenList != null) {
-                    String[] tokens = serviceTokenList.trim().split(M2DocCustomProperties.SEPARATOR);
-                    serviceTokens.addAll(Arrays.asList(tokens));
-                }
-            } else if (propertyName.startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)
-                && propertyName.length() > variablePrefixLength) {
-                final String variableName = propertyName.substring(variablePrefixLength);
-                final String type = property.getLpwstr();
-                if (isValidVariableName(variableName)) {
-                    variables.put(variableName, type);
-                }
-            } else if (M2DocCustomProperties.URI_PROPERTY_PREFIX.equals(propertyName)) {
-                parseEPackages(property);
-            } else if (M2DocCustomProperties.SERVICE_IMPORT_PROPERTY_PREFIX.equals(propertyName)) {
-                parseServiceImports(property);
+            final String nsURI = getNsURI(propertyName);
+            if (nsURI != null) {
+                nsURIs.add(nsURI);
+                continue;
             }
-        }
-    }
 
-    /**
-     * Parses {@link org.eclipse.emf.ecore.EPackage EPackage} imports.
-     * 
-     * @param property
-     *            the property to parse
-     */
-    private void parseEPackages(CTProperty property) {
-        String uriList = property.getLpwstr();
-        if (uriList != null) {
-            String[] uris = uriList.trim().split(M2DocCustomProperties.SEPARATOR);
-            for (String uri : uris) {
-                if (!uri.trim().isEmpty()) {
-                    packageURIs.add(uri.trim());
-                }
+            final String serviceClasse = getServiceImport(propertyName);
+            if (serviceClasse != null) {
+                serviceClasses.add(serviceClasse);
+                continue;
             }
-        }
-    }
 
-    /**
-     * Parses service imports.
-     * 
-     * @param property
-     *            the property to parse
-     */
-    private void parseServiceImports(CTProperty property) {
-        String uriList = property.getLpwstr();
-        if (uriList != null) {
-            String[] uris = uriList.trim().split(M2DocCustomProperties.SEPARATOR);
-            for (String uri : uris) {
-                if (!uri.trim().isEmpty()) {
-                    serviceClasses.add(uri.trim());
-                }
+            final String serviceToken = getServiceToken(propertyName);
+            if (serviceToken != null) {
+                serviceTokens.add(serviceToken);
+                continue;
+            }
+
+            final String variableName = getVariableName(propertyName);
+            if (variableName != null && isValidVariableName(variableName)) {
+                variables.put(variableName, property.getLpwstr());
             }
         }
     }
@@ -150,37 +186,41 @@ public class TemplateCustomProperties {
         final List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
         final List<Integer> indexToDelete = new ArrayList<Integer>();
         int currentIndex = 0;
-        final int variablePrefixLength = M2DocCustomProperties.VAR_PROPERTY_PREFIX.length();
-        boolean uriInsertionDone = false;
-        boolean serviceImportsInsertionDone = false;
-        boolean serviceTokenInsertionDone = false;
+        List<String> tmpNsURI = new ArrayList<String>(nsURIs);
+        List<String> tmpServiceImports = new ArrayList<String>(serviceClasses);
+        List<String> tmpServiceTokens = new ArrayList<String>(serviceTokens);
         Map<String, String> tmpVars = new LinkedHashMap<String, String>(variables);
         for (CTProperty property : properties) {
             final String propertyName = property.getName();
-            if (M2DocCustomProperties.URI_PROPERTY_PREFIX.equals(propertyName)) {
-                if (!packageURIs.isEmpty()) {
-                    property.setLpwstr(Joiner.on(M2DocCustomProperties.SEPARATOR).join(packageURIs));
-                    uriInsertionDone = true;
-                } else {
+            final String nsURI = getNsURI(propertyName);
+            if (nsURI != null) {
+                if (!tmpNsURI.remove(nsURI)) {
                     indexToDelete.add(currentIndex);
                 }
-            } else if (M2DocCustomProperties.SERVICE_IMPORT_PROPERTY_PREFIX.equals(propertyName)) {
-                if (!serviceClasses.isEmpty()) {
-                    property.setLpwstr(Joiner.on(M2DocCustomProperties.SEPARATOR).join(serviceClasses));
-                    serviceImportsInsertionDone = true;
-                } else {
+                currentIndex++;
+                continue;
+            }
+
+            final String serviceClasse = getServiceImport(propertyName);
+            if (serviceClasse != null) {
+                if (!tmpServiceImports.remove(serviceClasse)) {
                     indexToDelete.add(currentIndex);
                 }
-            } else if (M2DocCustomProperties.SERVICE_PROPERTY_PREFIX.equals(propertyName)) {
-                if (!serviceTokens.isEmpty()) {
-                    property.setLpwstr(Joiner.on(M2DocCustomProperties.SEPARATOR).join(serviceTokens));
-                    serviceTokenInsertionDone = true;
-                } else {
+                currentIndex++;
+                continue;
+            }
+
+            final String serviceToken = getServiceToken(propertyName);
+            if (serviceToken != null) {
+                if (!tmpServiceTokens.remove(serviceToken)) {
                     indexToDelete.add(currentIndex);
                 }
-            } else if (propertyName.startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)
-                && propertyName.length() > variablePrefixLength) {
-                final String variableName = propertyName.substring(variablePrefixLength);
+                currentIndex++;
+                continue;
+            }
+
+            final String variableName = getVariableName(propertyName);
+            if (variableName != null) {
                 final String type = tmpVars.remove(variableName);
                 if (type != null) {
                     property.setLpwstr(type);
@@ -195,23 +235,100 @@ public class TemplateCustomProperties {
             props.getUnderlyingProperties().removeProperty(indexToDelete.get(i));
         }
 
-        if (!uriInsertionDone && !packageURIs.isEmpty()) {
-            props.addProperty(M2DocCustomProperties.URI_PROPERTY_PREFIX,
-                    Joiner.on(M2DocCustomProperties.SEPARATOR).join(packageURIs));
+        for (String nsURI : tmpNsURI) {
+            props.addProperty(URI_PROPERTY_PREFIX + nsURI, "");
         }
-        if (!serviceImportsInsertionDone && !serviceClasses.isEmpty()) {
-            props.addProperty(M2DocCustomProperties.SERVICE_IMPORT_PROPERTY_PREFIX,
-                    Joiner.on(M2DocCustomProperties.SEPARATOR).join(serviceClasses));
+        for (String serviceClass : tmpServiceImports) {
+            props.addProperty(SERVICE_IMPORT_PROPERTY_PREFIX + serviceClass, "");
         }
-        if (!serviceTokenInsertionDone && !serviceTokens.isEmpty()) {
-            props.addProperty(M2DocCustomProperties.SERVICE_PROPERTY_PREFIX,
-                    Joiner.on(M2DocCustomProperties.SEPARATOR).join(serviceTokens));
+        for (String serviceToken : tmpServiceTokens) {
+            props.addProperty(SERVICE_PROPERTY_PREFIX + serviceToken, "");
         }
-        if (!tmpVars.isEmpty()) {
-            for (Entry<String, String> entry : tmpVars.entrySet()) {
-                props.addProperty(M2DocCustomProperties.VAR_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
-            }
+        for (Entry<String, String> entry : tmpVars.entrySet()) {
+            props.addProperty(VAR_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
         }
+    }
+
+    /**
+     * Gets the {@link EPackage#getNsURI() nsURI} from the given {@link CTProperty#getName() property name}.
+     * 
+     * @param propertyName
+     *            the {@link CTProperty#getName() property name}
+     * @return the {@link EPackage#getNsURI() nsURI} from the given {@link CTProperty#getName() property name} if any, <code>null</code>
+     *         otherwise
+     */
+    private String getNsURI(String propertyName) {
+        final String res;
+
+        if (propertyName.startsWith(URI_PROPERTY_PREFIX) && propertyName.length() > URI_PROPERTY_PREFIX_LENGTH) {
+            res = propertyName.substring(URI_PROPERTY_PREFIX_LENGTH);
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link Class#getName() class name} from the given {@link CTProperty#getName() property name}.
+     * 
+     * @param propertyName
+     *            the {@link CTProperty#getName() property name}
+     * @return the {@link Class#getName() class name} from the given {@link CTProperty#getName() property name} if any, <code>null</code>
+     *         otherwise
+     */
+    private String getServiceImport(String propertyName) {
+        final String res;
+
+        if (propertyName.startsWith(SERVICE_IMPORT_PROPERTY_PREFIX)
+            && propertyName.length() > SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH) {
+            res = propertyName.substring(SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH);
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the service token from the given {@link CTProperty#getName() property name}.
+     * 
+     * @param propertyName
+     *            the {@link CTProperty#getName() property name}
+     * @return the service token from the given {@link CTProperty#getName() property name} if any, <code>null</code>
+     *         otherwise
+     */
+    private String getServiceToken(String propertyName) {
+        final String res;
+
+        if (propertyName.startsWith(SERVICE_PROPERTY_PREFIX)
+            && propertyName.length() > SERVICE_PROPERTY_PREFIX_LENGTH) {
+            res = propertyName.substring(SERVICE_PROPERTY_PREFIX_LENGTH);
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the variable name from the given {@link CTProperty#getName() property name}.
+     * 
+     * @param propertyName
+     *            the {@link CTProperty#getName() property name}
+     * @return the variable name from the given {@link CTProperty#getName() property name} if any, <code>null</code>
+     *         otherwise
+     */
+    private String getVariableName(String propertyName) {
+        final String res;
+
+        if (propertyName.startsWith(VAR_PROPERTY_PREFIX) && propertyName.length() > VAR_PROPERTY_PREFIX_LENGTH) {
+            res = propertyName.substring(VAR_PROPERTY_PREFIX_LENGTH);
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     /**
@@ -229,7 +346,7 @@ public class TemplateCustomProperties {
      * @return the list of service tokens.
      */
     public List<String> getPackagesURIs() {
-        return packageURIs;
+        return nsURIs;
     }
 
     /**

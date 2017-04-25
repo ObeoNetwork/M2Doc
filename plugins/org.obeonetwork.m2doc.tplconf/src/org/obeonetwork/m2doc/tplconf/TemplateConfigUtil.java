@@ -11,12 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tplconf;
 
-import com.google.common.collect.Lists;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,7 +26,6 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.util.EcoreValidator;
 import org.obeonetwork.m2doc.POIServices;
-import org.obeonetwork.m2doc.properties.M2DocCustomProperties;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
@@ -89,7 +84,7 @@ public final class TemplateConfigUtil {
      *             If a I/O problem occurs while reading the given docx file.
      */
     public static TemplateConfig load(URI templateURI) throws IOException {
-        TemplateCustomProperties properties = POIServices.getInstance().getTemplateInformations(templateURI);
+        TemplateCustomProperties properties = POIServices.getInstance().getTemplateCustomProperties(templateURI);
         return load(properties);
     }
 
@@ -213,7 +208,7 @@ public final class TemplateConfigUtil {
      */
     private static void createSupportedScalarTypes(TemplateConfig config) {
         // The only type actually supported is 'string'
-        addScalarType(config, M2DocCustomProperties.STRING_TYPE);
+        addScalarType(config, TemplateCustomProperties.STRING_TYPE);
     }
 
     /**
@@ -260,51 +255,19 @@ public final class TemplateConfigUtil {
      *            The document the custom properties of which will be used to store the configuration
      */
     public static void store(TemplateConfig config, XWPFDocument xwpfDocument) {
-        // Metamodel URIs
-        StringBuilder b = new StringBuilder(1000);
-        for (EPackageMapping mm : config.getMappings()) {
-            b.append(M2DocCustomProperties.SEPARATOR).append(mm.getUri());
-        }
-        if (b.length() > 0) {
-            b.deleteCharAt(0);
-        }
-        CustomProperties customProperties = xwpfDocument.getProperties().getCustomProperties();
-        if (customProperties.contains(M2DocCustomProperties.URI_PROPERTY_PREFIX)) {
-            CTProperty uriProp = customProperties.getProperty(M2DocCustomProperties.URI_PROPERTY_PREFIX);
-            if (b.length() > 0) {
-                uriProp.setLpwstr(b.toString());
-            } else {
-                customProperties.getUnderlyingProperties()
-                        .removeProperty(indexOf(customProperties, M2DocCustomProperties.URI_PROPERTY_PREFIX));
-            }
-        } else if (b.length() > 0) {
-            customProperties.addProperty(M2DocCustomProperties.URI_PROPERTY_PREFIX, b.toString());
+        final TemplateCustomProperties properties = new TemplateCustomProperties(xwpfDocument);
+
+        properties.getPackagesURIs().clear();
+        for (EPackageMapping ePackageMapping : config.getMappings()) {
+            properties.getPackagesURIs().add(ePackageMapping.getUri());
         }
 
-        List<Integer> indicesToRemove = new ArrayList<>();
-        // Delete former variables
-        List<CTProperty> propertyList = customProperties.getUnderlyingProperties().getPropertyList();
-        for (int i = 0; i < propertyList.size(); i++) {
-            CTProperty prop = propertyList.get(i);
-            if (prop.getName() != null && prop.getName().startsWith(M2DocCustomProperties.VAR_PROPERTY_PREFIX)) {
-                indicesToRemove.add(i);
-            }
-        }
-        for (Integer indexToRemove : Lists.reverse(indicesToRemove)) {
-            customProperties.getUnderlyingProperties().removeProperty(indexToRemove.intValue());
-        }
-
-        // Variables
+        properties.getVariables().clear();
         for (TemplateVariable var : config.getVariables()) {
-            String name = var.getName();
-            String typeName = var.getTypeName();
-            String key = M2DocCustomProperties.VAR_PROPERTY_PREFIX + name;
-            if (customProperties.contains(key)) {
-                customProperties.getProperty(key).setLpwstr(typeName);
-            } else {
-                customProperties.addProperty(key, typeName);
-            }
+            properties.getVariables().put(var.getName(), var.getTypeName());
         }
+
+        properties.save();
     }
 
     /**
@@ -343,7 +306,7 @@ public final class TemplateConfigUtil {
         if (typeName == null) {
             return false;
         }
-        if (M2DocCustomProperties.STRING_TYPE.equals(typeName)) {
+        if (TemplateCustomProperties.STRING_TYPE.equals(typeName)) {
             return true;
         }
         int index = typeName.indexOf(METAMODEL_TYPE_SEPARATOR);

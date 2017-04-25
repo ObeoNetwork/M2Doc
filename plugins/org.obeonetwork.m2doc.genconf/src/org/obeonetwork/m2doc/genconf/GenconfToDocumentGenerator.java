@@ -317,7 +317,7 @@ public class GenconfToDocumentGenerator {
      */
     public Resource createConfigurationModel(URI templateFile) throws IOException {
         Resource resource = null;
-        TemplateCustomProperties templateProperties = POIServices.getInstance().getTemplateInformations(templateFile);
+        TemplateCustomProperties templateProperties = POIServices.getInstance().getTemplateCustomProperties(templateFile);
 
         // create genconf model
         if (templateProperties != null) {

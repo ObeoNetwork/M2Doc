@@ -64,6 +64,7 @@ public class TemplateCustomPropertiesTests {
                 .getXWPFDocument(URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> serviceClasses = properties.getServiceClasses();
+            assertEquals(2, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));
         }
