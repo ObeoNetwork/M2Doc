@@ -199,7 +199,7 @@ public class GenconfToDocumentGenerator {
 
             // validate template
             monitor.beginTask("Validating template.", 1);
-            boolean inError = validate(generatedFile, template, generation);
+            boolean inError = validate(generatedFile, template, queryEnvironment, generation);
             monitor.done();
 
             // add providers variables
@@ -443,7 +443,7 @@ public class GenconfToDocumentGenerator {
 
             // validate template
             if (template != null) {
-                res = validate(templateURI, template, generation);
+                res = validate(templateURI, template, queryEnvironment, generation);
             } else {
                 res = true;
             }
@@ -459,6 +459,8 @@ public class GenconfToDocumentGenerator {
      *            File
      * @param documentTemplate
      *            DocumentTemplate
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment}
      * @param generation
      *            Generation
      * @return if template contains errors/warnings/info
@@ -467,10 +469,8 @@ public class GenconfToDocumentGenerator {
      * @throws IOException
      *             IOException
      */
-    public boolean validate(URI templateFile, DocumentTemplate documentTemplate, Generation generation)
-            throws DocumentGenerationException, IOException {
-        final IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
-
+    public boolean validate(URI templateFile, DocumentTemplate documentTemplate, IQueryEnvironment queryEnvironment,
+            Generation generation) throws DocumentGenerationException, IOException {
         return validate(templateFile, documentTemplate, generation, queryEnvironment);
     }
 
