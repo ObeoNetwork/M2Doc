@@ -140,10 +140,10 @@ public class GenconfToDocumentGenerator {
      * 
      * @param generation
      *            the generation configuration object
-     * @param templateFile
-     *            template file
-     * @param generatedFile
-     *            generated file
+     * @param templateURI
+     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated docx {@link URI}
      * @return generated file and validation file if exists
      * @throws IOException
      *             if an I/O problem occurs
@@ -151,12 +151,12 @@ public class GenconfToDocumentGenerator {
      *             if the document coulnd'nt be parsed.
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
-     * @deprecated the method with a monitor parameter should be prefered.
+     * @deprecated the method with a monitor parameter should be preferred.
      */
     @Deprecated
-    public List<URI> generate(Generation generation, URI templateFile, URI generatedFile)
+    public List<URI> generate(Generation generation, URI templateURI, URI generatedURI)
             throws IOException, DocumentParserException, DocumentGenerationException {
-        return generate(generation, templateFile, generatedFile, new BasicMonitor());
+        return generate(generation, templateURI, generatedURI, new BasicMonitor());
     }
 
     /**
@@ -164,10 +164,10 @@ public class GenconfToDocumentGenerator {
      * 
      * @param generation
      *            the generation configuration object
-     * @param templateFile
-     *            template file
-     * @param generatedFile
-     *            generated file
+     * @param templateURI
+     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated docx {@link URI}
      * @param monitor
      *            used to track the progress will generating.
      * @return generated file and validation file if exists
@@ -178,10 +178,10 @@ public class GenconfToDocumentGenerator {
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
      */
-    public List<URI> generate(Generation generation, URI templateFile, URI generatedFile, Monitor monitor)
+    public List<URI> generate(Generation generation, URI templateURI, URI generatedURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
         // pre generation
-        preGenerate(generation, templateFile, generatedFile, monitor);
+        preGenerate(generation, templateURI, generatedURI, monitor);
 
         IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
@@ -194,28 +194,28 @@ public class GenconfToDocumentGenerator {
         monitor.done();
 
         // create generated file
-        try (DocumentTemplate template = M2DocUtils.parse(templateFile, queryEnvironment,
+        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
                 this.getClass().getClassLoader())) {
 
             // validate template
             monitor.beginTask("Validating template.", 1);
-            boolean inError = validate(generatedFile, template, queryEnvironment, generation);
+            boolean inError = validate(generatedURI, template, queryEnvironment, generation);
             monitor.done();
 
             // add providers variables
             definitions.putAll(configurationServices.getProviderVariables(generation));
 
             // launch generation
-            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, generatedFile, monitor);
+            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, generatedURI, monitor);
 
-            List<URI> generatedFiles = Lists.newArrayList(generatedFile);
+            List<URI> generatedFiles = Lists.newArrayList(generatedURI);
             if (inError) {
-                URI validationFile = getValidationLogFile(generatedFile);
+                URI validationFile = getValidationLogFile(generatedURI);
                 generatedFiles.add(validationFile);
             }
 
             // post generation
-            generatedFiles.addAll(postGenerate(generation, templateFile, generatedFile, template, monitor));
+            generatedFiles.addAll(postGenerate(generation, templateURI, generatedURI, template, monitor));
 
             return generatedFiles;
         }
@@ -226,19 +226,19 @@ public class GenconfToDocumentGenerator {
      * 
      * @param generation
      *            Generation
-     * @param templateFile
-     *            File
-     * @param generatedFile
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated docx {@link URI}
      * @param monitor
      *            used to track the progress will generating.
      */
-    public void preGenerate(Generation generation, URI templateFile, URI generatedFile, Monitor monitor) {
+    public void preGenerate(Generation generation, URI templateURI, URI generatedURI, Monitor monitor) {
         List<IConfigurationProvider> providers = ConfigurationProviderService.getInstance().getProviders();
         monitor.beginTask("Preparign document generation", providers.size());
         for (IConfigurationProvider configurationProvider : providers) {
             if (!monitor.isCanceled()) {
-                configurationProvider.preGenerate(generation, templateFile, generatedFile);
+                configurationProvider.preGenerate(generation, templateURI, generatedURI);
                 monitor.worked(1);
             }
         }
@@ -274,25 +274,25 @@ public class GenconfToDocumentGenerator {
      * 
      * @param generation
      *            Generation
-     * @param templateFile
-     *            File
-     * @param generatedFile
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated docx {@link URI}
      * @param template
      *            DocumentTemplate
      * @param monitor
      *            used to track the progress will generating.
      * @return File list to return after the generation. Generation result and validation log are already in there.
      */
-    public List<URI> postGenerate(Generation generation, URI templateFile, URI generatedFile, DocumentTemplate template,
+    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate template,
             Monitor monitor) {
         List<URI> files = Lists.newArrayList();
         List<IConfigurationProvider> providers = ConfigurationProviderService.getInstance().getProviders();
         monitor.beginTask("Launching post-generation tasks.", providers.size());
         for (IConfigurationProvider configurationProvider : providers) {
             if (!monitor.isCanceled()) {
-                List<URI> postGenerateFiles = configurationProvider.postGenerate(generation, templateFile,
-                        generatedFile, template);
+                List<URI> postGenerateFiles = configurationProvider.postGenerate(generation, templateURI, generatedURI,
+                        template);
                 monitor.worked(1);
                 if (postGenerateFiles != null) {
                     files.addAll(postGenerateFiles);
@@ -307,21 +307,22 @@ public class GenconfToDocumentGenerator {
     /**
      * Create genconf model from templateInfo information.
      * 
-     * @param templateFile
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
      * @return configuration model
      * @throws InvalidFormatException
      *             InvalidFormatException
      * @throws IOException
      *             IOException
      */
-    public Resource createConfigurationModel(URI templateFile) throws IOException {
+    public Resource createConfigurationModel(URI templateURI) throws IOException {
         Resource resource = null;
-        TemplateCustomProperties templateProperties = POIServices.getInstance().getTemplateCustomProperties(templateFile);
+        TemplateCustomProperties templateProperties = POIServices.getInstance()
+                .getTemplateCustomProperties(templateURI);
 
         // create genconf model
         if (templateProperties != null) {
-            resource = createConfigurationModel(templateProperties, templateFile);
+            resource = createConfigurationModel(templateProperties, templateURI);
         }
         return resource;
     }
@@ -378,15 +379,15 @@ public class GenconfToDocumentGenerator {
      * 
      * @param templateProperties
      *            TemplateInfo
-     * @param templateFile
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
      * @param generation
      *            Generation
      */
-    public void postCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateFile,
+    public void postCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateURI,
             Generation generation) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            configurationProvider.postCreateConfigurationModel(templateProperties, templateFile, generation);
+            configurationProvider.postCreateConfigurationModel(templateProperties, templateURI, generation);
         }
     }
 
@@ -395,12 +396,12 @@ public class GenconfToDocumentGenerator {
      * 
      * @param templateProperties
      *            TemplateInfo
-     * @param templateFile
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
      */
-    public void preCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateFile) {
+    public void preCreateConfigurationModel(TemplateCustomProperties templateProperties, URI templateURI) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            configurationProvider.preCreateConfigurationModel(templateProperties, templateFile);
+            configurationProvider.preCreateConfigurationModel(templateProperties, templateURI);
         }
     }
 
@@ -455,12 +456,12 @@ public class GenconfToDocumentGenerator {
     /**
      * Validate template with templateInfo information.
      * 
-     * @param templateFile
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
      * @param documentTemplate
      *            DocumentTemplate
      * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
+     *            the {@link IReadOnlyQueryEnvironment}
      * @param generation
      *            Generation
      * @return if template contains errors/warnings/info
@@ -469,26 +470,33 @@ public class GenconfToDocumentGenerator {
      * @throws IOException
      *             IOException
      */
-    public boolean validate(URI templateFile, DocumentTemplate documentTemplate, IQueryEnvironment queryEnvironment,
-            Generation generation) throws DocumentGenerationException, IOException {
-        return validate(templateFile, documentTemplate, generation, queryEnvironment);
+    public boolean validate(URI templateURI, DocumentTemplate documentTemplate,
+            IReadOnlyQueryEnvironment queryEnvironment, Generation generation)
+            throws DocumentGenerationException, IOException {
+        URI validationFile = getValidationLogFile(templateURI);
+
+        final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment);
+        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
+
+        return validationResult == ValidationMessageLevel.ERROR
+            && postValidateTemplate(templateURI, documentTemplate, generation);
     }
 
     /**
      * Post template validation.
      * 
-     * @param templateFile
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
      * @param template
      *            DocumentTemplate
      * @param generation
      *            Generation
      * @return validation result.
      */
-    public boolean postValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
+    public boolean postValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation) {
         boolean validate = true;
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            validate = validate && configurationProvider.postValidateTemplate(templateFile, template, generation);
+            validate = validate && configurationProvider.postValidateTemplate(templateURI, template, generation);
         }
         return validate;
     }
@@ -496,58 +504,30 @@ public class GenconfToDocumentGenerator {
     /**
      * Pre template validation.
      * 
-     * @param templateFile
-     *            File
+     * @param templateURI
+     *            the template URI
      * @param template
      *            DocumentTemplate
      * @param generation
      *            Generation
      */
-    public void preValidateTemplate(URI templateFile, DocumentTemplate template, Generation generation) {
+    public void preValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation) {
         for (IConfigurationProvider configurationProvider : ConfigurationProviderService.getInstance().getProviders()) {
-            configurationProvider.preValidateTemplate(templateFile, template, generation);
+            configurationProvider.preValidateTemplate(templateURI, template, generation);
         }
     }
 
     /**
-     * Validate template with templateInfo information.
+     * Gets the log {@link URI} for the given template {@link URI}.
      * 
-     * @param templateFile
-     *            File
-     * @param documentTemplate
-     *            DocumentTemplate
-     * @param generation
-     *            Generation
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @return if template contains errors
-     * @throws DocumentGenerationException
-     *             DocumentGenerationException
-     * @throws IOException
-     *             IOException
-     */
-    public boolean validate(URI templateFile, DocumentTemplate documentTemplate, Generation generation,
-            IReadOnlyQueryEnvironment queryEnvironment) throws DocumentGenerationException, IOException {
-        URI validationFile = getValidationLogFile(templateFile);
-
-        final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment);
-        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
-
-        return validationResult == ValidationMessageLevel.ERROR
-            && postValidateTemplate(templateFile, documentTemplate, generation);
-    }
-
-    /**
-     * return validation log file.
-     * 
-     * @param file
-     *            File
+     * @param templateURI
+     *            the template {@link URI}
      * @return validation log file.
      */
-    public URI getValidationLogFile(URI file) {
-        URI validationFile = file.trimSegments(1)
-                .appendSegment(Files.getNameWithoutExtension(file.lastSegment()) + "-error")
-                .appendFileExtension(file.fileExtension());
+    public URI getValidationLogFile(URI templateURI) {
+        URI validationFile = templateURI.trimSegments(1)
+                .appendSegment(Files.getNameWithoutExtension(templateURI.lastSegment()) + "-error")
+                .appendFileExtension(templateURI.fileExtension());
         return validationFile;
     }
 }
