@@ -6,12 +6,12 @@ Bundle-Version: 0.9.1.qualifier
 Bundle-Activator: org.obeonetwork.database.m2doc.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.dsl.database;bundle-version="4.0.0",
- org.obeonetwork.m2doc.ide.ui;bundle-version="[0.10.0,0.11.0)",
- org.obeonetwork.m2doc;bundle-version="[0.10.0,0.11.0)",
+ org.obeonetwork.m2doc.ide.ui,
+ org.obeonetwork.m2doc,
  org.eclipse.acceleo.annotations;bundle-version="4.0.0",
  org.eclipse.help,
  org.eclipse.emf.common,
- org.obeonetwork.m2doc.ide;bundle-version="[0.10.0,0.11.0)"
+ org.obeonetwork.m2doc.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.database.m2doc.services
