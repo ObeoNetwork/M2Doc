@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -26,6 +27,7 @@ import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.sirius.ui.M2DocSiriusUIPlugin;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -104,7 +106,8 @@ public class CDOGenerateHandler extends AbstractHandler {
 					GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
 					List<URI> generatedfiles = generator.generate(generation,
 							URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true),
-							URI.createPlatformResourceURI(generatedFile.getFullPath().toString(), true));
+							URI.createPlatformResourceURI(generatedFile.getFullPath().toString(), true),
+							new BasicMonitor());
 					if (generatedfiles.size() == 1) {
 						MessageDialog.openInformation(shell, "M2Doc generation",
 								"The document '" + generatedfiles.get(0).toString() + "' is generated.");

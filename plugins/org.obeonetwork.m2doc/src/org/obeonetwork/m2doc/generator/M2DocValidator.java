@@ -85,6 +85,7 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     /**
@@ -185,7 +186,6 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      *            the type to parse
      * @return the corresponding {@link AstResult}
      */
-    @SuppressWarnings("restriction")
     private static AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String type) {
         final IQueryBuilderEngine.AstResult result;
 

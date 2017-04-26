@@ -40,6 +40,7 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
  * 
  * @generated
  */
+@SuppressWarnings("restriction")
 public class ModelDefinitionItemProvider extends DefinitionItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!--
@@ -99,8 +100,8 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                 TemplateCustomProperties properties;
                                 try {
                                     final IQueryEnvironment queryEnvironment = Query.newEnvironment();
-                                    properties = POIServices.getInstance()
-                                            .getTemplateCustomProperties(URI.createURI(generation.getTemplateFileName()));
+                                    properties = POIServices.getInstance().getTemplateCustomProperties(
+                                            URI.createURI(generation.getTemplateFileName()));
                                     for (String nsURI : properties.getPackagesURIs()) {
                                         final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
                                         queryEnvironment.registerEPackage(ePackage);

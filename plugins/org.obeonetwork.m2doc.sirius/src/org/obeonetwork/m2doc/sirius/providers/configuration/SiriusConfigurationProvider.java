@@ -44,6 +44,7 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
+@SuppressWarnings("restriction")
 public class SiriusConfigurationProvider implements IConfigurationProvider {
 
     /**

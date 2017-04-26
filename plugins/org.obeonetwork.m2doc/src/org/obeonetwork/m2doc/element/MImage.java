@@ -18,8 +18,9 @@ import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.util.PictureType;
 
 /**
+ * An image that can be returned by services.
+ * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
- *
  */
 public interface MImage {
 

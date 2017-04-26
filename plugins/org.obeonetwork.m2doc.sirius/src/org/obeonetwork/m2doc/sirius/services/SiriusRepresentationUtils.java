@@ -12,19 +12,13 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.gmf.runtime.diagram.core.util.ViewUtil;
 import org.eclipse.gmf.runtime.diagram.ui.image.ImageFileFormat;
-import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
-import org.eclipse.sirius.business.api.session.CustomDataConstants;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionStatus;
 import org.eclipse.sirius.diagram.DDiagram;
-import org.eclipse.sirius.diagram.business.api.query.DDiagramQuery;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.ui.internal.refresh.SiriusDiagramSessionEventBroker;
 import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
@@ -37,7 +31,6 @@ import org.eclipse.sirius.ui.business.api.session.SessionUIManager;
 import org.eclipse.sirius.ui.tools.api.actions.export.SizeTooLargeException;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
-import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.swt.widgets.Display;
@@ -52,6 +45,7 @@ import org.obeonetwork.m2doc.sirius.session.CleaningJobRegistry;
  * 
  * @author Romain Guider
  */
+@SuppressWarnings("restriction")
 public final class SiriusRepresentationUtils {
 
     /**
@@ -219,30 +213,6 @@ public final class SiriusRepresentationUtils {
     }
 
     /**
-     * Get the GMF Diagram instance corresponding to a viewpoint
-     * DDiagram.
-     * 
-     * @param semanticDiagram
-     *            the diagram object from which we want to create an image.
-     * @return the GMF Diagram instance corresponding to a viewpoint
-     *         DDiagram.
-     */
-    private static Diagram getGmfDiagram(DDiagram semanticDiagram) {
-        for (final AnnotationEntry annotation : new DDiagramQuery(semanticDiagram)
-                .getAnnotation(CustomDataConstants.GMF_DIAGRAMS)) {
-            EObject eObject = annotation.getData();
-            if (eObject instanceof Diagram) {
-                final Diagram diagramInResource = (Diagram) eObject;
-                final EObject semanticElement = ViewUtil.resolveSemanticElement(diagramInResource);
-                if (semanticElement.equals(semanticDiagram)) {
-                    return diagramInResource;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * If layers is empty return diagram else return diagram copy with applied layers.
      * 
      * @param diagram
@@ -319,11 +289,6 @@ public final class SiriusRepresentationUtils {
                 File file = new File(filePath);
                 file.getParentFile().mkdirs();
                 final IPath path = new Path(filePath);
-                final Diagram gmfDiagram = getGmfDiagram(diagramtoExport);
-
-                final EditingDomain editingDomain = session.getTransactionalEditingDomain();
-                final Diagram realOne = (Diagram) editingDomain.getResourceSet()
-                        .getEObject(EcoreUtil.getURI(gmfDiagram), true);
                 try {
                     Runnable exportDiagUnitOfWork = new Runnable() {
 
@@ -351,7 +316,7 @@ public final class SiriusRepresentationUtils {
                     if (!diagramtoExport.equals(dsd)) {
                         session.getTransactionalEditingDomain().getCommandStack().undo();
                     }
-                    // CHECKSTYLE:OFF introducing a dedicated runtimexception just for this case seems overkill
+                    // CHECKSTYLE:OFF introducing a dedicated runtime exception just for this case seems overkill
                 } catch (RuntimeException e) {
                     // CHECKSTYLE:ON
                     throw new ProviderException("Image creation from diagram '" + dRepresentation.getName()

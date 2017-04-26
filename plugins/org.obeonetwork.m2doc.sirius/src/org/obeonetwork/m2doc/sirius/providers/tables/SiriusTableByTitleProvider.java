@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.session.Session;
@@ -28,7 +27,6 @@ import org.eclipse.sirius.viewpoint.DView;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.provider.OptionType;
-import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.sirius.util.OptionUtil;
 
@@ -38,6 +36,7 @@ import org.obeonetwork.m2doc.sirius.util.OptionUtil;
  * 
  * @author ldelaigue
  */
+@SuppressWarnings("restriction")
 public class SiriusTableByTitleProvider extends AbstractSiriusTableProvider {
     /**
      * The option key used to retrieve the 'title' option.
@@ -47,7 +46,6 @@ public class SiriusTableByTitleProvider extends AbstractSiriusTableProvider {
     @Override
     public List<MTable> getTables(ResourceSet resourceSetForModels, Map<String, Object> parameters)
             throws ProviderException {
-        EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
         boolean refreshTables = OptionUtil.mustRefreshRepresentation(parameters);
         Option<SessionTransientAttachment> attachement = SessionTransientAttachment
                 .getSessionTransientAttachement(resourceSetForModels);

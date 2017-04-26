@@ -41,6 +41,7 @@ import org.obeonetwork.m2doc.sirius.util.OptionUtil;
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
+@SuppressWarnings("restriction")
 public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriusDiagramImagesProvider {
     /**
      * The option key used to retrieve the {@link EObject} root of some diagram representations.
@@ -66,7 +67,6 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
     public SiriusDiagramByDiagramDescriptionNameProvider() {
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<String> getRepresentationImagePath(ResourceSet resourceSetForModel, Map<String, Object> parameters)
             throws ProviderException {
@@ -76,6 +76,7 @@ public class SiriusDiagramByDiagramDescriptionNameProvider extends AbstractSiriu
         Object diagramDescriptionName = parameters.get(DIAGRAM_DESCRIPTION_ID_KEY);
         Object targetRootObject = parameters.get(TARGET_ROOT_OBJECT_KEY);
         boolean createIfAbsent = CREATE_VALUE.equals(parameters.get(CREATE_ID_KEY));
+        @SuppressWarnings("unchecked")
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);
         refreshRepresentations = OptionUtil.mustRefreshRepresentation(parameters);

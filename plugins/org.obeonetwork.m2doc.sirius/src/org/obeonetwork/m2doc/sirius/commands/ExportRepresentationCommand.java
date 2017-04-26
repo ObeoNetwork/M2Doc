@@ -33,6 +33,7 @@ import org.eclipse.sirius.viewpoint.DRepresentation;
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
+@SuppressWarnings("restriction")
 public class ExportRepresentationCommand extends RecordingCommand {
 
     /**

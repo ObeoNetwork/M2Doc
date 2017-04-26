@@ -1,4 +1,4 @@
-package org.obeonetwork.m2doc.sirius.ui.handlers;
+package org.obeonetwork.m2doc.sirius.ui;
 /*******************************************************************************
 
  * Copyright (c) 2016 Obeo.

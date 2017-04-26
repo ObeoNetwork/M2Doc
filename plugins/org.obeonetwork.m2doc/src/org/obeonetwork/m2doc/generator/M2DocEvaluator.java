@@ -196,6 +196,9 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      */
     private ResourceSet resourceSetForModels;
 
+    /**
+     * The progress {@link Monitor}.
+     */
     private Monitor monitor;
 
     /**

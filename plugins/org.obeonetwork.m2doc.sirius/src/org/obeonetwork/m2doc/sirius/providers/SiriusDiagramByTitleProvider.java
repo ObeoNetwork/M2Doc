@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
@@ -38,6 +37,7 @@ import org.obeonetwork.m2doc.sirius.util.OptionUtil;
  * 
  * @author pguilet<pierre.guilet@obeo.fr>
  */
+@SuppressWarnings("restriction")
 public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesProvider {
     /**
      * The key used in the map passed to {@link IProvider} to define the Sirius
@@ -66,7 +66,6 @@ public class SiriusDiagramByTitleProvider extends AbstractSiriusDiagramImagesPro
     @Override
     public List<String> getRepresentationImagePath(ResourceSet resourceSetForModel, Map<String, Object> parameters)
             throws ProviderException {
-        EObject rootObject = (EObject) parameters.get(ProviderConstants.CONF_ROOT_OBJECT_KEY);
         String rootPath = createTempDirectoryPath();
         List<String> diagramActivatedLayers = (List<String>) parameters
                 .get(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY);

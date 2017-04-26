@@ -82,6 +82,7 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
  * 
  * @author Romain Guider
  */
+@SuppressWarnings("restriction")
 public class M2DocParser extends BodyAbstractParser {
 
     /**

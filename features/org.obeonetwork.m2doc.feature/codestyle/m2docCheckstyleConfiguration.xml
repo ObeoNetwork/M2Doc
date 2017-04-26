@@ -24,6 +24,7 @@
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
     <module name="FileContentsHolder"/>
+    <module name="SuppressWarningsHolder"/>
     <module name="JavadocMethod">
       <property name="severity" value="warning"/>
       <property name="allowMissingPropertyJavadoc" value="true"/>
@@ -338,10 +339,12 @@
       <property name="format" value="^Abstract.*$"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="error"/>
     </module>
+    <module name="SuppressWarnings"/>
   </module>
   <module name="FileLength">
     <property name="severity" value="error"/>
     <property name="max" value="3000"/>
   </module>
   <module name="SuppressionCommentFilter"/>
+  <module name="SuppressWarningsFilter"/>
 </module>

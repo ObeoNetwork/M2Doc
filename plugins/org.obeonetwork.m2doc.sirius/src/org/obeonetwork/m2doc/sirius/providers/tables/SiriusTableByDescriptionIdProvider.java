@@ -50,6 +50,7 @@ import org.obeonetwork.m2doc.sirius.util.OptionUtil;
  * 
  * @author ldelaigue
  */
+@SuppressWarnings("restriction")
 public class SiriusTableByDescriptionIdProvider extends AbstractSiriusTableProvider {
     /**
      * The option key used to retrieve the {@link EObject} root of some diagram representations.

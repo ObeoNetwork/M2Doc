@@ -56,6 +56,9 @@ public final class TableClientProcessor {
     /** The table provider. */
     private final AbstractTableProvider provider;
 
+    /**
+     * The {@link ResourceSet} for model variables.
+     */
     private final ResourceSet resourceSetForModels;
 
     /**
