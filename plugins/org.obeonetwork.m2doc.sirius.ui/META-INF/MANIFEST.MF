@@ -14,3 +14,4 @@ Require-Bundle: org.eclipse.ui,
  org.obeonetwork.m2doc
 Bundle-Activator: org.obeonetwork.m2doc.sirius.ui.M2DocSiriusUIPlugin
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.obeonetwork.m2doc.sample.ecore.design
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.sirius.sample.ecore.design;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.obeonetwork.m2doc.sirius.sample.ecore.design.Activator
@@ -11,3 +11,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.sirius.sample.ecore.design
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin

@@ -12,5 +12,6 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Export-Package: org.obeonetwork.m2doc.genconf.emf.ui,
  org.obeonetwork.m2doc.genconf.emf.ui.celleditor
