@@ -7,7 +7,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc;bundle-version="[0.11.0,0.12.0)"
 Export-Package: org.obeonetwork.m2doc.ide,
- org.obeonetwork.m2doc.ide.services
+ org.obeonetwork.m2doc.ide.services,
+ org.obeonetwork.m2doc.ide.services.configurator
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.obeonetwork.m2doc.ide.M2DocPlugin$Implementation
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin

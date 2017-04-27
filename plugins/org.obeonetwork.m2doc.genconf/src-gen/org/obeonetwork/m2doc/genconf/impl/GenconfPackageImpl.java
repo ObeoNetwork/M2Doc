@@ -15,6 +15,7 @@ import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
+import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 
 /**
@@ -53,6 +54,13 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 	private EClass stringDefinitionEClass = null;
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass optionEClass = null;
+
+    /**
      * Creates an instance of the model <b>Package</b>, registered with
      * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
      * package URI value.
@@ -154,20 +162,11 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
 	/**
      * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getGeneration_RepresentationsFileName() {
-        return (EAttribute)generationEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
 	public EAttribute getGeneration_TimeStamped() {
-        return (EAttribute)generationEClass.getEStructuralFeatures().get(4);
+        return (EAttribute)generationEClass.getEStructuralFeatures().get(3);
     }
 
 	/**
@@ -176,7 +175,7 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * @generated
      */
     public EAttribute getGeneration_RefreshRepresentations() {
-        return (EAttribute)generationEClass.getEStructuralFeatures().get(5);
+        return (EAttribute)generationEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -185,10 +184,19 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * @generated
      */
 	public EReference getGeneration_Definitions() {
-        return (EReference)generationEClass.getEStructuralFeatures().get(6);
+        return (EReference)generationEClass.getEStructuralFeatures().get(5);
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getGeneration_Options() {
+        return (EReference)generationEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -244,6 +252,33 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getOption() {
+        return optionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOption_Name() {
+        return (EAttribute)optionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOption_Value() {
+        return (EAttribute)optionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -274,10 +309,10 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
         createEAttribute(generationEClass, GENERATION__NAME);
         createEAttribute(generationEClass, GENERATION__TEMPLATE_FILE_NAME);
         createEAttribute(generationEClass, GENERATION__RESULT_FILE_NAME);
-        createEAttribute(generationEClass, GENERATION__REPRESENTATIONS_FILE_NAME);
         createEAttribute(generationEClass, GENERATION__TIME_STAMPED);
         createEAttribute(generationEClass, GENERATION__REFRESH_REPRESENTATIONS);
         createEReference(generationEClass, GENERATION__DEFINITIONS);
+        createEReference(generationEClass, GENERATION__OPTIONS);
 
         definitionEClass = createEClass(DEFINITION);
         createEAttribute(definitionEClass, DEFINITION__KEY);
@@ -287,6 +322,10 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
         stringDefinitionEClass = createEClass(STRING_DEFINITION);
         createEAttribute(stringDefinitionEClass, STRING_DEFINITION__VALUE);
+
+        optionEClass = createEClass(OPTION);
+        createEAttribute(optionEClass, OPTION__NAME);
+        createEAttribute(optionEClass, OPTION__VALUE);
     }
 
 	/**
@@ -328,10 +367,10 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
         initEAttribute(getGeneration_Name(), ecorePackage.getEString(), "name", null, 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGeneration_TemplateFileName(), ecorePackage.getEString(), "templateFileName", null, 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGeneration_ResultFileName(), ecorePackage.getEString(), "resultFileName", null, 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getGeneration_RepresentationsFileName(), ecorePackage.getEString(), "representationsFileName", null, 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGeneration_TimeStamped(), ecorePackage.getEBoolean(), "timeStamped", "true", 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGeneration_RefreshRepresentations(), theEcorePackage.getEBoolean(), "refreshRepresentations", "false", 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getGeneration_Definitions(), this.getDefinition(), null, "definitions", null, 0, -1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getGeneration_Options(), this.getOption(), null, "options", null, 0, -1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(definitionEClass, Definition.class, "Definition", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDefinition_Key(), ecorePackage.getEString(), "key", null, 0, 1, Definition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -341,6 +380,10 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
         initEClass(stringDefinitionEClass, StringDefinition.class, "StringDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getStringDefinition_Value(), ecorePackage.getEString(), "value", null, 0, 1, StringDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(optionEClass, Option.class, "Option", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getOption_Name(), theEcorePackage.getEString(), "name", null, 1, 1, Option.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getOption_Value(), theEcorePackage.getEString(), "value", null, 1, 1, Option.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         createResource(eNS_URI);

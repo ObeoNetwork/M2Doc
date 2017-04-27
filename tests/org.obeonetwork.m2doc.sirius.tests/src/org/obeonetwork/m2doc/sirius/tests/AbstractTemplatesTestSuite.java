@@ -2,22 +2,18 @@ package org.obeonetwork.m2doc.sirius.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.URIConverter;
-import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.business.api.session.SessionManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.Option;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.sirius.M2DocSiriusUtils;
 import org.obeonetwork.m2doc.sirius.providers.SiriusDiagramByTitleProvider;
-import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
@@ -33,11 +29,6 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     private static final SiriusDiagramByTitleProvider PROVIDER = new SiriusDiagramByTitleProvider();
 
     /**
-     * The instance of M2DocSiriusServices.
-     */
-    private M2DocSiriusServices m2DocSiriusServices;
-
-    /**
      * Constructor.
      * 
      * @param testFolder
@@ -49,6 +40,8 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
+        // make sure m2doc.ide is activated
+        M2DocPlugin.getPlugin();
     }
 
     /**
@@ -75,36 +68,10 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     @Override
     protected void setTemplateFileName(Generation gen, String templateFileName) {
         super.setTemplateFileName(gen, templateFileName);
-        gen.setRepresentationsFileName(getSessionURI(new File(getTestFolderPath())).toString());
-    }
-
-    @Override
-    protected IQueryEnvironment createEnvironment(URI templateURI) {
-        final IQueryEnvironment res = super.createEnvironment(templateURI);
-
-        m2DocSiriusServices = M2DocSiriusUtils.prepareEnvironmentServices(res, initSession());
-
-        return res;
-    }
-
-    /**
-     * Initializes the Sirius {@link Session}.
-     * 
-     * @return the Sirius {@link Session}
-     */
-    private Session initSession() {
-        final Session res;
-
-        final URI sessionURI = getSessionURI(new File(getTestFolderPath()));
-        if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
-            final Session s = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
-            s.open(new NullProgressMonitor());
-            res = s;
-        } else {
-            res = null;
-        }
-
-        return res;
+        final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
+        option.setName(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        option.setValue(getSessionURI(new File(getTestFolderPath())).toString());
+        gen.getOptions().add(option);
     }
 
     /**
@@ -121,7 +88,6 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     @Override
     public void generation() throws Exception {
         super.generation();
-        m2DocSiriusServices.clean();
     }
 
 }

@@ -12,3 +12,4 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[0.11.0,0.12.0)",
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.obeonetwork.m2doc.ide.tests.M2DocTestPlugin$Implementation
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin

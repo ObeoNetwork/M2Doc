@@ -94,22 +94,13 @@ public interface GenconfPackage extends EPackage {
 	int GENERATION__RESULT_FILE_NAME = 2;
 
 	/**
-     * The feature id for the '<em><b>Representations File Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int GENERATION__REPRESENTATIONS_FILE_NAME = 3;
-
-    /**
      * The feature id for the '<em><b>Time Stamped</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int GENERATION__TIME_STAMPED = 4;
+	int GENERATION__TIME_STAMPED = 3;
 
 	/**
      * The feature id for the '<em><b>Refresh Representations</b></em>' attribute.
@@ -118,7 +109,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION__REFRESH_REPRESENTATIONS = 5;
+    int GENERATION__REFRESH_REPRESENTATIONS = 4;
 
     /**
      * The feature id for the '<em><b>Definitions</b></em>' containment reference list.
@@ -127,9 +118,18 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-	int GENERATION__DEFINITIONS = 6;
+	int GENERATION__DEFINITIONS = 5;
 
 	/**
+     * The feature id for the '<em><b>Options</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GENERATION__OPTIONS = 6;
+
+    /**
      * The number of structural features of the '<em>Generation</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -278,6 +278,53 @@ public interface GenconfPackage extends EPackage {
 
 
 	/**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl <em>Option</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.obeonetwork.m2doc.genconf.impl.OptionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getOption()
+     * @generated
+     */
+    int OPTION = 4;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION__VALUE = 1;
+
+    /**
+     * The number of structural features of the '<em>Option</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Option</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int OPTION_OPERATION_COUNT = 0;
+
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.Generation <em>Generation</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -321,17 +368,6 @@ public interface GenconfPackage extends EPackage {
 	EAttribute getGeneration_ResultFileName();
 
 	/**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getRepresentationsFileName <em>Representations File Name</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Representations File Name</em>'.
-     * @see org.obeonetwork.m2doc.genconf.Generation#getRepresentationsFileName()
-     * @see #getGeneration()
-     * @generated
-     */
-    EAttribute getGeneration_RepresentationsFileName();
-
-    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#isTimeStamped <em>Time Stamped</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -365,6 +401,17 @@ public interface GenconfPackage extends EPackage {
 	EReference getGeneration_Definitions();
 
 	/**
+     * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.genconf.Generation#getOptions <em>Options</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Options</em>'.
+     * @see org.obeonetwork.m2doc.genconf.Generation#getOptions()
+     * @see #getGeneration()
+     * @generated
+     */
+    EReference getGeneration_Options();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.Definition <em>Definition</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -428,6 +475,38 @@ public interface GenconfPackage extends EPackage {
 	EAttribute getStringDefinition_Value();
 
 	/**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.Option <em>Option</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Option</em>'.
+     * @see org.obeonetwork.m2doc.genconf.Option
+     * @generated
+     */
+    EClass getOption();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Option#getName <em>Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.obeonetwork.m2doc.genconf.Option#getName()
+     * @see #getOption()
+     * @generated
+     */
+    EAttribute getOption_Name();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Option#getValue <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.Option#getValue()
+     * @see #getOption()
+     * @generated
+     */
+    EAttribute getOption_Value();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -485,14 +564,6 @@ public interface GenconfPackage extends EPackage {
 		EAttribute GENERATION__RESULT_FILE_NAME = eINSTANCE.getGeneration_ResultFileName();
 
 		/**
-         * The meta object literal for the '<em><b>Representations File Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute GENERATION__REPRESENTATIONS_FILE_NAME = eINSTANCE.getGeneration_RepresentationsFileName();
-
-        /**
          * The meta object literal for the '<em><b>Time Stamped</b></em>' attribute feature.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -517,6 +588,14 @@ public interface GenconfPackage extends EPackage {
 		EReference GENERATION__DEFINITIONS = eINSTANCE.getGeneration_Definitions();
 
 		/**
+         * The meta object literal for the '<em><b>Options</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference GENERATION__OPTIONS = eINSTANCE.getGeneration_Options();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.DefinitionImpl <em>Definition</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -569,6 +648,32 @@ public interface GenconfPackage extends EPackage {
          * @generated
          */
 		EAttribute STRING_DEFINITION__VALUE = eINSTANCE.getStringDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl <em>Option</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.obeonetwork.m2doc.genconf.impl.OptionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getOption()
+         * @generated
+         */
+        EClass OPTION = eINSTANCE.getOption();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute OPTION__NAME = eINSTANCE.getOption_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute OPTION__VALUE = eINSTANCE.getOption_Value();
 
 	}
 
