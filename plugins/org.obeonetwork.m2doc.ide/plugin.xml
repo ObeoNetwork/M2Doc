@@ -19,6 +19,7 @@
 <plugin>
    <extension-point id="org.obeonetwork.m2doc.ide.services.register" name="M2Doc Service Register" schema="schema/org.obeonetwork.m2doc.ide.services.register.exsd"/>
    <extension-point id="org.obeonetwork.m2doc.ide.providers.register" name="M2Doc Provider Register" schema="schema/org.obeonetwork.m2doc.ide.providers.register.exsd"/>
+   <extension-point id="org.obeonetwork.m2doc.ide.servicesConfigurator" name="Services Configurator" schema="schema/org.obeonetwork.m2doc.ide.servicesConfigurator.exsd"/>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated Template -->

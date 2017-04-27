@@ -143,28 +143,13 @@ public abstract class AbstractTemplatesTestSuite {
         }
         final URI templateURI = getTemplateURI(new File(testFolderPath));
         setTemplateFileName(generation, templateURI.toFileString());
-        queryEnvironment = createEnvironment(templateURI);
+        final ConfigurationServices configurationServices = new ConfigurationServices();
+        queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment, this.getClass().getClassLoader());
-        ConfigurationServices configurationServices = new ConfigurationServices();
-        ResourceSet resourceSetForModels = new GenconfToDocumentGenerator().createResourceSetForModels(generation);
+        final ResourceSet resourceSetForModels = new GenconfToDocumentGenerator().createResourceSetForModels(generation);
         variables = configurationServices.createDefinitions(generation, resourceSetForModels);
         // add providers variables
         variables.putAll(configurationServices.getProviderVariables(generation));
-    }
-
-    /**
-     * Gets the {@link IQueryEnvironment}.
-     * 
-     * @param templateURI
-     *            the template {@link URI}
-     * @return the {@link IQueryEnvironment}
-     */
-    protected IQueryEnvironment createEnvironment(final URI templateURI) {
-        IQueryEnvironment env = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
-
-        M2DocUtils.prepareEnvironmentServices(env, templateURI);
-
-        return env;
     }
 
     /**

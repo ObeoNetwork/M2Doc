@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -35,7 +36,9 @@ import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
 import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
+import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.sirius.M2DocSiriusUtils;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
@@ -188,10 +191,11 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
     @Override
     public ResourceSet createResourceSetForModels(Generation generation) {
         ResourceSet created = null;
-        if (generation.getRepresentationsFileName() != null
-            && generation.getRepresentationsFileName().endsWith("aird")) {
+        final Map<String, String> options = new ConfigurationServices().getOptions(generation);
+        final String representationsFileName = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        if (representationsFileName != null && representationsFileName.endsWith("aird")) {
             final URI sessionURI = GenconfToDocumentGenerator.createURIStartingFromCurrentModel(generation,
-                    generation.getRepresentationsFileName());
+                    representationsFileName);
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session s = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
                 s.open(new NullProgressMonitor());

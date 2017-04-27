@@ -63,6 +63,8 @@ import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
+import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
+import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Template;
@@ -95,6 +97,12 @@ public final class M2DocUtils {
      * Docx extension file.
      */
     public static final String DOCX_EXTENSION_FILE = "docx";
+
+    /**
+     * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
+     * {@link IServicesConfiguratorDescriptor}.
+     */
+    private static final List<IServicesConfiguratorDescriptor> CONFIGURATORS = new ArrayList<IServicesConfiguratorDescriptor>();
 
     /**
      * Constructor.
@@ -301,8 +309,11 @@ public final class M2DocUtils {
      *            the {@link IQueryEnvironment}
      * @param templateURI
      *            the template {@link URI}
+     * @param options
+     *            the {@link Map} of options
      */
-    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, URI templateURI) {
+    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, URI templateURI,
+            Map<String, String> options) {
 
         Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
@@ -314,6 +325,9 @@ public final class M2DocUtils {
         for (Class<?> cls : defaultClasses) {
             services = ServiceUtils.getServices(queryEnvironment, cls);
             ServiceUtils.registerServices(queryEnvironment, services);
+        }
+        for (IServicesConfigurator configurator : getConfigurators()) {
+            ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment, options));
         }
     }
 
@@ -579,6 +593,9 @@ public final class M2DocUtils {
 
             userContentManager.generateLostFiles(result);
             userContentManager.dispose();
+            for (IServicesConfigurator configurator : getConfigurators()) {
+                configurator.cleanServices(queryEnvironment);
+            }
 
             // At this point, the document has been generated and just needs being
             // written on disk.
@@ -594,6 +611,55 @@ public final class M2DocUtils {
         } finally {
             monitor.done();
         }
+    }
+
+    /**
+     * Registers the given {@link IServicesConfiguratorDescriptor}.
+     * 
+     * @param configurator
+     *            the {@link IServicesConfiguratorDescriptor} to register
+     */
+    public static void registerServicesConfigurator(IServicesConfiguratorDescriptor configurator) {
+        if (configurator != null) {
+            synchronized (CONFIGURATORS) {
+                CONFIGURATORS.add(configurator);
+            }
+        }
+    }
+
+    /**
+     * Unregister the given {@link IServicesConfiguratorDescriptor}.
+     * 
+     * @param configuratorDescriptor
+     *            the {@link IServicesConfiguratorDescriptor} to unregister
+     */
+    public static void unregisterServicesConfigurator(IServicesConfiguratorDescriptor configuratorDescriptor) {
+        if (configuratorDescriptor != null) {
+            synchronized (CONFIGURATORS) {
+                CONFIGURATORS.remove(configuratorDescriptor);
+            }
+        }
+    }
+
+    /**
+     * Gets the {@link List} of registered {@link IServicesConfigurator}.
+     * 
+     * @return the {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
+     *         {@link IServicesConfigurator}
+     */
+    public static List<IServicesConfigurator> getConfigurators() {
+        final List<IServicesConfigurator> res = new ArrayList<IServicesConfigurator>();
+
+        synchronized (CONFIGURATORS) {
+            for (IServicesConfiguratorDescriptor descriptor : CONFIGURATORS) {
+                final IServicesConfigurator configurator = descriptor.getServicesConfigurator();
+                if (configurator != null) {
+                    res.add(configurator);
+                }
+            }
+        }
+
+        return res;
     }
 
 }

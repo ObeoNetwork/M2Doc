@@ -12,12 +12,14 @@
 
 package org.obeonetwork.m2doc.ide;
 
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.obeonetwork.m2doc.ide.provider.DeclaredProviderListener;
+import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
 import org.obeonetwork.m2doc.provider.IProvider;
 import org.osgi.framework.BundleContext;
 
@@ -74,6 +76,10 @@ public class M2DocPlugin extends EMFPlugin {
      * @author cedric
      */
     public static class Implementation extends EclipsePlugin {
+
+        /** The registry listener that will be used to listen to extension changes. */
+        private ServicesConfiguratorRegistryListener registryListener = new ServicesConfiguratorRegistryListener();
+
         /**
          * Create the Eclipse Implementation.
          */
@@ -95,6 +101,10 @@ public class M2DocPlugin extends EMFPlugin {
             super.start(context);
             INSTANCE.providerListener = new DeclaredProviderListener();
             Platform.getExtensionRegistry().addListener(INSTANCE.providerListener);
+            final IExtensionRegistry registry = Platform.getExtensionRegistry();
+            registry.addListener(registryListener,
+                    ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
+            registryListener.parseInitialContributions();
         }
 
         /*
@@ -106,6 +116,9 @@ public class M2DocPlugin extends EMFPlugin {
         public void stop(BundleContext context) throws Exception {
             super.stop(context);
             Platform.getExtensionRegistry().removeListener(INSTANCE.providerListener);
+            final IExtensionRegistry registry = Platform.getExtensionRegistry();
+            registry.removeListener(registryListener);
+            // TODO clear registry and registryListener ?
         }
     }
 

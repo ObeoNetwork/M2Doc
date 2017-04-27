@@ -66,7 +66,6 @@ public class GenerationItemProvider
             addNamePropertyDescriptor(object);
             addTemplateFileNamePropertyDescriptor(object);
             addResultFileNamePropertyDescriptor(object);
-            addRepresentationsFileNamePropertyDescriptor(object);
             addTimeStampedPropertyDescriptor(object);
             addRefreshRepresentationsPropertyDescriptor(object);
         }
@@ -140,28 +139,6 @@ public class GenerationItemProvider
     }
 
 	/**
-     * This adds a property descriptor for the Representations File Name feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected void addRepresentationsFileNamePropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_Generation_representationsFileName_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_Generation_representationsFileName_feature", "_UI_Generation_type"),
-                 GenconfPackage.Literals.GENERATION__REPRESENTATIONS_FILE_NAME,
-                 true,
-                 false,
-                 false,
-                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-                 null,
-                 null));
-    }
-
-    /**
      * This adds a property descriptor for the Time Stamped feature.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -218,6 +195,7 @@ public class GenerationItemProvider
         if (childrenFeatures == null) {
             super.getChildrenFeatures(object);
             childrenFeatures.add(GenconfPackage.Literals.GENERATION__DEFINITIONS);
+            childrenFeatures.add(GenconfPackage.Literals.GENERATION__OPTIONS);
         }
         return childrenFeatures;
     }
@@ -286,12 +264,12 @@ public class GenerationItemProvider
             case GenconfPackage.GENERATION__NAME:
             case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
-            case GenconfPackage.GENERATION__REPRESENTATIONS_FILE_NAME:
             case GenconfPackage.GENERATION__TIME_STAMPED:
             case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case GenconfPackage.GENERATION__DEFINITIONS:
+            case GenconfPackage.GENERATION__OPTIONS:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -318,6 +296,11 @@ public class GenerationItemProvider
             (createChildParameter
                 (GenconfPackage.Literals.GENERATION__DEFINITIONS,
                  GenconfFactory.eINSTANCE.createStringDefinition()));
+
+        newChildDescriptors.add
+            (createChildParameter
+                (GenconfPackage.Literals.GENERATION__OPTIONS,
+                 GenconfFactory.eINSTANCE.createOption()));
     }
 
 	/**

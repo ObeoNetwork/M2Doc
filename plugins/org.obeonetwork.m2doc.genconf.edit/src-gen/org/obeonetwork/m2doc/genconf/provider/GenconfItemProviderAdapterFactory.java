@@ -141,6 +141,29 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory imp
     }
 
 	/**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.Option} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected OptionItemProvider optionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.Option}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public Adapter createOptionAdapter() {
+        if (optionItemProvider == null) {
+            optionItemProvider = new OptionItemProvider(this);
+        }
+
+        return optionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -242,6 +265,7 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory imp
         if (generationItemProvider != null) generationItemProvider.dispose();
         if (modelDefinitionItemProvider != null) modelDefinitionItemProvider.dispose();
         if (stringDefinitionItemProvider != null) stringDefinitionItemProvider.dispose();
+        if (optionItemProvider != null) optionItemProvider.dispose();
     }
 
 }

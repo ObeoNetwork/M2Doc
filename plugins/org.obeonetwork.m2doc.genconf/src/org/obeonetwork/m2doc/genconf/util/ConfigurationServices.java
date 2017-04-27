@@ -28,6 +28,7 @@ import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
+import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.provider.ProviderConstants;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -45,6 +46,11 @@ public class ConfigurationServices {
     public static final String GENCONF_EXTENSION_FILE = "genconf";
 
     /**
+     * The genconf {@link URI} option.
+     */
+    public static final String GENCONF_URI_OPTION = "GenconfURI";
+
+    /**
      * Init acceleo environment.
      * 
      * @param generation
@@ -60,7 +66,8 @@ public class ConfigurationServices {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
-        M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI);
+        final Map<String, String> options = getOptions(generation);
+        M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI, options);
 
         return queryEnvironment;
     }
@@ -179,4 +186,26 @@ public class ConfigurationServices {
         generation.getDefinitions().add(stringDefinition);
         return stringDefinition;
     }
+
+    /**
+     * Gets the {@link Map} of options from the given {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @return the {@link Map} of options from the given {@link Generation}
+     */
+    public Map<String, String> getOptions(Generation generation) {
+        final Map<String, String> res = new LinkedHashMap<String, String>();
+
+        final Resource eResource = generation.eResource();
+        if (eResource != null) {
+            res.put(GENCONF_URI_OPTION, eResource.getURI().toString());
+        }
+        for (Option option : generation.getOptions()) {
+            res.put(option.getName(), option.getValue());
+        }
+
+        return res;
+    }
+
 }

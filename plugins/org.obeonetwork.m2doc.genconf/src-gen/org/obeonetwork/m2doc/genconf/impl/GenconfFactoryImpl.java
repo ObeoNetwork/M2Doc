@@ -59,6 +59,7 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
             case GenconfPackage.GENERATION: return createGeneration();
             case GenconfPackage.MODEL_DEFINITION: return createModelDefinition();
             case GenconfPackage.STRING_DEFINITION: return createStringDefinition();
+            case GenconfPackage.OPTION: return createOption();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -95,6 +96,16 @@ public class GenconfFactoryImpl extends EFactoryImpl implements GenconfFactory {
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Option createOption() {
+        OptionImpl option = new OptionImpl();
+        return option;
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
