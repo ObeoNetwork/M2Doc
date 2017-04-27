@@ -26,6 +26,7 @@ import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
+import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
@@ -52,7 +53,7 @@ public class M2DocSiriusServices {
     /**
      * The {@link Set} of temporary {@link File}.
      */
-    private final Set<File> tmpFiles = new LinkedHashSet<File>();
+    private final Set<File> tmpFiles = new LinkedHashSet<>();
 
     /**
      * Constructor.
@@ -78,8 +79,9 @@ public class M2DocSiriusServices {
         final boolean result;
 
         if (representationDescriptionName != null) {
-            result = SiriusRepresentationUtils.getAssociatedRepresentationByDescriptionAndName(eObject,
-                    representationDescriptionName, session).size() > 0;
+            result = SiriusRepresentationUtils
+                    .getAssociatedRepresentationByDescriptionAndName(eObject, representationDescriptionName, session)
+                    .size() > 0;
         } else {
             result = false;
         }
@@ -119,13 +121,31 @@ public class M2DocSiriusServices {
      * @throws IOException
      *             if the image can't be serialized
      */
-    public MImage asImage(DRepresentation representation) throws SizeTooLargeException, IOException {
+    public MImage asImage(final DRepresentation representation) throws SizeTooLargeException, IOException {
         final MImage res;
 
         final File tmpFile = File.createTempFile(representation.getName(), ".jpg");
         tmpFiles.add(tmpFile);
-        DialectUIManager.INSTANCE.export(representation, session, new Path(tmpFile.getAbsolutePath()), FORMAT,
-                new NullProgressMonitor());
+
+        // Make sure to run the Sirius image export in the UI thread.
+        Runnable exportDiagUnitOfWork = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    DialectUIManager.INSTANCE.export(representation, session, new Path(tmpFile.getAbsolutePath()),
+                            FORMAT, new NullProgressMonitor());
+                } catch (SizeTooLargeException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        };
+        if (Display.getDefault() != null) {
+            Display.getDefault().syncExec(exportDiagUnitOfWork);
+        } else {
+            exportDiagUnitOfWork.run();
+        }
+
         res = new MImageImpl(URI.createFileURI(tmpFile.getAbsolutePath()));
 
         return res;
@@ -163,7 +183,7 @@ public class M2DocSiriusServices {
      */
     public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName)
             throws SizeTooLargeException, IOException {
-        final List<MImage> res = new ArrayList<MImage>();
+        final List<MImage> res = new ArrayList<>();
 
         final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
                 .getRepresentationDescriptors(eObj, session);
@@ -206,7 +226,7 @@ public class M2DocSiriusServices {
      */
     public List<MTable> asTableByRepresentationDescriptionName(EObject eObj, String descriptionName)
             throws SizeTooLargeException, IOException {
-        final List<MTable> res = new ArrayList<MTable>();
+        final List<MTable> res = new ArrayList<>();
 
         final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
                 .getRepresentationDescriptors(eObj, session);
