@@ -11,3 +11,4 @@ Export-Package: org.obeonetwork.m2doc.ide,
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.obeonetwork.m2doc.ide.M2DocPlugin$Implementation
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin

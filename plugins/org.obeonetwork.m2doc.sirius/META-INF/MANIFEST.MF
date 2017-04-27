@@ -25,4 +25,5 @@ Export-Package: org.obeonetwork.m2doc.sirius,
  org.obeonetwork.m2doc.sirius.providers.tables,
  org.obeonetwork.m2doc.sirius.services
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Import-Package: org.eclipse.core.expressions
