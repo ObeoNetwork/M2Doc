@@ -194,7 +194,7 @@ public class GenconfToDocumentGenerator {
         monitor.done();
 
         // create generated file
-        try (DocumentTemplate template = M2DocUtils.parse(URIConverter.INSTANCE, templateURI, queryEnvironment,
+        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
                 this.getClass().getClassLoader())) {
 
             // validate template
@@ -440,7 +440,7 @@ public class GenconfToDocumentGenerator {
         IQueryEnvironment queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
 
         // parse template
-        try (DocumentTemplate template = M2DocUtils.parse(URIConverter.INSTANCE, templateURI, queryEnvironment,
+        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
                 this.getClass().getClassLoader())) {
 
             // validate template
