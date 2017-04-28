@@ -9,20 +9,18 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.tests.services;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+package org.obeonetwork.m2doc;
 
 /**
- * Aggregates tests for the org.obeonetwork.m2doc.tests.services package.
+ * Pagination elements.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@RunWith(Suite.class)
-@SuiteClasses(value = {ServiceRegistryTests.class, BooleanServicesTests.class, ImageServicesTests.class,
-    LinkServicesTests.class, PaginationServicesTests.class, })
-public class ServicesTests {
+public enum MPagination {
+
+    /**
+     * Possible paginations.
+     */
+    newTableOfContent, newPage, newParagraph, newColumn, newTextWrapping;
 
 }

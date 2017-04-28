@@ -62,6 +62,7 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
+import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
@@ -318,6 +319,8 @@ public final class M2DocUtils {
         Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, LinkServices.class);
+        ServiceUtils.registerServices(queryEnvironment, services);
+        services = ServiceUtils.getServices(queryEnvironment, PaginationServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, new ImageServices(templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);

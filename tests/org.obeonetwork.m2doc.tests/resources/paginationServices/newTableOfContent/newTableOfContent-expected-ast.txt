@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  A simple demonstration of a query :
+  [query: .asPagination('newTableOfContent')]
+  End of demonstration.Some titleLevel 2 titleAn other level 2 titleA final level 2 title
+Some other titleLevel 2 titleAn other level 2 titleA final level 2 title
+And a final titleLevel 2 titleAn other level 2 titleA final level 2 title
+=== FOOTER ===

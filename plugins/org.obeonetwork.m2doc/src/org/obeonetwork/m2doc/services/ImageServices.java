@@ -45,7 +45,7 @@ public class ImageServices {
 
     // @formatter:off
     @Documentation(
-        value = "Convert a String to an Image.",
+        value = "Convert a String representing an URI to an Image.",
         params = {
             @Param(name = "uri", value = "The Image uri, it can be relative to the template"),
         },
@@ -55,31 +55,23 @@ public class ImageServices {
         }
     )
     // @formatter:on
-
-    /**
-     * Gets the {@link Image} corresponding to the given path.
-     * <p>
-     * Picture type is deducted from the file extension.
-     * </p>
-     * 
-     * @param uriStr
-     *            the uri.
-     * @return the {@link Image} corresponding to the given path
-     */
     public MImage asImage(String uriStr) {
         final URI imageURI = URI.createURI(uriStr);
         return asImage(uriStr, PictureType.toType(imageURI));
     }
 
-    /**
-     * Gets the {@link MImage} corresponding to the given path.
-     * 
-     * @param uriStr
-     *            the uri.
-     * @param type
-     *            the picture {@link PictureType type}.
-     * @return the {@link MImage} corresponding to the given path
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Convert a String representing an URI to an Image and serialize it in the given format.",
+        params = {
+            @Param(name = "uri", value = "The Image uri, it can be relative to the template"),
+        },
+        result = "insert the image",
+        examples = {
+            @Example(expression = "'image.png'.asImage('jpg')", result = "insert the image 'image.jpg'"),
+        }
+    )
+    // @formatter:on
     public MImage asImage(String uriStr, String type) {
         return asImage(uriStr, PictureType.valueOf(type.toUpperCase()));
     }
@@ -114,15 +106,6 @@ public class ImageServices {
         }
     )
     // @formatter:on
-    /**
-     * Sets the given width to the image.
-     * 
-     * @param image
-     *            the {@link Image}
-     * @param width
-     *            the width
-     * @return the given {@link Image} with the new width
-     */
     public MImage setWidth(MImage image, Integer width) {
         image.setWidth(width);
 
@@ -142,15 +125,6 @@ public class ImageServices {
         }
     )
     // @formatter:on
-    /**
-     * Sets the given height to the image.
-     * 
-     * @param image
-     *            the {@link Image}
-     * @param height
-     *            the height
-     * @return the given {@link Image} with the new height
-     */
     public MImage setHeight(MImage image, Integer height) {
         image.setHeight(height);
 
@@ -169,15 +143,6 @@ public class ImageServices {
             @Example(expression = "myImage.setConserveRatio(false)", result = "set the conserve ratio to false"),
         }
     )
-    /**
-     * Sets the conserve aspect ratio to the given {@link Image}.
-     * 
-     * @param image
-     *            the {@link Image}
-     * @param conserve
-     *            <code>true</code> to conserve the aspect ratio, <code>false</code> otherwise
-     * @return the given {@link Image} with the new conserve aspect ratio
-     */
     public MImage setConserveRatio(MImage image, Boolean conserve) {
         image.setConserveRatio(conserve);
 

@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  A simple demonstration of a query :
+  [query: Sequence{'Some text in a first paragraph', .asPagination('newParagraph'), 'Some text in a second paragraph'}]
+  End of demonstration.
+=== FOOTER ===

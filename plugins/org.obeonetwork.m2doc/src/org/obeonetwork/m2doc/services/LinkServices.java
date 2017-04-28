@@ -43,15 +43,6 @@ public class LinkServices {
         }
     )
     // @formatter:on
-    /**
-     * Converts to an {@link MHyperLink} with the given text and url.
-     * 
-     * @param text
-     *            the text
-     * @param url
-     *            the url
-     * @return the {@link MHyperLink} with the given text and url
-     */
     public MHyperLink asLink(String text, String url) {
         return new MHyperLinkImpl(Strings.nullToEmpty(text), Strings.nullToEmpty(url));
     }
@@ -69,15 +60,6 @@ public class LinkServices {
       }
     )
     // @formatter:on
-    /**
-     * Converts to a {@link MBookmark} with the given text and ID.
-     * 
-     * @param text
-     *            the text
-     * @param id
-     *            the ID
-     * @return the {@link MBookmark} with the given text and ID
-     */
     public MBookmark asBookmark(String text, String id) {
         return new MBookmarkImpl(text, id, false);
     }
@@ -95,15 +77,6 @@ public class LinkServices {
       }
     )
     // @formatter:on
-    /**
-     * Converts to a {@link MBookmark} reference with the given text and ID.
-     * 
-     * @param text
-     *            the text
-     * @param id
-     *            the ID
-     * @return the {@link MBookmark} reference with the given text and ID
-     */
     public MBookmark asBookmarkRef(String text, String id) {
         return new MBookmarkImpl(text, id, true);
     }

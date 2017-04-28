@@ -29,6 +29,7 @@ import java.util.Stack;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
@@ -57,6 +58,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.obeonetwork.m2doc.MPagination;
 import org.obeonetwork.m2doc.element.MBookmark;
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
@@ -105,9 +107,11 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 
 /**
  * The {@link M2DocEvaluator} class implements a switch over template that generates the doc.
@@ -484,6 +488,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             XWPFRun tableRun = run;
             tableRun.getCTR().getInstrTextList().clear();
             insertMTable(tableRun, (MTable) object);
+        } else if (object instanceof MPagination) {
+            insertMPagination(run, (MPagination) object);
         } else if (object == null) {
             insertFieldRunReplacement(run, "");
         } else {
@@ -563,6 +569,44 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         } catch (IOException e) {
             insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
                     image.getURI().toString() + " " + e.getMessage());
+        }
+    }
+
+    /**
+     * Insert the given {@link MPagination}.
+     * 
+     * @param run
+     *            the {@link XWPFRun} to insert to
+     * @param mPagination
+     *            the {@link MPagination}
+     */
+    private void insertMPagination(XWPFRun run, MPagination mPagination) {
+        switch (mPagination) {
+            case newColumn:
+                run.addBreak(BreakType.COLUMN);
+                break;
+
+            case newParagraph:
+                createNewParagraph((XWPFParagraph) run.getParent());
+                break;
+
+            case newPage:
+                run.addBreak(BreakType.PAGE);
+                break;
+
+            case newTableOfContent:
+                CTP ctP = currentGeneratedParagraph.getCTP();
+                CTSimpleField toc = ctP.addNewFldSimple();
+                toc.setInstr("TOC \\h");
+                toc.setDirty(STOnOff.TRUE);
+                break;
+
+            case newTextWrapping:
+                run.addBreak(BreakType.TEXT_WRAPPING);
+                break;
+
+            default:
+                throw new IllegalStateException("Not supported MPagination.");
         }
     }
 
