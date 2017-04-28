@@ -145,9 +145,9 @@ public abstract class AbstractTemplatesTestSuite {
         setTemplateFileName(generation, templateURI.toFileString());
         final ConfigurationServices configurationServices = new ConfigurationServices();
         queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
-        documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE, templateURI, queryEnvironment,
-                this.getClass().getClassLoader());
-        final ResourceSet resourceSetForModels = new GenconfToDocumentGenerator().createResourceSetForModels(generation);
+        documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment, this.getClass().getClassLoader());
+        final ResourceSet resourceSetForModels = new GenconfToDocumentGenerator()
+                .createResourceSetForModels(generation);
         variables = configurationServices.createDefinitions(generation, resourceSetForModels);
         // add providers variables
         variables.putAll(configurationServices.getProviderVariables(generation));
@@ -268,12 +268,12 @@ public abstract class AbstractTemplatesTestSuite {
         if (URIConverter.INSTANCE.exists(expectedValidationURI, Collections.EMPTY_MAP)) {
             tempURI = URI.createURI("m2doctests://" + testFolderPath + "-validation-test.docx");
             if (validationLevel != ValidationMessageLevel.OK) {
-                M2DocUtils.serializeValidatedDocumentTemplate(URIConverter.INSTANCE, documentTemplate, tempURI);
+                M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, tempURI);
             }
         } else {
             tempURI = getActualValidatedURI(new File(testFolderPath));
             if (validationLevel != ValidationMessageLevel.OK) {
-                M2DocUtils.serializeValidatedDocumentTemplate(URIConverter.INSTANCE, documentTemplate, tempURI);
+                M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, tempURI);
             } else {
                 touch(tempURI);
             }

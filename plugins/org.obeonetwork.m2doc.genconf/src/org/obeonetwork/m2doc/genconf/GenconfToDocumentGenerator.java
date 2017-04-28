@@ -477,7 +477,7 @@ public class GenconfToDocumentGenerator {
         URI validationFile = getValidationLogFile(templateURI);
 
         final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment);
-        M2DocUtils.serializeValidatedDocumentTemplate(URIConverter.INSTANCE, documentTemplate, validationFile);
+        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
 
         return validationResult == ValidationMessageLevel.ERROR
             && postValidateTemplate(templateURI, documentTemplate, generation);
