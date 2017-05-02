@@ -16,7 +16,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc.genconf;bundle-version="[0.11.0,0.12.0)",
  org.eclipse.sirius.common;bundle-version="[4.1.0,5.0.0)",
  org.eclipse.acceleo.query;bundle-version="[5.0.0,6.0.0)",
- org.obeonetwork.m2doc.ide;bundle-version="[0.11.0,0.12.0)"
+ org.obeonetwork.m2doc.ide;bundle-version="[0.11.0,0.12.0)",
+ org.eclipse.acceleo.annotations;bundle-version="[5.0.0,6.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.sirius,

@@ -8,6 +8,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
@@ -25,7 +29,6 @@ import org.eclipse.sirius.ui.business.api.dialect.ExportFormat;
 import org.eclipse.sirius.ui.tools.api.actions.export.SizeTooLargeException;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
-import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.element.MImage;
@@ -33,11 +36,12 @@ import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.sirius.providers.tables.DMTable;
 
-/**
- * AQL Services for Sirius representations.
- * 
- * @author Romain Guider
- */
+//@formatter:off
+@ServiceProvider(
+value = "Services available for Sirius"
+)
+//@formatter:on
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype"})
 public class M2DocSiriusServices {
 
     /**
@@ -66,16 +70,19 @@ public class M2DocSiriusServices {
         this.session = session;
     }
 
-    /**
-     * Returns <code>true</code> if the arguments are not null, the eObject is in a session and there's a representation with the specified
-     * name in it that is associated to the specified eObject. Returns <code>false</code> otherwise.
-     * 
-     * @param eObject
-     *            any eObject that is in the session where to search
-     * @param representationDescriptionName
-     *            the name of the searched representation
-     * @return <code>true</code> if there's a representation with the specified name in the eObject's associated session.
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Returns <code>true</code> if the arguments are not null, the eObject is in a session and there's a representation description with the specified name in it that is associated to the specified eObject. Returns <code>false</code> otherwise.",
+        params = {
+            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+        },
+        result = "<code>true</code> if there's a representation description with the specified name in the eObject's associated session",
+        examples = {
+            @Example(expression = "ePackage.isRepresentationDescriptionName('class diagram')", result = "True"),
+        }
+    )
+    // @formatter:on
     public boolean isRepresentationDescriptionName(EObject eObject, String representationDescriptionName) {
         final boolean result;
 
@@ -90,15 +97,18 @@ public class M2DocSiriusServices {
         return result;
     }
 
-    /**
-     * * Returns <code>true</code> if the arguments are not null, the eObject is in a session and there's a representation with the
-     * specified
-     * title in it. Returns <code>false</code> otherwise.
-     * 
-     * @param representationName
-     *            the name of the searched representation.
-     * @return <code>true</code> if there's a representation with the specified name in the session associated to the specified eObject.
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Returns <code>true</code> if the arguments are not null, there's a representation with the specified name in the Sirius session. Returns <code>false</code> otherwise.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+        },
+        result = "<code>true</code> if there's a representation with the specified name in the Sirius session",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.isRepresentationName()", result = "True"),
+        }
+    )
+    // @formatter:on
     public boolean isRepresentationName(String representationName) {
         final boolean result;
 
@@ -111,17 +121,18 @@ public class M2DocSiriusServices {
         return result;
     }
 
-    /**
-     * Gets the {@link MImage} from the given {@link DRepresentation}.
-     * 
-     * @param representation
-     *            the {@link DRepresentation}
-     * @return the {@link MImage} from the given {@link DRepresentation}
-     * @throws SizeTooLargeException
-     *             if the image is too large in memory
-     * @throws IOException
-     *             if the image can't be serialized
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation if it's a diagram.",
+        params = {
+            @Param(name = "representation", value = "the DRepresentation"),
+        },
+        result = "insert the image of the given representation if it's a diagram.",
+        examples = {
+            @Example(expression = "dRepresentation.asImage()", result = "insert the image of the given representation if it's a diagram"),
+        }
+    )
+    // @formatter:on
     public MImage asImage(final DRepresentation representation) throws SizeTooLargeException, IOException {
         final MImage res;
 
@@ -152,36 +163,35 @@ public class M2DocSiriusServices {
         return res;
     }
 
-    /**
-     * Gets the {@link MTable} from the given {@link DTable}.
-     * 
-     * @param table
-     *            the {@link DTable}
-     * @return the {@link MTable} from the given {@link DTable}
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Insert the table of the given representation table.",
+        params = {
+            @Param(name = "representation", value = "the DTable"),
+        },
+        result = "insert the table of the given representation table.",
+        examples = {
+            @Example(expression = "dTable.asTable()", result = "insert the tablee of the given representation table"),
+        }
+    )
+    // @formatter:on
     public MTable asTable(DTable table) {
         return new DMTable(table);
     }
 
-    /**
-     * Gets the {@link List} of {@link MImage} for the given {@link EObject} and {@link RepresentationDescription#getName()
-     * representation
-     * description name}
-     * .
-     * 
-     * @param eObj
-     *            the {@link EObject}
-     * @param descriptionName
-     *            the {@link RepresentationDescription#getName() description name}
-     * @return the {@link List} of {@link MImage} for the given {@link EObject} and {@link RepresentationDescription#getName()
-     *         representation
-     *         description
-     *         name}
-     * @throws SizeTooLargeException
-     *             if the image is too large in memory
-     * @throws IOException
-     *             if the image can't be serialized
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        params = {
+            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+        },
+        result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        examples = {
+            @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram')", result = "Sequence{image1, image2}"),
+        }
+    )
+    // @formatter:on
     public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName)
             throws SizeTooLargeException, IOException {
         final List<MImage> res = new ArrayList<>();
@@ -206,27 +216,20 @@ public class M2DocSiriusServices {
         return res;
     }
 
-    /**
-     * Gets the {@link List} of {@link MTable} for the given {@link EObject} and {@link RepresentationDescription#getName()
-     * representation
-     * description name}
-     * .
-     * 
-     * @param eObj
-     *            the {@link EObject}
-     * @param descriptionName
-     *            the {@link RepresentationDescription#getName() description name}
-     * @return the {@link List} of {@link MImage} for the given {@link EObject} and {@link RepresentationDescription#getName()
-     *         representation
-     *         description
-     *         name}
-     * @throws SizeTooLargeException
-     *             if the image is too large in memory
-     * @throws IOException
-     *             if the image can't be serialized
-     */
-    public List<MTable> asTableByRepresentationDescriptionName(EObject eObj, String descriptionName)
-            throws SizeTooLargeException, IOException {
+    // @formatter:off
+    @Documentation(
+        value = "Gets the Sequence of tables for the tables associated to the given EObject with the given description name.",
+        params = {
+            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+        },
+        result = "the Sequence of tables for the tables associated to the given EObject with the given description name.",
+        examples = {
+            @Example(expression = "ePackage.asTableByRepresentationDescriptionName('dependency table')", result = "Sequence{table1, table2}"),
+        }
+    )
+    // @formatter:on
+    public List<MTable> asTableByRepresentationDescriptionName(EObject eObj, String descriptionName) {
         final List<MTable> res = new ArrayList<>();
 
         final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
@@ -249,17 +252,18 @@ public class M2DocSiriusServices {
         return res;
     }
 
-    /**
-     * Gets the {@link MImage} for the given {@link DRepresentation#getName() representation name}.
-     * 
-     * @param representationName
-     *            the {@link DRepresentation#getName() representation name}
-     * @return the {@link MImage} for the given {@link EObject} and {@link DRepresentation#getName() representation name}
-     * @throws SizeTooLargeException
-     *             if the image is too large in memory
-     * @throws IOException
-     *             if the image can't be serialized
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+        },
+        result = "Insert the image of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName()", result = "insert the image"),
+        }
+    )
+    // @formatter:on
     public MImage asImageByRepresentationName(String representationName) throws SizeTooLargeException, IOException {
         final MImage res;
 
@@ -274,13 +278,18 @@ public class M2DocSiriusServices {
         return res;
     }
 
-    /**
-     * Gets the {@link MTable} for the given {@link DRepresentation#getName() representation name}.
-     * 
-     * @param representationName
-     *            the {@link DRepresentation#getName() representation name}
-     * @return the {@link MTable} for the given {@link EObject} and {@link DRepresentation#getName() representation name}
-     */
+    // @formatter:off
+    @Documentation(
+        value = "Insert the table of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+        },
+        result = "Insert the table of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asTableByRepresentationName()", result = "insert the table"),
+        }
+    )
+    // @formatter:on
     public MTable asTableByRepresentationName(String representationName) {
         final MTable res;
 
