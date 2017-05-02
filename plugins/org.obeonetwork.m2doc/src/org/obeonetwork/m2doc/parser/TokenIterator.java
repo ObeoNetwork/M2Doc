@@ -50,7 +50,7 @@ public class TokenIterator implements Iterator<ParsingToken> {
 
     /**
      * Put the iterator in a state where it is finished or there's a token to
-     * consumme in the currentIterator.
+     * consume in the currentIterator.
      */
     private void moveToNextToken() {
         if (tokenIterator == null || !tokenIterator.hasNext()) {

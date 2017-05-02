@@ -122,6 +122,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     /**
+     * I/O reading problem message.
+     */
+    private static final String AN_I_O_PROBLEM_OCCURED_WHILE_READING = "An I/O Problem occured while reading %s: %s.";
+    /**
      * Error message when AQL query could not be evaluated.
      */
     private static final String QUERY_EVALERROR_MESSAGE = "Couldn't evaluate query.";
@@ -133,7 +137,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Invalid format picture message.
      */
-    private static final String PICTURE_INVALID_FORMAT = "Picture in %s has an invalid format.";
+    private static final String PICTURE_INVALID_FORMAT = "Picture in %s has an invalid format: %s.";
 
     /**
      * The {@link BookmarkManager}.
@@ -225,8 +229,9 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      * @param monitor
      *            used to track the progress will generating.
      */
-    public M2DocEvaluator(URIConverter uriConverter, BookmarkManager bookmarkManager, UserContentManager userContentManager,
-            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Monitor monitor) {
+    public M2DocEvaluator(URIConverter uriConverter, BookmarkManager bookmarkManager,
+            UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment,
+            ResourceSet resourceSetForModels, Monitor monitor) {
         this.uriConverter = uriConverter;
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
@@ -571,10 +576,10 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             }
         } catch (InvalidFormatException e) {
             insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    String.format(PICTURE_INVALID_FORMAT, image.getURI().toString()));
+                    String.format(PICTURE_INVALID_FORMAT, image.getURI().toString(), e.getMessage()));
         } catch (IOException e) {
             insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    image.getURI().toString() + " " + e.getMessage());
+                    String.format(AN_I_O_PROBLEM_OCCURED_WHILE_READING, image.getURI().toString(), e.getMessage()));
         }
     }
 
@@ -1184,10 +1189,10 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 }
             } catch (InvalidFormatException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        String.format(PICTURE_INVALID_FORMAT, imageURI.toString()));
+                        String.format(PICTURE_INVALID_FORMAT, imageURI.toString(), e.getMessage()));
             } catch (IOException e) {
                 insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "An I/O Problem occured while reading " + imageURI.toString());
+                        String.format(AN_I_O_PROBLEM_OCCURED_WHILE_READING, imageURI.toString(), e.getMessage()));
             }
         }
 
