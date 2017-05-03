@@ -15,7 +15,7 @@ import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
-import org.obeonetwork.m2doc.MPagination;
+import org.obeonetwork.m2doc.element.MPagination;
 
 /**
  * Pagination services.

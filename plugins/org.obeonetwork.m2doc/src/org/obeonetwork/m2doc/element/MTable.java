@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author ldelaigue
  */
-public interface MTable extends MElemement {
+public interface MTable extends MElement {
 
     /**
      * Interface that represents a table column, whose label can be used as column header.

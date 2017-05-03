@@ -9,14 +9,14 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc;
+package org.obeonetwork.m2doc.element;
 
 /**
  * Pagination elements.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public enum MPagination {
+public enum MPagination implements MElement {
 
     /**
      * Possible paginations.
