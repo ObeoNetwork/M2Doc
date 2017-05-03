@@ -16,7 +16,7 @@ package org.obeonetwork.m2doc.element;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MHyperLink {
+public interface MHyperLink extends MElement {
 
     /**
      * Gets the text.

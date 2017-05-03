@@ -16,6 +16,6 @@ package org.obeonetwork.m2doc.element;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MElemement {
+public interface MElement {
 
 }

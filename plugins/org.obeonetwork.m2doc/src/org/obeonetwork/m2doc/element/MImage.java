@@ -22,7 +22,7 @@ import org.obeonetwork.m2doc.util.PictureType;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MImage {
+public interface MImage extends MElement {
 
     /**
      * Gets the image width.

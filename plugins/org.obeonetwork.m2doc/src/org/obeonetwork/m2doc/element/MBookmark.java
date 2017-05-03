@@ -16,7 +16,7 @@ package org.obeonetwork.m2doc.element;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MBookmark extends MElemement {
+public interface MBookmark extends MElement {
 
     /**
      * Gets the text to display.
