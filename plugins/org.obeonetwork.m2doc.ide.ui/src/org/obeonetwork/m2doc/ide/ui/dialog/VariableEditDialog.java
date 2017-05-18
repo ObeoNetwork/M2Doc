@@ -467,18 +467,15 @@ public class VariableEditDialog extends TitleAreaDialog {
 
     protected void validate() {
         String blockingMessage = null;
-        if (variable.getTypeName() == null || variable.getTypeName().length() == 0) {
-            blockingMessage = "The variable type name must be set";
-        }
-        if (variable.getType() == null
-            && variable.getTypeName().indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR) <= 0) {
-            blockingMessage = "The scalar type of the variable is not supported";
-        }
-        if (!TemplateConfigUtil.isValidTypeName(variable.getTypeName())) {
-            blockingMessage = "The variable type is not valid";
-        }
         if (!TemplateCustomProperties.isValidVariableName(variable.getName())) {
             blockingMessage = "The variable name must be valid (start with a letter or underscore, contain only letters, digits, or underscores)";
+        } else if (variable.getTypeName() == null || variable.getTypeName().length() == 0) {
+            blockingMessage = "The variable type name must be set";
+        } else if (variable.getType() == null
+            && variable.getTypeName().indexOf(TemplateConfigUtil.METAMODEL_TYPE_SEPARATOR) <= 0) {
+            blockingMessage = "The scalar type of the variable is not supported";
+        } else if (!TemplateConfigUtil.isValidTypeName(variable.getTypeName())) {
+            blockingMessage = "The variable type is not valid";
         }
         if (blockingMessage != null) {
             blockWithMessage(blockingMessage);
