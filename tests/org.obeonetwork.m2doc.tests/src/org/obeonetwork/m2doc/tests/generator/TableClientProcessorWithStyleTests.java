@@ -21,6 +21,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.junit.Test;
 import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.generator.TableClientProcessor;
 import org.obeonetwork.m2doc.provider.ProviderException;
 
@@ -60,13 +61,14 @@ public class TableClientProcessorWithStyleTests extends TableClientProcessorTest
         // First Row (header)
         XWPFTableRow row = table.getRow(0);
 
-        // Header => no style
+        // Header => col 1 has "column style"
         XWPFTableCell cell = row.getCell(1);
         XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
         XWPFRun cellRun = cellParagraph.getRuns().get(0);
-        assertNull(cell.getColor());
-        assertNull(cellRun.getColor());
-        assertFalse(cellRun.isBold());
+        assertEquals(COL_BG_COLOR, cell.getColor().toUpperCase());
+        assertEquals(COL_FG_COLOR, cellRun.getColor().toUpperCase());
+        assertEquals(COL_FONT_SIZE, cellRun.getFontSize());
+        assertTrue(cellRun.isBold());
         assertFalse(cellRun.isItalic());
         assertFalse(cellRun.isStrikeThrough());
         assertEquals(UnderlinePatterns.NONE, cellRun.getUnderline());
@@ -100,19 +102,23 @@ public class TableClientProcessorWithStyleTests extends TableClientProcessorTest
         cell = row.getCell(1);
         cellParagraph = cell.getParagraphs().get(0);
         cellRun = cellParagraph.getRuns().get(0);
-        assertEquals(CELL_BG_COLOR, cell.getColor().toUpperCase());
-        assertEquals(CELL_FG_COLOR, cellRun.getColor().toUpperCase());
-        assertEquals(CELL_FONT_SIZE, cellRun.getFontSize());
-        assertTrue(cellRun.isBold());
-        assertFalse(cellRun.isItalic());
+        assertEquals(ROW_BG_COLOR, cell.getColor().toUpperCase());
+        assertEquals(ROW_FG_COLOR, cellRun.getColor().toUpperCase());
+        assertEquals(ROW_FONT_SIZE, cellRun.getFontSize());
+        assertFalse(cellRun.isBold());
+        assertTrue(cellRun.isItalic());
         assertFalse(cellRun.isStrikeThrough());
-        assertEquals(UnderlinePatterns.SINGLE, cellRun.getUnderline());
+        assertEquals(UnderlinePatterns.NONE, cellRun.getUnderline());
 
-        // first row, second cell => row style
+        // first row, second cell => no style
         cell = row.getCell(2);
         cellParagraph = cell.getParagraphs().get(0);
-        assertEquals(ROW_BG_COLOR, cell.getColor().toUpperCase());
-        assertTrue(cellParagraph.getRuns().isEmpty());
+        assertNull(cell.getColor());
+        cellRun = cellParagraph.getRuns().get(0);
+        assertFalse(cellRun.isBold());
+        assertFalse(cellRun.isItalic());
+        assertFalse(cellRun.isStrikeThrough());
+        assertEquals(UnderlinePatterns.NONE, cellRun.getUnderline());
 
         // Second row
         row = table.getRow(2);
@@ -128,11 +134,15 @@ public class TableClientProcessorWithStyleTests extends TableClientProcessorTest
         assertFalse(cellRun.isStrikeThrough());
         assertEquals(UnderlinePatterns.NONE, cellRun.getUnderline());
 
-        // second row, first cell => column style
+        // second row, first cell => no style
         cell = row.getCell(1);
         cellParagraph = cell.getParagraphs().get(0);
-        assertEquals(COL_BG_COLOR, cell.getColor().toUpperCase());
-        assertTrue(cellParagraph.getRuns().isEmpty());
+        assertNull(cell.getColor());
+        cellRun = cellParagraph.getRuns().get(0);
+        assertFalse(cellRun.isBold());
+        assertFalse(cellRun.isItalic());
+        assertFalse(cellRun.isStrikeThrough());
+        assertEquals(UnderlinePatterns.NONE, cellRun.getUnderline());
 
         // second row, second cell => cell style
         cell = row.getCell(2);
@@ -162,10 +172,10 @@ public class TableClientProcessorWithStyleTests extends TableClientProcessorTest
         TestTable table = super.getTestTable();
 
         // Add styles
-        table.getColumns().get(0).setStyle(getColumnStyle());
-        table.getRows().get(0).setStyle(getRowStyle());
-        table.getRows().get(0).getCells().get(0).setStyle(getCellStyle());
-        table.getRows().get(1).getCells().get(0).setStyle(getCellStyle());
+        List<MRow> rows = table.getRows();
+        rows.get(0).getCells().get(1).setStyle(getColumnStyle());
+        rows.get(1).getCells().get(1).setStyle(getRowStyle());
+        rows.get(2).getCells().get(2).setStyle(getCellStyle());
 
         return table;
     }

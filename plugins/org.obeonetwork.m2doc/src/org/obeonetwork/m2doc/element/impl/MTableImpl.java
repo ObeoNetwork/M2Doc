@@ -25,82 +25,11 @@ import org.obeonetwork.m2doc.element.MTable;
 public class MTableImpl implements MTable {
 
     /**
-     * An element with a label.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    public static class MLabeled {
-        /**
-         * The label.
-         */
-        private String label;
-
-        /**
-         * Gets the label.
-         * 
-         * @return the label
-         */
-        public String getLabel() {
-            return label;
-        }
-
-        /**
-         * Sets the label.
-         * 
-         * @param label
-         *            the new label
-         */
-        public void setLabel(String label) {
-            this.label = label;
-        }
-    }
-
-    /**
-     * An element with a style.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    public static class MStyled extends MLabeled {
-        /**
-         * The {@link MStyle}.
-         */
-        private MStyle style;
-
-        /**
-         * Gets the style.
-         * 
-         * @return the style
-         */
-        public MStyle getStyle() {
-            return style;
-        }
-
-        /**
-         * Sets the style.
-         * 
-         * @param style
-         *            the new style
-         */
-        public void setStyle(MStyle style) {
-            this.style = style;
-        }
-    }
-
-    /**
-     * A table column, whose label can be used as column header.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    public static class MColumnImpl extends MStyled implements MColumn {
-
-    }
-
-    /**
      * A table row, whose label can be used as row header.
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    public static class MRowImpl extends MStyled implements MRow {
+    public static class MRowImpl implements MRow {
 
         /**
          * The {@link List} of {@link MCell}.
@@ -118,29 +47,60 @@ public class MTableImpl implements MTable {
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    public static class MCellImpl extends MStyled implements MCell {
+    public static class MCellImpl implements MCell {
 
         /**
-         * The {@link MColumn}.
+         * The label.
          */
-        private MColumn column;
+        private String label;
 
+        /**
+         * The {@link MStyle}.
+         */
+        private MStyle style;
+
+        /**
+         * Gets the label.
+         * 
+         * @return the label
+         */
         @Override
-        public MColumn getColumn() {
-            return column;
+        public String getLabel() {
+            return label;
         }
 
+        /**
+         * Sets the label.
+         * 
+         * @param label
+         *            the new label
+         */
         @Override
-        public void setColumn(MColumn column) {
-            this.column = column;
+        public void setLabel(String label) {
+            this.label = label;
         }
 
+        /**
+         * Gets the style.
+         * 
+         * @return the style
+         */
+        @Override
+        public MStyle getStyle() {
+            return style;
+        }
+
+        /**
+         * Sets the style.
+         * 
+         * @param style
+         *            the new style
+         */
+        @Override
+        public void setStyle(MStyle style) {
+            this.style = style;
+        }
     }
-
-    /**
-     * The {@link List} of {@link MColumn}.
-     */
-    private final List<MColumn> columns = new ArrayList<MColumn>();
 
     /**
      * The {@link List} of {@link MRow}.
@@ -151,11 +111,6 @@ public class MTableImpl implements MTable {
      * The table label.
      */
     private String label;
-
-    @Override
-    public List<MColumn> getColumns() {
-        return columns;
-    }
 
     @Override
     public List<MRow> getRows() {
@@ -172,4 +127,20 @@ public class MTableImpl implements MTable {
         this.label = label;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.element.MTable#getColumnsCount()
+     */
+    @Override
+    public int getColumnsCount() {
+        int result = 0;
+        for (MRow mRow : rows) {
+            int rowWidth = mRow.getCells().size();
+            if (rowWidth > result) {
+                result = rowWidth;
+            }
+        }
+        return result;
+    }
 }

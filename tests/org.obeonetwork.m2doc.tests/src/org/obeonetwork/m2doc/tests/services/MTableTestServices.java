@@ -16,12 +16,10 @@ import java.awt.Color;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
-import org.obeonetwork.m2doc.element.MTable.MColumn;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.impl.MStyleImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
-import org.obeonetwork.m2doc.element.impl.MTableImpl.MColumnImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MRowImpl;
 
 /**
@@ -58,20 +56,25 @@ public class MTableTestServices {
 
         final int[] colors = new int[] {0, 127, 255 };
         int index = 0;
+        final MRow headerRow = new MRowImpl();
+        table.getRows().add(headerRow);
+        // Empty cell at first
+        headerRow.getCells().add(new MCellImpl());
         for (int xStyle = 0; xStyle < 4; xStyle++) {
-            final MColumn column = new MColumnImpl();
-            table.getColumns().add(column);
-            column.setLabel(getLabelStyle(xStyle));
-            column.setStyle(getStyle(1 << xStyle, null));
+            final MCell headerCell = new MCellImpl();
+            headerRow.getCells().add(headerCell);
+            headerCell.setLabel(getLabelStyle(xStyle));
+            headerCell.setStyle(getStyle(1 << xStyle, null));
         }
         for (int yStyle = 0; yStyle < 4; yStyle++) {
             final MRow row = new MRowImpl();
             table.getRows().add(row);
-            row.setLabel(getLabelStyle(yStyle));
-            row.setStyle(getStyle(1 << yStyle, null));
+            final MCell headerCell = new MCellImpl();
+            row.getCells().add(headerCell);
+            headerCell.setLabel(getLabelStyle(yStyle));
+            headerCell.setStyle(getStyle(1 << yStyle, null));
             for (int xStyle = 0; xStyle < 4; xStyle++) {
                 final MCell cell = new MCellImpl();
-                cell.setColumn(table.getColumns().get(xStyle));
                 row.getCells().add(cell);
                 cell.setLabel(Integer.toString(index++));
                 final Color color = new Color(colors[(index + 1) % 3], colors[(index + 2) % 3],

@@ -30,8 +30,8 @@ import org.junit.Test;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
-import org.obeonetwork.m2doc.element.MTable.MColumn;
 import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.impl.MTableImpl;
 import org.obeonetwork.m2doc.generator.TableClientProcessor;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.OptionType;
@@ -183,19 +183,33 @@ public class TableClientProcessorTests {
     protected TestTable getTestTable() {
         TestTable table = new TestTable("Test Table");
 
-        TestColumn col1 = new TestColumn("Col 1");
-        table.getColumns().add(col1);
-        TestColumn col2 = new TestColumn("Col 2");
-        table.getColumns().add(col2);
-
-        TestRow row1 = new TestRow("Row 1");
+        TestRow row0 = new TestRow();
+        table.getRows().add(row0);
+        TestRow row1 = new TestRow();
         table.getRows().add(row1);
-        TestRow row2 = new TestRow("Row 2");
+        TestRow row2 = new TestRow();
         table.getRows().add(row2);
 
-        TestCell cell11 = new TestCell("Cell 1 1", col1);
+        // Null cell at first
+        row0.getCells().add(null);
+        TestCell col1 = new TestCell("Col 1");
+        row0.getCells().add(col1);
+        TestCell col2 = new TestCell("Col 2");
+        row0.getCells().add(col2);
+
+        TestCell cell10 = new TestCell("Row 1");
+        row1.getCells().add(cell10);
+        TestCell cell11 = new TestCell("Cell 1 1");
         row1.getCells().add(cell11);
-        TestCell cell22 = new TestCell("Cell 2 2", col2);
+        // Cell 1-2 not populated
+        // TestCell cell12 = new TestCell("Cell 1 2");
+        // row1.getCells().add(cell12);
+
+        TestCell cell20 = new TestCell("Row 2");
+        row2.getCells().add(cell20);
+        TestCell cell21 = null;
+        row2.getCells().add(cell21);
+        TestCell cell22 = new TestCell("Cell 2 2");
         row2.getCells().add(cell22);
         return table;
     }
@@ -234,32 +248,21 @@ public class TableClientProcessorTests {
 
     }
 
-    public static class TestTable extends TestLabeledElement implements MTable {
-        protected final List<MColumn> columns = new ArrayList<>();
-        protected final List<MRow> rows = new ArrayList<>();
+    public static class TestTable extends MTableImpl {
 
         public TestTable(String label) {
-            super(label);
-        }
-
-        @Override
-        public List<MColumn> getColumns() {
-            return columns;
-        }
-
-        @Override
-        public List<MRow> getRows() {
-            return rows;
+            super();
+            setLabel(label);
         }
 
     }
 
-    public static class TestRow extends TestStyledElement implements MRow {
+    public static class TestRow implements MRow {
 
         protected final List<MCell> cells = new ArrayList<>();
 
-        public TestRow(String label) {
-            super(label);
+        public TestRow() {
+            super();
         }
 
         @Override
@@ -269,31 +272,10 @@ public class TableClientProcessorTests {
 
     }
 
-    public static class TestColumn extends TestStyledElement implements MColumn {
-
-        public TestColumn(String label) {
-            super(label);
-        }
-
-    }
-
     public static class TestCell extends TestStyledElement implements MCell {
 
-        private MColumn column;
-
-        public TestCell(String label, TestColumn column) {
+        public TestCell(String label) {
             super(label);
-            this.column = column;
-        }
-
-        @Override
-        public TestColumn getColumn() {
-            return (TestColumn) column;
-        }
-
-        @Override
-        public void setColumn(MColumn column) {
-            this.column = column;
         }
 
     }
