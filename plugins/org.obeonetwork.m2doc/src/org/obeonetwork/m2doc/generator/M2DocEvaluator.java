@@ -65,7 +65,6 @@ import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
-import org.obeonetwork.m2doc.element.MTable.MColumn;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
@@ -686,76 +685,40 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      *            The MTable that describes the data and styles to insert
      */
     private void fillTable(XWPFTable table, MTable mtable) {
-        XWPFTableRow headerRow = table.getRow(0);
-        initializeEmptyTableCell(headerRow.getCell(0), null, null);
-        final Map<MTable.MColumn, Integer> columnToIndex = new HashMap<MTable.MColumn, Integer>();
-        int index = 0;
-        for (MColumn mcol : mtable.getColumns()) {
-            XWPFTableCell cell;
-            cell = headerRow.addNewTableCell();
-            initializeEmptyTableCell(cell, null, null);
-            setCellContent(cell, mcol.getLabel(), mcol.getStyle());
-            columnToIndex.put(mcol, index++);
-        }
-        for (MRow mrow : mtable.getRows()) {
-            XWPFTableRow row = table.createRow();
-            List<XWPFTableCell> cells = row.getTableCells();
-            for (int i = 0; i < cells.size(); i++) {
-                XWPFTableCell cell = cells.get(i);
-                // Make sure empty cells are empty and have the right style
-                if (i > 0) {
-                    initializeEmptyTableCell(cell, mrow, mtable.getColumns().get(i - 1));
-                } else {
-                    initializeEmptyTableCell(cell, null, null);
-                }
-            }
-            XWPFTableCell cell0 = row.getCell(0);
-            setCellContent(cell0, mrow.getLabel(), mrow.getStyle());
-            for (MCell mcell : mrow.getCells()) {
-                MColumn mcol = mcell.getColumn();
-                if (mcol != null) {
-                    Integer i = columnToIndex.get(mcol);
-                    if (i == null) {
-                        i = -1;
-                    }
-                    XWPFTableCell cell = row.getCell(i + 1);
-                    setCellContent(cell, mcell.getLabel(), mcell.getStyle());
-                }
-            }
-        }
-    }
+        List<MRow> rows = mtable.getRows();
+        // Iterate over the rows
+        for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
+            MRow mRow = rows.get(rowIdx);
 
-    /**
-     * Initialize properly a new table cell to make it easy to insert the data in this cell. Deals with the style to apply to this cell
-     * depending on the row and column it belongs to.
-     * 
-     * @param cell
-     *            Newly created cell to initialize
-     * @param row
-     *            The row the cell belongs to, the style of which will be used for the cell if defined.
-     * @param column
-     *            The column the cell belongs to, the style of which will be used for the cell if defined and the row's style is
-     *            <code>null</code>.
-     * @return The paragraph of the cell after initialization.
-     */
-    private XWPFParagraph initializeEmptyTableCell(XWPFTableCell cell, MRow row, MColumn column) {
-        XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
-        cellParagraph.setSpacingBefore(0);
-        cellParagraph.setSpacingAfter(0);
-        final MStyle style;
-        if (row != null) {
-            style = row.getStyle();
-        } else if (column != null) {
-            style = column.getStyle();
-        } else {
-            style = null;
-        }
-        if (style != null) {
-            if (style.getBackgroundColor() != null) {
-                cell.setColor(hexColor(style.getBackgroundColor()));
+            // Get or create XWPF row
+            XWPFTableRow xwpfRow;
+            if (table.getNumberOfRows() > rowIdx) {
+                xwpfRow = table.getRow(rowIdx);
+            } else {
+                xwpfRow = table.createRow();
+            }
+
+            // Iterate over the columns
+            for (int colIdx = 0; colIdx < mtable.getColumnsCount(); colIdx++) {
+                // Get or create XWPF cell
+                XWPFTableCell xwpfCell;
+                if (xwpfRow.getTableCells().size() > colIdx) {
+                    xwpfCell = xwpfRow.getCell(colIdx);
+                } else {
+                    xwpfCell = xwpfRow.createCell();
+                }
+
+                // Populate cell
+                XWPFParagraph xwpfCellParagraph = xwpfCell.getParagraphs().get(0);
+                xwpfCellParagraph.setSpacingBefore(0);
+                xwpfCellParagraph.setSpacingAfter(0);
+                MCell mCell = null;
+                if (colIdx < mRow.getCells().size()) {
+                    mCell = mRow.getCells().get(colIdx);
+                }
+                setCellContent(xwpfCell, mCell);
             }
         }
-        return cellParagraph;
     }
 
     /**
@@ -763,20 +726,24 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      * 
      * @param cell
      *            Cell to fill in
-     * @param text
-     *            Text to set in the cell
-     * @param style
-     *            Style to use, can be <code>null</code>
+     * @param mCell
+     *            the cell to read data from
      */
-    private void setCellContent(XWPFTableCell cell, String text, MStyle style) {
+    private void setCellContent(XWPFTableCell cell, MCell mCell) {
         XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
         XWPFRun cellRun = cellParagraph.createRun();
-        cellRun.setText(text);
-        if (style != null) {
-            if (style.getBackgroundColor() != null) {
-                cell.setColor(hexColor(style.getBackgroundColor()));
+        if (mCell != null) {
+            String label = mCell.getLabel();
+            if (label != null) {
+                cellRun.setText(label);
             }
-            applyMStyle(cellRun, style);
+            MStyle style = mCell.getStyle();
+            if (style != null) {
+                if (style.getBackgroundColor() != null) {
+                    cell.setColor(hexColor(style.getBackgroundColor()));
+                }
+                applyMStyle(cellRun, style);
+            }
         }
     }
 

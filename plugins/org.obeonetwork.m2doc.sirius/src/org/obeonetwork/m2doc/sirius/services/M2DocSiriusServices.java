@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
-import org.obeonetwork.m2doc.sirius.providers.tables.DMTable;
+import org.obeonetwork.m2doc.sirius.util.DTable2MTableConverter;
 
 //@formatter:off
 @ServiceProvider(
@@ -176,7 +176,7 @@ public class M2DocSiriusServices {
     )
     // @formatter:on
     public MTable asTable(DTable table) {
-        return new DMTable(table);
+        return DTable2MTableConverter.convert(table);
     }
 
     // @formatter:off

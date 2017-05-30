@@ -22,6 +22,7 @@ import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.provider.AbstractTableProvider;
 import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
+import org.obeonetwork.m2doc.sirius.util.DTable2MTableConverter;
 
 /**
  * Abstract super-implementation of all Sirius table providers.
@@ -40,7 +41,7 @@ public abstract class AbstractSiriusTableProvider extends AbstractTableProvider 
     protected List<MTable> extractTables(List<DTable> tables) {
         List<MTable> result = new ArrayList<MTable>();
         for (DTable table : tables) {
-            result.add(new DMTable(table));
+            result.add(DTable2MTableConverter.convert(table));
         }
         return result;
     }

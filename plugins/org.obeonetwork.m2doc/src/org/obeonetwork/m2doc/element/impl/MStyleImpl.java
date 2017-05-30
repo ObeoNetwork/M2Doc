@@ -42,6 +42,31 @@ public class MStyleImpl implements MStyle {
      */
     private int modifiers = -1;
 
+    /**
+     * Default constructor.
+     */
+    public MStyleImpl() {
+    }
+
+    /**
+     * Default constructor.
+     * 
+     * @param fontSize
+     *            the font size to use.
+     * @param foregroundColor
+     *            the foreground color to use.
+     * @param backgroundColor
+     *            the background color to use.
+     * @param modifiers
+     *            the modifiers color to use.
+     */
+    public MStyleImpl(int fontSize, Color foregroundColor, Color backgroundColor, int modifiers) {
+        this.fontSize = fontSize;
+        this.foregroundColor = foregroundColor;
+        this.backgroundColor = backgroundColor;
+        this.modifiers = modifiers;
+    }
+
     @Override
     public int getFontSize() {
         return fontSize;
