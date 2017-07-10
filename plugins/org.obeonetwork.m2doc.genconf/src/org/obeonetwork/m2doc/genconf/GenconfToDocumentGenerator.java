@@ -527,8 +527,10 @@ public class GenconfToDocumentGenerator {
      */
     public URI getValidationLogFile(URI templateURI) {
         URI validationFile = templateURI.trimSegments(1)
-                .appendSegment(Files.getNameWithoutExtension(templateURI.lastSegment()) + "-error")
-                .appendFileExtension(templateURI.fileExtension());
+                .appendSegment(Files.getNameWithoutExtension(templateURI.lastSegment()) + "-error");
+        if (URI.validSegment(templateURI.fileExtension())) {
+            validationFile = validationFile.appendFileExtension(templateURI.fileExtension());
+        }
         return validationFile;
     }
 }
