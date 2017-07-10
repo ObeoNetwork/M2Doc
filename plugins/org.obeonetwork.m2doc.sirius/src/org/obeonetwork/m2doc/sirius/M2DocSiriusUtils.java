@@ -16,6 +16,11 @@ import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
 public final class M2DocSiriusUtils {
 
     /**
+     * The Plug-in ID.
+     */
+    public static final String PLUGIN_ID = "org.obeonetwork.m2doc.sirius";
+
+    /**
      * The Sirius session option.
      */
     public static final String SIRIUS_SESSION_OPTION = "SiriusSession";

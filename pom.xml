@@ -109,7 +109,7 @@
             <plugin id="org.antlr.runtime"/>
             <feature id="org.eclipse.equinox.core.feature"/>
             <feature id="org.eclipse.emf.common"/>
-        </excludes>
+          </excludes>
         </configuration>
         <executions>
           <execution>
