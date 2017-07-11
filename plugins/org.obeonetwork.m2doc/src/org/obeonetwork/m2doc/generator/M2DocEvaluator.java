@@ -121,14 +121,19 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     /**
-     * Error message when a {@link Repetition} errors.
+     * Error message when a {@link Bookmark} errors.
      */
     private static final String INVALID_BOOKMARK_STATEMENT = "Invalid bookmark statement: ";
 
     /**
+     * Error message when a {@link Conditional} errors.
+     */
+    private static final String INVALID_CONDITIONAL_STATEMENT = "Invalid if statement: ";
+
+    /**
      * Error message when a {@link Repetition} errors.
      */
-    private static final String INVALID_FOR_STATEMENT = "Invalid for statement: ";
+    private static final String INVALID_REPETITION_STATEMENT = "Invalid for statement: ";
 
     /**
      * I/O reading problem message.
@@ -793,7 +798,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseRepetition(Repetition repetition) {
         if (!repetition.getValidationMessages().isEmpty()) {
-            insertQuerySyntaxMessages(repetition, INVALID_FOR_STATEMENT);
+            insertQuerySyntaxMessages(repetition, INVALID_REPETITION_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
@@ -1037,8 +1042,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseConditional(Conditional conditional) {
-        if (conditional.getCondition().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(conditional, QUERY_SYNTAX_ERROR_MESSAGE);
+        if (!conditional.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(conditional, INVALID_CONDITIONAL_STATEMENT);
         } else {
             final EvaluationResult evaluationResult = evaluator.eval(conditional.getCondition(), variablesStack.peek());
             if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
