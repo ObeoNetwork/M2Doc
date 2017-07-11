@@ -1,1 +1,1 @@
-ERROR - Syntax error in AQL expression: Expression "" is invalid: null or empty string.
+ERROR - Invalid let statement: Expression "" is invalid: null or empty string.

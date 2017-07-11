@@ -1,1 +1,1 @@
-ERROR - Couldn't find the 'v' variable
+ERROR - Invalid let statement: Missing identifier

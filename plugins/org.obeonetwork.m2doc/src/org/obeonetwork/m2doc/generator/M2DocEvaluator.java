@@ -131,6 +131,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     private static final String INVALID_CONDITIONAL_STATEMENT = "Invalid if statement: ";
 
     /**
+     * Error message when a {@link Let} errors.
+     */
+    private static final String INVALID_LET_STATEMENT = "Invalid let statement: ";
+
+    /**
      * Error message when a {@link Repetition} errors.
      */
     private static final String INVALID_REPETITION_STATEMENT = "Invalid for statement: ";
@@ -842,8 +847,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseLet(Let let) {
-        if (let.getValue().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(let, QUERY_SYNTAX_ERROR_MESSAGE);
+        if (!let.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(let, INVALID_LET_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(let.getValue(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
