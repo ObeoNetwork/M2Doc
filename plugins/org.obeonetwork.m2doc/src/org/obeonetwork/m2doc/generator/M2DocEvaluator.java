@@ -123,7 +123,13 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Error message when a {@link Repetition} errors.
      */
+    private static final String INVALID_BOOKMARK_STATEMENT = "Invalid bookmark statement: ";
+
+    /**
+     * Error message when a {@link Repetition} errors.
+     */
     private static final String INVALID_FOR_STATEMENT = "Invalid for statement: ";
+
     /**
      * I/O reading problem message.
      */
@@ -1239,8 +1245,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseBookmark(Bookmark bookmark) {
-        if (bookmark.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(bookmark, QUERY_SYNTAX_ERROR_MESSAGE);
+        if (!bookmark.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(bookmark, INVALID_BOOKMARK_STATEMENT);
         } else {
             final EvaluationResult evaluationResult = evaluator.eval(bookmark.getName(), variablesStack.peek());
             if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
