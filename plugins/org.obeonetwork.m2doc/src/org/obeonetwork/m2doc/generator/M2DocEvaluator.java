@@ -121,6 +121,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     /**
+     * Error message when a {@link Repetition} errors.
+     */
+    private static final String INVALID_FOR_STATEMENT = "Invalid for statement: ";
+    /**
      * I/O reading problem message.
      */
     private static final String AN_I_O_PROBLEM_OCCURED_WHILE_READING = "An I/O Problem occured while reading %s: %s.";
@@ -782,8 +786,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseRepetition(Repetition repetition) {
-        if (repetition.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(repetition, QUERY_SYNTAX_ERROR_MESSAGE);
+        if (!repetition.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(repetition, INVALID_FOR_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {

@@ -1,1 +1,1 @@
-ERROR - Syntax error in AQL expression: Malformed tag m:for, no '|' found.
+ERROR - Invalid for statement: Malformed tag m:for, no '|' found.

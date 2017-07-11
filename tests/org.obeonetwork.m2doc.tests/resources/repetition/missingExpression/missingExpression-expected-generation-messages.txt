@@ -1,2 +1,2 @@
-ERROR - Syntax error in AQL expression: Malformed tag m:for : no query expression specified. v |
-ERROR - Syntax error in AQL expression: Expression "" is invalid: null or empty string.
+ERROR - Invalid for statement: Malformed tag m:for : no query expression specified. v |
+ERROR - Invalid for statement: Expression "" is invalid: null or empty string.
