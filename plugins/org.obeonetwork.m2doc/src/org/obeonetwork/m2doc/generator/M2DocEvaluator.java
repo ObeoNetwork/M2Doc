@@ -136,6 +136,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     private static final String INVALID_LET_STATEMENT = "Invalid let statement: ";
 
     /**
+     * Error message when a {@link Link} errors.
+     */
+    private static final String INVALID_LINK_STATEMENT = "Invalid link statement: ";
+
+    /**
      * Error message when a {@link Repetition} errors.
      */
     private static final String INVALID_REPETITION_STATEMENT = "Invalid for statement: ";
@@ -1329,9 +1334,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseLink(Link link) {
-        if (link.getName().getDiagnostic().getSeverity() == Diagnostic.ERROR
-            || link.getText().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(link, QUERY_SYNTAX_ERROR_MESSAGE);
+        if (!link.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(link, INVALID_LINK_STATEMENT);
         } else {
             final EvaluationResult nameResult = evaluator.eval(link.getName(), variablesStack.peek());
             if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
