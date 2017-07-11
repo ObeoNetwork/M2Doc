@@ -286,9 +286,8 @@ public class UserContentManager {
                     }
                 }
                 XWPFParagraph currentGeneratedParagraph = destinationDocument.createParagraph();
-                M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
-                        format.format(new Date()) + " - Lost user content " + entry.getKey());
-                result.updateLevel(ValidationMessageLevel.WARNING);
+                result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
+                        format.format(new Date()) + " - Lost user content " + entry.getKey()));
                 currentGeneratedParagraph = destinationDocument.createParagraph();
 
                 for (UserContent userContent : entry.getValue()) {
@@ -298,17 +297,14 @@ public class UserContentManager {
                         currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
                                 destinationDocument);
                     } catch (InvalidFormatException e) {
-                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                USERDOC_COPY_ERROR + e.getMessage());
-                        result.updateLevel(ValidationMessageLevel.ERROR);
+                        result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
+                                ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));
                     } catch (XmlException e) {
-                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                USERDOC_COPY_ERROR + e.getMessage());
-                        result.updateLevel(ValidationMessageLevel.ERROR);
+                        result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
+                                ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));
                     } catch (IOException e) {
-                        M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                                USERDOC_COPY_ERROR + e.getMessage());
-                        result.updateLevel(ValidationMessageLevel.ERROR);
+                        result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
+                                ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));
                     }
                 }
 

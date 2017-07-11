@@ -1,0 +1,1 @@
+ERROR - Invalid image directive : no file name provided.

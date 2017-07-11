@@ -1,0 +1,3 @@
+ERROR - Syntax error in AQL expression: Expression "self." is invalid: missing feature access or service call
+ERROR - dangling reference for bookmark bookmark1
+ERROR - dangling reference for bookmark bookmark1

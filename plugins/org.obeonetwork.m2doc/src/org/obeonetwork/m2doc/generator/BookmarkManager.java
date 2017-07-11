@@ -76,19 +76,17 @@ public class BookmarkManager {
     /**
      * Starts a bookmark in the given {@link XWPFParagraph} with the given name.
      * 
+     * @param result
+     *            the {@link GenerationResult}
      * @param paragraph
      *            the current {@link XWPFParagraph}
      * @param name
      *            the bookmark name
-     * @return the {@link ValidationMessageLevel}
      */
-    public ValidationMessageLevel startBookmark(XWPFParagraph paragraph, String name) {
-        final ValidationMessageLevel res;
-
+    public void startBookmark(GenerationResult result, XWPFParagraph paragraph, String name) {
         if (bookmarks.containsKey(name)) {
-            M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
-                    "Can't start duplicated bookmark " + name);
-            res = ValidationMessageLevel.ERROR;
+            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
+                    "Can't start duplicated bookmark " + name));
         } else {
             final CTBookmark bookmark = paragraph.getCTP().addNewBookmarkStart();
             // we create a new run for future error messages.
@@ -112,24 +110,20 @@ public class BookmarkManager {
                     pendingRef.setStringValue(String.format(REF_TAG, bookmark.getName()));
                 }
             }
-            res = ValidationMessageLevel.OK;
         }
-
-        return res;
     }
 
     /**
      * Ends the bookmark with the given name.
      * 
+     * @param result
+     *            the {@link GenerationResult}
      * @param paragraph
      *            the current {@link XWPFParagraph}
      * @param name
      *            the bookmark name
-     * @return the {@link ValidationMessageLevel}
      */
-    public ValidationMessageLevel endBookmark(XWPFParagraph paragraph, String name) {
-        final ValidationMessageLevel res;
-
+    public void endBookmark(GenerationResult result, XWPFParagraph paragraph, String name) {
         final CTBookmark bookmark = startedBookmarks.remove(name);
         if (bookmark != null) {
             final CTMarkupRange range = paragraph.getCTP().addNewBookmarkEnd();
@@ -142,18 +136,13 @@ public class BookmarkManager {
             } else {
                 throw new IllegalStateException("this should not happend");
             }
-            res = ValidationMessageLevel.OK;
         } else if (bookmarks.containsKey(name)) {
-            M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
-                    "Can't end already closed bookmark " + name);
-            res = ValidationMessageLevel.ERROR;
+            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
+                    "Can't end already closed bookmark " + name));
         } else {
-            M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
-                    "Can't end not existing bookmark " + name);
-            res = ValidationMessageLevel.ERROR;
+            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
+                    "Can't end not existing bookmark " + name));
         }
-
-        return res;
     }
 
     /**
@@ -277,16 +266,18 @@ public class BookmarkManager {
     /**
      * Marks the bookmarks that are still open.
      * 
+     * @param result
+     *            the {@link GenerationResult}
      * @return <code>true</code> if any open bookmarks was found, <code>false</code> otherwise
      */
-    public boolean markOpenBookmarks() {
+    public boolean markOpenBookmarks(GenerationResult result) {
         final boolean res = !startedBookmarks.isEmpty();
 
         if (res) {
             for (Entry<String, CTBookmark> entry : startedBookmarks.entrySet()) {
                 final XWPFRun positionRun = messagePositions.remove(entry.getValue());
-                M2DocUtils.setRunMessage(positionRun, ValidationMessageLevel.ERROR,
-                        "unclosed bookmark " + entry.getKey());
+                result.addMessage(M2DocUtils.setRunMessage(positionRun, ValidationMessageLevel.ERROR,
+                        "unclosed bookmark " + entry.getKey()));
             }
         }
 
@@ -296,17 +287,19 @@ public class BookmarkManager {
     /**
      * Marks dangling references.
      * 
+     * @param result
+     *            the {@link GenerationResult}
      * @return <code>true</code> if any dangling reference was found, <code>false</code> otherwise
      */
-    public boolean markDanglingReferences() {
+    public boolean markDanglingReferences(GenerationResult result) {
         final boolean res = !pendingReferences.isEmpty();
 
         if (res) {
             for (Entry<String, Set<CTText>> entry : pendingReferences.entrySet()) {
                 for (CTText ref : entry.getValue()) {
                     final XWPFRun refRun = messagePositions.remove(ref);
-                    M2DocUtils.insertMessageAfter(refRun, ValidationMessageLevel.ERROR,
-                            "dangling reference for bookmark " + entry.getKey());
+                    result.addMessage(M2DocUtils.insertMessageAfter(refRun, ValidationMessageLevel.ERROR,
+                            "dangling reference for bookmark " + entry.getKey()));
                 }
             }
         }

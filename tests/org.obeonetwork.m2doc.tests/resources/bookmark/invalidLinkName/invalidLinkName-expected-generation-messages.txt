@@ -1,0 +1,2 @@
+ERROR - Syntax error in AQL expression: Expression "self. 'a reference to bookmark1'" is invalid: missing feature access or service call
+ERROR - Syntax error in AQL expression: Expression "" is invalid: null or empty string.

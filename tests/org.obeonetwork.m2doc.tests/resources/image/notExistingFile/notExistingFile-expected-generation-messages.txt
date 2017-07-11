@@ -1,0 +1,1 @@
+ERROR - An I/O Problem occured while reading file:/.../M2Doc/tests/org.obeonetwork.m2doc.tests/resources/image/notExistingFile/dh1.gif (No such file or directory).

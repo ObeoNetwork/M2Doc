@@ -201,7 +201,7 @@ public final class M2DocTestUtils {
      *            the text content
      * @return the portable version of the given {@link String}
      */
-    private static String getPortableString(String textContent) {
+    public static String getPortableString(String textContent) {
         String res;
 
         res = textContent.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc");

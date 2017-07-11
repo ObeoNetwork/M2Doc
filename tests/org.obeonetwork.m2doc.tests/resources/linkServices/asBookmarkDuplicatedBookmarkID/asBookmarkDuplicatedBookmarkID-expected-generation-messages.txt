@@ -1,0 +1,2 @@
+ERROR - Can't start duplicated bookmark Art1
+ERROR - Can't end already closed bookmark Art1

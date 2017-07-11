@@ -526,12 +526,9 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         if (bookmark.isReference()) {
             bookmarkManager.insertReference(currentGeneratedParagraph, bookmark.getId(), bookmark.getText());
         } else {
-            final ValidationMessageLevel levelStart = bookmarkManager.startBookmark(currentGeneratedParagraph,
-                    bookmark.getId());
+            bookmarkManager.startBookmark(result, currentGeneratedParagraph, bookmark.getId());
             insertFieldRunReplacement(run, bookmark.getText());
-            final ValidationMessageLevel levelEnd = bookmarkManager.endBookmark(currentGeneratedParagraph,
-                    bookmark.getId());
-            result.updateLevel(levelStart, levelEnd);
+            bookmarkManager.endBookmark(result, currentGeneratedParagraph, bookmark.getId());
         }
     }
 
@@ -667,7 +664,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             tcell.addParagraph();
         } else {
             docTable = null;
-            M2DocUtils.appendMessageRun((XWPFParagraph) run.getParent(), ValidationMessageLevel.ERROR,
+            insertMessage((XWPFParagraph) run.getParent(), ValidationMessageLevel.ERROR,
                     "m:table can't be inserted here.");
         }
 
@@ -1245,12 +1242,10 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(bookmark, evaluationResult.getDiagnostic());
             } else {
-                final ValidationMessageLevel levelStart = bookmarkManager.startBookmark(currentGeneratedParagraph,
+                bookmarkManager.startBookmark(result, currentGeneratedParagraph,
                         evaluationResult.getResult().toString());
                 doSwitch(bookmark.getBody());
-                final ValidationMessageLevel levelEnd = bookmarkManager.endBookmark(currentGeneratedParagraph,
-                        evaluationResult.getResult().toString());
-                result.updateLevel(levelStart, levelEnd);
+                bookmarkManager.endBookmark(result, currentGeneratedParagraph, evaluationResult.getResult().toString());
             }
         }
 
@@ -1269,7 +1264,10 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         for (XWPFRun tagRun : construct.getRuns()) {
             insertRun(tagRun);
         }
-        result.updateLevel(M2DocUtils.appendDiagnosticMessage(currentGeneratedParagraph, diagnostic));
+        for (TemplateValidationMessage message : M2DocUtils.appendDiagnosticMessage(currentGeneratedParagraph,
+                diagnostic)) {
+            result.addMessage(message);
+        }
         for (XWPFRun tagRun : construct.getClosingRuns()) {
             insertRun(tagRun);
         }
@@ -1305,9 +1303,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      * @param message
      *            the message
      */
-    private void insertMessage(XWPFParagraph paragraph, ValidationMessageLevel level, String message) {
-        M2DocUtils.appendMessageRun(paragraph, level, message);
-        result.updateLevel(level);
+    protected void insertMessage(XWPFParagraph paragraph, ValidationMessageLevel level, String message) {
+        result.addMessage(M2DocUtils.appendMessageRun(paragraph, level, message));
     }
 
     @Override

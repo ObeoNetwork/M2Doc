@@ -49,6 +49,7 @@ import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -345,6 +346,41 @@ public abstract class AbstractTemplatesTestSuite {
         }
         // make sure we didn't miss an expected lost file
         assertTrue(Arrays.deepToString(expectedLostFiles.toArray()), expectedLostFiles.isEmpty());
+
+        final String actualGenerationMessages = getGenerationMessageText(generationResult);
+        final URI expectedGenerationMessageURI = getExpectedGenerationMessageURI(new File(testFolderPath));
+        final URI actualValidationMessageURI = getActualGenerationMessageURI(new File(testFolderPath));
+        if (!URIConverter.INSTANCE.exists(expectedGenerationMessageURI, Collections.emptyMap())) {
+            try (OutputStream stream = URIConverter.INSTANCE.createOutputStream(actualValidationMessageURI);) {
+                setContent(stream, "UTF-8", actualGenerationMessages);
+            }
+            fail("missing " + expectedGenerationMessageURI.toString());
+        }
+        try (InputStream stream = URIConverter.INSTANCE.createInputStream(expectedGenerationMessageURI)) {
+            final String expectedGenerationMessages = getContent(stream, "UTF-8");
+            assertEquals(expectedGenerationMessages.replaceAll("\r\n", "\n"),
+                    actualGenerationMessages.replaceAll("\r\n", "\n"));
+        }
+    }
+
+    /**
+     * Gets the generation messages text.
+     * 
+     * @param generationResult
+     *            the {@link GenerationResult}
+     * @return the generation messages text
+     */
+    private String getGenerationMessageText(GenerationResult generationResult) {
+        final StringBuilder builder = new StringBuilder();
+
+        for (TemplateValidationMessage message : generationResult.getMessages()) {
+            builder.append(message.getLevel());
+            builder.append(" - ");
+            builder.append(message.getMessage());
+            builder.append("\n");
+        }
+
+        return M2DocTestUtils.getPortableString(builder.toString());
     }
 
     /**
@@ -418,7 +454,7 @@ public abstract class AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder path
-     * @return the template file from the test folder path
+     * @return the expected AST file from the test folder path
      */
     protected URI getExpectedASTURI(File testFolder) {
         return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-ast.txt");
@@ -429,10 +465,33 @@ public abstract class AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder path
-     * @return the actual file from the test folder path
+     * @return the actual AST file from the test folder path
      */
     protected URI getActualASTURI(File testFolder) {
         return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-ast.txt");
+    }
+
+    /**
+     * Gets the expected validation messages file from the test folder path.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @return the expected validation messages file from the test folder path
+     */
+    protected URI getExpectedGenerationMessageURI(File testFolder) {
+        return URI
+                .createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-generation-messages.txt");
+    }
+
+    /**
+     * Gets the actual AST file from the test folder path.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @return the actual AST file from the test folder path
+     */
+    protected URI getActualGenerationMessageURI(File testFolder) {
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-generation-messages.txt");
     }
 
     /**

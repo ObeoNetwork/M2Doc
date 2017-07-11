@@ -152,14 +152,15 @@ public final class M2DocUtils {
      *            the {@link ValidationMessageLevel}
      * @param message
      *            the message
-     * @return the created {@link XWPFRun}
+     * @return the created {@link TemplateValidationMessage}
      */
-    public static XWPFRun appendMessageRun(XWPFParagraph paragraph, ValidationMessageLevel level, String message) {
-        final XWPFRun res = paragraph.createRun();
+    public static TemplateValidationMessage appendMessageRun(XWPFParagraph paragraph, ValidationMessageLevel level,
+            String message) {
+        final XWPFRun run = paragraph.createRun();
 
-        setRunMessage(res, level, message);
+        setRunMessage(run, level, message);
 
-        return res;
+        return new TemplateValidationMessage(level, message, run);
     }
 
     /**
@@ -171,32 +172,29 @@ public final class M2DocUtils {
      *            the {@link Diagnostic}
      * @return the maximum {@link ValidationMessageLevel}
      */
-    public static ValidationMessageLevel appendDiagnosticMessage(XWPFParagraph paragraph, Diagnostic diagnostic) {
-        ValidationMessageLevel res = ValidationMessageLevel.OK;
+    public static List<TemplateValidationMessage> appendDiagnosticMessage(XWPFParagraph paragraph,
+            Diagnostic diagnostic) {
+        final List<TemplateValidationMessage> res = new ArrayList<TemplateValidationMessage>();
 
         for (Diagnostic child : diagnostic.getChildren()) {
             switch (child.getSeverity()) {
                 case Diagnostic.INFO:
-                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage());
-                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.INFO);
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage()));
                     break;
                 case Diagnostic.WARNING:
-                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING, child.getMessage());
-                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.WARNING);
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING, child.getMessage()));
                     break;
                 case Diagnostic.ERROR:
-                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, child.getMessage());
-                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.ERROR);
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, child.getMessage()));
                     break;
 
                 default:
-                    M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage());
-                    res = ValidationMessageLevel.updateLevel(res, ValidationMessageLevel.INFO);
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage()));
                     break;
             }
             paragraph.getRuns().get(paragraph.getRuns().size() - 1).addBreak();
             if (!child.getChildren().isEmpty()) {
-                res = ValidationMessageLevel.updateLevel(res, appendDiagnosticMessage(paragraph, child));
+                res.addAll(appendDiagnosticMessage(paragraph, child));
             }
         }
 
@@ -214,19 +212,17 @@ public final class M2DocUtils {
      *            the message
      * @return the created {@link XWPFRun}
      */
-    public static XWPFRun insertMessageAfter(XWPFRun run, ValidationMessageLevel level, String message) {
-        final XWPFRun res;
-
+    public static TemplateValidationMessage insertMessageAfter(XWPFRun run, ValidationMessageLevel level,
+            String message) {
         final IRunBody parent = run.getParent();
         if (parent instanceof XWPFParagraph) {
             final XWPFParagraph paragraph = (XWPFParagraph) parent;
-            res = paragraph.insertNewRun(paragraph.getRuns().indexOf(run));
-            setRunMessage(res, level, message);
+            final XWPFRun newRun = paragraph.insertNewRun(paragraph.getRuns().indexOf(run));
+            setRunMessage(newRun, level, message);
+            return new TemplateValidationMessage(level, message, newRun);
         } else {
             throw new IllegalStateException("this should not happend");
         }
-
-        return res;
     }
 
     /**
@@ -238,11 +234,14 @@ public final class M2DocUtils {
      *            the {@link ValidationMessageLevel}
      * @param message
      *            the message
+     * @return the {@link TemplateValidationMessage}
      */
-    public static void setRunMessage(XWPFRun run, ValidationMessageLevel level, String message) {
+    public static TemplateValidationMessage setRunMessage(XWPFRun run, ValidationMessageLevel level, String message) {
         run.setText(message);
         run.setBold(true);
         run.setColor(getColor(level));
+
+        return new TemplateValidationMessage(level, message, run);
     }
 
     /**
@@ -693,12 +692,8 @@ public final class M2DocUtils {
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
 
-            if (bookmarkManager.markDanglingReferences()) {
-                result.updateLevel(ValidationMessageLevel.ERROR);
-            }
-            if (bookmarkManager.markOpenBookmarks()) {
-                result.updateLevel(ValidationMessageLevel.ERROR);
-            }
+            bookmarkManager.markDanglingReferences(result);
+            bookmarkManager.markOpenBookmarks(result);
 
             userContentManager.generateLostFiles(result);
             userContentManager.dispose();

@@ -12,11 +12,13 @@
 package org.obeonetwork.m2doc.generator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
@@ -44,6 +46,11 @@ public class GenerationResult {
      * The {@link List} of duplicated {@link UserContent#getId() user content ID}.
      */
     private final List<String> duplicatedUserContentIDs = new ArrayList<String>();
+
+    /**
+     * The {@link List} of {@link TemplateValidationMessage} produced at generation time.
+     */
+    private final List<TemplateValidationMessage> messages = new ArrayList<TemplateValidationMessage>();
 
     /**
      * Updates the current {@link #getLevel() level} with the given {@link ValidationMessageLevel}.
@@ -83,6 +90,26 @@ public class GenerationResult {
      */
     public List<String> getDuplicatedUserContentIDs() {
         return duplicatedUserContentIDs;
+    }
+
+    /**
+     * Gets the {@link List} of {@link TemplateValidationMessage} produced at generation time.
+     * 
+     * @return the {@link List} of {@link TemplateValidationMessage} produced at generation time
+     */
+    public List<TemplateValidationMessage> getMessages() {
+        return Collections.unmodifiableList(messages);
+    }
+
+    /**
+     * Adds the given {@link TemplateValidationMessage} to {@link #getMessages() messages} and update the {@link #getLevel() level}.
+     * 
+     * @param message
+     *            the {@link TemplateValidationMessage} to add
+     */
+    public void addMessage(TemplateValidationMessage message) {
+        messages.add(message);
+        updateLevel(message.getLevel());
     }
 
 }
