@@ -1053,8 +1053,12 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseBlock(Block block) {
-        for (IConstruct construct : block.getStatements()) {
-            doSwitch(construct);
+        if (!block.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(block, INVALID_CONDITIONAL_STATEMENT);
+        } else {
+            for (IConstruct construct : block.getStatements()) {
+                doSwitch(construct);
+            }
         }
 
         return block;

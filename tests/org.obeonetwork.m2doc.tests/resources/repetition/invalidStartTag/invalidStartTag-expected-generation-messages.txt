@@ -1,3 +1,1 @@
-ERROR - Couldn't find the 'fr' variable
-ERROR - Couldn't find the 'v' variable
-WARNING - Couldn't find the 'aqlFeatureAccess(org.eclipse.acceleo.query.runtime.impl.Nothing,java.lang.String)' service
+ERROR - Invalid if statement: Unexpected tag m:endfor at this location

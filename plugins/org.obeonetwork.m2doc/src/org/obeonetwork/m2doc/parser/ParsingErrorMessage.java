@@ -28,7 +28,7 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when unexpected tag is encountered.
      */
-    UNEXPECTEDTAGMISSING("Unexpected tag {0} at this location missing {1}"),
+    UNEXPECTEDTAGMISSING("Unexpected tag {0} missing {1}"),
     /**
      * Error message issued when a invalid AQL expression is encountered.
      */
