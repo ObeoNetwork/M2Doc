@@ -489,9 +489,31 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         currentGeneratedParagraph = newParagraph;
     }
 
+    /**
+     * Tells if the given {@link IConstruct} has {@link ValidationMessageLevel#ERROR error} in its {@link IConstruct#getValidationMessages()
+     * validation messages}.
+     * 
+     * @param construct
+     *            the {@link IConstruct}
+     * @return <code>true</code> if the given {@link IConstruct} has {@link ValidationMessageLevel#ERROR error} in its
+     *         {@link IConstruct#getValidationMessages() validation messages}, <code>false</code> otherwise
+     */
+    protected boolean hasError(IConstruct construct) {
+        boolean res = false;
+
+        for (TemplateValidationMessage message : construct.getValidationMessages()) {
+            if (message.getLevel() == ValidationMessageLevel.ERROR) {
+                res = true;
+                break;
+            }
+        }
+
+        return res;
+    }
+
     @Override
     public IConstruct caseQuery(Query query) {
-        if (!query.getValidationMessages().isEmpty()) {
+        if (hasError(query)) {
             insertQuerySyntaxMessages(query, INVALID_QUERY_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
@@ -817,7 +839,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseRepetition(Repetition repetition) {
-        if (!repetition.getValidationMessages().isEmpty()) {
+        if (hasError(repetition)) {
             insertQuerySyntaxMessages(repetition, INVALID_REPETITION_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(), variablesStack.peek());
@@ -862,7 +884,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseLet(Let let) {
-        if (!let.getValidationMessages().isEmpty()) {
+        if (hasError(let)) {
             insertQuerySyntaxMessages(let, INVALID_LET_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(let.getValue(), variablesStack.peek());
@@ -890,7 +912,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseUserDoc(UserDoc userDoc) {
-        if (!userDoc.getValidationMessages().isEmpty()) {
+        if (hasError(userDoc)) {
             insertQuerySyntaxMessages(userDoc, INVALID_USERDOC_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), variablesStack.peek());
@@ -1053,7 +1075,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseBlock(Block block) {
-        if (!block.getValidationMessages().isEmpty()) {
+        if (hasError(block)) {
             insertQuerySyntaxMessages(block, INVALID_CONDITIONAL_STATEMENT);
         } else {
             for (IConstruct construct : block.getStatements()) {
@@ -1066,7 +1088,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseConditional(Conditional conditional) {
-        if (!conditional.getValidationMessages().isEmpty()) {
+        if (hasError(conditional)) {
             insertQuerySyntaxMessages(conditional, INVALID_CONDITIONAL_STATEMENT);
         } else {
             final EvaluationResult evaluationResult = evaluator.eval(conditional.getCondition(), variablesStack.peek());
@@ -1274,7 +1296,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseBookmark(Bookmark bookmark) {
-        if (!bookmark.getValidationMessages().isEmpty()) {
+        if (hasError(bookmark)) {
             insertQuerySyntaxMessages(bookmark, INVALID_BOOKMARK_STATEMENT);
         } else {
             final EvaluationResult evaluationResult = evaluator.eval(bookmark.getName(), variablesStack.peek());
@@ -1348,7 +1370,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseLink(Link link) {
-        if (!link.getValidationMessages().isEmpty()) {
+        if (hasError(link)) {
             insertQuerySyntaxMessages(link, INVALID_LINK_STATEMENT);
         } else {
             final EvaluationResult nameResult = evaluator.eval(link.getName(), variablesStack.peek());
