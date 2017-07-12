@@ -151,6 +151,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     private static final String INVALID_REPETITION_STATEMENT = "Invalid for statement: ";
 
     /**
+     * Error message when a {@link UserDoc} errors.
+     */
+    private static final String INVALID_USERDOC_STATEMENT = "Invalid userDoc statement: ";
+
+    /**
      * I/O reading problem message.
      */
     private static final String AN_I_O_PROBLEM_OCCURED_WHILE_READING = "An I/O Problem occured while reading %s: %s.";
@@ -885,8 +890,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseUserDoc(UserDoc userDoc) {
-        if (userDoc.getId().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(userDoc, QUERY_SYNTAX_ERROR_MESSAGE);
+        if (!userDoc.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(userDoc, INVALID_USERDOC_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
