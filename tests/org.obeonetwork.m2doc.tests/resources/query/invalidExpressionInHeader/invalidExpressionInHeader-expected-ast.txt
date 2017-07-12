@@ -6,7 +6,5 @@ template
   End of demonstration.
 === BODY ===
 template
-  A simple demonstration of a query :
-  [query: ***ERROR***.aqlFeatureAccess(self)]
-  End of demonstration.
+  
 === FOOTER ===

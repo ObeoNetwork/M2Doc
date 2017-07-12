@@ -141,6 +141,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     private static final String INVALID_LINK_STATEMENT = "Invalid link statement: ";
 
     /**
+     * Error message when a {@link Query} errors.
+     */
+    private static final String INVALID_QUERY_STATEMENT = "Invalid query statement: ";
+
+    /**
      * Error message when a {@link Repetition} errors.
      */
     private static final String INVALID_REPETITION_STATEMENT = "Invalid for statement: ";
@@ -481,8 +486,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
 
     @Override
     public IConstruct caseQuery(Query query) {
-        if (query.getQuery().getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-            insertQuerySyntaxMessages(query, QUERY_SYNTAX_ERROR_MESSAGE);
+        if (!query.getValidationMessages().isEmpty()) {
+            insertQuerySyntaxMessages(query, INVALID_QUERY_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
