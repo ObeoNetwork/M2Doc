@@ -206,8 +206,7 @@ public class GenconfToDocumentGenerator {
             definitions.putAll(configurationServices.getProviderVariables(generation));
 
             // launch generation
-            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, URIConverter.INSTANCE,
-                    generatedURI, monitor);
+            M2DocUtils.generate(template, queryEnvironment, resourceSetForModels, definitions, generatedURI, monitor);
 
             List<URI> generatedFiles = Lists.newArrayList(generatedURI);
             if (inError) {
