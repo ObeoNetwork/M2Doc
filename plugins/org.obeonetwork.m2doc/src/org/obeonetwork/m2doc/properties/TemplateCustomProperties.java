@@ -14,15 +14,45 @@ package org.obeonetwork.m2doc.properties;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.CommonTokenFactory;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.UnbufferedCharStream;
+import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.apache.poi.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.parser.QueryLexer;
+import org.eclipse.acceleo.query.parser.QueryParser;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
+import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
@@ -33,12 +63,12 @@ import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProper
 public class TemplateCustomProperties {
 
     /**
-     * id of the integer type to use in variable declaration properties (not supported yet).
+     * id of the integer type to use in variable declaration properties (TODO not supported yet).
      */
     public static final String INT_TYPE = "Integer";
 
     /**
-     * id of the real type to use in variable declaration properties (not supported yet).
+     * id of the real type to use in variable declaration properties (TODO not supported yet).
      */
     public static final String REAL_TYPE = "Real";
 
@@ -48,17 +78,17 @@ public class TemplateCustomProperties {
     public static final String STRING_TYPE = "String";
 
     /**
-     * id of the boolean type to use in variable declaration properties (not supported yet).
+     * id of the boolean type to use in variable declaration properties (TODO not supported yet).
      */
     public static final String BOOLEAN_TYPE = "Boolean";
 
     /**
-     * id of the date type to use in variable declaration properties (not supported yet).
+     * id of the date type to use in variable declaration properties (TODO not supported yet).
      */
     public static final String DATE_TYPE = "Date";
 
     /**
-     * id of the object type to use in variable declaration properties (not supported yet).
+     * id of the object type to use in variable declaration properties (TODO not supported yet).
      */
     public static final String OBJECT_TYPE = "Object";
 
@@ -365,6 +395,120 @@ public class TemplateCustomProperties {
      */
     public List<String> getServiceClasses() {
         return serviceClasses;
+    }
+
+    /**
+     * Configures the given {@link IQueryEnvironment} with {@link #getPackagesURIs() declared EPackages}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment} to configure
+     */
+    public void configureQueryEnvironment(IQueryEnvironment queryEnvironment) {
+        for (String nsURI : getPackagesURIs()) {
+            final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
+            queryEnvironment.registerEPackage(ePackage);
+        }
+    }
+
+    /**
+     * Gets the {@link Set} of {@link IType} for each variable declaration.
+     * 
+     * @param validator
+     *            the {@link AstValidator}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @return the {@link Set} of variable declaration {@link IType}
+     */
+    public Map<String, Set<IType>> getVariableTypes(AstValidator validator,
+            IReadOnlyQueryEnvironment queryEnvironment) {
+        final Map<String, Set<IType>> res = new LinkedHashMap<String, Set<IType>>();
+
+        for (Entry<String, String> entry : getVariables().entrySet()) {
+            final Set<IType> types = getVariableTypes(validator, queryEnvironment, entry.getValue());
+            res.put(entry.getKey(), types);
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link Set} of variable declaration {@link IType}.
+     * 
+     * @param validator
+     *            the {@link AstValidator}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param type
+     *            the {@link String} representation of a type
+     * @return the {@link Set} of variable declaration {@link IType}
+     */
+    public Set<IType> getVariableTypes(AstValidator validator, IReadOnlyQueryEnvironment queryEnvironment,
+            String type) {
+        final Set<IType> res = new LinkedHashSet<IType>();
+
+        final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
+        final IValidationResult validationResult = validator.validate(Collections.<String, Set<IType>> emptyMap(),
+                astResult);
+        // TODO replace with AstValidator.getDeclarationTypes()
+        final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
+        for (IType iType : variableTypes) {
+            if (iType instanceof EClassifierLiteralType) {
+                res.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType) iType).getType()));
+            } else if (iType instanceof EClassifierSetLiteralType) {
+                for (EClassifier eClassifier : ((EClassifierSetLiteralType) iType).getEClassifiers()) {
+                    res.add(new EClassifierType(queryEnvironment, eClassifier));
+                }
+            } else {
+                res.add(iType);
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Parses while matching an AQL expression.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param type
+     *            the type to parse
+     * @return the corresponding {@link AstResult}
+     */
+    private AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String type) {
+        final IQueryBuilderEngine.AstResult result;
+
+        if (type != null && type.length() > 0) {
+            AstBuilderListener astBuilder = new AstBuilderListener((IQueryEnvironment) queryEnvironment);
+            CharStream input = new UnbufferedCharStream(new StringReader(type), type.length());
+            QueryLexer lexer = new QueryLexer(input);
+            lexer.setTokenFactory(new CommonTokenFactory(true));
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(astBuilder.getErrorListener());
+            TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
+            QueryParser parser = new QueryParser(tokens);
+            parser.addParseListener(astBuilder);
+            parser.removeErrorListeners();
+            parser.addErrorListener(astBuilder.getErrorListener());
+            // parser.setTrace(true);
+            parser.typeLiteral();
+            result = astBuilder.getAstResult();
+        } else {
+            ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral) EcoreUtil
+                    .create(AstPackage.eINSTANCE.getErrorTypeLiteral());
+            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
+            errors.add(errorTypeLiteral);
+            final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+            if (type != null) {
+                positions.put(errorTypeLiteral, Integer.valueOf(0));
+            }
+            final BasicDiagnostic diagnostic = new BasicDiagnostic();
+            diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0, "null or empty type.",
+                    new Object[] {errorTypeLiteral }));
+            result = new AstResult(errorTypeLiteral, positions, positions, errors, diagnostic);
+        }
+
+        return result;
     }
 
     /**

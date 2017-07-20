@@ -22,7 +22,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -31,7 +32,6 @@ import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
-import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 /**
@@ -101,15 +101,18 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                 TemplateCustomProperties properties;
                                 try {
                                     final IQueryEnvironment queryEnvironment = Query.newEnvironment();
-                                    properties = POIServices.getInstance().getTemplateCustomProperties(
-                                            URIConverter.INSTANCE, URI.createURI(generation.getTemplateFileName()));
-                                    for (String nsURI : properties.getPackagesURIs()) {
-                                        final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-                                        queryEnvironment.registerEPackage(ePackage);
-                                    }
+                                    URI templateURI = URI.createURI(generation.getTemplateFileName())
+                                            .resolve(generation.eResource().getURI());
+                                    properties = POIServices.getInstance()
+                                            .getTemplateCustomProperties(URIConverter.INSTANCE, templateURI);
+                                    queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+                                    queryEnvironment.registerCustomClassMapping(
+                                            EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
+                                            EStringToStringMapEntryImpl.class);
+                                    properties.configureQueryEnvironment(queryEnvironment);
                                     final AstValidator validator = new AstValidator(
                                             new ValidationServices(queryEnvironment));
-                                    final Set<IType> possibleTypes = M2DocValidator.getVariableTypes(validator,
+                                    final Set<IType> possibleTypes = properties.getVariableTypes(validator,
                                             queryEnvironment, properties.getVariables().get(modelDefinition.getKey()));
                                     final Iterable<?> filter = Iterables.filter(super.getChoiceOfValues(object),
                                             new Predicate<Object>() {
@@ -160,6 +163,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
      * This returns ModelDefinition.gif.
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -169,6 +173,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -197,6 +202,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
+     * 
      * @generated
      */
     @Override

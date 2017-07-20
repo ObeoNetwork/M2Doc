@@ -38,7 +38,7 @@
             name="%_UI_GenconfEditor_label"
             icon="icons/full/obj16/GenconfModelFile.gif"
             extensions="genconf"
-            class="org.obeonetwork.m2doc.genconf.presentation.GenconfEditor"
+            class="org.obeonetwork.m2doc.genconf.editor.CustomGenconfEditor"
             contributorClass="org.obeonetwork.m2doc.genconf.presentation.GenconfActionBarContributor">
       </editor>
    </extension>
