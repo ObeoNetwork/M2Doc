@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.tplconf;singleton:=true
-Bundle-Version: 0.11.0.qualifier
+Bundle-Version: 0.12.0.qualifier
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.tplconf,
@@ -11,7 +11,7 @@ Export-Package: org.obeonetwork.m2doc.tplconf,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.obeonetwork.m2doc;bundle-version="[0.11.0,0.12.0)",
+ org.obeonetwork.m2doc;bundle-version="[0.12.0,0.13.0)",
  org.apache.poi;bundle-version="[3.16.0,3.17.0)",
  com.google.guava;bundle-version="[15.0.0,16.0.0)"
 Bundle-ActivationPolicy: lazy
