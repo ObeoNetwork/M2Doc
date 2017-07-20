@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ide.ui.command;
+package org.obeonetwork.m2doc.genconf.editor.command;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
-import org.obeonetwork.m2doc.ide.ui.Activator;
+import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 
 /**
  * Initialize configurations for documention generation.
@@ -59,12 +59,12 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
                     MessageDialog.openInformation(shell, "M2Doc generation", "The configuration file '"
                         + configurationModel.getURI().toPlatformString(true) + "' is created.");
                 } catch (FileNotFoundException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "File not found, see the error log for details", e.getMessage());
                 } catch (IOException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
                 }
 

@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ide.ui.propertyTester;
+package org.obeonetwork.m2doc.genconf.propertyTester;
 
 import java.util.List;
 
@@ -25,13 +25,13 @@ import org.obeonetwork.m2doc.genconf.Generation;
 public class GenerationPropertyTester extends PropertyTester {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public GenerationPropertyTester() {
     }
 
     /**
-     * Returns <code>true</code> when the generation has a local URI (platform or file)
+     * Returns <code>true</code> when the generation has a local URI (platform or file).
      * 
      * @param generation
      *            the tested generation.
@@ -43,18 +43,17 @@ public class GenerationPropertyTester extends PropertyTester {
     }
 
     /**
-     * (non-Javadoc)
+     * (non-Javadoc).
      * 
      * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String, java.lang.Object[], java.lang.Object)
      */
-    @SuppressWarnings("rawtypes")
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         boolean isApplicable = false;
         if (receiver instanceof Generation && isLocal((Generation) receiver)) {
             isApplicable = true;
         } else if (receiver instanceof List) {
-            for (Object object : (List) receiver) {
+            for (Object object : (List<?>) receiver) {
                 if (!test(object, property, args, expectedValue)) {
                     isApplicable = false;
                     break;

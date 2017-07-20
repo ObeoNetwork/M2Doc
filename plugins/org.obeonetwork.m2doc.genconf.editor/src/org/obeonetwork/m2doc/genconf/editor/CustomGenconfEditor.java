@@ -88,6 +88,7 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class CustomGenconfEditor extends GenconfEditor {
 
     /**
@@ -905,6 +906,7 @@ public class CustomGenconfEditor extends GenconfEditor {
         queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
                 EStringToStringMapEntryImpl.class);
         templateCustomProperties.configureQueryEnvironment(queryEnvironment);
+        @SuppressWarnings("restriction")
         final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
         final Map<String, Set<IType>> variablesTypes = templateCustomProperties.getVariableTypes(validator,
                 queryEnvironment);

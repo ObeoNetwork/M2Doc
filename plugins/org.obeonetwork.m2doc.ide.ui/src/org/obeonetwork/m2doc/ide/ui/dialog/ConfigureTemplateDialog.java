@@ -79,8 +79,6 @@ import org.obeonetwork.m2doc.tplconf.TplconfFactory;
 import org.obeonetwork.m2doc.tplconf.impl.TplconfFactoryImpl;
 import org.obeonetwork.m2doc.tplconf.provider.spec.TplconfItemProviderAdapterFactorySpec;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Dialog to configuration M2Doc template properties (nsURI and variable declarations).
  * 
@@ -404,7 +402,10 @@ public class ConfigureTemplateDialog extends TitleAreaDialog {
     public ConfigureTemplateDialog(Shell parentShell, TemplateConfig config) {
         super(parentShell);
         setShellStyle(SWT.CLOSE | SWT.RESIZE | SWT.TITLE | SWT.APPLICATION_MODAL);
-        this.config = checkNotNull(config);
+        if (config == null) {
+            throw new NullPointerException();
+        }
+        this.config = config;
         for (EPackageMapping mapping : config.getMappings()) {
             if (mapping.getUri() != null) {
                 mappingsByUri.put(mapping.getUri(), mapping);

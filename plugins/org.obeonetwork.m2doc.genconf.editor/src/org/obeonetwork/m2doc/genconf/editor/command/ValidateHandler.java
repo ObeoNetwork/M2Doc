@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ide.ui.command;
+package org.obeonetwork.m2doc.genconf.editor.command;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
@@ -42,8 +42,14 @@ public class ValidateHandler extends AbstractHandler {
     }
 
     /**
-     * the command has been executed, so extract extract the needed information
+     * The command has been executed, so extract extract the needed information
      * from the application context.
+     * 
+     * @param event
+     *            the {@link ExecutionEvent}
+     * @throws ExecutionException
+     *             if something went wrong
+     * @return <code>null</code>
      */
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ISelection selection = HandlerUtil.getCurrentSelection(event);
@@ -71,21 +77,21 @@ public class ValidateHandler extends AbstractHandler {
                                 "Error(s) detected during validation. A log file has been generated next to the template file.");
                     }
                 } catch (FileNotFoundException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "File not found, see the error log for details", e.getMessage());
                 } catch (IOException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
                 } catch (DocumentParserException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "Template parsing problem, see the error log for details",
                             e.getMessage());
                 } catch (DocumentGenerationException e) {
-                    Activator.getDefault().getLog()
-                            .log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
                     MessageDialog.openError(shell, "Generation problem, see the error log for details", e.getMessage());
                 }
 

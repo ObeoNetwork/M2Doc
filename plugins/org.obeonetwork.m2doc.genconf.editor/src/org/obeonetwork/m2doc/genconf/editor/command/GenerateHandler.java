@@ -9,12 +9,11 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ide.ui.command;
-
-import com.google.common.collect.Lists;
+package org.obeonetwork.m2doc.genconf.editor.command;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -36,9 +35,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.progress.IProgressService;
 import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
@@ -75,7 +74,7 @@ public class GenerateHandler extends AbstractHandler {
 
             if (generation != null) {
                 final Generation toLaunch = generation;
-                final List<URI> generatedfiles = Lists.newArrayList();
+                final List<URI> generatedfiles = new ArrayList<URI>();
                 IWorkbench wb = PlatformUI.getWorkbench();
                 IProgressService ps = wb.getProgressService();
                 try {
@@ -110,8 +109,9 @@ public class GenerateHandler extends AbstractHandler {
                     }
                 } catch (InvocationTargetException | InterruptedException e) {
                     String msg = e.getMessage();
-                    Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, Status.ERROR,
-                            "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
+                    M2docconfEditorPlugin.getPlugin().getLog()
+                            .log(new Status(Status.ERROR, M2docconfEditorPlugin.getPlugin().getSymbolicName(),
+                                    Status.ERROR, "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
                     MessageDialog.openError(shell, "Generation problem. See the error log for details",
                             "A technical error occured. Please log a bug (see the error log for details)");
                 }

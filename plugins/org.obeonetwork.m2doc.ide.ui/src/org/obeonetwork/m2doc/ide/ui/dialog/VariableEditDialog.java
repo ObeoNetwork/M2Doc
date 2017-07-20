@@ -11,9 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.ide.ui.dialog;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -65,8 +62,6 @@ import org.obeonetwork.m2doc.tplconf.TemplateType;
 import org.obeonetwork.m2doc.tplconf.TemplateVariable;
 import org.obeonetwork.m2doc.tplconf.TplconfFactory;
 import org.obeonetwork.m2doc.tplconf.impl.TplconfFactoryImpl;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Dialog to configure one template variable.
@@ -159,8 +154,8 @@ public class VariableEditDialog extends TitleAreaDialog {
                 classifierTreeViewer.setSelection(new StructuredSelection(type), true);
             } else if (type instanceof StructuredType) {
                 if (((StructuredType) type).getEClassifier() != null) {
-                    classifierTreeViewer.setSelection(
-                            new StructuredSelection(((StructuredType) type).getEClassifier()), true);
+                    classifierTreeViewer.setSelection(new StructuredSelection(((StructuredType) type).getEClassifier()),
+                            true);
                 } else {
                     classifierTreeViewer.setSelection(new StructuredSelection(), true);
                 }
@@ -187,6 +182,8 @@ public class VariableEditDialog extends TitleAreaDialog {
     }
 
     /**
+     * Classifier tree content provider.
+     * 
      * @author cedric
      */
     private final class ClassifierTreeContentProvider implements ITreeContentProvider {
@@ -202,18 +199,22 @@ public class VariableEditDialog extends TitleAreaDialog {
 
         @Override
         public Object[] getElements(Object inputElement) {
-            Object[] result = new Object[0];
+            final List<Object> result = new ArrayList<Object>();
             if (inputElement instanceof EPackageMapping) {
                 EPackageMapping mm = (EPackageMapping) inputElement;
                 if (mm.getEPackage() instanceof EPackage) {
                     EList<EClassifier> eClassifiers = ((EPackage) mm.getEPackage()).getEClassifiers();
-                    result = eClassifiers.toArray(new Object[eClassifiers.size()]);
+                    result.addAll(eClassifiers);
                 }
             } else if (inputElement instanceof TemplateConfig) {
                 Collection<TemplateType> allTypes = ((TemplateConfig) inputElement).getTypesByName().values();
-                result = Collections2.filter(allTypes, Predicates.instanceOf(ScalarType.class)).toArray();
+                for (TemplateType type : allTypes) {
+                    if (type instanceof ScalarType) {
+                        result.add(type);
+                    }
+                }
             }
-            return result;
+            return result.toArray();
         }
 
         @Override
@@ -289,9 +290,18 @@ public class VariableEditDialog extends TitleAreaDialog {
             AdapterFactory adapterFactory) {
         super(parentShell);
         setShellStyle(SWT.CLOSE | SWT.RESIZE | SWT.TITLE | SWT.APPLICATION_MODAL);
-        this.variable = checkNotNull(var);
-        this.config = checkNotNull(config);
-        this.adapterFactory = checkNotNull(adapterFactory);
+        if (var == null) {
+            throw new NullPointerException();
+        }
+        this.variable = var;
+        if (config == null) {
+            throw new NullPointerException();
+        }
+        this.config = config;
+        if (adapterFactory == null) {
+            throw new NullPointerException();
+        }
+        this.adapterFactory = adapterFactory;
     }
 
     /**
