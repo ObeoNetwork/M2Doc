@@ -597,7 +597,7 @@ public class CustomGenconfEditor extends GenconfEditor {
      *            the container {@link Composite}
      */
     private void createOptionsTable(final Generation generation, Composite composite) {
-        optionsTable = new TableViewer(composite, SWT.NONE);
+        optionsTable = new TableViewer(composite, SWT.MULTI);
         optionsTable.getTable().setHeaderVisible(true);
         TableViewerColumn nameColumn = new TableViewerColumn(optionsTable, SWT.NONE);
         nameColumn.getColumn().setText("Option name");
@@ -661,7 +661,7 @@ public class CustomGenconfEditor extends GenconfEditor {
      *            the container {@link Composite}
      */
     private void createVariablesTable(final Generation generation, Composite composite) {
-        variablesTable = new TableViewer(composite, SWT.NONE);
+        variablesTable = new TableViewer(composite, SWT.MULTI);
         variablesTable.getTable().setHeaderVisible(true);
         TableViewerColumn nameColumn = new TableViewerColumn(variablesTable, SWT.NONE);
         nameColumn.getColumn().setText("Variable name");

@@ -15,6 +15,7 @@ location Eclipse "http://download.eclipse.org/releases/mars" {
 	org.eclipse.gmf lazy
 	org.eclipse.gmf.runtime.diagram.ui lazy
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
+	org.eclipse.jdt.feature.group lazy
 }
 
 

@@ -34,7 +34,11 @@ import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.apache.poi.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.VarRef;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.parser.QueryLexer;
@@ -44,6 +48,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -51,8 +56,14 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.M2DocParser;
+import org.obeonetwork.m2doc.template.Let;
+import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.template.Template;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
@@ -60,6 +71,7 @@ import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProper
  * 
  * @author Romain Guider
  */
+@SuppressWarnings("restriction")
 public class TemplateCustomProperties {
 
     /**
@@ -520,6 +532,78 @@ public class TemplateCustomProperties {
      */
     public static boolean isValidVariableName(String name) {
         return name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*");
+    }
+
+    /**
+     * Gets the {@link List} of missing variable names.
+     * 
+     * @return the {@link List} of missing variable names
+     */
+    public List<String> getMissingVariables() {
+        final List<String> res = new ArrayList<String>();
+
+        final M2DocParser parser = new M2DocParser(document, Query.newEnvironment());
+        try {
+            final Template template = parser.parseTemplate();
+            final Set<String> missing = new LinkedHashSet<String>();
+            walkForNeededVariables(new ArrayList<String>(getVariables().keySet()), missing, template);
+            res.addAll(missing);
+        } catch (DocumentParserException e) {
+            // can't parse then nothing is missing
+        }
+
+        return res;
+    }
+
+    /**
+     * Walks the given {@link EObject} for missing variables.
+     * 
+     * @param declarations
+     *            the known declarations
+     * @param missing
+     *            the missing declarations
+     * @param eObj
+     *            the current {@link EObject} to walk
+     */
+    private void walkForNeededVariables(List<String> declarations, Set<String> missing, EObject eObj) {
+        if (eObj instanceof VarRef) {
+            if (!declarations.contains(((VarRef) eObj).getVariableName())) {
+                missing.add(((VarRef) eObj).getVariableName());
+            }
+        } else if (eObj instanceof Repetition) {
+            walkForNeededVariables(declarations, missing, ((Repetition) eObj).getQuery().getAst());
+            declarations.add(((Repetition) eObj).getIterationVar());
+            walkForNeededVariables(declarations, missing, ((Repetition) eObj).getBody());
+            declarations.remove(((Repetition) eObj).getIterationVar());
+        } else if (eObj instanceof Let) {
+            walkForNeededVariables(declarations, missing, ((Let) eObj).getValue().getAst());
+            declarations.add(((Let) eObj).getName());
+            walkForNeededVariables(declarations, missing, ((Let) eObj).getBody());
+            declarations.remove(((Let) eObj).getName());
+        } else if (eObj instanceof org.obeonetwork.m2doc.template.Query) {
+            walkForNeededVariables(declarations, missing,
+                    ((org.obeonetwork.m2doc.template.Query) eObj).getQuery().getAst());
+        } else if (eObj instanceof Lambda) {
+            final List<String> lambdaDeclartations = new ArrayList<String>();
+            for (VariableDeclaration parameter : ((Lambda) eObj).getParameters()) {
+                lambdaDeclartations.add(parameter.getName());
+            }
+            declarations.addAll(lambdaDeclartations);
+            walkForNeededVariables(declarations, missing, ((Lambda) eObj).getExpression());
+            declarations.removeAll(lambdaDeclartations);
+        } else if (eObj instanceof org.eclipse.acceleo.query.ast.Let) {
+            final List<String> letDeclartations = new ArrayList<String>();
+            for (Binding binding : ((org.eclipse.acceleo.query.ast.Let) eObj).getBindings()) {
+                letDeclartations.add(binding.getName());
+            }
+            declarations.addAll(letDeclartations);
+            walkForNeededVariables(declarations, missing, ((org.eclipse.acceleo.query.ast.Let) eObj).getBody());
+            declarations.removeAll(letDeclartations);
+        } else {
+            for (EObject child : eObj.eContents()) {
+                walkForNeededVariables(declarations, missing, child);
+            }
+        }
     }
 
 }

@@ -28,8 +28,14 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
 
+    /**
+     * The delete image key.
+     */
     public static final String DELETE_IMG_KEY = "delete";
 
+    /**
+     * The add image key.
+     */
     public static final String ADD_IMG_KEY = "add";
 
     /**
@@ -98,8 +104,8 @@ public class Activator extends AbstractUIPlugin {
     @Override
     protected void initializeImageRegistry(ImageRegistry reg) {
         try {
-            reg.put(ADD_IMG_KEY,
-                    ImageDescriptor.createFromURL(new URL("platform:/plugin/org.obeonetwork.m2doc.ide.ui/icons/add.gif")));
+            reg.put(ADD_IMG_KEY, ImageDescriptor
+                    .createFromURL(new URL("platform:/plugin/org.obeonetwork.m2doc.ide.ui/icons/add.gif")));
             reg.put(DELETE_IMG_KEY, ImageDescriptor
                     .createFromURL(new URL("platform:/plugin/org.obeonetwork.m2doc.ide.ui/icons/delete.gif")));
         } catch (MalformedURLException e) {

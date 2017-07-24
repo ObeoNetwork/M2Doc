@@ -53,6 +53,19 @@ public final class POIServices {
     /**
      * Get XWPFDocument from template file.
      * 
+     * @param templateURI
+     *            the template {@link URI}
+     * @return XWPFDocument
+     * @throws IOException
+     *             IOException
+     */
+    public XWPFDocument getXWPFDocument(URI templateURI) throws IOException {
+        return getXWPFDocument(URIConverter.INSTANCE, templateURI);
+    }
+
+    /**
+     * Get XWPFDocument from template file.
+     * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
      * @param templateURI
@@ -95,6 +108,21 @@ public final class POIServices {
     /**
      * Get template informations.
      * 
+     * @param templateURI
+     *            the template {@link URI}
+     * @return TemplateInfo
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws IOException
+     *             IOException
+     */
+    public TemplateCustomProperties getTemplateCustomProperties(URI templateURI) throws IOException {
+        return getTemplateCustomProperties(URIConverter.INSTANCE, templateURI);
+    }
+
+    /**
+     * Get template informations.
+     * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
      * @param templateURI
@@ -105,13 +133,28 @@ public final class POIServices {
      * @throws IOException
      *             IOException
      */
-    public TemplateCustomProperties getTemplateCustomProperties(URIConverter uriConverter, URI templateURI) throws IOException {
+    public TemplateCustomProperties getTemplateCustomProperties(URIConverter uriConverter, URI templateURI)
+            throws IOException {
         final TemplateCustomProperties res;
 
         try (XWPFDocument document = getXWPFDocument(uriConverter, templateURI);) {
             res = new TemplateCustomProperties(document);
         }
         return res;
+    }
+
+    /**
+     * Save the document into the file pointing at the given path.
+     * 
+     * @param document
+     *            the validated document to save.
+     * @param theDestinationURI
+     *            the {@link URI} were to save the content of the validated document.
+     * @throws IOException
+     *             throws if the writing of the {@link URI} fails.
+     */
+    public void saveFile(XWPFDocument document, URI theDestinationURI) throws IOException {
+        saveFile(URIConverter.INSTANCE, document, theDestinationURI);
     }
 
     /**

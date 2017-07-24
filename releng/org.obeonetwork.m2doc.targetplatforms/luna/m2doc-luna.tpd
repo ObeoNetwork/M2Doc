@@ -15,4 +15,5 @@ location Eclipse "http://download.eclipse.org/releases/luna" {
 	org.eclipse.gmf lazy
 	org.eclipse.gmf.runtime.diagram.ui lazy
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
+	org.eclipse.jdt.feature.group lazy
 }
