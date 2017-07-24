@@ -20,7 +20,6 @@ import org.obeonetwork.m2doc.tests.properties.PropertiesTests;
 import org.obeonetwork.m2doc.tests.provider.ProviderTests;
 import org.obeonetwork.m2doc.tests.services.ServicesTests;
 import org.obeonetwork.m2doc.tests.userdoc.UserdocTests;
-import org.obeonetwork.m2doc.tests.util.UtilsTests;
 
 /**
  * Aggregates tests for the org.obeonetwork.m2doc plug-in.
@@ -29,9 +28,9 @@ import org.obeonetwork.m2doc.tests.util.UtilsTests;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {GeneratorTests.class, ParserTests.class, PropertiesTests.class, ProviderTests.class,
-    ServicesTests.class, UserdocTests.class, UtilsTests.class, BookmarkTests.class, CommentTests.class,
-    ConditionalTests.class, DiagramTests.class, ImageTests.class, LetTests.class, QueryTests.class,
-    RepetitionTests.class, StaticTests.class, UserDocTests.class, })
+    ServicesTests.class, UserdocTests.class, BookmarkTests.class, CommentTests.class, ConditionalTests.class,
+    DiagramTests.class, ImageTests.class, LetTests.class, QueryTests.class, RepetitionTests.class, StaticTests.class,
+    UserDocTests.class, })
 public class AllTests {
 
 }

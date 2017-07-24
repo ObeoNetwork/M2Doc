@@ -16,7 +16,6 @@ Require-Bundle: org.kohsuke.args4j;bundle-version="2.0.21",
  org.eclipse.core.runtime,
  org.obeonetwork.m2doc;bundle-version="0.10.0",
  org.obeonetwork.m2doc.genconf;bundle-version="0.10.0",
- org.obeonetwork.m2doc.tplconf;bundle-version="0.10.0",
  com.google.guava;bundle-version="[15.0.0,16.0.0)"
 Bundle-Activator: org.obeonetwork.m2doc.launcher.internal.M2DocLauncherPlugin$Implementation
 Bundle-Localization: plugin

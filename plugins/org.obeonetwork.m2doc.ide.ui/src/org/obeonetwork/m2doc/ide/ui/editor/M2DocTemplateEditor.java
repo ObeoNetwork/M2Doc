@@ -85,6 +85,7 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class M2DocTemplateEditor extends EditorPart {
 
     /**

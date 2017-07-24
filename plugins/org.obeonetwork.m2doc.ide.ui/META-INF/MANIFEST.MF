@@ -14,22 +14,17 @@ Require-Bundle: org.eclipse.ui,
  org.obeonetwork.m2doc;bundle-version="[0.12.0,0.13.0)",
  org.eclipse.core.expressions,
  org.eclipse.emf.ecore.xmi,
- org.obeonetwork.m2doc.tplconf;bundle-version="[0.12.0,0.13.0)",
  org.eclipse.emf.edit.ui,
- org.obeonetwork.m2doc.genconf.emf.ui;bundle-version="[0.12.0,0.13.0)",
  org.eclipse.emf.ecore.editor,
  org.eclipse.emf.transaction,
  org.eclipse.draw2d,
  org.apache.poi;bundle-version="[3.16.0,3.17.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[0.12.0,0.13.0)",
- org.obeonetwork.m2doc.tplconf.edit;bundle-version="[0.12.0,0.13.0)",
  org.eclipse.acceleo.query;bundle-version="[5.0.0,7.0.0)",
  org.eclipse.jdt.ui,
  org.eclipse.jdt.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.ide.ui,
- org.obeonetwork.m2doc.ide.ui.command,
- org.obeonetwork.m2doc.ide.ui.dialog,
  org.obeonetwork.m2doc.ide.ui.editor,
  org.obeonetwork.m2doc.ide.ui.propertyTester
