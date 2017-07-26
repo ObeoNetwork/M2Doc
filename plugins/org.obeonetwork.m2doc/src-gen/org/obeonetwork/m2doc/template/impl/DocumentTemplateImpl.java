@@ -16,21 +16,15 @@ import java.util.Collection;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -43,12 +37,12 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getHeaders <em>Headers</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getFooters <em>Footers</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getInputStream <em>Input Stream</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getOpcPackage <em>Opc Package</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getDocument <em>Document</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getHeaders <em>Headers</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getFooters <em>Footers</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getInputStream <em>Input Stream</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getOpcPackage <em>Opc Package</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getDocument <em>Document</em>}</li>
  * </ul>
  *
  * @generated
@@ -57,6 +51,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -65,6 +60,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The cached value of the '{@link #getHeaders() <em>Headers</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getHeaders()
      * @generated
      * @ordered
@@ -75,6 +71,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The cached value of the '{@link #getFooters() <em>Footers</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getFooters()
      * @generated
      * @ordered
@@ -85,6 +82,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getBody()
      * @generated
      * @ordered
@@ -95,6 +93,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The default value of the '{@link #getInputStream() <em>Input Stream</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getInputStream()
      * @generated
      * @ordered
@@ -105,6 +104,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The cached value of the '{@link #getInputStream() <em>Input Stream</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getInputStream()
      * @generated
      * @ordered
@@ -115,6 +115,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The default value of the '{@link #getOpcPackage() <em>Opc Package</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getOpcPackage()
      * @generated
      * @ordered
@@ -125,6 +126,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The cached value of the '{@link #getOpcPackage() <em>Opc Package</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getOpcPackage()
      * @generated
      * @ordered
@@ -135,6 +137,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The default value of the '{@link #getDocument() <em>Document</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getDocument()
      * @generated
      * @ordered
@@ -145,6 +148,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * The cached value of the '{@link #getDocument() <em>Document</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getDocument()
      * @generated
      * @ordered
@@ -154,6 +158,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected DocumentTemplateImpl() {
@@ -163,6 +168,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -173,11 +179,13 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public EList<Template> getHeaders() {
         if (headers == null) {
-            headers = new EObjectContainmentEList<Template>(Template.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
+            headers = new EObjectContainmentEList<Template>(Template.class, this,
+                    TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
         }
         return headers;
     }
@@ -185,11 +193,13 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public EList<Template> getFooters() {
         if (footers == null) {
-            footers = new EObjectContainmentEList<Template>(Template.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
+            footers = new EObjectContainmentEList<Template>(Template.class, this,
+                    TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
         }
         return footers;
     }
@@ -197,6 +207,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public Template getBody() {
@@ -206,14 +217,18 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public NotificationChain basicSetBody(Template newBody, NotificationChain msgs) {
         Template oldBody = body;
         body = newBody;
         if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__BODY, oldBody, newBody);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+                    TemplatePackage.DOCUMENT_TEMPLATE__BODY, oldBody, newBody);
+            if (msgs == null)
+                msgs = notification;
+            else msgs.add(notification);
         }
         return msgs;
     }
@@ -221,25 +236,30 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setBody(Template newBody) {
         if (newBody != body) {
             NotificationChain msgs = null;
             if (body != null)
-                msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.DOCUMENT_TEMPLATE__BODY, null, msgs);
+                msgs = ((InternalEObject) body).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - TemplatePackage.DOCUMENT_TEMPLATE__BODY, null, msgs);
             if (newBody != null)
-                msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - TemplatePackage.DOCUMENT_TEMPLATE__BODY, null, msgs);
+                msgs = ((InternalEObject) newBody).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - TemplatePackage.DOCUMENT_TEMPLATE__BODY, null, msgs);
             msgs = basicSetBody(newBody, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__BODY, newBody, newBody));
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__BODY, newBody,
+                    newBody));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public InputStream getInputStream() {
@@ -249,18 +269,21 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setInputStream(InputStream newInputStream) {
         InputStream oldInputStream = inputStream;
         inputStream = newInputStream;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM, oldInputStream, inputStream));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM,
+                    oldInputStream, inputStream));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public OPCPackage getOpcPackage() {
@@ -270,18 +293,21 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setOpcPackage(OPCPackage newOpcPackage) {
         OPCPackage oldOpcPackage = opcPackage;
         opcPackage = newOpcPackage;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE, oldOpcPackage, opcPackage));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE,
+                    oldOpcPackage, opcPackage));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public XWPFDocument getDocument() {
@@ -291,27 +317,30 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setDocument(XWPFDocument newDocument) {
         XWPFDocument oldDocument = document;
         document = newDocument;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT, oldDocument, document));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT,
+                    oldDocument, document));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TemplatePackage.DOCUMENT_TEMPLATE__HEADERS:
-                return ((InternalEList<?>)getHeaders()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) getHeaders()).basicRemove(otherEnd, msgs);
             case TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS:
-                return ((InternalEList<?>)getFooters()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) getFooters()).basicRemove(otherEnd, msgs);
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
                 return basicSetBody(null, msgs);
         }
@@ -321,6 +350,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -345,6 +375,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -353,23 +384,23 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         switch (featureID) {
             case TemplatePackage.DOCUMENT_TEMPLATE__HEADERS:
                 getHeaders().clear();
-                getHeaders().addAll((Collection<? extends Template>)newValue);
+                getHeaders().addAll((Collection<? extends Template>) newValue);
                 return;
             case TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS:
                 getFooters().clear();
-                getFooters().addAll((Collection<? extends Template>)newValue);
+                getFooters().addAll((Collection<? extends Template>) newValue);
                 return;
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
-                setBody((Template)newValue);
+                setBody((Template) newValue);
                 return;
             case TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM:
-                setInputStream((InputStream)newValue);
+                setInputStream((InputStream) newValue);
                 return;
             case TemplatePackage.DOCUMENT_TEMPLATE__OPC_PACKAGE:
-                setOpcPackage((OPCPackage)newValue);
+                setOpcPackage((OPCPackage) newValue);
                 return;
             case TemplatePackage.DOCUMENT_TEMPLATE__DOCUMENT:
-                setDocument((XWPFDocument)newValue);
+                setDocument((XWPFDocument) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -378,6 +409,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -390,7 +422,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 getFooters().clear();
                 return;
             case TemplatePackage.DOCUMENT_TEMPLATE__BODY:
-                setBody((Template)null);
+                setBody((Template) null);
                 return;
             case TemplatePackage.DOCUMENT_TEMPLATE__INPUT_STREAM:
                 setInputStream(INPUT_STREAM_EDEFAULT);
@@ -408,6 +440,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -432,11 +465,13 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (inputStream: ");
@@ -459,5 +494,5 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         getOpcPackage().close();
         getInputStream().close();
     }
-    
-} //DocumentTemplateImpl
+
+} // DocumentTemplateImpl

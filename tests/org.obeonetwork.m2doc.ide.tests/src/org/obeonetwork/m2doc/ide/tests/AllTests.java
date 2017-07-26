@@ -14,7 +14,6 @@ package org.obeonetwork.m2doc.ide.tests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import org.obeonetwork.m2doc.ide.tests.provider.DeclaredProviderListenerTest;
 
 /**
  * Aggregates tests for the org.obeonetwork.m2doc.ide plug-in.
@@ -22,7 +21,7 @@ import org.obeonetwork.m2doc.ide.tests.provider.DeclaredProviderListenerTest;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {DeclaredProviderListenerTest.class, BundleTests.class, })
+@SuiteClasses(value = { BundleTests.class, })
 public class AllTests {
 
 }

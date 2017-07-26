@@ -13,22 +13,14 @@ package org.obeonetwork.m2doc.template.impl;
 import java.util.Collection;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
-
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
-
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
@@ -40,11 +32,11 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getStyleRun <em>Style Run</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getRuns <em>Runs</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getClosingRuns <em>Closing Runs</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getValidationMessages <em>Validation Messages</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getQuery <em>Query</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getStyleRun <em>Style Run</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getRuns <em>Runs</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getClosingRuns <em>Closing Runs</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getValidationMessages <em>Validation Messages</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.QueryImpl#getQuery <em>Query</em>}</li>
  * </ul>
  *
  * @generated
@@ -53,6 +45,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -61,6 +54,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * The default value of the '{@link #getStyleRun() <em>Style Run</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getStyleRun()
      * @generated
      * @ordered
@@ -71,6 +65,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * The cached value of the '{@link #getStyleRun() <em>Style Run</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getStyleRun()
      * @generated
      * @ordered
@@ -81,6 +76,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * The cached value of the '{@link #getRuns() <em>Runs</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getRuns()
      * @generated
      * @ordered
@@ -91,6 +87,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * The cached value of the '{@link #getClosingRuns() <em>Closing Runs</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getClosingRuns()
      * @generated
      * @ordered
@@ -101,6 +98,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * The cached value of the '{@link #getValidationMessages() <em>Validation Messages</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getValidationMessages()
      * @generated
      * @ordered
@@ -111,6 +109,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getQuery()
      * @generated
      * @ordered
@@ -121,6 +120,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
      * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getQuery()
      * @generated
      * @ordered
@@ -130,6 +130,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected QueryImpl() {
@@ -139,6 +140,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -149,6 +151,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public XWPFRun getStyleRun() {
@@ -158,18 +161,21 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setStyleRun(XWPFRun newStyleRun) {
         XWPFRun oldStyleRun = styleRun;
         styleRun = newStyleRun;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.QUERY__STYLE_RUN, oldStyleRun, styleRun));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.QUERY__STYLE_RUN, oldStyleRun,
+                    styleRun));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public EList<XWPFRun> getRuns() {
@@ -182,6 +188,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public EList<XWPFRun> getClosingRuns() {
@@ -194,11 +201,13 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class, this, TemplatePackage.QUERY__VALIDATION_MESSAGES);
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
+                    this, TemplatePackage.QUERY__VALIDATION_MESSAGES);
         }
         return validationMessages;
     }
@@ -206,6 +215,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public AstResult getQuery() {
@@ -215,6 +225,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setQuery(AstResult newQuery) {
@@ -227,6 +238,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -249,6 +261,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -256,22 +269,22 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case TemplatePackage.QUERY__STYLE_RUN:
-                setStyleRun((XWPFRun)newValue);
+                setStyleRun((XWPFRun) newValue);
                 return;
             case TemplatePackage.QUERY__RUNS:
                 getRuns().clear();
-                getRuns().addAll((Collection<? extends XWPFRun>)newValue);
+                getRuns().addAll((Collection<? extends XWPFRun>) newValue);
                 return;
             case TemplatePackage.QUERY__CLOSING_RUNS:
                 getClosingRuns().clear();
-                getClosingRuns().addAll((Collection<? extends XWPFRun>)newValue);
+                getClosingRuns().addAll((Collection<? extends XWPFRun>) newValue);
                 return;
             case TemplatePackage.QUERY__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
-                getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>)newValue);
+                getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>) newValue);
                 return;
             case TemplatePackage.QUERY__QUERY:
-                setQuery((AstResult)newValue);
+                setQuery((AstResult) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -280,6 +293,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -307,6 +321,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -329,11 +344,13 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (styleRun: ");
@@ -350,4 +367,4 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
         return result.toString();
     }
 
-} //QueryImpl
+} // QueryImpl

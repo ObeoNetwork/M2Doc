@@ -14,9 +14,7 @@ package org.obeonetwork.m2doc.generator;
 import com.google.common.collect.Maps;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -24,7 +22,6 @@ import java.util.Stack;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.parser.AstValidator;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -38,9 +35,6 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.provider.OptionType;
-import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
-import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -476,43 +470,6 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseCell(Cell cell) {
         return doSwitch(cell.getTemplate());
-    }
-
-    @Override
-    public ValidationMessageLevel caseAbstractProviderClient(AbstractProviderClient providerClient) {
-        ValidationMessageLevel res = ValidationMessageLevel.WARNING;
-        final XWPFRun run = providerClient.getStyleRun();
-        providerClient.getValidationMessages()
-                .add(new TemplateValidationMessage(res,
-                        "Providers are deprecated use services instead:\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/ImageServices.java\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/M2DocSiriusServices.java",
-                        run));
-
-        if (providerClient.getProvider() != null) {
-            ValidationMessageLevel optionsLevel = ValidationMessageLevel.OK;
-            Map<String, Object> options = new LinkedHashMap<String, Object>(providerClient.getOptionValueMap().size());
-            for (Entry<String, Object> entry : providerClient.getOptionValueMap()) {
-                if (providerClient.getProvider().getOptionTypes().get(entry.getKey()) == OptionType.AQL_EXPRESSION) {
-                    final AstResult astResult = (AstResult) entry.getValue();
-                    if (astResult.getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-                        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), astResult);
-                        addValidationMessages(providerClient, run, validationResult);
-                        options.put(entry.getKey(), validationResult.getPossibleTypes(astResult.getAst()));
-                    } else {
-                        optionsLevel = ValidationMessageLevel.updateLevel(optionsLevel, ValidationMessageLevel.ERROR);
-                    }
-                } else {
-                    options.put(entry.getKey(), entry.getValue());
-                }
-            }
-
-            final List<ProviderValidationMessage> messages = providerClient.getProvider().validate(options);
-            for (ProviderValidationMessage message : messages) {
-                providerClient.getValidationMessages().add(new TemplateValidationMessage(message.getLevel(),
-                        String.format("option %s: %s", message.getOptionName(), message.getMessage()), run));
-            }
-        }
-
-        return ValidationMessageLevel.updateLevel(res, getHighestMessageLevel(providerClient));
     }
 
     /**

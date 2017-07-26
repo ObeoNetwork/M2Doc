@@ -10,14 +10,28 @@
  */
 package org.obeonetwork.m2doc.template.util;
 
-import java.util.Map;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
-
-import org.obeonetwork.m2doc.template.*;
+import org.obeonetwork.m2doc.template.Block;
+import org.obeonetwork.m2doc.template.Bookmark;
+import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.Comment;
+import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.Let;
+import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Query;
+import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.template.Row;
+import org.obeonetwork.m2doc.template.Statement;
+import org.obeonetwork.m2doc.template.StaticFragment;
+import org.obeonetwork.m2doc.template.Table;
+import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.template.TemplatePackage;
+import org.obeonetwork.m2doc.template.UserContent;
+import org.obeonetwork.m2doc.template.UserDoc;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,6 +43,7 @@ import org.obeonetwork.m2doc.template.*;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
+ * 
  * @see org.obeonetwork.m2doc.template.TemplatePackage
  * @generated
  */
@@ -36,6 +51,7 @@ public class TemplateSwitch<T> extends Switch<T> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -44,6 +60,7 @@ public class TemplateSwitch<T> extends Switch<T> {
      * The cached model package
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected static TemplatePackage modelPackage;
@@ -52,6 +69,7 @@ public class TemplateSwitch<T> extends Switch<T> {
      * Creates an instance of the switch.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public TemplateSwitch() {
@@ -64,7 +82,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * Checks whether this is a switch for the given package.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param ePackage the package in question.
+     * 
+     * @param ePackage
+     *            the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
@@ -77,6 +97,7 @@ public class TemplateSwitch<T> extends Switch<T> {
      * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @return the first non-null result returned by a <code>caseXXX</code> call.
      * @generated
      */
@@ -84,191 +105,183 @@ public class TemplateSwitch<T> extends Switch<T> {
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
             case TemplatePackage.ICONSTRUCT: {
-                IConstruct iConstruct = (IConstruct)theEObject;
+                IConstruct iConstruct = (IConstruct) theEObject;
                 T result = caseIConstruct(iConstruct);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.COMMENT: {
-                Comment comment = (Comment)theEObject;
+                Comment comment = (Comment) theEObject;
                 T result = caseComment(comment);
-                if (result == null) result = caseStatement(comment);
-                if (result == null) result = caseIConstruct(comment);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(comment);
+                if (result == null)
+                    result = caseIConstruct(comment);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.CONDITIONAL: {
-                Conditional conditional = (Conditional)theEObject;
+                Conditional conditional = (Conditional) theEObject;
                 T result = caseConditional(conditional);
-                if (result == null) result = caseStatement(conditional);
-                if (result == null) result = caseIConstruct(conditional);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(conditional);
+                if (result == null)
+                    result = caseIConstruct(conditional);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.REPETITION: {
-                Repetition repetition = (Repetition)theEObject;
+                Repetition repetition = (Repetition) theEObject;
                 T result = caseRepetition(repetition);
-                if (result == null) result = caseStatement(repetition);
-                if (result == null) result = caseIConstruct(repetition);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(repetition);
+                if (result == null)
+                    result = caseIConstruct(repetition);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.USER_DOC: {
-                UserDoc userDoc = (UserDoc)theEObject;
+                UserDoc userDoc = (UserDoc) theEObject;
                 T result = caseUserDoc(userDoc);
-                if (result == null) result = caseStatement(userDoc);
-                if (result == null) result = caseIConstruct(userDoc);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(userDoc);
+                if (result == null)
+                    result = caseIConstruct(userDoc);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.USER_CONTENT: {
-                UserContent userContent = (UserContent)theEObject;
+                UserContent userContent = (UserContent) theEObject;
                 T result = caseUserContent(userContent);
-                if (result == null) result = caseStatement(userContent);
-                if (result == null) result = caseIConstruct(userContent);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(userContent);
+                if (result == null)
+                    result = caseIConstruct(userContent);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.QUERY: {
-                Query query = (Query)theEObject;
+                Query query = (Query) theEObject;
                 T result = caseQuery(query);
-                if (result == null) result = caseStatement(query);
-                if (result == null) result = caseIConstruct(query);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TemplatePackage.IMAGE: {
-                Image image = (Image)theEObject;
-                T result = caseImage(image);
-                if (result == null) result = caseAbstractImage(image);
-                if (result == null) result = caseAbstractProviderClient(image);
-                if (result == null) result = caseStatement(image);
-                if (result == null) result = caseIConstruct(image);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(query);
+                if (result == null)
+                    result = caseIConstruct(query);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.BLOCK: {
-                Block block = (Block)theEObject;
+                Block block = (Block) theEObject;
                 T result = caseBlock(block);
-                if (result == null) result = caseIConstruct(block);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseIConstruct(block);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.STATEMENT: {
-                Statement statement = (Statement)theEObject;
+                Statement statement = (Statement) theEObject;
                 T result = caseStatement(statement);
-                if (result == null) result = caseIConstruct(statement);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseIConstruct(statement);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.TEMPLATE: {
-                Template template = (Template)theEObject;
+                Template template = (Template) theEObject;
                 T result = caseTemplate(template);
-                if (result == null) result = caseIConstruct(template);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TemplatePackage.REPRESENTATION: {
-                Representation representation = (Representation)theEObject;
-                T result = caseRepresentation(representation);
-                if (result == null) result = caseAbstractImage(representation);
-                if (result == null) result = caseAbstractProviderClient(representation);
-                if (result == null) result = caseStatement(representation);
-                if (result == null) result = caseIConstruct(representation);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseIConstruct(template);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.STATIC_FRAGMENT: {
-                StaticFragment staticFragment = (StaticFragment)theEObject;
+                StaticFragment staticFragment = (StaticFragment) theEObject;
                 T result = caseStaticFragment(staticFragment);
-                if (result == null) result = caseStatement(staticFragment);
-                if (result == null) result = caseIConstruct(staticFragment);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(staticFragment);
+                if (result == null)
+                    result = caseIConstruct(staticFragment);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.TABLE: {
-                Table table = (Table)theEObject;
+                Table table = (Table) theEObject;
                 T result = caseTable(table);
-                if (result == null) result = caseStatement(table);
-                if (result == null) result = caseIConstruct(table);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(table);
+                if (result == null)
+                    result = caseIConstruct(table);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.ROW: {
-                Row row = (Row)theEObject;
+                Row row = (Row) theEObject;
                 T result = caseRow(row);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.CELL: {
-                Cell cell = (Cell)theEObject;
+                Cell cell = (Cell) theEObject;
                 T result = caseCell(cell);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.DOCUMENT_TEMPLATE: {
-                DocumentTemplate documentTemplate = (DocumentTemplate)theEObject;
+                DocumentTemplate documentTemplate = (DocumentTemplate) theEObject;
                 T result = caseDocumentTemplate(documentTemplate);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TemplatePackage.OPTION_VALUE_MAP: {
-                @SuppressWarnings("unchecked") Map.Entry<String, Object> optionValueMap = (Map.Entry<String, Object>)theEObject;
-                T result = caseOptionValueMap(optionValueMap);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TemplatePackage.ABSTRACT_IMAGE: {
-                AbstractImage abstractImage = (AbstractImage)theEObject;
-                T result = caseAbstractImage(abstractImage);
-                if (result == null) result = caseAbstractProviderClient(abstractImage);
-                if (result == null) result = caseStatement(abstractImage);
-                if (result == null) result = caseIConstruct(abstractImage);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TemplatePackage.ABSTRACT_PROVIDER_CLIENT: {
-                AbstractProviderClient abstractProviderClient = (AbstractProviderClient)theEObject;
-                T result = caseAbstractProviderClient(abstractProviderClient);
-                if (result == null) result = caseStatement(abstractProviderClient);
-                if (result == null) result = caseIConstruct(abstractProviderClient);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.BOOKMARK: {
-                Bookmark bookmark = (Bookmark)theEObject;
+                Bookmark bookmark = (Bookmark) theEObject;
                 T result = caseBookmark(bookmark);
-                if (result == null) result = caseStatement(bookmark);
-                if (result == null) result = caseIConstruct(bookmark);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(bookmark);
+                if (result == null)
+                    result = caseIConstruct(bookmark);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.LINK: {
-                Link link = (Link)theEObject;
+                Link link = (Link) theEObject;
                 T result = caseLink(link);
-                if (result == null) result = caseStatement(link);
-                if (result == null) result = caseIConstruct(link);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(link);
+                if (result == null)
+                    result = caseIConstruct(link);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case TemplatePackage.LET: {
-                Let let = (Let)theEObject;
+                Let let = (Let) theEObject;
                 T result = caseLet(let);
-                if (result == null) result = caseStatement(let);
-                if (result == null) result = caseIConstruct(let);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseStatement(let);
+                if (result == null)
+                    result = caseIConstruct(let);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
-            case TemplatePackage.TABLE_CLIENT: {
-                TableClient tableClient = (TableClient)theEObject;
-                T result = caseTableClient(tableClient);
-                if (result == null) result = caseAbstractProviderClient(tableClient);
-                if (result == null) result = caseStatement(tableClient);
-                if (result == null) result = caseIConstruct(tableClient);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            default: return defaultCase(theEObject);
+            default:
+                return defaultCase(theEObject);
         }
     }
 
@@ -278,7 +291,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>IConstruct</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -293,7 +308,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Comment</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -308,7 +325,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conditional</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -323,7 +342,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Repetition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -338,7 +359,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>User Doc</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -353,7 +376,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>User Content</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -368,7 +393,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Query</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -378,27 +405,14 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Image</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Image</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseImage(Image object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>Block</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Block</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -413,7 +427,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Statement</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -428,7 +444,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Template</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -438,27 +456,14 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Representation</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Representation</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseRepresentation(Representation object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>Static Fragment</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Static Fragment</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -473,7 +478,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Table</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -488,7 +495,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Row</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -503,7 +512,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Cell</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -518,7 +529,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Document Template</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -528,57 +541,14 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Option Value Map</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Option Value Map</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseOptionValueMap(Map.Entry<String, Object> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Abstract Image</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Abstract Image</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseAbstractImage(AbstractImage object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Abstract Provider Client</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Abstract Provider Client</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseAbstractProviderClient(AbstractProviderClient object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>Bookmark</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Bookmark</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -593,7 +563,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Link</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -608,7 +580,9 @@ public class TemplateSwitch<T> extends Switch<T> {
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Let</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -618,27 +592,14 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Table Client</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Table Client</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseTableClient(TableClient object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch, but this is the last case anyway.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      * @generated
@@ -648,4 +609,4 @@ public class TemplateSwitch<T> extends Switch<T> {
         return null;
     }
 
-} //TemplateSwitch
+} // TemplateSwitch

@@ -11,20 +11,18 @@
 package org.obeonetwork.m2doc.template;
 
 import org.apache.poi.xwpf.usermodel.XWPFTable;
-
 import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Table</b></em>'.
  * <!-- end-user-doc -->
- *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.Table#getRows <em>Rows</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Table#getTable <em>Table</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Table#getRows <em>Rows</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Table#getTable <em>Table</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getTable()
@@ -35,6 +33,7 @@ public interface Table extends Statement {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -48,6 +47,7 @@ public interface Table extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Rows</em>' containment reference list.
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getTable_Rows()
      * @model containment="true"
@@ -63,6 +63,7 @@ public interface Table extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Table</em>' attribute.
      * @see #setTable(XWPFTable)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getTable_Table()
@@ -75,7 +76,9 @@ public interface Table extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Table#getTable <em>Table</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Table</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Table</em>' attribute.
      * @see #getTable()
      * @generated
      */

@@ -12,19 +12,15 @@
 package org.obeonetwork.m2doc.generator;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.Stack;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -46,18 +42,13 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlException;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.Monitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MBookmark;
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
@@ -66,17 +57,9 @@ import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
-import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider;
-import org.obeonetwork.m2doc.provider.IProvider;
-import org.obeonetwork.m2doc.provider.OptionType;
-import org.obeonetwork.m2doc.provider.ProviderConstants;
-import org.obeonetwork.m2doc.provider.ProviderException;
-import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -84,22 +67,18 @@ import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
-import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
-import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
-import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
-import org.obeonetwork.m2doc.util.PictureType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
@@ -159,14 +138,6 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      * I/O reading problem message.
      */
     private static final String AN_I_O_PROBLEM_OCCURED_WHILE_READING = "An I/O Problem occured while reading %s: %s.";
-    /**
-     * Error message when AQL query could not be evaluated.
-     */
-    private static final String QUERY_EVALERROR_MESSAGE = "Couldn't evaluate query.";
-    /**
-     * Error message when an AQL query contains syntax errors.
-     */
-    private static final String QUERY_SYNTAX_ERROR_MESSAGE = "Syntax error in AQL expression: ";
 
     /**
      * Invalid format picture message.
@@ -208,11 +179,6 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     private boolean forceNewParagraph;
 
     /**
-     * The {@link Set} of used {@link AbstractDiagramProvider}.
-     */
-    private Set<AbstractDiagramProvider> usedProviders = Sets.newLinkedHashSet();
-
-    /**
      * Last Destination UserContent Manager.
      */
     private UserContentManager userContentManager;
@@ -233,14 +199,6 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      */
     private GenerationResult result;
 
-    /** The URI converter. */
-    private URIConverter uriConverter;
-
-    /**
-     * The ResourceSet used to keep the models.
-     */
-    private ResourceSet resourceSetForModels;
-
     /**
      * The progress {@link Monitor}.
      */
@@ -250,27 +208,20 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      * Create a new {@link M2DocEvaluator} instance given some definitions
      * and a query environment.
      * 
-     * @param uriConverter
-     *            the {@link URIConverter uri converter} to use.
      * @param bookmarkManager
      *            the {@link BookmarkManager}
      * @param userContentManager
      *            the {@link UserContentManager}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
-     * @param resourceSetForModels
-     *            the resourceset to use for loading the models.
      * @param monitor
      *            used to track the progress will generating.
      */
-    public M2DocEvaluator(URIConverter uriConverter, BookmarkManager bookmarkManager,
-            UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment,
-            ResourceSet resourceSetForModels, Monitor monitor) {
-        this.uriConverter = uriConverter;
+    public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager,
+            IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
-        this.resourceSetForModels = resourceSetForModels;
         this.monitor = monitor;
     }
 
@@ -1195,106 +1146,6 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseImage(Image image) {
-        XWPFRun imageRun = insertRun(image.getStyleRun());
-        imageRun.setText("");
-        imageRun.getCTR().getInstrTextList().clear();
-        if (image.getFileName() == null) {
-            insertQuerySyntaxMessages(image, "");
-        } else {
-            URI imageURI = URI.createFileURI(image.getFileName());
-            imageURI = imageURI.resolve(image.eResource().getURI());
-            try {
-                int heigth = Units.toEMU(image.getHeight());
-                int width = Units.toEMU(image.getWidth());
-
-                try (InputStream imageStream = uriConverter.createInputStream(imageURI)) {
-                    imageRun.addPicture(imageStream, PictureType.toType(imageURI).getPoiType(), image.getFileName(),
-                            width, heigth);
-                }
-            } catch (InvalidFormatException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        String.format(PICTURE_INVALID_FORMAT, imageURI.toString(), e.getMessage()));
-            } catch (IOException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        String.format(AN_I_O_PROBLEM_OCCURED_WHILE_READING, imageURI.toString(), e.getMessage()));
-            }
-        }
-
-        return image;
-    }
-
-    @Override
-    public IConstruct caseRepresentation(Representation representation) {
-        XWPFRun imageRun = insertRun(representation.getStyleRun());
-        IProvider provider = representation.getProvider();
-        if (provider == null) {
-            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    representation.getValidationMessages().get(0).getMessage());
-        } else {
-            Map<String, Object> parameters;
-            try {
-                parameters = setupParametersMapForRepresentation(representation, provider);
-                List<String> imagePaths = ((AbstractDiagramProvider) provider)
-                        .getRepresentationImagePath(resourceSetForModels, parameters);
-                usedProviders.add((AbstractDiagramProvider) provider);
-                for (String imagePathStr : imagePaths) {
-                    URI imageURI = URI.createFileURI(imagePathStr);
-                    imageURI = imageURI.resolve(representation.eResource().getURI());
-
-                    imageRun.setText("");
-                    imageRun.getCTR().getInstrTextList().clear();
-
-                    final MImage image = new MImageImpl(uriConverter, imageURI);
-                    // get default image size if needed
-                    image.setConserveRatio(representation.getHeight() == 0 || representation.getWidth() == 0);
-                    if (representation.getHeight() != 0) {
-                        image.setHeight(representation.getHeight());
-                    }
-                    if (representation.getWidth() != 0) {
-                        image.setWidth(representation.getWidth());
-                    }
-                    insertMImage(imageRun, image);
-                }
-            } catch (IllegalArgumentException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
-            } catch (ProviderException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "A problem occured while creating image from an diagram provider: " + e.getMessage());
-            }
-
-        }
-
-        return representation;
-
-    }
-
-    @Override
-    public IConstruct caseTableClient(TableClient tableClient) {
-        XWPFRun tableRun = insertRun(tableClient.getStyleRun());
-        tableRun.getCTR().getInstrTextList().clear();
-        AbstractTableProvider provider = (AbstractTableProvider) tableClient.getProvider();
-        if (provider == null) {
-            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    tableClient.getValidationMessages().get(0).getMessage());
-        } else {
-            Map<String, Object> parameters;
-            try {
-                parameters = setupParametersMap(tableClient, provider);
-                TableClientProcessor tableProcessor = new TableClientProcessor(generatedDocument, provider, parameters,
-                        resourceSetForModels);
-                tableProcessor.generate(tableRun);
-            } catch (IllegalArgumentException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, e.getMessage());
-            } catch (ProviderException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                        "A problem occured while creating table from a table provider: " + e.getMessage());
-            }
-        }
-        return tableClient;
-    }
-
-    @Override
     public IConstruct caseBookmark(Bookmark bookmark) {
         if (hasError(bookmark)) {
             insertQuerySyntaxMessages(bookmark, INVALID_BOOKMARK_STATEMENT);
@@ -1388,165 +1239,6 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         }
 
         return link;
-    }
-
-    /**
-     * Returns a map containing all parameters coming from the table tag
-     * and global variables available.
-     * 
-     * @param abstractProviderClient
-     *            the {@link AbstractProviderClient} object from which we extracts needed parameters.
-     * @param provider
-     *            the provider providing information regarding tag options.
-     * @return a map containing all parameters coming from the representation tag
-     *         and global variables available.
-     * @throws IllegalArgumentException
-     *             if the evaluation fails because error were present during parse time or evaluation time.
-     */
-    private Map<String, Object> setupParametersMap(AbstractProviderClient abstractProviderClient, IProvider provider)
-            throws IllegalArgumentException {
-        Map<String, Object> parameters = new HashMap<>();
-        if (variablesStack.peek().containsKey(ProviderConstants.CONF_ROOT_OBJECT_KEY)) {
-            parameters.put(ProviderConstants.CONF_ROOT_OBJECT_KEY,
-                    variablesStack.peek().get(ProviderConstants.CONF_ROOT_OBJECT_KEY));
-        }
-        if (variablesStack.peek().containsKey(ProviderConstants.REFRESH_REPRESENTATIONS_KEY)) {
-            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY,
-                    variablesStack.peek().get(ProviderConstants.REFRESH_REPRESENTATIONS_KEY));
-        } else {
-            parameters.put(ProviderConstants.REFRESH_REPRESENTATIONS_KEY, false);
-        }
-        setGenericParameters(abstractProviderClient, provider.getOptionTypes(), parameters);
-        return parameters;
-    }
-
-    /**
-     * Returns a map containing all parameters coming from the representation tag
-     * and global variables available.
-     * 
-     * @param representation
-     *            the {@link Representation} object from which we extracts needed parameters.
-     * @param provider
-     *            the provider providing information regarding tag options.
-     * @return a map containing all parameters coming from the representation tag
-     *         and global variables available.
-     * @throws IllegalArgumentException
-     *             if the evaluation fails because error were present during parse time or evaluation time.
-     */
-    private Map<String, Object> setupParametersMapForRepresentation(Representation representation, IProvider provider)
-            throws IllegalArgumentException {
-        Map<String, Object> parameters = new HashMap<>(setupParametersMap(representation, provider));
-        parameters.put(ProviderConstants.IMAGE_HEIGHT_KEY, representation.getHeight());
-        parameters.put(ProviderConstants.IMAGE_WIDTH_KEY, representation.getWidth());
-        parameters.put(ProviderConstants.DIAGRAM_ACTIVATED_LAYERS_KEY, representation.getActivatedLayers());
-        return parameters;
-    }
-
-    /**
-     * Adds all parameters with the value evaluated if needed.
-     * 
-     * @param templateProvider
-     *            the template element from which we set generic parameters.
-     * @param optionTypes
-     *            the option types provided by the provider used by the template provider model element.
-     * @param parameters
-     *            the map containing the parameters to pass to the provider.
-     * @throws IllegalArgumentException
-     *             if the evaluation fails because error were present during parse time or evaluation time.
-     */
-    private void setGenericParameters(AbstractProviderClient templateProvider, Map<String, OptionType> optionTypes,
-            Map<String, Object> parameters) throws IllegalArgumentException {
-        EMap<String, Object> optionsMap = templateProvider.getOptionValueMap();
-        Set<Entry<String, Object>> optionsMapEntries = optionsMap.entrySet();
-        for (Entry<String, Object> optionsMapEntry : optionsMapEntries) {
-            if (optionTypes == null || optionTypes.get(optionsMapEntry.getKey()) == null) {
-                parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
-            } else if (optionTypes != null) {
-                OptionType optionType = optionTypes.get(optionsMapEntry.getKey());
-                if (OptionType.AQL_EXPRESSION == optionType) {
-                    evaluateAqlExpression(templateProvider, parameters, optionsMapEntry);
-                } else if (OptionType.STRING == optionType) {
-                    parameters.put(optionsMapEntry.getKey(), optionsMapEntry.getValue());
-                } else {
-                    throw new UnsupportedOperationException("All options types should be supported.");
-                }
-            }
-
-        }
-    }
-
-    /**
-     * Evaluate the given AQL AST tree in the given entry and put it in the options map.
-     * 
-     * @param templateProvider
-     *            the template model element were to put AQL evaluation errors.
-     * @param options
-     *            the map of generic options were to put evaluated content.
-     * @param aqlEntry
-     *            an AQL options to evaluate and put the result in the given options map.
-     */
-    private void evaluateAqlExpression(AbstractProviderClient templateProvider, Map<String, Object> options,
-            Entry<String, Object> aqlEntry) {
-        if (aqlEntry.getValue() == null) {
-            throw new IllegalArgumentException(
-                    QUERY_SYNTAX_ERROR_MESSAGE + templateProvider.getValidationMessages().get(0).getMessage());
-        } else {
-            EvaluationResult evaluationResult = evaluator.eval((AstResult) aqlEntry.getValue(), variablesStack.peek());
-            if (evaluationResult == null) {
-                throw new IllegalArgumentException(QUERY_EVALERROR_MESSAGE);
-            } else if (evaluationResult.getResult() == null) {
-                StringBuilder builder = new StringBuilder();
-                getDiagnostic(evaluationResult.getDiagnostic(), builder);
-                throw new IllegalArgumentException(builder.toString());
-            } else {
-                options.put(aqlEntry.getKey(), evaluationResult.getResult());
-            }
-        }
-    }
-
-    /**
-     * returns the diagnostic associated to the {@link Diagnostic} instance and its children.
-     * 
-     * @param diagnostic
-     *            the {@link Diagnostic} in which searching
-     * @param builder
-     *            a string builder that aggregate the messages
-     * @return the diagnostic status of the specified diagnostic tree.
-     */
-    private int getDiagnostic(Diagnostic diagnostic, StringBuilder builder) {
-        String message;
-        int code;
-        if (diagnostic.getCode() == Diagnostic.ERROR) {
-            message = diagnostic.getMessage();
-            code = Diagnostic.ERROR;
-        } else {
-            message = diagnostic.getMessage();
-            code = diagnostic.getCode();
-            for (Diagnostic child : diagnostic.getChildren()) {
-                int childrenCode = getDiagnostic(child, builder);
-                if (childrenCode > code) {
-                    code = childrenCode;
-                }
-            }
-        }
-        if (message != null) {
-            if (builder.length() > 0) {
-                builder.append('\n');
-            }
-            builder.append(message);
-        }
-        return code;
-    }
-
-    /**
-     * Should be called when the {@link M2DocEvaluator} is no longer needed so that it can cleanup temporary files used during the
-     * generation.
-     */
-    public void clear() {
-        for (AbstractDiagramProvider diagprovider : usedProviders) {
-            diagprovider.clear();
-        }
-
     }
 
 }

@@ -18,9 +18,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.obeonetwork.m2doc.ide.provider.DeclaredProviderListener;
 import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
-import org.obeonetwork.m2doc.provider.IProvider;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -49,10 +47,6 @@ public class M2DocPlugin extends EMFPlugin {
      * The implementation plugin for Eclipse.
      */
     private static Implementation plugin;
-    /**
-     * Register/unregister {@link IProvider} provided by plugins.
-     */
-    private DeclaredProviderListener providerListener;
 
     /**
      * The constructor.
@@ -99,8 +93,6 @@ public class M2DocPlugin extends EMFPlugin {
         @Override
         public void start(BundleContext context) throws Exception {
             super.start(context);
-            INSTANCE.providerListener = new DeclaredProviderListener();
-            Platform.getExtensionRegistry().addListener(INSTANCE.providerListener);
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
             registry.addListener(registryListener,
                     ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
@@ -115,7 +107,6 @@ public class M2DocPlugin extends EMFPlugin {
         @Override
         public void stop(BundleContext context) throws Exception {
             super.stop(context);
-            Platform.getExtensionRegistry().removeListener(INSTANCE.providerListener);
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
             registry.removeListener(registryListener);
             // TODO clear registry and registryListener ?

@@ -11,22 +11,19 @@
 package org.obeonetwork.m2doc.template;
 
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Row</b></em>'.
  * <!-- end-user-doc -->
- *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.Row#getCells <em>Cells</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Row#getTableRow <em>Table Row</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Row#getCells <em>Cells</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Row#getTableRow <em>Table Row</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getRow()
@@ -37,6 +34,7 @@ public interface Row extends EObject {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -50,6 +48,7 @@ public interface Row extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Cells</em>' containment reference list.
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRow_Cells()
      * @model containment="true"
@@ -65,6 +64,7 @@ public interface Row extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Table Row</em>' attribute.
      * @see #setTableRow(XWPFTableRow)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRow_TableRow()
@@ -77,7 +77,9 @@ public interface Row extends EObject {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Row#getTableRow <em>Table Row</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Table Row</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Table Row</em>' attribute.
      * @see #getTableRow()
      * @generated
      */

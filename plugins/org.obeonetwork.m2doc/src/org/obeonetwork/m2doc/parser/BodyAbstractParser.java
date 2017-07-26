@@ -12,11 +12,7 @@
 package org.obeonetwork.m2doc.parser;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -28,7 +24,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.obeonetwork.m2doc.provider.OptionType;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -38,9 +33,6 @@ import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.util.FieldUtils;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Sets.difference;
 
 import static org.obeonetwork.m2doc.util.FieldUtils.readUpInstrText;
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
@@ -296,72 +288,4 @@ public abstract class BodyAbstractParser {
      */
     protected abstract BodyAbstractParser getNewParser(IBody inputDocument);
 
-    /**
-     * Class to easily validate a list of options against options declared by a provider.
-     * 
-     * @author ldelaigue
-     */
-    protected static final class OptionChecker {
-        /** The provider options, considered mandatory. */
-        private final Map<String, OptionType> providerOptions;
-        /** The options to ignore. */
-        private Set<String> optionsToIgnore;
-
-        /**
-         * Constructor.
-         * 
-         * @param providerOptions
-         *            The map opf provider options, cannot be <code>null</code>
-         */
-        private OptionChecker(Map<String, OptionType> providerOptions) {
-            this.providerOptions = checkNotNull(providerOptions);
-            optionsToIgnore = new LinkedHashSet<String>();
-        }
-
-        /**
-         * Static method to instantiate an OptionChecker more easily.
-         * 
-         * @param providerOptions
-         *            The provider options, cannot be <code>null</code>
-         * @return A new instance of OptionChecker.
-         */
-        public static OptionChecker check(Map<String, OptionType> providerOptions) {
-            return new OptionChecker(providerOptions);
-        }
-
-        /**
-         * Register the given option names as options to ignore. If these options are provided but are not present in the provider options,
-         * they won't cause the candidate to be rejected.
-         * 
-         * @param options
-         *            The options to ignore
-         * @return this, for a fluent API.
-         */
-        public OptionChecker ignore(String... options) {
-            for (String option : options) {
-                if (option != null) {
-                    optionsToIgnore.add(option);
-                }
-            }
-            return this;
-        }
-
-        /**
-         * Check whether the given map of options is compatible with the provider options, taking into account the options to ignore and the
-         * rejectAdditionalOptions flag.
-         * 
-         * @param options
-         *            Options to check
-         * @return <code>true</code> if the given options are compatible with the provider options, taking the checker configuration into
-         *         account (options to ignore, reject additinoal options).
-         */
-        public boolean against(Map<String, String> options) {
-            for (Entry<String, OptionType> entry : providerOptions.entrySet()) {
-                if (!options.containsKey(entry.getKey())) {
-                    return false;
-                }
-            }
-            return difference(difference(options.keySet(), providerOptions.keySet()), optionsToIgnore).isEmpty();
-        }
-    }
 }

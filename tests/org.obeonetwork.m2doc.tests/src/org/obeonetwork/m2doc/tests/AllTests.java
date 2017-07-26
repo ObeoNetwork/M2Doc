@@ -17,7 +17,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.obeonetwork.m2doc.tests.generator.GeneratorTests;
 import org.obeonetwork.m2doc.tests.parser.ParserTests;
 import org.obeonetwork.m2doc.tests.properties.PropertiesTests;
-import org.obeonetwork.m2doc.tests.provider.ProviderTests;
 import org.obeonetwork.m2doc.tests.services.ServicesTests;
 import org.obeonetwork.m2doc.tests.userdoc.UserdocTests;
 
@@ -27,10 +26,9 @@ import org.obeonetwork.m2doc.tests.userdoc.UserdocTests;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {GeneratorTests.class, ParserTests.class, PropertiesTests.class, ProviderTests.class,
-    ServicesTests.class, UserdocTests.class, BookmarkTests.class, CommentTests.class, ConditionalTests.class,
-    DiagramTests.class, ImageTests.class, LetTests.class, QueryTests.class, RepetitionTests.class, StaticTests.class,
-    UserDocTests.class, })
+@SuiteClasses(value = {GeneratorTests.class, ParserTests.class, PropertiesTests.class, ServicesTests.class,
+    UserdocTests.class, BookmarkTests.class, CommentTests.class, ConditionalTests.class, LetTests.class,
+    QueryTests.class, RepetitionTests.class, StaticTests.class, UserDocTests.class, })
 public class AllTests {
 
 }

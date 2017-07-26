@@ -11,11 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests.generator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,14 +26,10 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.provider.IProvider;
-import org.obeonetwork.m2doc.provider.OptionType;
-import org.obeonetwork.m2doc.provider.ProviderValidationMessage;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
-import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
@@ -117,55 +110,6 @@ public class M2DocValidatorTests {
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,
                 "Couldn't find the 'self' variable", query.getStyleRun());
-    }
-
-    @Test
-    public void abstractProviderClient() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
-        final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
-        template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
-        final Image image = TemplatePackage.eINSTANCE.getTemplateFactory().createImage();
-        image.setProvider(new IProvider() {
-
-            @Override
-            public List<ProviderValidationMessage> validate(Map<String, Object> options) {
-                final List<ProviderValidationMessage> res = new ArrayList<ProviderValidationMessage>();
-
-                res.add(new ProviderValidationMessage("variable", ValidationMessageLevel.ERROR, "error with ..."));
-
-                return res;
-            }
-
-            @Override
-            public Map<String, OptionType> getOptionTypes() {
-                Map<String, OptionType> res = new LinkedHashMap<String, OptionType>();
-
-                res.put("variable", OptionType.STRING);
-                res.put("query", OptionType.AQL_EXPRESSION);
-
-                return res;
-            }
-        });
-        image.setFileName("somefile");
-        image.getOptionValueMap().put("variable", "value");
-        image.getOptionValueMap().put("query", engine.build("self"));
-
-        template.getBody().getStatements().add(image);
-        @SuppressWarnings("resource")
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
-
-        final M2DocValidator validator = new M2DocValidator();
-        validator.validate(documentTemplate, queryEnvironment);
-
-        assertEquals(3, image.getValidationMessages().size());
-        assertTemplateValidationMessage(image.getValidationMessages().get(0), ValidationMessageLevel.WARNING,
-                "Providers are deprecated use services instead:\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/ImageServices.java\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/M2DocSiriusServices.java",
-                image.getStyleRun());
-        assertTemplateValidationMessage(image.getValidationMessages().get(1), ValidationMessageLevel.ERROR,
-                "Couldn't find the 'self' variable", image.getStyleRun());
-        assertTemplateValidationMessage(image.getValidationMessages().get(2), ValidationMessageLevel.ERROR,
-                "option variable: error with ...", image.getStyleRun());
     }
 
 }

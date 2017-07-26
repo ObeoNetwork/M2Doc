@@ -3,6 +3,7 @@ package org.obeonetwork.m2doc.sirius.services;
 import com.google.common.collect.Lists;
 
 import java.io.File;
+import java.security.ProviderException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,7 +36,6 @@ import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.provider.ProviderException;
 import org.obeonetwork.m2doc.sirius.commands.ExportRepresentationCommand;
 import org.obeonetwork.m2doc.sirius.session.CleaningAIRDJob;
 import org.obeonetwork.m2doc.sirius.session.CleaningJobRegistry;
@@ -270,12 +270,9 @@ public final class SiriusRepresentationUtils {
      * @param layers
      *            layers activated on the representations.
      * @return all images paths corresponding to the given representations.
-     * @throws ProviderException
-     *             if the image generation fails.
      */
     public static List<String> generateAndReturnDiagramImages(String rootPath, final Session session,
-            boolean refreshRepresentations, List<DRepresentationDescriptor> representations, List<Layer> layers)
-            throws ProviderException {
+            boolean refreshRepresentations, List<DRepresentationDescriptor> representations, List<Layer> layers) {
         List<String> resultList = new ArrayList<>();
         boolean isSessionDirtyBeforeExport = SessionStatus.DIRTY.equals(session.getStatus());
         for (DRepresentationDescriptor descriptor : representations) {

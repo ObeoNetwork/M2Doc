@@ -11,20 +11,14 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.antlr.v4.runtime.CharStream;
@@ -48,29 +42,17 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.obeonetwork.m2doc.provider.AbstractDiagramProvider;
-import org.obeonetwork.m2doc.provider.AbstractTableProvider;
-import org.obeonetwork.m2doc.provider.IProvider;
-import org.obeonetwork.m2doc.provider.OptionType;
-import org.obeonetwork.m2doc.provider.ProviderRegistry;
-import org.obeonetwork.m2doc.template.AbstractImage;
-import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
-import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
-import org.obeonetwork.m2doc.template.POSITION;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
-import org.obeonetwork.m2doc.template.Representation;
-import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 
-import static org.obeonetwork.m2doc.provider.ProviderConstants.HIDE_TITLE_KEY;
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
 import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
 
@@ -84,70 +66,6 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
  */
 @SuppressWarnings("restriction")
 public class M2DocParser extends BodyAbstractParser {
-
-    /**
-     * Image file name option name.
-     */
-    private static final String IMAGE_FILE_NAME_KEY = "file";
-    /**
-     * Diagram or table provider option name.
-     */
-    private static final String PROVIDER_KEY = "provider";
-    /**
-     * Diagram or table create option name.
-     */
-    private static final String CREATE_KEY = "create";
-    /**
-     * Diagram layers option name.
-     */
-    private static final String DIAGRAM_LAYERS_KEY = "layers";
-    /**
-     * Image height option name.
-     */
-    private static final String IMAGE_HEIGHT_KEY = "height";
-    /**
-     * Image width option name.
-     */
-    private static final String IMAGE_WIDTH_KEY = "width";
-    /**
-     * Image legend option name.
-     */
-    private static final String IMAGE_LEGEND_KEY = "legend";
-    /**
-     * Image legend position option name.
-     */
-    private static final String IMAGE_LEGEND_POSITION = "legendPos";
-    /**
-     * Image legend position above value's constant.
-     */
-    private static final String IMAGE_LEGEND_ABOVE = "above";
-    /**
-     * Image legend position above value's constant.
-     */
-    private static final String IMAGE_LEGEND_BELOW = "below";
-
-    /**
-     * Array of image's options name constants.
-     */
-    private static final String[] IMAGE_OPTION_SET =
-
-            {IMAGE_FILE_NAME_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY };
-    /**
-     * Array of representation's options name constants.
-     */
-    private static final String[] DIAGRAM_OPTION_SET =
-
-            {PROVIDER_KEY, IMAGE_HEIGHT_KEY, IMAGE_LEGEND_KEY, IMAGE_LEGEND_POSITION, IMAGE_WIDTH_KEY,
-                DIAGRAM_LAYERS_KEY, CREATE_KEY, };
-
-    /**
-     * Rank of the option's value group in the matcher.
-     */
-    private static final int OPTION_VAL_GROUP_RANK = 2;
-    /**
-     * Rank of the option's name group in the matcher.
-     */
-    private static final int OPTION_GROUP_RANK = 1;
 
     /**
      * Creates a new {@link M2DocParser} instance.
@@ -210,18 +128,10 @@ public class M2DocParser extends BodyAbstractParser {
                     result = TokenType.USERDOC;
                 } else if (code.startsWith(TokenType.ENDUSERDOC.getValue())) {
                     result = TokenType.ENDUSERDOC;
-                } else if (code.startsWith(TokenType.ELT.getValue())) {
-                    result = TokenType.ELT;
                 } else if (code.startsWith(TokenType.LET.getValue())) {
                     result = TokenType.LET;
                 } else if (code.startsWith(TokenType.ENDLET.getValue())) {
                     result = TokenType.ENDLET;
-                } else if (code.startsWith(TokenType.IMAGE.getValue())) {
-                    result = TokenType.IMAGE;
-                } else if (code.startsWith(TokenType.DIAGRAM.getValue())) {
-                    result = TokenType.DIAGRAM;
-                } else if (code.startsWith(TokenType.TABLE.getValue())) {
-                    result = TokenType.TABLE;
                 } else if (code.startsWith(TokenType.BOOKMARK.getValue())) {
                     result = TokenType.BOOKMARK;
                 } else if (code.startsWith(TokenType.ENDBOOKMARK.getValue())) {
@@ -294,9 +204,6 @@ public class M2DocParser extends BodyAbstractParser {
                 case LET:
                     res.getStatements().add(parseLet());
                     break;
-                case IMAGE:
-                    res.getStatements().add(parseImage());
-                    break;
                 case STATIC:
                     res.getStatements().add(parseStaticFragment());
                     break;
@@ -308,13 +215,6 @@ public class M2DocParser extends BodyAbstractParser {
                     break;
                 case WTABLE:
                     res.getStatements().add(parseTable(runIterator.next().getTable()));
-                    break;
-                case DIAGRAM:
-                    res.getStatements().add(parseRepresentation()); // XXX : change representation into diagram in the template
-                                                                    // model.
-                    break;
-                case TABLE:
-                    res.getStatements().add(parseTableClient());
                     break;
                 default:
                     throw new UnsupportedOperationException(
@@ -416,355 +316,6 @@ public class M2DocParser extends BodyAbstractParser {
         comment.setText(commentText.trim());
 
         return comment;
-    }
-
-    /**
-     * Check that all options are known options.
-     * 
-     * @param options
-     *            the option map
-     * @param image
-     *            the image
-     * @param imageOptionSet
-     *            the options set to take in consideration.
-     * @param providerOptions
-     *            the options handled by the provider.
-     * @param logError
-     *            Whether or not errors must be logged
-     * @return if provider provide the image option.
-     */
-    private boolean checkImagesOptions(Map<String, String> options, AbstractImage image, String[] imageOptionSet,
-            Set<String> providerOptions, boolean logError) {
-        boolean check = true;
-        Set<String> optionSet = Sets.newHashSet(imageOptionSet);
-        for (String key : options.keySet()) {
-            if (!optionSet.contains(key) && !providerOptions.contains(key)) {
-                if (logError) {
-                    validationError(image,
-                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key, "unknown option name"));
-                }
-                check = false;
-            } else if (IMAGE_LEGEND_POSITION.equals(key)) {
-                String value = options.get(key);
-                if (logError) {
-                    if (!IMAGE_LEGEND_ABOVE.equals(value) && !IMAGE_LEGEND_BELOW.equals(value)) {
-                        validationError(image, message(ParsingErrorMessage.INVALID_IMAGE_OPTION, key,
-                                "unknown option value (" + value + ")."));
-                    }
-                }
-            }
-        }
-        return check;
-    }
-
-    /**
-     * Parses an image tag.
-     * 
-     * @return the image object created
-     * @throws DocumentParserException
-     *             if something wrong happens during parsing.
-     */
-    private Image parseImage() throws DocumentParserException {
-        Image image = (Image) EcoreUtil.create(TemplatePackage.Literals.IMAGE);
-        OptionParser optionParser = new OptionParser();
-        Map<String, String> options = optionParser.parseOptions(readTag(image, image.getRuns()), TokenType.IMAGE,
-                OPTION_GROUP_RANK, OPTION_VAL_GROUP_RANK, image);
-        checkImagesOptions(options, image, IMAGE_OPTION_SET, new HashSet<String>(0), true);
-        if (!options.containsKey(IMAGE_FILE_NAME_KEY)) {
-            validationError(image, message(ParsingErrorMessage.INVALID_IMAGE_TAG));
-        } else {
-            image.setFileName(options.get(IMAGE_FILE_NAME_KEY));
-            setImageOptions(image, options);
-        }
-        return image;
-    }
-
-    /**
-     * Sets all images options like legend, width and height if those are defined.
-     * 
-     * @param image
-     *            the image from which we want to set options.
-     * @param options
-     *            the options to set.
-     */
-    private void setImageOptions(AbstractImage image, Map<String, String> options) {
-        Set<Entry<String, String>> entrySet = options.entrySet();
-        for (Entry<String, String> entry : entrySet) {
-            if (IMAGE_LEGEND_KEY.equals(entry.getKey())) {
-                image.setLegend(options.get(IMAGE_LEGEND_KEY));
-            } else if (IMAGE_HEIGHT_KEY.equals(entry.getKey())) {
-                String heightStr = options.get(IMAGE_HEIGHT_KEY);
-                try {
-                    image.setHeight(Integer.parseInt(heightStr));
-                } catch (NumberFormatException e) {
-                    validationError(image,
-                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_HEIGHT_KEY, heightStr));
-                }
-            } else if (IMAGE_WIDTH_KEY.equals(entry.getKey())) {
-                String heightStr = options.get(IMAGE_WIDTH_KEY);
-                try {
-                    image.setWidth(Integer.parseInt(options.get(IMAGE_WIDTH_KEY)));
-                } catch (NumberFormatException e) {
-                    validationError(image,
-                            message(ParsingErrorMessage.INVALID_IMAGE_OPTION, IMAGE_WIDTH_KEY, heightStr));
-                }
-            } else if (IMAGE_LEGEND_POSITION.equals(entry.getKey())) {
-                String value = options.get(IMAGE_LEGEND_POSITION);
-                if (IMAGE_LEGEND_ABOVE.equals(value)) {
-                    image.setLegendPOS(POSITION.ABOVE);
-                } else { // put the legend below by default.
-                    image.setLegendPOS(POSITION.BELOW);
-                }
-            }
-        }
-    }
-
-    /**
-     * Sets all generic options parsed from a tag to the given construct.
-     * 
-     * @param providerTemplate
-     *            the {@link AbstractProviderClient} template model element that will receive generic options.
-     * @param options
-     *            the options to set.
-     * @param optionToIgnore
-     *            all specific options that should not be in the generic map.
-     * @param provider
-     *            a provider used to get information for the given construct.
-     */
-    private void setGenericOptions(AbstractProviderClient providerTemplate, Map<String, String> options,
-            Set<String> optionToIgnore, IProvider provider) {
-        Map<String, OptionType> optionTypes = provider.getOptionTypes();
-        Set<Entry<String, String>> parsedOptions = options.entrySet();
-        for (Entry<String, String> parsedOption : parsedOptions) {
-            if (!optionToIgnore.contains(parsedOption.getKey())) {
-                OptionType optionType = optionTypes == null ? null : optionTypes.get(parsedOption.getKey());
-                if (optionType != null) {
-                    if (OptionType.AQL_EXPRESSION == optionType) {
-                        parseAqlOptions(providerTemplate, parsedOption);
-                    } else if (OptionType.STRING == optionType) {
-                        providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
-                    } else {
-                        throw new UnsupportedOperationException("All option types should be supported.");
-                    }
-                } else {
-                    providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
-                }
-            } else if (CREATE_KEY.equals(parsedOption.getKey())) {
-                providerTemplate.getOptionValueMap().put(parsedOption.getKey(), parsedOption.getValue());
-            }
-        }
-    }
-
-    /**
-     * Parse an AQL options and produce an {@link AstResult} added to the options map of the given provider tempalte element.
-     * 
-     * @param providerTemplate
-     *            the element which will have its options map filled with the parse result of the AQL expression.
-     * @param aqlParsedOption
-     *            an option containing an AQL expression as map value.
-     */
-    private void parseAqlOptions(AbstractProviderClient providerTemplate, Entry<String, String> aqlParsedOption) {
-        String query = aqlParsedOption.getValue();
-        final AstResult option = queryParser.build(query);
-        providerTemplate.getOptionValueMap().put(aqlParsedOption.getKey(), option);
-        if (!option.getErrors().isEmpty()) {
-            final XWPFRun lastRun = providerTemplate.getRuns().get(providerTemplate.getRuns().size() - 1);
-            providerTemplate.getValidationMessages()
-                    .addAll(getValidationMessage(option.getDiagnostic(), query, lastRun));
-        }
-    }
-
-    /**
-     * parses a representation tag.
-     * 
-     * @return the object created
-     * @throws DocumentParserException
-     *             if something wrong happens during parsing
-     */
-    private Representation parseRepresentation() throws DocumentParserException {
-
-        Representation representation = (Representation) EcoreUtil.create(TemplatePackage.Literals.REPRESENTATION);
-        OptionParser optionParser = new OptionParser();
-        String tag = readTag(representation, representation.getRuns());
-
-        Map<String, String> options = optionParser.parseOptions(tag, TokenType.DIAGRAM, OPTION_GROUP_RANK,
-                OPTION_VAL_GROUP_RANK, representation);
-
-        representation.setProvider(getRepresentationProvider(representation, options));
-        setImageOptions(representation, options);
-        setLayersOption(representation, options);
-        Set<String> optionToIgnore = new HashSet<String>();
-        optionToIgnore.add(IMAGE_LEGEND_KEY);
-        optionToIgnore.add(IMAGE_LEGEND_POSITION);
-        optionToIgnore.add(IMAGE_HEIGHT_KEY);
-        optionToIgnore.add(IMAGE_WIDTH_KEY);
-        optionToIgnore.add(PROVIDER_KEY);
-        optionToIgnore.add(DIAGRAM_LAYERS_KEY);
-        optionToIgnore.add(CREATE_KEY);
-        if (representation.getProvider() != null) {
-            setGenericOptions(representation, options, optionToIgnore, representation.getProvider());
-        }
-        return representation;
-    }
-
-    /**
-     * Parses a m:table tag.
-     * 
-     * @return the created {@link TableClient} object
-     * @throws DocumentParserException
-     *             if something wrong happens during parsing
-     */
-    private TableClient parseTableClient() throws DocumentParserException {
-        TableClient tableClient = (TableClient) EcoreUtil.create(TemplatePackage.Literals.TABLE_CLIENT);
-        OptionParser optionParser = new OptionParser();
-        String tag = readTag(tableClient, tableClient.getRuns());
-
-        Map<String, String> options = optionParser.parseOptions(tag, TokenType.TABLE, OPTION_GROUP_RANK,
-                OPTION_VAL_GROUP_RANK, tableClient);
-
-        assignTableProvider(tableClient, options);
-        return tableClient;
-    }
-
-    /**
-     * Set layers option.
-     * 
-     * @param representation
-     *            Representation
-     * @param options
-     *            the options to set.
-     */
-    protected void setLayersOption(Representation representation, Map<String, String> options) {
-        String layers = options.get(DIAGRAM_LAYERS_KEY);
-        if (!Strings.isNullOrEmpty(layers)) {
-            Iterable<String> split = Splitter.on(',').trimResults().split(layers);
-            representation.getActivatedLayers().addAll(Lists.newArrayList(split));
-        }
-    }
-
-    /**
-     * Get diagram provider matching options.
-     * 
-     * @param representation
-     *            Representation
-     * @param options
-     *            Map
-     * @return diagram provider
-     */
-    private IProvider getRepresentationProvider(Representation representation, Map<String, String> options) {
-        IProvider result = null;
-
-        // first if provider option exists, set this one
-        String providerQualifiedName = options.get(PROVIDER_KEY);
-        if (providerQualifiedName != null) {
-            result = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
-            if (result == null) {
-                representation.getValidationMessages()
-                        .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                String.format("The image tag is referencing an unknown diagram provider : '%s'",
-                                        providerQualifiedName),
-                                representation.getRuns().get(1)));
-                return null;
-            }
-        }
-
-        // then search best provider from registered providers
-        if (result == null) {
-            List<IProvider> providers = ProviderRegistry.INSTANCE.getDiagramProviders();
-            // no registered providers
-            if (providers.isEmpty()) {
-                validationError(representation,
-                        "No image tag provider has been found. Please add one with diagramProvider extension.");
-            }
-
-            // search best provider
-            result = getFirstProvider(representation, options, providers);
-
-            // check errors
-            if (result == null) {
-                validationError(representation, "No diagram provider found for the image tag");
-            } else if (!(result instanceof AbstractDiagramProvider)) {
-                validationError(representation,
-                        "The image tag is referencing a provider that has not been made to handle diagram tags.");
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Get diagram provider matching options and set it to the given {@link TableClient}.
-     * 
-     * @param tableClient
-     *            Representation
-     * @param options
-     *            Map
-     */
-    private void assignTableProvider(TableClient tableClient, Map<String, String> options) {
-        // if provider option exists, set this one
-        String providerQualifiedName = options.get(PROVIDER_KEY);
-        if (providerQualifiedName != null) {
-            IProvider provider = ProviderRegistry.INSTANCE.getProvider(providerQualifiedName);
-            if (!(provider instanceof AbstractTableProvider)) {
-                validationError(tableClient,
-                        String.format(
-                                "The table tag is referencing an unknown or invalid table provider in the 'provider' argument : '%s'",
-                                providerQualifiedName));
-                provider = null;
-            } else if (OptionChecker.check(provider.getOptionTypes()).ignore(PROVIDER_KEY, HIDE_TITLE_KEY)
-                    .against(options)) {
-                validationError(tableClient,
-                        String.format(
-                                "The table tag is referencing a provider that doesn't support the other arguments provided in the tag : '%s'",
-                                providerQualifiedName));
-                provider = null;
-            }
-        } else {
-            List<AbstractTableProvider> providers = ProviderRegistry.INSTANCE.getTableProviders();
-            if (providers.isEmpty()) {
-                validationError(tableClient,
-                        "No table tag provider has been found. Please add one with tableProvider extension.");
-            } else {
-                // let's find the best provider
-                for (AbstractTableProvider provider : providers) {
-                    if (OptionChecker.check(provider.getOptionTypes()).ignore(PROVIDER_KEY, HIDE_TITLE_KEY, CREATE_KEY)
-                            .against(options)) {
-                        tableClient.setProvider(provider);
-                        setGenericOptions(tableClient, options, ImmutableSet.of(PROVIDER_KEY), provider);
-                        break;
-                    }
-                }
-                if (tableClient.getProvider() == null) {
-                    // No relevant provider has been found
-                    validationError(tableClient,
-                            "No table tag provider matching the tag arguments has been found. Please use arguments compatible with the table providers in use.");
-                }
-            }
-        }
-    }
-
-    /**
-     * return first provider that matches with options.
-     * 
-     * @param representation
-     *            Representation
-     * @param options
-     *            Map<String, String>
-     * @param providers
-     *            List<IProvider>
-     * @return first provider that matches with options.
-     */
-    private IProvider getFirstProvider(Representation representation, Map<String, String> options,
-            List<IProvider> providers) {
-        for (IProvider provider : providers) {
-            Set<String> providerOptions = provider.getOptionTypes() == null ? new HashSet<String>(0)
-                    : provider.getOptionTypes().keySet();
-            if (checkImagesOptions(options, representation, DIAGRAM_OPTION_SET, providerOptions, false)) {
-                return provider;
-            }
-
-        }
-        return null;
     }
 
     /**

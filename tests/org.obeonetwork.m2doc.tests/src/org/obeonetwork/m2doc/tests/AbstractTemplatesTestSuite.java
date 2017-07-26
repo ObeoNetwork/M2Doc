@@ -51,9 +51,7 @@ import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.provider.ProviderRegistry;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
-import org.obeonetwork.m2doc.tests.provider.TestDiagramProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -150,8 +148,6 @@ public abstract class AbstractTemplatesTestSuite {
         final ResourceSet resourceSetForModels = new GenconfToDocumentGenerator()
                 .createResourceSetForModels(generation);
         variables = configurationServices.createDefinitions(generation, resourceSetForModels);
-        // add providers variables
-        variables.putAll(configurationServices.getProviderVariables(generation));
     }
 
     /**
@@ -167,18 +163,16 @@ public abstract class AbstractTemplatesTestSuite {
     }
 
     /**
-     * Registers the {@link TestDiagramProvider}.
+     * Registers the {@link MemoryURIHandler}.
      */
     @BeforeClass
     public static void beforeClass() {
-        ProviderRegistry.INSTANCE.clear();
-        ProviderRegistry.INSTANCE.registerProvider(new TestDiagramProvider());
         URIConverter.INSTANCE.getURIHandlers().add(0, uriHandler);
         uriHandler.clear();
     }
 
     /**
-     * Closes the {@link DocumentTemplate}.
+     * Closes the {@link DocumentTemplate} and unregister the {@link MemoryURIHandler}.
      * 
      * @throws IOException
      *             if the {@link DocumentTemplate} can't be closed
@@ -186,7 +180,6 @@ public abstract class AbstractTemplatesTestSuite {
     @AfterClass
     public static void afterClass() throws IOException {
         documentTemplate.close();
-        ProviderRegistry.INSTANCE.clear();
         URIConverter.INSTANCE.getURIHandlers().remove(uriHandler);
     }
 
@@ -403,8 +396,7 @@ public abstract class AbstractTemplatesTestSuite {
                     .substring(userContentLostURI.lastSegment().indexOf(USER_CONTENT_TAG) + USER_CONTENT_TAG.length()));
             copy(userContentLostURI, destURI);
         }
-        final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment,
-                new GenconfToDocumentGenerator().createResourceSetForModels(generation), variables,
+        final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment, variables,
                 URIConverter.INSTANCE, outputURI, new BasicMonitor());
         return generationResult;
     }

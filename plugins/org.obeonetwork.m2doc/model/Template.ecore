@@ -90,9 +90,6 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="#//AstResult"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Image" eSuperTypes="#//AbstractImage">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//IConstruct">
     <eStructuralFeatures xsi:type="ecore:EReference" name="statements" upperBound="-1"
         eType="#//Statement" containment="true"/>
@@ -113,13 +110,6 @@
   <eClassifiers xsi:type="ecore:EDataType" name="Document" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFDocument"/>
   <eClassifiers xsi:type="ecore:EDataType" name="WTable" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTable"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Run" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFRun"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Representation" eSuperTypes="#//AbstractImage">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="#//AstResult"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representationTitle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="activatedLayers" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//Statement"/>
   <eClassifiers xsi:type="ecore:EEnum" name="QueryBehavior">
     <eLiterals name="ICON"/>
@@ -163,24 +153,6 @@
     <eLiterals name="ABOVE"/>
     <eLiterals name="BELOW" value="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OptionValueMap" instanceClassName="java.util.Map$Entry">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractImage" abstract="true" eSuperTypes="#//AbstractProviderClient">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legend" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="legendPOS" eType="#//POSITION"
-        defaultValueLiteral="BELOW"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="Provider" instanceClassName="org.obeonetwork.m2doc.provider.IProvider"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractProviderClient" abstract="true"
-      eSuperTypes="#//Statement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="optionValueMap" upperBound="-1"
-        eType="#//OptionValueMap" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="provider" eType="#//Provider"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Body" instanceClassName="org.apache.poi.xwpf.usermodel.IBody"/>
   <eClassifiers xsi:type="ecore:EClass" name="Bookmark" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//AstResult"/>
@@ -205,5 +177,4 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TableClient" eSuperTypes="#//AbstractProviderClient"/>
 </ecore:EPackage>

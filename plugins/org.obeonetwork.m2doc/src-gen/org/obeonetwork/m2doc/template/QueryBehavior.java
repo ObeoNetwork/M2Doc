@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Query Behavior</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
+ * 
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getQueryBehavior()
  * @model
  * @generated
@@ -30,6 +31,7 @@ public enum QueryBehavior implements Enumerator {
      * The '<em><b>ICON</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #ICON_VALUE
      * @generated
      * @ordered
@@ -40,6 +42,7 @@ public enum QueryBehavior implements Enumerator {
      * The '<em><b>LABEL</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #LABEL_VALUE
      * @generated
      * @ordered
@@ -50,6 +53,7 @@ public enum QueryBehavior implements Enumerator {
      * The '<em><b>TEXT</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #TEXT_VALUE
      * @generated
      * @ordered
@@ -59,6 +63,7 @@ public enum QueryBehavior implements Enumerator {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -71,6 +76,7 @@ public enum QueryBehavior implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #ICON
      * @model
      * @generated
@@ -86,6 +92,7 @@ public enum QueryBehavior implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #LABEL
      * @model
      * @generated
@@ -101,6 +108,7 @@ public enum QueryBehavior implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #TEXT
      * @model
      * @generated
@@ -112,19 +120,16 @@ public enum QueryBehavior implements Enumerator {
      * An array of all the '<em><b>Query Behavior</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
-    private static final QueryBehavior[] VALUES_ARRAY =
-        new QueryBehavior[] {
-            ICON,
-            LABEL,
-            TEXT,
-        };
+    private static final QueryBehavior[] VALUES_ARRAY = new QueryBehavior[] {ICON, LABEL, TEXT, };
 
     /**
      * A public read-only list of all the '<em><b>Query Behavior</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static final List<QueryBehavior> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
@@ -133,7 +138,9 @@ public enum QueryBehavior implements Enumerator {
      * Returns the '<em><b>Query Behavior</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param literal the literal.
+     * 
+     * @param literal
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -151,7 +158,9 @@ public enum QueryBehavior implements Enumerator {
      * Returns the '<em><b>Query Behavior</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param name the name.
+     * 
+     * @param name
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -169,15 +178,20 @@ public enum QueryBehavior implements Enumerator {
      * Returns the '<em><b>Query Behavior</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the integer value.
+     * 
+     * @param value
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static QueryBehavior get(int value) {
         switch (value) {
-            case ICON_VALUE: return ICON;
-            case LABEL_VALUE: return LABEL;
-            case TEXT_VALUE: return TEXT;
+            case ICON_VALUE:
+                return ICON;
+            case LABEL_VALUE:
+                return LABEL;
+            case TEXT_VALUE:
+                return TEXT;
         }
         return null;
     }
@@ -185,6 +199,7 @@ public enum QueryBehavior implements Enumerator {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     private final int value;
@@ -192,6 +207,7 @@ public enum QueryBehavior implements Enumerator {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     private final String name;
@@ -199,6 +215,7 @@ public enum QueryBehavior implements Enumerator {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     private final String literal;
@@ -207,6 +224,7 @@ public enum QueryBehavior implements Enumerator {
      * Only this class can construct instances.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     private QueryBehavior(int value, String name, String literal) {
@@ -218,39 +236,43 @@ public enum QueryBehavior implements Enumerator {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public int getValue() {
-      return value;
+        return value;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public String getName() {
-      return name;
+        return name;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public String getLiteral() {
-      return literal;
+        return literal;
     }
 
     /**
      * Returns the literal value of the enumerator, which is its string representation.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
         return literal;
     }
-    
-} //QueryBehavior
+
+} // QueryBehavior

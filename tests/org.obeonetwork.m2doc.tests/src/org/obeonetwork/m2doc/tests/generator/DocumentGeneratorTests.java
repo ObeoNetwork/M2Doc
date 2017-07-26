@@ -19,34 +19,13 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.obeonetwork.m2doc.provider.ProviderRegistry;
-import org.obeonetwork.m2doc.tests.provider.TestDiagramProvider;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class DocumentGeneratorTests {
-
-    /**
-     * Initialize registry.
-     */
-    @Before
-    public void setUp() {
-        ProviderRegistry.INSTANCE.clear();
-        ProviderRegistry.INSTANCE.registerProvider(new TestDiagramProvider());
-    }
-
-    /**
-     * Cleaning.
-     */
-    @After
-    public void after() {
-        ProviderRegistry.INSTANCE.clear();
-    }
 
     @Test
     public void testBookmarkNominal() throws Exception {

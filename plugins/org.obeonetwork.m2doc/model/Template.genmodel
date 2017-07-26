@@ -27,7 +27,6 @@
     <genDataTypes ecoreDataType="Template.ecore#//TemplateValidationMessage"/>
     <genDataTypes ecoreDataType="Template.ecore#//WTableRow"/>
     <genDataTypes ecoreDataType="Template.ecore#//WTableCell"/>
-    <genDataTypes ecoreDataType="Template.ecore#//Provider"/>
     <genDataTypes ecoreDataType="Template.ecore#//Body"/>
     <genClasses image="false" ecoreClass="Template.ecore#//IConstruct">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//IConstruct/styleRun"/>
@@ -59,9 +58,6 @@
     <genClasses ecoreClass="Template.ecore#//Query">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Query/query"/>
     </genClasses>
-    <genClasses ecoreClass="Template.ecore#//Image">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Image/fileName"/>
-    </genClasses>
     <genClasses ecoreClass="Template.ecore#//Block">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Block/statements"/>
     </genClasses>
@@ -69,12 +65,6 @@
     <genClasses ecoreClass="Template.ecore#//Template">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Template/XWPFBody"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference Template.ecore#//Template/body"/>
-    </genClasses>
-    <genClasses ecoreClass="Template.ecore#//Representation">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/query"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationId"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/representationTitle"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Representation/activatedLayers"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//StaticFragment"/>
     <genClasses ecoreClass="Template.ecore#//Table">
@@ -97,20 +87,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/opcPackage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/document"/>
     </genClasses>
-    <genClasses ecoreClass="Template.ecore#//OptionValueMap">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//OptionValueMap/key"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//OptionValueMap/value"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="Template.ecore#//AbstractImage">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractImage/legend"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractImage/height"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractImage/width"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractImage/legendPOS"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="Template.ecore#//AbstractProviderClient">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//AbstractProviderClient/optionValueMap"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//AbstractProviderClient/provider"/>
-    </genClasses>
     <genClasses ecoreClass="Template.ecore#//Bookmark">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Bookmark/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Bookmark/body"/>
@@ -124,6 +100,5 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Let/value"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Let/body"/>
     </genClasses>
-    <genClasses ecoreClass="Template.ecore#//TableClient"/>
   </genPackages>
 </genmodel:GenModel>

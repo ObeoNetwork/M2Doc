@@ -13,21 +13,15 @@ package org.obeonetwork.m2doc.template.impl;
 import java.util.Collection;
 
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.TemplatePackage;
@@ -40,8 +34,8 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.RowImpl#getCells <em>Cells</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.impl.RowImpl#getTableRow <em>Table Row</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.RowImpl#getCells <em>Cells</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.RowImpl#getTableRow <em>Table Row</em>}</li>
  * </ul>
  *
  * @generated
@@ -50,6 +44,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -58,6 +53,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
      * The cached value of the '{@link #getCells() <em>Cells</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getCells()
      * @generated
      * @ordered
@@ -68,6 +64,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
      * The default value of the '{@link #getTableRow() <em>Table Row</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getTableRow()
      * @generated
      * @ordered
@@ -78,6 +75,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
      * The cached value of the '{@link #getTableRow() <em>Table Row</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getTableRow()
      * @generated
      * @ordered
@@ -87,6 +85,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected RowImpl() {
@@ -96,6 +95,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -106,6 +106,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public EList<Cell> getCells() {
@@ -118,6 +119,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public XWPFTableRow getTableRow() {
@@ -127,25 +129,28 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setTableRow(XWPFTableRow newTableRow) {
         XWPFTableRow oldTableRow = tableRow;
         tableRow = newTableRow;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.ROW__TABLE_ROW, oldTableRow, tableRow));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.ROW__TABLE_ROW, oldTableRow,
+                    tableRow));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TemplatePackage.ROW__CELLS:
-                return ((InternalEList<?>)getCells()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) getCells()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -153,6 +158,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -169,6 +175,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -177,10 +184,10 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
         switch (featureID) {
             case TemplatePackage.ROW__CELLS:
                 getCells().clear();
-                getCells().addAll((Collection<? extends Cell>)newValue);
+                getCells().addAll((Collection<? extends Cell>) newValue);
                 return;
             case TemplatePackage.ROW__TABLE_ROW:
-                setTableRow((XWPFTableRow)newValue);
+                setTableRow((XWPFTableRow) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -189,6 +196,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -207,6 +215,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -223,11 +232,13 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (tableRow: ");
@@ -236,4 +247,4 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
         return result.toString();
     }
 
-} //RowImpl
+} // RowImpl

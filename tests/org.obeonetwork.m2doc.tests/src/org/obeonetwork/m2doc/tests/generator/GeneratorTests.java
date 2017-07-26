@@ -21,9 +21,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {DocumentGeneratorTests.class, TableClientProcessorSeveralTablesTests.class,
-    TableClientProcessorTests.class, TableClientProcessorWithStyleTests.class, TemplateValidationGeneratorTests.class,
-    M2DocValidatorTests.class, })
+@SuiteClasses(
+    value = {DocumentGeneratorTests.class, TemplateValidationGeneratorTests.class, M2DocValidatorTests.class, })
 public class GeneratorTests {
 
 }

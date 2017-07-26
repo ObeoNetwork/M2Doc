@@ -12,7 +12,6 @@
 package org.obeonetwork.m2doc.tests;
 
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -37,7 +36,6 @@ import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.ecore.EClassifier;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
@@ -46,15 +44,12 @@ import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
-import org.obeonetwork.m2doc.template.Image;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
-import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
-import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
@@ -526,90 +521,6 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     public Void caseCell(Cell cell) {
         doSwitch(cell.getTemplate());
 
-        return null;
-    }
-
-    @Override
-    public Void caseImage(Image image) {
-        newLine();
-        builder.append("image ");
-        builder.append(image.getFileName());
-        builder.append(" provider ");
-        if (image.getProvider() != null) {
-            builder.append(image.getProvider().getClass().getName());
-        } else {
-            builder.append("null");
-        }
-        builder.append(" height ");
-        builder.append(image.getHeight());
-        builder.append(" width ");
-        builder.append(image.getWidth());
-        builder.append(" legend ");
-        builder.append(image.getLegend());
-        builder.append(" legendpos ");
-        builder.append(image.getLegendPOS().getName());
-        for (Entry<String, Object> entry : image.getOptionValueMap().entrySet()) {
-            // TODO the value will not be consistent between serializations...
-            if (entry.getValue() instanceof AstResult) {
-                builder.append(String.format(" %s %s ", entry.getKey(),
-                        querySerializer.serialize(((AstResult) entry.getValue()).getAst())));
-            } else {
-                builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
-            }
-        }
-        newLine();
-        return null;
-    }
-
-    @Override
-    public Void caseRepresentation(Representation representation) {
-        newLine();
-        builder.append("representation ");
-        builder.append(representation.getRepresentationId());
-        builder.append(" title ");
-        builder.append(representation.getRepresentationTitle());
-        builder.append(" provider ");
-        if (representation.getProvider() != null) {
-            builder.append(representation.getProvider().getClass().getName());
-        } else {
-            builder.append("null");
-        }
-        builder.append(" height ");
-        builder.append(representation.getHeight());
-        builder.append(" width ");
-        builder.append(representation.getWidth());
-        builder.append(" legend ");
-        builder.append(representation.getLegend());
-        builder.append(" legendpos ");
-        builder.append(representation.getLegendPOS().getName());
-        for (Entry<String, Object> entry : representation.getOptionValueMap().entrySet()) {
-            // TODO the value will not be consistent between serializations...
-            if (entry.getValue() instanceof AstResult) {
-                builder.append(String.format(" %s %s ", entry.getKey(),
-                        querySerializer.serialize(((AstResult) entry.getValue()).getAst())));
-            } else {
-                builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
-            }
-        }
-        newLine();
-        return null;
-    }
-
-    @Override
-    public Void caseTableClient(TableClient tableClient) {
-        newLine();
-        builder.append("table client ");
-        builder.append(tableClient.getProvider().getClass().getName());
-        for (Entry<String, Object> entry : tableClient.getOptionValueMap().entrySet()) {
-            // TODO the value will not be consistent between serializations...
-            if (entry.getValue() instanceof AstResult) {
-                builder.append(String.format(" %s %s ", entry.getKey(),
-                        querySerializer.serialize(((AstResult) entry.getValue()).getAst())));
-            } else {
-                builder.append(String.format(" %s %s ", entry.getKey(), entry.getValue()));
-            }
-        }
-        newLine();
         return null;
     }
 

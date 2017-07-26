@@ -16,23 +16,24 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>User Doc</b></em>'.
  * <!-- end-user-doc -->
- *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.UserDoc#getId <em>Id</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.UserDoc#getBody <em>Body</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.UserDoc#getId <em>Id</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.UserDoc#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getUserDoc()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='UserDoc  tag\r\n\r\nTag template to keep user part modification in previous generated \r\nresult file.'"
+ * @model annotation=
+ *        "http://www.eclipse.org/emf/2002/Ecore documentation='UserDoc  tag\r\n\r\nTag template to keep user part modification in previous generated \r\nresult file.'"
  * @generated
  */
 public interface UserDoc extends Statement {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -45,6 +46,7 @@ public interface UserDoc extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Id</em>' attribute.
      * @see #setId(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getUserDoc_Id()
@@ -57,7 +59,9 @@ public interface UserDoc extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.UserDoc#getId <em>Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Id</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Id</em>' attribute.
      * @see #getId()
      * @generated
      */
@@ -71,6 +75,7 @@ public interface UserDoc extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Body</em>' containment reference.
      * @see #setBody(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getUserDoc_Body()
@@ -84,7 +89,9 @@ public interface UserDoc extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.UserDoc#getBody <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Body</em>' containment reference.
+     * 
+     * @param value
+     *            the new value of the '<em>Body</em>' containment reference.
      * @see #getBody()
      * @generated
      */

@@ -16,14 +16,13 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Let</b></em>'.
  * <!-- end-user-doc -->
- *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.Let#getName <em>Name</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Let#getValue <em>Value</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Let#getBody <em>Body</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Let#getName <em>Name</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Let#getValue <em>Value</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Let#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getLet()
@@ -34,6 +33,7 @@ public interface Let extends Statement {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -46,6 +46,7 @@ public interface Let extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getLet_Name()
@@ -58,7 +59,9 @@ public interface Let extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Let#getName <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
      * @see #getName()
      * @generated
      */
@@ -72,6 +75,7 @@ public interface Let extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Value</em>' attribute.
      * @see #setValue(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getLet_Value()
@@ -84,7 +88,9 @@ public interface Let extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Let#getValue <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Value</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Value</em>' attribute.
      * @see #getValue()
      * @generated
      */
@@ -98,6 +104,7 @@ public interface Let extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Body</em>' containment reference.
      * @see #setBody(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getLet_Body()
@@ -111,7 +118,9 @@ public interface Let extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Let#getBody <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Body</em>' containment reference.
+     * 
+     * @param value
+     *            the new value of the '<em>Body</em>' containment reference.
      * @see #getBody()
      * @generated
      */

@@ -20,7 +20,6 @@ import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
-import org.obeonetwork.m2doc.template.AbstractProviderClient;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -172,13 +171,6 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     @Override
     public Void caseCell(Cell cell) {
         doSwitch(cell.getTemplate());
-
-        return null;
-    }
-
-    @Override
-    public Void caseAbstractProviderClient(AbstractProviderClient providerClient) {
-        insertErrorMessages(providerClient);
 
         return null;
     }

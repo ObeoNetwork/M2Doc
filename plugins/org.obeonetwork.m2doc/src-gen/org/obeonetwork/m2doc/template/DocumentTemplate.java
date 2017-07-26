@@ -12,28 +12,26 @@ package org.obeonetwork.m2doc.template;
 
 import java.io.Closeable;
 import java.io.InputStream;
+
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Document Template</b></em>'.
  * <!-- end-user-doc -->
- *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getHeaders <em>Headers</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getFooters <em>Footers</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getHeaders <em>Headers</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getFooters <em>Footers</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate()
@@ -44,6 +42,7 @@ public interface DocumentTemplate extends EObject, Closeable {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -57,6 +56,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Headers</em>' containment reference list.
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Headers()
      * @model containment="true"
@@ -73,6 +73,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Footers</em>' containment reference list.
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Footers()
      * @model containment="true"
@@ -88,6 +89,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Body</em>' containment reference.
      * @see #setBody(Template)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Body()
@@ -100,7 +102,9 @@ public interface DocumentTemplate extends EObject, Closeable {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Body</em>' containment reference.
+     * 
+     * @param value
+     *            the new value of the '<em>Body</em>' containment reference.
      * @see #getBody()
      * @generated
      */
@@ -114,6 +118,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Input Stream</em>' attribute.
      * @see #setInputStream(InputStream)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_InputStream()
@@ -126,7 +131,9 @@ public interface DocumentTemplate extends EObject, Closeable {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Input Stream</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Input Stream</em>' attribute.
      * @see #getInputStream()
      * @generated
      */
@@ -140,6 +147,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Opc Package</em>' attribute.
      * @see #setOpcPackage(OPCPackage)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_OpcPackage()
@@ -152,7 +160,9 @@ public interface DocumentTemplate extends EObject, Closeable {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Opc Package</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Opc Package</em>' attribute.
      * @see #getOpcPackage()
      * @generated
      */
@@ -166,6 +176,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Document</em>' attribute.
      * @see #setDocument(XWPFDocument)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Document()
@@ -178,7 +189,9 @@ public interface DocumentTemplate extends EObject, Closeable {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Document</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Document</em>' attribute.
      * @see #getDocument()
      * @generated
      */

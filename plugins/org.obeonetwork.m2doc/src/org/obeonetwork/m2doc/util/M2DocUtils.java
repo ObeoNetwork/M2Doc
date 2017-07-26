@@ -603,8 +603,6 @@ public final class M2DocUtils {
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
-     * @param resourceSetForModels
-     *            the resourceset used to load and process the user models.
      * @param variables
      *            variables
      * @param destination
@@ -616,10 +614,10 @@ public final class M2DocUtils {
      */
     @Deprecated
     public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
-            URI destination) throws DocumentGenerationException {
-        return generate(documentTemplate, queryEnvironment, resourceSetForModels, variables, URIConverter.INSTANCE,
-                destination, new BasicMonitor());
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URI destination)
+            throws DocumentGenerationException {
+        return generate(documentTemplate, queryEnvironment, variables, URIConverter.INSTANCE, destination,
+                new BasicMonitor());
     }
 
     /**
@@ -629,8 +627,6 @@ public final class M2DocUtils {
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
-     * @param resourceSetForModels
-     *            the resourceset used to load and process the user models.
      * @param variables
      *            variables
      * @param destination
@@ -642,10 +638,9 @@ public final class M2DocUtils {
      *             if the generation fails
      */
     public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
-            URI destination, Monitor monitor) throws DocumentGenerationException {
-        return generate(documentTemplate, queryEnvironment, resourceSetForModels, variables, URIConverter.INSTANCE,
-                destination, monitor);
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URI destination, Monitor monitor)
+            throws DocumentGenerationException {
+        return generate(documentTemplate, queryEnvironment, variables, URIConverter.INSTANCE, destination, monitor);
     }
 
     /**
@@ -655,8 +650,6 @@ public final class M2DocUtils {
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
-     * @param resourceSetForModels
-     *            the resourceset used to load and process the user models.
      * @param variables
      *            variables
      * @param uriConverter
@@ -670,8 +663,8 @@ public final class M2DocUtils {
      *             if the generation fails
      */
     public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels, Map<String, Object> variables,
-            URIConverter uriConverter, URI destination, Monitor monitor) throws DocumentGenerationException {
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URIConverter uriConverter,
+            URI destination, Monitor monitor) throws DocumentGenerationException {
 
         monitor.beginTask("Generating " + destination.lastSegment(), 1);
 
@@ -687,8 +680,8 @@ public final class M2DocUtils {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(uriConverter, documentTemplate,
                     destination);
-            final M2DocEvaluator processor = new M2DocEvaluator(uriConverter, bookmarkManager, userContentManager,
-                    queryEnvironment, resourceSetForModels, monitor);
+            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
+                    monitor);
 
             final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
 
@@ -701,11 +694,8 @@ public final class M2DocUtils {
                 configurator.cleanServices(queryEnvironment);
             }
 
-            // At this point, the document has been generated and just needs being
-            // written on disk.
+            // At this point, the document has been generated and just needs to be written on disk.
             POIServices.getInstance().saveFile(uriConverter, destinationDocument, destination);
-
-            processor.clear();
 
             return result;
         } catch (IOException e) {

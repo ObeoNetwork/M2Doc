@@ -16,24 +16,25 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Repetition</b></em>'.
  * <!-- end-user-doc -->
- *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.template.Repetition#getIterationVar <em>Iteration Var</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Repetition#getQuery <em>Query</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.template.Repetition#getBody <em>Body</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Repetition#getIterationVar <em>Iteration Var</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Repetition#getQuery <em>Query</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Repetition#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.' syntax='{m:for var | query} body {m:endfor}'"
+ * @model annotation=
+ *        "http://www.eclipse.org/emf/2002/Ecore documentation='This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.' syntax='{m:for var | query} body {m:endfor}'"
  * @generated
  */
 public interface Repetition extends Statement {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
@@ -46,6 +47,7 @@ public interface Repetition extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Iteration Var</em>' attribute.
      * @see #setIterationVar(String)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_IterationVar()
@@ -58,7 +60,9 @@ public interface Repetition extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Repetition#getIterationVar <em>Iteration Var</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Iteration Var</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Iteration Var</em>' attribute.
      * @see #getIterationVar()
      * @generated
      */
@@ -72,6 +76,7 @@ public interface Repetition extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Query</em>' attribute.
      * @see #setQuery(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_Query()
@@ -84,7 +89,9 @@ public interface Repetition extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Repetition#getQuery <em>Query</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Query</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Query</em>' attribute.
      * @see #getQuery()
      * @generated
      */
@@ -98,6 +105,7 @@ public interface Repetition extends Statement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Body</em>' containment reference.
      * @see #setBody(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition_Body()
@@ -111,7 +119,9 @@ public interface Repetition extends Statement {
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.Repetition#getBody <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Body</em>' containment reference.
+     * 
+     * @param value
+     *            the new value of the '<em>Body</em>' containment reference.
      * @see #getBody()
      * @generated
      */
