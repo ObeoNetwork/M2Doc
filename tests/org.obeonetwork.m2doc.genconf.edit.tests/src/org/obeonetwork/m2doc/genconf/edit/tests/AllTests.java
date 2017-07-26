@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.genconf.edit.tests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+import org.obeonetwork.m2doc.genconf.edit.tests.provider.ModelDefinitionItemProviderTests;
 
 /**
  * Aggregates tests for the org.obeonetwork.m2doc.ide plug-in.
@@ -21,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = { })
+@SuiteClasses(value = {ModelDefinitionItemProviderTests.class, })
 public class AllTests {
 
 }

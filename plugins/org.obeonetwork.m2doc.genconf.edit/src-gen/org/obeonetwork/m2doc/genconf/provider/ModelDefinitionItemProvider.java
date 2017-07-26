@@ -125,10 +125,10 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                                 @Override
                                                 public boolean apply(Object value) {
                                                     return value == null || (value instanceof EObject
-                                                        && isCompatiblType(possibleTypes, ((EObject) value).eClass()));
+                                                        && isCompatibleType(possibleTypes, ((EObject) value).eClass()));
                                                 }
 
-                                                private boolean isCompatiblType(Set<IType> possibleTypes,
+                                                private boolean isCompatibleType(Set<IType> possibleTypes,
                                                         EClass eClass) {
                                                     boolean res = false;
 

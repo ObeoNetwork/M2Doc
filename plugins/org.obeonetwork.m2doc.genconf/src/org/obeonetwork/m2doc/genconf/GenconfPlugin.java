@@ -88,7 +88,7 @@ public class GenconfPlugin extends EMFPlugin {
      * @param exception
      *            The exception to log.
      * @param blocker
-     *            <code>True</code> if the message must be logged as error, <code>False</code> to log it as a
+     *            <code>true</code> if the message must be logged as error, <code>false</code> to log it as a
      *            warning.
      */
     public static void log(Exception exception, boolean blocker) {
@@ -105,7 +105,7 @@ public class GenconfPlugin extends EMFPlugin {
      * @param message
      *            The message to put in the error log view.
      * @param blocker
-     *            <code>True</code> if the message must be logged as error, <code>False</code> to log it as a
+     *            <code>true</code> if the message must be logged as error, <code>false</code> to log it as a
      *            warning.
      */
     public static void log(String message, boolean blocker) {
