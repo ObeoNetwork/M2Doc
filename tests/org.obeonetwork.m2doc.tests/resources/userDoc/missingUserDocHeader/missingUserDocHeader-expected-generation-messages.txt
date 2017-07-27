@@ -1,2 +1,2 @@
-ERROR - Invalid if statement: Unexpected tag m:enduserdoc at this location
+ERROR - Invalid block: Unexpected tag m:enduserdoc at this location
 WARNING - 20...date and time... - Lost user content zone1

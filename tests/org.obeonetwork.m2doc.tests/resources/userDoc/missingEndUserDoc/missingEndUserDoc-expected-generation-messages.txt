@@ -1,1 +1,1 @@
-ERROR - Invalid if statement: Unexpected tag EOF missing [ENDUSERDOC]
+ERROR - Invalid block: Unexpected tag EOF missing [ENDUSERDOC]

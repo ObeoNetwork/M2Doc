@@ -111,6 +111,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     private static final String INVALID_CONDITIONAL_STATEMENT = "Invalid if statement: ";
 
     /**
+     * Error message when a {@link Block} errors.
+     */
+    private static final String INVALID_BLOCK_STATEMENT = "Invalid block: ";
+
+    /**
      * Error message when a {@link Let} errors.
      */
     private static final String INVALID_LET_STATEMENT = "Invalid let statement: ";
@@ -1028,7 +1033,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     @Override
     public IConstruct caseBlock(Block block) {
         if (hasError(block)) {
-            insertQuerySyntaxMessages(block, INVALID_CONDITIONAL_STATEMENT);
+            insertQuerySyntaxMessages(block, INVALID_BLOCK_STATEMENT);
         } else {
             for (IConstruct construct : block.getStatements()) {
                 doSwitch(construct);
