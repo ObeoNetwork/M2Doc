@@ -14,11 +14,9 @@ package org.obeonetwork.m2doc.parser;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.poi.xwpf.usermodel.BodyElementType;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 /**
  * {@link TokenIterator} realizes an iterator of {@link ParsingToken} over a document's body (document, table's cell, text zone, etc.).
@@ -56,20 +54,30 @@ public class TokenIterator implements Iterator<ParsingToken> {
         if (tokenIterator == null || !tokenIterator.hasNext()) {
             while (elementIterator.hasNext() && (tokenIterator == null || !tokenIterator.hasNext())) {
                 final IBodyElement element = elementIterator.next();
-                if (element.getElementType().equals(BodyElementType.PARAGRAPH)) {
-                    // create an empty run if there's no run in the paragraph.
-                    // this eases the processing of documents. The processing is based on runs and a paragraph that has no run in it won't
-                    // be seen by the generator and, as a consequence, won't be inserted as a static part in the result.
-                    XWPFParagraph paragraph = (XWPFParagraph) element;
-                    if (paragraph.getRuns().size() == 0) {
-                        paragraph.createRun().setText("");
-                    }
-                    tokenIterator = new RunIterator(((XWPFParagraph) element).getRuns());
-                } else if (element.getElementType().equals(BodyElementType.TABLE)) {
-                    tokenIterator = new TableIterator((XWPFTable) element);
-                } else {
-                    throw new UnsupportedOperationException(
-                            "Unsupported type of body element : " + element.getElementType());
+                switch (element.getElementType()) {
+                    case PARAGRAPH:
+                        // create an empty run if there's no run in the paragraph.
+                        // this eases the processing of documents. The processing is based on runs and a paragraph that has no run in it
+                        // won't
+                        // be seen by the generator and, as a consequence, won't be inserted as a static part in the result.
+                        XWPFParagraph paragraph = (XWPFParagraph) element;
+                        if (paragraph.getRuns().size() == 0) {
+                            paragraph.createRun().setText("");
+                        }
+                        tokenIterator = new RunIterator(((XWPFParagraph) element).getRuns());
+                        break;
+
+                    case TABLE:
+                        tokenIterator = new BodyElementIterator(element);
+                        break;
+
+                    case CONTENTCONTROL:
+                        tokenIterator = new BodyElementIterator(element);
+                        break;
+
+                    default:
+                        throw new UnsupportedOperationException(
+                                "Unsupported type of body element : " + element.getElementType());
                 }
             }
         }

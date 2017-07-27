@@ -200,6 +200,16 @@ public interface TemplateFactory extends EFactory {
     Let createLet();
 
     /**
+     * Returns a new object of class '<em>Content Control</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Content Control</em>'.
+     * @generated
+     */
+    ContentControl createContentControl();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

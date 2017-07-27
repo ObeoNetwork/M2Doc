@@ -1579,6 +1579,87 @@ public interface TemplatePackage extends EPackage {
     int LET_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.impl.ContentControlImpl <em>Content Control</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.template.impl.ContentControlImpl
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getContentControl()
+     * @generated
+     */
+    int CONTENT_CONTROL = 18;
+
+    /**
+     * The feature id for the '<em><b>Style Run</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int CONTENT_CONTROL__STYLE_RUN = STATEMENT__STYLE_RUN;
+
+    /**
+     * The feature id for the '<em><b>Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int CONTENT_CONTROL__RUNS = STATEMENT__RUNS;
+
+    /**
+     * The feature id for the '<em><b>Closing Runs</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int CONTENT_CONTROL__CLOSING_RUNS = STATEMENT__CLOSING_RUNS;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int CONTENT_CONTROL__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
+
+    /**
+     * The feature id for the '<em><b>Control</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int CONTENT_CONTROL__CONTROL = STATEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Content Control</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int CONTENT_CONTROL_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Content Control</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int CONTENT_CONTROL_OPERATION_COUNT = STATEMENT_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1587,7 +1668,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getQueryBehavior()
      * @generated
      */
-    int QUERY_BEHAVIOR = 18;
+    int QUERY_BEHAVIOR = 19;
 
     /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.template.POSITION <em>POSITION</em>}' enum.
@@ -1598,7 +1679,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getPOSITION()
      * @generated
      */
-    int POSITION = 19;
+    int POSITION = 20;
 
     /**
      * The meta object id for the '<em>Input Stream</em>' data type.
@@ -1609,7 +1690,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getInputStream()
      * @generated
      */
-    int INPUT_STREAM = 20;
+    int INPUT_STREAM = 21;
 
     /**
      * The meta object id for the '<em>OPC Package</em>' data type.
@@ -1620,7 +1701,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOPCPackage()
      * @generated
      */
-    int OPC_PACKAGE = 21;
+    int OPC_PACKAGE = 22;
 
     /**
      * The meta object id for the '<em>Document</em>' data type.
@@ -1631,7 +1712,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 22;
+    int DOCUMENT = 23;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -1642,7 +1723,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-    int WTABLE = 23;
+    int WTABLE = 24;
 
     /**
      * The meta object id for the '<em>Run</em>' data type.
@@ -1653,7 +1734,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-    int RUN = 24;
+    int RUN = 25;
 
     /**
      * The meta object id for the '<em>Ast Result</em>' data type.
@@ -1664,7 +1745,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-    int AST_RESULT = 25;
+    int AST_RESULT = 26;
 
     /**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -1675,7 +1756,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 26;
+    int TEMPLATE_VALIDATION_MESSAGE = 27;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -1686,7 +1767,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-    int WTABLE_ROW = 27;
+    int WTABLE_ROW = 28;
 
     /**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -1697,7 +1778,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-    int WTABLE_CELL = 28;
+    int WTABLE_CELL = 29;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -1708,7 +1789,18 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 29;
+    int BODY = 30;
+
+    /**
+     * The meta object id for the '<em>XWPFSDT</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.apache.poi.xwpf.usermodel.XWPFSDT
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getXWPFSDT()
+     * @generated
+     */
+    int XWPFSDT = 31;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}'.
@@ -2373,6 +2465,29 @@ public interface TemplatePackage extends EPackage {
     EReference getLet_Body();
 
     /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.ContentControl <em>Content Control</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Content Control</em>'.
+     * @see org.obeonetwork.m2doc.template.ContentControl
+     * @generated
+     */
+    EClass getContentControl();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.ContentControl#getControl <em>Control</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute '<em>Control</em>'.
+     * @see org.obeonetwork.m2doc.template.ContentControl#getControl()
+     * @see #getContentControl()
+     * @generated
+     */
+    EAttribute getContentControl_Control();
+
+    /**
      * Returns the meta object for enum '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2513,6 +2628,18 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EDataType getBody();
+
+    /**
+     * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFSDT <em>XWPFSDT</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for data type '<em>XWPFSDT</em>'.
+     * @see org.apache.poi.xwpf.usermodel.XWPFSDT
+     * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFSDT"
+     * @generated
+     */
+    EDataType getXWPFSDT();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -3081,6 +3208,26 @@ public interface TemplatePackage extends EPackage {
         EReference LET__BODY = eINSTANCE.getLet_Body();
 
         /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.ContentControlImpl <em>Content Control</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.template.impl.ContentControlImpl
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getContentControl()
+         * @generated
+         */
+        EClass CONTENT_CONTROL = eINSTANCE.getContentControl();
+
+        /**
+         * The meta object literal for the '<em><b>Control</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute CONTENT_CONTROL__CONTROL = eINSTANCE.getContentControl_Control();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.QueryBehavior <em>Query Behavior</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3211,6 +3358,17 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EDataType BODY = eINSTANCE.getBody();
+
+        /**
+         * The meta object literal for the '<em>XWPFSDT</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.apache.poi.xwpf.usermodel.XWPFSDT
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getXWPFSDT()
+         * @generated
+         */
+        EDataType XWPFSDT = eINSTANCE.getXWPFSDT();
 
     }
 

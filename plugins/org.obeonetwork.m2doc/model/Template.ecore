@@ -177,4 +177,9 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentControl" eSuperTypes="#//Statement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="control" lowerBound="1"
+        eType="#//XWPFSDT"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="XWPFSDT" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFSDT"/>
 </ecore:EPackage>

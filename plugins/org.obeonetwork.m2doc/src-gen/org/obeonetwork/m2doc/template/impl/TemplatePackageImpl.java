@@ -33,6 +33,7 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Let;
@@ -216,6 +217,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    private EClass contentControlEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     private EEnum queryBehaviorEEnum = null;
 
     /**
@@ -305,6 +314,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EDataType bodyEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    private EDataType xwpfsdtEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -939,6 +956,26 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    public EClass getContentControl() {
+        return contentControlEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EAttribute getContentControl_Control() {
+        return (EAttribute) contentControlEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     public EEnum getQueryBehavior() {
         return queryBehaviorEEnum;
     }
@@ -1059,6 +1096,16 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    public EDataType getXWPFSDT() {
+        return xwpfsdtEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     public TemplateFactory getTemplateFactory() {
         return (TemplateFactory) getEFactoryInstance();
     }
@@ -1159,6 +1206,9 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(letEClass, LET__VALUE);
         createEReference(letEClass, LET__BODY);
 
+        contentControlEClass = createEClass(CONTENT_CONTROL);
+        createEAttribute(contentControlEClass, CONTENT_CONTROL__CONTROL);
+
         // Create enums
         queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
         positionEEnum = createEEnum(POSITION);
@@ -1174,6 +1224,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         wTableRowEDataType = createEDataType(WTABLE_ROW);
         wTableCellEDataType = createEDataType(WTABLE_CELL);
         bodyEDataType = createEDataType(BODY);
+        xwpfsdtEDataType = createEDataType(XWPFSDT);
     }
 
     /**
@@ -1221,6 +1272,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         bookmarkEClass.getESuperTypes().add(this.getStatement());
         linkEClass.getESuperTypes().add(this.getStatement());
         letEClass.getESuperTypes().add(this.getStatement());
+        contentControlEClass.getESuperTypes().add(this.getStatement());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(iConstructEClass, IConstruct.class, "IConstruct", IS_ABSTRACT, IS_INTERFACE,
@@ -1363,6 +1415,11 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEReference(getLet_Body(), this.getBlock(), null, "body", null, 1, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        initEClass(contentControlEClass, ContentControl.class, "ContentControl", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getContentControl_Control(), this.getXWPFSDT(), "control", null, 1, 1, ContentControl.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Initialize enums and add enum literals
         initEEnum(queryBehaviorEEnum, QueryBehavior.class, "QueryBehavior");
         addEEnumLiteral(queryBehaviorEEnum, QueryBehavior.ICON);
@@ -1389,6 +1446,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEDataType(wTableCellEDataType, XWPFTableCell.class, "WTableCell", IS_SERIALIZABLE,
                 !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(bodyEDataType, IBody.class, "Body", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(xwpfsdtEDataType, org.apache.poi.xwpf.usermodel.XWPFSDT.class, "XWPFSDT", IS_SERIALIZABLE,
+                !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

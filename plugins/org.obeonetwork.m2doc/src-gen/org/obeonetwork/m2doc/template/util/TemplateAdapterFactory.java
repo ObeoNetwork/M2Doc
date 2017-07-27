@@ -19,6 +19,7 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Let;
@@ -190,6 +191,11 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseLet(Let object) {
             return createLetAdapter();
+        }
+
+        @Override
+        public Adapter caseContentControl(ContentControl object) {
+            return createContentControlAdapter();
         }
 
         @Override
@@ -480,6 +486,21 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLetAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.ContentControl <em>Content Control</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * 
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.ContentControl
+     * @generated
+     */
+    public Adapter createContentControlAdapter() {
         return null;
     }
 

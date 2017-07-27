@@ -65,6 +65,7 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Let;
@@ -1162,6 +1163,14 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         }
 
         return super.caseBookmark(bookmark);
+    }
+
+    @Override
+    public IConstruct caseContentControl(ContentControl contentControl) {
+        // Doing nothing here seems to insert the control anyway
+        // I think there is some king of side effect in the way
+        // we produce a new document
+        return super.caseContentControl(contentControl);
     }
 
     /**

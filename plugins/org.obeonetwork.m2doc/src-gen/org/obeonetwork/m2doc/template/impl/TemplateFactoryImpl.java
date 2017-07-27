@@ -16,6 +16,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -32,6 +33,7 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
@@ -136,6 +138,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createLink();
             case TemplatePackage.LET:
                 return createLet();
+            case TemplatePackage.CONTENT_CONTROL:
+                return createContentControl();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -174,6 +178,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createWTableCellFromString(eDataType, initialValue);
             case TemplatePackage.BODY:
                 return createBodyFromString(eDataType, initialValue);
+            case TemplatePackage.XWPFSDT:
+                return createXWPFSDTFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException(
                         "The datatype '" + eDataType.getName() + "' is not a valid classifier");
@@ -213,6 +219,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return convertWTableCellToString(eDataType, instanceValue);
             case TemplatePackage.BODY:
                 return convertBodyToString(eDataType, instanceValue);
+            case TemplatePackage.XWPFSDT:
+                return convertXWPFSDTToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException(
                         "The datatype '" + eDataType.getName() + "' is not a valid classifier");
@@ -393,6 +401,17 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     public Let createLet() {
         LetImpl let = new LetImpl();
         return let;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public ContentControl createContentControl() {
+        ContentControlImpl contentControl = new ContentControlImpl();
+        return contentControl;
     }
 
     /**
@@ -641,6 +660,26 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * @generated
      */
     public String convertBodyToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public XWPFSDT createXWPFSDTFromString(EDataType eDataType, String initialValue) {
+        return (XWPFSDT) super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public String convertXWPFSDTToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

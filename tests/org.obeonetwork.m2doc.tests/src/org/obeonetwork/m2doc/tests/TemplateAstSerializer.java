@@ -42,6 +42,7 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Link;
@@ -544,6 +545,19 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append(" ");
         builder.append(querySerializer.serialize(link.getText().getAst()));
         builder.append(" endlink");
+        newLine();
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseContentControl(org.obeonetwork.m2doc.template.ContentControl)
+     */
+    @Override
+    public Void caseContentControl(ContentControl contentControl) {
+        newLine();
+        builder.append("content control");
         newLine();
         return null;
     }

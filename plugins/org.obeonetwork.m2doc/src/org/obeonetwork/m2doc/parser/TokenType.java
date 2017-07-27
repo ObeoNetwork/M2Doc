@@ -11,6 +11,18 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFSDT;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.obeonetwork.m2doc.template.Bookmark;
+import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.Let;
+import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Query;
+import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.template.UserContent;
+import org.obeonetwork.m2doc.template.UserDoc;
+
 /**
  * Token types are used to characterize tokens during parsing and guide the parsing algorithm.
  * 
@@ -19,9 +31,111 @@ package org.obeonetwork.m2doc.parser;
 public enum TokenType {
 
     /**
-     * Token type constants.
+     * A comment tag.
      */
-    COMMENT("m:comment"), AQL("m:"), FOR("m:for"), ENDFOR("m:endfor"), IF("m:if"), ELSEIF("m:elseif"), ELSE("m:else"), ENDIF("m:endif"), LET("m:let"), ENDLET("m:endlet"), STATIC("static"), EOF("end of file."), WTABLE("table"), BOOKMARK("m:bookmark"), ENDBOOKMARK("m:endbookmark"), LINK("m:link"), USERDOC("m:userdoc"), ENDUSERDOC("m:enduserdoc"), USERCONTENT("m:usercontent"), ENDUSERCONTENT("m:endusercontent");
+    COMMENT("m:comment"),
+
+    /**
+     * A {@link Query} tag.
+     */
+    AQL("m:"),
+
+    /**
+     * A {@link Repetition} tag.
+     */
+    FOR("m:for"),
+
+    /**
+     * A end {@link Repetition} tag.
+     */
+    ENDFOR("m:endfor"),
+
+    /**
+     * A {@link Conditional} tag.
+     */
+    IF("m:if"),
+
+    /**
+     * A {@link Conditional} else if tag.
+     */
+    ELSEIF("m:elseif"),
+
+    /**
+     * A {@link Conditional} else tag.
+     */
+    ELSE("m:else"),
+
+    /**
+     * A {@link Conditional} end tag.
+     */
+    ENDIF("m:endif"),
+
+    /**
+     * A {@link Let} tag.
+     */
+    LET("m:let"),
+
+    /**
+     * A {@link Let} end tag.
+     */
+    ENDLET("m:endlet"),
+
+    /**
+     * A {@link Bookmark} tag.
+     */
+    BOOKMARK("m:bookmark"),
+
+    /**
+     * A {@link Bookmark} end tag.
+     */
+    ENDBOOKMARK("m:endbookmark"),
+
+    /**
+     * A {@link Link} tag.
+     */
+    LINK("m:link"),
+
+    /**
+     * A {@link UserDoc} tag.
+     */
+    USERDOC("m:userdoc"),
+
+    /**
+     * A {@link UserDoc} end tag.
+     */
+    ENDUSERDOC("m:enduserdoc"),
+
+    /**
+     * A {@link UserContent} tag.
+     */
+    USERCONTENT("m:usercontent"),
+
+    /**
+     * A {@link UserContent} end tag.
+     */
+    ENDUSERCONTENT("m:endusercontent"),
+
+    /**
+     * A static {@link XWPFRun}.
+     */
+    STATIC("static"),
+
+    /**
+     * The end of the file.
+     */
+    EOF("end of file."),
+
+    /**
+     * A {@link XWPFTable}.
+     */
+    WTABLE("table"),
+
+    /**
+     * A {@link XWPFSDT}.
+     */
+    CONTENTCONTROL("contentcontrol"),
+
+    ;
 
     /**
      * Token type value.

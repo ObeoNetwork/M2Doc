@@ -40,6 +40,7 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Let;
@@ -470,6 +471,12 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseCell(Cell cell) {
         return doSwitch(cell.getTemplate());
+    }
+
+    @Override
+    public ValidationMessageLevel caseContentControl(ContentControl contentControl) {
+        // noting to do here
+        return ValidationMessageLevel.OK;
     }
 
     /**

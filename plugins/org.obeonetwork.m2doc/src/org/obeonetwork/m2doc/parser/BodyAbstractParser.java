@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -26,6 +27,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
@@ -235,7 +237,7 @@ public abstract class BodyAbstractParser {
     }
 
     /**
-     * parses a static fragment.
+     * Parses a {@link StaticFragment}.
      * 
      * @return the object created
      * @throws DocumentParserException
@@ -250,7 +252,7 @@ public abstract class BodyAbstractParser {
     }
 
     /**
-     * Parses a table.
+     * Parses a {@link Table}.
      * 
      * @param wtable
      *            the table to parse
@@ -277,6 +279,23 @@ public abstract class BodyAbstractParser {
             }
         }
         return table;
+    }
+
+    /**
+     * Parses a {@link ContentControl}.
+     * 
+     * @param control
+     *            the {@link XWPFSDT}
+     * @return the parsed {@link ContentControl}
+     */
+    protected ContentControl parseContentControl(XWPFSDT control) {
+        if (control == null) {
+            throw new IllegalArgumentException("parseContentControl can't be called on a null argument.");
+        }
+        ContentControl contentControl = (ContentControl) EcoreUtil.create(TemplatePackage.Literals.CONTENT_CONTROL);
+        contentControl.setControl(control);
+
+        return contentControl;
     }
 
     /**

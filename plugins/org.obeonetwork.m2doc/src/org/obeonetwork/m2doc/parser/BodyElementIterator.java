@@ -15,28 +15,28 @@ import com.google.common.collect.Lists;
 
 import java.util.Iterator;
 
-import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
 
 /**
- * Table iterator instances are only iterating over a single instance but they
+ * {@link IBodyElement} iterator instances are only iterating over a single instance but they
  * are useful to simplify the code of the {@link TokenIterator} class.
  * 
  * @author Romain Guider
  */
-public class TableIterator implements Iterator<ParsingToken> {
+public class BodyElementIterator implements Iterator<ParsingToken> {
     /**
      * The underlying iterator.
      */
-    private Iterator<XWPFTable> iterator;
+    private Iterator<IBodyElement> iterator;
 
     /**
-     * Create a new iterator for a single table.
+     * Create a new iterator for a single {@link IBodyElement}.
      * 
-     * @param table
-     *            the table to iterate on.
+     * @param bodyElement
+     *            the {@link IBodyElement}
      */
-    public TableIterator(XWPFTable table) {
-        this.iterator = Lists.newArrayList(table).iterator();
+    public BodyElementIterator(IBodyElement bodyElement) {
+        this.iterator = Lists.newArrayList(bodyElement).iterator();
     }
 
     @Override

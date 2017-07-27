@@ -11,7 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import org.apache.poi.xwpf.usermodel.BodyElementType;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 /**
@@ -28,5 +30,39 @@ public enum ParsingTokenKind {
     /**
      * {@link XWPFTable} kind.
      */
-    TABLE
+    TABLE,
+
+    /**
+     * {@link XWPFSDT} kind.
+     */
+    CONTENTCONTROL,;
+
+    /**
+     * Gets the
+     * 
+     * @param bodyElementType
+     * @return
+     */
+    public static ParsingTokenKind getParsingTokenKind(BodyElementType bodyElementType) {
+        final ParsingTokenKind res;
+
+        switch (bodyElementType) {
+            case PARAGRAPH:
+                res = ParsingTokenKind.RUN;
+                break;
+
+            case TABLE:
+                res = ParsingTokenKind.TABLE;
+                break;
+
+            case CONTENTCONTROL:
+                res = ParsingTokenKind.CONTENTCONTROL;
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unsupported type of body element : " + bodyElementType);
+        }
+
+        return res;
+    }
 }

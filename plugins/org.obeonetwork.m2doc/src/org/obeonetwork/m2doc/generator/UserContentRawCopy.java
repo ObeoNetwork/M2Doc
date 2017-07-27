@@ -20,19 +20,23 @@ import java.util.Map;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFPicture;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFStyle;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlToken;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 
 /**
@@ -156,7 +160,10 @@ public class UserContentRawCopy {
                 listOutputTables.add(outputTable);
                 // Inspect table to extract all picture ID in run
                 collectRelationId(inputTable, containerOutputDocument);
-
+            } else if (abstractConstruct instanceof ContentControl) {
+                final ContentControl contentControl = (ContentControl) abstractConstruct;
+                final XWPFSDT control = contentControl.getControl();
+                copyControl(outputBody, control);
             }
         }
         // Change Picture Id by xml replacement
@@ -170,6 +177,31 @@ public class UserContentRawCopy {
     }
 
     /**
+     * Copies the given {@link XWPFSDT} in the given output {@link IBody}.
+     * 
+     * @param outputBody
+     *            the output {@link IBody}
+     * @param control
+     *            the {@link XWPFSDT} to insert
+     */
+    private void copyControl(IBody outputBody, XWPFSDT control) {
+        final CTSdtBlock sdt;
+        if (outputBody instanceof XWPFDocument) {
+            sdt = ((XWPFDocument) outputBody).getDocument().getBody().addNewSdt();
+        } else if (outputBody instanceof XWPFHeaderFooter) {
+            sdt = ((XWPFHeaderFooter) outputBody)._getHdrFtr().addNewSdt();
+        } else if (outputBody instanceof XWPFFootnote) {
+            sdt = ((XWPFFootnote) outputBody).getCTFtnEdn().addNewSdt();
+        } else if (outputBody instanceof XWPFTableCell) {
+            sdt = ((XWPFTableCell) outputBody).getCTTc().addNewSdt();
+        } else {
+            throw new IllegalStateException("can't insert control in " + outputBody.getClass().getCanonicalName());
+        }
+        // TODO we miss POI write API
+        // XWPFSDT c = new XWPFSDT(sdt, outputBody);
+    }
+
+    /**
      * Create new Table.
      * TODO OHA fix bug in nested table on usercontent (else case in code)
      * 
@@ -180,15 +212,25 @@ public class UserContentRawCopy {
      * @return get Table
      */
     private XWPFTable createNewTable(IBody document, XWPFTable inputTable) {
-        XWPFTable generatedTable;
-        CTTbl copy = (CTTbl) inputTable.getCTTbl().copy();
+        final XWPFTable generatedTable;
+        final CTTbl copy = (CTTbl) inputTable.getCTTbl().copy();
         if (document instanceof XWPFDocument) {
             generatedTable = ((XWPFDocument) document).createTable();
+        } else if (document instanceof XWPFHeaderFooter) {
+            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) document;
+            final int index = headerFooter._getHdrFtr().getTblArray().length;
+            final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
+            XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
+            if (newTable.getRows().size() > 0) {
+                newTable.removeRow(0);
+            }
+            headerFooter.insertTable(index, newTable);
+            generatedTable = headerFooter.getTables().get(index);
+            generatedTable.getCTTbl().set(copy);
         } else if (document instanceof XWPFTableCell) {
             XWPFTableCell tCell = (XWPFTableCell) document;
             int tableRank = tCell.getTables().size();
-            generatedTable = new XWPFTable(copy, tCell, 0, 0);
-            tCell.insertTable(tableRank, generatedTable);
+            tCell.insertTable(tableRank, new XWPFTable(copy, tCell, 0, 0));
             generatedTable = tCell.getTables().get(tableRank);
         } else {
             throw new UnsupportedOperationException("unknown type of IBody : " + document.getClass());

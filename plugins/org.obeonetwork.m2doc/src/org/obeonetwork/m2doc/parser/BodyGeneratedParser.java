@@ -20,6 +20,8 @@ import java.util.List;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFSDT;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -84,6 +86,8 @@ public class BodyGeneratedParser extends BodyAbstractParser {
             result = TokenType.EOF;
         } else if (token.getKind() == ParsingTokenKind.TABLE) {
             result = TokenType.WTABLE;
+        } else if (token.getKind() == ParsingTokenKind.CONTENTCONTROL) {
+            result = TokenType.CONTENTCONTROL;
         } else {
             XWPFRun run = token.getRun();
             // is run a field begin run
@@ -139,7 +143,10 @@ public class BodyGeneratedParser extends BodyAbstractParser {
                     res.getStatements().add(parseStaticFragment());
                     break;
                 case WTABLE:
-                    res.getStatements().add(parseTable(runIterator.next().getTable()));
+                    res.getStatements().add(parseTable((XWPFTable) runIterator.next().getBodyElement()));
+                    break;
+                case CONTENTCONTROL:
+                    res.getStatements().add(parseContentControl((XWPFSDT) runIterator.next().getBodyElement()));
                     break;
                 default:
                     throw new UnsupportedOperationException(

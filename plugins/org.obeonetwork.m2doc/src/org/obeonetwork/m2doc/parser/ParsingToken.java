@@ -11,8 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 /**
  * Token used to direct parsing of gendoc templates.
@@ -23,60 +23,65 @@ public class ParsingToken {
     /**
      * The underlying body element.
      */
-    private XWPFTable table;
+    private final IBodyElement bodyElement;
     /**
      * The run the token is contained in.
      */
-    private XWPFRun run;
+    private final XWPFRun run;
 
     /**
-     * Creates a new parsing token that corresponds to a run.
+     * The {@link ParsingTokenKind}.
+     */
+    private final ParsingTokenKind kind;
+
+    /**
+     * Creates a new parsing token that corresponds to a {@link XWPFRun}.
      * 
      * @param run
-     *            the run
+     *            the {@link XWPFRun}
      */
     public ParsingToken(XWPFRun run) {
+        bodyElement = null;
         this.run = run;
+        kind = ParsingTokenKind.RUN;
     }
 
     /**
-     * Creates a new parsing token that corresponds to a table.
+     * Creates a new parsing token that corresponds to a {@link IBodyElement}.
      * 
-     * @param table
-     *            the table
+     * @param bodyElement
+     *            the {@link IBodyElement}
      */
-    public ParsingToken(XWPFTable table) {
-        this.table = table;
+    public ParsingToken(IBodyElement bodyElement) {
+        this.bodyElement = bodyElement;
+        run = null;
+        kind = ParsingTokenKind.getParsingTokenKind(bodyElement.getElementType());
     }
 
     /**
-     * returns the underlying run if any.
+     * Gets the {@link XWPFRun}.
      * 
-     * @return the underlying run if any.
+     * @return the {@link XWPFRun} if the {@link #getKind() kind} is {@link ParsingTokenKind#RUN}, <code>null</code> otherwise
      */
     public XWPFRun getRun() {
         return run;
     }
 
     /**
-     * returns the underlying table if any.
+     * Gets the {@link IBodyElement}.
      * 
-     * @return the underlying table if any.
+     * @return the {@link IBodyElement} if the {@link #getKind() kind} is not {@link ParsingTokenKind#RUN}, <code>null</code> otherwise
      */
-    public XWPFTable getTable() {
-        return table;
+    public IBodyElement getBodyElement() {
+        return bodyElement;
     }
 
     /**
-     * Retuns the kind of token.
+     * Gets the {@link ParsingTokenKind}.
      * 
-     * @return the token's kind.
+     * @return the {@link ParsingTokenKind}
      */
     ParsingTokenKind getKind() {
-        if (table != null) {
-            return ParsingTokenKind.TABLE;
-        } else {
-            return ParsingTokenKind.RUN;
-        }
+        return kind;
     }
 }

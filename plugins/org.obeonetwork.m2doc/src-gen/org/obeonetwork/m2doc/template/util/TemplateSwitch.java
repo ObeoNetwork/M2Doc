@@ -18,6 +18,7 @@ import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Let;
@@ -276,6 +277,17 @@ public class TemplateSwitch<T> extends Switch<T> {
                     result = caseStatement(let);
                 if (result == null)
                     result = caseIConstruct(let);
+                if (result == null)
+                    result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.CONTENT_CONTROL: {
+                ContentControl contentControl = (ContentControl) theEObject;
+                T result = caseContentControl(contentControl);
+                if (result == null)
+                    result = caseStatement(contentControl);
+                if (result == null)
+                    result = caseIConstruct(contentControl);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -588,6 +600,23 @@ public class TemplateSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseLet(Let object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Content Control</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Content Control</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseContentControl(ContentControl object) {
         return null;
     }
 

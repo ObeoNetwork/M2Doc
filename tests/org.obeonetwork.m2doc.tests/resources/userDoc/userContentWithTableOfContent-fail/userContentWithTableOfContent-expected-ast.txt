@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  A simple demonstration of a user doc :
+  
+  userdoc 'zone1' do
+    
+      Insert table of content here.
+  enduserdoc
+  
+  End of demonstration.
+=== FOOTER ===
