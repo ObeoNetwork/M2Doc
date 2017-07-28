@@ -23,13 +23,18 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.ext.base.Option;
 import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.sirius.M2DocSiriusUtils;
@@ -51,6 +56,55 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
      * Mapping from {@link IReadOnlyQueryEnvironment} to {@link M2DocSiriusServices}.
      */
     private final Map<IReadOnlyQueryEnvironment, M2DocSiriusServices> services = new HashMap<IReadOnlyQueryEnvironment, M2DocSiriusServices>();
+
+    @Override
+    public Map<String, String> getInitializedOptions(Map<String, String> options) {
+        final Map<String, String> res = new HashMap<String, String>();
+
+        if (!options.containsKey(M2DocSiriusUtils.SIRIUS_SESSION_OPTION)) {
+            final String genConfURIStr = options.get(ConfigurationServices.GENCONF_URI_OPTION);
+            final String sessionURIStr = getSessionString(genConfURIStr);
+            if (sessionURIStr != null) {
+                res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Gets the {@link Session} option from the generation URI string.
+     * 
+     * @param genConfURIStr
+     *            the generation URI string
+     * @return the {@link Session} option from the generation URI string
+     */
+    protected String getSessionString(final String genConfURIStr) {
+        final String res;
+
+        if (genConfURIStr != null) {
+            final URI genConfURI = URI.createURI(genConfURIStr);
+            if (URIConverter.INSTANCE.exists(genConfURI, Collections.emptyMap()) && genConfURI.isPlatformResource()) {
+                final String filePath = genConfURI.toPlatformString(true);
+                final IFile genconfFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
+                Option<ModelingProject> optionalModelingProject = ModelingProject
+                        .asModelingProject(genconfFile.getProject());
+                if (optionalModelingProject.some()) {
+                    final ModelingProject project = optionalModelingProject.get();
+                    final Session session = project.getSession();
+                    final URI sessionURI = session.getSessionResource().getURI();
+                    res = sessionURI.resolve(genConfURI).toString();
+                } else {
+                    res = null;
+                }
+            } else {
+                res = null;
+            }
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
 
     @Override
     public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options) {

@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -751,6 +752,23 @@ public final class M2DocUtils {
                     res.add(configurator);
                 }
             }
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link Map} of initialized options.
+     * 
+     * @param options
+     *            the {@link Map} of existing options.
+     * @return the {@link Map} of initialized options
+     */
+    public static Map<String, String> getInitializedOptions(Map<String, String> options) {
+        final Map<String, String> res = new LinkedHashMap<String, String>();
+
+        for (IServicesConfigurator configurator : getConfigurators()) {
+            res.putAll(configurator.getInitializedOptions(options));
         }
 
         return res;

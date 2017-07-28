@@ -27,6 +27,8 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -78,6 +80,7 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.GenconfEditor;
+import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
@@ -560,7 +563,9 @@ public class CustomGenconfEditor extends GenconfEditor {
         getContainer().setLayout(new GridLayout(1, false));
 
         final Generation generation = getGeneration();
+        initializeOptions(generation);
         final Composite composite = new Composite(getContainer(), SWT.NONE);
+
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         composite.setLayout(new GridLayout(1, false));
 
@@ -586,6 +591,39 @@ public class CustomGenconfEditor extends GenconfEditor {
 
         generationListener = new GenerationListener();
         installGenerationListener(generation, generationListener);
+    }
+
+    /**
+     * Initializes options for the given {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     */
+    private void initializeOptions(Generation generation) {
+        final Map<String, String> options = new ConfigurationServices().getOptions(generation);
+
+        boolean shouldExec = false;
+        List<Command> commands = new ArrayList<Command>();
+        final Map<String, String> initializedOptions = M2DocUtils.getInitializedOptions(options);
+        for (Option option : generation.getOptions()) {
+            if (initializedOptions.containsKey(option.getName())) {
+                commands.add(SetCommand.create(editingDomain, option, GenconfPackage.Literals.OPTION__VALUE,
+                        initializedOptions.remove(option.getName())));
+                shouldExec = true;
+            }
+        }
+        final List<Option> newOptions = new ArrayList<Option>();
+        for (Entry<String, String> entry : initializedOptions.entrySet()) {
+            final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
+            option.setName(entry.getKey());
+            option.setValue(entry.getValue());
+            shouldExec = true;
+        }
+
+        if (shouldExec) {
+            commands.add(AddCommand.create(editingDomain, generation, GenconfPackage.GENERATION__OPTIONS, newOptions));
+            editingDomain.getCommandStack().execute(new CompoundCommand(commands));
+        }
     }
 
     /**

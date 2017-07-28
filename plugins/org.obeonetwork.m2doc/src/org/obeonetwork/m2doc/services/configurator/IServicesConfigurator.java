@@ -34,6 +34,15 @@ public interface IServicesConfigurator {
     List<String> getOptions();
 
     /**
+     * Gets the {@link Map} of initialized options.
+     * 
+     * @param options
+     *            the {@link Map} of existing options.
+     * @return the {@link Map} of initialized options
+     */
+    Map<String, String> getInitializedOptions(Map<String, String> options);
+
+    /**
      * Validates the given options.
      * 
      * @param queryEnvironment
