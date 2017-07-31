@@ -7,12 +7,6 @@ import java.util.Set;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -20,7 +14,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
@@ -61,26 +54,6 @@ public class CDOGenerateHandler extends AbstractHandler {
     }
 
     /**
-     * Returns the {@link IProject} where the generation object is located.
-     * 
-     * @param generation
-     *            the generation
-     * @return the project where the generation object is located
-     */
-    private IProject findProject(Generation generation) {
-        Set<Resource> resources = SessionManager.INSTANCE.getSession(generation).getAllSessionResources();
-        Resource platformResource = getPlatformeResource(resources);
-        if (platformResource != null) {
-            IWorkspace workspace = ResourcesPlugin.getWorkspace();
-            IResource configurationFile = workspace.getRoot()
-                    .findMember(platformResource.getURI().toPlatformString(true));
-            return configurationFile.getProject();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * the command has been executed, so extract extract the needed information
      * from the application context.
      */
@@ -99,27 +72,15 @@ public class CDOGenerateHandler extends AbstractHandler {
                 return null;
             }
             try {
-                IProject project = findProject(generation);
-                if (project != null) {
-                    IFile templateFile = project.getFile(new Path(generation.getTemplateFileName()));
-                    IFile generatedFile = project.getFile(new Path(generation.getResultFileName()));
-                    List<URI> generatedfiles = GenconfUtils.generate(generation,
-                            URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true),
-                            URI.createPlatformResourceURI(generatedFile.getFullPath().toString(), true),
-                            new BasicMonitor());
-                    if (generatedfiles.size() == 1) {
-                        MessageDialog.openInformation(shell, "M2Doc generation",
-                                "The document '" + generatedfiles.get(0).toString() + "' is generated.");
-                    } else if (generatedfiles.size() == 2) {
-                        MessageDialog.openInformation(shell, "M2Doc generation",
-                                "The document '" + generatedfiles.get(0).toString()
-                                    + "' is generated. \n\n The template file contains validation errors, please read '"
-                                    + generatedfiles.get(1).toString() + "'.");
-                    }
-
-                } else {
-                    MessageDialog.openError(shell, "Generation Error",
-                            "Couldn't find a project where to locate the template file");
+                List<URI> generatedfiles = GenconfUtils.generate(generation, new BasicMonitor());
+                if (generatedfiles.size() == 1) {
+                    MessageDialog.openInformation(shell, "M2Doc generation",
+                            "The document '" + generatedfiles.get(0).toString() + "' is generated.");
+                } else if (generatedfiles.size() == 2) {
+                    MessageDialog.openInformation(shell, "M2Doc generation",
+                            "The document '" + generatedfiles.get(0).toString()
+                                + "' is generated. \n\n The template file contains validation errors, please read '"
+                                + generatedfiles.get(1).toString() + "'.");
                 }
             } catch (IOException e) {
                 M2DocSiriusUIPlugin.INSTANCE

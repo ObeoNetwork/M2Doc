@@ -33,7 +33,6 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
@@ -47,7 +46,6 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -77,6 +75,16 @@ public final class GenconfUtils {
     public static final String GENCONF_URI_OPTION = "GenconfURI";
 
     /**
+     * The {@link Generation#getTemplateFileName() template URI} option.
+     */
+    public static final String TEMPLATE_URI_OPTION = "TemplateURI";
+
+    /**
+     * The {@link Generation#getResultFileName() result URI} option.
+     */
+    public static final String RESULT_URI_OPTION = "ResultURI";
+
+    /**
      * Constructor.
      */
     private GenconfUtils() {
@@ -95,8 +103,14 @@ public final class GenconfUtils {
         final Map<String, String> res = new LinkedHashMap<String, String>();
 
         final Resource eResource = generation.eResource();
-        if (eResource != null) {
+        if (eResource != null && eResource.getURI() != null) {
             res.put(GENCONF_URI_OPTION, eResource.getURI().toString());
+        }
+        if (generation.getTemplateFileName() != null) {
+            res.put(TEMPLATE_URI_OPTION, generation.getTemplateFileName());
+        }
+        if (generation.getResultFileName() != null) {
+            res.put(RESULT_URI_OPTION, generation.getResultFileName());
         }
         for (Option option : generation.getOptions()) {
             res.put(option.getName(), option.getValue());
@@ -136,10 +150,8 @@ public final class GenconfUtils {
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
     public static IQueryEnvironment getQueryEnvironment(Generation generation) {
-        URI templateURI = URI.createFileURI(generation.getTemplateFileName());
-        if (generation.eResource() != null) {
-            templateURI = templateURI.resolve(generation.eResource().getURI());
-        }
+        final URI templateURI;
+        templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName()));
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
@@ -186,25 +198,6 @@ public final class GenconfUtils {
             }
         }
         return result;
-    }
-
-    /**
-     * Gets the Generation from the given {@link URI}.
-     * 
-     * @param uri
-     *            the {@link URI}
-     * @return the Generation from the given {@link URI}
-     */
-    public static Generation getGeneration(URI uri) {
-        ResourceSet rs = new ResourceSetImpl();
-        Resource modelResource = rs.getResource(uri, true);
-        if (modelResource != null && !modelResource.getContents().isEmpty()) {
-            EObject root = modelResource.getContents().get(0);
-            if (root instanceof Generation) {
-                return (Generation) root;
-            }
-        }
-        return null;
     }
 
     /**
@@ -342,8 +335,8 @@ public final class GenconfUtils {
         }
 
         // get template and result file
-        URI templateFile = createURIStartingFromCurrentModel(generation, generation.getTemplateFileName());
-        URI generatedFile = createURIStartingFromCurrentModel(generation, generation.getResultFileName());
+        URI templateFile = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName()));
+        URI generatedFile = getResolvedURI(generation, URI.createURI(generation.getResultFileName()));
 
         if (!URIConverter.INSTANCE.exists(templateFile, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
@@ -354,19 +347,24 @@ public final class GenconfUtils {
     }
 
     /**
-     * Creates {@link URI} starting from the current model.
+     * Gets the {@link URI#resolve(URI) resolved URI} from the given {@link Generation}.
      * 
      * @param generation
      *            the {@link Generation}
-     * @param relativePath
-     *            the relative path
-     * @return the created {@link URI} starting from the current model
+     * @param uri
+     *            the {@link URI} to resolve
+     * @return the {@link URI#resolve(URI) resolved URI} from the given {@link Generation}
      */
-    public static URI createURIStartingFromCurrentModel(Generation generation, String relativePath) {
-        URI generationURI = generation.eResource().getURI();
-        URI relativeURI = URI.createURI(relativePath);
+    public static URI getResolvedURI(Generation generation, URI uri) {
+        final URI res;
 
-        return relativeURI.resolve(generationURI);
+        if (generation.eResource() != null && generation.eResource().getURI() != null) {
+            res = uri.resolve(generation.eResource().getURI());
+        } else {
+            res = uri;
+        }
+
+        return res;
     }
 
     /**
@@ -388,7 +386,7 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
      */
-    public static List<URI> generate(Generation generation, URI templateURI, URI generatedURI, Monitor monitor)
+    private static List<URI> generate(Generation generation, URI templateURI, URI generatedURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
@@ -447,87 +445,6 @@ public final class GenconfUtils {
     }
 
     /**
-     * Create genconf model from templateInfo information.
-     * 
-     * @param templateURI
-     *            the template {@link URI}
-     * @return configuration model
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws IOException
-     *             IOException
-     */
-    public static Resource createConfigurationModel(URI templateURI) throws IOException {
-        Resource resource = null;
-        TemplateCustomProperties templateProperties = POIServices.getInstance()
-                .getTemplateCustomProperties(URIConverter.INSTANCE, templateURI);
-
-        // create genconf model
-        if (templateProperties != null) {
-            resource = createConfigurationModel(templateProperties, templateURI);
-        }
-        return resource;
-    }
-
-    /**
-     * Create genconf model from templateInfo information.
-     * 
-     * @param templateProperties
-     *            TemplateInfo
-     * @param templateURI
-     *            File
-     * @return configuration model
-     */
-    public static Resource createConfigurationModel(TemplateCustomProperties templateProperties,
-            final URI templateURI) {
-        // create genconf resource.
-        URI genConfURI = templateURI.trimFileExtension().appendFileExtension(GenconfUtils.GENCONF_EXTENSION_FILE);
-        Resource resource = M2DocUtils.createResource(templateURI, genConfURI);
-
-        // create initial model content.
-        final Generation generation = createInitialModel(genConfURI.trimFileExtension().lastSegment(),
-                templateURI.deresolve(genConfURI).toString());
-        // add docx properties
-        final List<Definition> definitions = getNewDefinitions(generation, templateProperties);
-        generation.getDefinitions().addAll(definitions);
-        if (generation != null) {
-            resource.getContents().add(generation);
-        }
-        // Save the contents of the resource to the file system.
-        try {
-            M2DocUtils.saveResource(resource);
-        } catch (IOException e) {
-            GenconfPlugin.INSTANCE
-                    .log(new Status(Status.ERROR, GenconfPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-        }
-
-        // Save the contents of the resource to the file system.
-        try {
-            M2DocUtils.saveResource(resource);
-        } catch (IOException e) {
-            GenconfPlugin.INSTANCE
-                    .log(new Status(Status.ERROR, GenconfPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
-        }
-        return resource;
-    }
-
-    /**
-     * Create generation eObject.
-     * 
-     * @param name
-     *            the name
-     * @param templateFileName
-     *            the template file name
-     * @return the created {@link Generation}
-     */
-    public static Generation createInitialModel(String name, String templateFileName) {
-        Generation generation = GenconfFactory.eINSTANCE.createGeneration();
-        generation.setName(name);
-        generation.setTemplateFileName(templateFileName);
-        return generation;
-    }
-
-    /**
      * Validate templateInfo information.
      * 
      * @param generation
@@ -550,14 +467,12 @@ public final class GenconfUtils {
             throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
         }
 
-        URI generationURI = generation.eResource().getURI();
-
         // get template and result file
-        URI templateURI = URI.createFileURI(generation.getTemplateFileName()).resolve(generationURI);
+        URI templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName()));
         if (!URIConverter.INSTANCE.exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
         }
-        // get acceleo environment
+        // get AQL environment
         IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
         // parse template

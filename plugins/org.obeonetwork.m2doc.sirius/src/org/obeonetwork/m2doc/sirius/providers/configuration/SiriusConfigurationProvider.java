@@ -193,7 +193,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         final String representationsFileName = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (representationsFileName != null && representationsFileName.endsWith("aird")) {
-            final URI sessionURI = GenconfUtils.createURIStartingFromCurrentModel(generation, representationsFileName);
+            final URI sessionURI = GenconfUtils.getResolvedURI(generation, URI.createURI(representationsFileName));
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session s = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
                 s.open(new NullProgressMonitor());

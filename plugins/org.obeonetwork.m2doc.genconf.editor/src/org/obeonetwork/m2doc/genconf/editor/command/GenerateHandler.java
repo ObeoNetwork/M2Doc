@@ -24,6 +24,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
@@ -64,7 +68,7 @@ public class GenerateHandler extends AbstractHandler {
             Generation generation = null;
             if (selected instanceof IFile && "genconf".equals(((IFile) selected).getFileExtension())) {
                 URI genconfURI = URI.createPlatformResourceURI(((IFile) selected).getFullPath().toString(), true);
-                generation = GenconfUtils.getGeneration(genconfURI);
+                generation = getGeneration(genconfURI);
 
             }
             if (selected instanceof Generation) {
@@ -124,6 +128,25 @@ public class GenerateHandler extends AbstractHandler {
         }
         return null;
 
+    }
+
+    /**
+     * Gets the Generation from the given {@link URI}.
+     * 
+     * @param uri
+     *            the {@link URI}
+     * @return the Generation from the given {@link URI}
+     */
+    protected Generation getGeneration(URI uri) {
+        ResourceSet rs = new ResourceSetImpl();
+        Resource modelResource = rs.getResource(uri, true);
+        if (modelResource != null && !modelResource.getContents().isEmpty()) {
+            EObject root = modelResource.getContents().get(0);
+            if (root instanceof Generation) {
+                return (Generation) root;
+            }
+        }
+        return null;
     }
 
 }

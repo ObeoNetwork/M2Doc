@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,13 +37,9 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -111,37 +106,6 @@ public final class M2DocUtils {
      */
     private M2DocUtils() {
         super();
-    }
-
-    /**
-     * Save the contents of the resource to the file system.
-     * 
-     * @param resource
-     *            Resource
-     * @throws IOException
-     *             if the resource can't be serialized
-     */
-    public static void saveResource(Resource resource) throws IOException {
-        Map<Object, Object> options = new HashMap<>();
-        options.put(XMLResource.OPTION_ENCODING, "UTF-8");
-        resource.save(options);
-    }
-
-    /**
-     * Create resource.
-     * 
-     * @param templateFile
-     *            IFile
-     * @param genConfURI
-     *            URI
-     * @return new resource.
-     */
-    public static Resource createResource(URI templateFile, URI genConfURI) {
-        // Create a resource set
-        ResourceSet resourceSet = new ResourceSetImpl();
-        // Create a resource for this file.
-        Resource resource = resourceSet.createResource(genConfURI);
-        return resource;
     }
 
     /**

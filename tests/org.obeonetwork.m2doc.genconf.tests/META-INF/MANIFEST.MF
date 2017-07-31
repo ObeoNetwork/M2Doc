@@ -8,6 +8,8 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[0.12.0,0.13.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[0.12.0,0.13.0)",
  org.junit;bundle-version="4.0.0",
  org.eclipse.core.runtime,
- org.obeonetwork.m2doc.tests;bundle-version="[0.12.0,0.13.0)"
+ org.obeonetwork.m2doc.genconf;bundle-version="[0.12.0,0.13.0)",
+ org.eclipse.acceleo.query,
+ org.apache.poi
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
