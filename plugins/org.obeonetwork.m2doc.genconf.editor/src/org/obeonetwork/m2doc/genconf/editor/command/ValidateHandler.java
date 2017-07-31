@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -67,8 +67,7 @@ public class ValidateHandler extends AbstractHandler {
 
             if (generation != null) {
                 try {
-                    GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    boolean inError = generator.validate(generation);
+                    boolean inError = GenconfUtils.validate(generation);
                     if (!inError) {
                         MessageDialog.openInformation(shell, "M2Doc validation",
                                 "The template validation has been performed successfully.");

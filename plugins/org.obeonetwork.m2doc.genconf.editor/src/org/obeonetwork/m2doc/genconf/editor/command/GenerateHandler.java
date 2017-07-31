@@ -33,10 +33,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.progress.IProgressService;
-import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
-import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
@@ -65,7 +64,7 @@ public class GenerateHandler extends AbstractHandler {
             Generation generation = null;
             if (selected instanceof IFile && "genconf".equals(((IFile) selected).getFileExtension())) {
                 URI genconfURI = URI.createPlatformResourceURI(((IFile) selected).getFullPath().toString(), true);
-                generation = ConfigurationServices.getGeneration(genconfURI);
+                generation = GenconfUtils.getGeneration(genconfURI);
 
             }
             if (selected instanceof Generation) {
@@ -82,8 +81,7 @@ public class GenerateHandler extends AbstractHandler {
                         @Override
                         public void run(IProgressMonitor pm) throws InvocationTargetException {
                             try {
-                                GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                                generatedfiles.addAll(generator.generate(toLaunch, BasicMonitor.toMonitor(pm)));
+                                generatedfiles.addAll(GenconfUtils.generate(toLaunch, BasicMonitor.toMonitor(pm)));
 
                             } catch (IOException e) {
                                 throw new InvocationTargetException(e);

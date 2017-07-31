@@ -35,7 +35,7 @@ import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.ext.base.Option;
-import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.sirius.M2DocSiriusUtils;
 import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
@@ -62,7 +62,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         final Map<String, String> res = new HashMap<String, String>();
 
         if (!options.containsKey(M2DocSiriusUtils.SIRIUS_SESSION_OPTION)) {
-            final String genConfURIStr = options.get(ConfigurationServices.GENCONF_URI_OPTION);
+            final String genConfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
             final String sessionURIStr = getSessionString(genConfURIStr);
             if (sessionURIStr != null) {
                 res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
@@ -113,15 +113,12 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null) {
             URI sessionURI = URI.createURI(sessionURIStr);
-            final String genconfURIStr = options.get(ConfigurationServices.GENCONF_URI_OPTION);
+            final String genconfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
             if (genconfURIStr != null) {
                 sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr));
             }
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
-                if (!session.isOpen()) {
-                    session.open(new NullProgressMonitor());
-                }
                 final M2DocSiriusServices serviceInstance = new M2DocSiriusServices(session);
                 res.addAll(ServiceUtils.getServices(queryEnvironment, serviceInstance));
                 services.put(queryEnvironment, serviceInstance);
@@ -153,7 +150,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null) {
             URI sessionURI = URI.createURI(sessionURIStr);
-            final String genconfURIStr = options.get(ConfigurationServices.GENCONF_URI_OPTION);
+            final String genconfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
             if (genconfURIStr != null) {
                 sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr));
             }

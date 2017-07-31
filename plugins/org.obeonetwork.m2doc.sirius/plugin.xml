@@ -17,9 +17,6 @@
       <configuration
             providerClass="org.obeonetwork.m2doc.sirius.providers.configuration.SiriusConfigurationProvider">
       </configuration>
-      <configuration
-            providerClass="org.obeonetwork.m2doc.sirius.session.SessionCleaner">
-      </configuration>
    </extension>
    <extension
          point="org.obeonetwork.m2doc.ide.services.register">

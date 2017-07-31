@@ -1,7 +1,5 @@
 package org.obeonetwork.m2doc.sirius.services;
 
-import com.google.common.collect.Lists;
-
 import java.io.File;
 import java.security.ProviderException;
 import java.util.ArrayList;
@@ -12,10 +10,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.ui.image.ImageFileFormat;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
-import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionStatus;
@@ -35,10 +31,7 @@ import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.swt.widgets.Display;
-import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.sirius.commands.ExportRepresentationCommand;
-import org.obeonetwork.m2doc.sirius.session.CleaningAIRDJob;
-import org.obeonetwork.m2doc.sirius.session.CleaningJobRegistry;
 
 /**
  * Utility class to be used by the various classes that access the Sirius session.
@@ -53,77 +46,6 @@ public final class SiriusRepresentationUtils {
      */
     private SiriusRepresentationUtils() {
         // nothing to do here
-    }
-
-    /**
-     * Retrieve all representations whose target is the specified EObject and description the given one.
-     * 
-     * @param targetRootObject
-     *            Object which is the target of the representations.
-     * @param representationId
-     *            the diagram description from which we want to retrieve representations.
-     * @param session
-     *            the Sirius session from which we want to find the representation with the given name.
-     * @return all representations whose target is the specified EObject
-     */
-    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDescriptionAndName(
-            EObject targetRootObject, String representationId, Session session) {
-        return getAssociatedRepresentationByDescriptionAndName(null, targetRootObject, representationId, session,
-                false);
-    }
-
-    /**
-     * Retrieve all representations whose target is the specified EObject and description the given one. If no representation is
-     * found and createIfAbsent is <code>true</code> the create the representation.
-     * 
-     * @param generation
-     *            the generation configuration object this generation has been launched on.
-     * @param targetRootObject
-     *            Object which is the target of the representations.
-     * @param representationId
-     *            the description from which we want to retrieve representations.
-     * @param session
-     *            the Sirius session from which we want to find the representation with the given name.
-     * @param createIfAbsent
-     *            if <code>true</code> and the generation object is present, the representations are created on the fly and cleaned after
-     *            doc generation.
-     * @return all representations whose target is the specified EObject
-     */
-    public static List<DRepresentationDescriptor> getAssociatedRepresentationByDescriptionAndName(Generation generation,
-            EObject targetRootObject, String representationId, Session session, boolean createIfAbsent) {
-        List<DRepresentationDescriptor> result = new ArrayList<>();
-        if (representationId != null && targetRootObject != null && session != null) {
-            Collection<DRepresentationDescriptor> representations = DialectManager.INSTANCE
-                    .getRepresentationDescriptors(targetRootObject, session);
-            // Filter representations to keep only those in a selected viewpoint
-            Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-
-            for (DRepresentationDescriptor representation : representations) {
-                boolean isDangling = new DRepresentationDescriptorQuery(representation).isDangling();
-                if (!isDangling && representationId.equals(representation.getDescription().getName())
-                    && representation.getDescription().eContainer() instanceof Viewpoint) {
-                    Viewpoint vp = (Viewpoint) representation.getDescription().eContainer();
-                    if (selectedViewpoints.contains(vp)) {
-                        result.add(representation);
-                    }
-                }
-            }
-        }
-        if (generation != null && result.isEmpty() && createIfAbsent) {
-            RepresentationDescription description = findDescription(session, representationId);
-            session.getTransactionalEditingDomain().getCommandStack().execute(new CreateRepresentationCommand(session,
-                    description, targetRootObject, representationId, new NullProgressMonitor()));
-            for (DRepresentationDescriptor representation : DialectManager.INSTANCE
-                    .getRepresentationDescriptors(targetRootObject, session)) {
-                if (representation != null && representation.getDescription() == description) {
-                    CleaningJobRegistry.INSTANCE.registerJob(generation,
-                            new CleaningAIRDJob(targetRootObject, session, representation));
-                    result = Lists.newArrayList(representation);
-                }
-            }
-
-        }
-        return result;
     }
 
     /**

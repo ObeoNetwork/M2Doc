@@ -43,9 +43,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.obeonetwork.m2doc.genconf.GenconfFactory;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
-import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -142,12 +141,10 @@ public abstract class AbstractTemplatesTestSuite {
         }
         final URI templateURI = getTemplateURI(new File(testFolderPath));
         setTemplateFileName(generation, templateURI.toFileString());
-        final ConfigurationServices configurationServices = new ConfigurationServices();
-        queryEnvironment = configurationServices.initAcceleoEnvironment(generation);
+        queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment, this.getClass().getClassLoader());
-        final ResourceSet resourceSetForModels = new GenconfToDocumentGenerator()
-                .createResourceSetForModels(generation);
-        variables = configurationServices.createDefinitions(generation, resourceSetForModels);
+        final ResourceSet resourceSetForModels = GenconfUtils.createResourceSetForModels(generation);
+        variables = GenconfUtils.getVariables(generation, resourceSetForModels);
     }
 
     /**

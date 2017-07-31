@@ -1,4 +1,4 @@
-package org.obeonetwork.m2doc.sirius.session;
+package org.obeonetwork.m2doc.sirius.services;
 
 import com.google.common.collect.Sets;
 

@@ -13,30 +13,16 @@ package org.obeonetwork.m2doc.genconf.editor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import org.eclipse.acceleo.query.parser.AstValidator;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.Query;
-import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.validation.type.ClassType;
-import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.edit.command.AddCommand;
@@ -44,6 +30,7 @@ import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -75,12 +62,12 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.GenconfEditor;
-import org.obeonetwork.m2doc.genconf.util.ConfigurationServices;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
@@ -91,7 +78,6 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class CustomGenconfEditor extends GenconfEditor {
 
     /**
@@ -557,13 +543,9 @@ public class CustomGenconfEditor extends GenconfEditor {
     public void createPages() {
         super.createPages();
 
-        // make sure org.obeonetwork.m2doc.ide is started
-        M2DocPlugin.INSTANCE.getBaseURL();
-
         getContainer().setLayout(new GridLayout(1, false));
 
         final Generation generation = getGeneration();
-        initializeOptions(generation);
         final Composite composite = new Composite(getContainer(), SWT.NONE);
 
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -591,39 +573,6 @@ public class CustomGenconfEditor extends GenconfEditor {
 
         generationListener = new GenerationListener();
         installGenerationListener(generation, generationListener);
-    }
-
-    /**
-     * Initializes options for the given {@link Generation}.
-     * 
-     * @param generation
-     *            the {@link Generation}
-     */
-    private void initializeOptions(Generation generation) {
-        final Map<String, String> options = new ConfigurationServices().getOptions(generation);
-
-        boolean shouldExec = false;
-        List<Command> commands = new ArrayList<Command>();
-        final Map<String, String> initializedOptions = M2DocUtils.getInitializedOptions(options);
-        for (Option option : generation.getOptions()) {
-            if (initializedOptions.containsKey(option.getName())) {
-                commands.add(SetCommand.create(editingDomain, option, GenconfPackage.Literals.OPTION__VALUE,
-                        initializedOptions.remove(option.getName())));
-                shouldExec = true;
-            }
-        }
-        final List<Option> newOptions = new ArrayList<Option>();
-        for (Entry<String, String> entry : initializedOptions.entrySet()) {
-            final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
-            option.setName(entry.getKey());
-            option.setValue(entry.getValue());
-            shouldExec = true;
-        }
-
-        if (shouldExec) {
-            commands.add(AddCommand.create(editingDomain, generation, GenconfPackage.GENERATION__OPTIONS, newOptions));
-            editingDomain.getCommandStack().execute(new CompoundCommand(commands));
-        }
     }
 
     /**
@@ -923,110 +872,13 @@ public class CustomGenconfEditor extends GenconfEditor {
             templateCustomProperties = POIServices.getInstance().getTemplateCustomProperties(URIConverter.INSTANCE,
                     absoluteURI);
             final Generation generation = getGeneration();
-            final List<Definition> newDefinitions = getNewDefinitions(generation);
+            final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(generation,
+                    templateCustomProperties);
             editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, generation,
                     GenconfPackage.GENERATION__DEFINITIONS, newDefinitions));
         } catch (IOException e) {
             templateCustomProperties = null;
         }
-    }
-
-    /**
-     * Gets the {@link List} of new {@link Definition}.
-     * 
-     * @param generation
-     *            the {@link Generation}
-     * @return the {@link List} of new {@link Definition}
-     */
-    protected List<Definition> getNewDefinitions(final Generation generation) {
-        final IQueryEnvironment queryEnvironment = Query.newEnvironment();
-        queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
-        queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
-                EStringToStringMapEntryImpl.class);
-        templateCustomProperties.configureQueryEnvironment(queryEnvironment);
-        @SuppressWarnings("restriction")
-        final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-        final Map<String, Set<IType>> variablesTypes = templateCustomProperties.getVariableTypes(validator,
-                queryEnvironment);
-        final Set<String> existingVariables = new HashSet<String>();
-        for (Definition definition : generation.getDefinitions()) {
-            if (isValidDefinitionForType(queryEnvironment, definition, variablesTypes.get(definition.getKey()))) {
-                existingVariables.add(definition.getKey());
-            }
-        }
-        final List<Definition> newDefinitions = new ArrayList<Definition>();
-        for (Entry<String, Set<IType>> entry : variablesTypes.entrySet()) {
-            if (!existingVariables.contains(entry.getKey())) {
-                final Definition newDefinition = createDefinition(queryEnvironment, entry.getKey(), entry.getValue());
-                if (newDefinition != null) {
-                    newDefinitions.add(newDefinition);
-                }
-            }
-        }
-        return newDefinitions;
-    }
-
-    /**
-     * Creates the proper definition for the given {@link Set} of {@link IType}.
-     * 
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param name
-     *            the {@link Definition#getKey() definition name}
-     * @param types
-     *            the {@link Set} of {@link IType}
-     * @return the proper definition for the given {@link Set} of {@link IType} if any created, <code>null</code> otherwise
-     */
-    private Definition createDefinition(IReadOnlyQueryEnvironment queryEnvironment, String name, Set<IType> types) {
-        Definition res = null;
-
-        final ClassType eObjectType = new ClassType(queryEnvironment, EObject.class);
-        final ClassType stringType = new ClassType(queryEnvironment, String.class);
-        for (IType type : types) {
-            if (eObjectType.isAssignableFrom(type)) {
-                res = GenconfPackage.eINSTANCE.getGenconfFactory().createModelDefinition();
-                res.setKey(name);
-                break;
-            } else if (stringType.isAssignableFrom(type)) {
-                res = GenconfPackage.eINSTANCE.getGenconfFactory().createStringDefinition();
-                res.setKey(name);
-                break;
-            }
-        }
-
-        return res;
-
-    }
-
-    /**
-     * Tells if the given {@link Definition} is valid for the given {@link Set} of {@link IType}.
-     * 
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param definition
-     *            the {@link Definition} to check
-     * @param types
-     *            the {@link Set} of {@link IType}
-     * @return <code>true</code> if the given {@link Definition} is valid for the given {@link Set} of {@link IType}, <code>false</code>
-     *         otherwise
-     */
-    private boolean isValidDefinitionForType(IReadOnlyQueryEnvironment queryEnvironment, Definition definition,
-            Set<IType> types) {
-        boolean res = false;
-
-        final ClassType eObjectType = new ClassType(queryEnvironment, EObject.class);
-        final ClassType stringType = new ClassType(queryEnvironment, String.class);
-        for (IType type : types) {
-            if (eObjectType.isAssignableFrom(type) && definition instanceof ModelDefinition) {
-                res = true;
-                break;
-            } else if (stringType.isAssignableFrom(type) && definition instanceof StringDefinition) {
-                res = true;
-                break;
-            }
-        }
-
-        return res;
     }
 
     /**
@@ -1067,6 +919,23 @@ public class CustomGenconfEditor extends GenconfEditor {
             }
         });
 
+        final MenuItem initializeOptionMenu = new MenuItem(optionsTable.getControl().getMenu(), SWT.PUSH);
+        initializeOptionMenu.setText("Initialize option");
+        initializeOptionMenu.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                final Generation generation = getGeneration();
+                editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+
+                    @Override
+                    protected void doExecute() {
+                        GenconfUtils.initializeOptions(generation);
+                    }
+
+                });
+            }
+        });
+
         final MenuItem removeOptionMenu = new MenuItem(optionsTable.getControl().getMenu(), SWT.PUSH);
         removeOptionMenu.setText("Remove option");
         removeOptionMenu.addListener(SWT.Selection, new Listener() {
@@ -1091,12 +960,13 @@ public class CustomGenconfEditor extends GenconfEditor {
         new MenuItem(variablesTable.getControl().getMenu(), SWT.SEPARATOR);
         final MenuItem addDefinitionsMenu = new MenuItem(variablesTable.getControl().getMenu(), SWT.PUSH);
         addDefinitionsMenu.setText("Add variables");
-        addDefinitionsMenu.setEnabled(!getNewDefinitions(generation).isEmpty());
+        final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(generation, templateCustomProperties);
+        addDefinitionsMenu.setEnabled(!newDefinitions.isEmpty());
         addDefinitionsMenu.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
                 editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, generation,
-                        GenconfPackage.GENERATION__OPTIONS, getNewDefinitions(generation)));
+                        GenconfPackage.GENERATION__OPTIONS, newDefinitions));
             }
         });
 

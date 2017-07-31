@@ -1,5 +1,7 @@
 package org.obeonetwork.m2doc.sirius.services;
 
+import com.google.common.collect.Lists;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
+import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.common.tools.api.resource.ImageFileFormat;
@@ -29,6 +32,7 @@ import org.eclipse.sirius.ui.business.api.dialect.ExportFormat;
 import org.eclipse.sirius.ui.tools.api.actions.export.SizeTooLargeException;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
+import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.element.MImage;
@@ -45,6 +49,47 @@ value = "Services available for Sirius"
 public class M2DocSiriusServices {
 
     /**
+     * Registry of cleaning jobs.
+     * 
+     * @author Romain Guider
+     */
+    private class CleaningJobRegistry {
+
+        /**
+         * The {@link Set} of jobs.
+         */
+
+        private Set<Runnable> jobs = new LinkedHashSet<Runnable>();
+
+        /**
+         * Registers a job on a key.
+         * 
+         * @param job
+         *            the job
+         */
+        public void registerJob(Runnable job) {
+            jobs.add(job);
+        }
+
+        /**
+         * Clears all the jobs associated to the given key.
+         * 
+         * @param key
+         *            the key
+         */
+        public void clean(Object key) {
+            for (Runnable job : jobs) {
+                try {
+                    job.run();
+                } finally {
+                    jobs.clear();
+                }
+            }
+        }
+
+    }
+
+    /**
      * The {@link ExportFormat}.
      */
     private static final ExportFormat FORMAT = new ExportFormat(ExportFormat.ExportDocumentFormat.NONE,
@@ -56,9 +101,19 @@ public class M2DocSiriusServices {
     private final Session session;
 
     /**
+     * The {@link CleaningJobRegistry}.
+     */
+    private final CleaningJobRegistry registry = new CleaningJobRegistry();
+
+    /**
      * The {@link Set} of temporary {@link File}.
      */
     private final Set<File> tmpFiles = new LinkedHashSet<>();
+
+    /**
+     * Tells if we should {@link Session#close(org.eclipse.core.runtime.IProgressMonitor) close} the {@link #session}.
+     */
+    private boolean shouldCloseSession;
 
     /**
      * Constructor.
@@ -68,6 +123,10 @@ public class M2DocSiriusServices {
      */
     public M2DocSiriusServices(Session session) {
         this.session = session;
+        if (!session.isOpen()) {
+            session.open(new NullProgressMonitor());
+            shouldCloseSession = true;
+        }
     }
 
     // @formatter:off
@@ -87,13 +146,77 @@ public class M2DocSiriusServices {
         final boolean result;
 
         if (representationDescriptionName != null) {
-            result = SiriusRepresentationUtils
-                    .getAssociatedRepresentationByDescriptionAndName(eObject, representationDescriptionName, session)
-                    .size() > 0;
+            result = getAssociatedRepresentationByDescriptionAndName(eObject, representationDescriptionName).size() > 0;
         } else {
             result = false;
         }
 
+        return result;
+    }
+
+    /**
+     * Retrieve all representations whose target is the specified EObject and description the given one.
+     * 
+     * @param targetRootObject
+     *            Object which is the target of the representations.
+     * @param representationId
+     *            the diagram description from which we want to retrieve representations.
+     * @return all representations whose target is the specified EObject
+     */
+    protected List<DRepresentationDescriptor> getAssociatedRepresentationByDescriptionAndName(EObject targetRootObject,
+            String representationId) {
+        return getAssociatedRepresentationByDescriptionAndName(targetRootObject, representationId, false);
+    }
+
+    /**
+     * Retrieve all representations whose target is the specified EObject and description the given one. If no representation is
+     * found and createIfAbsent is <code>true</code> the create the representation.
+     * 
+     * @param generation
+     *            the generation configuration object this generation has been launched on.
+     * @param targetRootObject
+     *            Object which is the target of the representations.
+     * @param representationId
+     *            the description from which we want to retrieve representations.
+     * @param createIfAbsent
+     *            if <code>true</code> and the generation object is present, the representations are created on the fly and cleaned after
+     *            doc generation.
+     * @return all representations whose target is the specified EObject
+     */
+    protected List<DRepresentationDescriptor> getAssociatedRepresentationByDescriptionAndName(EObject targetRootObject,
+            String representationId, boolean createIfAbsent) {
+        List<DRepresentationDescriptor> result = new ArrayList<>();
+        if (representationId != null && targetRootObject != null && session != null) {
+            Collection<DRepresentationDescriptor> representations = DialectManager.INSTANCE
+                    .getRepresentationDescriptors(targetRootObject, session);
+            // Filter representations to keep only those in a selected viewpoint
+            Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
+
+            for (DRepresentationDescriptor representation : representations) {
+                boolean isDangling = new DRepresentationDescriptorQuery(representation).isDangling();
+                if (!isDangling && representationId.equals(representation.getDescription().getName())
+                    && representation.getDescription().eContainer() instanceof Viewpoint) {
+                    Viewpoint vp = (Viewpoint) representation.getDescription().eContainer();
+                    if (selectedViewpoints.contains(vp)) {
+                        result.add(representation);
+                    }
+                }
+            }
+        }
+        if (result.isEmpty() && createIfAbsent) {
+            RepresentationDescription description = SiriusRepresentationUtils.findDescription(session,
+                    representationId);
+            session.getTransactionalEditingDomain().getCommandStack().execute(new CreateRepresentationCommand(session,
+                    description, targetRootObject, representationId, new NullProgressMonitor()));
+            for (DRepresentationDescriptor representation : DialectManager.INSTANCE
+                    .getRepresentationDescriptors(targetRootObject, session)) {
+                if (representation != null && representation.getDescription() == description) {
+                    registry.registerJob(new CleaningAIRDJob(targetRootObject, session, representation));
+                    result = Lists.newArrayList(representation);
+                }
+            }
+
+        }
         return result;
     }
 
@@ -310,6 +433,10 @@ public class M2DocSiriusServices {
     public void clean() {
         for (File tmpFile : tmpFiles) {
             tmpFile.delete();
+        }
+        registry.clean(this);
+        if (shouldCloseSession) {
+            session.close(new NullProgressMonitor());
         }
         tmpFiles.clear();
     }

@@ -25,7 +25,6 @@ Export-Package: org.obeonetwork.m2doc.sirius,
  org.obeonetwork.m2doc.sirius.propertyTester,
  org.obeonetwork.m2doc.sirius.services,
  org.obeonetwork.m2doc.sirius.services.configurator,
- org.obeonetwork.m2doc.sirius.session,
  org.obeonetwork.m2doc.sirius.util
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

@@ -26,7 +26,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.obeonetwork.m2doc.genconf.GenconfToDocumentGenerator;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 
 /**
@@ -53,8 +53,7 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
             Object selected = ((IStructuredSelection) selection).getFirstElement();
             if (selected instanceof IFile) {
                 try {
-                    GenconfToDocumentGenerator generator = new GenconfToDocumentGenerator();
-                    Resource configurationModel = generator.createConfigurationModel(
+                    Resource configurationModel = GenconfUtils.createConfigurationModel(
                             URI.createPlatformResourceURI(((IFile) selected).getFullPath().toString(), true));
                     MessageDialog.openInformation(shell, "M2Doc generation", "The configuration file '"
                         + configurationModel.getURI().toPlatformString(true) + "' is created.");
