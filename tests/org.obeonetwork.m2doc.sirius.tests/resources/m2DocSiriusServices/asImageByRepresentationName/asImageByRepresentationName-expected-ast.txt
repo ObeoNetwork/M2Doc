@@ -5,7 +5,7 @@ template
 === BODY ===
 template
   This demonstrate the simple usage of asImageByRepresentationName service :
-  [query: .asImageByRepresentationName('anydsl class diagram')]
+  [query: .setWidth(.asImageByRepresentationName('anydsl class diagram'), 300)]
   End of demonstration.
 === FOOTER ===
 template
