@@ -163,6 +163,7 @@
          <consoleOutput>true</consoleOutput>
          <failsOnError>true</failsOnError>
          <linkXRef>false</linkXRef>
+         <excludes>**/tests/**/*</excludes>
        </configuration>
        <goals>
          <goal>check</goal>
