@@ -1,0 +1,21 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  This template demonstrates the use of bookmarks. It creates two links to the same bookmark.Test link before bookmark : 
+  
+  link 'bookmark1' 'a reference to bookmark1' endlink
+  
+  Test bookmark : 
+  
+  bookmark .divOp(1, 0)
+    bookmarked content
+  endbookmark
+  
+  Test link after bookmark : 
+  
+  link 'bookmark1' 'a reference to bookmark1' endlink
+  
+   End of demonstration.
+=== FOOTER ===

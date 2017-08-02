@@ -1,0 +1,1 @@
+ERROR - User doc id can't be null.

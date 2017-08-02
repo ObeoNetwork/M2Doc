@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  A simple demonstration of a query :
+  [query: .divOp(1, 0)]
+  End of demonstration.
+=== FOOTER ===

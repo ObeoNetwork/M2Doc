@@ -61,7 +61,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.M2DocParser;
+import org.obeonetwork.m2doc.template.Bookmark;
+import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Let;
+import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Template;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
@@ -580,6 +583,18 @@ public class TemplateCustomProperties {
             declarations.add(((Let) eObj).getName());
             walkForNeededVariables(declarations, missing, ((Let) eObj).getBody());
             declarations.remove(((Let) eObj).getName());
+        } else if (eObj instanceof Conditional) {
+            walkForNeededVariables(declarations, missing, ((Conditional) eObj).getCondition().getAst());
+            walkForNeededVariables(declarations, missing, ((Conditional) eObj).getThen());
+            if (((Conditional) eObj).getElse() != null) {
+                walkForNeededVariables(declarations, missing, ((Conditional) eObj).getElse());
+            }
+        } else if (eObj instanceof Link) {
+            walkForNeededVariables(declarations, missing, ((Link) eObj).getName().getAst());
+            walkForNeededVariables(declarations, missing, ((Link) eObj).getText().getAst());
+        } else if (eObj instanceof Bookmark) {
+            walkForNeededVariables(declarations, missing, ((Bookmark) eObj).getName().getAst());
+            walkForNeededVariables(declarations, missing, ((Bookmark) eObj).getBody());
         } else if (eObj instanceof org.obeonetwork.m2doc.template.Query) {
             walkForNeededVariables(declarations, missing,
                     ((org.obeonetwork.m2doc.template.Query) eObj).getQuery().getAst());
@@ -595,6 +610,7 @@ public class TemplateCustomProperties {
             final List<String> letDeclartations = new ArrayList<String>();
             for (Binding binding : ((org.eclipse.acceleo.query.ast.Let) eObj).getBindings()) {
                 letDeclartations.add(binding.getName());
+                walkForNeededVariables(declarations, missing, binding.getValue());
             }
             declarations.addAll(letDeclartations);
             walkForNeededVariables(declarations, missing, ((org.eclipse.acceleo.query.ast.Let) eObj).getBody());

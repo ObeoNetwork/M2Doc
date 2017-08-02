@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  Basic if demonstration :
+  
+  if .equals('', 'anydsl') then
+    The THEN paragraph.
+  else
+    
+    if .equals(.divOp(1, 0), 42) then
+      The ELSEIF paragraph.
+    endif
+    
+  endif
+  
+  End of demonstration.
+=== FOOTER ===

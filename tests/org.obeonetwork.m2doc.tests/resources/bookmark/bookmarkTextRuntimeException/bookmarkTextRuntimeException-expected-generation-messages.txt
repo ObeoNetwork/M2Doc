@@ -1,0 +1,4 @@
+ERROR - divOp(java.lang.Integer,java.lang.Integer) with arguments [1, 0] failed:
+	/ by zero
+ERROR - dangling reference for bookmark bookmark1
+ERROR - dangling reference for bookmark bookmark1

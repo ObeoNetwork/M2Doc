@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  Basic for demonstration : 
+  
+  for v | Sequence{.divOp(1, 0), 2} do
+    name
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===

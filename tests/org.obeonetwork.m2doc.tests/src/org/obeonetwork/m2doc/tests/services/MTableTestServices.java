@@ -64,7 +64,7 @@ public class MTableTestServices {
             final MCell headerCell = new MCellImpl();
             headerRow.getCells().add(headerCell);
             headerCell.setLabel(getLabelStyle(xStyle));
-            headerCell.setStyle(getStyle(1 << xStyle, null));
+            headerCell.setStyle(getStyle(1 << xStyle, 10, null, null));
         }
         for (int yStyle = 0; yStyle < 4; yStyle++) {
             final MRow row = new MRowImpl();
@@ -72,14 +72,16 @@ public class MTableTestServices {
             final MCell headerCell = new MCellImpl();
             row.getCells().add(headerCell);
             headerCell.setLabel(getLabelStyle(yStyle));
-            headerCell.setStyle(getStyle(1 << yStyle, null));
+            headerCell.setStyle(getStyle(1 << yStyle, 10, null, null));
             for (int xStyle = 0; xStyle < 4; xStyle++) {
                 final MCell cell = new MCellImpl();
                 row.getCells().add(cell);
                 cell.setLabel(Integer.toString(index++));
-                final Color color = new Color(colors[(index + 1) % 3], colors[(index + 2) % 3],
+                final Color foregroundColor = new Color(colors[(index + 1) % 3], colors[(index + 2) % 3],
                         colors[(index + 3) % 3]);
-                cell.setStyle(getStyle(1 << xStyle | 1 << yStyle, color));
+                final Color backgroundColor = new Color(colors[(index + 2) % 3], colors[(index + 3) % 3],
+                        colors[(index + 1) % 3]);
+                cell.setStyle(getStyle(1 << xStyle | 1 << yStyle, index + 4, foregroundColor, backgroundColor));
             }
         }
 
@@ -87,19 +89,26 @@ public class MTableTestServices {
     }
 
     /**
-     * Gets the {@link MStyle} for the given modifiers and {@link Color}.
+     * Gets the {@link MStyle}.
      * 
      * @param modifiers
      *            the modifiers
-     * @param color
-     *            the {@link Color}
+     * @param fontSize
+     *            the font size
+     *            ]
+     * @param backgroundColor
+     *            the foreground {@link Color}
+     * @param foregroundColor
+     *            the background {@link Color}
      * @return the {@link MStyle} for the given modifiers and {@link Color}
      */
-    private MStyle getStyle(int modifiers, Color color) {
+    private MStyle getStyle(int modifiers, int fontSize, Color foregroundColor, Color backgroundColor) {
         final MStyle res = new MStyleImpl();
 
         res.setModifiers(modifiers);
-        res.setForegroundColor(color);
+        res.setFontSize(fontSize);
+        res.setForegroundColor(foregroundColor);
+        res.setBackgroundColor(backgroundColor);
 
         return res;
     }

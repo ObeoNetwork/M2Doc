@@ -490,18 +490,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      *            the {@link IValidationResult}
      */
     private void addValidationMessages(IConstruct construct, XWPFRun run, IValidationResult validationResult) {
-        ValidationMessageLevel messageLevel = ValidationMessageLevel.OK;
-
-        if (validationResult != null) {
-            for (IValidationMessage message : validationResult.getMessages()) {
-                final ValidationMessageLevel level = getLevel(message);
-                messageLevel = ValidationMessageLevel.updateLevel(messageLevel, level);
-                construct.getValidationMessages().add(new TemplateValidationMessage(level, message.getMessage(), run));
-            }
-        } else {
-            messageLevel = ValidationMessageLevel.ERROR;
-            construct.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
-                    "Couldn't validate the expression", run));
+        for (IValidationMessage message : validationResult.getMessages()) {
+            final ValidationMessageLevel level = getLevel(message);
+            construct.getValidationMessages().add(new TemplateValidationMessage(level, message.getMessage(), run));
         }
     }
 

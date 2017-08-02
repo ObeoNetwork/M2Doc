@@ -12,18 +12,10 @@
 package org.obeonetwork.m2doc.genconf.tests;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.emf.common.util.BasicDiagnostic;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -38,9 +30,8 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
-import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
-import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.obeonetwork.m2doc.tests.M2DocUtilsTests;
+import org.obeonetwork.m2doc.tests.M2DocUtilsTests.TestServiceConfigurator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -52,82 +43,14 @@ import static org.junit.Assert.assertTrue;
  */
 public class GenconfUtilsTests {
 
-    /**
-     * Test {@link IServicesConfigurator}.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    private static final class TestServiceConfigurator implements IServicesConfigurator {
-
-        /**
-         * The option name.
-         */
-        public static final String OPTION = "option";
-
-        /**
-         * The option value.
-         */
-        public static final String VALUE = "value";
-
-        @Override
-        public List<String> getOptions() {
-            final List<String> res = new ArrayList<String>();
-
-            res.add(OPTION);
-
-            return res;
-        }
-
-        @Override
-        public Map<String, String> getInitializedOptions(Map<String, String> options) {
-            final Map<String, String> res = new LinkedHashMap<String, String>();
-
-            res.put(OPTION, VALUE);
-
-            return res;
-        }
-
-        @Override
-        public Map<String, List<Diagnostic>> validate(IReadOnlyQueryEnvironment queryEnvironment,
-                Map<String, String> options) {
-            final Map<String, List<Diagnostic>> res = new LinkedHashMap<String, List<Diagnostic>>();
-
-            if (options.containsKey(OPTION)) {
-                if (!VALUE.equals(options.get(OPTION))) {
-                    final List<Diagnostic> diagnostic = new ArrayList<Diagnostic>();
-                    diagnostic.add(new BasicDiagnostic());
-                }
-            }
-
-            return res;
-        }
-
-        @Override
-        public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options) {
-            // nothing to do here
-            return Collections.emptySet();
-        }
-
-        @Override
-        public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment) {
-            // nothing to do here
-        }
-    }
-
-    /**
-     * The {@link TestServiceConfigurator}.
-     */
-    private static final ServicesConfiguratorDescriptor CONFIGURATOR = new ServicesConfiguratorDescriptor(
-            new TestServiceConfigurator());
-
     @BeforeClass
     public static void beforeClass() {
-        M2DocUtils.registerServicesConfigurator(CONFIGURATOR);
+        M2DocUtilsTests.beforeClass();
     }
 
     @AfterClass
     public static void afterClass() {
-        M2DocUtils.unregisterServicesConfigurator(CONFIGURATOR);
+        M2DocUtilsTests.afterClass();
     }
 
     @Test
