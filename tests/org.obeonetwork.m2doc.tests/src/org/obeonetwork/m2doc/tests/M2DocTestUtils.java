@@ -19,6 +19,7 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,10 +27,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -258,55 +258,51 @@ public final class M2DocTestUtils {
                 InputStream actualIs = URIConverter.INSTANCE.createInputStream(actualURI);
                 ZipInputStream actualZin = new ZipInputStream(new BufferedInputStream(actualIs))) {
 
-            List<ZipEntry> expectedEntries = new ArrayList<>();
-            ZipEntry anExpectedEntry;
-            while ((anExpectedEntry = expectedZin.getNextEntry()) != null) {
-                expectedEntries.add(anExpectedEntry);
-            }
+            final Map<String, byte[]> expectedContent = getContentMap(expectedZin);
 
-            List<ZipEntry> actualEntries = new ArrayList<>();
-            ZipEntry anActualEntry;
-            while ((anActualEntry = actualZin.getNextEntry()) != null) {
-                actualEntries.add(anActualEntry);
-            }
+            final Map<String, byte[]> actualContent = getContentMap(actualZin);
 
-            assertEquals(expectedEntries.size(), actualEntries.size());
-
-            // Build a map in order to make sure we iterate on equivalent files (i.e. with the same name), because the order of iteration
-            // from ZipInputStream depends on the order of creation.
-            Map<ZipEntry, ZipEntry> entryMap = new HashMap<>();
-            for (ZipEntry expectedEntry : expectedEntries) {
-                for (ZipEntry actualEntry : actualEntries) {
-                    if (expectedEntry.getName().equals(actualEntry.getName())) {
-                        entryMap.put(expectedEntry, actualEntry);
-                    }
-                }
-            }
-
-            ZipEntry expectedEntry;
-            ZipEntry actualEntry;
-            while ((expectedEntry = expectedZin.getNextEntry()) != null) {
-                actualEntry = actualZin.getNextEntry();
-                if (expectedEntry.getName().endsWith(".xml") || expectedEntry.getName().endsWith(".rels")) {
-                    final String expectedXMLContent = getXMLContent(expectedZin, expectedEntry);
-                    final String actualXMLContent = getXMLContent(actualZin, actualEntry);
+            for (Entry<String, byte[]> entry : expectedContent.entrySet()) {
+                final InputStream expectedInputStream = new ByteArrayInputStream(entry.getValue());
+                final InputStream actualInputStream = new ByteArrayInputStream(actualContent.get(entry.getKey()));
+                if (entry.getKey().endsWith(".xml") || entry.getKey().endsWith(".rels")) {
+                    final String expectedXMLContent = getXMLContent(expectedInputStream, entry.getKey());
+                    final String actualXMLContent = getXMLContent(actualInputStream, entry.getKey());
                     assertEquals(expectedXMLContent, actualXMLContent);
-                } else if (expectedEntry.getName().endsWith(".jpeg") || expectedEntry.getName().endsWith(".jpg")) {
-                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), expectedEntry);
-                    ImageTestUtils.assertJPG(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
-                } else if (expectedEntry.getName().endsWith(".gif")) {
-                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), expectedEntry);
-                    ImageTestUtils.assertGIF(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
-                } else if (expectedEntry.getName().endsWith(".png")) {
-                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), expectedEntry);
-                    ImageTestUtils.assertPNG(imageDiff, expectedZin, actualZin, IMAGE_THRESHOLD);
+                } else if (entry.getKey().endsWith(".jpeg") || entry.getKey().endsWith(".jpg")) {
+                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), entry.getKey());
+                    ImageTestUtils.assertJPG(imageDiff, expectedInputStream, actualInputStream, IMAGE_THRESHOLD);
+                } else if (entry.getKey().endsWith(".gif")) {
+                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), entry.getKey());
+                    ImageTestUtils.assertGIF(imageDiff, expectedInputStream, actualInputStream, IMAGE_THRESHOLD);
+                } else if (entry.getKey().endsWith(".png")) {
+                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), entry.getKey());
+                    ImageTestUtils.assertPNG(imageDiff, expectedInputStream, actualInputStream, IMAGE_THRESHOLD);
                 } else {
-                    final String expectedHash = getZipEntryHash(expectedZin, expectedEntry);
-                    final String actualHash = getZipEntryHash(actualZin, actualEntry);
+                    final String expectedHash = getZipEntryHash(expectedInputStream, entry.getKey());
+                    final String actualHash = getZipEntryHash(actualInputStream, entry.getKey());
                     assertEquals(expectedHash, actualHash);
                 }
             }
+            assertEquals(expectedContent.size(), actualContent.size());
         }
+    }
+
+    /**
+     * Gets the content mapping of the given {@link ZipInputStream}.
+     * 
+     * @param zin
+     *            the {@link ZipInputStream}
+     * @return the content mapping of the given {@link ZipInputStream}
+     * @throws IOException
+     */
+    protected static Map<String, byte[]> getContentMap(ZipInputStream zin) throws IOException {
+        final Map<String, byte[]> res = new HashMap<String, byte[]>();
+        ZipEntry zipEntry;
+        while ((zipEntry = zin.getNextEntry()) != null) {
+            res.put(zipEntry.getName(), ByteStreams.toByteArray(zin));
+        }
+        return res;
     }
 
     /**
@@ -314,21 +310,21 @@ public final class M2DocTestUtils {
      * 
      * @param expectedDocxPath
      *            the expected .docx file path
-     * @param entry
-     *            the {@link ZipEntry}
+     * @param entryName
+     *            the {@link ZipEntry#getName() entry name}
      * @return the image difference output file
      * @throws IOException
      *             if the file can't be created
      */
-    private static File getDiffImageFile(String expectedDocxPath, ZipEntry entry) throws IOException {
-        final File result = new File(expectedDocxPath + "-diff-" + entry.getName().replaceAll("/", "-"));
+    private static File getDiffImageFile(String expectedDocxPath, String entryName) throws IOException {
+        final File result = new File(expectedDocxPath + "-diff-" + entryName.replaceAll("/", "-"));
         return result;
     }
 
     /**
      * Gets the XML contents of the given {@link ZipEntry}.
      * 
-     * @param zin
+     * @param inputStream
      *            the {@link ZipInputStream}
      * @param entry
      *            the {@link ZipEntry}
@@ -336,11 +332,11 @@ public final class M2DocTestUtils {
      *             if the {@link ZipInputStream} can't be read
      * @return the XML contents of the given {@link ZipEntry}
      */
-    private static String getXMLContent(ZipInputStream zin, ZipEntry entry) throws IOException {
+    private static String getXMLContent(InputStream inputStream, String entryName) throws IOException {
         final StringBuilder result = new StringBuilder();
 
-        result.append(String.format("\n%s | ", entry.getName()));
-        String fileContent = CharStreams.toString(new InputStreamReader(zin, Charsets.UTF_8));
+        result.append(String.format("\n%s | ", entryName));
+        String fileContent = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
         fileContent = indentXML(fileContent);
         // normalizing on \n to have a cross-platform comparison.
         fileContent = fileContent.replace("\r\n", "\n");
@@ -355,21 +351,21 @@ public final class M2DocTestUtils {
     }
 
     /**
-     * Gets the name and hash of the given {@link ZipEntry}.
+     * Gets the name and hash of the given {@link ZipEntry#getName() entry name}.
      * 
-     * @param zin
-     *            the {@link ZipInputStream}
-     * @param entry
-     *            the {@link ZipEntry}
+     * @param inputStream
+     *            the {@link InputStream}
+     * @param entryName
+     *            the {@link ZipEntry#getName() entry name}
      * @throws IOException
-     *             if the {@link ZipInputStream} can't be read
-     * @return the name and hash of the given {@link ZipEntry}
+     *             if the {@link InputStream} can't be read
+     * @return the name and hash of the given {@link ZipEntry#getName() entry name}
      */
-    private static String getZipEntryHash(ZipInputStream zin, ZipEntry entry) throws IOException {
+    private static String getZipEntryHash(InputStream inputStream, String entryName) throws IOException {
         final StringBuilder result = new StringBuilder();
 
-        final HashCode code = HF.hashBytes(ByteStreams.toByteArray(zin));
-        result.append(String.format("\n%s | ", entry.getName()));
+        final HashCode code = HF.hashBytes(ByteStreams.toByteArray(inputStream));
+        result.append(String.format("\n%s | ", entryName));
         result.append(String.format("\n md5:%s", code.toString()));
 
         return result.toString();
