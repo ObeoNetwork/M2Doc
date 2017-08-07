@@ -18,13 +18,13 @@
    <extension point="org.eclipse.ui.newWizards">
       <!-- @generated m2docconf -->
       <category
-            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            id="org.obeonetwork.m2doc.genconf.editor.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
             id="org.obeonetwork.m2doc.genconf.presentation.GenconfModelWizardID"
             name="%_UI_GenconfModelWizard_label"
             class="org.obeonetwork.m2doc.genconf.presentation.GenconfModelWizard"
-            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            category="org.obeonetwork.m2doc.genconf.editor.Wizard.category.ID"
             icon="icons/full/obj16/GenconfModelFile.gif">
          <description>%_UI_GenconfModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
