@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -500,7 +499,7 @@ public class CustomGenconfEditor extends GenconfEditor {
     }
 
     /**
-     * Illegale state message.
+     * Illegal state message.
      */
     private static final String DON_T_KNOW_WHAT_TO_DO_WITH = "don't know what to do with ";
 
@@ -868,16 +867,19 @@ public class CustomGenconfEditor extends GenconfEditor {
      */
     private void updateTemplateCustomProperties(URI uri) {
         final URI absoluteURI = uri.resolve(getGenconfResource().getURI());
-        try {
-            templateCustomProperties = POIServices.getInstance().getTemplateCustomProperties(URIConverter.INSTANCE,
-                    absoluteURI);
-            final Generation generation = getGeneration();
-            final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(generation,
-                    templateCustomProperties);
-            editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, generation,
-                    GenconfPackage.GENERATION__DEFINITIONS, newDefinitions));
-        } catch (IOException e) {
-            templateCustomProperties = null;
+        if (URIConverter.INSTANCE.exists(absoluteURI, null)) {
+            try {
+                templateCustomProperties = POIServices.getInstance().getTemplateCustomProperties(absoluteURI);
+                final Generation generation = getGeneration();
+                final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(generation,
+                        templateCustomProperties);
+                editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, generation,
+                        GenconfPackage.GENERATION__DEFINITIONS, newDefinitions));
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                templateCustomProperties = null;
+            }
         }
     }
 
@@ -960,15 +962,20 @@ public class CustomGenconfEditor extends GenconfEditor {
         new MenuItem(variablesTable.getControl().getMenu(), SWT.SEPARATOR);
         final MenuItem addDefinitionsMenu = new MenuItem(variablesTable.getControl().getMenu(), SWT.PUSH);
         addDefinitionsMenu.setText("Add variables");
-        final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(generation, templateCustomProperties);
-        addDefinitionsMenu.setEnabled(!newDefinitions.isEmpty());
-        addDefinitionsMenu.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, generation,
-                        GenconfPackage.GENERATION__OPTIONS, newDefinitions));
-            }
-        });
+        if (templateCustomProperties != null) {
+            final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(generation,
+                    templateCustomProperties);
+            addDefinitionsMenu.setEnabled(!newDefinitions.isEmpty());
+            addDefinitionsMenu.addListener(SWT.Selection, new Listener() {
+                @Override
+                public void handleEvent(Event event) {
+                    editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, generation,
+                            GenconfPackage.GENERATION__OPTIONS, newDefinitions));
+                }
+            });
+        } else {
+            addDefinitionsMenu.setEnabled(false);
+        }
 
         final MenuItem removeDefinitionMenu = new MenuItem(variablesTable.getControl().getMenu(), SWT.PUSH);
         removeDefinitionMenu.setText("Remove definition");

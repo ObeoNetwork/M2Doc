@@ -194,9 +194,11 @@ public class M2DocTemplateEditor extends EditorPart {
 
             final List<String> availiablesTypes = new ArrayList<String>();
             availableTypes.addAll(getEClassifiers(EcorePackage.eINSTANCE));
-            for (String nsURI : templateCustomProperties.getPackagesURIs()) {
-                final EPackage ePkg = EPackageRegistryImpl.INSTANCE.getEPackage(nsURI);
-                availableTypes.addAll(getEClassifiers(ePkg));
+            if (templateCustomProperties != null) {
+                for (String nsURI : templateCustomProperties.getPackagesURIs()) {
+                    final EPackage ePkg = EPackageRegistryImpl.INSTANCE.getEPackage(nsURI);
+                    availableTypes.addAll(getEClassifiers(ePkg));
+                }
             }
             Collections.sort(availiablesTypes);
             availableTypes.addAll(availiablesTypes);
@@ -371,7 +373,9 @@ public class M2DocTemplateEditor extends EditorPart {
 
             @Override
             public void handleEvent(Event event) {
-                contributeServiceMenus(templateCustomProperties);
+                if (templateCustomProperties != null) {
+                    contributeServiceMenus(templateCustomProperties);
+                }
             }
 
         });
@@ -385,7 +389,7 @@ public class M2DocTemplateEditor extends EditorPart {
      *            the parent {@link Composite}
      */
     protected void createPackagesTable(Composite composite) {
-        packagesTable = new TableViewer(composite, SWT.BORDER | SWT.MULTI);
+        packagesTable = new TableViewer(composite, SWT.MULTI);
         packagesTable.getTable().setHeaderVisible(true);
         TableViewerColumn nsURIColumn = new TableViewerColumn(packagesTable, SWT.NONE);
         nsURIColumn.getColumn().setText("Package nsURI");
@@ -419,7 +423,9 @@ public class M2DocTemplateEditor extends EditorPart {
 
             @Override
             public void handleEvent(Event event) {
-                contributePackageMenus(templateCustomProperties);
+                if (templateCustomProperties != null) {
+                    contributePackageMenus(templateCustomProperties);
+                }
             }
 
         });
@@ -433,7 +439,7 @@ public class M2DocTemplateEditor extends EditorPart {
      *            the parent {@link Composite}
      */
     protected void createVariablesTable(Composite composite) {
-        variablesTable = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+        variablesTable = new TableViewer(composite, SWT.MULTI);
         variablesTable.getTable().setHeaderVisible(true);
         TableViewerColumn nameColumn = new TableViewerColumn(variablesTable, SWT.NONE);
         nameColumn.getColumn().setText("Variable name");
@@ -481,7 +487,9 @@ public class M2DocTemplateEditor extends EditorPart {
 
             @Override
             public void handleEvent(Event event) {
-                contributeVariablesMenus(templateCustomProperties);
+                if (templateCustomProperties != null) {
+                    contributeVariablesMenus(templateCustomProperties);
+                }
             }
 
         });
@@ -495,13 +503,15 @@ public class M2DocTemplateEditor extends EditorPart {
 
     @Override
     public void doSave(IProgressMonitor monitor) {
-        templateCustomProperties.save();
-        try {
-            POIServices.getInstance().saveFile(document, templateURI);
-            setDirty(false);
-        } catch (IOException e) {
-            Activator.getDefault().getLog()
-                    .log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Editor is unable to save the template", e));
+        if (templateCustomProperties != null) {
+            templateCustomProperties.save();
+            try {
+                POIServices.getInstance().saveFile(document, templateURI);
+                setDirty(false);
+            } catch (IOException e) {
+                Activator.getDefault().getLog().log(
+                        new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Editor is unable to save the template", e));
+            }
         }
     }
 
@@ -519,7 +529,9 @@ public class M2DocTemplateEditor extends EditorPart {
             IFile file = ((FileEditorInput) input).getFile();
             project = JavaCore.create(file.getProject());
             try {
-                project.open(new NullProgressMonitor());
+                if (project.exists()) {
+                    project.open(new NullProgressMonitor());
+                }
                 templateURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
                 document = POIServices.getInstance().getXWPFDocument(templateURI);
                 templateCustomProperties = new TemplateCustomProperties(document);

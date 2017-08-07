@@ -1,0 +1,33 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_cOyesHgzEeeKcP-oL2U8_A
+Element-Name: Type Template URI
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _kfH4AHhFEeeKcP-oL2U8_A
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 8/4/17 10:24 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName.genconf" 
+    | get-menu "Open With/Genconf Model Editor" | click
+get-editor "asImageByRepresentationDescriptionName.genconf" | get-tab-folder | get-property activePage 
+    | equals Overview | verify-true
+
+with [get-editor "asImageByRepresentationDescriptionName.genconf"] {
+    with [get-editbox -after [get-label "Template URI:"]] {
+        set-text "asImageByRepresentationDescriptionName-template.docx"
+        key-type x
+    }
+}
+with [get-editor "asImageByRepresentationDescriptionName.genconf"] {
+    get-editbox -after [get-label "Template URI:"] | get-property text 
+        | equals "asImageByRepresentationDescriptionName-template.docx" | verify-true
+    get-table | get-item self | get-property "values['Variable name']" | equals self | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

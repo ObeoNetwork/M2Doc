@@ -92,7 +92,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                     final ModelingProject project = optionalModelingProject.get();
                     final Session session = project.getSession();
                     final URI sessionURI = session.getSessionResource().getURI();
-                    res = sessionURI.resolve(genConfURI).toString();
+                    res = sessionURI.deresolve(genConfURI).toString();
                 } else {
                     res = null;
                 }

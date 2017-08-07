@@ -1,0 +1,33 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _cOyesHgzEeeKcP-oL2U8_A,_nPYeUHgzEeeKcP-oL2U8_A
+Element-Name: Browse Template URI
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _7Lz_QHgtEeeTpLLV3WMpCA
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 8/3/17 2:15 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName.genconf" 
+    | get-menu "Open With/Genconf Model Editor" | click
+get-editor "asImageByRepresentationDescriptionName.genconf" | get-tab-folder | get-property activePage 
+    | equals Overview | verify-true
+get-editor "asImageByRepresentationDescriptionName.genconf" | get-button Browse | click
+with [get-window "Select a template"] {
+    get-tree | select "test/asImageByRepresentationDescriptionName-template.docx"
+    get-button OK | click
+}
+with [get-editor "asImageByRepresentationDescriptionName.genconf"] {
+    get-editbox -after [get-label "Template URI:"] | get-property text 
+        | equals "asImageByRepresentationDescriptionName-template.docx" | verify-true
+    get-editbox -after [get-label "Destination URI:"] | get-property text 
+        | equals "asImageByRepresentationDescriptionName-template-generated.docx" | verify-true
+    get-table | get-item self | get-property "values['Variable name']" | equals self | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

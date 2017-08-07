@@ -310,6 +310,10 @@
         <module>tests/org.obeonetwork.m2doc.sirius.tests</module>
         <module>tests/org.obeonetwork.m2doc.genconf.tests</module>
         <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
+<!--
+        <module>releng/org.obeonetwork.m2doc.product</module>
+        <module>tests/org.obeonetwork.m2doc.rcptt</module>
+ -->
       </modules>
     </profile>
     <profile>
@@ -321,6 +325,9 @@
           <value>oxygen</value>
         </property>
       </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/oxygen</eclipse-rcptt-inject-site>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -348,6 +355,9 @@
           <value>neon</value>
         </property>
       </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/neon</eclipse-rcptt-inject-site>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -375,6 +385,9 @@
           <value>mars</value>
         </property>
       </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/mars</eclipse-rcptt-inject-site>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -402,6 +415,9 @@
           <value>luna</value>
         </property>
       </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/luna</eclipse-rcptt-inject-site>
+      </properties>
       <build>
         <plugins>
           <plugin>

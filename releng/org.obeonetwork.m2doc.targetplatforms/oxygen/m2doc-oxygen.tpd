@@ -10,6 +10,9 @@ location Eclipse "http://download.eclipse.org/releases/oxygen" {
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
 	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
 	org.eclipse.emf.sdk.feature.group lazy
 	org.junit [4.0.0,5.0.0)
 	org.eclipse.gmf lazy
