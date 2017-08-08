@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
@@ -281,7 +280,7 @@ public class M2DocSiriusServices {
             exportDiagUnitOfWork.run();
         }
 
-        res = new MImageImpl(URIConverter.INSTANCE, URI.createFileURI(tmpFile.getAbsolutePath()));
+        res = new MImageImpl(URI.createFileURI(tmpFile.getAbsolutePath()));
 
         return res;
     }

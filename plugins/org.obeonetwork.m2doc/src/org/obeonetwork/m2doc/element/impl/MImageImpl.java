@@ -71,6 +71,20 @@ public class MImageImpl implements MImage {
      * default.
      * </p>
      * 
+     * @param uri
+     *            the {@link URI}
+     */
+    public MImageImpl(URI uri) {
+        this(URIConverter.INSTANCE, uri, PictureType.toType(uri));
+    }
+
+    /**
+     * Constructor.
+     * <p>
+     * The image type is deducted from the image {@link URI} file extension. If the extension is unknown, jpeg format will be selected by
+     * default.
+     * </p>
+     * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
      * @param uri
