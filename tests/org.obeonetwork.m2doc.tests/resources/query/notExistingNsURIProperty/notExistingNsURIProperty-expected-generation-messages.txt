@@ -1,2 +1,4 @@
 WARNING - aqlFeatureAccess(org.eclipse.emf.ecore.EObject,java.lang.String) with arguments [org.eclipse.emf.ecore.impl.EObjectImpl@00000000 (eProxyURI: file:/.../M2Doc/tests/org.obeonetwork.m2doc.tests/resources/query/notExistingNsURIProperty/nsURIProperty.genconf#/), name] failed:
 	Feature name not found in EClass EObject
+org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException: Feature name not found in EClass EObject
+...STACK...

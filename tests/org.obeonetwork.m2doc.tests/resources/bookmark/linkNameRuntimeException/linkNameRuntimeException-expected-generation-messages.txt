@@ -1,2 +1,4 @@
 ERROR - divOp(java.lang.Integer,java.lang.Integer) with arguments [3, 0] failed:
 	/ by zero
+java.lang.ArithmeticException: / by zero
+...STACK...

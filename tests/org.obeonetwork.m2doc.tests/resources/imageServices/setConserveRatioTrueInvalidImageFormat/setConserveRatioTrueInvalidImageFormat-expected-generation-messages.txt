@@ -1,2 +1,4 @@
 ERROR - setConserveRatio(org.obeonetwork.m2doc.element.MImage,java.lang.Boolean) with arguments [Image file:/.../M2Doc/tests/org.obeonetwork.m2doc.tests/resources/imageServices/setConserveRatioTrueInvalidImageFormat/dh1.gif, true] failed:
 	Can't conserve ratio: unknown ratio
+java.lang.IllegalStateException: Can't conserve ratio: unknown ratio
+...STACK...

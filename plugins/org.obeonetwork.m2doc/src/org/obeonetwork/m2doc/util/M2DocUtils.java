@@ -11,8 +11,10 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -144,23 +146,61 @@ public final class M2DocUtils {
         for (Diagnostic child : diagnostic.getChildren()) {
             switch (child.getSeverity()) {
                 case Diagnostic.INFO:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage()));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO,
+                            getMessageWithException(child)));
                     break;
                 case Diagnostic.WARNING:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING, child.getMessage()));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING,
+                            getMessageWithException(child)));
                     break;
                 case Diagnostic.ERROR:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, child.getMessage()));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
+                            getMessageWithException(child)));
                     break;
 
                 default:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage()));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO,
+                            getMessageWithException(child)));
                     break;
             }
             paragraph.getRuns().get(paragraph.getRuns().size() - 1).addBreak();
             if (!child.getChildren().isEmpty()) {
                 res.addAll(appendDiagnosticMessage(paragraph, child));
             }
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the given {@link Diagnostic} {@link Diagnostic#getMessage() message} and {@link Diagnostic#getException() exception}.
+     * 
+     * @param diagnostic
+     *            the {@link Diagnostic}
+     * @return the given {@link Diagnostic} {@link Diagnostic#getMessage() message} and {@link Diagnostic#getException() exception}
+     */
+    private static String getMessageWithException(Diagnostic diagnostic) {
+        String res;
+
+        final Throwable exception;
+        if (diagnostic.getException() != null) {
+            exception = diagnostic.getException().getCause();
+        } else {
+            exception = null;
+        }
+        if (exception != null) {
+            try (final ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    final PrintWriter printWriter = new PrintWriter(out);) {
+                exception.printStackTrace(printWriter);
+                printWriter.flush();
+                out.flush();
+                res = diagnostic.getMessage() + "\n" + new String(out.toByteArray());
+            } catch (IOException e) {
+                // nothing to do here
+                res = diagnostic.getMessage();
+            }
+        } else {
+            res = diagnostic.getMessage();
         }
 
         return res;
