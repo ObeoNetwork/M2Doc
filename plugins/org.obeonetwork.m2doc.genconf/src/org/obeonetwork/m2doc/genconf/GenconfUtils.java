@@ -33,6 +33,7 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
@@ -45,7 +46,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -534,4 +537,114 @@ public final class GenconfUtils {
         return validationFile;
     }
 
+    /**
+     * Create genconf model from templateInfo information.
+     * 
+     * @param templateURI
+     *            the template {@link URI}
+     * @return the EMF {@link Resource} containing the {@link Generation} model. The {@link URI} of that resource is built based on
+     *         {@code templateURI}.
+     * @throws IOException
+     *             IOException
+     */
+    public static Resource createConfigurationModel(URI templateURI) throws IOException {
+        Resource resource = null;
+        TemplateCustomProperties templateProperties = POIServices.getInstance()
+                .getTemplateCustomProperties(URIConverter.INSTANCE, templateURI);
+
+        // create genconf model
+        if (templateProperties != null) {
+            resource = createConfigurationModel(templateProperties, templateURI);
+        }
+        return resource;
+    }
+
+    /**
+     * Create resource.
+     * 
+     * @param templateFile
+     *            IFile
+     * @param genConfURI
+     *            URI
+     * @return new resource.
+     */
+    private static Resource createResource(URI templateFile, URI genConfURI) {
+        // Create a resource set
+        ResourceSet resourceSet = new ResourceSetImpl();
+        // Create a resource for this file.
+        Resource resource = resourceSet.createResource(genConfURI);
+        return resource;
+    }
+
+    /**
+     * Create genconf model from templateInfo information.
+     * 
+     * @param templateProperties
+     *            TemplateInfo
+     * @param templateURI
+     *            File
+     * @return configuration model
+     */
+    private static Resource createConfigurationModel(TemplateCustomProperties templateProperties,
+            final URI templateURI) {
+        // create genconf resource.
+        URI genConfURI = templateURI.trimFileExtension().appendFileExtension(GenconfUtils.GENCONF_EXTENSION_FILE);
+        Resource resource = createResource(templateURI, genConfURI);
+
+        // create initial model content.
+        final Generation generation = createInitialModel(genConfURI.trimFileExtension().lastSegment(),
+                templateURI.deresolve(genConfURI).toString());
+        // add docx properties
+        final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, templateProperties);
+        generation.getDefinitions().addAll(definitions);
+        if (generation != null) {
+            resource.getContents().add(generation);
+        }
+        // Save the contents of the resource to the file system.
+        try {
+            saveResource(resource);
+        } catch (IOException e) {
+            GenconfPlugin.INSTANCE
+                    .log(new Status(Status.ERROR, GenconfPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+        }
+
+        // Save the contents of the resource to the file system.
+        try {
+            saveResource(resource);
+        } catch (IOException e) {
+            GenconfPlugin.INSTANCE
+                    .log(new Status(Status.ERROR, GenconfPlugin.PLUGIN_ID, Status.ERROR, e.getMessage(), e));
+        }
+        return resource;
+    }
+
+    /**
+     * Create generation eObject.
+     * 
+     * @param name
+     *            the name
+     * @param templateFileName
+     *            the template file name
+     * @return the created {@link Generation}
+     */
+    private static Generation createInitialModel(String name, String templateFileName) {
+        Generation generation = GenconfFactory.eINSTANCE.createGeneration();
+        generation.setName(name);
+        generation.setTemplateFileName(templateFileName);
+        return generation;
+    }
+
+    /**
+     * Save the contents of the resource to the file system.
+     * 
+     * @param resource
+     *            Resource
+     * @throws IOException
+     *             if the resource can't be serialized
+     */
+    private static void saveResource(Resource resource) throws IOException {
+        Map<Object, Object> options = new HashMap<>();
+        options.put(XMLResource.OPTION_ENCODING, "UTF-8");
+        resource.save(options);
+    }
 }

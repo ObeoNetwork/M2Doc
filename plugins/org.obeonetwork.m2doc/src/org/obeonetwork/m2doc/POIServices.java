@@ -128,8 +128,6 @@ public final class POIServices {
      * @param templateURI
      *            the template {@link URI}
      * @return TemplateInfo
-     * @throws InvalidFormatException
-     *             InvalidFormatException
      * @throws IOException
      *             IOException
      */
