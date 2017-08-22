@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.obeonetwork.m2doc.ide.services.DeclaredServicesListener;
 import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
 import org.osgi.framework.BundleContext;
 
@@ -73,6 +74,8 @@ public class M2DocPlugin extends EMFPlugin {
 
         /** The registry listener that will be used to listen to extension changes. */
         private ServicesConfiguratorRegistryListener registryListener = new ServicesConfiguratorRegistryListener();
+        /** The listener for M2Doc services. */
+        private DeclaredServicesListener servicesListener = new DeclaredServicesListener();
 
         /**
          * Create the Eclipse Implementation.
@@ -97,6 +100,7 @@ public class M2DocPlugin extends EMFPlugin {
             registry.addListener(registryListener,
                     ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
             registryListener.parseInitialContributions();
+            registry.addListener(this.servicesListener);
         }
 
         /*
@@ -109,6 +113,7 @@ public class M2DocPlugin extends EMFPlugin {
             super.stop(context);
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
             registry.removeListener(registryListener);
+            registry.removeListener(this.servicesListener);
             // TODO clear registry and registryListener ?
         }
     }
