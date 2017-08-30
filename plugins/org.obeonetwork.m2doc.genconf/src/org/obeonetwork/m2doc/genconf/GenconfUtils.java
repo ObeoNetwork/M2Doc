@@ -67,6 +67,11 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 @SuppressWarnings("restriction")
 public final class GenconfUtils {
 
+    static {
+        // make sure org.obeonetwork.m2doc.ide is started
+        M2DocPlugin.INSTANCE.getBaseURL();
+    }
+
     /**
      * The genconf extension file.
      */
@@ -91,8 +96,6 @@ public final class GenconfUtils {
      * Constructor.
      */
     private GenconfUtils() {
-        // make sure org.obeonetwork.m2doc.ide is started
-        M2DocPlugin.INSTANCE.getBaseURL();
     }
 
     /**
@@ -513,10 +516,10 @@ public final class GenconfUtils {
     private static boolean validate(URI templateURI, DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, Generation generation)
             throws DocumentGenerationException, IOException {
-        URI validationFile = getValidationLogFile(templateURI);
+        URI validationURI = getValidationLogFile(templateURI);
 
         final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment);
-        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationFile);
+        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationURI);
 
         return validationResult == ValidationMessageLevel.ERROR;
     }
@@ -629,8 +632,8 @@ public final class GenconfUtils {
      */
     private static Generation createInitialModel(String name, String templateFileName) {
         Generation generation = GenconfFactory.eINSTANCE.createGeneration();
-        generation.setName(name);
-        generation.setTemplateFileName(templateFileName);
+        generation.setName(URI.decode(name));
+        generation.setTemplateFileName(URI.decode(templateFileName));
         return generation;
     }
 

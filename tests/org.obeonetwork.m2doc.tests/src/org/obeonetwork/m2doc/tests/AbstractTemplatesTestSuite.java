@@ -140,7 +140,7 @@ public abstract class AbstractTemplatesTestSuite {
             generation = GenconfFactory.eINSTANCE.createGeneration();
         }
         final URI templateURI = getTemplateURI(new File(testFolderPath));
-        setTemplateFileName(generation, templateURI.toString());
+        setTemplateFileName(generation, URI.decode(templateURI.toString()));
         queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment, this.getClass().getClassLoader());
         final ResourceSet resourceSetForModels = GenconfUtils.createResourceSetForModels(generation);

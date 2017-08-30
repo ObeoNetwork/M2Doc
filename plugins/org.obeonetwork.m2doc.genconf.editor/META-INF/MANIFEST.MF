@@ -9,7 +9,9 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.genconf.editor,
- org.obeonetwork.m2doc.genconf.presentation
+ org.obeonetwork.m2doc.genconf.editor.command,
+ org.obeonetwork.m2doc.genconf.presentation,
+ org.obeonetwork.m2doc.genconf.propertyTester
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  org.obeonetwork.m2doc.genconf.edit;bundle-version="[0.12.0,0.13.0)",

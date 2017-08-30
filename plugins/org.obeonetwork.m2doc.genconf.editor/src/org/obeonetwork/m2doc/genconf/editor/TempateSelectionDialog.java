@@ -36,6 +36,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * A template selection dialog.
@@ -131,7 +132,8 @@ public class TempateSelectionDialog extends Dialog {
                 final Object[] children = super.getChildren(element);
                 for (Object child : children) {
                     if (child instanceof IFile) {
-                        if (child instanceof IFile && "docx".equals(((IFile) child).getLocation().getFileExtension())) {
+                        if (child instanceof IFile && M2DocUtils.DOCX_EXTENSION_FILE
+                                .equals(((IFile) child).getLocation().getFileExtension())) {
                             res.add(child);
                         } else {
                             // nothing to do here

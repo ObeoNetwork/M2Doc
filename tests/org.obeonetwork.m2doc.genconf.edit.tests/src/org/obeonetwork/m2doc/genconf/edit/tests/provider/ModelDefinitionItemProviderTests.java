@@ -102,7 +102,7 @@ public class ModelDefinitionItemProviderTests {
         final Resource res = rs.createResource(URI.createURI("m2doctests://resources/test.genconf"));
 
         final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
-        generation.setTemplateFileName(URI.createURI("test.docx").toString());
+        generation.setTemplateFileName("test.docx");
         res.getContents().add(generation);
 
         definition = GenconfPackage.eINSTANCE.getGenconfFactory().createModelDefinition();

@@ -67,7 +67,6 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.GenconfEditor;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -731,6 +730,24 @@ public class CustomGenconfEditor extends GenconfEditor {
         destinationURIText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         Button destinationURIButton = new Button(destinationURIComposite, SWT.BORDER);
         destinationURIButton.setText("Browse");
+        destinationURIButton.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final TempateSelectionDialog dialog = new TempateSelectionDialog(getSite().getShell(), SWT.NONE);
+
+                final IFile selected = dialog.open();
+                if (!dialog.isCanceled()) {
+                    final URI destinationURI = URI.createPlatformResourceURI(selected.getFullPath().toString(), true);
+                    final URI genconfURI = getGenconfResource().getURI();
+                    final String relativeDestinationPath = URI.decode(destinationURI.deresolve(genconfURI).toString());
+                    destinationURIText.setText(relativeDestinationPath);
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                            GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME, relativeDestinationPath));
+                }
+            }
+
+        });
     }
 
     /**
@@ -781,16 +798,15 @@ public class CustomGenconfEditor extends GenconfEditor {
                 if (!dialog.isCanceled()) {
                     final URI templateURI = URI.createPlatformResourceURI(selected.getFullPath().toString(), true);
                     final URI genconfURI = getGenconfResource().getURI();
-                    final String relativeTemplatePath = templateURI.deresolve(genconfURI).toString();
+                    final String relativeTemplatePath = URI.decode(templateURI.deresolve(genconfURI).toString());
                     templateURIText.setText(relativeTemplatePath);
                     updateTemplateCustomProperties(URI.createURI(relativeTemplatePath));
                     editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
                             GenconfPackage.Literals.GENERATION__TEMPLATE_FILE_NAME, relativeTemplatePath));
                     if (generation.getResultFileName() == null || generation.getResultFileName().isEmpty()) {
-                        editingDomain.getCommandStack()
-                                .execute(SetCommand.create(editingDomain, generation,
-                                        GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME, relativeTemplatePath
-                                                .replace("." + M2DocPlugin.DOCX_EXTENSION_FILE, "-generated.docx")));
+                        editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                                GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME,
+                                relativeTemplatePath.replace("." + M2DocUtils.DOCX_EXTENSION_FILE, "-generated.docx")));
                     }
                 }
             }

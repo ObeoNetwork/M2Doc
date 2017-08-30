@@ -35,11 +35,6 @@ public class M2DocPlugin extends EMFPlugin {
     public static final String PLUGIN_ID = "org.obeonetwork.m2doc"; //$NON-NLS-1$
 
     /**
-     * docx extension.
-     */
-    public static final String DOCX_EXTENSION_FILE = "docx";
-
-    /**
      * The shared instance.
      */
     public static final M2DocPlugin INSTANCE = new M2DocPlugin();
