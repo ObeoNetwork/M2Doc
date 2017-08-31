@@ -54,6 +54,7 @@ import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
+import org.obeonetwork.m2doc.util.AQL56Compatibility;
 
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
 import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
@@ -532,7 +533,7 @@ public class M2DocParser extends BodyAbstractParser {
         final IQueryBuilderEngine.AstResult result;
 
         if (expression != null && expression.length() > 0) {
-            AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+            AstBuilderListener astBuilder = AQL56Compatibility.createAstBuilderListener(queryEnvironment);
             CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
             QueryLexer lexer = new QueryLexer(input);
             lexer.setTokenFactory(new CommonTokenFactory(true));

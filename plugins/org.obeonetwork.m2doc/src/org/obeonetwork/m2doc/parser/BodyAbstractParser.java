@@ -22,7 +22,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.Block;
@@ -34,6 +33,7 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
+import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.FieldUtils;
 
 import static org.obeonetwork.m2doc.util.FieldUtils.readUpInstrText;
@@ -83,7 +83,7 @@ public abstract class BodyAbstractParser {
     public BodyAbstractParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
-        this.queryParser = new QueryBuilderEngine(queryEnvironment);
+        this.queryParser = AQL56Compatibility.createQueryBuilderEngine(queryEnvironment);
         this.queryEnvironment = queryEnvironment;
         this.fieldUtils = new FieldUtils();
     }

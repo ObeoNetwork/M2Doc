@@ -67,6 +67,7 @@ import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Template;
+import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
@@ -494,7 +495,8 @@ public class TemplateCustomProperties {
         final IQueryBuilderEngine.AstResult result;
 
         if (type != null && type.length() > 0) {
-            AstBuilderListener astBuilder = new AstBuilderListener((IQueryEnvironment) queryEnvironment);
+            AstBuilderListener astBuilder = AQL56Compatibility
+                    .createAstBuilderListener((IQueryEnvironment) queryEnvironment);
             CharStream input = new UnbufferedCharStream(new StringReader(type), type.length());
             QueryLexer lexer = new QueryLexer(input);
             lexer.setTokenFactory(new CommonTokenFactory(true));
