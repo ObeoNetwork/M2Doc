@@ -69,6 +69,7 @@ import org.obeonetwork.m2doc.template.Representation;
 import org.obeonetwork.m2doc.template.TableClient;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
+import org.obeonetwork.m2doc.util.AQL56Compatibility;
 
 import static org.obeonetwork.m2doc.provider.ProviderConstants.HIDE_TITLE_KEY;
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
@@ -974,7 +975,7 @@ public class M2DocParser extends BodyAbstractParser {
         final IQueryBuilderEngine.AstResult result;
 
         if (expression != null && expression.length() > 0) {
-            AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+            AstBuilderListener astBuilder = AQL56Compatibility.createAstBuilderListener(queryEnvironment);
             CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
             QueryLexer lexer = new QueryLexer(input);
             lexer.setTokenFactory(new CommonTokenFactory(true));
