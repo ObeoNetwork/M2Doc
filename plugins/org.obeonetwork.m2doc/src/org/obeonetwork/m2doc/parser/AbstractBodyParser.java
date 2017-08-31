@@ -46,7 +46,7 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.message;
  * @author ohaegi
  */
 @SuppressWarnings("restriction")
-public abstract class BodyAbstractParser {
+public abstract class AbstractBodyParser {
 
     /**
      * Parsed template document.
@@ -80,7 +80,7 @@ public abstract class BodyAbstractParser {
      * @param queryEnvironment
      *            the query environment to used during parsing.
      */
-    public BodyAbstractParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
+    public AbstractBodyParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
         this.queryParser = AQL56Compatibility.createQueryBuilderEngine(queryEnvironment);
@@ -98,7 +98,7 @@ public abstract class BodyAbstractParser {
      * @param queryEnvironment
      *            The {@link IQueryEnvironment}
      */
-    protected BodyAbstractParser(IBody inputDocument, IQueryBuilderEngine queryParser,
+    protected AbstractBodyParser(IBody inputDocument, IQueryBuilderEngine queryParser,
             IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
         runIterator = new TokenProvider(inputDocument);
@@ -274,7 +274,7 @@ public abstract class BodyAbstractParser {
                 Cell cell = (Cell) EcoreUtil.create(TemplatePackage.Literals.CELL);
                 row.getCells().add(cell);
                 cell.setTableCell(tableCell);
-                BodyAbstractParser parser = getNewParser(tableCell);
+                AbstractBodyParser parser = getNewParser(tableCell);
                 cell.setTemplate(parser.parseTemplate());
             }
         }
@@ -305,6 +305,6 @@ public abstract class BodyAbstractParser {
      *            Document to parse
      * @return new Template parser
      */
-    protected abstract BodyAbstractParser getNewParser(IBody inputDocument);
+    protected abstract AbstractBodyParser getNewParser(IBody inputDocument);
 
 }

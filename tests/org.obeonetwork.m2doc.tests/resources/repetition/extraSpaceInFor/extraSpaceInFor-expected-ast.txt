@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  Basic for demonstration : 
+  [query: for]
+  name = 
+  [query: .aqlFeatureAccess(v, 'name')]
+  ,
+  End of demonstration.
+=== FOOTER ===

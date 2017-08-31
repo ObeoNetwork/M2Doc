@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -55,9 +57,7 @@ import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
-
-import static org.obeonetwork.m2doc.util.M2DocUtils.message;
-import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * DocumentParser reads a {@link XWPFDocument} and produces a abstract syntax
@@ -68,7 +68,12 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.validationError;
  * @author Romain Guider
  */
 @SuppressWarnings("restriction")
-public class M2DocParser extends BodyAbstractParser {
+public class M2DocParser extends AbstractBodyParser {
+
+    /**
+     * The mapping of {@link TokenType} to extra spaces {@link Pattern}.
+     */
+    private static final Map<TokenType, Pattern> EXTRA_SPACES_PATTERNS = initExtraSpacesPatterns();
 
     /**
      * Creates a new {@link M2DocParser} instance.
@@ -94,6 +99,25 @@ public class M2DocParser extends BodyAbstractParser {
      */
     private M2DocParser(IBody inputDocument, IQueryBuilderEngine queryParser, IQueryEnvironment queryEnvironment) {
         super(inputDocument, queryParser, queryEnvironment);
+    }
+
+    /**
+     * Initializes {@link #EXTRA_SPACES_PATTERNS}.
+     *
+     * @return the mapping of {@link TokenType} to extra spaces {@link Pattern}
+     */
+    private static Map<TokenType, Pattern> initExtraSpacesPatterns() {
+        final Map<TokenType, Pattern> res = new HashMap<TokenType, Pattern>();
+
+        for (TokenType tokenType : TokenType.values()) {
+            if (tokenType.needExtraSpacesCheck()) {
+                final String value = tokenType.getValue();
+                final String tag = value.substring(TokenType.QUERY.getValue().length());
+                res.put(tokenType, Pattern.compile("m:\\s+" + tag));
+            }
+        }
+
+        return res;
     }
 
     /**
@@ -145,8 +169,8 @@ public class M2DocParser extends BodyAbstractParser {
                     result = TokenType.LINK;
                 } else if (code.startsWith(TokenType.COMMENT.getValue())) {
                     result = TokenType.COMMENT;
-                } else if (code.startsWith(TokenType.AQL.getValue())) {
-                    result = TokenType.AQL;
+                } else if (code.startsWith(TokenType.QUERY.getValue())) {
+                    result = TokenType.QUERY;
                 } else {
                     result = TokenType.STATIC;
                 }
@@ -164,7 +188,7 @@ public class M2DocParser extends BodyAbstractParser {
         Set<TokenType> endTypeList = Sets.newHashSet(endTypes);
         endBlock: while (!endTypeList.contains(type)) {
             switch (type) {
-                case AQL:
+                case QUERY:
                     res.getStatements().add(parseQuery());
                     break;
                 case FOR:
@@ -194,7 +218,7 @@ public class M2DocParser extends BodyAbstractParser {
                                 "Token of type " + type + " detected. Run shouldn't be null at this place.");
                     }
                     res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                            M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
                     readTag(res, res.getRuns());
                     break;
                 case EOF:
@@ -202,8 +226,8 @@ public class M2DocParser extends BodyAbstractParser {
                             .get(document.getParagraphs().size() - 1);
                     final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
                     res.getValidationMessages()
-                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                    message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type, Arrays.toString(endTypes)),
+                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, M2DocUtils
+                                    .message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type, Arrays.toString(endTypes)),
                                     lastRun));
                     break endBlock;
                 case LET:
@@ -255,7 +279,7 @@ public class M2DocParser extends BodyAbstractParser {
             }
             let.setName(letText.substring(0, currentIndex));
         } else {
-            validationError(let, "Missing identifier");
+            M2DocUtils.validationError(let, "Missing identifier");
         }
 
         while (currentIndex < letText.length() && Character.isWhitespace(letText.charAt(currentIndex))) {
@@ -265,7 +289,7 @@ public class M2DocParser extends BodyAbstractParser {
         if (currentIndex < letText.length() && letText.charAt(currentIndex) == '=') {
             currentIndex++;
         } else {
-            validationError(let, "Missing =");
+            M2DocUtils.validationError(let, "Missing =");
         }
 
         while (currentIndex < letText.length() && Character.isWhitespace(letText.charAt(currentIndex))) {
@@ -298,14 +322,28 @@ public class M2DocParser extends BodyAbstractParser {
      */
     private Query parseQuery() throws DocumentParserException {
         final Query query = (Query) EcoreUtil.create(TemplatePackage.Literals.QUERY);
-        final String queryText = readTag(query, query.getRuns()).trim().substring(TokenType.AQL.getValue().length())
-                .trim();
+        final String tagText = readTag(query, query.getRuns()).trim();
+        final String queryText = tagText.substring(TokenType.QUERY.getValue().length()).trim();
         final AstResult result = queryParser.build(queryText);
         query.setQuery(result);
         if (!result.getErrors().isEmpty()) {
             final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
             query.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryText, lastRun));
         }
+
+        final boolean checkExtraSpace = !result.getErrors().isEmpty()
+            || result.getEndPosition(result.getAst()) != queryText.length();
+        for (TokenType tokenType : TokenType.values()) {
+            final String value = tokenType.getValue();
+            if (tokenType.needExtraSpacesCheck()) {
+                final Matcher matcher = EXTRA_SPACES_PATTERNS.get(tokenType).matcher(tagText);
+                if (matcher.find(0) && (matcher.end() == tagText.length() || checkExtraSpace)) {
+                    M2DocUtils.validationInfo(query, "You might want to replace " + matcher.group() + " by " + value);
+                    break;
+                }
+            }
+        }
+
         return query;
     }
 
@@ -371,7 +409,7 @@ public class M2DocParser extends BodyAbstractParser {
                 readTag(conditional, conditional.getClosingRuns());
                 break; // we just finish the current conditional.
             default:
-                validationError(conditional, message(ParsingErrorMessage.CONDTAGEXPEXTED));
+                M2DocUtils.validationError(conditional, M2DocUtils.message(ParsingErrorMessage.CONDTAGEXPEXTED));
         }
         return conditional;
     }
@@ -393,7 +431,7 @@ public class M2DocParser extends BodyAbstractParser {
         // extract the variable;
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
-            validationError(repetition, "Malformed tag m:for, no '|' found.");
+            M2DocUtils.validationError(repetition, "Malformed tag m:for, no '|' found.");
             final AstResult result = queryParser.build(null);
             repetition.setQuery(result);
             final Block body = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
@@ -401,11 +439,12 @@ public class M2DocParser extends BodyAbstractParser {
         } else {
             String iterationVariable = tagText.substring(0, indexOfPipe).trim();
             if ("".equals(iterationVariable)) {
-                validationError(repetition, "Malformed tag m:for : no iteration variable specified.");
+                M2DocUtils.validationError(repetition, "Malformed tag m:for : no iteration variable specified.");
             }
             repetition.setIterationVar(iterationVariable);
             if (tagText.length() == indexOfPipe + 1) {
-                validationError(repetition, "Malformed tag m:for : no query expression specified." + tagText);
+                M2DocUtils.validationError(repetition,
+                        "Malformed tag m:for : no query expression specified." + tagText);
             }
             String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
             final AstResult result = queryParser.build(query);
@@ -571,8 +610,8 @@ public class M2DocParser extends BodyAbstractParser {
      * @see org.obeonetwork.m2doc.parser.BodyAbstractParser#getNewParser(org.apache.poi.xwpf.usermodel.IBody)
      */
     @Override
-    protected BodyAbstractParser getNewParser(IBody inputDocument) {
-        BodyAbstractParser parser = new M2DocParser(inputDocument, this.queryParser, this.queryEnvironment);
+    protected AbstractBodyParser getNewParser(IBody inputDocument) {
+        AbstractBodyParser parser = new M2DocParser(inputDocument, this.queryParser, this.queryEnvironment);
         return parser;
     }
 }

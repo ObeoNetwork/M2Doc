@@ -22,6 +22,7 @@ import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Token types are used to characterize tokens during parsing and guide the parsing algorithm.
@@ -38,7 +39,7 @@ public enum TokenType {
     /**
      * A {@link Query} tag.
      */
-    AQL("m:"),
+    QUERY(M2DocUtils.M),
 
     /**
      * A {@link Repetition} tag.
@@ -143,6 +144,11 @@ public enum TokenType {
     private String value;
 
     /**
+     * Tells if this Token type needs extra spaces check.
+     */
+    private boolean needExtraSpacesCheck;
+
+    /**
      * Constructor.
      * 
      * @param theValue
@@ -150,6 +156,7 @@ public enum TokenType {
      */
     TokenType(String theValue) {
         this.value = theValue;
+        this.needExtraSpacesCheck = value.startsWith(M2DocUtils.M) && !M2DocUtils.M.equals(value);
     }
 
     /**
@@ -159,6 +166,15 @@ public enum TokenType {
      */
     public String getValue() {
         return value;
+    }
+
+    /**
+     * Tells if this token type need extra spaces check.
+     * 
+     * @return <code>true</code> if this token type need extra spaces check, <code>false</code> otherwise
+     */
+    public boolean needExtraSpacesCheck() {
+        return needExtraSpacesCheck;
     }
 
 }

@@ -178,6 +178,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
     @Override
     public Void caseBookmark(Bookmark bookmark) {
         insertErrorMessages(bookmark);
+        doSwitch(bookmark.getBody());
 
         return null;
     }

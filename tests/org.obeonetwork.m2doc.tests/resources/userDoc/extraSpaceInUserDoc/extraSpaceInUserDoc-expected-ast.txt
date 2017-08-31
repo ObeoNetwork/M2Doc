@@ -1,0 +1,10 @@
+
+=== HEADER ===
+
+=== BODY ===
+template
+  A simple demonstration of a user doc :
+  [query: userdoc]
+  Some protected text.
+  End of demonstration.
+=== FOOTER ===

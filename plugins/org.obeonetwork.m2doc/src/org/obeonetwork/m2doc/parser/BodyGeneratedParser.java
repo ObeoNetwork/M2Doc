@@ -37,7 +37,7 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.message;
  * 
  * @author ohaegi
  */
-public class BodyGeneratedParser extends BodyAbstractParser {
+public class BodyGeneratedParser extends AbstractBodyParser {
 
     /**
      * User Conetnt Ids list.
@@ -211,8 +211,8 @@ public class BodyGeneratedParser extends BodyAbstractParser {
      * @see org.obeonetwork.m2doc.parser.BodyAbstractParser#getNewParser(org.apache.poi.xwpf.usermodel.IBody)
      */
     @Override
-    protected BodyAbstractParser getNewParser(IBody inputDocument) {
-        BodyAbstractParser parser = new BodyGeneratedParser(inputDocument, this.queryParser, this.queryEnvironment);
+    protected AbstractBodyParser getNewParser(IBody inputDocument) {
+        AbstractBodyParser parser = new BodyGeneratedParser(inputDocument, this.queryParser, this.queryEnvironment);
         return parser;
     }
 }

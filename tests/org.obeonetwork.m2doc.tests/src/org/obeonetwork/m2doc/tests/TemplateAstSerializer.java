@@ -149,9 +149,13 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
             builder.append("if (");
             doSwitch(conditional.getPredicate());
             builder.append(") then ");
-            doSwitch(conditional.getTrueBranch());
+            if (conditional.getTrueBranch() != null) {
+                doSwitch(conditional.getTrueBranch());
+            }
             builder.append(" else ");
-            doSwitch(conditional.getFalseBranch());
+            if (conditional.getFalseBranch() != null) {
+                doSwitch(conditional.getFalseBranch());
+            }
             builder.append(" endif ");
             return null;
         }

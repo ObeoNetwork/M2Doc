@@ -78,6 +78,11 @@ import org.obeonetwork.m2doc.template.UserContent;
 public final class M2DocUtils {
 
     /**
+     * The {@link org.obeonetwork.m2doc.template.Query Query} tag.
+     */
+    public static final String M = "m:";
+
+    /**
      * constant defining the color of info messages.
      */
     public static final String INFO_COLOR = "0000FF";
@@ -286,12 +291,39 @@ public final class M2DocUtils {
      * @param construct
      *            The construct in which to 'log' the message
      * @param msg
-     *            THe message to log
+     *            the message to log
      */
     public static void validationError(IConstruct construct, String msg) {
         XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
         construct.getValidationMessages()
                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, msg, lastRun));
+    }
+
+    /**
+     * Add a validation warning message to a given {@link IConstruct}'s last run.
+     * 
+     * @param construct
+     *            The construct in which to 'log' the message
+     * @param msg
+     *            the message to log
+     */
+    public static void validationWarning(IConstruct construct, String msg) {
+        XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
+        construct.getValidationMessages()
+                .add(new TemplateValidationMessage(ValidationMessageLevel.WARNING, msg, lastRun));
+    }
+
+    /**
+     * Add a validation info message to a given {@link IConstruct}'s last run.
+     * 
+     * @param construct
+     *            The construct in which to 'log' the message
+     * @param msg
+     *            the message to log
+     */
+    public static void validationInfo(IConstruct construct, String msg) {
+        XWPFRun lastRun = construct.getRuns().get(construct.getRuns().size() - 1);
+        construct.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.INFO, msg, lastRun));
     }
 
     /**
