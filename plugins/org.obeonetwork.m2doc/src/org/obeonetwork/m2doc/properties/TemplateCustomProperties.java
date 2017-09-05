@@ -164,9 +164,9 @@ public class TemplateCustomProperties {
     private final List<String> nsURIs = Lists.newArrayList();
 
     /**
-     * The {@link List} of service {@link Class#getName() class names}.
+     * The {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).
      */
-    private final List<String> serviceClasses = Lists.newArrayList();
+    private final Map<String, String> serviceClasses = new LinkedHashMap<String, String>();
 
     /**
      * The {@link XWPFDocument}.
@@ -207,7 +207,8 @@ public class TemplateCustomProperties {
 
             final String serviceClasse = getServiceImport(propertyName);
             if (serviceClasse != null) {
-                serviceClasses.add(serviceClasse);
+                final String bundleName = property.getLpwstr();
+                serviceClasses.put(serviceClasse, bundleName);
                 continue;
             }
 
@@ -219,7 +220,9 @@ public class TemplateCustomProperties {
 
             final String variableName = getVariableName(propertyName);
             if (variableName != null && isValidVariableName(variableName)) {
-                variables.put(variableName, property.getLpwstr());
+                final String type = property.getLpwstr();
+                variables.put(variableName, type);
+                continue;
             }
         }
     }
@@ -233,7 +236,7 @@ public class TemplateCustomProperties {
         final List<Integer> indexToDelete = new ArrayList<Integer>();
         int currentIndex = 0;
         List<String> tmpNsURI = new ArrayList<String>(nsURIs);
-        List<String> tmpServiceImports = new ArrayList<String>(serviceClasses);
+        Map<String, String> tmpServiceImports = new LinkedHashMap<String, String>(serviceClasses);
         List<String> tmpServiceTokens = new ArrayList<String>(serviceTokens);
         Map<String, String> tmpVars = new LinkedHashMap<String, String>(variables);
         for (CTProperty property : properties) {
@@ -249,7 +252,10 @@ public class TemplateCustomProperties {
 
             final String serviceClasse = getServiceImport(propertyName);
             if (serviceClasse != null) {
-                if (!tmpServiceImports.remove(serviceClasse)) {
+                final String bundleName = tmpServiceImports.remove(serviceClasse);
+                if (bundleName != null) {
+                    property.setLpwstr(bundleName);
+                } else {
                     indexToDelete.add(currentIndex);
                 }
                 currentIndex++;
@@ -284,8 +290,8 @@ public class TemplateCustomProperties {
         for (String nsURI : tmpNsURI) {
             props.addProperty(URI_PROPERTY_PREFIX + nsURI, "");
         }
-        for (String serviceClass : tmpServiceImports) {
-            props.addProperty(SERVICE_IMPORT_PROPERTY_PREFIX + serviceClass, "");
+        for (Entry<String, String> entry : tmpServiceImports.entrySet()) {
+            props.addProperty(SERVICE_IMPORT_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
         }
         for (String serviceToken : tmpServiceTokens) {
             props.addProperty(SERVICE_PROPERTY_PREFIX + serviceToken, "");
@@ -405,11 +411,11 @@ public class TemplateCustomProperties {
     }
 
     /**
-     * Gets the {@link List} of service {@link Class#getName() class names}.
+     * Gets the {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).
      * 
-     * @return the {@link List} of service {@link Class#getName() class names}
+     * @return the {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).
      */
-    public List<String> getServiceClasses() {
+    public Map<String, String> getServiceClasses() {
         return serviceClasses;
     }
 

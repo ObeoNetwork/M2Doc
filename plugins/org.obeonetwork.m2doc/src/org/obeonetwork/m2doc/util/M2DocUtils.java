@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -395,16 +396,16 @@ public final class M2DocUtils {
      *            URI for the template, used when external links (images, includes) have to be resolved
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
-     * @param classLoader
-     *            the {@link ClassLoader} to use for service Loading
+     * @param classProvider
+     *            the {@link IClassProvider} to use for service Loading
      * @return the {@link DocumentTemplate} resulting from parsing the specified
      *         document
      * @throws DocumentParserException
      *             if a problem occurs while parsing the document.
      */
-    public static DocumentTemplate parse(URI templateURI, IQueryEnvironment queryEnvironment, ClassLoader classLoader)
-            throws DocumentParserException {
-        return parse(URIConverter.INSTANCE, templateURI, queryEnvironment, classLoader);
+    public static DocumentTemplate parse(URI templateURI, IQueryEnvironment queryEnvironment,
+            IClassProvider classProvider) throws DocumentParserException {
+        return parse(URIConverter.INSTANCE, templateURI, queryEnvironment, classProvider);
     }
 
     /**
@@ -417,8 +418,8 @@ public final class M2DocUtils {
      *            URI for the template, used when external links (images, includes) have to be resolved
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
-     * @param classLoader
-     *            the {@link ClassLoader} to use for service Loading
+     * @param classProvider
+     *            the {@link IClassProvider} to use for service Loading
      * @return the {@link DocumentTemplate} resulting from parsing the specified
      *         document
      * @throws DocumentParserException
@@ -426,7 +427,7 @@ public final class M2DocUtils {
      */
     @SuppressWarnings("resource")
     public static DocumentTemplate parse(URIConverter uriConverter, URI templateURI, IQueryEnvironment queryEnvironment,
-            ClassLoader classLoader) throws DocumentParserException {
+            IClassProvider classProvider) throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         final ResourceImpl r = new ResourceImpl(templateURI);
 
@@ -436,7 +437,7 @@ public final class M2DocUtils {
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
             final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment,
-                    classLoader, document);
+                    classProvider, document);
             r.getContents().add(result);
             final M2DocParser parser = new M2DocParser(document, queryEnvironment);
             final Template documentBody = parser.parseTemplate();
@@ -470,14 +471,14 @@ public final class M2DocUtils {
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
-     * @param classLoader
-     *            the {@link ClassLoader} to use for service Loading
+     * @param classProvider
+     *            the {@link IClassProvider} to use for service Loading
      * @param document
      *            the {@link XWPFDocument}
      * @return the {@link List} of {@link TemplateValidationMessage} produced while reading the {@link TemplateCustomProperties}
      */
     private static List<TemplateValidationMessage> parseTemplateCustomProperties(IQueryEnvironment queryEnvironment,
-            ClassLoader classLoader, final XWPFDocument document) {
+            IClassProvider classProvider, final XWPFDocument document) {
         final TemplateCustomProperties properties = new TemplateCustomProperties(document);
         final List<TemplateValidationMessage> messages = new ArrayList<>();
         for (String nsURI : properties.getPackagesURIs()) {
@@ -498,18 +499,19 @@ public final class M2DocUtils {
                 ServiceUtils.registerServices(queryEnvironment, s);
             }
         }
-        for (String serviceClass : properties.getServiceClasses()) {
+        for (Entry<String, String> entry : properties.getServiceClasses().entrySet()) {
             try {
-                final Class<?> cls = classLoader.loadClass(serviceClass);
+                final Class<?> cls = classProvider.getClass(entry.getKey(), entry.getValue());
                 final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
                 ServiceUtils.registerServices(queryEnvironment, s);
             } catch (ClassNotFoundException e) {
                 final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
                 final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
-                        ValidationMessageLevel.ERROR, "can't load service class: " + serviceClass, run);
+                        ValidationMessageLevel.ERROR, "can't load service class: " + entry.getKey(), run);
                 messages.add(validationMessage);
             }
         }
+
         return messages;
     }
 

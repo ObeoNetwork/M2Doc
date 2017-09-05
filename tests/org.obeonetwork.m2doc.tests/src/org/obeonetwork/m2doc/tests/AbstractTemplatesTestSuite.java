@@ -51,6 +51,7 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -142,7 +143,8 @@ public abstract class AbstractTemplatesTestSuite {
         final URI templateURI = getTemplateURI(new File(testFolderPath));
         setTemplateFileName(generation, URI.decode(templateURI.toString()));
         queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
-        documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment, this.getClass().getClassLoader());
+        documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment,
+                new ClassProvider(this.getClass().getClassLoader()));
         final ResourceSet resourceSetForModels = GenconfUtils.createResourceSetForModels(generation);
         variables = GenconfUtils.getVariables(generation, resourceSetForModels);
     }

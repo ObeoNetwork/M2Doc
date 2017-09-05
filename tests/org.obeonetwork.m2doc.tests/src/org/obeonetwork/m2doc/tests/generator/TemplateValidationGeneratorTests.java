@@ -30,6 +30,7 @@ import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.tests.M2DocTestUtils;
+import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -60,7 +61,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate template = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                this.getClass().getClassLoader())) {
+                new ClassProvider(this.getClass().getClassLoader()))) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -99,7 +100,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate template = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                this.getClass().getClassLoader())) {
+                new ClassProvider(this.getClass().getClassLoader()))) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -138,7 +139,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate template = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                this.getClass().getClassLoader())) {
+                new ClassProvider(this.getClass().getClassLoader()))) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
@@ -177,7 +178,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate template = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                this.getClass().getClassLoader())) {
+                new ClassProvider(this.getClass().getClassLoader()))) {
             final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
             template.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "AAAA", location));

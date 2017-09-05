@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.tests.properties;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class TemplateCustomPropertiesTests {
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
-            final List<String> serviceClasses = properties.getServiceClasses();
+            final List<String> serviceClasses = new ArrayList<String>(properties.getServiceClasses().keySet());
             assertEquals(2, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));
@@ -127,8 +128,8 @@ public class TemplateCustomPropertiesTests {
             properties.getServiceTokens().add("token200");
 
             assertTrue(properties.getServiceClasses().isEmpty());
-            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
-            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
+            properties.getServiceClasses().put("org.obeonetwork.m2doc.services.test.ServicePackage100", "");
+            properties.getServiceClasses().put("org.obeonetwork.m2doc.services.test.ServicePackage200", "");
 
             assertTrue(properties.getVariables().isEmpty());
             properties.getVariables().put("var100", "String");
@@ -139,23 +140,24 @@ public class TemplateCustomPropertiesTests {
         }
 
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE, tempFileURI);) {
-            final TemplateCustomProperties info = new TemplateCustomProperties(document);
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
-            assertEquals(2, info.getPackagesURIs().size());
-            assertEquals("http://www.eclipse.org/meta100", info.getPackagesURIs().get(0));
-            assertEquals("http://www.eclipse.org/meta200", info.getPackagesURIs().get(1));
+            assertEquals(2, properties.getPackagesURIs().size());
+            assertEquals("http://www.eclipse.org/meta100", properties.getPackagesURIs().get(0));
+            assertEquals("http://www.eclipse.org/meta200", properties.getPackagesURIs().get(1));
 
-            assertEquals(2, info.getServiceTokens().size());
-            assertEquals("token100", info.getServiceTokens().get(0));
-            assertEquals("token200", info.getServiceTokens().get(1));
+            assertEquals(2, properties.getServiceTokens().size());
+            assertEquals("token100", properties.getServiceTokens().get(0));
+            assertEquals("token200", properties.getServiceTokens().get(1));
 
-            assertEquals(2, info.getServiceClasses().size());
-            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage100", info.getServiceClasses().get(0));
-            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage200", info.getServiceClasses().get(1));
+            final List<String> serviceClasses = new ArrayList<String>(properties.getServiceClasses().keySet());
+            assertEquals(2, serviceClasses.size());
+            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage100", serviceClasses.get(0));
+            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage200", serviceClasses.get(1));
 
-            assertEquals(2, info.getVariables().size());
-            assertEquals("String", info.getVariables().get("var100"));
-            assertEquals("Integer", info.getVariables().get("var200"));
+            assertEquals(2, properties.getVariables().size());
+            assertEquals("String", properties.getVariables().get("var100"));
+            assertEquals("Integer", properties.getVariables().get("var200"));
         }
     }
 
@@ -215,8 +217,8 @@ public class TemplateCustomPropertiesTests {
             properties.getServiceTokens().add("token200");
 
             assertEquals(2, properties.getServiceClasses().size());
-            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
-            properties.getServiceClasses().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
+            properties.getServiceClasses().put("org.obeonetwork.m2doc.services.test.ServicePackage100", "");
+            properties.getServiceClasses().put("org.obeonetwork.m2doc.services.test.ServicePackage200", "");
 
             assertEquals(2, properties.getVariables().size());
             properties.getVariables().put("var100", "String");
@@ -227,31 +229,32 @@ public class TemplateCustomPropertiesTests {
         }
 
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE, tempFileURI);) {
-            final TemplateCustomProperties info = new TemplateCustomProperties(document);
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
-            assertEquals(4, info.getPackagesURIs().size());
-            assertEquals("http://www.eclipse.org/meta1", info.getPackagesURIs().get(0));
-            assertEquals("http://www.eclipse.org/meta2", info.getPackagesURIs().get(1));
-            assertEquals("http://www.eclipse.org/meta100", info.getPackagesURIs().get(2));
-            assertEquals("http://www.eclipse.org/meta200", info.getPackagesURIs().get(3));
+            assertEquals(4, properties.getPackagesURIs().size());
+            assertEquals("http://www.eclipse.org/meta1", properties.getPackagesURIs().get(0));
+            assertEquals("http://www.eclipse.org/meta2", properties.getPackagesURIs().get(1));
+            assertEquals("http://www.eclipse.org/meta100", properties.getPackagesURIs().get(2));
+            assertEquals("http://www.eclipse.org/meta200", properties.getPackagesURIs().get(3));
 
-            assertEquals(4, info.getServiceTokens().size());
-            assertEquals("token1", info.getServiceTokens().get(0));
-            assertEquals("token2", info.getServiceTokens().get(1));
-            assertEquals("token100", info.getServiceTokens().get(2));
-            assertEquals("token200", info.getServiceTokens().get(3));
+            assertEquals(4, properties.getServiceTokens().size());
+            assertEquals("token1", properties.getServiceTokens().get(0));
+            assertEquals("token2", properties.getServiceTokens().get(1));
+            assertEquals("token100", properties.getServiceTokens().get(2));
+            assertEquals("token200", properties.getServiceTokens().get(3));
 
-            assertEquals(4, info.getServiceClasses().size());
-            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", info.getServiceClasses().get(0));
-            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", info.getServiceClasses().get(1));
-            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage100", info.getServiceClasses().get(2));
-            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage200", info.getServiceClasses().get(3));
+            final List<String> serviceClasses = new ArrayList<String>(properties.getServiceClasses().keySet());
+            assertEquals(4, serviceClasses.size());
+            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
+            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));
+            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage100", serviceClasses.get(2));
+            assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage200", serviceClasses.get(3));
 
-            assertEquals(4, info.getVariables().size());
-            assertEquals("database.Table", info.getVariables().get("variable1"));
-            assertEquals("database.Column", info.getVariables().get("variable2"));
-            assertEquals("String", info.getVariables().get("var100"));
-            assertEquals("Integer", info.getVariables().get("var200"));
+            assertEquals(4, properties.getVariables().size());
+            assertEquals("database.Table", properties.getVariables().get("variable1"));
+            assertEquals("database.Column", properties.getVariables().get("variable2"));
+            assertEquals("String", properties.getVariables().get("var100"));
+            assertEquals("Integer", properties.getVariables().get("var200"));
         }
     }
 
@@ -280,7 +283,7 @@ public class TemplateCustomPropertiesTests {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> missingVariables = properties.getMissingVariables();
 
-            // assertEquals(16, missingVariables.size());
+            assertEquals(16, missingVariables.size());
             assertEquals("linkNamelinkText", missingVariables.get(0));
             assertEquals("bookmarkName", missingVariables.get(1));
             assertEquals("queryInBookmark", missingVariables.get(2));

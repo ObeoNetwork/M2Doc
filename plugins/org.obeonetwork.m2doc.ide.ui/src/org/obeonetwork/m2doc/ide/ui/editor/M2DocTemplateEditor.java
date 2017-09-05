@@ -346,9 +346,21 @@ public class M2DocTemplateEditor extends EditorPart {
         classNameColumn.getColumn().setWidth(WIDTH);
         classNameColumn.setLabelProvider(new CellLabelProvider() {
 
+            @SuppressWarnings("unchecked")
             @Override
             public void update(ViewerCell cell) {
-                cell.setText((String) cell.getElement());
+                cell.setText(((Entry<String, String>) cell.getElement()).getKey());
+            }
+        });
+        TableViewerColumn bundleNameColumn = new TableViewerColumn(servicesTable, SWT.NONE);
+        bundleNameColumn.getColumn().setText("Bundle");
+        bundleNameColumn.getColumn().setWidth(WIDTH);
+        bundleNameColumn.setLabelProvider(new CellLabelProvider() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void update(ViewerCell cell) {
+                cell.setText(((Entry<String, String>) cell.getElement()).getValue());
             }
         });
         servicesTable.setContentProvider(new IStructuredContentProvider() {
@@ -365,7 +377,7 @@ public class M2DocTemplateEditor extends EditorPart {
 
             @Override
             public Object[] getElements(Object inputElement) {
-                return ((TemplateCustomProperties) inputElement).getServiceClasses().toArray();
+                return ((TemplateCustomProperties) inputElement).getServiceClasses().entrySet().toArray();
             }
         });
         createContextMenuFor(servicesTable);
@@ -433,7 +445,7 @@ public class M2DocTemplateEditor extends EditorPart {
     }
 
     /**
-     * Creates the {@link TemplateCustomProperties#getServiceClasses() services} {@link TableViewer}.
+     * Creates the {@link TemplateCustomProperties#getVariables() variables} {@link TableViewer}.
      * 
      * @param composite
      *            the parent {@link Composite}
@@ -705,7 +717,8 @@ public class M2DocTemplateEditor extends EditorPart {
                 if (dialog.open() == Dialog.OK && dialog.getResult() != null) {
                     if (dialog.getResult().length != 0) {
                         for (Object object : dialog.getResult()) {
-                            customProperties.getServiceClasses().add(((IType) object).getFullyQualifiedName());
+                            customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(),
+                                    project.getProject().getName());
                         }
                         setDirty(true);
                         servicesTable.refresh();
@@ -721,10 +734,11 @@ public class M2DocTemplateEditor extends EditorPart {
             @SuppressWarnings("unchecked")
             @Override
             public void handleEvent(Event event) {
-                List<String> selectedElements = ((IStructuredSelection) servicesTable.getSelection()).toList();
+                List<Entry<String, String>> selectedElements = ((IStructuredSelection) servicesTable.getSelection())
+                        .toList();
                 if (!selectedElements.isEmpty()) {
-                    for (String selected : selectedElements) {
-                        customProperties.getServiceClasses().remove(selected);
+                    for (Entry<String, String> selected : selectedElements) {
+                        customProperties.getServiceClasses().remove(selected.getKey());
                     }
                     setDirty(true);
                     servicesTable.refresh();

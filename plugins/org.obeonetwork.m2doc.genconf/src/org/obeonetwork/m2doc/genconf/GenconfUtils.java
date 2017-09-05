@@ -406,7 +406,7 @@ public final class GenconfUtils {
 
         // create generated file
         try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
-                GenconfUtils.class.getClassLoader())) {
+                M2DocPlugin.getClassProvider())) {
 
             // validate template
             monitor.beginTask("Validating template.", 1);
@@ -483,7 +483,7 @@ public final class GenconfUtils {
 
         // parse template
         try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
-                GenconfUtils.class.getClassLoader())) {
+                M2DocPlugin.getClassProvider())) {
 
             // validate template
             if (template != null) {

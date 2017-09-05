@@ -20,6 +20,10 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.obeonetwork.m2doc.ide.services.DeclaredServicesListener;
 import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
+import org.obeonetwork.m2doc.ide.util.EclipseClassProvider;
+import org.obeonetwork.m2doc.util.ClassProvider;
+import org.obeonetwork.m2doc.util.IClassProvider;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -43,6 +47,11 @@ public class M2DocPlugin extends EMFPlugin {
      * The implementation plugin for Eclipse.
      */
     private static Implementation plugin;
+
+    /**
+     * The {@link IClassProvider}.
+     */
+    private static IClassProvider classProvider = new ClassProvider(M2DocPlugin.class.getClassLoader());
 
     /**
      * The constructor.
@@ -96,6 +105,7 @@ public class M2DocPlugin extends EMFPlugin {
                     ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
             registryListener.parseInitialContributions();
             registry.addListener(this.servicesListener);
+            classProvider = new EclipseClassProvider(context, this.getClass().getClassLoader());
         }
 
         /*
@@ -106,11 +116,23 @@ public class M2DocPlugin extends EMFPlugin {
         @Override
         public void stop(BundleContext context) throws Exception {
             super.stop(context);
+            ((EclipseClassProvider) classProvider).dispose();
+            classProvider = new ClassProvider(M2DocPlugin.class.getClassLoader());
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
             registry.removeListener(registryListener);
             registry.removeListener(this.servicesListener);
             // TODO clear registry and registryListener ?
         }
+
+    }
+
+    /**
+     * Gets the {@link IClassProvider} with {@link Bundle} support.
+     * 
+     * @return the {@link IClassProvider} with {@link Bundle} support
+     */
+    public static IClassProvider getClassProvider() {
+        return classProvider;
     }
 
     /**
