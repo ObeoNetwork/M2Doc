@@ -57,6 +57,7 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -313,6 +314,8 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the generation configuration
+     * @param classProvider
+     *            the {@link IClassProvider}
      * @param monitor
      *            used to track the progress will generating.
      * @return generated file
@@ -323,7 +326,7 @@ public final class GenconfUtils {
      * @throws IOException
      *             IOException
      */
-    public static List<URI> generate(Generation generation, Monitor monitor)
+    public static List<URI> generate(Generation generation, IClassProvider classProvider, Monitor monitor)
             throws DocumentGenerationException, IOException, DocumentParserException {
         if (generation == null) {
             throw new IllegalArgumentException("Null configuration object passed.");
@@ -349,7 +352,7 @@ public final class GenconfUtils {
         }
 
         // generate result file.
-        return generate(generation, templateFile, generatedFile, monitor);
+        return generate(generation, classProvider, templateFile, generatedFile, monitor);
     }
 
     /**
@@ -378,6 +381,8 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the generation configuration object
+     * @param classProvider
+     *            the {@link IClassProvider}
      * @param templateURI
      *            the template {@link URI}
      * @param generatedURI
@@ -392,7 +397,8 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
      */
-    private static List<URI> generate(Generation generation, URI templateURI, URI generatedURI, Monitor monitor)
+    private static List<URI> generate(Generation generation, IClassProvider classProvider, URI templateURI,
+            URI generatedURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
         IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
@@ -405,8 +411,7 @@ public final class GenconfUtils {
         monitor.done();
 
         // create generated file
-        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
-                M2DocPlugin.getClassProvider())) {
+        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {
 
             // validate template
             monitor.beginTask("Validating template.", 1);
@@ -455,6 +460,8 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            Generation
+     * @param classProvider
+     *            the {@link IClassProvider}
      * @return if template contains errors.
      * @throws IOException
      *             IOException
@@ -463,7 +470,7 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      */
-    public static boolean validate(Generation generation)
+    public static boolean validate(Generation generation, IClassProvider classProvider)
             throws IOException, DocumentParserException, DocumentGenerationException {
         final boolean res;
 
@@ -482,8 +489,7 @@ public final class GenconfUtils {
         IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
         // parse template
-        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
-                M2DocPlugin.getClassProvider())) {
+        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {
 
             // validate template
             if (template != null) {

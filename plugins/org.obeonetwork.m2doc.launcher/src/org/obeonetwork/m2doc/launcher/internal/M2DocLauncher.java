@@ -35,6 +35,7 @@ import org.kohsuke.args4j.spi.StringArrayOptionHandler;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
@@ -137,7 +138,7 @@ public class M2DocLauncher implements IApplication {
                 try {
 
                     System.out.println("Input: " + generation.eResource().getURI());
-                    List<URI> generated = GenconfUtils.generate(generation, monitor);
+                    List<URI> generated = GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(), monitor);
                     for (URI uri : generated) {
                         System.out.println("Output: " + uri.toString());
                     }

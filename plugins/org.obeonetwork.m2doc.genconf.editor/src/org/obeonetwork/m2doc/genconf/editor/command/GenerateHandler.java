@@ -41,6 +41,7 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
@@ -65,18 +66,17 @@ public class GenerateHandler extends AbstractHandler {
         final Shell shell = HandlerUtil.getActiveShell(event);
         if (selection instanceof IStructuredSelection) {
             Object selected = ((IStructuredSelection) selection).getFirstElement();
-            Generation generation = null;
+            final Generation generation;
             if (selected instanceof IFile && "genconf".equals(((IFile) selected).getFileExtension())) {
                 URI genconfURI = URI.createPlatformResourceURI(((IFile) selected).getFullPath().toString(), true);
                 generation = getGeneration(genconfURI);
-
-            }
-            if (selected instanceof Generation) {
+            } else if (selected instanceof Generation) {
                 generation = (Generation) selected;
+            } else {
+                generation = null;
             }
 
             if (generation != null) {
-                final Generation toLaunch = generation;
                 final List<URI> generatedfiles = new ArrayList<URI>();
                 IWorkbench wb = PlatformUI.getWorkbench();
                 IProgressService ps = wb.getProgressService();
@@ -85,7 +85,8 @@ public class GenerateHandler extends AbstractHandler {
                         @Override
                         public void run(IProgressMonitor pm) throws InvocationTargetException {
                             try {
-                                generatedfiles.addAll(GenconfUtils.generate(toLaunch, BasicMonitor.toMonitor(pm)));
+                                generatedfiles.addAll(GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(),
+                                        BasicMonitor.toMonitor(pm)));
 
                             } catch (IOException e) {
                                 throw new InvocationTargetException(e);

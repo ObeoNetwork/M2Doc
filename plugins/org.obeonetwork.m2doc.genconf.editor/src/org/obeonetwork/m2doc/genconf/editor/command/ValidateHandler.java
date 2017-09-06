@@ -27,6 +27,7 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
@@ -67,7 +68,7 @@ public class ValidateHandler extends AbstractHandler {
 
             if (generation != null) {
                 try {
-                    boolean inError = GenconfUtils.validate(generation);
+                    boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider());
                     if (!inError) {
                         MessageDialog.openInformation(shell, "M2Doc validation",
                                 "The template validation has been performed successfully.");

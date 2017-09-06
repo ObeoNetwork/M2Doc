@@ -19,6 +19,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.sirius.ui.M2DocSiriusUIPlugin;
 
@@ -72,7 +73,8 @@ public class CDOGenerateHandler extends AbstractHandler {
                 return null;
             }
             try {
-                List<URI> generatedfiles = GenconfUtils.generate(generation, new BasicMonitor());
+                List<URI> generatedfiles = GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(),
+                        new BasicMonitor());
                 if (generatedfiles.size() == 1) {
                     MessageDialog.openInformation(shell, "M2Doc generation",
                             "The document '" + generatedfiles.get(0).toString() + "' is generated.");
