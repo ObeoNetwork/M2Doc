@@ -415,15 +415,15 @@ public final class GenconfUtils {
 
             // validate template
             monitor.beginTask("Validating template.", 1);
-            boolean inError = validate(generatedURI, template, queryEnvironment, generation);
+            final URI validationURI = validate(generatedURI, template, queryEnvironment, generation);
             monitor.done();
 
             // launch generation
             M2DocUtils.generate(template, queryEnvironment, definitions, generatedURI, monitor);
 
             List<URI> generatedFiles = Lists.newArrayList(generatedURI);
-            if (inError) {
-                URI validationFile = getValidationLogFile(generatedURI);
+            if (validationURI != null) {
+                URI validationFile = validationURI;
                 generatedFiles.add(validationFile);
             }
 
@@ -493,7 +493,7 @@ public final class GenconfUtils {
 
             // validate template
             if (template != null) {
-                res = validate(templateURI, template, queryEnvironment, generation);
+                res = validate(templateURI, template, queryEnvironment, generation) != null;
             } else {
                 res = true;
             }
@@ -503,7 +503,7 @@ public final class GenconfUtils {
     }
 
     /**
-     * Validate template with templateInfo information.
+     * Validates template with templateInfo information.
      * 
      * @param templateURI
      *            the template {@link URI}
@@ -513,37 +513,49 @@ public final class GenconfUtils {
      *            the {@link IReadOnlyQueryEnvironment}
      * @param generation
      *            Generation
-     * @return if template contains errors/warnings/info
+     * @return the validation {@link URI} if the validation isn't OK, <code>null</code> otherwise
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      * @throws IOException
      *             IOException
      */
-    private static boolean validate(URI templateURI, DocumentTemplate documentTemplate,
+    private static URI validate(URI templateURI, DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, Generation generation)
             throws DocumentGenerationException, IOException {
-        URI validationURI = getValidationLogFile(templateURI);
+        final URI res;
 
-        final ValidationMessageLevel validationResult = M2DocUtils.validate(documentTemplate, queryEnvironment);
-        M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationURI);
+        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment);
+        if (validationLevel != ValidationMessageLevel.OK) {
+            res = getValidationLogFile(templateURI, validationLevel);
+            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, res);
+        } else {
+            res = null;
+        }
 
-        return validationResult == ValidationMessageLevel.ERROR;
+        return res;
     }
 
     /**
-     * Gets the log {@link URI} for the given template {@link URI}.
+     * Gets the log {@link URI} for the given template {@link URI} and {@link ValidationMessageLevel}.
      * 
      * @param templateURI
      *            the template {@link URI}
-     * @return validation log file.
+     * @param level
+     *            the {@link ValidationMessageLevel}
+     * @return the log {@link URI} for the given template {@link URI} and {@link ValidationMessageLevel}
      */
-    private static URI getValidationLogFile(URI templateURI) {
-        URI validationFile = templateURI.trimSegments(1)
-                .appendSegment(Files.getNameWithoutExtension(templateURI.lastSegment()) + "-error");
+    private static URI getValidationLogFile(URI templateURI, ValidationMessageLevel level) {
+        final URI res;
+
+        final URI uri = templateURI.trimSegments(1).appendSegment(
+                Files.getNameWithoutExtension(templateURI.lastSegment()) + "-" + level.name().toLowerCase());
         if (URI.validSegment(templateURI.fileExtension())) {
-            validationFile = validationFile.appendFileExtension(templateURI.fileExtension());
+            res = uri.appendFileExtension(templateURI.fileExtension());
+        } else {
+            res = uri;
         }
-        return validationFile;
+
+        return res;
     }
 
     /**

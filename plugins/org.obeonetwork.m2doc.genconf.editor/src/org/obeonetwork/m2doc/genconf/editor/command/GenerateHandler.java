@@ -115,8 +115,7 @@ public class GenerateHandler extends AbstractHandler {
                     M2docconfEditorPlugin.getPlugin().getLog()
                             .log(new Status(Status.ERROR, M2docconfEditorPlugin.getPlugin().getSymbolicName(),
                                     Status.ERROR, "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
-                    MessageDialog.openError(shell, "Generation problem. See the error log for details",
-                            "A technical error occured. Please log a bug (see the error log for details)");
+                    MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
                 }
             } else {
                 MessageDialog.openError(shell, "Bad selection",
@@ -127,8 +126,8 @@ public class GenerateHandler extends AbstractHandler {
             MessageDialog.openError(shell, "Bad selection",
                     "Document generation action can only be triggered on Generation object.");
         }
-        return null;
 
+        return null;
     }
 
     /**

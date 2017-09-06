@@ -103,13 +103,13 @@ public class CDOGenerateHandler extends AbstractHandler {
                 String msg = e.getMessage();
                 M2DocSiriusUIPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocSiriusUIPlugin.PLUGIN_ID, Status.ERROR,
                         "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
-                MessageDialog.openError(shell, "Generation problem. See the error log for details",
-                        "A technical error occured. Please log a bug (see the error log for details)");
+                MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
             }
         } else {
             MessageDialog.openError(shell, "Bad selection",
                     "Document generation action can only be triggered on Generation object.");
         }
+
         return null;
     }
 }
