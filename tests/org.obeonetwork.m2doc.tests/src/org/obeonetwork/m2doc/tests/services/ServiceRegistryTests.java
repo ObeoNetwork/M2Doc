@@ -11,14 +11,15 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests.services;
 
-import org.junit.Before;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 //CHECKSTYLE:OFF
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * {@link ServiceRegistry} test class.
@@ -29,23 +30,24 @@ public class ServiceRegistryTests {
     /**
      * {@link ServiceRegistry} instance used during testing.
      */
-    private ServiceRegistry registry = ServiceRegistry.INSTANCE;
-
-    @Before
-    public void setUp() {
-        registry.clear();
-    }
+    private ServiceRegistry registry = new ServiceRegistry();
 
     /**
      * Tests the register/getServicePackage couple with a single token.
      */
     @Test
     public void registerServicesTestSingleToken() {
-        registry.registerServicePackage(ServicePackage1.class, "token1");
-        registry.registerServicePackage(ServicePackage2.class, "token1");
-        assertEquals(2, registry.getServicePackages("token1").size());
-        assertEquals(ServicePackage1.class, registry.getServicePackages("token1").get(0));
-        assertEquals(ServicePackage2.class, registry.getServicePackages("token1").get(1));
+        final List<String> services = new ArrayList<String>();
+        services.add(ServicePackage1.class.getCanonicalName());
+        services.add(ServicePackage2.class.getCanonicalName());
+        registry.register("token1", "bundle", services);
+
+        final Map<String, List<String>> map = registry.getServicePackages("token1");
+        assertEquals(1, map.size());
+        final List<String> list = map.get("bundle");
+        assertEquals(2, list.size());
+        assertEquals(ServicePackage1.class.getCanonicalName(), list.get(0));
+        assertEquals(ServicePackage2.class.getCanonicalName(), list.get(1));
     }
 
     /**
@@ -53,18 +55,30 @@ public class ServiceRegistryTests {
      */
     @Test
     public void registerServicesTestTwoTokens() {
-        registry.registerServicePackage(ServicePackage1.class, "token1");
-        registry.registerServicePackage(ServicePackage2.class, "token1");
-        registry.registerServicePackage(ServicePackage1.class, "token2");
-        registry.registerServicePackage(ServicePackage2.class, "token2");
-        registry.registerServicePackage(ServicePackage3.class, "token2");
-        assertEquals(2, registry.getServicePackages("token1").size());
-        assertEquals(ServicePackage1.class, registry.getServicePackages("token1").get(0));
-        assertEquals(ServicePackage2.class, registry.getServicePackages("token1").get(1));
-        assertEquals(3, registry.getServicePackages("token2").size());
-        assertEquals(ServicePackage1.class, registry.getServicePackages("token2").get(0));
-        assertEquals(ServicePackage2.class, registry.getServicePackages("token2").get(1));
-        assertEquals(ServicePackage3.class, registry.getServicePackages("token2").get(2));
+        final List<String> services1 = new ArrayList<String>();
+        services1.add(ServicePackage1.class.getCanonicalName());
+        services1.add(ServicePackage2.class.getCanonicalName());
+        final List<String> services2 = new ArrayList<String>();
+        services2.add(ServicePackage1.class.getCanonicalName());
+        services2.add(ServicePackage2.class.getCanonicalName());
+        services2.add(ServicePackage3.class.getCanonicalName());
+
+        registry.register("token1", "bundle", services1);
+        registry.register("token2", "bundle", services2);
+
+        final Map<String, List<String>> map1 = registry.getServicePackages("token1");
+        assertEquals(1, map1.size());
+        final List<String> list1 = map1.get("bundle");
+        assertEquals(2, list1.size());
+        assertEquals(ServicePackage1.class.getCanonicalName(), list1.get(0));
+        assertEquals(ServicePackage2.class.getCanonicalName(), list1.get(1));
+        final Map<String, List<String>> map2 = registry.getServicePackages("token2");
+        assertEquals(1, map2.size());
+        final List<String> list2 = map2.get("bundle");
+        assertEquals(3, list2.size());
+        assertEquals(ServicePackage1.class.getCanonicalName(), list2.get(0));
+        assertEquals(ServicePackage2.class.getCanonicalName(), list2.get(1));
+        assertEquals(ServicePackage3.class.getCanonicalName(), list2.get(2));
     }
 
     /**
@@ -72,34 +86,24 @@ public class ServiceRegistryTests {
      */
     @Test
     public void removeService() {
-        registry.registerServicePackage(ServicePackage1.class, "token1");
-        registry.registerServicePackage(ServicePackage2.class, "token1");
-        registry.registerServicePackage(ServicePackage1.class, "token2");
-        registry.registerServicePackage(ServicePackage2.class, "token2");
-        registry.registerServicePackage(ServicePackage3.class, "token2");
-        assertTrue(registry.remove(ServicePackage1.class, "token2"));
-        assertFalse(registry.remove(ServicePackage1.class, "token2"));
-        assertFalse(registry.remove(ServicePackage3.class, "token1"));
-        assertEquals(2, registry.getServicePackages("token1").size());
-        assertEquals(2, registry.getServicePackages("token2").size());
+        final List<String> services = new ArrayList<String>();
+        services.add(ServicePackage1.class.getCanonicalName());
+        services.add(ServicePackage2.class.getCanonicalName());
+        services.add(ServicePackage3.class.getCanonicalName());
+
+        registry.register("token", "bundle", services);
+
+        final List<String> servicesToRemove = new ArrayList<String>();
+        servicesToRemove.add(ServicePackage1.class.getCanonicalName());
+        servicesToRemove.add(ServicePackage2.class.getCanonicalName());
+
+        registry.remove("token", "bundle", servicesToRemove);
+
+        final Map<String, List<String>> map = registry.getServicePackages("token");
+        assertEquals(1, map.size());
+        final List<String> list = map.get("bundle");
+        assertEquals(1, list.size());
+        assertEquals(ServicePackage3.class.getCanonicalName(), list.get(0));
     }
 
-    /**
-     * Tests the unmodifiable character of returned service's lists with non
-     * empty lists returned.
-     */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testServicePackageListsAreUnmodifiable() {
-        registry.registerServicePackage(ServicePackage1.class, "token1");
-        registry.getServicePackages("token1").add(ServicePackage3.class);
-    }
-
-    /**
-     * Tests the unmodifiable character of returned service's lists with empty
-     * lists returned.
-     */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testServicePackageEmptyListsAreUnmodifiable() {
-        registry.getServicePackages("token1").add(ServicePackage3.class);
-    }
 }

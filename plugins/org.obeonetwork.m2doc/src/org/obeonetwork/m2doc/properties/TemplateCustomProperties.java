@@ -129,16 +129,6 @@ public class TemplateCustomProperties {
     public static final int URI_PROPERTY_PREFIX_LENGTH = URI_PROPERTY_PREFIX.length();
 
     /**
-     * Prefix of the service declaration custom properties.
-     */
-    public static final String SERVICE_PROPERTY_PREFIX = "m:services:";
-
-    /**
-     * Prefix of the service declaration custom properties.
-     */
-    public static final int SERVICE_PROPERTY_PREFIX_LENGTH = SERVICE_PROPERTY_PREFIX.length();
-
-    /**
      * Prefix of the service import custom properties.
      */
     public static final String SERVICE_IMPORT_PROPERTY_PREFIX = "m:import:";
@@ -147,11 +137,6 @@ public class TemplateCustomProperties {
      * Prefix of the service import custom properties length.
      */
     public static final int SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH = SERVICE_IMPORT_PROPERTY_PREFIX.length();
-
-    /**
-     * The list of service tokens declared in the template.
-     */
-    private final List<String> serviceTokens = Lists.newArrayList();
 
     /**
      * A map that associates variables declared in the template with their intended type.
@@ -212,12 +197,6 @@ public class TemplateCustomProperties {
                 continue;
             }
 
-            final String serviceToken = getServiceToken(propertyName);
-            if (serviceToken != null) {
-                serviceTokens.add(serviceToken);
-                continue;
-            }
-
             final String variableName = getVariableName(propertyName);
             if (variableName != null && isValidVariableName(variableName)) {
                 final String type = property.getLpwstr();
@@ -237,7 +216,6 @@ public class TemplateCustomProperties {
         int currentIndex = 0;
         List<String> tmpNsURI = new ArrayList<String>(nsURIs);
         Map<String, String> tmpServiceImports = new LinkedHashMap<String, String>(serviceClasses);
-        List<String> tmpServiceTokens = new ArrayList<String>(serviceTokens);
         Map<String, String> tmpVars = new LinkedHashMap<String, String>(variables);
         for (CTProperty property : properties) {
             final String propertyName = property.getName();
@@ -256,15 +234,6 @@ public class TemplateCustomProperties {
                 if (bundleName != null) {
                     property.setLpwstr(bundleName);
                 } else {
-                    indexToDelete.add(currentIndex);
-                }
-                currentIndex++;
-                continue;
-            }
-
-            final String serviceToken = getServiceToken(propertyName);
-            if (serviceToken != null) {
-                if (!tmpServiceTokens.remove(serviceToken)) {
                     indexToDelete.add(currentIndex);
                 }
                 currentIndex++;
@@ -292,9 +261,6 @@ public class TemplateCustomProperties {
         }
         for (Entry<String, String> entry : tmpServiceImports.entrySet()) {
             props.addProperty(SERVICE_IMPORT_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
-        }
-        for (String serviceToken : tmpServiceTokens) {
-            props.addProperty(SERVICE_PROPERTY_PREFIX + serviceToken, "");
         }
         for (Entry<String, String> entry : tmpVars.entrySet()) {
             props.addProperty(VAR_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
@@ -343,27 +309,6 @@ public class TemplateCustomProperties {
     }
 
     /**
-     * Gets the service token from the given {@link CTProperty#getName() property name}.
-     * 
-     * @param propertyName
-     *            the {@link CTProperty#getName() property name}
-     * @return the service token from the given {@link CTProperty#getName() property name} if any, <code>null</code>
-     *         otherwise
-     */
-    private String getServiceToken(String propertyName) {
-        final String res;
-
-        if (propertyName.startsWith(SERVICE_PROPERTY_PREFIX)
-            && propertyName.length() > SERVICE_PROPERTY_PREFIX_LENGTH) {
-            res = propertyName.substring(SERVICE_PROPERTY_PREFIX_LENGTH);
-        } else {
-            res = null;
-        }
-
-        return res;
-    }
-
-    /**
      * Gets the variable name from the given {@link CTProperty#getName() property name}.
      * 
      * @param propertyName
@@ -381,15 +326,6 @@ public class TemplateCustomProperties {
         }
 
         return res;
-    }
-
-    /**
-     * Returns a non modifiable copy of the service tokens.
-     * 
-     * @return the list of service tokens.
-     */
-    public List<String> getServiceTokens() {
-        return serviceTokens;
     }
 
     /**

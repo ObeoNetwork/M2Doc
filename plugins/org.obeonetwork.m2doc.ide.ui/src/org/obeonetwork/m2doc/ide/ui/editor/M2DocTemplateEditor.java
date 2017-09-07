@@ -79,6 +79,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
  * M2Doc template editor.
@@ -258,6 +259,11 @@ public class M2DocTemplateEditor extends EditorPart {
      * The Editor ID.
      */
     public static final String ID = "org.obeonetwork.m2doc.ide.ui.editor.M2DocTemplateEditor"; // $NON-NLS-0$
+
+    /**
+     * The "delete" string.
+     */
+    private static final String DELETE = "Delete";
 
     /**
      * Default width.
@@ -635,7 +641,7 @@ public class M2DocTemplateEditor extends EditorPart {
         });
 
         final MenuItem deleteVariableMenu = new MenuItem(variablesTable.getControl().getMenu(), SWT.PUSH);
-        deleteVariableMenu.setText("Delete");
+        deleteVariableMenu.setText(DELETE);
         deleteVariableMenu.addListener(SWT.Selection, new Listener() {
             @SuppressWarnings("unchecked")
             @Override
@@ -680,7 +686,7 @@ public class M2DocTemplateEditor extends EditorPart {
         });
 
         final MenuItem deletePackageMenu = new MenuItem(packagesTable.getControl().getMenu(), SWT.PUSH);
-        deletePackageMenu.setText("Delete");
+        deletePackageMenu.setText(DELETE);
         deletePackageMenu.addListener(SWT.Selection, new Listener() {
 
             @SuppressWarnings("unchecked")
@@ -728,7 +734,7 @@ public class M2DocTemplateEditor extends EditorPart {
         });
 
         final MenuItem deletePackageMenu = new MenuItem(servicesTable.getControl().getMenu(), SWT.PUSH);
-        deletePackageMenu.setText("Delete");
+        deletePackageMenu.setText(DELETE);
         deletePackageMenu.addListener(SWT.Selection, new Listener() {
 
             @SuppressWarnings("unchecked")
@@ -745,6 +751,22 @@ public class M2DocTemplateEditor extends EditorPart {
                 }
             }
         });
+
+        final MenuItem tokenPackageMenu = new MenuItem(servicesTable.getControl().getMenu(), SWT.PUSH);
+        tokenPackageMenu.setText("Select tokens");
+        tokenPackageMenu.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                ServiceTokenSelectionDialog dialog = new ServiceTokenSelectionDialog(getSite().getShell(),
+                        ServiceRegistry.INSTANCE, templateCustomProperties);
+                dialog.open();
+                if (dialog.hasChanges()) {
+                    setDirty(true);
+                    servicesTable.refresh();
+                }
+            }
+        });
     }
 
     /**
@@ -754,8 +776,10 @@ public class M2DocTemplateEditor extends EditorPart {
      *            the new dirty value
      */
     protected void setDirty(boolean value) {
-        dirty = value;
-        firePropertyChange(PROP_DIRTY);
+        if (dirty != value) {
+            dirty = value;
+            firePropertyChange(PROP_DIRTY);
+        }
     }
 
 }

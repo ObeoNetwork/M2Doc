@@ -104,7 +104,8 @@ public class M2DocPlugin extends EMFPlugin {
             registry.addListener(registryListener,
                     ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
             registryListener.parseInitialContributions();
-            registry.addListener(this.servicesListener);
+            registry.addListener(servicesListener, DeclaredServicesListener.SERVICE_REGISTERY_EXTENSION_POINT);
+            servicesListener.parseInitialContributions();
             classProvider = new EclipseClassProvider(context, this.getClass().getClassLoader());
         }
 
@@ -120,7 +121,7 @@ public class M2DocPlugin extends EMFPlugin {
             classProvider = new ClassProvider(M2DocPlugin.class.getClassLoader());
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
             registry.removeListener(registryListener);
-            registry.removeListener(this.servicesListener);
+            registry.removeListener(servicesListener);
             // TODO clear registry and registryListener ?
         }
 

@@ -11,16 +11,15 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.ide.services;
 
-import org.eclipse.core.runtime.CoreException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.services.IServiceHolder;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
 
 /**
@@ -32,7 +31,11 @@ public class DeclaredServicesListener implements IRegistryEventListener {
     /**
      * Unique ID of the extension point.
      */
-    private static final String SERVICEREGISTERY_ID = "org.obeonetwork.m2doc.ide.services.register";
+    public static final String SERVICE_REGISTERY_EXTENSION_POINT = "org.obeonetwork.m2doc.ide.services.register";
+    /**
+     * Name of the service element.
+     */
+    private static final String TOKEN_ELEMENT_NAME = "token";
     /**
      * Name of the service element.
      */
@@ -40,19 +43,18 @@ public class DeclaredServicesListener implements IRegistryEventListener {
     /**
      * Name of the attribute used to declare the service's class name.
      */
-    private static final String SERVICE_CLASS_ATTR_NAME = "serviceClass";
+    private static final String SERVICE_CLASS_ATTR_NAME = "class";
     /**
      * Name of the attribute used to declare the service's class name.
      */
-    private static final String SERVICE_TOKEN_ATTR_NAME = "serviceToken";
+    private static final String SERVICE_TOKEN_ATTR_NAME = "name";
 
     /**
-     * Creates and initializes the service registry listener.
+     * Parses initial contributions.
      */
-    public DeclaredServicesListener() {
-        // initializes the extensions
+    public void parseInitialContributions() {
         IExtensionRegistry registry = Platform.getExtensionRegistry();
-        IExtensionPoint extensionPoint = registry.getExtensionPoint(SERVICEREGISTERY_ID);
+        IExtensionPoint extensionPoint = registry.getExtensionPoint(SERVICE_REGISTERY_EXTENSION_POINT);
         for (IExtension extension : extensionPoint.getExtensions()) {
             add(extension);
         }
@@ -65,16 +67,16 @@ public class DeclaredServicesListener implements IRegistryEventListener {
      *            the extension
      */
     private void add(IExtension extension) {
-        for (IConfigurationElement confElt : extension.getConfigurationElements()) {
-            if (SERVICE_ELEMENT_NAME.equals(confElt.getName())) {
-                try {
-                    IServiceHolder holder = (IServiceHolder) confElt.createExecutableExtension(SERVICE_CLASS_ATTR_NAME);
-                    String token = confElt.getAttribute(SERVICE_TOKEN_ATTR_NAME);
-                    ServiceRegistry.INSTANCE.registerServicePackage(holder.getServiceClass(), token);
-                } catch (CoreException e) {
-                    M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
-                            "Problem while registering M2Doc Services : " + e.getMessage(), e));
+        for (IConfigurationElement element : extension.getConfigurationElements()) {
+            if (TOKEN_ELEMENT_NAME.equals(element.getName())) {
+                final String tokenName = element.getAttribute(SERVICE_TOKEN_ATTR_NAME);
+                final String bundleName = extension.getContributor().getName();
+                final List<String> services = new ArrayList<String>();
+                for (IConfigurationElement child : element.getChildren()) {
+                    final String className = child.getAttribute(SERVICE_CLASS_ATTR_NAME);
+                    services.add(className);
                 }
+                ServiceRegistry.INSTANCE.register(tokenName, bundleName, services);
             }
         }
     }
@@ -82,7 +84,7 @@ public class DeclaredServicesListener implements IRegistryEventListener {
     @Override
     public void added(IExtension[] extensions) {
         for (IExtension extension : extensions) {
-            if (SERVICEREGISTERY_ID.equals(extension.getExtensionPointUniqueIdentifier())) {
+            if (SERVICE_REGISTERY_EXTENSION_POINT.equals(extension.getExtensionPointUniqueIdentifier())) {
                 add(extension);
             }
         }
@@ -91,19 +93,17 @@ public class DeclaredServicesListener implements IRegistryEventListener {
     @Override
     public void removed(IExtension[] extensions) {
         for (IExtension extension : extensions) {
-            if (SERVICEREGISTERY_ID.equals(extension.getExtensionPointUniqueIdentifier())) {
-                for (IConfigurationElement confElt : extension.getConfigurationElements()) {
-                    if (SERVICE_ELEMENT_NAME.equals(confElt.getName())) {
-                        try {
-                            IServiceHolder holder = (IServiceHolder) confElt
-                                    .createExecutableExtension(SERVICE_CLASS_ATTR_NAME);
-                            String token = confElt.getAttribute(SERVICE_TOKEN_ATTR_NAME);
-                            ServiceRegistry.INSTANCE.remove(holder.getServiceClass(), token);
-                        } catch (CoreException e) {
-                            M2DocPlugin.INSTANCE.log(new Status(Status.ERROR, M2DocPlugin.PLUGIN_ID, Status.ERROR,
-                                    "Problem while registering M2Doc Services : " + e.getMessage(), e));
+            if (SERVICE_REGISTERY_EXTENSION_POINT.equals(extension.getExtensionPointUniqueIdentifier())) {
+                for (IConfigurationElement element : extension.getConfigurationElements()) {
+                    if (TOKEN_ELEMENT_NAME.equals(element.getName())) {
+                        final String tokenName = element.getAttribute(SERVICE_TOKEN_ATTR_NAME);
+                        final String bundleName = extension.getContributor().getName();
+                        final List<String> services = new ArrayList<String>();
+                        for (IConfigurationElement child : element.getChildren()) {
+                            final String className = child.getAttribute(SERVICE_CLASS_ATTR_NAME);
+                            services.add(className);
                         }
-
+                        ServiceRegistry.INSTANCE.remove(tokenName, bundleName, services);
                     }
                 }
             }

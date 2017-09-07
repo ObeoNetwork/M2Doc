@@ -11,10 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,68 +37,74 @@ public final class ServiceRegistry {
      */
     public static final String DEFAULT_TOKEN = "default";
     /**
-     * The central map holding the services.
+     * Mapping from token name to bundle name to list of service class names.
      */
-    private Map<String, List<Class<?>>> registry = Maps.newLinkedHashMap();
+    private Map<String, Map<String, List<String>>> registry = new LinkedHashMap<String, Map<String, List<String>>>();
 
     /**
-     * Private constructor to prevent creation of other instances.
-     */
-    private ServiceRegistry() {
-
-    }
-
-    /**
-     * Register a service package under the specified token.
+     * Registers the given {@link List} of service class names to the given token name.
      * 
-     * @param servicePackage
-     *            the class that contains the registered services.
-     * @param token
-     *            the token under which services must be stored.
+     * @param tokenName
+     *            the token name
+     * @param bundleName
+     *            the bundle name
+     * @param services
+     *            the {@link List} of service class names
      */
-    public void registerServicePackage(Class<?> servicePackage, String token) {
-        List<Class<?>> services = registry.get(token);
-        if (services == null) {
-            services = Lists.newArrayList();
-            registry.put(token, services);
+    public void register(String tokenName, String bundleName, List<String> services) {
+        Map<String, List<String>> map = registry.get(tokenName);
+        if (map == null) {
+            map = new LinkedHashMap<String, List<String>>();
+            registry.put(tokenName, map);
         }
-        services.add(servicePackage);
+        List<String> list = map.get(bundleName);
+        if (list == null) {
+            list = new ArrayList<String>();
+            map.put(bundleName, list);
+        }
+
+        list.addAll(services);
     }
 
     /**
-     * Removes a service package from a service token.
+     * Removes the given {@link List} of service class names from the given token name.
      * 
-     * @param servicePackage
-     *            the service package to remove
-     * @param token
-     *            the token underwich the services must be removed.
-     * @return <code>true</code> if the service was actually present under the
-     *         specified token in the registry, <code>false</code> otherwise.
+     * @param tokenName
+     *            the token name
+     * @param bundleName
+     *            the bundle name
+     * @param services
+     *            the {@link List} of service class names
      */
-    public boolean remove(Class<?> servicePackage, String token) {
-        List<Class<?>> services = registry.get(token);
-        if (services == null) {
-            return false;
-        } else {
-            return services.remove(servicePackage);
+    public void remove(String tokenName, String bundleName, List<String> services) {
+        final Map<String, List<String>> map = registry.get(tokenName);
+        if (map != null) {
+            final List<String> list = map.get(bundleName);
+            if (list.removeAll(services) && list.isEmpty()) {
+                map.remove(bundleName);
+                if (map.isEmpty()) {
+                    registry.remove(tokenName);
+                }
+            }
         }
     }
 
     /**
-     * Returns the set of services registred under the specified token.
+     * Gets the mapping of bundle name to list of class names.
      * 
-     * @param token
-     *            the token for which services are required.
-     * @return an unmodifiable version of the list of services registered under
-     *         the specified token.
+     * @param tokenName
+     *            the token name
+     * @return the mapping of bundle name to list of class names
      */
-    public List<Class<?>> getServicePackages(String token) {
-        List<Class<?>> result = registry.get(token);
+    public Map<String, List<String>> getServicePackages(String tokenName) {
+        Map<String, List<String>> result = registry.get(tokenName);
+
         if (result == null) {
-            result = Collections.emptyList();
+            result = Collections.emptyMap();
         } else {
-            result = Collections.unmodifiableList(result);
+            result = Collections.unmodifiableMap(result);
         }
+
         return result;
     }
 
@@ -107,7 +112,7 @@ public final class ServiceRegistry {
      * Clears the registry by removing all the registered services.
      */
     public void clear() {
-        this.registry.clear();
+        registry.clear();
     }
 
     /**

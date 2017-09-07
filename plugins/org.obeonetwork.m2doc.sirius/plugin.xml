@@ -19,13 +19,6 @@
       </configuration>
    </extension>
    <extension
-         point="org.obeonetwork.m2doc.ide.services.register">
-      <service
-            serviceClass="org.obeonetwork.m2doc.sirius.services.M2DocSiriusServiceHolder"
-            serviceToken="default">
-      </service>
-   </extension>
-   <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
             class="org.obeonetwork.m2doc.sirius.propertyTester.TeamGenerationPropertyTester"

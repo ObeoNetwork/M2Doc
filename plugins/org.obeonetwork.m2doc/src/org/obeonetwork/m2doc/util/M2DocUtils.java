@@ -62,7 +62,6 @@ import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
-import org.obeonetwork.m2doc.services.ServiceRegistry;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -378,11 +377,6 @@ public final class M2DocUtils {
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, new ImageServices(uriConverter, templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
-        List<Class<?>> defaultClasses = ServiceRegistry.INSTANCE.getServicePackages(ServiceRegistry.DEFAULT_TOKEN);
-        for (Class<?> cls : defaultClasses) {
-            services = ServiceUtils.getServices(queryEnvironment, cls);
-            ServiceUtils.registerServices(queryEnvironment, services);
-        }
         for (IServicesConfigurator configurator : getConfigurators()) {
             ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment, options));
         }
@@ -490,13 +484,6 @@ public final class M2DocUtils {
                 final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
                         ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
                 messages.add(validationMessage);
-            }
-        }
-        for (String token : properties.getServiceTokens()) {
-            List<Class<?>> services = ServiceRegistry.INSTANCE.getServicePackages(token);
-            for (Class<?> cls : services) {
-                final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
-                ServiceUtils.registerServices(queryEnvironment, s);
             }
         }
         for (Entry<String, String> entry : properties.getServiceClasses().entrySet()) {

@@ -21,7 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = { BundleTests.class, })
+@SuiteClasses(value = {BundleTests.class})
 public class AllTests {
 
 }

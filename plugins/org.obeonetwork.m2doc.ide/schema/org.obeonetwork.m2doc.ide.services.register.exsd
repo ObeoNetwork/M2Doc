@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="service"/>
+            <element ref="token"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,22 +47,30 @@
       </complexType>
    </element>
 
-   <element name="service">
+   <element name="token">
       <complexType>
-         <attribute name="serviceToken" type="string" use="required">
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="service"/>
+         </sequence>
+         <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
                   A token used to isolate services used for a given usage.
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="serviceClass" type="string" use="required">
+      </complexType>
+   </element>
+
+   <element name="service">
+      <complexType>
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  ServiceHolder that&apos;s used to convey a service package.
+                  
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.obeonetwork.m2doc.services.IServiceHolder"/>
+                  <meta.attribute kind="java"/>
                </appinfo>
             </annotation>
          </attribute>
