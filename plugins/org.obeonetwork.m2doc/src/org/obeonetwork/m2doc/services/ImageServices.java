@@ -152,8 +152,32 @@ public class ImageServices {
             @Example(expression = "myImage.setConserveRatio(false)", result = "set the conserve ratio to false"),
         }
     )
+    // @formatter:on
     public MImage setConserveRatio(MImage image, Boolean conserve) {
         image.setConserveRatio(conserve);
+
+        return image;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Fits the Image in the given the given rectangle width and height.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+            @Param(name = "width", value = "The width to fit"),
+            @Param(name = "height", value = "The height to fit"),
+        },
+        result = "sets the conserve ratio of the image",
+        examples = {
+            @Example(expression = "myImage.fit(200, 300)", result = "will fit the image in a rectangle (width=200, height=300)"),
+        }
+    )
+    // @formatter:on
+    public MImage fit(MImage image, Integer width, Integer height) {
+        image.setWidth(width);
+        if (!image.conserveRatio() || image.getHeight() > height) {
+            image.setHeight(height);
+        }
 
         return image;
     }
