@@ -35,20 +35,11 @@ import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
 public class InitializeConfigurationsHandler extends AbstractHandler {
-    /**
-     * The constructor.
-     */
-    public InitializeConfigurationsHandler() {
-    }
 
-    /**
-     * the command has been executed, so extract extract the needed information
-     * from the application context.
-     */
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        ISelection selection = HandlerUtil.getCurrentSelection(event);
-        Shell shell = HandlerUtil.getActiveShell(event);
+        final ISelection selection = HandlerUtil.getCurrentSelection(event);
+        final Shell shell = HandlerUtil.getActiveShell(event);
         if (selection instanceof IStructuredSelection) {
             Object selected = ((IStructuredSelection) selection).getFirstElement();
             if (selected instanceof IFile) {
@@ -69,12 +60,12 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
 
             } else {
                 MessageDialog.openError(shell, "Bad selection",
-                        "Configuration action can only be triggered on docx files.");
+                        "Configuration action can only be triggered on a .docx file.");
             }
 
         } else {
             MessageDialog.openError(shell, "Bad selection",
-                    "Document generation action can only be triggered on docx files.");
+                    "Document generation action can only be triggered on a .docx file.");
         }
         return null;
 
