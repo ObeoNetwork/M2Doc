@@ -104,6 +104,22 @@ public class ImageServices {
 
     // @formatter:off
     @Documentation(
+        value = "Gets the width of the image.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+        },
+        result = "gets the width of the image",
+        examples = {
+            @Example(expression = "myImage.getWidth()", result = "300"),
+        }
+    )
+    // @formatter:on
+    public Integer getWidth(MImage image) {
+        return image.getWidth();
+    }
+
+    // @formatter:off
+    @Documentation(
         value = "Sets the width of the image.",
         params = {
             @Param(name = "image", value = "The Image"),
@@ -119,6 +135,22 @@ public class ImageServices {
         image.setWidth(width);
 
         return image;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Sets the height of the image.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+        },
+        result = "gets the height of the image",
+        examples = {
+            @Example(expression = "myImage.getHeight()", result = "300"),
+        }
+    )
+    // @formatter:on
+    public Integer getHeight(MImage image) {
+        return image.getHeight();
     }
 
     // @formatter:off
