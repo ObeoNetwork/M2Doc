@@ -12,9 +12,35 @@
             Obeo - initial API and implementation
  -->
 
-<toc label="M2Doc" topic="doc/index.html">
-   <topic href="doc/user/M2Doc User Guide.html" label="M2Doc User Guide">
-   </topic>
-   <topic href="doc/developer/M2Doc Developer Guide.html" label="M2Doc Developer Guide">
-   </topic>
+<toc topic="doc/index.html" label="index">
+	<topic href="doc/index.html" label="Overview"></topic>
+	<topic href="doc/index.html#Installation" label="Installation"></topic>
+	<topic href="doc/index.html#Generateadocument" label="Generate a document">
+		<topic href="doc/index.html#Launchinggeneration" label="Launching generation"></topic>
+		<topic href="doc/index.html#Initializinggeneration" label="Initializing generation"></topic>
+		<topic href="doc/index.html#Validatingageneration" label="Validating a generation"></topic>
+		<topic href="doc/index.html#Generationconfigurationeditor" label="Generation configuration editor"></topic>
+	</topic>
+	<topic href="doc/index.html#Templateauthoring" label="Template authoring">
+		<topic href="doc/index.html#Syntax" label="Syntax"></topic>
+		<topic href="doc/index.html#Services" label="Services"></topic>
+		<topic href="doc/index.html#Templateeditor" label="Template editor"></topic>
+	</topic>
+	<topic href="doc/index.html#Providenewservices" label="Provide new services">
+		<topic href="doc/index.html#Serviceclass" label="Service class">
+			<topic href="doc/index.html#Defaultconstructor" label="Default constructor"></topic>
+			<topic href="doc/index.html#Customconstructor" label="Custom constructor"></topic>
+		</topic>
+		<topic href="doc/index.html#Servicetoken" label="Service token"></topic>
+		<topic href="doc/index.html#Specialreturntypes" label="Special return types"></topic>
+	</topic>
+	<topic href="doc/index.html#Templatetesting" label="Template testing"></topic>
+	<topic href="doc/index.html#UsingM2Docprogrammatically" label="Using M2Doc programmatically">
+		<topic href="doc/index.html#Parsing" label="Parsing"></topic>
+		<topic href="doc/index.html#Validation" label="Validation"></topic>
+		<topic href="doc/index.html#Generation" label="Generation">
+			<topic href="doc/index.html#CoregenerationAPI" label="Core generation API"></topic>
+			<topic href="doc/index.html#GenerationconfigurationAPI" label="Generation configuration API"></topic>
+		</topic>
+	</topic>
 </toc>
