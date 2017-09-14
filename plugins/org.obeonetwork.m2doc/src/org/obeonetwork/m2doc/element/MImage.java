@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.emf.common.util.URI;
-import org.obeonetwork.m2doc.util.PictureType;
 
 /**
  * An image that can be returned by services.

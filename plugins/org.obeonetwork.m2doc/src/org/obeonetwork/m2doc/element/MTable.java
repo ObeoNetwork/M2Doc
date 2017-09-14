@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.element;
 
+import java.awt.Color;
 import java.util.List;
 
 /**
@@ -41,35 +42,36 @@ public interface MTable extends MElement {
      * @author ldelaigue
      */
     public interface MCell {
-        /**
-         * The cell style.
-         * 
-         * @return The style to use for the cell.
-         */
-        MStyle getStyle();
 
         /**
-         * Sets the cell style.
+         * Gets the cell contents.
          * 
-         * @param style
-         *            the new cell {@link MStyle}
+         * @return the cell contents if any, <code>null</code> otherwise
          */
-        void setStyle(MStyle style);
+        MElement getContents();
 
         /**
-         * The cell label, i.e. its textual content.
+         * Sets the cell contents.
          * 
-         * @return The cell text.
+         * @param contents
+         *            the new cell contents
          */
-        String getLabel();
+        void setContents(MElement contents);
 
         /**
-         * Sets the cell label.
+         * Gets the background {@link Color}.
          * 
-         * @param label
-         *            the new cell label
+         * @return the background {@link Color} if any, <code>null</code> otherwise
          */
-        void setLabel(String label);
+        Color getBackgroundColor();
+
+        /**
+         * Sets the background {@link Color}.
+         * 
+         * @param color
+         *            the new background {@link Color}
+         */
+        void setBackgroundColor(Color color);
 
     }
 
@@ -95,10 +97,10 @@ public interface MTable extends MElement {
     String getLabel();
 
     /**
-     * Sets the table label.
+     * Sets the table label (caption).
      * 
      * @param label
-     *            the new table label
+     *            the new table label (caption)
      */
     void setLabel(String label);
 }

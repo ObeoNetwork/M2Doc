@@ -17,10 +17,12 @@ import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.element.impl.MStyleImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MRowImpl;
+import org.obeonetwork.m2doc.element.impl.MTextImpl;
 
 /**
  * Test {@link MTable} insertion.
@@ -59,29 +61,28 @@ public class MTableTestServices {
         final MRow headerRow = new MRowImpl();
         table.getRows().add(headerRow);
         // Empty cell at first
-        headerRow.getCells().add(new MCellImpl());
+        headerRow.getCells().add(new MCellImpl(null, null));
         for (int xStyle = 0; xStyle < 4; xStyle++) {
-            final MCell headerCell = new MCellImpl();
+            final MText headerText = new MTextImpl(getLabelStyle(xStyle), getStyle(1 << xStyle, 10, null));
+            final MCell headerCell = new MCellImpl(headerText, null);
             headerRow.getCells().add(headerCell);
-            headerCell.setLabel(getLabelStyle(xStyle));
-            headerCell.setStyle(getStyle(1 << xStyle, 10, null, null));
         }
         for (int yStyle = 0; yStyle < 4; yStyle++) {
             final MRow row = new MRowImpl();
             table.getRows().add(row);
-            final MCell headerCell = new MCellImpl();
+            final MText headerText = new MTextImpl(getLabelStyle(yStyle), getStyle(1 << yStyle, 10, null));
+            final MCell headerCell = new MCellImpl(headerText, null);
             row.getCells().add(headerCell);
-            headerCell.setLabel(getLabelStyle(yStyle));
-            headerCell.setStyle(getStyle(1 << yStyle, 10, null, null));
             for (int xStyle = 0; xStyle < 4; xStyle++) {
-                final MCell cell = new MCellImpl();
-                row.getCells().add(cell);
-                cell.setLabel(Integer.toString(index++));
+                final String text = Integer.toString(index++);
                 final Color foregroundColor = new Color(colors[(index + 1) % 3], colors[(index + 2) % 3],
                         colors[(index + 3) % 3]);
                 final Color backgroundColor = new Color(colors[(index + 2) % 3], colors[(index + 3) % 3],
                         colors[(index + 1) % 3]);
-                cell.setStyle(getStyle(1 << xStyle | 1 << yStyle, index + 4, foregroundColor, backgroundColor));
+                final MText mText = new MTextImpl(text,
+                        getStyle(1 << xStyle | 1 << yStyle, index + 4, foregroundColor));
+                final MCell cell = new MCellImpl(mText, backgroundColor);
+                row.getCells().add(cell);
             }
         }
 
@@ -96,19 +97,16 @@ public class MTableTestServices {
      * @param fontSize
      *            the font size
      *            ]
-     * @param backgroundColor
-     *            the foreground {@link Color}
      * @param foregroundColor
      *            the background {@link Color}
      * @return the {@link MStyle} for the given modifiers and {@link Color}
      */
-    private MStyle getStyle(int modifiers, int fontSize, Color foregroundColor, Color backgroundColor) {
+    private MStyle getStyle(int modifiers, int fontSize, Color foregroundColor) {
         final MStyle res = new MStyleImpl();
 
         res.setModifiers(modifiers);
         res.setFontSize(fontSize);
         res.setForegroundColor(foregroundColor);
-        res.setBackgroundColor(backgroundColor);
 
         return res;
     }

@@ -11,45 +11,37 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.element.impl;
 
-import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MText;
 
 /**
- * An bookmark that can be returned by services.
+ * Styled text.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class MBookmarkImpl implements MBookmark {
+public class MTextImpl implements MText {
 
     /**
-     * The text to display.
+     * The text.
      */
     private String text;
 
     /**
-     * The bookmark ID.
+     * The {@link MStyle}.
      */
-    private String id;
-
-    /**
-     * <code>true</code> if this is a reference to a {@link MBookmarkImpl}, <code>false</code> if it's a {@link MBookmarkImpl} declaration.
-     */
-    private final boolean reference;
+    private MStyle style;
 
     /**
      * Constructor.
      * 
      * @param text
-     *            the text to display
-     * @param id
-     *            the id
-     * @param reference
-     *            <code>true</code> if this is a reference to a {@link MBookmarkImpl}, <code>false</code> if it's a {@link MBookmarkImpl}
-     *            declaration
+     *            the text
+     * @param style
+     *            the {@link MStyle}
      */
-    public MBookmarkImpl(String text, String id, boolean reference) {
+    public MTextImpl(String text, MStyle style) {
         this.text = text;
-        this.id = id;
-        this.reference = reference;
+        this.style = style;
     }
 
     @Override
@@ -63,18 +55,13 @@ public class MBookmarkImpl implements MBookmark {
     }
 
     @Override
-    public String getId() {
-        return id;
+    public MStyle getStyle() {
+        return style;
     }
 
     @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean isReference() {
-        return reference;
+    public void setStyle(MStyle style) {
+        this.style = style;
     }
 
 }

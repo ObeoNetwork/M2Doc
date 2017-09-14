@@ -11,10 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.element.impl;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MTable;
 
 /**
@@ -50,56 +51,48 @@ public class MTableImpl implements MTable {
     public static class MCellImpl implements MCell {
 
         /**
-         * The label.
+         * The contents.
          */
-        private String label;
+        private MElement contents;
 
         /**
-         * The {@link MStyle}.
+         * The background {@link Color}.
          */
-        private MStyle style;
+        private Color backgroundColor;
 
         /**
-         * Gets the label.
+         * Constructor.
          * 
-         * @return the label
+         * @param contents
+         *            the contents
+         * @param backgroundColor
+         *            the background {@link Color}
          */
-        @Override
-        public String getLabel() {
-            return label;
+        public MCellImpl(MElement contents, Color backgroundColor) {
+            this.contents = contents;
+            this.backgroundColor = backgroundColor;
         }
 
-        /**
-         * Sets the label.
-         * 
-         * @param label
-         *            the new label
-         */
         @Override
-        public void setLabel(String label) {
-            this.label = label;
+        public MElement getContents() {
+            return contents;
         }
 
-        /**
-         * Gets the style.
-         * 
-         * @return the style
-         */
         @Override
-        public MStyle getStyle() {
-            return style;
+        public void setContents(MElement contents) {
+            this.contents = contents;
         }
 
-        /**
-         * Sets the style.
-         * 
-         * @param style
-         *            the new style
-         */
         @Override
-        public void setStyle(MStyle style) {
-            this.style = style;
+        public Color getBackgroundColor() {
+            return backgroundColor;
         }
+
+        @Override
+        public void setBackgroundColor(Color backgroundColor) {
+            this.backgroundColor = backgroundColor;
+        }
+
     }
 
     /**
@@ -127,11 +120,6 @@ public class MTableImpl implements MTable {
         this.label = label;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.obeonetwork.m2doc.element.MTable#getColumnsCount()
-     */
     @Override
     public int getColumnsCount() {
         int result = 0;

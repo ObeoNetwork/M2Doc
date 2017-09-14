@@ -18,8 +18,8 @@ import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MImage;
+import org.obeonetwork.m2doc.element.PictureType;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
-import org.obeonetwork.m2doc.util.PictureType;
 
 //@formatter:off
 @ServiceProvider(

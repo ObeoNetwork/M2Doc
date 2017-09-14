@@ -20,6 +20,7 @@ import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.sirius.util.DTable2MTableConverter;
 
 import static org.junit.Assert.assertEquals;
@@ -53,30 +54,32 @@ public class DMTableTest {
 
         // Header row
         MRow row = rowIt.next();
-        MCell col0 = row.getCells().get(0);
-        assertNull(col0.getLabel());
-        assertNull(col0.getStyle());
+        MCell cell0 = row.getCells().get(0);
+        assertNull(cell0.getContents());
+        assertNull(cell0.getBackgroundColor());
 
-        MCell col1 = row.getCells().get(1);
-        assertEquals("Col One", col1.getLabel());
-        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, col1.getStyle());
+        MCell cell1 = row.getCells().get(1);
+        assertEquals("Col One", ((MText) cell1.getContents()).getText());
+        assertEquals(DTable2MTableConverter.HEADER_BACKGROUND_COLOR, cell1.getBackgroundColor());
+        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, ((MText) cell1.getContents()).getStyle());
 
-        MCell col2 = row.getCells().get(2);
-        assertEquals("Col Two", col2.getLabel());
-        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, col2.getStyle());
+        MCell cell2 = row.getCells().get(2);
+        assertEquals("Col Two", ((MText) cell2.getContents()).getText());
+        assertEquals(DTable2MTableConverter.HEADER_BACKGROUND_COLOR, cell2.getBackgroundColor());
+        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, ((MText) cell2.getContents()).getStyle());
 
         // First row
         row = rowIt.next();
         assertEquals(3, Iterables.size(row.getCells()));
         MCell cell10 = row.getCells().get(0);
-        assertEquals("Row One", cell10.getLabel());
-        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, cell10.getStyle());
+        assertEquals("Row One", ((MText) cell10.getContents()).getText());
+        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, ((MText) cell10.getContents()).getStyle());
 
         MCell cell11 = row.getCells().get(1);
-        MStyle style = cell11.getStyle();
-        assertEquals("Cell One One", cell11.getLabel());
+        MStyle style = ((MText) cell11.getContents()).getStyle();
+        assertEquals("Cell One One", ((MText) cell11.getContents()).getText());
         assertEquals(6, style.getFontSize());
-        assertEquals(new Color(GRAY), style.getBackgroundColor());
+        assertEquals(new Color(GRAY), cell11.getBackgroundColor());
         assertEquals(new Color(BLACK), style.getForegroundColor());
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
@@ -84,34 +87,28 @@ public class DMTableTest {
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_UNDERLINE);
 
         MCell cell12 = row.getCells().get(2);
-        assertNull(cell12.getLabel()); // No label
-        assertNull(cell12.getStyle()); // No column nor row style, so style == null
+        assertNull(cell12.getContents()); // No content
+        assertNull(cell12.getBackgroundColor()); // No background color
 
         // Second row
         row = rowIt.next();
         assertEquals(3, Iterables.size(row.getCells()));
         MCell cell20 = row.getCells().get(0);
-        assertEquals("Row Two", cell20.getLabel());
-        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, cell20.getStyle());
+        assertEquals("Row Two", ((MText) cell20.getContents()).getText());
+        assertEquals(DTable2MTableConverter.HEADER_BACKGROUND_COLOR, cell20.getBackgroundColor());
+        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, ((MText) cell20.getContents()).getStyle());
 
         MCell cell21 = row.getCells().get(1);
-        assertNull(cell21.getLabel());
-        style = cell21.getStyle(); // no row style, but column style, so style == column style
-        assertEquals(3, style.getFontSize());
-        assertEquals(new Color(WHITE), style.getBackgroundColor());
-        assertEquals(new Color(BLACK), style.getForegroundColor());
-        assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
-        assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
-        assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
-        assertEquals(0, style.getFontModifiers() & MStyle.FONT_UNDERLINE);
+        assertNull(cell21.getContents());
+        assertEquals(new Color(WHITE), cell21.getBackgroundColor()); // no row style, but column style, so style == column style
 
         MCell cell22 = row.getCells().get(2);
-        assertEquals("Cell Two Two", cell22.getLabel());
-        style = cell22.getStyle();
+        assertEquals("Cell Two Two", ((MText) cell22.getContents()).getText());
+        style = ((MText) cell22.getContents()).getStyle();
         // CHECKSTYLE:OFF
         assertEquals(9, style.getFontSize());
         // CHECKSTYLE:ON
-        assertEquals(new Color(WHITE), style.getBackgroundColor());
+        assertEquals(new Color(WHITE), cell22.getBackgroundColor());
         assertEquals(new Color(BROWN), style.getForegroundColor());
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
@@ -124,7 +121,6 @@ public class DMTableTest {
             assertNull(right);
         } else {
             assertEquals(left.getForegroundColor(), right.getForegroundColor());
-            assertEquals(left.getBackgroundColor(), right.getBackgroundColor());
             assertEquals(left.getFontModifiers(), right.getFontModifiers());
             assertEquals(left.getFontSize(), right.getFontSize());
         }

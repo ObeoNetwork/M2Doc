@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MImage;
-import org.obeonetwork.m2doc.util.PictureType;
+import org.obeonetwork.m2doc.element.PictureType;
 
 /**
  * An image that can be returned by services.

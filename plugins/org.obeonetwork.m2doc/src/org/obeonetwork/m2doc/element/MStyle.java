@@ -31,7 +31,7 @@ public interface MStyle {
     /**
      * Gets the font size in points.
      * 
-     * @return the font size in points
+     * @return the font size in points if any, <code>-1</code> otherwise
      */
     int getFontSize();
 
@@ -46,7 +46,7 @@ public interface MStyle {
     /**
      * Gets the foreground {@link Color}.
      * 
-     * @return the foreground {@link Color}
+     * @return the foreground {@link Color} if any, <code>null</code> otherwise
      */
     Color getForegroundColor();
 
@@ -57,21 +57,6 @@ public interface MStyle {
      *            the new foreground {@link Color}
      */
     void setForegroundColor(Color color);
-
-    /**
-     * Gets the background {@link Color}.
-     * 
-     * @return the background {@link Color}
-     */
-    Color getBackgroundColor();
-
-    /**
-     * Sets the background {@link Color}.
-     * 
-     * @param color
-     *            the new background {@link Color}
-     */
-    void setBackgroundColor(Color color);
 
     /**
      * Gets the font modifiers. To know whether the font is bold, use:

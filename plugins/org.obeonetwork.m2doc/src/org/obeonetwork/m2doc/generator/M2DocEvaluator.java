@@ -50,6 +50,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MPagination;
@@ -57,6 +58,7 @@ import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -498,7 +500,6 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         if (object instanceof Collection<?>) {
             for (Object child : (Collection<?>) object) {
                 insertObject(child, run);
-                // TODO insert Run ?
             }
         } else if (object instanceof MHyperLink) {
             final XWPFRun linkRun = insertFieldRunReplacement(run, "");
@@ -508,6 +509,8 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         } else if (object instanceof MImage) {
             final XWPFRun imageRun = insertFieldRunReplacement(run, "");
             insertMImage(imageRun, (MImage) object);
+        } else if (object instanceof MText) {
+            insertMText(run, (MText) object);
         } else if (object instanceof MTable) {
             XWPFRun tableRun = run;
             tableRun.getCTR().getInstrTextList().clear();
@@ -518,6 +521,23 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             insertFieldRunReplacement(run, "");
         } else {
             insertFieldRunReplacement(run, object.toString());
+        }
+    }
+
+    /**
+     * Inserts the given {@link MText}.
+     * 
+     * @param run
+     *            the {@link XWPFRun}
+     * @param text
+     *            the {@link MText}
+     */
+    private void insertMText(XWPFRun run, MText text) {
+        if (text.getText() != null) {
+            final XWPFRun textRun = insertFieldRunReplacement(run, text.getText());
+            if (text.getStyle() != null) {
+                applyMStyle(textRun, text.getStyle());
+            }
         }
     }
 
@@ -744,16 +764,26 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
         XWPFParagraph cellParagraph = cell.getParagraphs().get(0);
         XWPFRun cellRun = cellParagraph.createRun();
         if (mCell != null) {
-            String label = mCell.getLabel();
-            if (label != null) {
-                cellRun.setText(label);
-            }
-            MStyle style = mCell.getStyle();
-            if (style != null) {
-                if (style.getBackgroundColor() != null) {
-                    cell.setColor(hexColor(style.getBackgroundColor()));
+            final MElement contents = mCell.getContents();
+            if (contents != null) {
+                final IBody savedGeneratedDocument = generatedDocument;
+                final XWPFParagraph savedGeneratedParagraph = currentGeneratedParagraph;
+                final XWPFParagraph savedTemplateParagraph = currentTemplateParagraph;
+                generatedDocument = cell;
+                currentGeneratedParagraph = cellParagraph;
+                currentTemplateParagraph = cellParagraph;
+                try {
+                    insertObject(contents, cellRun);
+                } finally {
+                    generatedDocument = savedGeneratedDocument;
+                    currentGeneratedParagraph = savedGeneratedParagraph;
+                    currentTemplateParagraph = savedTemplateParagraph;
                 }
-                applyMStyle(cellRun, style);
+                cellParagraph.removeRun(cellParagraph.getRuns().indexOf(cellRun));
+            }
+            final Color backGroundColor = mCell.getBackgroundColor();
+            if (backGroundColor != null) {
+                cell.setColor(hexColor(backGroundColor));
             }
         }
     }

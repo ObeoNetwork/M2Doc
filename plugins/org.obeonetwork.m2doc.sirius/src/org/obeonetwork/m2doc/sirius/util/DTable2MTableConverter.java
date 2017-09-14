@@ -26,12 +26,12 @@ import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.element.impl.MStyleImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MRowImpl;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.obeonetwork.m2doc.element.impl.MTextImpl;
 
 /**
  * Implementation of {@link MTable} based on a {@link DTable}.
@@ -41,7 +41,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class DTable2MTableConverter {
 
     /** Header style. */
-    public static final MStyle HEADER_STYLE = new MStyleImpl(12, Color.BLACK, Color.GRAY, MStyle.FONT_BOLD);
+    public static final MStyle HEADER_STYLE = new MStyleImpl(12, Color.BLACK, MStyle.FONT_BOLD);
+
+    /** Header background color. */
+    public static final Color HEADER_BACKGROUND_COLOR = Color.GRAY;
 
     /**
      * Default constructor.
@@ -50,88 +53,82 @@ public final class DTable2MTableConverter {
     }
 
     /**
-     * Converts a {@link DTable sirius table} to a {@link MTable m2doc table}.
+     * Converts a {@link DTable Sirius table} to a {@link MTable M2Doc table}.
      * 
      * @param table
-     *            The sirius table, must not be <code>null</code>.
-     * @return the converted table.
+     *            The Sirius table, must not be <code>null</code>
+     * @return the converted table
      */
     public static MTable convert(DTable table) {
-        checkNotNull(table);
-
-        /*
-         * Creates the new table.
-         */
-        MTable mTable = new MTableImpl();
+        final MTable mTable = new MTableImpl();
         mTable.setLabel(table.getName());
 
-        /*
-         * A header row is inserted with an empty cell
-         */
-        MRow mHeaderRow = new MRowImpl();
+        // A header row is inserted with an empty cell
+        final MRow mHeaderRow = new MRowImpl();
         mTable.getRows().add(mHeaderRow);
         // Empty cell at first position
-        mHeaderRow.getCells().add(new MCellImpl());
-        Map<Integer, MStyle> columnStyles = new HashMap<Integer, MStyle>();
+        mHeaderRow.getCells().add(new MCellImpl(null, null));
+        final Map<Integer, DTableElementStyle> columnStyles = new HashMap<Integer, DTableElementStyle>();
         int colIdx = 0;
         for (DColumn column : table.getColumns()) {
-            MCell mCell = new MCellImpl();
+            final MText mText = new MTextImpl(column.getLabel(), HEADER_STYLE);
+            final MCell mCell = new MCellImpl(mText, HEADER_BACKGROUND_COLOR);
             mHeaderRow.getCells().add(mCell);
-            mCell.setLabel(column.getLabel());
-            mCell.setStyle(HEADER_STYLE);
-            // Convert & keep the column style
-            DTableElementStyle columnStyle = column.getCurrentStyle();
-            columnStyles.put(colIdx, convert(columnStyle));
+            // Keep the column style
+            columnStyles.put(colIdx, column.getCurrentStyle());
             colIdx++;
         }
 
-        /*
-         * Convert the rows.
-         */
+        // Convert the rows.
         for (DLine line : table.getLines()) {
             if (line.isVisible()) {
-                MRow row = new MRowImpl();
+                final MRow row = new MRowImpl();
                 mTable.getRows().add(row);
 
-                /*
-                 * A header cell is inserted
-                 */
-                MCell mHeaderColumnCell = new MCellImpl();
+                // A header cell is inserted
+                final MText mHeaderText = new MTextImpl(line.getLabel(), HEADER_STYLE);
+                final MCell mHeaderColumnCell = new MCellImpl(mHeaderText, HEADER_BACKGROUND_COLOR);
                 row.getCells().add(mHeaderColumnCell);
-                mHeaderColumnCell.setLabel(line.getLabel());
-                mHeaderColumnCell.setStyle(HEADER_STYLE);
                 // Retrieve row style to apply to non styled cells
-                DTableElementStyle lineStyle = line.getCurrentStyle();
-                MStyle mRowStyle = convert(lineStyle);
+                final DTableElementStyle rowStyle = line.getCurrentStyle();
 
-                /*
-                 * Initialize the row with default styles (row or column)
-                 */
+                // Initialize the row cells
                 for (colIdx = 0; colIdx < table.getColumns().size(); colIdx++) {
-                    MCell mCell = new MCellImpl();
-                    row.getCells().add(mCell);
-                    if (mRowStyle != null) {
-                        // 1st attempt : try row style
-                        mCell.setStyle(mRowStyle);
+                    final DTableElementStyle style;
+                    if (rowStyle != null) {
+                        style = rowStyle;
                     } else {
-                        // 2nd attempt : try column style
-                        MStyle mColumnStyle = columnStyles.get(colIdx);
-                        mCell.setStyle(mColumnStyle);
+                        style = columnStyles.get(colIdx);
+                    }
+                    if (style != null) {
+                        row.getCells().add(new MCellImpl(null, convert(style.getBackgroundColor())));
+                    } else {
+                        row.getCells().add(new MCellImpl(null, null));
                     }
                 }
 
-                /*
-                 * Converts the provided cells
-                 */
+                // Converts the provided cells
                 for (DCell dcell : line.getCells()) {
                     // The cell must be put at the right position in the index
                     colIdx = table.getColumns().indexOf(dcell.getColumn());
-                    MCell mCell = row.getCells().get(colIdx + 1);
-                    mCell.setLabel(dcell.getLabel());
-                    // Override default style if required
-                    DTableElementStyle style = dcell.getCurrentStyle();
+
+                    final DTableElementStyle style;
+                    if (dcell.getCurrentStyle() != null) {
+                        style = dcell.getCurrentStyle();
+                    } else if (rowStyle != null) {
+                        style = rowStyle;
+                    } else {
+                        style = columnStyles.get(colIdx);
+                    }
+
+                    final MCell mCell = row.getCells().get(colIdx + 1);
                     if (style != null) {
-                        mCell.setStyle(convert(style));
+                        final MText mText = new MTextImpl(dcell.getLabel(), convert(style));
+                        mCell.setContents(mText);
+                        mCell.setBackgroundColor(convert(style.getBackgroundColor()));
+                    } else {
+                        final MText mText = new MTextImpl(dcell.getLabel(), null);
+                        mCell.setContents(mText);
                     }
                 }
             }
@@ -153,7 +150,6 @@ public final class DTable2MTableConverter {
         if (dStyle != null) {
             mStyle = new MStyleImpl();
             mStyle.setForegroundColor(convert(dStyle.getForegroundColor()));
-            mStyle.setBackgroundColor(convert(dStyle.getBackgroundColor()));
             mStyle.setFontSize(dStyle.getLabelSize());
             mStyle.setModifiers(convert(dStyle.getLabelFormat()));
         }
@@ -197,7 +193,7 @@ public final class DTable2MTableConverter {
      *            the color to convert.
      * @return the converted color.
      */
-    private static Color convert(final RGBValues rgb) {
+    public static Color convert(final RGBValues rgb) {
         if (rgb != null) {
             return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
         } else {

@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.util;
+package org.obeonetwork.m2doc.element;
 
 import org.apache.poi.xwpf.usermodel.Document;
 import org.eclipse.emf.common.util.URI;

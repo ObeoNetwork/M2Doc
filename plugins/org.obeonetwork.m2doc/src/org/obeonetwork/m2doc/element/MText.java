@@ -12,48 +12,40 @@
 package org.obeonetwork.m2doc.element;
 
 /**
- * An bookmark that can be returned by services.
+ * Styled text.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MBookmark extends MElement {
+public interface MText extends MElement {
 
     /**
-     * Gets the text to display.
+     * Gets the text.
      * 
-     * @return the text to display
+     * @return the text
      */
     String getText();
 
     /**
-     * Sets the text to display.
+     * Sets the text.
      * 
      * @param text
-     *            the new text to display
+     *            the new text
      */
     void setText(String text);
 
     /**
-     * Gets the bookmark ID.
+     * Gets the {@link MStyle}.
      * 
-     * @return the bookmark ID
+     * @return the {@link MStyle}
      */
-    String getId();
+    MStyle getStyle();
 
     /**
-     * Sets the bookmark ID.
+     * Set the {@link MStyle}.
      * 
-     * @param id
-     *            the new bookmark ID
+     * @param style
+     *            the new {@link MStyle}
      */
-    void setId(String id);
-
-    /**
-     * Tells if this is a reference to a {@link MBookmark} or a {@link MBookmark} declaration.
-     * 
-     * @return <code>true</code> if this is a reference to a {@link MBookmark}, <code>false</code> if it's a {@link MBookmark}
-     *         declaration
-     */
-    boolean isReference();
+    void setStyle(MStyle style);
 
 }

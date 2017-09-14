@@ -23,7 +23,7 @@ public class DMStyleTest {
         MStyle style = DTable2MTableConverter.convert(dstyle);
         assertEquals(6, style.getFontSize());
         // CHECKSTYLE:OFF
-        assertEquals(new Color(0 << 16 | 128 << 8 | 255), style.getBackgroundColor());
+        assertEquals(new Color(0 << 16 | 128 << 8 | 255), DTable2MTableConverter.convert(dstyle.getBackgroundColor()));
         assertEquals(new Color(255 << 16 | 128 << 8 | 0), style.getForegroundColor());
         // CHECKSTYLE:ON
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
