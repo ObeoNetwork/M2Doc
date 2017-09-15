@@ -1,7 +1,5 @@
 package org.obeonetwork.m2doc.sirius.services;
 
-import com.google.common.collect.Lists;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -211,7 +209,8 @@ public class M2DocSiriusServices {
                     .getRepresentationDescriptors(targetRootObject, session)) {
                 if (representation != null && representation.getDescription() == description) {
                     registry.registerJob(new CleaningAIRDJob(targetRootObject, session, representation));
-                    result = Lists.newArrayList(representation);
+                    result = new ArrayList<DRepresentationDescriptor>();
+                    result.add(representation);
                 }
             }
 

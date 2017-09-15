@@ -1,7 +1,5 @@
 package org.obeonetwork.m2doc.sirius.tests.tables;
 
-import com.google.common.collect.Iterables;
-
 import java.awt.Color;
 import java.util.Iterator;
 
@@ -49,7 +47,7 @@ public class DMTableTest {
     public void test() {
         assertEquals("Test Table", table.getLabel());
         assertEquals(3, table.getColumnsCount()); // Header column + 2 columns
-        assertEquals(3, Iterables.size(table.getRows())); // Header + 2 rows
+        assertEquals(3, table.getRows().size()); // Header + 2 rows
         Iterator<? extends MRow> rowIt = table.getRows().iterator();
 
         // Header row
@@ -70,7 +68,7 @@ public class DMTableTest {
 
         // First row
         row = rowIt.next();
-        assertEquals(3, Iterables.size(row.getCells()));
+        assertEquals(3, row.getCells().size());
         MCell cell10 = row.getCells().get(0);
         assertEquals("Row One", ((MText) cell10.getContents()).getText());
         assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, ((MText) cell10.getContents()).getStyle());
@@ -92,7 +90,7 @@ public class DMTableTest {
 
         // Second row
         row = rowIt.next();
-        assertEquals(3, Iterables.size(row.getCells()));
+        assertEquals(3, row.getCells().size());
         MCell cell20 = row.getCells().get(0);
         assertEquals("Row Two", ((MText) cell20.getContents()).getText());
         assertEquals(DTable2MTableConverter.HEADER_BACKGROUND_COLOR, cell20.getBackgroundColor());

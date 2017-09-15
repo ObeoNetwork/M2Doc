@@ -11,12 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
-import com.google.common.collect.Sets;
-
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -185,7 +184,7 @@ public class M2DocParser extends AbstractBodyParser {
     protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
         TokenType type = getNextTokenType();
-        Set<TokenType> endTypeList = Sets.newHashSet(endTypes);
+        Set<TokenType> endTypeList = new HashSet<TokenType>(Arrays.asList(endTypes));
         endBlock: while (!endTypeList.contains(type)) {
             switch (type) {
                 case QUERY:

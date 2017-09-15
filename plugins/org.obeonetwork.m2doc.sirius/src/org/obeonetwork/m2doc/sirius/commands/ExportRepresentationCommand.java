@@ -11,8 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.commands;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -136,7 +135,7 @@ public class ExportRepresentationCommand extends RecordingCommand {
     protected Command activateLayers(DDiagram diagram) {
         CompoundCommand compoundCmd = new CompoundCommand();
         // deactivate current activated layers
-        for (Layer layer : Lists.newArrayList(diagram.getActivatedLayers())) {
+        for (Layer layer : new ArrayList<Layer>(diagram.getActivatedLayers())) {
             ChangeLayerActivationCommand cmd = new ChangeLayerActivationCommand(this.editingDomain, diagram, layer,
                     MONITOR);
             compoundCmd.append(cmd);

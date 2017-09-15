@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -112,7 +110,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
 
         TokenType type = getNextTokenType();
-        List<TokenType> endTypeList = Lists.newArrayList(endTypes);
+        List<TokenType> endTypeList = Arrays.asList(endTypes);
         endBlock: while (!endTypeList.contains(type)) {
             switch (type) {
                 case USERCONTENT:

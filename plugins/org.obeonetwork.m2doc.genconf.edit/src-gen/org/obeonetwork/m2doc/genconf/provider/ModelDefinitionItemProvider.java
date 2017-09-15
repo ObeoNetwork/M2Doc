@@ -2,17 +2,15 @@
  */
 package org.obeonetwork.m2doc.genconf.provider;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -114,37 +112,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                             new ValidationServices(queryEnvironment));
                                     final Set<IType> possibleTypes = properties.getVariableTypes(validator,
                                             queryEnvironment, properties.getVariables().get(modelDefinition.getKey()));
-                                    final Iterable<?> filter = Iterables.filter(super.getChoiceOfValues(object),
-                                            new Predicate<Object>() {
-
-                                                /**
-                                                 * (non-Javadoc)
-                                                 * 
-                                                 * @see com.google.common.base.Predicate#apply(java.lang.Object)
-                                                 */
-                                                @Override
-                                                public boolean apply(Object value) {
-                                                    return value == null || (value instanceof EObject
-                                                        && isCompatibleType(possibleTypes, ((EObject) value).eClass()));
-                                                }
-
-                                                private boolean isCompatibleType(Set<IType> possibleTypes,
-                                                        EClass eClass) {
-                                                    boolean res = false;
-
-                                                    final IType variableType = new EClassifierType(queryEnvironment,
-                                                            eClass);
-                                                    for (IType possibleType : possibleTypes) {
-                                                        if (possibleType.isAssignableFrom(variableType)) {
-                                                            res = true;
-                                                            break;
-                                                        }
-                                                    }
-
-                                                    return res;
-                                                }
-                                            });
-                                    res = Lists.newArrayList(filter);
+                                    res = filterTypes(queryEnvironment, possibleTypes, super.getChoiceOfValues(object));
                                 } catch (IOException e) {
                                     res = super.getChoiceOfValues(object);
                                 }
@@ -155,6 +123,36 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
 
                         return res;
                     }
+
+                    private List<?> filterTypes(IReadOnlyQueryEnvironment queryEnvironment, Set<IType> possibleTypes,
+                            Collection<?> values) {
+                        final List<Object> res = new ArrayList<Object>();
+
+                        for (Object value : values) {
+                            if (value == null || (value instanceof EObject
+                                && isCompatibleType(queryEnvironment, possibleTypes, ((EObject) value).eClass()))) {
+                                res.add(value);
+                            }
+                        }
+
+                        return res;
+                    }
+
+                    private boolean isCompatibleType(IReadOnlyQueryEnvironment queryEnvironment,
+                            Set<IType> possibleTypes, EClass eClass) {
+                        boolean res = false;
+
+                        final IType variableType = new EClassifierType(queryEnvironment, eClass);
+                        for (IType possibleType : possibleTypes) {
+                            if (possibleType.isAssignableFrom(variableType)) {
+                                res = true;
+                                break;
+                            }
+                        }
+
+                        return res;
+                    }
+
                 });
 
     }

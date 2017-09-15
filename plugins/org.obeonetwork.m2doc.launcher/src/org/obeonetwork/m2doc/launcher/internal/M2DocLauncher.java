@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.launcher.internal;
 
-import com.google.common.collect.Iterables;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -111,7 +110,11 @@ public class M2DocLauncher implements IApplication {
                     try {
                         Resource r = s.getResource(uri, true);
                         r.load(Collections.EMPTY_MAP);
-                        Iterables.addAll(loadedGenConfs, Iterables.filter(r.getContents(), Generation.class));
+                        for (EObject eObj : r.getContents()) {
+                            if (eObj instanceof Generation) {
+                                loadedGenConfs.add((Generation) eObj);
+                            }
+                        }
                     } catch (IOException e) {
                         somethingWentWrong = true;
                         M2DocLauncherPlugin.INSTANCE

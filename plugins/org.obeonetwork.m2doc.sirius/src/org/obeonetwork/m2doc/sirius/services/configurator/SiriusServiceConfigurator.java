@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.services.configurator;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,7 +48,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     /**
      * The {@link List} of options managed by this configurator.
      */
-    public static final List<String> OPTIONS = Lists.newArrayList(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+    public static final List<String> OPTIONS = initOptions();
 
     /**
      * Mapping from {@link IReadOnlyQueryEnvironment} to {@link M2DocSiriusServices}.
@@ -68,6 +66,19 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                 res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
             }
         }
+        return res;
+    }
+
+    /**
+     * Initializes options.
+     * 
+     * @return the {@link List} of options.
+     */
+    private static List<String> initOptions() {
+        final List<String> res = new ArrayList<String>();
+
+        res.add(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+
         return res;
     }
 

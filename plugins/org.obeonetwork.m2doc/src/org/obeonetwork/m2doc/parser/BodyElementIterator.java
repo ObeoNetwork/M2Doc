@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 
@@ -36,7 +36,11 @@ public class BodyElementIterator implements Iterator<ParsingToken> {
      *            the {@link IBodyElement}
      */
     public BodyElementIterator(IBodyElement bodyElement) {
-        this.iterator = Lists.newArrayList(bodyElement).iterator();
+        final List<IBodyElement> list = new ArrayList<IBodyElement>();
+
+        list.add(bodyElement);
+
+        this.iterator = list.iterator();
     }
 
     @Override

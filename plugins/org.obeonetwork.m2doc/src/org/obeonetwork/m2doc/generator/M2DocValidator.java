@@ -11,9 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import com.google.common.collect.Maps;
-
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -96,7 +95,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
                 documentTemplate.getDocument());
-        Map<String, Set<IType>> types = Maps.newLinkedHashMap();
+        Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
         for (Entry<String, String> entry : templateProperties.getVariables().entrySet()) {
             final Set<IType> variableTypes = templateProperties.getVariableTypes(aqlValidator, queryEnvironment,
                     entry.getValue());

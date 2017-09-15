@@ -1,6 +1,7 @@
 package org.obeonetwork.m2doc.sirius.services;
 
-import com.google.common.collect.Sets;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.dialect.command.DeleteRepresentationCommand;
@@ -46,8 +47,10 @@ public class CleaningAIRDJob implements Runnable {
      */
     @Override
     public void run() {
+        final Set<DRepresentationDescriptor> representations = new LinkedHashSet<DRepresentationDescriptor>();
+        representations.add(representation);
         session.getTransactionalEditingDomain().getCommandStack()
-                .execute(new DeleteRepresentationCommand(session, Sets.newHashSet(representation)));
+                .execute(new DeleteRepresentationCommand(session, representations));
     }
 
 }

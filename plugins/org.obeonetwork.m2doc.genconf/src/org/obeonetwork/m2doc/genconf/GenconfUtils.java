@@ -11,9 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf;
 
-import com.google.common.collect.Lists;
-import com.google.common.io.Files;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -439,7 +436,8 @@ public final class GenconfUtils {
             // launch generation
             M2DocUtils.generate(template, queryEnvironment, definitions, generatedURI, monitor);
 
-            List<URI> generatedFiles = Lists.newArrayList(generatedURI);
+            List<URI> generatedFiles = new ArrayList<URI>();
+            generatedFiles.add(generatedURI);
             if (validationURI != null) {
                 URI validationFile = validationURI;
                 generatedFiles.add(validationFile);
@@ -565,8 +563,9 @@ public final class GenconfUtils {
     private static URI getValidationLogFile(URI templateURI, ValidationMessageLevel level) {
         final URI res;
 
-        final URI uri = templateURI.trimSegments(1).appendSegment(
-                Files.getNameWithoutExtension(templateURI.lastSegment()) + "-" + level.name().toLowerCase());
+        String lastSegmentNoExtension = templateURI.lastSegment().replaceFirst("[.][^.]+$", "");
+        final URI uri = templateURI.trimSegments(1)
+                .appendSegment(lastSegmentNoExtension + "-" + level.name().toLowerCase());
         if (URI.validSegment(templateURI.fileExtension())) {
             res = uri.appendFileExtension(templateURI.fileExtension());
         } else {

@@ -11,9 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.properties;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,12 +128,12 @@ public class TemplateCustomProperties {
     /**
      * A map that associates variables declared in the template with their intended type.
      */
-    private final Map<String, String> variables = Maps.newLinkedHashMap();
+    private final Map<String, String> variables = new LinkedHashMap<String, String>();
 
     /**
      * The list of nsURIs declared in the template.
      */
-    private final List<String> nsURIs = Lists.newArrayList();
+    private final List<String> nsURIs = new ArrayList<String>();
 
     /**
      * The {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).

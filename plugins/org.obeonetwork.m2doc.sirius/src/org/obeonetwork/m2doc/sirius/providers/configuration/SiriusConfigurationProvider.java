@@ -11,9 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.providers.configuration;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -113,12 +111,13 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * @return uris list
      */
     protected List<String> addURIs(Session session) {
-        List<String> uris = Lists.newArrayList();
+        List<String> uris = new ArrayList<String>();
         for (Resource resource : session.getSemanticResources()) {
             if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof EObject
                 && resource.getContents().get(0).eClass() != null
                 && resource.getContents().get(0).eClass().getEPackage() != null
-                && !Strings.isNullOrEmpty(resource.getContents().get(0).eClass().getEPackage().getNsURI())) {
+                && resource.getContents().get(0).eClass().getEPackage().getNsURI() != null
+                && !resource.getContents().get(0).eClass().getEPackage().getNsURI().isEmpty()) {
                 String nsURI = resource.getContents().get(0).eClass().getEPackage().getNsURI();
                 if (!uris.contains(nsURI)) {
                     uris.add(nsURI);
@@ -184,7 +183,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
     @Override
     public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate template) {
         // do nothing.
-        return Lists.newArrayList();
+        return new ArrayList<URI>();
     }
 
     @Override

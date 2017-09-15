@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
-import com.google.common.base.Strings;
-
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
@@ -44,7 +42,20 @@ public class LinkServices {
     )
     // @formatter:on
     public MHyperLink asLink(String text, String url) {
-        return new MHyperLinkImpl(Strings.nullToEmpty(text), Strings.nullToEmpty(url));
+        final String localText;
+        if (text != null) {
+            localText = text;
+        } else {
+            localText = "";
+        }
+        final String localURL;
+        if (url != null) {
+            localURL = url;
+        } else {
+            localURL = "";
+        }
+
+        return new MHyperLinkImpl(localText, localURL);
     }
 
     // @formatter:off

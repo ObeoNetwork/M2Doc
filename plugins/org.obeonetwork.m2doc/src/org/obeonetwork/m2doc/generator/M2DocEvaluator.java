@@ -11,13 +11,12 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import com.google.common.collect.Maps;
-
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -842,7 +841,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                     insertMessage(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
                             repetition.getIterationVar() + " value is null.");
                 }
-                final Map<String, Object> newVariables = Maps.newHashMap(variablesStack.peek());
+                final Map<String, Object> newVariables = new HashMap<String, Object>(variablesStack.peek());
                 variablesStack.push(newVariables);
                 try {
                     for (Object val : iteration) {
@@ -878,7 +877,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
                 insertQueryEvaluationMessages(let, queryResult.getDiagnostic());
             } else {
-                final Map<String, Object> newVariables = Maps.newHashMap(variablesStack.peek());
+                final Map<String, Object> newVariables = new HashMap<String, Object>(variablesStack.peek());
                 variablesStack.push(newVariables);
                 try {
                     newVariables.put(let.getName(), queryResult.getResult());
