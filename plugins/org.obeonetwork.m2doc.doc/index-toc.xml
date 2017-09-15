@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="doc/index.html" label="index">
+	<topic href="doc/index.html" label="Overview"></topic>
+	<topic href="doc/index.html#installation" label="Installation"></topic>
+	<topic href="doc/index.html#generate-a-document" label="Generate a document">
+		<topic href="doc/index.html#launching-generation" label="Launching generation"></topic>
+		<topic href="doc/index.html#initializing-generation" label="Initializing generation"></topic>
+		<topic href="doc/index.html#validating-a-generation" label="Validating a generation"></topic>
+		<topic href="doc/index.html#generation-configuration-editor" label="Generation configuration editor"></topic>
+	</topic>
+	<topic href="doc/index.html#template-authoring" label="Template authoring">
+		<topic href="doc/index.html#syntax" label="Syntax">
+			<topic href="doc/index.html#comment" label="Comment"></topic>
+			<topic href="doc/index.html#static-statement" label="Static statement"></topic>
+			<topic href="doc/index.html#query" label="Query"></topic>
+			<topic href="doc/index.html#conditional" label="Conditional"></topic>
+			<topic href="doc/index.html#repetition" label="Repetition"></topic>
+			<topic href="doc/index.html#let" label="Let"></topic>
+			<topic href="doc/index.html#bookmark" label="Bookmark"></topic>
+			<topic href="doc/index.html#user-documentation" label="User Documentation"></topic>
+		</topic>
+		<topic href="doc/index.html#services" label="Services"></topic>
+		<topic href="doc/index.html#template-editor" label="Template editor"></topic>
+	</topic>
+	<topic href="doc/index.html#provide-new-services" label="Provide new services">
+		<topic href="doc/index.html#service-class" label="Service class">
+			<topic href="doc/index.html#default-constructor" label="Default constructor"></topic>
+			<topic href="doc/index.html#custom-constructor" label="Custom constructor"></topic>
+		</topic>
+		<topic href="doc/index.html#service-token" label="Service token"></topic>
+		<topic href="doc/index.html#special-return-types" label="Special return types"></topic>
+	</topic>
+	<topic href="doc/index.html#template-testing" label="Template testing"></topic>
+	<topic href="doc/index.html#using-m2doc-programmatically" label="Using M2Doc programmatically">
+		<topic href="doc/index.html#parsing" label="Parsing"></topic>
+		<topic href="doc/index.html#validation" label="Validation"></topic>
+		<topic href="doc/index.html#generation" label="Generation">
+			<topic href="doc/index.html#core-generation-api" label="Core generation API"></topic>
+			<topic href="doc/index.html#generation-configuration-api" label="Generation configuration API"></topic>
+		</topic>
+	</topic>
+</toc>

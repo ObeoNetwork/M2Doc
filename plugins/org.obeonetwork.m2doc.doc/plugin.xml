@@ -15,7 +15,7 @@
 <extension
          point="org.eclipse.help.toc">
       <toc
-            file="m2DocToc.xml"
+            file="index-toc.xml"
             primary="true">
       </toc>
    </extension>
