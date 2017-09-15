@@ -2,7 +2,7 @@
 <feature
       id="org.obeonetwork.m2doc.launcher.feature"
       label="Feature for the M2doc Launcher"
-      version="0.12.0.qualifier">
+      version="1.0.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
