@@ -42,7 +42,7 @@ You probably want to start with the [Instalation](https://github.com/ObeoNetwork
 
 
 * Template developper, You want to create your own template:
-  * *see [Template authoring](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#template-authoring)
+  * see [Template authoring](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#template-authoring)
   * *see [Provide new services](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#provide-new-services) (optional)*
   * *see [Validating a generation](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#validating-a-generation) (optional)*
   * *see [Template testing](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#template-testing) (optional)*
