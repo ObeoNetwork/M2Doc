@@ -31,6 +31,7 @@
 		<topic href="doc/index.html#special-return-types" label="Special return types"></topic>
 	</topic>
 	<topic href="doc/index.html#template-testing" label="Template testing"></topic>
+	<topic href="doc/index.html#maven" label="Maven"></topic>
 	<topic href="doc/index.html#using-m2doc-programmatically" label="Using M2Doc programmatically">
 		<topic href="doc/index.html#parsing" label="Parsing"></topic>
 		<topic href="doc/index.html#validation" label="Validation"></topic>

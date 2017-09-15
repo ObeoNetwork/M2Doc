@@ -23,24 +23,50 @@ The following set of functionalities is currently supported :
 * generation of dynamic content in the document's header and footer,
 * definition of an arbitrary number of model entries through a configuration model which allows to define the values of variables used in the template
 * definition and registration of AQL services to be used in the template's queries,
-* static parts in the templates are produced as is in the generated documents. 
+* static parts in the templates are produced as is in the generated documents.
+* launch document generation from maven.
 
-The sirius features are not mandatory and require a specific feature to be installed. 
+The sirius functionalities are not mandatory and require a specific feature to be installed. 
 
 ## Documentation
 
-The complete description of the functionalities can be found in the [User Guide](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/user/M2Doc%20User%20Guide.textile)
+The complete description of the functionalities can be found in the [Reference documentation](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown)
 
 M2Doc is built around an open architecture that allows extensions to connect any modeling technology that provides representations and diagrams to M2Doc the way we did with Sirius. 
 
-The proper way to achieve this is described in the [Developer Guide] (https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/developer/M2Doc%20Developer%20Guide.textile)
+You probably want to start with the [Instalation](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#installation) section. Then you migth have one of the following roles:
+
+* Template user:
+
+... You already have the template and want to generate the document:
+
+... see [Generate a document](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#generate-a-document)
+... *see [Maven](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#maven) (optional)*
+
+
+* Template developper
+
+... You want to create your own template:
+
+... see [Template authoring](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#template-authoring)
+... *see [Provide new services](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#provide-new-services) (optional)*
+... *see [Validating a generation](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#validating-a-generation) (optional)*
+... *see [Template testing](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#template-testing) (optional)*
+
+* Integrator
+
+* You want to provide document generation in your own project using M2Doc:
+
+... see [Using M2Doc programmatically](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.doc/doc/index.markdown#using-m2doc-programmatically)
+... *see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)*
+
 ##Example
 
 As a preview here follows a screen shot of a template's fragment and the corresponding generation result for a database. 
 
-![DB Template](doc/doc/DBTemplate.png)
+![DB Template](doc/DBTemplate.png)
 The generation results looks like this 
-![DB Result](doc/doc/DBResult.png)
+![DB Result](doc/DBResult.png)
 
 ## Architecture 
 
@@ -49,11 +75,11 @@ The overall architecture of M2Doc is organized around three building blocs:
 * AQL for querying the models
 * EMF as a general platform
 
-![Technical architecture](doc/doc/TechnicalArchitecture.png)
+![Technical architecture](doc/TechnicalArchitecture.png)
 
 The workflow of M2Doc is depicted below: 
 
-![M2Doc Workflow](doc/doc/M2DocWorkflow.png)
+![M2Doc Workflow](doc/M2DocWorkflow.png)
 
 ## Download & Installation
 

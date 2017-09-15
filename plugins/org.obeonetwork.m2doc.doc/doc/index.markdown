@@ -216,6 +216,14 @@ Default implementations are also provided by M2Doc in [this package](https://git
 
 To simplify testing while developing M2Doc, a [JUnit](http://junit.org/junit4/) test suite has been implemented. It use a given folder as input and list each sub directory following a naming pattern as a test case. You can use the same test suite for your own tests. And example of the test suite implementation [QueryTests](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.tests/src/org/obeonetwork/m2doc/tests/QueryTests.java) with the folder [resources/query](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query).
 
+# Maven
+
+You can launch your generation using [Maven](https://maven.apache.org/) and [Tycho](https://eclipse.org/tycho/). An example is available [here](https://github.com/ObeoNetwork/M2Doc/tree/master/doc/generate-with-maven). You probably have a look at the [pom.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/doc/generate-with-maven/myModelToDocx/pom.xml) file. To launch the build and the generation you can simply use the following command:
+
+```
+mvn clean verify
+```
+
 # Using M2Doc programmatically
 
 This section is for developers wanting to integrate M2Doc in there own project. It will show how to use main features of M2Doc programmatically. Since M2Doc use AQL for expressions it can be useful to have a look at [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically).
