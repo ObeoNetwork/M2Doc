@@ -192,6 +192,9 @@ public class M2DocTemplateEditor extends EditorPart {
             List<String> availableTypes = new ArrayList<String>();
 
             availableTypes.add(TemplateCustomProperties.STRING_TYPE);
+            availableTypes.add(TemplateCustomProperties.INTEGER_TYPE);
+            availableTypes.add(TemplateCustomProperties.REAL_TYPE);
+            availableTypes.add(TemplateCustomProperties.BOOLEAN_TYPE);
 
             final List<String> availiablesTypes = new ArrayList<String>();
             availableTypes.addAll(getEClassifiers(EcorePackage.eINSTANCE));

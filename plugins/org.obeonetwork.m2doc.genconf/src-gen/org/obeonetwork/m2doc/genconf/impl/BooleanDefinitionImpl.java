@@ -5,44 +5,44 @@ package org.obeonetwork.m2doc.genconf.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.obeonetwork.m2doc.genconf.BooleanDefinition;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
-import org.obeonetwork.m2doc.genconf.StringDefinition;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>String Definition</b></em>'.
+ * An implementation of the model object '<em><b>Boolean Definition</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl#getValue <em>Value</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.impl.BooleanDefinitionImpl#isValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class StringDefinitionImpl extends DefinitionImpl implements StringDefinition {
+public class BooleanDefinitionImpl extends DefinitionImpl implements BooleanDefinition {
     /**
-     * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+     * The default value of the '{@link #isValue() <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see #getValue()
+     * @see #isValue()
      * @generated
      * @ordered
      */
-    protected static final String VALUE_EDEFAULT = null;
+    protected static final boolean VALUE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
+     * The cached value of the '{@link #isValue() <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see #getValue()
+     * @see #isValue()
      * @generated
      * @ordered
      */
-    protected String value = VALUE_EDEFAULT;
+    protected boolean value = VALUE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -50,7 +50,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * 
      * @generated
      */
-    protected StringDefinitionImpl() {
+    protected BooleanDefinitionImpl() {
         super();
     }
 
@@ -62,7 +62,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      */
     @Override
     protected EClass eStaticClass() {
-        return GenconfPackage.Literals.STRING_DEFINITION;
+        return GenconfPackage.Literals.BOOLEAN_DEFINITION;
     }
 
     /**
@@ -71,7 +71,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * 
      * @generated
      */
-    public String getValue() {
+    public boolean isValue() {
         return value;
     }
 
@@ -81,11 +81,11 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * 
      * @generated
      */
-    public void setValue(String newValue) {
-        String oldValue = value;
+    public void setValue(boolean newValue) {
+        boolean oldValue = value;
         value = newValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.STRING_DEFINITION__VALUE, oldValue,
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.BOOLEAN_DEFINITION__VALUE, oldValue,
                     value));
     }
 
@@ -98,8 +98,8 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
-                return getValue();
+            case GenconfPackage.BOOLEAN_DEFINITION__VALUE:
+                return isValue();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -113,8 +113,8 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
-                setValue((String) newValue);
+            case GenconfPackage.BOOLEAN_DEFINITION__VALUE:
+                setValue((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -129,7 +129,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
+            case GenconfPackage.BOOLEAN_DEFINITION__VALUE:
                 setValue(VALUE_EDEFAULT);
                 return;
         }
@@ -145,8 +145,8 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
-                return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+            case GenconfPackage.BOOLEAN_DEFINITION__VALUE:
+                return value != VALUE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -169,4 +169,4 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
         return result.toString();
     }
 
-} // StringDefinitionImpl
+} // BooleanDefinitionImpl

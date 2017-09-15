@@ -200,6 +200,12 @@ public final class GenconfUtils {
                 result.put(((ModelDefinition) def).getKey(), val);
             } else if (def instanceof StringDefinition) {
                 result.put(((StringDefinition) def).getKey(), ((StringDefinition) def).getValue());
+            } else if (def instanceof IntegerDefinition) {
+                result.put(((IntegerDefinition) def).getKey(), ((IntegerDefinition) def).getValue());
+            } else if (def instanceof RealDefinition) {
+                result.put(((RealDefinition) def).getKey(), ((RealDefinition) def).getValue());
+            } else if (def instanceof BooleanDefinition) {
+                result.put(((BooleanDefinition) def).getKey(), ((BooleanDefinition) def).isValue());
             } else {
                 throw new UnsupportedOperationException();
             }
@@ -296,11 +302,23 @@ public final class GenconfUtils {
 
         final ClassType eObjectType = new ClassType(queryEnvironment, EObject.class);
         final ClassType stringType = new ClassType(queryEnvironment, String.class);
+        final ClassType integerType = new ClassType(queryEnvironment, Integer.class);
+        final ClassType realType = new ClassType(queryEnvironment, Double.class);
+        final ClassType booleanType = new ClassType(queryEnvironment, Boolean.class);
         for (IType type : types) {
             if (eObjectType.isAssignableFrom(type) && definition instanceof ModelDefinition) {
                 res = true;
                 break;
             } else if (stringType.isAssignableFrom(type) && definition instanceof StringDefinition) {
+                res = true;
+                break;
+            } else if (integerType.isAssignableFrom(type) && definition instanceof IntegerDefinition) {
+                res = true;
+                break;
+            } else if (realType.isAssignableFrom(type) && definition instanceof RealDefinition) {
+                res = true;
+                break;
+            } else if (booleanType.isAssignableFrom(type) && definition instanceof BooleanDefinition) {
                 res = true;
                 break;
             }

@@ -59,12 +59,15 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.obeonetwork.m2doc.POIServices;
+import org.obeonetwork.m2doc.genconf.BooleanDefinition;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.IntegerDefinition;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
+import org.obeonetwork.m2doc.genconf.RealDefinition;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.GenconfEditor;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -90,6 +93,12 @@ public class CustomGenconfEditor extends GenconfEditor {
             final Definition definition = (Definition) cell.getElement();
             if (definition instanceof StringDefinition) {
                 cell.setText(((StringDefinition) definition).getValue());
+            } else if (definition instanceof IntegerDefinition) {
+                cell.setText(String.valueOf(((IntegerDefinition) definition).getValue()));
+            } else if (definition instanceof RealDefinition) {
+                cell.setText(String.valueOf(((RealDefinition) definition).getValue()));
+            } else if (definition instanceof BooleanDefinition) {
+                cell.setText(String.valueOf(((BooleanDefinition) definition).isValue()));
             } else if (definition instanceof ModelDefinition) {
                 final String text;
                 final EObject eObj = ((ModelDefinition) definition).getValue();
@@ -176,9 +185,30 @@ public class CustomGenconfEditor extends GenconfEditor {
                             variableNames.add(entry.getKey());
                         }
                     }
+                } else if (element instanceof IntegerDefinition) {
+                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
+                        if (TemplateCustomProperties.INTEGER_TYPE.equals(entry.getValue())) {
+                            variableNames.add(entry.getKey());
+                        }
+                    }
+                } else if (element instanceof RealDefinition) {
+                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
+                        if (TemplateCustomProperties.REAL_TYPE.equals(entry.getValue())) {
+                            variableNames.add(entry.getKey());
+                        }
+                    }
+                } else if (element instanceof BooleanDefinition) {
+                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
+                        if (TemplateCustomProperties.BOOLEAN_TYPE.equals(entry.getValue())) {
+                            variableNames.add(entry.getKey());
+                        }
+                    }
                 } else if (element instanceof ModelDefinition) {
                     for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
-                        if (!TemplateCustomProperties.STRING_TYPE.equals(entry.getValue())) {
+                        if (!TemplateCustomProperties.STRING_TYPE.equals(entry.getValue())
+                            && !TemplateCustomProperties.INTEGER_TYPE.equals(entry.getValue())
+                            && !TemplateCustomProperties.REAL_TYPE.equals(entry.getValue())
+                            && !TemplateCustomProperties.BOOLEAN_TYPE.equals(entry.getValue())) {
                             variableNames.add(entry.getKey());
                         }
                     }

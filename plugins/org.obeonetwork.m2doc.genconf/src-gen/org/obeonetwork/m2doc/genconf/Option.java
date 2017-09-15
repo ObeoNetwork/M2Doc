@@ -8,13 +8,12 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Option</b></em>'.
  * <!-- end-user-doc -->
- *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.genconf.Option#getName <em>Name</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.genconf.Option#getValue <em>Value</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.Option#getName <em>Name</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.Option#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getOption()
@@ -30,6 +29,7 @@ public interface Option extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getOption_Name()
@@ -42,7 +42,9 @@ public interface Option extends EObject {
      * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.Option#getName <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
      * @see #getName()
      * @generated
      */
@@ -56,6 +58,7 @@ public interface Option extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Value</em>' attribute.
      * @see #setValue(String)
      * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getOption_Value()
@@ -68,7 +71,9 @@ public interface Option extends EObject {
      * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.Option#getValue <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Value</em>' attribute.
+     * 
+     * @param value
+     *            the new value of the '<em>Value</em>' attribute.
      * @see #getValue()
      * @generated
      */

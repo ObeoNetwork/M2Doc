@@ -3,12 +3,9 @@
 package org.obeonetwork.m2doc.genconf.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.Option;
 
@@ -20,8 +17,8 @@ import org.obeonetwork.m2doc.genconf.Option;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl#getValue <em>Value</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
@@ -31,6 +28,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * The default value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -41,6 +39,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -51,6 +50,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getValue()
      * @generated
      * @ordered
@@ -61,6 +61,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getValue()
      * @generated
      * @ordered
@@ -70,6 +71,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected OptionImpl() {
@@ -79,6 +81,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -89,6 +92,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public String getName() {
@@ -98,6 +102,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setName(String newName) {
@@ -110,6 +115,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public String getValue() {
@@ -119,6 +125,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setValue(String newValue) {
@@ -131,6 +138,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -147,16 +155,17 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case GenconfPackage.OPTION__NAME:
-                setName((String)newValue);
+                setName((String) newValue);
                 return;
             case GenconfPackage.OPTION__VALUE:
-                setValue((String)newValue);
+                setValue((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -165,6 +174,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -183,6 +193,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -199,11 +210,13 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (name: ");
@@ -214,4 +227,4 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
         return result.toString();
     }
 
-} //OptionImpl
+} // OptionImpl

@@ -6,22 +6,22 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
-import org.obeonetwork.m2doc.genconf.StringDefinition;
+import org.obeonetwork.m2doc.genconf.IntegerDefinition;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>String Definition</b></em>'.
+ * An implementation of the model object '<em><b>Integer Definition</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl#getValue <em>Value</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.impl.IntegerDefinitionImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class StringDefinitionImpl extends DefinitionImpl implements StringDefinition {
+public class IntegerDefinitionImpl extends DefinitionImpl implements IntegerDefinition {
     /**
      * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -31,7 +31,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * @generated
      * @ordered
      */
-    protected static final String VALUE_EDEFAULT = null;
+    protected static final int VALUE_EDEFAULT = 0;
 
     /**
      * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
@@ -42,7 +42,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * @generated
      * @ordered
      */
-    protected String value = VALUE_EDEFAULT;
+    protected int value = VALUE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -50,7 +50,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * 
      * @generated
      */
-    protected StringDefinitionImpl() {
+    protected IntegerDefinitionImpl() {
         super();
     }
 
@@ -62,7 +62,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      */
     @Override
     protected EClass eStaticClass() {
-        return GenconfPackage.Literals.STRING_DEFINITION;
+        return GenconfPackage.Literals.INTEGER_DEFINITION;
     }
 
     /**
@@ -71,7 +71,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * 
      * @generated
      */
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
@@ -81,11 +81,11 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
      * 
      * @generated
      */
-    public void setValue(String newValue) {
-        String oldValue = value;
+    public void setValue(int newValue) {
+        int oldValue = value;
         value = newValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.STRING_DEFINITION__VALUE, oldValue,
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.INTEGER_DEFINITION__VALUE, oldValue,
                     value));
     }
 
@@ -98,7 +98,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
+            case GenconfPackage.INTEGER_DEFINITION__VALUE:
                 return getValue();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -113,8 +113,8 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
-                setValue((String) newValue);
+            case GenconfPackage.INTEGER_DEFINITION__VALUE:
+                setValue((Integer) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -129,7 +129,7 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
+            case GenconfPackage.INTEGER_DEFINITION__VALUE:
                 setValue(VALUE_EDEFAULT);
                 return;
         }
@@ -145,8 +145,8 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case GenconfPackage.STRING_DEFINITION__VALUE:
-                return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+            case GenconfPackage.INTEGER_DEFINITION__VALUE:
+                return value != VALUE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -169,4 +169,4 @@ public class StringDefinitionImpl extends DefinitionImpl implements StringDefini
         return result.toString();
     }
 
-} // StringDefinitionImpl
+} // IntegerDefinitionImpl

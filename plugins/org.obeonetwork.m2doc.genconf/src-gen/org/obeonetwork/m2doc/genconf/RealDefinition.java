@@ -4,20 +4,20 @@ package org.obeonetwork.m2doc.genconf;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>String Definition</b></em>'.
+ * A representation of the model object '<em><b>Real Definition</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.genconf.StringDefinition#getValue <em>Value</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.RealDefinition#getValue <em>Value</em>}</li>
  * </ul>
  *
- * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getStringDefinition()
+ * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getRealDefinition()
  * @model
  * @generated
  */
-public interface StringDefinition extends Definition {
+public interface RealDefinition extends Definition {
     /**
      * Returns the value of the '<em><b>Value</b></em>' attribute.
      * <!-- begin-user-doc -->
@@ -28,15 +28,15 @@ public interface StringDefinition extends Definition {
      * <!-- end-user-doc -->
      * 
      * @return the value of the '<em>Value</em>' attribute.
-     * @see #setValue(String)
-     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getStringDefinition_Value()
+     * @see #setValue(double)
+     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getRealDefinition_Value()
      * @model
      * @generated
      */
-    String getValue();
+    double getValue();
 
     /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.StringDefinition#getValue <em>Value</em>}' attribute.
+     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.RealDefinition#getValue <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -45,6 +45,6 @@ public interface StringDefinition extends Definition {
      * @see #getValue()
      * @generated
      */
-    void setValue(String value);
+    void setValue(double value);
 
-} // StringDefinition
+} // RealDefinition

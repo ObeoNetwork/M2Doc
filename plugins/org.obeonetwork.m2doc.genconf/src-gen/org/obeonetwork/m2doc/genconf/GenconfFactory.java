@@ -9,49 +9,85 @@ import org.eclipse.emf.ecore.EFactory;
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
  * <!-- end-user-doc -->
+ * 
  * @see org.obeonetwork.m2doc.genconf.GenconfPackage
  * @generated
  */
 public interface GenconfFactory extends EFactory {
-	/**
+    /**
      * The singleton instance of the factory.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @generated
      */
-	GenconfFactory eINSTANCE = org.obeonetwork.m2doc.genconf.impl.GenconfFactoryImpl.init();
+    GenconfFactory eINSTANCE = org.obeonetwork.m2doc.genconf.impl.GenconfFactoryImpl.init();
 
-	/**
+    /**
      * Returns a new object of class '<em>Generation</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @return a new object of class '<em>Generation</em>'.
      * @generated
      */
-	Generation createGeneration();
+    Generation createGeneration();
 
-	/**
+    /**
      * Returns a new object of class '<em>Model Definition</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @return a new object of class '<em>Model Definition</em>'.
      * @generated
      */
-	ModelDefinition createModelDefinition();
+    ModelDefinition createModelDefinition();
 
-	/**
+    /**
      * Returns a new object of class '<em>String Definition</em>'.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @return a new object of class '<em>String Definition</em>'.
      * @generated
      */
-	StringDefinition createStringDefinition();
+    StringDefinition createStringDefinition();
 
-	/**
+    /**
+     * Returns a new object of class '<em>Integer Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Integer Definition</em>'.
+     * @generated
+     */
+    IntegerDefinition createIntegerDefinition();
+
+    /**
+     * Returns a new object of class '<em>Real Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Real Definition</em>'.
+     * @generated
+     */
+    RealDefinition createRealDefinition();
+
+    /**
+     * Returns a new object of class '<em>Boolean Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Boolean Definition</em>'.
+     * @generated
+     */
+    BooleanDefinition createBooleanDefinition();
+
+    /**
      * Returns a new object of class '<em>Option</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @return a new object of class '<em>Option</em>'.
      * @generated
      */
@@ -60,10 +96,11 @@ public interface GenconfFactory extends EFactory {
     /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @return the package supported by this factory.
      * @generated
      */
-	GenconfPackage getGenconfPackage();
+    GenconfPackage getGenconfPackage();
 
-} //GenconfFactory
+} // GenconfFactory

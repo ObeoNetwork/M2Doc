@@ -79,34 +79,24 @@ import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProper
 public class TemplateCustomProperties {
 
     /**
-     * id of the integer type to use in variable declaration properties (TODO not supported yet).
-     */
-    public static final String INT_TYPE = "Integer";
-
-    /**
-     * id of the real type to use in variable declaration properties (TODO not supported yet).
-     */
-    public static final String REAL_TYPE = "Real";
-
-    /**
      * id of the String type to use in variable declaration properties.
      */
     public static final String STRING_TYPE = "String";
 
     /**
-     * id of the boolean type to use in variable declaration properties (TODO not supported yet).
+     * id of the integer type to use in variable declaration properties.
+     */
+    public static final String INTEGER_TYPE = "Integer";
+
+    /**
+     * id of the real type to use in variable declaration properties.
+     */
+    public static final String REAL_TYPE = "Real";
+
+    /**
+     * id of the boolean type to use in variable declaration properties.
      */
     public static final String BOOLEAN_TYPE = "Boolean";
-
-    /**
-     * id of the date type to use in variable declaration properties (TODO not supported yet).
-     */
-    public static final String DATE_TYPE = "Date";
-
-    /**
-     * id of the object type to use in variable declaration properties (TODO not supported yet).
-     */
-    public static final String OBJECT_TYPE = "Object";
 
     /**
      * Prefix of the variable declaration custom properties.

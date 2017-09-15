@@ -4,10 +4,16 @@ package org.obeonetwork.m2doc.genconf.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
-
-import org.obeonetwork.m2doc.genconf.*;
+import org.obeonetwork.m2doc.genconf.BooleanDefinition;
+import org.obeonetwork.m2doc.genconf.Definition;
+import org.obeonetwork.m2doc.genconf.GenconfPackage;
+import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.IntegerDefinition;
+import org.obeonetwork.m2doc.genconf.ModelDefinition;
+import org.obeonetwork.m2doc.genconf.Option;
+import org.obeonetwork.m2doc.genconf.RealDefinition;
+import org.obeonetwork.m2doc.genconf.StringDefinition;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,156 +25,258 @@ import org.obeonetwork.m2doc.genconf.*;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
+ * 
  * @see org.obeonetwork.m2doc.genconf.GenconfPackage
  * @generated
  */
 public class GenconfSwitch<T> extends Switch<T> {
-	/**
+    /**
      * The cached model package
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @generated
      */
-	protected static GenconfPackage modelPackage;
+    protected static GenconfPackage modelPackage;
 
-	/**
+    /**
      * Creates an instance of the switch.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @generated
      */
-	public GenconfSwitch() {
+    public GenconfSwitch() {
         if (modelPackage == null) {
             modelPackage = GenconfPackage.eINSTANCE;
         }
     }
 
-	/**
+    /**
      * Checks whether this is a switch for the given package.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @param ePackage the package in question.
+     * <!-- end-user-doc -->
+     * 
+     * @param ePackage
+     *            the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
-	@Override
-	protected boolean isSwitchFor(EPackage ePackage) {
+    @Override
+    protected boolean isSwitchFor(EPackage ePackage) {
         return ePackage == modelPackage;
     }
 
-	/**
+    /**
      * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @return the first non-null result returned by a <code>caseXXX</code> call.
      * @generated
      */
-	@Override
-	protected T doSwitch(int classifierID, EObject theEObject) {
+    @Override
+    protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
             case GenconfPackage.GENERATION: {
-                Generation generation = (Generation)theEObject;
+                Generation generation = (Generation) theEObject;
                 T result = caseGeneration(generation);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case GenconfPackage.DEFINITION: {
-                Definition definition = (Definition)theEObject;
+                Definition definition = (Definition) theEObject;
                 T result = caseDefinition(definition);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case GenconfPackage.MODEL_DEFINITION: {
-                ModelDefinition modelDefinition = (ModelDefinition)theEObject;
+                ModelDefinition modelDefinition = (ModelDefinition) theEObject;
                 T result = caseModelDefinition(modelDefinition);
-                if (result == null) result = caseDefinition(modelDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseDefinition(modelDefinition);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case GenconfPackage.STRING_DEFINITION: {
-                StringDefinition stringDefinition = (StringDefinition)theEObject;
+                StringDefinition stringDefinition = (StringDefinition) theEObject;
                 T result = caseStringDefinition(stringDefinition);
-                if (result == null) result = caseDefinition(stringDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = caseDefinition(stringDefinition);
+                if (result == null)
+                    result = defaultCase(theEObject);
+                return result;
+            }
+            case GenconfPackage.INTEGER_DEFINITION: {
+                IntegerDefinition integerDefinition = (IntegerDefinition) theEObject;
+                T result = caseIntegerDefinition(integerDefinition);
+                if (result == null)
+                    result = caseDefinition(integerDefinition);
+                if (result == null)
+                    result = defaultCase(theEObject);
+                return result;
+            }
+            case GenconfPackage.REAL_DEFINITION: {
+                RealDefinition realDefinition = (RealDefinition) theEObject;
+                T result = caseRealDefinition(realDefinition);
+                if (result == null)
+                    result = caseDefinition(realDefinition);
+                if (result == null)
+                    result = defaultCase(theEObject);
+                return result;
+            }
+            case GenconfPackage.BOOLEAN_DEFINITION: {
+                BooleanDefinition booleanDefinition = (BooleanDefinition) theEObject;
+                T result = caseBooleanDefinition(booleanDefinition);
+                if (result == null)
+                    result = caseDefinition(booleanDefinition);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
             case GenconfPackage.OPTION: {
-                Option option = (Option)theEObject;
+                Option option = (Option) theEObject;
                 T result = caseOption(option);
-                if (result == null) result = defaultCase(theEObject);
+                if (result == null)
+                    result = defaultCase(theEObject);
                 return result;
             }
-            default: return defaultCase(theEObject);
+            default:
+                return defaultCase(theEObject);
         }
     }
 
-	/**
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Generation</em>'.
      * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Generation</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public T caseGeneration(Generation object) {
+    public T caseGeneration(Generation object) {
         return null;
     }
 
-	/**
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Definition</em>'.
      * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public T caseDefinition(Definition object) {
+    public T caseDefinition(Definition object) {
         return null;
     }
 
-	/**
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Model Definition</em>'.
      * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Model Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public T caseModelDefinition(ModelDefinition object) {
+    public T caseModelDefinition(ModelDefinition object) {
         return null;
     }
 
-	/**
+    /**
      * Returns the result of interpreting the object as an instance of '<em>String Definition</em>'.
      * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>String Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public T caseStringDefinition(StringDefinition object) {
+    public T caseStringDefinition(StringDefinition object) {
         return null;
     }
 
-	/**
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Integer Definition</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Integer Definition</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIntegerDefinition(IntegerDefinition object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Real Definition</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Real Definition</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRealDefinition(RealDefinition object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Boolean Definition</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Boolean Definition</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseBooleanDefinition(BooleanDefinition object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Option</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Option</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -180,17 +288,19 @@ public class GenconfSwitch<T> extends Switch<T> {
     /**
      * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
      * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch, but this is the last case anyway.
-	 * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch, but this is the last case anyway.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      * @generated
      */
-	@Override
-	public T defaultCase(EObject object) {
+    @Override
+    public T defaultCase(EObject object) {
         return null;
     }
 
-} //GenconfSwitch
+} // GenconfSwitch

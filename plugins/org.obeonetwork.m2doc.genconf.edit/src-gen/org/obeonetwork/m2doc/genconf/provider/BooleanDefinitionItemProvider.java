@@ -7,29 +7,21 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.obeonetwork.m2doc.genconf.Definition;
+import org.obeonetwork.m2doc.genconf.BooleanDefinition;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 
 /**
- * This is the item provider adapter for a {@link org.obeonetwork.m2doc.genconf.Definition} object.
+ * This is the item provider adapter for a {@link org.obeonetwork.m2doc.genconf.BooleanDefinition} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * 
  * @generated
  */
-public class DefinitionItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
-        IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class BooleanDefinitionItemProvider extends DefinitionItemProvider {
     /**
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
@@ -37,7 +29,7 @@ public class DefinitionItemProvider extends ItemProviderAdapter implements IEdit
      * 
      * @generated
      */
-    public DefinitionItemProvider(AdapterFactory adapterFactory) {
+    public BooleanDefinitionItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -53,26 +45,38 @@ public class DefinitionItemProvider extends ItemProviderAdapter implements IEdit
         if (itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            addKeyPropertyDescriptor(object);
+            addValuePropertyDescriptor(object);
         }
         return itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Key feature.
+     * This adds a property descriptor for the Value feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @generated
      */
-    protected void addKeyPropertyDescriptor(Object object) {
+    protected void addValuePropertyDescriptor(Object object) {
         itemPropertyDescriptors
                 .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-                        getResourceLocator(), getString("_UI_Definition_key_feature"),
-                        getString("_UI_PropertyDescriptor_description", "_UI_Definition_key_feature",
-                                "_UI_Definition_type"),
-                        GenconfPackage.Literals.DEFINITION__KEY, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                        getResourceLocator(), getString("_UI_BooleanDefinition_value_feature"),
+                        getString("_UI_PropertyDescriptor_description", "_UI_BooleanDefinition_value_feature",
+                                "_UI_BooleanDefinition_type"),
+                        GenconfPackage.Literals.BOOLEAN_DEFINITION__VALUE, true, false, false,
+                        ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This returns BooleanDefinition.gif.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Object getImage(Object object) {
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/BooleanDefinition"));
     }
 
     /**
@@ -95,9 +99,9 @@ public class DefinitionItemProvider extends ItemProviderAdapter implements IEdit
      */
     @Override
     public String getText(Object object) {
-        String label = ((Definition) object).getKey();
-        return label == null || label.length() == 0 ? getString("_UI_Definition_type")
-                : getString("_UI_Definition_type") + " " + label;
+        String label = ((BooleanDefinition) object).getKey();
+        return label == null || label.length() == 0 ? getString("_UI_BooleanDefinition_type")
+                : getString("_UI_BooleanDefinition_type") + " " + label;
     }
 
     /**
@@ -112,8 +116,8 @@ public class DefinitionItemProvider extends ItemProviderAdapter implements IEdit
     public void notifyChanged(Notification notification) {
         updateChildren(notification);
 
-        switch (notification.getFeatureID(Definition.class)) {
-            case GenconfPackage.DEFINITION__KEY:
+        switch (notification.getFeatureID(BooleanDefinition.class)) {
+            case GenconfPackage.BOOLEAN_DEFINITION__VALUE:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }
@@ -131,18 +135,6 @@ public class DefinitionItemProvider extends ItemProviderAdapter implements IEdit
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
-
-    /**
-     * Return the resource locator for this item provider's resources.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    @Override
-    public ResourceLocator getResourceLocator() {
-        return M2docconfEditPlugin.INSTANCE;
     }
 
 }

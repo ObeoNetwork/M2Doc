@@ -4,20 +4,20 @@ package org.obeonetwork.m2doc.genconf;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>String Definition</b></em>'.
+ * A representation of the model object '<em><b>Boolean Definition</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.genconf.StringDefinition#getValue <em>Value</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.BooleanDefinition#isValue <em>Value</em>}</li>
  * </ul>
  *
- * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getStringDefinition()
+ * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getBooleanDefinition()
  * @model
  * @generated
  */
-public interface StringDefinition extends Definition {
+public interface BooleanDefinition extends Definition {
     /**
      * Returns the value of the '<em><b>Value</b></em>' attribute.
      * <!-- begin-user-doc -->
@@ -28,23 +28,23 @@ public interface StringDefinition extends Definition {
      * <!-- end-user-doc -->
      * 
      * @return the value of the '<em>Value</em>' attribute.
-     * @see #setValue(String)
-     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getStringDefinition_Value()
+     * @see #setValue(boolean)
+     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getBooleanDefinition_Value()
      * @model
      * @generated
      */
-    String getValue();
+    boolean isValue();
 
     /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.StringDefinition#getValue <em>Value</em>}' attribute.
+     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.BooleanDefinition#isValue <em>Value</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @param value
      *            the new value of the '<em>Value</em>' attribute.
-     * @see #getValue()
+     * @see #isValue()
      * @generated
      */
-    void setValue(String value);
+    void setValue(boolean value);
 
-} // StringDefinition
+} // BooleanDefinition

@@ -4,8 +4,8 @@
     editDirectory="/org.obeonetwork.m2doc.genconf.edit/src-gen" editorDirectory="/org.obeonetwork.m2doc.genconf.editor/src-gen"
     modelPluginID="org.obeonetwork.m2doc.genconf" modelName="M2docconf" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="/org.obeonetwork.m2doc.genconf.tests/src-gen" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="7.0" copyrightFields="false" runtimeVersion="2.10" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
-    operationReflection="true" importOrganizing="true">
+    complianceLevel="7.0" copyrightFields="false" runtimeVersion="2.10" operationReflection="true"
+    importOrganizing="true">
   <foreignModel>m2docconf.ecore</foreignModel>
   <genPackages prefix="Genconf" basePackage="org.obeonetwork.m2doc" disposableProviderFactory="true"
       ecorePackage="m2docconf.ecore#/">
@@ -26,6 +26,15 @@
     </genClasses>
     <genClasses ecoreClass="m2docconf.ecore#//StringDefinition">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//StringDefinition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="m2docconf.ecore#//IntegerDefinition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//IntegerDefinition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="m2docconf.ecore#//RealDefinition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//RealDefinition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="m2docconf.ecore#//BooleanDefinition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//BooleanDefinition/value"/>
     </genClasses>
     <genClasses ecoreClass="m2docconf.ecore#//Option">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute m2docconf.ecore#//Option/name"/>
