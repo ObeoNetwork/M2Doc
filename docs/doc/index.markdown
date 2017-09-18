@@ -71,7 +71,7 @@ All syntax elements of M2Doc should by placed into fields using ALT+F9 to show f
 
 In the following table &#8249;{&#8250; and &#8249;}&#8250; denote a Word field. 
 
-### Comment
+### Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))
 
 A simple comment, nothing is generated.
 
@@ -83,7 +83,7 @@ A simple comment, nothing is generated.
 
   anything that is not a M2Doc field is generated as is.
 
-### Query
+### Query ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal))
 
 The [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) is evaluated and its result is inserted in the generated document. [M2Doc services](index.html#services) and [provided services](index.html#provide-new-services) can be used. Some [specific return types](index.html#special-return-types) will be interpreted by M2Doc.
 
@@ -91,7 +91,7 @@ The [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) is 
 {m:[AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) }
 ```
 
-### Conditional
+### Conditional ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal))
 
 if the condition is true the &#171;then block&#187; is inserted in the generated document. if it&#8217;s false and the &#171;else if&#187; condition is true the &#171;else if block&#187; is inserted. if all condition are false the &#171;else block&#187; is inserted. You can have zero or more &#171;elseif blocks&#187;, zero or one &#171;else block&#187;. All [AQL expressions](https://www.eclipse.org/acceleo/documentation/aql.html) should evaluate to a Boolean.
 
@@ -100,7 +100,7 @@ if the condition is true the &#171;then block&#187; is inserted in the generated
 ```
 
 
-### Repetition
+### Repetition ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
 Generates the &#171;repetition block&#187; for each value of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html).
 
@@ -109,7 +109,7 @@ Generates the &#171;repetition block&#187; for each value of the [AQL expression
 ```
 
 
-### Let
+### Let ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
 Declare the variable named &#171;variable&#187; with the result of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) as value. The variable is accessible in the &#171;let block&#187;.
 
@@ -117,7 +117,7 @@ Declare the variable named &#171;variable&#187; with the result of the [AQL expr
 {m:let variable = [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...let block... {m:endlet}
 ```
 
-### Bookmark
+### Bookmark ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))
 
 Generates a bookmark with the result of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) as identifier and the &#171;bookmark block&#187; as content.
 
@@ -125,7 +125,7 @@ Generates a bookmark with the result of the [AQL expression](https://www.eclipse
 {m:bookmark [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...bookmark block... {m:endbookmark}
 ```
 
-### User Documentation
+### User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))
 
 Generate a user content block in the resulting document. If the generated document exists and already has a use content with the same id the previous user content is preserved, otherwise the &#171;userdoc block&#187; is generated.
 
@@ -139,7 +139,11 @@ If you want examples of templates you can have a look at the nominal cases in [u
 
 All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference) are available, on top that specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide services](index.html#provide-new-services).
 
-TODO
+* [Boolean services](m2doc_service_booleanservices.html)
+* [Image services](m2doc_service_imageservices.html)
+* [Link services](m2doc_service_linkservices.html)
+* [Pagination services](m2doc_service_paginationservices.html)
+* [Sirius services](m2doc_service_m2docsiriusservices.html)
 
 ## Template editor
 

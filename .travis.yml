@@ -20,6 +20,7 @@ before_script:
 - sleep 10
 script:
 - mvn -v
+- cp -Rf docs/doc/ plugins/org.obeonetwork.m2doc.doc
 - mvn clean verify -fae -P$PROFILE
 - export TAG_OR_BRANCH="${TRAVIS_BRANCH}/nightly"
 - if [[ "$TRAVIS_TAG" != "" ]]; then export TAG_OR_BRANCH="${TRAVIS_TAG}"; fi

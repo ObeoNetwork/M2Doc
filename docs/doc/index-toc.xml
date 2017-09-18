@@ -10,14 +10,14 @@
 	</topic>
 	<topic href="doc/index.html#template-authoring" label="Template authoring">
 		<topic href="doc/index.html#syntax" label="Syntax">
-			<topic href="doc/index.html#comment" label="Comment"></topic>
+			<topic href="doc/index.html#comment-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-nominal" label="Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))"></topic>
 			<topic href="doc/index.html#static-statement" label="Static statement"></topic>
-			<topic href="doc/index.html#query" label="Query"></topic>
-			<topic href="doc/index.html#conditional" label="Conditional"></topic>
-			<topic href="doc/index.html#repetition" label="Repetition"></topic>
-			<topic href="doc/index.html#let" label="Let"></topic>
-			<topic href="doc/index.html#bookmark" label="Bookmark"></topic>
-			<topic href="doc/index.html#user-documentation" label="User Documentation"></topic>
+			<topic href="doc/index.html#query-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-query-nominal" label="Query ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal))"></topic>
+			<topic href="doc/index.html#conditional-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-conditional-nominal" label="Conditional ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal))"></topic>
+			<topic href="doc/index.html#repetition-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal" label="Repetition ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))"></topic>
+			<topic href="doc/index.html#let-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal" label="Let ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))"></topic>
+			<topic href="doc/index.html#bookmark-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-bookmark-nominal" label="Bookmark ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))"></topic>
+			<topic href="doc/index.html#user-documentation-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-userdoc-nominal" label="User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))"></topic>
 		</topic>
 		<topic href="doc/index.html#services" label="Services"></topic>
 		<topic href="doc/index.html#template-editor" label="Template editor"></topic>

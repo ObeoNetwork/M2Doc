@@ -93,7 +93,9 @@
 			<a href="index.html#provide-new-services">custom services</a>.
 		</p>
 		<p>In the following table &#8249;{&#8250; and &#8249;}&#8250; denote a Word field. </p>
-		<h3 id="comment">Comment</h3>
+		<h3 id="comment-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-nominal">Comment (
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal">example</a>)
+		</h3>
 		<p>A simple comment, nothing is generated.</p>
 		<p>
 			<code>`</code>
@@ -103,7 +105,9 @@
 		</p>
 		<h3 id="static-statement">Static statement</h3>
 		<p>  anything that is not a M2Doc field is generated as is.</p>
-		<h3 id="query">Query</h3>
+		<h3 id="query-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-query-nominal">Query (
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal">example</a>)
+		</h3>
 		<p>The 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> is evaluated and its result is inserted in the generated document. 
 			<a href="index.html#services">M2Doc services</a> and 
@@ -117,7 +121,9 @@
 
 			<code>`</code>
 		</p>
-		<h3 id="conditional">Conditional</h3>
+		<h3 id="conditional-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-conditional-nominal">Conditional (
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal">example</a>)
+		</h3>
 		<p>if the condition is true the &#171;then block&#187; is inserted in the generated document. if it&#8217;s false and the &#171;else if&#187; condition is true the &#171;else if block&#187; is inserted. if all condition are false the &#171;else block&#187; is inserted. You can have zero or more &#171;elseif blocks&#187;, zero or one &#171;else block&#187;. All 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expressions</a> should evaluate to a Boolean.
 		</p>
@@ -129,7 +135,9 @@
 
 			<code>`</code>
 		</p>
-		<h3 id="repetition">Repetition</h3>
+		<h3 id="repetition-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal">Repetition (
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal">example</a>)
+		</h3>
 		<p>Generates the &#171;repetition block&#187; for each value of the 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a>.
 		</p>
@@ -140,7 +148,9 @@
 
 			<code>`</code>
 		</p>
-		<h3 id="let">Let</h3>
+		<h3 id="let-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal">Let (
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal">example</a>)
+		</h3>
 		<p>Declare the variable named &#171;variable&#187; with the result of the 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> as value. The variable is accessible in the &#171;let block&#187;.
 		</p>
@@ -151,7 +161,9 @@
 
 			<code>`</code>
 		</p>
-		<h3 id="bookmark">Bookmark</h3>
+		<h3 id="bookmark-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-bookmark-nominal">Bookmark (
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal">example</a>)
+		</h3>
 		<p>Generates a bookmark with the result of the 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> as identifier and the &#171;bookmark block&#187; as content.
 		</p>
@@ -162,7 +174,9 @@
 
 			<code>`</code>
 		</p>
-		<h3 id="user-documentation">User Documentation</h3>
+		<h3 id="user-documentation-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-userdoc-nominal">User Documentation (
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal">example</a>)
+		</h3>
 		<p>Generate a user content block in the resulting document. If the generated document exists and already has a use content with the same id the previous user content is preserved, otherwise the &#171;userdoc block&#187; is generated.</p>
 		<p>
 			<code>`</code>
@@ -180,7 +194,23 @@
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference">AQL services</a> are available, on top that specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can 
 			<a href="index.html#provide-new-services">provide services</a>.
 		</p>
-		<p>TODO</p>
+		<ul>
+			<li>
+				<a href="m2doc_service_booleanservices.html">Boolean services</a>
+			</li>
+			<li>
+				<a href="m2doc_service_imageservices.html">Image services</a>
+			</li>
+			<li>
+				<a href="m2doc_service_linkservices.html">Link services</a>
+			</li>
+			<li>
+				<a href="m2doc_service_paginationservices.html">Pagination services</a>
+			</li>
+			<li>
+				<a href="m2doc_service_m2docsiriusservices.html">Sirius services</a>
+			</li>
+		</ul>
 		<h2 id="template-editor">Template editor</h2>
 		<p>The template editor can set M2Doc specific custom properties in your Word template. Those properties are used to define variables, EMF packages URI, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services.</p>
 		<p>
