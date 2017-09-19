@@ -14,7 +14,7 @@ To generate a document you will need at least a template file (.docx file) and a
 
 To launch the generation you can right click on the generation configuration model (.genconf file) or the Generation object and select the &#171;Generate Documentation menu&#187; has shown here:
 
-![The Generate Documentation menu.](images/Generate Documentation menu.png "The Generate Documentation menu.")
+![The Generate Documentation menu.](images/Generate%20Documentation%20menu.png "The Generate Documentation menu.")
 
 If you don&#8217;t have the the generation model configuration file you can create it using the [initialize generation](index.html#initializing-generation) section.
 
@@ -24,7 +24,7 @@ To initialize a generation you will need a template file (.docx file). If you do
 
 Right click on the template file and select the &#171;Initialize Documentation Configuration&#187; menu:
 
-![The Initialize Documentation Configuration menu.](images/Initialize Documentation Configuration menu.png "The Initialize Documentation Configuration menu.")
+![The Initialize Documentation Configuration menu.](images/Initialize%20Documentation%20Configuration%20menu.png "The Initialize Documentation Configuration menu.")
 
 To edit the created generation model file you can use the [generation configuration editor](index.html#generation-configuration-editor).
 
@@ -32,7 +32,7 @@ To edit the created generation model file you can use the [generation configurat
 
 To validate the configuration you can right click on the generation configuration model (.genconf file) or the Generation object and select the &#171;Validate Documentation menu&#187; has shown here:
 
-![The Validate Documentation menu.](images/Validate Documentation menu.png "The Validate Documentation menu.")
+![The Validate Documentation menu.](images/Validate%20Documentation%20menu.png "The Validate Documentation menu.")
 
 If you don&#8217;t have the the generation model configuration file you can create it using the [initialize generation](index.html#initializing-generation) section. If the validation succeed with no informations, warnings, or errors you will be promted. If something went wrong a .docx file with the name of the template and sufixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues.
 
@@ -40,13 +40,13 @@ If you don&#8217;t have the the generation model configuration file you can crea
 
 The generation configuration model (.genconf file) references the template [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) and the result [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier). It also binds the variables defined using the [template editor](index.html#template-editor) to the desired value. It can also contains a set of options to configure [specific services](index.html#custom-constructor).
 
-![The generation configuration editor.](images/Generation configuration editor.png "The generation configuration editor.")
+![The generation configuration editor.](images/Generation%20configuration%20editor.png "The generation configuration editor.")
 
 In this example we reference the template named &#171;template.docx&#187; using a relative [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) and the result [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) is set to &#171;template-generated.docx&#187;. Absolute [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) can be used as well.
 
 The first table of the editor is used to bind variables. The first column is the variable name and the second column is the value. The value can be a reference an EMF model element or be a primitive type value. Two menus are accessible using right click on the variable table.
 
-![The variable menu.](images/Generation configuration editor - variables menu.png "The variable menu.")
+![The variable menu.](images/Generation%20configuration%20editor%20-%20variables%20menu.png "The variable menu.")
 
 * Add variables will add all variables defined in the referenced template. To define variables you can use the [template editor](index.html#template-editor)
 * Remove definition will remove the selected bindings
@@ -55,7 +55,7 @@ An other menu can be useful to set EMF model values. It&#8217;s the &#171;Load R
 
 The second table of the editor at the bottom can be used to set options for specific services. For instance if you use the [Sirius](https://eclipse.org/sirius/) integration an option should be set to define the Sirius session model. Three menus are accessible using right click on the option table.
 
-![The option menu.](images/Generation configuration editor - options menu.png "The option menu.")
+![The option menu.](images/Generation%20configuration%20editor%20-%20options%20menu.png "The option menu.")
 
 * Add option will add an option (see [services with custom constructor](index.html#custom-constructor) for more details)
 * Initialize option will initialize an option (see [services with custom constructor](index.html#custom-constructor) for more details)
@@ -149,11 +149,11 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 
 The template editor can set M2Doc specific custom properties in your Word template. Those properties are used to define variables, EMF packages URI, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services.
 
-![The template editor.](images/Template editor.png "The template editor.")
+![The template editor.](images/Template%20editor.png "The template editor.")
 
 The first table at the top lists variables needed by the template. Each variable has a declared [type](https://www.eclipse.org/acceleo/documentation/aql.html#Typeliterals). This type is used to validate the template and to select a value in the [generation configuration editor](index.html#generation-configuration-editor). Three menus are accessible using right click on the variable table.
 
-![The variables menu.](images/Template editor - variables menu.png "The variables menu.")
+![The variables menu.](images/Template%20editor%20-%20variables%20menu.png "The variables menu.")
 
 * Add missing variables will add all variables used in the template but not declared yet.
 * Add variable will add a variable
@@ -161,17 +161,17 @@ The first table at the top lists variables needed by the template. Each variable
 
 The second table in the middle lists packages used in the template. It reference EMF EPackages used to type expressions in the template. Two menus are accessible using right click on the package table.
 
-![The variables menu.](images/Template editor - packages menu.png "The variables menu.")
+![The variables menu.](images/Template%20editor%20-%20packages%20menu.png "The variables menu.")
 
 * Add will open the following dialog to add selected packages
 
-![The package selection dialog.](images/Package selection dialog.png "The package selection dialog.")
+![The package selection dialog.](images/Package%20selection%20dialog.png "The package selection dialog.")
 
 * Delete selected packages
 
 The last table at the bottom lists services used in the template. If you have created your [own services](index.html#provide-new-services) you can add them here to be able to use them in the template. Three menus are accessible using right click on the service table.
 
-![The variables menu.](images/Template editor - services menu.png "The variables menu.")
+![The variables menu.](images/Template%20editor%20-%20services%20menu.png "The variables menu.")
 
 * Add will open a dialog where you can select a Java class
 
@@ -180,7 +180,7 @@ The last table at the bottom lists services used in the template. If you have cr
 * Delete will remove the selection
 * Select token will add/remove services according to the selected [tokens](index.html#service-token) in the dialog
 
-![The service token selection dialog.](images/Service token selection dialog.png "The service token selection dialog.")
+![The service token selection dialog.](images/Service%20token%20selection%20dialog.png "The service token selection dialog.")
 
 # Provide new services
 
