@@ -35,9 +35,9 @@ import org.eclipse.emf.ecore.EClass;
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
+// CHECKSTYLE:OFF
 public final class M2DocHelpContentUtils {
 
-    // CHECKSTYLE:OFF
     public static final Function<Method, StringBuffer> METHOD_SIGNATURE_GENERATOR_2016 = new Function<Method, StringBuffer>() {
 
         @Override
@@ -132,7 +132,6 @@ public final class M2DocHelpContentUtils {
             return result;
         }
     };
-    // CHECKSTYLE:ON
 
     /**
      * The prefix to use to create internal links.
@@ -144,7 +143,6 @@ public final class M2DocHelpContentUtils {
      */
     private static final String LS = System.getProperty("line.separator");
 
-    // CHECKSTYLE:OFF
     private static final Function<Method, StringBuffer> METHOD_SIGNATURE_OLD_GENERATOR = new Function<Method, StringBuffer>() {
 
         @Override
@@ -199,7 +197,6 @@ public final class M2DocHelpContentUtils {
             return result;
         }
     };
-    // CHECKSTYLE:ON
 
     /**
      * The constructor.
@@ -403,6 +400,10 @@ public final class M2DocHelpContentUtils {
      * 
      * @param serviceProviderClass
      *            The service provider
+     * @param titleLevel
+     *            the title level
+     * @param signatureGenerator
+     *            the signature generator
      * @return The sections to display in the HTML page
      */
     public static List<StringBuffer> computeServiceSections(Class<?> serviceProviderClass, int titleLevel,
@@ -579,3 +580,4 @@ public final class M2DocHelpContentUtils {
 
     }
 }
+// CHECKSTYLE:ON

@@ -37,7 +37,7 @@ import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.html;
 public final class DocumentationGenerator {
 
     /**
-     * 
+     * Trigger to append standard documentation.
      */
     private static final String TRIGGER_TO_APPEND_STD_DOC = "<p>These sections are listing all the services of the standard library of M2Doc.</p>";
 
