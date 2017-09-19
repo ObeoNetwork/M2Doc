@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2017 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,37 +35,190 @@ import org.eclipse.emf.ecore.EClass;
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-@SuppressWarnings({"checkstyle:multiplestringliterals" })
 public final class M2DocHelpContentUtils {
 
-	/**
-	 * The prefix to use to create internal links.
-	 */
-	public static final String M2DOC_HREF_PREFIX = "m2doc_service_";
+    // CHECKSTYLE:OFF
+    public static final Function<Method, StringBuffer> METHOD_SIGNATURE_GENERATOR_2016 = new Function<Method, StringBuffer>() {
 
-	/**
-	 * The line separator.
-	 */
-	private static final String LS = System.getProperty("line.separator");
+        @Override
+        public StringBuffer apply(Method method) {
+            Map<String, String> methodnamesToOperator = new LinkedHashMap<String, String>();
+            methodnamesToOperator.put("add", " + ");
+            methodnamesToOperator.put("sub", " - ");
+            methodnamesToOperator.put("equals", " = ");
+            methodnamesToOperator.put("differs", " <> ");
 
-	/**
-	 * The constructor.
-	 */
-	private M2DocHelpContentUtils() {
-		// Prevent instantiation
-	}
+            methodnamesToOperator.put("greaterThan", " > ");
+            methodnamesToOperator.put("greaterThanEqual", " >= ");
+            methodnamesToOperator.put("lessThan", " < ");
+            methodnamesToOperator.put("lessThanEqual", " <= ");
 
-	/**
-	 * Produces the HTML page.
-	 * 
-	 * @param head
-	 *            The content of the head
-	 * @param body
-	 *            The content of the body
-	 * @return The HTML content
-	 */
-	public static StringBuffer html(StringBuffer head, StringBuffer body) {
-		// @formatter:off
+            StringBuffer result = new StringBuffer();
+            boolean isOperator = false;
+
+            boolean first = true;
+
+            List<String> parameterNames = new ArrayList<String>();
+            Documentation documentation = method.getAnnotation(Documentation.class);
+            Param[] params = documentation.params();
+            if (params != null) {
+                for (Param param : params) {
+                    parameterNames.add(param.name());
+                }
+            }
+
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            Type[] genericParameterTypes = method.getGenericParameterTypes();
+            for (int i = 0; i < parameterTypes.length; i = i + 1) {
+                Object argType = parameterTypes[i];
+
+                String typeName = "";
+                if (argType instanceof Class<?>) {
+                    typeName = getPrettyGenericTypename(genericParameterTypes[i], (Class<?>) argType);
+
+                } else if (argType instanceof EClass) {
+                    typeName = "EClass=" + ((EClass) argType).getName();
+                } else {
+                    typeName = "Object=" + argType.toString();
+                }
+
+                if (first) {
+                    String methodName = method.getName();
+                    /*
+                     * check for operator names
+                     */
+                    if (methodnamesToOperator.get(methodName) != null) {
+                        isOperator = true;
+                        methodName = methodnamesToOperator.get(methodName);
+                    }
+
+                    result.append(typeName);
+
+                    if (!isOperator) {
+                        if (isCollection((Class<?>) argType)) {
+                            result.append("->");
+                        } else {
+                            result.append(".");
+                        }
+                    }
+
+                    result.append(methodName);
+                    if (!isOperator) {
+                        result.append('(');
+                    }
+                }
+
+                if (!first) {
+                    if (i > 1) {
+                        result.append(", ");
+                    }
+                    result.append(typeName);
+                } else {
+                    first = false;
+                }
+
+            }
+            if (!isOperator) {
+                result.append(')');
+            }
+
+            Type returnType = method.getGenericReturnType();
+            if (Void.class.equals(returnType)) {
+                result.append(" : void");
+            } else {
+                result.append(" : ");
+                result.append(getPrettyGenericTypename(returnType, method.getReturnType()));
+            }
+            return result;
+        }
+    };
+    // CHECKSTYLE:ON
+
+    /**
+     * The prefix to use to create internal links.
+     */
+    public static final String M2DOC_HREF_PREFIX = "m2doc_service_";
+
+    /**
+     * The line separator.
+     */
+    private static final String LS = System.getProperty("line.separator");
+
+    // CHECKSTYLE:OFF
+    private static final Function<Method, StringBuffer> METHOD_SIGNATURE_OLD_GENERATOR = new Function<Method, StringBuffer>() {
+
+        @Override
+        public StringBuffer apply(Method method) {
+            StringBuffer result = new StringBuffer();
+            result.append(method.getName()).append('(');
+            boolean first = true;
+
+            List<String> parameterNames = new ArrayList<String>();
+            Documentation documentation = method.getAnnotation(Documentation.class);
+            Param[] params = documentation.params();
+            if (params != null) {
+                for (Param param : params) {
+                    parameterNames.add(param.name());
+                }
+            }
+
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            for (int i = 0; i < parameterTypes.length; i = i + 1) {
+                Object argType = parameterTypes[i];
+                if (!first) {
+                    result.append(", ");
+                } else {
+                    first = false;
+                }
+
+                if (parameterNames.size() >= i + 1) {
+                    String paramName = parameterNames.get(i);
+                    if (paramName.trim().length() > 0) {
+                        result.append(paramName);
+                        result.append(": ");
+                    }
+                }
+
+                if (argType instanceof Class<?>) {
+                    result.append(((Class<?>) argType).getCanonicalName());
+                } else if (argType instanceof EClass) {
+                    result.append("EClass=" + ((EClass) argType).getName());
+                } else {
+                    result.append("Object=" + argType.toString());
+                }
+            }
+            result.append(')');
+
+            Class<?> returnType = method.getReturnType();
+            if (Void.class.equals(returnType)) {
+                result.append(" = void");
+            } else {
+                result.append(" = ");
+                result.append(returnType.getSimpleName());
+            }
+            return result;
+        }
+    };
+    // CHECKSTYLE:ON
+
+    /**
+     * The constructor.
+     */
+    private M2DocHelpContentUtils() {
+        // Prevent instantiation
+    }
+
+    /**
+     * Produces the HTML page.
+     * 
+     * @param head
+     *            The content of the head
+     * @param body
+     *            The content of the body
+     * @return The HTML content
+     */
+    public static StringBuffer html(StringBuffer head, StringBuffer body) {
+        // @formatter:off
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<!DOCTYPE html>").append(LS);
 		buffer.append("<html lang=\"en\">").append(LS);
@@ -86,16 +240,16 @@ public final class M2DocHelpContentUtils {
 
 		buffer.append("</html>").append(LS);
 		// @formatter:on
-		return buffer;
-	}
+        return buffer;
+    }
 
-	/**
-	 * Produces the head element.
-	 * 
-	 * @return The content of the head element
-	 */
-	public static StringBuffer head() {
-		// @formatter:off
+    /**
+     * Produces the head element.
+     * 
+     * @return The content of the head element
+     */
+    public static StringBuffer head() {
+        // @formatter:off
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("  <head>").append(LS);
 		buffer.append("    <meta charset=\"utf-8\">").append(LS);
@@ -115,20 +269,20 @@ public final class M2DocHelpContentUtils {
 		buffer.append("    <title>M2Doc</title>").append(LS);
 		buffer.append("  </head>").append(LS);
 		// @formatter:on
-		return buffer;
-	}
+        return buffer;
+    }
 
-	/**
-	 * Produces the content of the body.
-	 * 
-	 * @param header
-	 *            The header
-	 * @param sections
-	 *            The sections to display
-	 * @return The content of the body
-	 */
-	public static StringBuffer body(StringBuffer header, List<StringBuffer> sections) {
-		// @formatter:off
+    /**
+     * Produces the content of the body.
+     * 
+     * @param header
+     *            The header
+     * @param sections
+     *            The sections to display
+     * @return The content of the body
+     */
+    public static StringBuffer body(StringBuffer header, List<StringBuffer> sections) {
+        // @formatter:off
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("  <body>").append(LS);
 		buffer.append("    <div class=\"container\">").append(LS);
@@ -142,19 +296,19 @@ public final class M2DocHelpContentUtils {
 		buffer.append("    </div>").append(LS);
 		buffer.append("  </body>").append(LS);
 		// @formatter:on
-		return buffer;
-	}
+        return buffer;
+    }
 
-	/**
-	 * Produces the content of the header.
-	 * 
-	 * @param isMainPage
-	 *            Indicates if we are computing the header of the main page
-	 * @return The content of the header element
-	 */
-	public static StringBuffer header(boolean isMainPage) {
-		StringBuffer buffer = new StringBuffer();
-		// @formatter:off
+    /**
+     * Produces the content of the header.
+     * 
+     * @param isMainPage
+     *            Indicates if we are computing the header of the main page
+     * @return The content of the header element
+     */
+    public static StringBuffer header(boolean isMainPage) {
+        StringBuffer buffer = new StringBuffer();
+        // @formatter:off
 		buffer.append("   <header class=\"jumbotron subhead\" id=\"overview\">").append(LS);
 		if (!isMainPage) {			
 			buffer.append("    <h1>M2Doc Documentation</h1>").append(LS);
@@ -172,43 +326,43 @@ public final class M2DocHelpContentUtils {
 		buffer.append("    </div>-->").append(LS);
 		buffer.append("  </header>").append(LS);
 		// @formatter:on
-		return buffer;
-	}
+        return buffer;
+    }
 
-	/**
-	 * Computes the content of the toc.xml file.
-	 * 
-	 * @param serviceProviders
-	 *            The list of Java classes providing services to M2Doc.
-	 * @return The content of the toc.xml
-	 */
-	public static StringBuffer computeToc(Class<?>... serviceProviders) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append(LS);
-		buffer.append("<?NLS TYPE=\"org.eclipse.help.toc\"?>").append(LS);
-		buffer.append("<toc label=\"M2Doc Documentation\" topic=\"pages/index.html\">")
-				.append(LS);
-		for (Class<?> serviceProviderClass : serviceProviders) {
-			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
-				ServiceProvider serviceProvider = serviceProviderClass.getAnnotation(ServiceProvider.class);
-				buffer.append("<topic href=\"pages/" + M2DOC_HREF_PREFIX + serviceProviderClass.getSimpleName()
-						.toLowerCase() + ".html\" label=\"" + serviceProvider.value() + "\"></topic>").append(
-								LS);
-			}
-		}
-		buffer.append("</toc>").append(LS);
-		return buffer;
-	}
+    /**
+     * Computes the content of the toc.xml file.
+     * 
+     * @param serviceProviders
+     *            The list of Java classes providing services to M2Doc.
+     * @return The content of the toc.xml
+     */
+    public static StringBuffer computeToc(Class<?>... serviceProviders) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append(LS);
+        buffer.append("<?NLS TYPE=\"org.eclipse.help.toc\"?>").append(LS);
+        buffer.append("<toc label=\"M2Doc Documentation\" topic=\"pages/index.html\">").append(LS);
+        for (Class<?> serviceProviderClass : serviceProviders) {
+            if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
+                ServiceProvider serviceProvider = serviceProviderClass.getAnnotation(ServiceProvider.class);
+                buffer.append(
+                        "<topic href=\"pages/" + M2DOC_HREF_PREFIX + serviceProviderClass.getSimpleName().toLowerCase()
+                            + ".html\" label=\"" + serviceProvider.value() + "\"></topic>")
+                        .append(LS);
+            }
+        }
+        buffer.append("</toc>").append(LS);
+        return buffer;
+    }
 
-	/**
-	 * Produces the content of the M2Doc Overview page.
-	 * 
-	 * @return The sections to display in the page
-	 */
-	public static List<StringBuffer> computeM2DocOverviewSections() {
-		List<StringBuffer> buffers = new ArrayList<StringBuffer>();
+    /**
+     * Produces the content of the M2Doc Overview page.
+     * 
+     * @return The sections to display in the page
+     */
+    public static List<StringBuffer> computeM2DocOverviewSections() {
+        List<StringBuffer> buffers = new ArrayList<StringBuffer>();
 
-		// @formatter:off
+        // @formatter:off
 		StringBuffer introductionSection = new StringBuffer();
 		introductionSection.append("  <div class=\"jumbotron masthead\">").append(LS);
 		introductionSection.append("    <h1>M2Doc</h1>").append(LS);
@@ -228,94 +382,39 @@ public final class M2DocHelpContentUtils {
 		introductionSection.append("  </section>").append(LS);
 		// @formatter:on
 
-		buffers.add(introductionSection);
+        buffers.add(introductionSection);
 
-		return buffers;
-	}
+        return buffers;
+    }
 
-	/**
-	 * Computes the sections for a service provider.
-	 * 
-	 * @param serviceProviderClass
-	 *            The service provider
-	 * @return The sections to display in the HTML page
-	 */
-	public static List<StringBuffer> computeServiceSections(Class<?> serviceProviderClass) {
-		return computeServiceSections(serviceProviderClass, 1, methodSignatureOldGenerator);
-	}
+    /**
+     * Computes the sections for a service provider.
+     * 
+     * @param serviceProviderClass
+     *            The service provider
+     * @return The sections to display in the HTML page
+     */
+    public static List<StringBuffer> computeServiceSections(Class<?> serviceProviderClass) {
+        return computeServiceSections(serviceProviderClass, 1, METHOD_SIGNATURE_OLD_GENERATOR);
+    }
 
-	private static final Function<Method, StringBuffer> methodSignatureOldGenerator = new Function<Method, StringBuffer>() {
+    /**
+     * Computes the sections for a service provider.
+     * 
+     * @param serviceProviderClass
+     *            The service provider
+     * @return The sections to display in the HTML page
+     */
+    public static List<StringBuffer> computeServiceSections(Class<?> serviceProviderClass, int titleLevel,
+            Function<Method, StringBuffer> signatureGenerator) {
+        List<StringBuffer> buffers = new ArrayList<StringBuffer>();
 
-		@Override
-		public StringBuffer apply(Method method) {
-			StringBuffer result = new StringBuffer();
-			result.append(method.getName()).append('(');
-			boolean first = true;
+        ServiceProvider serviceProvider = serviceProviderClass.getAnnotation(ServiceProvider.class);
+        if (serviceProvider == null) {
+            return buffers;
+        }
 
-			List<String> parameterNames = new ArrayList<String>();
-			Documentation documentation = method.getAnnotation(Documentation.class);
-			Param[] params = documentation.params();
-			if (params != null) {
-				for (Param param : params) {
-					parameterNames.add(param.name());
-				}
-			}
-
-			Class<?>[] parameterTypes = method.getParameterTypes();
-			for (int i = 0; i < parameterTypes.length; i = i + 1) {
-				Object argType = parameterTypes[i];
-				if (!first) {
-					result.append(", ");
-				} else {
-					first = false;
-				}
-
-				if (parameterNames.size() >= i + 1) {
-					String paramName = parameterNames.get(i);
-					if (paramName.trim().length() > 0) {
-						result.append(paramName);
-						result.append(": ");
-					}
-				}
-
-				if (argType instanceof Class<?>) {
-					result.append(((Class<?>)argType).getCanonicalName());
-				} else if (argType instanceof EClass) {
-					result.append("EClass=" + ((EClass)argType).getName());
-				} else {
-					result.append("Object=" + argType.toString());
-				}
-			}
-			result.append(')');
-
-			Class<?> returnType = method.getReturnType();
-			if (Void.class.equals(returnType)) {
-				result.append(" = void");
-			} else {
-				result.append(" = ");
-				result.append(returnType.getSimpleName());
-			}
-			return result;
-		}
-	};
-
-	/**
-	 * Computes the sections for a service provider.
-	 * 
-	 * @param serviceProviderClass
-	 *            The service provider
-	 * @return The sections to display in the HTML page
-	 */
-	public static List<StringBuffer> computeServiceSections(Class<?> serviceProviderClass, int titleLevel,
-			Function<Method, StringBuffer> signatureGenerator) {
-		List<StringBuffer> buffers = new ArrayList<StringBuffer>();
-
-		ServiceProvider serviceProvider = serviceProviderClass.getAnnotation(ServiceProvider.class);
-		if (serviceProvider == null) {
-			return buffers;
-		}
-
-		// @formatter:off
+        // @formatter:off
 		StringBuffer servicesSection = new StringBuffer();
 		servicesSection.append("  <section id=\"services\">").append(LS);
 		servicesSection.append("    <div class=\"page-header\">").append(LS);
@@ -323,22 +422,22 @@ public final class M2DocHelpContentUtils {
 		servicesSection.append("    </div>").append(LS);
 		// @formatter:on
 
-		Method[] methods = serviceProviderClass.getMethods();
+        Method[] methods = serviceProviderClass.getMethods();
 
-		Method[] sortedMethods = Arrays.copyOf(methods, methods.length);
-		Comparator<Method> comparator = new Comparator<Method>() {
-			@Override
-			public int compare(Method o1, Method o2) {
-				return o1.getName().compareTo(o2.getName());
-			}
-		};
-		Arrays.sort(sortedMethods, 0, sortedMethods.length, comparator);
+        Method[] sortedMethods = Arrays.copyOf(methods, methods.length);
+        Comparator<Method> comparator = new Comparator<Method>() {
+            @Override
+            public int compare(Method o1, Method o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        };
+        Arrays.sort(sortedMethods, 0, sortedMethods.length, comparator);
 
-		for (Method method : sortedMethods) {
-			if (method.isAnnotationPresent(Documentation.class)) {
-				Documentation serviceDocumentation = method.getAnnotation(Documentation.class);
+        for (Method method : sortedMethods) {
+            if (method.isAnnotationPresent(Documentation.class)) {
+                Documentation serviceDocumentation = method.getAnnotation(Documentation.class);
 
-				// @formatter:off
+                // @formatter:off
 				servicesSection.append(LS);
 
 				servicesSection.append("        <h3>").append(signatureGenerator.apply(method)).append("</h3>").append(LS);
@@ -402,169 +501,81 @@ public final class M2DocHelpContentUtils {
 				}
 				servicesSection.append("        <hr />").append(LS);
 				// @formatter:on
-			}
-		}
+            }
+        }
 
-		// @formatter:off
+        // @formatter:off
 		servicesSection.append("  </section>").append(LS);
 		// @formatter:on
 
-		buffers.add(servicesSection);
+        buffers.add(servicesSection);
 
-		return buffers;
-	}
+        return buffers;
+    }
 
-	public static final Function<Method, StringBuffer> METHOD_SIGNATURE_GENERATOR_2016 = new Function<Method, StringBuffer>() {
+    /**
+     * Tells if the given Class is a {@link Collection}.
+     * 
+     * @param argType
+     *            the {@link Class}
+     * @return <code>true</code> if the given Class is a {@link Collection}, <code>false</code>
+     *         otherwise
+     */
+    private static boolean isCollection(Class<?> argType) {
+        final boolean res;
 
-		@Override
-		public StringBuffer apply(Method method) {
-			Map<String, String> methodnamesToOperator = new LinkedHashMap<String, String>();
-			methodnamesToOperator.put("add", " + ");
-			methodnamesToOperator.put("sub", " - ");
-			methodnamesToOperator.put("equals", " = ");
-			methodnamesToOperator.put("differs", " <> ");
+        String typeName = ((Class<?>) argType).getCanonicalName();
+        if ("java.util.Set".equals(typeName)) {
+            res = true;
+        } else if ("java.util.List".equals(typeName) || "java.util.Collection".equals(typeName)) {
+            res = true;
+        } else {
+            res = false;
+        }
 
-			methodnamesToOperator.put("greaterThan", " > ");
-			methodnamesToOperator.put("greaterThanEqual", " >= ");
-			methodnamesToOperator.put("lessThan", " < ");
-			methodnamesToOperator.put("lessThanEqual", " <= ");
+        return res;
 
-			StringBuffer result = new StringBuffer();
-			boolean isOperator = false;
+    }
 
-			boolean first = true;
+    public static String prettySimpleName(Class<?> argType) {
+        String typeName = argType.getCanonicalName();
+        if ("org.eclipse.acceleo.query.runtime.impl.LambdaValue".equals(typeName)) {
+            typeName = " x | ... ";
+        }
+        if (typeName.startsWith("java.lang") || typeName.startsWith("java.util")) {
+            typeName = argType.getSimpleName();
+        }
+        if (typeName.startsWith("org.eclipse.emf")) {
+            typeName = argType.getSimpleName();
+        }
+        if ("List".equals(typeName)) {
+            typeName = "Sequence";
+        }
+        if ("Set".equals(typeName)) {
+            typeName = "OrderedSet";
+        }
+        return typeName;
+    }
 
-			List<String> parameterNames = new ArrayList<String>();
-			Documentation documentation = method.getAnnotation(Documentation.class);
-			Param[] params = documentation.params();
-			if (params != null) {
-				for (Param param : params) {
-					parameterNames.add(param.name());
-				}
-			}
+    public static String getPrettyGenericTypename(Type type, Class<?> argType) {
+        String typename = prettySimpleName(argType);
+        if (type instanceof Class<?>) {
+            typename = prettySimpleName((Class<?>) type);
+        } else if (type instanceof ParameterizedType) {
+            String canonical = ((Class<?>) argType).getCanonicalName();
+            Type t = ((ParameterizedType) type).getActualTypeArguments()[0];
+            if (t instanceof Class<?>) {
+                if ("java.util.Set".equals(canonical)) {
+                    typename = "OrderedSet{" + prettySimpleName((Class<?>) t) + "}";
+                } else if ("java.util.List".equals(canonical) || "java.util.Collection".equals(canonical)) {
+                    typename = "Sequence{" + prettySimpleName((Class<?>) t) + "}";
+                } else {
+                    typename = "{" + prettySimpleName((Class<?>) t) + "}";
+                }
 
-			Class<?>[] parameterTypes = method.getParameterTypes();
-			Type[] genericParameterTypes = method.getGenericParameterTypes();
-			for (int i = 0; i < parameterTypes.length; i = i + 1) {
-				Object argType = parameterTypes[i];
+            }
+        }
+        return typename;
 
-				String typeName = "";
-				if (argType instanceof Class<?>) {
-					typeName = getPrettyGenericTypename(genericParameterTypes[i], (Class<?>)argType);
-
-				} else if (argType instanceof EClass) {
-					typeName = "EClass=" + ((EClass)argType).getName();
-				} else {
-					typeName = "Object=" + argType.toString();
-				}
-
-				if (first) {
-					String methodName = method.getName();
-					/*
-					 * check for operator names
-					 */
-					if (methodnamesToOperator.get(methodName) != null) {
-						isOperator = true;
-						methodName = methodnamesToOperator.get(methodName);
-					}
-
-					result.append(typeName);
-
-					if (!isOperator) {
-						if (isCollection(((Class<?>)argType))) {
-							result.append("->");
-						} else {
-							result.append(".");
-						}
-					}
-
-					result.append(methodName);
-					if (!isOperator) {
-						result.append('(');
-					}
-
-				} else {
-				}
-
-				if (!first) {
-					if (i > 1) {
-						result.append(", ");
-					}
-					result.append(typeName);
-				} else {
-					first = false;
-				}
-
-			}
-			if (!isOperator) {
-				result.append(')');
-			}
-
-			Type returnType = method.getGenericReturnType();
-			if (Void.class.equals(returnType)) {
-				result.append(" : void");
-			} else {
-				result.append(" : ");
-				result.append(getPrettyGenericTypename(returnType, method.getReturnType()));
-			}
-			return result;
-		}
-	};
-
-	/**
-	 * @param class1
-	 * @return
-	 */
-	private static boolean isCollection(Class<?> argType) {
-		String typeName = ((Class<?>)argType).getCanonicalName();
-		if ("java.util.Set".equals(typeName)) {
-			return true;
-		} else if ("java.util.List".equals(typeName) || "java.util.Collection".equals(typeName)) {
-			return true;
-		}
-		return false;
-
-	}
-
-	public static String prettySimpleName(Class<?> argType) {
-		String typeName = argType.getCanonicalName();
-		if ("org.eclipse.acceleo.query.runtime.impl.LambdaValue".equals(typeName)) {
-			typeName = " x | ... ";
-		}
-		if (typeName.startsWith("java.lang") || typeName.startsWith("java.util")) {
-			typeName = argType.getSimpleName();
-		}
-		if (typeName.startsWith("org.eclipse.emf")) {
-			typeName = argType.getSimpleName();
-		}
-		if ("List".equals(typeName)) {
-			typeName = "Sequence";
-		}
-		if ("Set".equals(typeName)) {
-			typeName = "OrderedSet";
-		}
-		return typeName;
-	}
-
-	public static String getPrettyGenericTypename(Type type, Class<?> argType) {
-		String typename = prettySimpleName(argType);
-		if (type instanceof Class<?>) {
-			typename = prettySimpleName((Class<?>)type);
-		} else if (type instanceof ParameterizedType) {
-			String canonical = ((Class<?>)argType).getCanonicalName();
-			Type t = ((ParameterizedType)type).getActualTypeArguments()[0];
-			if (t instanceof Class<?>) {
-				if ("java.util.Set".equals(canonical)) {
-					typename = "OrderedSet{" + prettySimpleName(((Class<?>)t)) + "}";
-				} else if ("java.util.List".equals(canonical) || "java.util.Collection".equals(canonical)) {
-					typename = "Sequence{" + prettySimpleName(((Class<?>)t)) + "}";
-				} else {
-					typename = "{" + prettySimpleName(((Class<?>)t)) + "}";
-				}
-
-			}
-		}
-		return typename;
-
-	}
+    }
 }
