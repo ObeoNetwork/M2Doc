@@ -6,8 +6,8 @@ env:
   matrix:
   - PROFILE=platform-luna,tests
   - PROFILE=platform-mars,tests
-  - PROFILE=platform-neon,tests,updatesites
-  - PROFILE=platform-oxygen,tests
+  - PROFILE=platform-neon,tests
+  - PROFILE=platform-oxygen,tests,updatesites
 jdk:
 - oraclejdk8
 sudo: false
