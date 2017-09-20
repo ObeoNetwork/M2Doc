@@ -727,7 +727,7 @@ public class M2DocTemplateEditor extends EditorPart {
                     if (dialog.getResult().length != 0) {
                         for (Object object : dialog.getResult()) {
                             customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(),
-                                    project.getProject().getName());
+                                    ((IType) object).getJavaProject().getProject().getName());
                         }
                         setDirty(true);
                         servicesTable.refresh();
