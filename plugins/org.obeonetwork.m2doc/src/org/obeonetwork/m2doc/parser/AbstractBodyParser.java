@@ -45,7 +45,6 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.message;
  * 
  * @author ohaegi
  */
-@SuppressWarnings("restriction")
 public abstract class AbstractBodyParser {
 
     /**

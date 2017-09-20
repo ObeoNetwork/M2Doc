@@ -184,8 +184,8 @@ public class M2DocParser extends AbstractBodyParser {
     protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
         TokenType type = getNextTokenType();
-        Set<TokenType> endTypeList = new HashSet<TokenType>(Arrays.asList(endTypes));
-        endBlock: while (!endTypeList.contains(type)) {
+        Set<TokenType> endTypeSet = new HashSet<TokenType>(Arrays.asList(endTypes));
+        endBlock: while (!endTypeSet.contains(type)) {
             switch (type) {
                 case QUERY:
                     res.getStatements().add(parseQuery());
@@ -218,6 +218,11 @@ public class M2DocParser extends AbstractBodyParser {
                     }
                     res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                             M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                    if (!endTypeSet.contains(TokenType.EOF)) {
+                        res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.INFO,
+                                M2DocUtils.message(ParsingErrorMessage.DIDYOUFORGETENDBLOCK, Arrays.toString(endTypes)),
+                                run));
+                    }
                     readTag(res, res.getRuns());
                     break;
                 case EOF:

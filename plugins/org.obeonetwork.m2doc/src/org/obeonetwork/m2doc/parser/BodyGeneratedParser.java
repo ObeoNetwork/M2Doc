@@ -13,7 +13,9 @@ package org.obeonetwork.m2doc.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -110,8 +112,8 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
 
         TokenType type = getNextTokenType();
-        List<TokenType> endTypeList = Arrays.asList(endTypes);
-        endBlock: while (!endTypeList.contains(type)) {
+        Set<TokenType> endTypeSet = new HashSet<TokenType>(Arrays.asList(endTypes));
+        endBlock: while (!endTypeSet.contains(type)) {
             switch (type) {
                 case USERCONTENT:
                     res.getStatements().add(parseUserContent());

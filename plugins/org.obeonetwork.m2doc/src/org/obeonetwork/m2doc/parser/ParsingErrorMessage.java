@@ -24,7 +24,11 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when unexpected tag is encountered.
      */
-    UNEXPECTEDTAG("Unexpected tag {0} at this location"), MALFORMEDTAG("Tag {0} is malformed"),
+    UNEXPECTEDTAG("Unexpected tag {0} at this location"),
+    /**
+     * Error message issued when a tag is malformed.
+     */
+    MALFORMEDTAG("Tag {0} is malformed"),
     /**
      * Error message issued when unexpected tag is encountered.
      */
@@ -72,7 +76,11 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when a usercontent tag must have a not empty value.
      */
-    INVALID_USERCONTENT_VALUE("usercontent tag must have an no empty value.");
+    INVALID_USERCONTENT_VALUE("usercontent tag must have an no empty value."),
+    /**
+     * Error message issued when a block is closed while parsing an other block.
+     */
+    DIDYOUFORGETENDBLOCK("Did you forget the {0}?");
     /**
      * The error message.
      */
