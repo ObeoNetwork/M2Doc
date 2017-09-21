@@ -30,24 +30,24 @@ The sirius functionalities are not mandatory and require a specific feature to b
 
 ## Documentation
 
-The complete description of the functionalities can be found in the [Reference documentation](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown). You can also use the Help menu direclty from Eclipse after [installing](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#installation) M2Doc.
+The complete description of the functionalities can be found in the [Reference documentation](http://obeonetwork.github.io/M2Doc/doc/index.html). You can also use the Help menu direclty from Eclipse after [installing](http://obeonetwork.github.io/M2Doc/doc/index.html#installation) M2Doc.
 
 M2Doc is built around an open architecture that allows extensions to connect any modeling technology that provides representations and diagrams to M2Doc the way we did with Sirius. 
 
-You probably want to start with the [Instalation](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#installation) section. Then you migth have one of the following roles:
+You probably want to start with the [Instalation](http://obeonetwork.github.io/M2Doc/doc/index.html#installation) section. Then you migth have one of the following roles:
 
 * Template user, You already have the template and want to generate the document:
-  * see [Generate a document](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#generate-a-document)
-  * *see [Maven](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#maven) (optional)*
+  * see [Generate a document](http://obeonetwork.github.io/M2Doc/doc/index.html#generate-a-document)
+  * *see [Maven](http://obeonetwork.github.io/M2Doc/doc/index.html#maven) (optional)*
 
 * Template developper, You want to create your own template:
-  * see [Template authoring](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#template-authoring)
-  * *see [Provide new services](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#provide-new-services) (optional)*
-  * *see [Validating a generation](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#validating-a-generation) (optional)*
-  * *see [Template testing](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#template-testing) (optional)*
+  * see [Template authoring](http://obeonetwork.github.io/M2Doc/doc/index.html#template-authoring)
+  * *see [Provide new services](http://obeonetwork.github.io/M2Doc/doc/index.html#provide-new-services) (optional)*
+  * *see [Validating a generation](http://obeonetwork.github.io/M2Doc/doc/index.html#validating-a-generation) (optional)*
+  * *see [Template testing](http://obeonetwork.github.io/M2Doc/doc/index.html#template-testing) (optional)*
 
 * Integrator, You want to provide document generation in your own project using M2Doc:
-  * see [Using M2Doc programmatically](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/doc/index.markdown#using-m2doc-programmatically)
+  * see [Using M2Doc programmatically](http://obeonetwork.github.io/M2Doc/doc/index.html#using-m2doc-programmatically)
   * *see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)*
 
 ##Example
