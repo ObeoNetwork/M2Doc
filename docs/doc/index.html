@@ -5,106 +5,101 @@
 	</head>
 	<body>
 		<h1 id="overview">Overview</h1>
-		<p>The M2Doc project provides Word document (.docx files) generation. It&#8217;s based on document template and Ecore model. The M2Doc template is applied on one or mode variables to produce the generated document.</p>
+		<p>The M2Doc project provides Word document (.docx files) generation. It is based on a document template and Ecore models. The M2Doc template is applied on one or mode variables to produce the generated document.</p>
 		<h1 id="installation">Installation</h1>
 		<p>The simplest way to start using M2Doc is to download an Eclipse modeling tools bundle from the 
 			<a href="https://www.eclipse.org/downloads/eclipse-packages/">Eclipse packages page</a>. Then you need to unpack it and launch the Eclipse executable. The next step is to 
 			<a href="https://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm">install</a> M2Doc from one for the following 
 			<a href="https://github.com/ObeoNetwork/M2Doc#download%2d%2dinstallation">update sites</a>
 		</p>
-		<h1 id="generate-a-document">Generate a document</h1>
+		<h1 id="generating-a-document">Generating a document</h1>
 		<p>To generate a document you will need at least a template file (.docx file) and a generation configuration model (.genconf file). If you don&#8217;t have the template you can read the 
 			<a href="index.html#template-authoring">template authoring</a> section. To create a generation model file you can read the 
 			<a href="index.html#initializing-generation">initialize generation</a> section.
 		</p>
-		<h2 id="launching-generation">Launching generation</h2>
-		<p>To launch the generation you can right click on the generation configuration model (.genconf file) or the Generation object and select the &#171;Generate Documentation menu&#187; has shown here:</p>
+		<h2 id="launching-a-generation">Launching a generation</h2>
+		<p>To launch a generation you can right click on the generation configuration model (.genconf file) or the Generation object and select the &#171;Generate Documentation menu&#187; as shown here:</p>
 		<p>
-			<img alt="The Generate Documentation menu." title="The Generate Documentation menu." border="0" src="images/Generate Documentation menu.png"/>
+			<img alt="The Generate Documentation menu." title="The Generate Documentation menu." border="0" src="images/Generate%20Documentation%20menu.png"/>
 		</p>
 		<p>If you don&#8217;t have the the generation model configuration file you can create it using the 
 			<a href="index.html#initializing-generation">initialize generation</a> section.
 		</p>
-		<h2 id="initializing-generation">Initializing generation</h2>
-		<p>To initialize a generation you will need a template file (.docx file). If you don&#8217;t have the template you can read the 
+		<h2 id="initializing-a-generation-configuration">Initializing a generation configuration</h2>
+		<p>To initialize a generation configuration you will need a template file (.docx file). If you don&#8217;t have the template you can read the 
 			<a href="index.html#template-authoring">template authoring</a> section.
 		</p>
 		<p>Right click on the template file and select the &#171;Initialize Documentation Configuration&#187; menu:</p>
 		<p>
-			<img alt="The Initialize Documentation Configuration menu." title="The Initialize Documentation Configuration menu." border="0" src="images/Initialize Documentation Configuration menu.png"/>
+			<img alt="The Initialize Documentation Configuration menu." title="The Initialize Documentation Configuration menu." border="0" src="images/Initialize%20Documentation%20Configuration%20menu.png"/>
 		</p>
 		<p>To edit the created generation model file you can use the 
 			<a href="index.html#generation-configuration-editor">generation configuration editor</a>.
 		</p>
-		<h2 id="validating-a-generation">Validating a generation</h2>
-		<p>To validate the configuration you can right click on the generation configuration model (.genconf file) or the Generation object and select the &#171;Validate Documentation menu&#187; has shown here:</p>
+		<h2 id="validating-a-generation-setup">Validating a generation setup</h2>
+		<p>To validate a generation setup (template plus generation configuration) you can right click on the generation configuration model (.genconf file) or the Generation object and select the &#171;Validate Documentation menu&#187; as shown here:</p>
 		<p>
-			<img alt="The Validate Documentation menu." title="The Validate Documentation menu." border="0" src="images/Validate Documentation menu.png"/>
+			<img alt="The Validate Documentation menu." title="The Validate Documentation menu." border="0" src="images/Validate%20Documentation%20menu.png"/>
 		</p>
-		<p>If you don&#8217;t have the the generation model configuration file you can create it using the 
-			<a href="index.html#initializing-generation">initialize generation</a> section. If the validation succeed with no informations, warnings, or errors you will be promted. If something went wrong a .docx file with the name of the template and sufixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues.
+		<p>If you don&#8217;t have the the generation configuration model file you can create it using the 
+			<a href="index.html#initializing-generation">initialize generation</a> section. If the validation succeeds with no informations, warnings, or errors you will be prompted. If something went wrong a .docx file with the name of the template and sufixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues. The template is 
+			<em>not</em> modified.
 		</p>
 		<h2 id="generation-configuration-editor">Generation configuration editor</h2>
 		<p>The generation configuration model (.genconf file) references the template 
 			<a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a> and the result 
 			<a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a>. It also binds the variables defined using the 
-			<a href="index.html#template-editor">template editor</a> to the desired value. It can also contains a set of options to configure 
+			<a href="index.html#template-editor">template editor</a> to the desired value. It can also contain a set of options to configure 
 			<a href="index.html#custom-constructor">specific services</a>.
 		</p>
 		<p>
-			<img alt="The generation configuration editor." title="The generation configuration editor." border="0" src="images/Generation configuration editor.png"/>
+			<img alt="The generation configuration editor." title="The generation configuration editor." border="0" src="images/Generation%20configuration%20editor.png"/>
 		</p>
 		<p>In this example we reference the template named &#171;template.docx&#187; using a relative 
 			<a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a> and the result 
 			<a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a> is set to &#171;template-generated.docx&#187;. Absolute 
 			<a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URI</a> can be used as well.
 		</p>
-		<p>The first table of the editor is used to bind variables. The first column is the variable name and the second column is the value. The value can be a reference an EMF model element or be a primitive type value. Two menus are accessible using right click on the variable table.</p>
+		<p>The first table of the editor is used to bind variables. The first column is the variable name and the second column is its value. The value can be a reference to an EMF model element, or be a primitive type value. Two menus are accessible using right click on the variable table.</p>
 		<p>
-			<img alt="The variable menu." title="The variable menu." border="0" src="images/Generation configuration editor - variables menu.png"/>
+			<img alt="The variable menu." title="The variable menu." border="0" src="images/Generation%20configuration%20editor%20-%20variables%20menu.png"/>
 		</p>
 		<ul>
-			<li>Add variables will add all variables defined in the referenced template. To define variables you can use the 
+			<li>'Add variables' will add all variables defined in the referenced template. To define variables you can use the 
 				<a href="index.html#template-editor">template editor</a>
 			</li>
-			<li>Remove definition will remove the selected bindings</li>
+			<li>'Remove definition' will remove the selected bindings</li>
 		</ul>
-		<p>An other menu can be useful to set EMF model values. It&#8217;s the &#171;Load Resource...&#187; menu. It add the EMF elements of the selected resources to possible values of a variable.</p>
+		<p>Another menu can be useful to set EMF model values. It&#8217;s the &#171;Load Resource...&#187; menu. It adds the EMF elements of the selected resources to possible values of a variable.</p>
 		<p>The second table of the editor at the bottom can be used to set options for specific services. For instance if you use the 
 			<a href="https://eclipse.org/sirius/">Sirius</a> integration an option should be set to define the Sirius session model. Three menus are accessible using right click on the option table.
 		</p>
 		<p>
-			<img alt="The option menu." title="The option menu." border="0" src="images/Generation configuration editor - options menu.png"/>
+			<img alt="The option menu." title="The option menu." border="0" src="images/Generation%20configuration%20editor%20-%20options%20menu.png"/>
 		</p>
 		<ul>
-			<li>Add option will add an option (see 
+			<li>'Add option' will add an option (see 
 				<a href="index.html#custom-constructor">services with custom constructor</a> for more details)
 			</li>
-			<li>Initialize option will initialize an option (see 
+			<li>'Initialize option' will initialize an option (see 
 				<a href="index.html#custom-constructor">services with custom constructor</a> for more details)
 			</li>
-			<li>Delete will delete selected options </li>
+			<li>'Delete' will delete the selected options </li>
 		</ul>
 		<h1 id="template-authoring">Template authoring</h1>
-		<p>The template should be edited using your word document editor. M2Doc use Word fields to declare dynamic elements. In MS work you can make fields visible by using ALT+F9 and insert a new field by using CTRL+F9.</p>
+		<p>The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use 'ALT+F9'. To insert a new field, use 'CTRL+F9'.</p>
 		<h2 id="syntax">Syntax</h2>
-		<p>All syntax elements of M2Doc should by placed into fields using ALT+F9 to show fields and CTRL+F9 to insert a field in MS Word. M2Doc is a imperative template language build on top of 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL</a> for querying. The language support type inference and can be extented using 
+		<p>All syntax elements of M2Doc should be placed into fields using 'ALT+F9' to show fields and 'CTRL+F9' to insert a new field. M2Doc is an imperative template language built on top of 
+			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL</a> for querying. The language supports type inference and can be extended using 
 			<a href="index.html#provide-new-services">custom services</a>.
 		</p>
 		<p>In the following table &#8249;{&#8250; and &#8249;}&#8250; denote a Word field. </p>
 		<h3 id="comment-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-nominal">Comment (
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal">example</a>)
 		</h3>
-		<p>A simple comment, nothing is generated.</p>
-		<p>
-			<code>`</code>
-			{m:comment any text}
-
-			<code>`</code>
-		</p>
+		<p>A simple comment, nothing is generated.</p><pre>{m:comment any text}</pre>
 		<h3 id="static-statement">Static statement</h3>
-		<p>  anything that is not a M2Doc field is generated as is.</p>
+		<p>  Anything that is not a M2Doc field is generated as is.</p>
 		<h3 id="query-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-query-nominal">Query (
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal">example</a>)
 		</h3>
@@ -113,86 +108,42 @@
 			<a href="index.html#services">M2Doc services</a> and 
 			<a href="index.html#provide-new-services">provided services</a> can be used. Some 
 			<a href="index.html#special-return-types">specific return types</a> will be interpreted by M2Doc.
-		</p>
-		<p>
-			<code>`</code>
-			{m:
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> }
-
-			<code>`</code>
-		</p>
+		</p><pre>{m:[AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)}</pre>
 		<h3 id="conditional-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-conditional-nominal">Conditional (
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal">example</a>)
 		</h3>
-		<p>if the condition is true the &#171;then block&#187; is inserted in the generated document. if it&#8217;s false and the &#171;else if&#187; condition is true the &#171;else if block&#187; is inserted. if all condition are false the &#171;else block&#187; is inserted. You can have zero or more &#171;elseif blocks&#187;, zero or one &#171;else block&#187;. All 
+		<p>If the condition is true the &#171;then block&#187; is inserted in the generated document. if it&#8217;s false and the &#171;else if&#187; condition is true the &#171;else if block&#187; is inserted. if all condition are false the &#171;else block&#187; is inserted. You can have zero or more &#171;elseif blocks&#187;, zero or one &#171;else block&#187;. All 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expressions</a> should evaluate to a Boolean.
-		</p>
-		<p>
-			<code>`</code>
-			{m:if 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> } ...then block... {m:elseif 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> } ...else if block... {m:else} ...else block... {m:endif}
-
-			<code>`</code>
-		</p>
+		</p><pre>{m:if [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...then block... {m:elseif [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...else if block... {m:else} ...else block... {m:endif}</pre>
 		<h3 id="repetition-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal">Repetition (
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal">example</a>)
 		</h3>
 		<p>Generates the &#171;repetition block&#187; for each value of the 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a>.
-		</p>
-		<p>
-			<code>`</code>
-			{m:for variable &#124; 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> } ...repetition block... {m:endfor}
-
-			<code>`</code>
-		</p>
+		</p><pre>{m:for variable &#124; [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...repetition block... {m:endfor}</pre>
 		<h3 id="let-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal">Let (
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal">example</a>)
 		</h3>
-		<p>Declare the variable named &#171;variable&#187; with the result of the 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> as value. The variable is accessible in the &#171;let block&#187;.
-		</p>
-		<p>
-			<code>`</code>
-			{m:let variable = 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> } ...let block... {m:endlet}
-
-			<code>`</code>
-		</p>
+		<p>Declares a variable named &#171;variable&#187; with the result of the 
+			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> as its value. The variable is accessible in the &#171;let block&#187;.
+		</p><pre>{m:let variable = [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...let block... {m:endlet}</pre>
 		<h3 id="bookmark-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-bookmark-nominal">Bookmark (
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal">example</a>)
 		</h3>
 		<p>Generates a bookmark with the result of the 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> as identifier and the &#171;bookmark block&#187; as content.
-		</p>
-		<p>
-			<code>`</code>
-			{m:bookmark 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> } ...bookmark block... {m:endbookmark}
-
-			<code>`</code>
-		</p>
+		</p><pre>{m:bookmark [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...bookmark block... {m:endbookmark}</pre>
 		<h3 id="user-documentation-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-userdoc-nominal">User Documentation (
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal">example</a>)
 		</h3>
-		<p>Generate a user content block in the resulting document. If the generated document exists and already has a use content with the same id the previous user content is preserved, otherwise the &#171;userdoc block&#187; is generated.</p>
-		<p>
-			<code>`</code>
-			{m:userdoc 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> } ...user block... {m:enduserdoc}
-			<code>`</code>
-
-			<code>`</code>
-		</p>
+		<p>Generates a user content block in the resulting document. If the generated document exists and already has a use content with the same id the previous user content is preserved, otherwise the &#171;userdoc block&#187; is generated.</p><pre>{m:userdoc [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...user block... {m:enduserdoc}</pre>
 		<p>If you want examples of templates you can have a look at the nominal cases in 
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources">unit tests</a>.
 		</p>
 		<h2 id="services">Services</h2>
 		<p>All 
-			<a href="https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference">AQL services</a> are available, on top that specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can 
-			<a href="index.html#provide-new-services">provide services</a>.
+			<a href="https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference">AQL services</a> are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can 
+			<a href="index.html#provide-new-services">provide custom services</a>.
 		</p>
 		<ul>
 			<li>
@@ -212,68 +163,68 @@
 			</li>
 		</ul>
 		<h2 id="template-editor">Template editor</h2>
-		<p>The template editor can set M2Doc specific custom properties in your Word template. Those properties are used to define variables, EMF packages URI, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services.</p>
+		<p>The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services.</p>
 		<p>
-			<img alt="The template editor." title="The template editor." border="0" src="images/Template editor.png"/>
+			<img alt="The template editor." title="The template editor." border="0" src="images/Template%20editor.png"/>
 		</p>
 		<p>The first table at the top lists variables needed by the template. Each variable has a declared 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html#Typeliterals">type</a>. This type is used to validate the template and to select a value in the 
 			<a href="index.html#generation-configuration-editor">generation configuration editor</a>. Three menus are accessible using right click on the variable table.
 		</p>
 		<p>
-			<img alt="The variables menu." title="The variables menu." border="0" src="images/Template editor - variables menu.png"/>
+			<img alt="The variables menu." title="The variables menu." border="0" src="images/Template%20editor%20-%20variables%20menu.png"/>
 		</p>
 		<ul>
-			<li>Add missing variables will add all variables used in the template but not declared yet.</li>
-			<li>Add variable will add a variable</li>
-			<li>Delete variable will delete selected variables</li>
+			<li>'Add missing variables' will add all variables used in the template but not declared yet.</li>
+			<li>'Add variable' will add a variable</li>
+			<li>'Delete variable' will delete selected variables</li>
 		</ul>
 		<p>The second table in the middle lists packages used in the template. It reference EMF EPackages used to type expressions in the template. Two menus are accessible using right click on the package table.</p>
 		<p>
-			<img alt="The variables menu." title="The variables menu." border="0" src="images/Template editor - packages menu.png"/>
+			<img alt="The variables menu." title="The variables menu." border="0" src="images/Template%20editor%20-%20packages%20menu.png"/>
 		</p>
 		<ul>
-			<li>Add will open the following dialog to add selected packages</li>
+			<li>'Add' will open the following dialog to add selected packages</li>
 		</ul>
 		<p>
-			<img alt="The package selection dialog." title="The package selection dialog." border="0" src="images/Package selection dialog.png"/>
+			<img alt="The package selection dialog." title="The package selection dialog." border="0" src="images/Package%20selection%20dialog.png"/>
 		</p>
 		<ul>
-			<li>Delete selected packages</li>
+			<li>'Delete' will remove the selected packages</li>
 		</ul>
 		<p>The last table at the bottom lists services used in the template. If you have created your 
 			<a href="index.html#provide-new-services">own services</a> you can add them here to be able to use them in the template. Three menus are accessible using right click on the service table.
 		</p>
 		<p>
-			<img alt="The variables menu." title="The variables menu." border="0" src="images/Template editor - services menu.png"/>
+			<img alt="The variables menu." title="The variables menu." border="0" src="images/Template%20editor%20-%20services%20menu.png"/>
 		</p>
 		<ul>
-			<li>Add will open a dialog where you can select a Java class</li>
+			<li>'Add' will open a dialog where you can select a Java class</li>
 		</ul>
 		<p>
 			<img alt="The service selection dialog." title="The service selection dialog." border="0" src="images/Service selection dialog.png"/>
 		</p>
 		<ul>
-			<li>Delete will remove the selection</li>
-			<li>Select token will add/remove services according to the selected 
+			<li>'Delete' will remove the selection</li>
+			<li>'Select token' will add/remove services according to the selected 
 				<a href="index.html#service-token">tokens</a> in the dialog
 			</li>
 		</ul>
 		<p>
-			<img alt="The service token selection dialog." title="The service token selection dialog." border="0" src="images/Service token selection dialog.png"/>
+			<img alt="The service token selection dialog." title="The service token selection dialog." border="0" src="images/Service%20token%20selection%20dialog.png"/>
 		</p>
-		<h1 id="provide-new-services">Provide new services</h1>
+		<h1 id="providing-new-services">Providing new services</h1>
 		<p>You can extends M2Doc by adding services to your templates using the 
 			<a href="index.html#template-editor">template editor</a>. A service is a simple Java method with at least one parameter and a return value.
 		</p>
 		<h2 id="service-class">Service class</h2>
-		<p>You have two cases for the containing class either it has a 
-			<a href="index.html#default-constructor">default constructor</a> or a 
+		<p>There are two cases for the class containing the service: either it has a 
+			<a href="index.html#default-constructor">default constructor</a>, or it has a 
 			<a href="index.html#custom-constructor">constructor with a parameter</a>.
 		</p>
 		<h3 id="default-constructor">Default constructor</h3>
-		<p>When the class has no explicit constructor or the constructor don&#8217;t have any parameters. In this case you don&#8217;t need any specific development except for your service method. You can have a look at 
-			<a href="index.html#special-return-types">specific return types</a> if you want to insert images, table, etc... To use your services in your template simply add them in the 
+		<p>When the class has no explicit constructor or the constructor doesn&#8217;t have any parameters. In this case you don&#8217;t need any specific development except for your service method. You can have a look at 
+			<a href="index.html#special-return-types">specific return types</a> if you want to insert images, table, etc... To use your services in your template simply add them through the 
 			<a href="index.html#template-editor">template editor</a>.
 		</p>
 		<h3 id="custom-constructor">Custom constructor</h3>
@@ -292,33 +243,33 @@
 			<a href="index.html#template-editor">template editor</a>.
 		</p>
 		<h2 id="special-return-types">Special return types</h2>
-		<p>M2Doc evaluation engine convert any object to a string in order to insert it in the generated document. To add flexibility in the produced document we chose to expose some special types to service creators. Those types are 
-			<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MElement.java">MElement</a> allow to directly insert document artifacts:
+		<p>The M2Doc evaluation engine converts any object to a string in order to insert it in the generated document. To add flexibility in the produced document we chose to expose some special types to service creators. Those types are 
+			<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MElement.java">MElement</a> and allow directly inserting document artifacts:
 		</p>
 		<ul>
 			<li>
-				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MPagination.java">MPagination</a> insert table of contents, new page, new paragraph, new column, and new text wrapping. 
+				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MPagination.java">MPagination</a> to insert a table of contents, a new page, a new paragraph, a new column, or a new text wrapping. 
 			</li>
 			<li>
-				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MBookmark.java">MBookmark</a> insert a new bookmark or a reference to a bookmark.
+				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MBookmark.java">MBookmark</a> to insert a new bookmark or a reference to a bookmark.
 			</li>
 			<li>
-				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MHyperLink.java">MHyperLink</a> insert a new link to an 
+				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MHyperLink.java">MHyperLink</a> to insert a new link to an 
 				<a href="https://en.wikipedia.org/wiki/URL">URL</a>.
 			</li>
 			<li>
-				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MImage.java">MImage</a> insert a new image.
+				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MImage.java">MImage</a> to insert a new image.
 			</li>
 			<li>
-				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MTable.java">MTable</a> insert a new table.
+				<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MTable.java">MTable</a> to insert a new table.
 			</li>
 		</ul>
 		<p>Default implementations are also provided by M2Doc in 
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/impl">this package</a>.
 		</p>
 		<h1 id="template-testing">Template testing</h1>
-		<p>To simplify testing while developing M2Doc, a 
-			<a href="http://junit.org/junit4/">JUnit</a> test suite has been implemented. It use a given folder as input and list each sub directory following a naming pattern as a test case. You can use the same test suite for your own tests. And example of the test suite implementation 
+		<p>To simplify unit testing while developing M2Doc, a 
+			<a href="http://junit.org/junit4/">JUnit</a> test suite has been implemented. It uses a given folder as input and lists each sub directory following a naming pattern as a test case. You can use the same test suite for your own tests. An example of the test suite implementation 
 			<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.tests/src/org/obeonetwork/m2doc/tests/QueryTests.java">QueryTests</a> with the folder 
 			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query">resources/query</a>.
 		</p>
@@ -326,64 +277,20 @@
 		<p>You can launch your generation using 
 			<a href="https://maven.apache.org/">Maven</a> and 
 			<a href="https://eclipse.org/tycho/">Tycho</a>. An example is available 
-			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/doc/generate-with-maven">here</a>. You probably have a look at the 
+			<a href="https://github.com/ObeoNetwork/M2Doc/tree/master/doc/generate-with-maven">here</a>. You may probably need to have a look at the 
 			<a href="https://github.com/ObeoNetwork/M2Doc/blob/master/doc/generate-with-maven/myModelToDocx/pom.xml">pom.xml</a> file. To launch the build and the generation you can simply use the following command:
-		</p>
-		<p>
-			<code>`</code>
-			mvn clean verify
-
-			<code>`</code>
-		</p>
+		</p></pre>mvn clean verify</pre>
 		<h1 id="using-m2doc-programmatically">Using M2Doc programmatically</h1>
-		<p>This section is for developers wanting to integrate M2Doc in there own project. It will show how to use main features of M2Doc programmatically. Since M2Doc use AQL for expressions it can be useful to have a look at 
+		<p>This section is for developers wanting to integrate M2Doc in their own project. It will show how to use the main features of M2Doc programmatically. Since M2Doc uses AQL for expressions it can be useful to have a look at 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically">Using AQL programmatically</a>.
 		</p>
 		<h2 id="parsing">Parsing</h2>
-		<p>the following sample code shows how to load a template .docx file using M2Doc:</p>
-		<p>
-			<code>`</code>java
-			final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
-			final Map&lt;String, String&gt; options = ...; // can be empty
-			M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI, options); // delegate to IServicesConfigurator
-			final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
-			try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {
-			  // use the template
-			}
-
-			<code>`</code>
-		</p>
+		<p>The following sample code shows how to load a template .docx file using M2Doc:</p><pre>final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);<br>final Map<String, String> options = ...; // can be empty<br>M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI, options); // delegate to IServicesConfigurator<br>final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse<br>try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {<br>  // use the template<br>}<br></pre>
 		<h2 id="validation">Validation</h2>
-		<p>The validation is optional:</p>
-		<p>
-			<code>`</code>java
-			final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment);
-			if (validationLevel != ValidationMessageLevel.OK) {
-			  final URI validationResulrURI = ...; // some place to serialize the result of the validation
-			  M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationResulrURI);
-			}
-
-			<code>`</code>
-		</p>
+		<p>The validation is optional:</p><pre>final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment);<br>if (validationLevel != ValidationMessageLevel.OK) {<br>  final URI validationResulrURI = ...; // some place to serialize the result of the validation<br>  M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationResulrURI);<br>}<br></pre>
 		<h2 id="generation">Generation</h2>
-		<p>The generation will produce the final document where M2Doc template is evaluated against the given variables. There are two level of API for the generation: direclty from the DocumentTemplate or from the Generation.</p>
-		<h3 id="core-generation-api">Core generation API</h3>
-		<p>
-			<code>`</code>java
-			final Map&lt;String, Object&gt; variables = ...; // your variables and values
-			final URI outputURI = ...; // some place to serialize the result of the generation
-			M2DocUtils.generate(template, queryEnvironment, variables, outputURI, monitor);
-
-			<code>`</code>
-		</p>
-		<h3 id="generation-configuration-api">Generation configuration API</h3>
-		<p>
-			<code>`</code>java
-			final Generation generation = ...; // load from a serialized EMF model or create in memory
-			final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
-			GenconfUtils.generate(generation, classProvider, monitor);
-
-			<code>`</code>
-		</p>
+		<p>The generation will produce the final document where M2Doc template is evaluated against the given variables. There are two levels of API for the generation: directly from the DocumentTemplate or from the Generation.</p>
+		<h3 id="core-generation-api">Core generation API</h3><pre>final Map<String, Object> variables = ...; // your variables and values<br>final URI outputURI = ...; // some place to serialize the result of the generation<br>M2DocUtils.generate(template, queryEnvironment, variables, outputURI, monitor);<br></pre>
+		<h3 id="generation-configuration-api">Generation configuration API</h3><pre>final Generation generation = ...; // load from a serialized EMF model or create in memory<br>final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse<br>GenconfUtils.generate(generation, classProvider, monitor);<br></pre>
 	</body>
 </html>

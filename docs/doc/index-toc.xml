@@ -2,10 +2,10 @@
 <toc topic="doc/index.html" label="index">
 	<topic href="doc/index.html" label="Overview"></topic>
 	<topic href="doc/index.html#installation" label="Installation"></topic>
-	<topic href="doc/index.html#generate-a-document" label="Generate a document">
-		<topic href="doc/index.html#launching-generation" label="Launching generation"></topic>
-		<topic href="doc/index.html#initializing-generation" label="Initializing generation"></topic>
-		<topic href="doc/index.html#validating-a-generation" label="Validating a generation"></topic>
+	<topic href="doc/index.html#generating-a-document" label="Generating a document">
+		<topic href="doc/index.html#launching-a-generation" label="Launching a generation"></topic>
+		<topic href="doc/index.html#initializing-a-generation-configuration" label="Initializing a generation configuration"></topic>
+		<topic href="doc/index.html#validating-a-generation-setup" label="Validating a generation setup"></topic>
 		<topic href="doc/index.html#generation-configuration-editor" label="Generation configuration editor"></topic>
 	</topic>
 	<topic href="doc/index.html#template-authoring" label="Template authoring">
@@ -22,7 +22,7 @@
 		<topic href="doc/index.html#services" label="Services"></topic>
 		<topic href="doc/index.html#template-editor" label="Template editor"></topic>
 	</topic>
-	<topic href="doc/index.html#provide-new-services" label="Provide new services">
+	<topic href="doc/index.html#providing-new-services" label="Providing new services">
 		<topic href="doc/index.html#service-class" label="Service class">
 			<topic href="doc/index.html#default-constructor" label="Default constructor"></topic>
 			<topic href="doc/index.html#custom-constructor" label="Custom constructor"></topic>

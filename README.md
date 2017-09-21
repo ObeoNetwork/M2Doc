@@ -37,13 +37,13 @@ M2Doc is built around an open architecture that allows extensions to connect any
 You probably want to start with the [Installation](http://obeonetwork.github.io/M2Doc/doc/index.html#installation) section. Then you might have one of the following roles:
 
 * Template user, You already have the template and want to generate the document:
-  * see [Generate a document](http://obeonetwork.github.io/M2Doc/doc/index.html#generate-a-document)
+  * see [Generate a document](http://obeonetwork.github.io/M2Doc/doc/index.html#generating-a-document)
   * *see [Maven](http://obeonetwork.github.io/M2Doc/doc/index.html#maven) (optional)*
 
 * Template developper, You want to create your own template:
   * see [Template authoring](http://obeonetwork.github.io/M2Doc/doc/index.html#template-authoring)
   * *see [Provide new services](http://obeonetwork.github.io/M2Doc/doc/index.html#provide-new-services) (optional)*
-  * *see [Validating a generation](http://obeonetwork.github.io/M2Doc/doc/index.html#validating-a-generation) (optional)*
+  * *see [Validating a generation](http://obeonetwork.github.io/M2Doc/doc/index.html#validating-a-generation-setup) (optional)*
   * *see [Template testing](http://obeonetwork.github.io/M2Doc/doc/index.html#template-testing) (optional)*
 
 * Integrator, You want to provide document generation in your own project using M2Doc:

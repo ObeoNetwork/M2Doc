@@ -8,7 +8,7 @@ The simplest way to start using M2Doc is to download an Eclipse modeling tools b
 
 # Generating a document
 
-To generate a document you will need at least a template file (.docx file) and a generation configuration model (.genconf file). If you don&#8217;t have the template you can read the [template authoring](index.html#template-authoring) section. To create a generation model file you can read the [initialize generation](index.html#initializing-generation) section.
+To generate a document you will need at least a template file (.docx file) and a generation configuration model (.genconf file). If you don&#8217;t have the template you can read the [template authoring](index.html#template-authoring) section. To create a generation model file you can read the [initialize generation](index.html#initializing-a-generation-configuration) section.
 
 ## Launching a generation
 
@@ -16,7 +16,7 @@ To launch a generation you can right click on the generation configuration model
 
 ![The Generate Documentation menu.](images/Generate%20Documentation%20menu.png "The Generate Documentation menu.")
 
-If you don&#8217;t have the the generation model configuration file you can create it using the [initialize generation](index.html#initializing-generation) section.
+If you don&#8217;t have the the generation model configuration file you can create it using the [initialize generation](index.html#initializing-a-generation-configuration) section.
 
 ## Initializing a generation configuration
 
@@ -34,7 +34,7 @@ To validate a generation setup (template plus generation configuration) you can 
 
 ![The Validate Documentation menu.](images/Validate%20Documentation%20menu.png "The Validate Documentation menu.")
 
-If you don&#8217;t have the the generation configuration model file you can create it using the [initialize generation](index.html#initializing-generation) section. If the validation succeeds with no informations, warnings, or errors you will be prompted. If something went wrong a .docx file with the name of the template and sufixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues. The template is *not* modified.
+If you don&#8217;t have the the generation configuration model file you can create it using the [initialize generation](index.html#initializing-a-generation-configuration) section. If the validation succeeds with no informations, warnings, or errors you will be prompted. If something went wrong a .docx file with the name of the template and sufixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues. The template is *not* modified.
 
 ## Generation configuration editor
 
@@ -67,7 +67,7 @@ The template should be edited using your Microsoft Word document editor. M2Doc u
 
 ## Syntax
 
-All syntax elements of M2Doc should be placed into fields using 'ALT+F9' to show fields and 'CTRL+F9' to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#provide-new-services).
+All syntax elements of M2Doc should be placed into fields using 'ALT+F9' to show fields and 'CTRL+F9' to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
 
 In the following table &#8249;{&#8250; and &#8249;}&#8250; denote a Word field. 
 
@@ -75,9 +75,9 @@ In the following table &#8249;{&#8250; and &#8249;}&#8250; denote a Word field.
 
 A simple comment, nothing is generated.
 
-```
+<pre>
 {m:comment any text}
-```
+</pre>
 
 ### Static statement
 
@@ -85,59 +85,59 @@ A simple comment, nothing is generated.
 
 ### Query ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal))
 
-The [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) is evaluated and its result is inserted in the generated document. [M2Doc services](index.html#services) and [provided services](index.html#provide-new-services) can be used. Some [specific return types](index.html#special-return-types) will be interpreted by M2Doc.
+The [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) is evaluated and its result is inserted in the generated document. [M2Doc services](index.html#services) and [provided services](index.html#providing-new-services) can be used. Some [specific return types](index.html#special-return-types) will be interpreted by M2Doc.
 
-```
-{m:[AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) }
-```
+<pre>
+{m:[AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)}
+</pre>
 
 ### Conditional ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal))
 
 If the condition is true the &#171;then block&#187; is inserted in the generated document. if it&#8217;s false and the &#171;else if&#187; condition is true the &#171;else if block&#187; is inserted. if all condition are false the &#171;else block&#187; is inserted. You can have zero or more &#171;elseif blocks&#187;, zero or one &#171;else block&#187;. All [AQL expressions](https://www.eclipse.org/acceleo/documentation/aql.html) should evaluate to a Boolean.
 
-```
-{m:if [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...then block... {m:elseif [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...else if block... {m:else} ...else block... {m:endif}
-```
+<pre>
+{m:if [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...then block... {m:elseif [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...else if block... {m:else} ...else block... {m:endif}
+</pre>
 
 
 ### Repetition ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
 Generates the &#171;repetition block&#187; for each value of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html).
 
-```
-{m:for variable &#124; [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...repetition block... {m:endfor}
-```
+<pre>
+{m:for variable &#124; [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...repetition block... {m:endfor}
+</pre>
 
 
 ### Let ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
 Declares a variable named &#171;variable&#187; with the result of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) as its value. The variable is accessible in the &#171;let block&#187;.
 
-```
-{m:let variable = [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...let block... {m:endlet}
-```
+<pre>
+{m:let variable = [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...let block... {m:endlet}
+</pre>
 
 ### Bookmark ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))
 
 Generates a bookmark with the result of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) as identifier and the &#171;bookmark block&#187; as content.
 
-```
-{m:bookmark [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...bookmark block... {m:endbookmark}
-```
+<pre>
+{m:bookmark [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...bookmark block... {m:endbookmark}
+</pre>
 
 ### User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))
 
 Generates a user content block in the resulting document. If the generated document exists and already has a use content with the same id the previous user content is preserved, otherwise the &#171;userdoc block&#187; is generated.
 
-```
-{m:userdoc [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) } ...user block... {m:enduserdoc}
-```
+<pre>
+{m:userdoc [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)} ...user block... {m:enduserdoc}
+</pre>
 
 If you want examples of templates you can have a look at the nominal cases in [unit tests](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources).
 
 ## Services
 
-All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#provide-new-services).
+All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#providing-new-services).
 
 * [Boolean services](m2doc_service_booleanservices.html)
 * [Image services](m2doc_service_imageservices.html)
@@ -169,7 +169,7 @@ The second table in the middle lists packages used in the template. It reference
 
 * 'Delete' will remove the selected packages
 
-The last table at the bottom lists services used in the template. If you have created your [own services](index.html#provide-new-services) you can add them here to be able to use them in the template. Three menus are accessible using right click on the service table.
+The last table at the bottom lists services used in the template. If you have created your [own services](index.html#providing-new-services) you can add them here to be able to use them in the template. Three menus are accessible using right click on the service table.
 
 ![The variables menu.](images/Template%20editor%20-%20services%20menu.png "The variables menu.")
 
@@ -224,9 +224,9 @@ To simplify unit testing while developing M2Doc, a [JUnit](http://junit.org/juni
 
 You can launch your generation using [Maven](https://maven.apache.org/) and [Tycho](https://eclipse.org/tycho/). An example is available [here](https://github.com/ObeoNetwork/M2Doc/tree/master/doc/generate-with-maven). You may probably need to have a look at the [pom.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/doc/generate-with-maven/myModelToDocx/pom.xml) file. To launch the build and the generation you can simply use the following command:
 
-```
+</pre>
 mvn clean verify
-```
+</pre>
 
 # Using M2Doc programmatically
 
@@ -236,27 +236,27 @@ This section is for developers wanting to integrate M2Doc in their own project. 
 
 The following sample code shows how to load a template .docx file using M2Doc:
 
-```java
-final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
-final Map<String, String> options = ...; // can be empty
-M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI, options); // delegate to IServicesConfigurator
-final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
-try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {
-  // use the template
-}
-```
+<pre>
+final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);<br>
+final Map<String, String> options = ...; // can be empty<br>
+M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI, options); // delegate to IServicesConfigurator<br>
+final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse<br>
+try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {<br>
+  // use the template<br>
+}<br>
+</pre>
 
 ## Validation
 
 The validation is optional:
 
-```java
-final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment);
-if (validationLevel != ValidationMessageLevel.OK) {
-  final URI validationResulrURI = ...; // some place to serialize the result of the validation
-  M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationResulrURI);
-}
-```
+<pre>
+final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment);<br>
+if (validationLevel != ValidationMessageLevel.OK) {<br>
+  final URI validationResulrURI = ...; // some place to serialize the result of the validation<br>
+  M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationResulrURI);<br>
+}<br>
+</pre>
 
 ## Generation
 
@@ -264,16 +264,16 @@ The generation will produce the final document where M2Doc template is evaluated
 
 ### Core generation API
 
-```java
-final Map<String, Object> variables = ...; // your variables and values
-final URI outputURI = ...; // some place to serialize the result of the generation
-M2DocUtils.generate(template, queryEnvironment, variables, outputURI, monitor);
-```
+<pre>
+final Map<String, Object> variables = ...; // your variables and values<br>
+final URI outputURI = ...; // some place to serialize the result of the generation<br>
+M2DocUtils.generate(template, queryEnvironment, variables, outputURI, monitor);<br>
+</pre>
 
 ### Generation configuration API
 
-```java
-final Generation generation = ...; // load from a serialized EMF model or create in memory
-final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
-GenconfUtils.generate(generation, classProvider, monitor);
-```
+<pre>
+final Generation generation = ...; // load from a serialized EMF model or create in memory<br>
+final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse<br>
+GenconfUtils.generate(generation, classProvider, monitor);<br>
+</pre>
