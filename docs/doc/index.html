@@ -6,6 +6,64 @@
 	<body>
 		<h1 id="overview">Overview</h1>
 		<p>The M2Doc project provides Word document (.docx files) generation. It is based on a document template and Ecore models. The M2Doc template is applied on one or mode variables to produce the generated document.</p>
+		<p>You probably want to start with the 
+			<a href="http://obeonetwork.github.io/M2Doc/doc/index.html#installation">Installation</a> section. Then you might have one of the following roles:
+		</p>
+		<h2 id="template-user">Template user</h2>
+		<p>You already have the template and want to generate the document:</p>
+		<ul>
+			<li>see 
+				<a href="http://obeonetwork.github.io/M2Doc/doc/index.html#generating-a-document">Generate a document</a>
+			</li>
+			<li>
+				<em>see [Maven](http://obeonetwork.github.io/M2Doc/doc/index.html#maven) (optional)</em>
+			</li>
+		</ul>
+		<h2 id="template-developper">Template developper</h2>
+		<p>You want to create your own template:</p>
+		<ul>
+			<li>see 
+				<a href="http://obeonetwork.github.io/M2Doc/doc/index.html#template-authoring">Template authoring</a>
+			</li>
+			<li>
+				<em>see [Provide new services](http://obeonetwork.github.io/M2Doc/doc/index.html#providing-new-services) (optional)</em>
+			</li>
+			<li>
+				<em>see [Validating a generation](http://obeonetwork.github.io/M2Doc/doc/index.html#validating-a-generation-setup) (optional)</em>
+			</li>
+			<li>
+				<em>see [Template testing](http://obeonetwork.github.io/M2Doc/doc/index.html#template-testing) (optional)</em>
+			</li>
+		</ul>
+		<h2 id="integrator">Integrator</h2>
+		<p>You want to provide document generation in your own project using M2Doc:</p>
+		<ul>
+			<li>see 
+				<a href="http://obeonetwork.github.io/M2Doc/doc/index.html#using-m2doc-programmatically">Using M2Doc programmatically</a>
+			</li>
+			<li>
+				<em>see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)</em>
+			</li>
+		</ul>
+		<h1 id="architecture">Architecture</h1>
+		<p>The overall architecture of M2Doc is organized around three building blocs:</p>
+		<ul>
+			<li>
+				<a href="https://poi.apache.org/">Apache POI</a> for the parsing and generation of 
+				<a href="https://fr.wikipedia.org/wiki/Office_Open_XML">OOXML</a> documents
+			</li>
+			<li>
+				<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL</a> for querying the models
+			</li>
+			<li>EMF as a general platform</li>
+		</ul>
+		<p>
+			<img alt="Technical architecture" border="0" src="TechnicalArchitecture.png"/>
+		</p>
+		<p>The workflow of M2Doc is depicted below: </p>
+		<p>
+			<img alt="M2Doc Workflow" border="0" src="M2DocWorkflow.png"/>
+		</p>
 		<h1 id="installation">Installation</h1>
 		<p>The simplest way to start using M2Doc is to download an Eclipse modeling tools bundle from the 
 			<a href="https://www.eclipse.org/downloads/eclipse-packages/">Eclipse packages page</a>. Then you need to unpack it and launch the Eclipse executable. The next step is to 
@@ -15,7 +73,7 @@
 		<h1 id="generating-a-document">Generating a document</h1>
 		<p>To generate a document you will need at least a template file (.docx file) and a generation configuration model (.genconf file). If you don&#8217;t have the template you can read the 
 			<a href="index.html#template-authoring">template authoring</a> section. To create a generation model file you can read the 
-			<a href="index.html#initializing-generation">initialize generation</a> section.
+			<a href="index.html#initializing-a-generation-configuration">initialize generation</a> section.
 		</p>
 		<h2 id="launching-a-generation">Launching a generation</h2>
 		<p>To launch a generation you can right click on the generation configuration model (.genconf file) or the Generation object and select the &#171;Generate Documentation menu&#187; as shown here:</p>
@@ -23,7 +81,7 @@
 			<img alt="The Generate Documentation menu." title="The Generate Documentation menu." border="0" src="images/Generate%20Documentation%20menu.png"/>
 		</p>
 		<p>If you don&#8217;t have the the generation model configuration file you can create it using the 
-			<a href="index.html#initializing-generation">initialize generation</a> section.
+			<a href="index.html#initializing-a-generation-configuration">initialize generation</a> section.
 		</p>
 		<h2 id="initializing-a-generation-configuration">Initializing a generation configuration</h2>
 		<p>To initialize a generation configuration you will need a template file (.docx file). If you don&#8217;t have the template you can read the 
@@ -42,7 +100,7 @@
 			<img alt="The Validate Documentation menu." title="The Validate Documentation menu." border="0" src="images/Validate%20Documentation%20menu.png"/>
 		</p>
 		<p>If you don&#8217;t have the the generation configuration model file you can create it using the 
-			<a href="index.html#initializing-generation">initialize generation</a> section. If the validation succeeds with no informations, warnings, or errors you will be prompted. If something went wrong a .docx file with the name of the template and sufixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues. The template is 
+			<a href="index.html#initializing-a-generation-configuration">initialize generation</a> section. If the validation succeeds with no informations, warnings, or errors you will be prompted. If something went wrong a .docx file with the name of the template and sufixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues. The template is 
 			<em>not</em> modified.
 		</p>
 		<h2 id="generation-configuration-editor">Generation configuration editor</h2>
@@ -91,7 +149,7 @@
 		<h2 id="syntax">Syntax</h2>
 		<p>All syntax elements of M2Doc should be placed into fields using 'ALT+F9' to show fields and 'CTRL+F9' to insert a new field. M2Doc is an imperative template language built on top of 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL</a> for querying. The language supports type inference and can be extended using 
-			<a href="index.html#provide-new-services">custom services</a>.
+			<a href="index.html#providing-new-services">custom services</a>.
 		</p>
 		<p>In the following table &#8249;{&#8250; and &#8249;}&#8250; denote a Word field. </p>
 		<h3 id="comment-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-nominal">Comment (
@@ -106,7 +164,7 @@
 		<p>The 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html">AQL expression</a> is evaluated and its result is inserted in the generated document. 
 			<a href="index.html#services">M2Doc services</a> and 
-			<a href="index.html#provide-new-services">provided services</a> can be used. Some 
+			<a href="index.html#providing-new-services">provided services</a> can be used. Some 
 			<a href="index.html#special-return-types">specific return types</a> will be interpreted by M2Doc.
 		</p><pre>{m:[AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html)}</pre>
 		<h3 id="conditional-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-conditional-nominal">Conditional (
@@ -143,7 +201,7 @@
 		<h2 id="services">Services</h2>
 		<p>All 
 			<a href="https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference">AQL services</a> are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can 
-			<a href="index.html#provide-new-services">provide custom services</a>.
+			<a href="index.html#providing-new-services">provide custom services</a>.
 		</p>
 		<ul>
 			<li>
@@ -193,7 +251,7 @@
 			<li>'Delete' will remove the selected packages</li>
 		</ul>
 		<p>The last table at the bottom lists services used in the template. If you have created your 
-			<a href="index.html#provide-new-services">own services</a> you can add them here to be able to use them in the template. Three menus are accessible using right click on the service table.
+			<a href="index.html#providing-new-services">own services</a> you can add them here to be able to use them in the template. Three menus are accessible using right click on the service table.
 		</p>
 		<p>
 			<img alt="The variables menu." title="The variables menu." border="0" src="images/Template%20editor%20-%20services%20menu.png"/>

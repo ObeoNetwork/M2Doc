@@ -2,6 +2,44 @@
 
 The M2Doc project provides Word document (.docx files) generation. It is based on a document template and Ecore models. The M2Doc template is applied on one or mode variables to produce the generated document.
 
+You probably want to start with the [Installation](http://obeonetwork.github.io/M2Doc/doc/index.html#installation) section. Then you might have one of the following roles:
+
+## Template user
+
+You already have the template and want to generate the document:
+
+* see [Generate a document](http://obeonetwork.github.io/M2Doc/doc/index.html#generating-a-document)
+* *see [Maven](http://obeonetwork.github.io/M2Doc/doc/index.html#maven) (optional)*
+
+## Template developper
+
+You want to create your own template:
+
+* see [Template authoring](http://obeonetwork.github.io/M2Doc/doc/index.html#template-authoring)
+* *see [Provide new services](http://obeonetwork.github.io/M2Doc/doc/index.html#providing-new-services) (optional)*
+* *see [Validating a generation](http://obeonetwork.github.io/M2Doc/doc/index.html#validating-a-generation-setup) (optional)*
+* *see [Template testing](http://obeonetwork.github.io/M2Doc/doc/index.html#template-testing) (optional)*
+
+## Integrator
+
+You want to provide document generation in your own project using M2Doc:
+
+* see [Using M2Doc programmatically](http://obeonetwork.github.io/M2Doc/doc/index.html#using-m2doc-programmatically)
+* *see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)*
+
+# Architecture 
+
+The overall architecture of M2Doc is organized around three building blocs:
+* [Apache POI](https://poi.apache.org/) for the parsing and generation of [OOXML](https://fr.wikipedia.org/wiki/Office_Open_XML) documents
+* [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying the models
+* EMF as a general platform
+
+![Technical architecture](TechnicalArchitecture.png)
+
+The workflow of M2Doc is depicted below: 
+
+![M2Doc Workflow](M2DocWorkflow.png)
+
 # Installation
 
 The simplest way to start using M2Doc is to download an Eclipse modeling tools bundle from the [Eclipse packages page](https://www.eclipse.org/downloads/eclipse-packages/). Then you need to unpack it and launch the Eclipse executable. The next step is to [install](https://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm) M2Doc from one for the following [update sites](https://github.com/ObeoNetwork/M2Doc#download%2d%2dinstallation)

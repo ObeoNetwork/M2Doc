@@ -1,6 +1,11 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="doc/index.html" label="index">
-	<topic href="doc/index.html" label="Overview"></topic>
+	<topic href="doc/index.html" label="Overview">
+		<topic href="doc/index.html#template-user" label="Template user"></topic>
+		<topic href="doc/index.html#template-developper" label="Template developper"></topic>
+		<topic href="doc/index.html#integrator" label="Integrator"></topic>
+	</topic>
+	<topic href="doc/index.html#architecture" label="Architecture"></topic>
 	<topic href="doc/index.html#installation" label="Installation"></topic>
 	<topic href="doc/index.html#generating-a-document" label="Generating a document">
 		<topic href="doc/index.html#launching-a-generation" label="Launching a generation"></topic>

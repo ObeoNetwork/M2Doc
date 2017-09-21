@@ -34,22 +34,6 @@ The complete description of the functionalities can be found in the [Reference d
 
 M2Doc is built around an open architecture that allows extensions to connect any modeling technology that provides representations and diagrams to M2Doc the way we did with Sirius. 
 
-You probably want to start with the [Installation](http://obeonetwork.github.io/M2Doc/doc/index.html#installation) section. Then you might have one of the following roles:
-
-* Template user, You already have the template and want to generate the document:
-  * see [Generate a document](http://obeonetwork.github.io/M2Doc/doc/index.html#generating-a-document)
-  * *see [Maven](http://obeonetwork.github.io/M2Doc/doc/index.html#maven) (optional)*
-
-* Template developper, You want to create your own template:
-  * see [Template authoring](http://obeonetwork.github.io/M2Doc/doc/index.html#template-authoring)
-  * *see [Provide new services](http://obeonetwork.github.io/M2Doc/doc/index.html#provide-new-services) (optional)*
-  * *see [Validating a generation](http://obeonetwork.github.io/M2Doc/doc/index.html#validating-a-generation-setup) (optional)*
-  * *see [Template testing](http://obeonetwork.github.io/M2Doc/doc/index.html#template-testing) (optional)*
-
-* Integrator, You want to provide document generation in your own project using M2Doc:
-  * see [Using M2Doc programmatically](http://obeonetwork.github.io/M2Doc/doc/index.html#using-m2doc-programmatically)
-  * *see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)*
-
 ##Example
 
 As a preview here follows a screenshot of a template's fragment and the corresponding generation result for a database model. 
@@ -57,19 +41,6 @@ As a preview here follows a screenshot of a template's fragment and the correspo
 ![DB Template](docs/DBTemplate.png)
 The generation results looks like this 
 ![DB Result](docs/DBResult.png)
-
-## Architecture 
-
-The overall architecture of M2Doc is organized around three building blocs:
-* [Apache POI](https://poi.apache.org/) for the parsing and generation of [OOXML](https://fr.wikipedia.org/wiki/Office_Open_XML) documents
-* [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying the models
-* EMF as a general platform
-
-![Technical architecture](docs/TechnicalArchitecture.png)
-
-The workflow of M2Doc is depicted below: 
-
-![M2Doc Workflow](docs/M2DocWorkflow.png)
 
 ## Download & Installation
 
