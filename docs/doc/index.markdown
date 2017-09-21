@@ -9,23 +9,23 @@ You probably want to start with the [Installation](index.html#installation) sect
 You already have the template and want to generate the document:
 
 * see [Generate a document](index.html#generating-a-document)
-* *see [Maven](index.html#maven) (optional)*
+* see [Maven](index.html#maven) (optional)
 
 ## Template developper
 
 You want to create your own template:
 
 * see [Template authoring](index.html#template-authoring)
-* *see [Provide new services](index.html#providing-new-services) (optional)*
-* *see [Validating a generation](index.html#validating-a-generation-setup) (optional)*
-* *see [Template testing](index.html#template-testing) (optional)*
+* see [Provide new services](index.html#providing-new-services) (optional)
+* see [Validating a generation](index.html#validating-a-generation-setup) (optional)
+* see [Template testing](index.html#template-testing) (optional)
 
 ## Integrator
 
 You want to provide document generation in your own project using M2Doc:
 
 * see [Using M2Doc programmatically](index.html#using-m2doc-programmatically)
-* *see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)*
+* see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)
 
 # Architecture 
 
