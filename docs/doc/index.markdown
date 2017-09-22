@@ -185,7 +185,7 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 
 ## Template editor
 
-The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services.
+The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services. The template editor modifies template custom properties. You can also read [template custom properties](index.html#template-custom-properties) section to change them manually. 
 
 ![The template editor.](images/Template%20editor.png "The template editor.")
 
@@ -213,12 +213,54 @@ The last table at the bottom lists services used in the template. If you have cr
 
 * 'Add' will open a dialog where you can select a Java class
 
-![The service selection dialog.](images/Service selection dialog.png "The service selection dialog.")
+![The service selection dialog.](images/Service%20selection%20dialog.png "The service selection dialog.")
+
+If your class doesn't appear in the dialog you might want to check the Window>Preferences>Plug-in Development>Include all plug-ins from target in Java search option. This will list deployed classes.
 
 * 'Delete' will remove the selection
 * 'Select token' will add/remove services according to the selected [tokens](index.html#service-token) in the dialog
 
 ![The service token selection dialog.](images/Service%20token%20selection%20dialog.png "The service token selection dialog.")
+
+## Template custom properties
+
+You can use the (template editor](index.html#template-editor) or edit them using your Microsoft Word document editor (see [this page](https://support.office.com/en-us/article/View-or-change-the-properties-for-an-Office-file-21d604c2-481e-4379-8e54-1dd4622c6b75?CorrelationId=866914c3-b0b5-42e8-aeb2-e9f7bcc216e2&ui=en-US&rs=en-US&ad=US&ocmsassetID=HA010047524)). This section will describe possible properties name and value used by M2Doc.
+
+### Variable custom properties
+
+To define variables you can set a custom property as follow
+
+* Name: m:var:**variable name**
+* Value: **variable type**
+
+For example:
+
+* Name: m:var:self
+* Value: ecore::EPackage
+
+### Package custom properties
+
+To use new Ecore packages for typing you can add the following custom property:
+
+* Name: m:uri:**EPackage nsURI**
+* Value:
+
+For example:
+
+* Name: m:uri:http://www.eclipse.org/uml2/5.0.0/UML 
+* Value:
+
+### Service custom properties
+
+To import a service class with a [default constructor](index.html#default-constructor). To use a service class with a custom constructor you can read the [custom constructor](index.html#custom-constructor) section.
+
+* Name: m:import:**qualified class name**
+* Value: **bundle symbolic name**
+
+For example:
+
+* Name: m:import:org.obeonetwork.m2doc.rcptt.a.ServiceClassA
+* Value: org.obeonetwork.m2doc.rcptt.a 
 
 # Providing new services
 

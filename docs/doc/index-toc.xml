@@ -26,6 +26,11 @@
 		</topic>
 		<topic href="doc/index.html#services" label="Services"></topic>
 		<topic href="doc/index.html#template-editor" label="Template editor"></topic>
+		<topic href="doc/index.html#template-custom-properties" label="Template custom properties">
+			<topic href="doc/index.html#variable-custom-properties" label="Variable custom properties"></topic>
+			<topic href="doc/index.html#package-custom-properties" label="Package custom properties"></topic>
+			<topic href="doc/index.html#service-custom-properties" label="Service custom properties"></topic>
+		</topic>
 	</topic>
 	<topic href="doc/index.html#providing-new-services" label="Providing new services">
 		<topic href="doc/index.html#service-class" label="Service class">

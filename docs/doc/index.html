@@ -221,7 +221,9 @@
 			</li>
 		</ul>
 		<h2 id="template-editor">Template editor</h2>
-		<p>The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services.</p>
+		<p>The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services. The template editor modifies template custom properties. You can also read 
+			<a href="index.html#template-custom-properties">template custom properties</a> section to change them manually. 
+		</p>
 		<p>
 			<img alt="The template editor." title="The template editor." border="0" src="images/Template%20editor.png"/>
 		</p>
@@ -260,8 +262,9 @@
 			<li>'Add' will open a dialog where you can select a Java class</li>
 		</ul>
 		<p>
-			<img alt="The service selection dialog." title="The service selection dialog." border="0" src="images/Service selection dialog.png"/>
+			<img alt="The service selection dialog." title="The service selection dialog." border="0" src="images/Service%20selection%20dialog.png"/>
 		</p>
+		<p>If your class doesn't appear in the dialog you might want to check the Window&gt;Preferences&gt;Plug-in Development&gt;Include all plug-ins from target in Java search option. This will list deployed classes.</p>
 		<ul>
 			<li>'Delete' will remove the selection</li>
 			<li>'Select token' will add/remove services according to the selected 
@@ -271,6 +274,56 @@
 		<p>
 			<img alt="The service token selection dialog." title="The service token selection dialog." border="0" src="images/Service%20token%20selection%20dialog.png"/>
 		</p>
+		<h2 id="template-custom-properties">Template custom properties</h2>
+		<p>You can use the (template editor](index.html#template-editor) or edit them using your Microsoft Word document editor (see 
+			<a href="https://support.office.com/en-us/article/View-or-change-the-properties-for-an-Office-file-21d604c2-481e-4379-8e54-1dd4622c6b75?CorrelationId=866914c3-b0b5-42e8-aeb2-e9f7bcc216e2&amp;ui=en-US&amp;rs=en-US&amp;ad=US&amp;ocmsassetID=HA010047524">this page</a>). This section will describe possible properties name and value used by M2Doc.
+		</p>
+		<h3 id="variable-custom-properties">Variable custom properties</h3>
+		<p>To define variables you can set a custom property as follow</p>
+		<ul>
+			<li>Name: m:var:
+				<strong>variable name</strong>
+			</li>
+			<li>Value: 
+				<strong>variable type</strong>
+			</li>
+		</ul>
+		<p>For example:</p>
+		<ul>
+			<li>Name: m:var:self</li>
+			<li>Value: ecore::EPackage</li>
+		</ul>
+		<h3 id="package-custom-properties">Package custom properties</h3>
+		<p>To use new Ecore packages for typing you can add the following custom property:</p>
+		<ul>
+			<li>Name: m:uri:
+				<strong>EPackage nsURI</strong>
+			</li>
+			<li>Value:</li>
+		</ul>
+		<p>For example:</p>
+		<ul>
+			<li>Name: m:uri:http://www.eclipse.org/uml2/5.0.0/UML </li>
+			<li>Value:</li>
+		</ul>
+		<h3 id="service-custom-properties">Service custom properties</h3>
+		<p>To import a service class with a 
+			<a href="index.html#default-constructor">default constructor</a>. To use a service class with a custom constructor you can read the 
+			<a href="index.html#custom-constructor">custom constructor</a> section.
+		</p>
+		<ul>
+			<li>Name: m:import:
+				<strong>qualified class name</strong>
+			</li>
+			<li>Value: 
+				<strong>bundle symbolic name</strong>
+			</li>
+		</ul>
+		<p>For example:</p>
+		<ul>
+			<li>Name: m:import:org.obeonetwork.m2doc.rcptt.a.ServiceClassA</li>
+			<li>Value: org.obeonetwork.m2doc.rcptt.a </li>
+		</ul>
 		<h1 id="providing-new-services">Providing new services</h1>
 		<p>You can extends M2Doc by adding services to your templates using the 
 			<a href="index.html#template-editor">template editor</a>. A service is a simple Java method with at least one parameter and a return value.
