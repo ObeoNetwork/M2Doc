@@ -39,7 +39,7 @@ import org.obeonetwork.m2doc.sirius.util.DTable2MTableConverter;
 
 //@formatter:off
 @ServiceProvider(
-value = "Services available for Sirius"
+value = "Services available for Sirius. You will have to set the \"SiriusSession\" option in the generation configuration. It must contains the .aird file URI."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype"})
