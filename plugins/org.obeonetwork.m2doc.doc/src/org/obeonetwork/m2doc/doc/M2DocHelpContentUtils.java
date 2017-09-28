@@ -337,12 +337,12 @@ public final class M2DocHelpContentUtils {
         StringBuffer buffer = new StringBuffer();
         buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append(LS);
         buffer.append("<?NLS TYPE=\"org.eclipse.help.toc\"?>").append(LS);
-        buffer.append("<toc label=\"M2Doc Documentation\" topic=\"pages/index.html\">").append(LS);
+        buffer.append("<toc label=\"M2Doc Documentation\" topic=\"doc/index.html\">").append(LS);
         for (Class<?> serviceProviderClass : serviceProviders) {
             if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
                 ServiceProvider serviceProvider = serviceProviderClass.getAnnotation(ServiceProvider.class);
                 buffer.append(
-                        "<topic href=\"pages/" + M2DOC_HREF_PREFIX + serviceProviderClass.getSimpleName().toLowerCase()
+                        "<topic href=\"doc/" + M2DOC_HREF_PREFIX + serviceProviderClass.getSimpleName().toLowerCase()
                             + ".html\" label=\"" + serviceProvider.value() + "\"></topic>")
                         .append(LS);
             }

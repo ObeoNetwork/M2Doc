@@ -37,11 +37,6 @@ import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.html;
 public final class DocumentationGenerator {
 
     /**
-     * Trigger to append standard documentation.
-     */
-    private static final String TRIGGER_TO_APPEND_STD_DOC = "<p>These sections are listing all the services of the standard library of M2Doc.</p>";
-
-    /**
      * The name of the charset to use to write the documentation.
      */
     private static final String UTF8 = "UTF-8"; //$NON-NLS-1$
@@ -73,9 +68,7 @@ public final class DocumentationGenerator {
 
         System.out.println("Prepare the generation of the documentation for " + pluginFolder.getAbsolutePath());
 
-        File inputFolder = new File(pluginFolder, "input"); //$NON-NLS-1$
-        File documentationFolder = new File(pluginFolder, "pages"); //$NON-NLS-1$
-        File indexHtmlFile = new File(documentationFolder, "index.html"); //$NON-NLS-1$
+        File documentationFolder = new File(pluginFolder, "doc"); //$NON-NLS-1$
 
         // toc.xml
         StringBuffer buffer = M2DocHelpContentUtils.computeToc(STANDARD_SERVICE_PROVIDERS);
@@ -114,31 +107,6 @@ public final class DocumentationGenerator {
                     exception.printStackTrace();
                 }
             }
-        }
-
-        // index.html
-        try {
-            List<StringBuffer> sections = M2DocHelpContentUtils.computeM2DocOverviewSections();
-
-            String inputHtmlContent = Files.toString(new File(inputFolder, "index.html"), Charset.forName(UTF8));
-            int indexOfBodyStart = inputHtmlContent.indexOf("<body>");
-            if (indexOfBodyStart != -1 && indexOfBodyStart + 6 < inputHtmlContent.length()) {
-                inputHtmlContent = inputHtmlContent.substring(indexOfBodyStart + 6);
-            }
-            int indexOfBodyEnd = inputHtmlContent.indexOf("</body>");
-            if (indexOfBodyEnd != -1) {
-                inputHtmlContent = inputHtmlContent.substring(0, indexOfBodyEnd);
-            }
-            sections.add(new StringBuffer(inputHtmlContent));
-
-            StringBuffer stringBuffer = html(head(), body(header(true), sections));
-            String out = stringBuffer.toString().replace(TRIGGER_TO_APPEND_STD_DOC,
-                    TRIGGER_TO_APPEND_STD_DOC + "\n" + aggregated);
-
-            System.out.println("Writing content of " + indexHtmlFile.getAbsolutePath());
-            Files.write(out, indexHtmlFile, Charset.forName(UTF8));
-        } catch (IOException exception) {
-            exception.printStackTrace();
         }
     }
 }
