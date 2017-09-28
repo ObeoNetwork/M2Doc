@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.eclipse.emf.common.util.URI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.obeonetwork.m2doc.genconf.GenconfPackage;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
@@ -59,10 +59,8 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     @Override
     protected void setTemplateFileName(Generation gen, String templateFileName) {
         super.setTemplateFileName(gen, templateFileName);
-        final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
-        option.setName(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
-        option.setValue(getSessionURI(new File(getTestFolderPath())).toString());
-        gen.getOptions().add(option);
+        final Option option = GenconfUtils.getOrCreateOption(gen, M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        option.setValue(getSessionURI(new File(getTestFolderPath())).deresolve(gen.eResource().getURI()).toString());
     }
 
     /**

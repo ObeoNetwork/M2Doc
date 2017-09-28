@@ -685,4 +685,36 @@ public final class GenconfUtils {
         options.put(XMLResource.OPTION_ENCODING, "UTF-8");
         resource.save(options);
     }
+
+    /**
+     * Gets or creates the {@link Option} with the given name.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @param name
+     *            the {@link Option#getName() option name}
+     * @return the {@link Option} with the given name
+     */
+    public static Option getOrCreateOption(Generation generation, String name) {
+        final Option res;
+
+        Option foundOption = null;
+        for (Option option : generation.getOptions()) {
+            if (name.equals(option.getName())) {
+                foundOption = option;
+                break;
+            }
+        }
+
+        if (foundOption != null) {
+            res = foundOption;
+        } else {
+            res = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
+            res.setName(name);
+            generation.getOptions().add(res);
+        }
+
+        return res;
+    }
+
 }

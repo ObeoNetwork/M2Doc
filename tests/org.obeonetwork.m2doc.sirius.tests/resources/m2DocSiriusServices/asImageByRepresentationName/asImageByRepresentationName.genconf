@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="nominal" templateFileName="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName-template.docx">
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
-  <options name="SiriusSession" value="file:/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices/asImageByRepresentationName/asImageByRepresentationName.aird"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="nominal" templateFileName="asImageByRepresentationName-template.docx">
+  <options name="SiriusSession" value="asImageByRepresentationName.aird"/>
 </genconf:Generation>

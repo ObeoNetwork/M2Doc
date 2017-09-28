@@ -31,11 +31,13 @@ import java.util.Map.Entry;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -139,9 +141,11 @@ public abstract class AbstractTemplatesTestSuite {
             generation = getGeneration(genconfURI, rs);
         } else {
             generation = GenconfFactory.eINSTANCE.createGeneration();
+            Resource r = new XMIResourceImpl(genconfURI);
+            r.getContents().add(generation);
         }
         final URI templateURI = getTemplateURI(new File(testFolderPath));
-        setTemplateFileName(generation, URI.decode(templateURI.toString()));
+        setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
         queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
         documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()));
