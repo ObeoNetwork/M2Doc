@@ -1,2 +1,0 @@
-ERROR - Invalid for statement: Malformed tag m:for : no query expression specified. v |
-ERROR - Invalid for statement: Expression "" is invalid: null or empty string.

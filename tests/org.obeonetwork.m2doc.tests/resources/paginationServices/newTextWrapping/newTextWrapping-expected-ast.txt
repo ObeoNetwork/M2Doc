@@ -1,9 +1,0 @@
-
-=== HEADER ===
-
-=== BODY ===
-template
-  A simple demonstration of a query :
-  [query: Sequence{'Some text in a first section of text', .asPagination('newTextWrapping'), 'Some text in a second section of text'}]
-  End of demonstration.
-=== FOOTER ===

@@ -1,0 +1,353 @@
+/*
+Custom CSS for...
+'Modern Business' HTML Theme by Start Bootstrap
+
+All Start Bootstrap themes are licensed under Apache 2.0.
+For more info and more free Bootstrap 3 HTML themes, visit http://startbootstrap.com!
+*/
+
+/* Global Styles */
+
+html, body {
+  height: 100%;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  color: #676767;
+}
+
+#mainbody {
+	padding-top: 80px;
+}
+
+#mainbody .container {
+	padding-bottom: 50px;
+}
+
+img {
+	margin: 15px 0;
+}
+
+a, .first_section h3 a:hover, .section h3 a:hover, .section-colored h3 a:hover {
+	color: #fbb800;
+	font-weight: 600;
+}
+
+a:hover, a:focus {
+    color: #292929;
+    text-decoration: none;
+}
+
+h2 {
+	text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+h2, h3 {
+	font-family: "Open Sans Condensed",sans-serif;
+    font-weight: 600;
+}
+
+h4 {
+    color: #fbb800;
+}
+
+h2, h3, h4, h5 {
+    margin-top: 40px;
+}
+
+h5, .h5 {
+	font-weight: 600;
+}
+
+.section h2, .section h3, .section-colored  h2{
+	margin-bottom: 30px;
+}
+
+.btn-default {
+	border: 2px solid #fbb800;
+    background: transparent;
+    color: #fbb800;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{
+	color: #fff;
+	background-color: #fbb800;
+	border: 2px solid #fbb800;
+}
+	
+.btn-lg {
+	border-radius: 0;
+	padding: 10px 45px;
+}
+
+.page-masthead {
+	color: #fff;
+	margin-bottom: 20px;
+}
+
+.page-header {
+	border: none;
+	padding: 0;
+}
+
+#mainbody .page-masthead .container {
+	padding-bottom: 20px;
+}
+
+.on_dark_bg {
+    border: 2px solid #badfe1;
+    background: transparent;
+    color: #badfe1;
+}
+
+.on_dark_bg:hover {
+    color: #fff;
+    background-color: #badfe1;
+    border: 2px solid #badfe1;
+}
+
+.bg_green1 {
+    background: #4ebbc2;
+}
+
+.bg_green2, .navbar-inverse .navbar-toggle .icon-bar {
+    background: #007788;
+}
+
+.bg_green3 {
+    background: #002B3C;
+}
+
+.green1 {
+    color: #4ebbc2;
+}
+
+.green2 {
+    color: #007788;
+}
+
+.green3, h2, h3, h5, .h5, .first_section h3 a, .section h3 a, .section-colored h3 a, .navbar-inverse .navbar-nav > li > a  {
+    color: #002B3C;
+}
+
+.nav > li {
+    position: relative;
+    display: block;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.nav > li > a {
+    padding: 15px 0 5px 0;
+    margin-left: 25px;
+}
+
+.navbar {
+	min-height: 75px;
+	clear: both;
+}
+
+.navbar-brand {
+    height: auto;
+    padding: 0;
+}	
+	
+.navbar-nav {
+    margin: 15px 0;
+}
+
+.navbar-inverse, .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+  background-color: white;
+  color: #002B3C;
+ }
+
+.navbar-inverse{
+	border-bottom: 1px solid #badfe1;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #676767;
+}
+
+.navbar-inverse .navbar-text {
+  color: #676767;
+}
+.navbar-inverse .navbar-nav > li > a {
+  border-bottom: 3px solid white;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+	border-bottom: 3px solid #badfe1;
+    color: #292929;
+}
+
+.navbar-toggle {
+	border: none;
+}
+
+.navbar-toggle .icon-bar {
+	height: 4px;
+}
+
+.img-home-portfolio,
+.img-customer,
+.portfolio-item {
+  margin-bottom: 30px;
+}
+
+.tab-pane {
+  margin-top: 15px;
+}
+
+/* Page Sections */
+.section,
+.section-colored {
+  padding: 50px 0;
+}
+
+.section-colored {
+  /* change this to change the background color of a colored section */
+  background-color: #eee;
+}
+
+.sidebar {
+  margin-top: 40px;
+}
+
+.sidebar ul {
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid #cccccc;
+}
+
+/* Half Page Height Carousel Customization */
+.carousel {
+  height: 60%;
+}
+
+.item,
+.active,
+.carousel-inner {
+  height: 100%;
+}
+
+.fill {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+/* Social Icons Styles */
+.list-social-icons {
+  margin-bottom: 45px;
+}
+
+.tooltip-social a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.facebook-link a:hover {
+  color: #3b5998;
+}
+
+.linkedin-link a:hover {
+  color: #007fb1;
+}
+
+.twitter-link a:hover {
+  color: #39a9e0;
+}
+
+.google-plus-link a:hover {
+  color: #d14836;
+}
+
+/* Service Page Styles */
+.service-icon {
+  font-size: 50px;
+}
+
+/* 404 Page Styles */
+.error-404 {
+  font-size: 8em;
+}
+
+/* Pricing Page Styles */
+.price {
+  font-size: 4em;
+}
+
+.price-cents {
+  vertical-align: super;
+  font-size: 50%;
+}
+
+.price-month {
+  font-size: 35%;
+  font-style: italic;
+}
+
+/* Footer Styles */
+footer {
+  padding: 30px 0 5px 0;
+  font-size: 14px;
+  font-family: "Open Sans Condensed",sans-serif;
+  color: #ffffff;
+}
+
+.title {
+  padding-top: 60px;
+  padding-bottom: 10px;
+  text-align: center;
+   color: #fff;
+}
+
+.title h1 {
+  font-size: 160px;
+  line-height: 1;
+  letter-spacing: -2px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.title p {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 200;
+  line-height: 1.25;
+  margin-bottom: 40px;
+}
+
+.center {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+td, th {
+  padding: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Responsive Settings */
+@media (min-width: 768px) {
+.navbar-toggle .icon-bar {
+	
+}
+
+.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+	margin-left: 0;
+}
+
+}
+
+/* .bgimg {
+    background-image: url('../images/m2doc.png');
+}*/

@@ -1,9 +1,0 @@
-
-=== HEADER ===
-
-=== BODY ===
-template
-  A simple demonstration of a MText :
-  [query: Sequence{.sampleText('some text', 6), .sampleText('more text', 8), .sampleText('even more text', 10)}]
-  End of demonstration.
-=== FOOTER ===

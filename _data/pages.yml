@@ -1,0 +1,38 @@
+- title: Overview
+  file: ref-doc/index
+  anchor: overview
+
+
+- title: Download
+  file: download
+
+- category: Get started
+  pages:
+  - title: Generate a document
+    file: ref-doc/index
+    anchor: generate-a-document
+  - title: Write a template
+    file: ref-doc/index
+    anchor: write-a-template
+
+
+- category: Get involved
+  pages:
+  - title: Report issues
+    file: developer-guide/contribute
+    anchor: report
+  - title: Ask questions
+    file: developer-guide/contribute
+    anchor: ask
+  - title: Contribute
+    file: developer-guide/contribute
+    anchor: contribute
+    
+- title: Reference
+  file: ref-doc
+
+- title: Support
+  file: support
+
+- title: FAQ
+  file: faq

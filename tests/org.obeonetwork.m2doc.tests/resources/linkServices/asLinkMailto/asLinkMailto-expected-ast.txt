@@ -1,9 +1,0 @@
-
-=== HEADER ===
-
-=== BODY ===
-template
-  A simple demonstration of an http hyperlink:
-  [query: .asLink('Yvan Lussaud', 'mailto:yvan.lussaud@obeo.fr')]
-  End of demonstration.
-=== FOOTER ===

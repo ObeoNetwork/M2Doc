@@ -1,7 +1,0 @@
-
-=== HEADER ===
-
-=== BODY ===
-template
-  A simple demonstration of a static image :End of demonstration.
-=== FOOTER ===

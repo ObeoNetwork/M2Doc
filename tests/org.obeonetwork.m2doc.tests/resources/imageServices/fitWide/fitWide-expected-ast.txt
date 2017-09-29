@@ -1,9 +1,0 @@
-
-=== HEADER ===
-
-=== BODY ===
-template
-  Checks ImageServices registration :
-  [query: .fit(.asImage('dh1.gif'), 300, 100)]
-  End of demonstration.
-=== FOOTER ===

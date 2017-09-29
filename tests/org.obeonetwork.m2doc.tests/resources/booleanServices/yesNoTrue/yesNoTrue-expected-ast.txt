@@ -1,9 +1,0 @@
-
-=== HEADER ===
-
-=== BODY ===
-template
-  Checks BooleanServices registration :
-  [query: .yesNo(true)]
-  End of demonstration.
-=== FOOTER ===

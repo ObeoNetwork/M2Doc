@@ -1,2 +1,0 @@
-ERROR - Invalid link statement: Expression "'bookmark1' self." is invalid: missing feature access or service call
-ERROR - Invalid link statement: Expression "" is invalid: null or empty string.
