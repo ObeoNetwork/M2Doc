@@ -28,12 +28,12 @@ import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdate
 import org.eclipse.sirius.viewpoint.DRepresentation;
 
 /**
- * Export representation: copy the representation and activate/desactivate configurated layers.
+ * Prepare representation: copy the representation and activate/desactivate configurated layers.
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
 @SuppressWarnings("restriction")
-public class ExportRepresentationCommand extends RecordingCommand {
+public class PrepareDiagramCommand extends RecordingCommand {
 
     /**
      * Progress Monitor.
@@ -88,7 +88,7 @@ public class ExportRepresentationCommand extends RecordingCommand {
      * @param refreshRepresentations
      *            refresh Representations
      */
-    public ExportRepresentationCommand(TransactionalEditingDomain domain, List<Layer> layers, DDiagram diagram,
+    public PrepareDiagramCommand(TransactionalEditingDomain domain, List<Layer> layers, DDiagram diagram,
             Session session, boolean isDiagramOpened, boolean refreshRepresentations) {
         super(domain);
         this.editingDomain = domain;

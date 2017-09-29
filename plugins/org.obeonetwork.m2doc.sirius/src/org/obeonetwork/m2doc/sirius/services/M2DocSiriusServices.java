@@ -20,8 +20,10 @@ import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
 import org.eclipse.sirius.business.api.session.Session;
+import org.eclipse.sirius.business.api.session.SessionStatus;
 import org.eclipse.sirius.common.tools.api.resource.ImageFileFormat;
-import org.eclipse.sirius.diagram.description.DiagramDescription;
+import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.table.metamodel.table.DTable;
 import org.eclipse.sirius.table.metamodel.table.description.TableDescription;
 import org.eclipse.sirius.ui.business.api.dialect.DialectUIManager;
@@ -247,6 +249,54 @@ public class M2DocSiriusServices {
         value = "Insert the image of the given representation if it's a diagram.",
         params = {
             @Param(name = "representation", value = "the DRepresentation"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "insert the image of the given representation if it's a diagram.",
+        examples = {
+            @Example(expression = "dRepresentation.asImage(true, OrderedSet{'Layer 1', 'Layer 2'})", result = "insert the image of the given representation if it's a diagram"),
+        }
+    )
+    // @formatter:on
+    public MImage asImage(DRepresentation representation, boolean refresh, Set<String> layerNames)
+            throws SizeTooLargeException, IOException {
+        final MImage res;
+
+        if (representation instanceof DDiagram) {
+            final DDiagram diagram = (DDiagram) representation;
+            final List<Layer> layers = new ArrayList<Layer>();
+            for (Layer layer : diagram.getDescription().getAllLayers()) {
+                if (layerNames.contains(layer.getName())) {
+                    layers.add(layer);
+                }
+            }
+
+            final boolean isSessionDirtyBeforeExport = SessionStatus.DIRTY.equals(session.getStatus());
+            final DDiagram diagramtoExport = SiriusRepresentationUtils.getDDiagramToExport(diagram, refresh, layers,
+                    session, SiriusRepresentationUtils.getEditor(session, diagram) != null);
+
+            res = asImage(diagramtoExport);
+
+            // remove representation copy if needed
+            if (!diagramtoExport.equals(diagram)) {
+                session.getTransactionalEditingDomain().getCommandStack().undo();
+            }
+            // save session if not dirty before diagram export
+            if (!isSessionDirtyBeforeExport) {
+                session.save(new NullProgressMonitor());
+            }
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation if it's a diagram.",
+        params = {
+            @Param(name = "representation", value = "the DRepresentation"),
         },
         result = "insert the image of the given representation if it's a diagram.",
         examples = {
@@ -306,6 +356,33 @@ public class M2DocSiriusServices {
         params = {
             @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
             @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        examples = {
+            @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram', true, OrderedSet{'Layer 1', 'Layer 2'})", result = "Sequence{image1, image2}"),
+        }
+    )
+    // @formatter:on
+    public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName, boolean refresh,
+            Set<String> layerNames) throws SizeTooLargeException, IOException {
+        final List<MImage> res = new ArrayList<MImage>();
+
+        for (DRepresentation representation : SiriusRepresentationUtils
+                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName)) {
+            res.add(asImage(representation, refresh, layerNames));
+        }
+
+        return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        params = {
+            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
         },
         result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
         examples = {
@@ -315,23 +392,11 @@ public class M2DocSiriusServices {
     // @formatter:on
     public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName)
             throws SizeTooLargeException, IOException {
-        final List<MImage> res = new ArrayList<>();
+        final List<MImage> res = new ArrayList<MImage>();
 
-        final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
-                .getRepresentationDescriptors(eObj, session);
-        // Filter representations to keep only those in a selected viewpoint
-        final Collection<Viewpoint> selectedViewpoints = session.getSelectedViewpoints(false);
-
-        for (DRepresentationDescriptor repDesc : repDescs) {
-            boolean isDangling = new DRepresentationDescriptorQuery(repDesc).isDangling();
-            if (!isDangling && repDesc.getDescription() instanceof DiagramDescription
-                && descriptionName.equals(repDesc.getDescription().getName())
-                && repDesc.getDescription().eContainer() instanceof Viewpoint) {
-                Viewpoint vp = (Viewpoint) repDesc.getDescription().eContainer();
-                if (selectedViewpoints.contains(vp)) {
-                    res.add(asImage(repDesc.getRepresentation()));
-                }
-            }
+        for (DRepresentation representation : SiriusRepresentationUtils
+                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName)) {
+            res.add(asImage(representation));
         }
 
         return res;
@@ -368,6 +433,35 @@ public class M2DocSiriusServices {
                     res.add(asTable((DTable) repDesc.getRepresentation()));
                 }
             }
+        }
+
+        return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "Insert the image of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName(true, OrderedSet{'Layer 1', 'Layer 2'})", result = "insert the image"),
+        }
+    )
+    // @formatter:on
+    public MImage asImageByRepresentationName(String representationName, boolean refresh, Set<String> layerNames)
+            throws SizeTooLargeException, IOException {
+        final MImage res;
+
+        final DRepresentationDescriptor description = SiriusRepresentationUtils
+                .getAssociatedRepresentationByName(representationName, session);
+        if (description != null) {
+            res = asImage(description.getRepresentation(), refresh, layerNames);
+        } else {
+            res = null;
         }
 
         return res;

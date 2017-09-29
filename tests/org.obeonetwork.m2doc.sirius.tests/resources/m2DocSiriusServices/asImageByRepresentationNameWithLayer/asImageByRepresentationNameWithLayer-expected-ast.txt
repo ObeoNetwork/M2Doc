@@ -1,0 +1,12 @@
+
+=== HEADER ===
+template
+  
+=== BODY ===
+template
+  This demonstrate the simple usage of asImageByRepresentationName service :
+  [query: .setWidth(.asImageByRepresentationName('anydsl class diagram', true, OrderedSet{'Default', 'NewLayer'}), 300)]
+   End of demonstration.
+=== FOOTER ===
+template
+  
