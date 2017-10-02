@@ -259,6 +259,117 @@ public class M2DocTemplateEditor extends EditorPart {
     }
 
     /**
+     * {@link TemplateCustomProperties#getServiceClasses() service} class name editing support.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class ServiceClassNameEditingSupport extends EditingSupport {
+
+        /**
+         * The Editor.
+         */
+        private final TextCellEditor editor;
+
+        /**
+         * Constructor.
+         * 
+         * @param viewer
+         *            the {@link ColumnViewer}
+         */
+        private ServiceClassNameEditingSupport(ColumnViewer viewer) {
+            super(viewer);
+            editor = new TextCellEditor((Composite) viewer.getControl());
+        }
+
+        @Override
+        protected CellEditor getCellEditor(Object element) {
+            return editor;
+        }
+
+        @Override
+        protected boolean canEdit(Object element) {
+            return true;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected Object getValue(Object element) {
+            final Entry<String, String> entry = (Entry<String, String>) element;
+            return entry.getKey();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void setValue(Object element, Object value) {
+            final Entry<String, String> entry = (Entry<String, String>) element;
+            if (templateCustomProperties.getServiceClasses().containsKey(value)) {
+                // TODO warn user
+            } else {
+                if (!entry.getKey().equals(value)) {
+                    templateCustomProperties.getServiceClasses().put((String) value,
+                            templateCustomProperties.getServiceClasses().remove(entry.getKey()));
+                    setDirty(true);
+                    servicesTable.refresh();
+                }
+            }
+        }
+
+    }
+
+    /**
+     * {@link TemplateCustomProperties#getServiceClasses() service} bundle name editing support.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class ServiceBundleEditingSupport extends EditingSupport {
+
+        /**
+         * The Editor.
+         */
+        private final TextCellEditor editor;
+
+        /**
+         * Constructor.
+         * 
+         * @param viewer
+         *            the {@link ColumnViewer}
+         */
+        private ServiceBundleEditingSupport(ColumnViewer viewer) {
+            super(viewer);
+            editor = new TextCellEditor((Composite) viewer.getControl());
+        }
+
+        @Override
+        protected CellEditor getCellEditor(Object element) {
+            return editor;
+        }
+
+        @Override
+        protected boolean canEdit(Object element) {
+            return true;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected Object getValue(Object element) {
+            final Entry<String, String> entry = (Entry<String, String>) element;
+            return entry.getValue();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void setValue(Object element, Object value) {
+            final Entry<String, String> entry = (Entry<String, String>) element;
+            if (!entry.getValue().equals(value)) {
+                entry.setValue((String) value);
+                setDirty(true);
+                servicesTable.refresh();
+            }
+        }
+
+    }
+
+    /**
      * The Editor ID.
      */
     public static final String ID = "org.obeonetwork.m2doc.ide.ui.editor.M2DocTemplateEditor"; // $NON-NLS-0$
@@ -353,6 +464,7 @@ public class M2DocTemplateEditor extends EditorPart {
         TableViewerColumn classNameColumn = new TableViewerColumn(servicesTable, SWT.NONE);
         classNameColumn.getColumn().setText("Service class");
         classNameColumn.getColumn().setWidth(WIDTH);
+        classNameColumn.setEditingSupport(new ServiceClassNameEditingSupport(servicesTable));
         classNameColumn.setLabelProvider(new CellLabelProvider() {
 
             @SuppressWarnings("unchecked")
@@ -364,6 +476,7 @@ public class M2DocTemplateEditor extends EditorPart {
         TableViewerColumn bundleNameColumn = new TableViewerColumn(servicesTable, SWT.NONE);
         bundleNameColumn.getColumn().setText("Bundle");
         bundleNameColumn.getColumn().setWidth(WIDTH);
+        bundleNameColumn.setEditingSupport(new ServiceBundleEditingSupport(servicesTable));
         bundleNameColumn.setLabelProvider(new CellLabelProvider() {
 
             @SuppressWarnings("unchecked")
