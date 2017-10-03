@@ -31,4 +31,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>doc</name>
+			<type>2</type>
+			<location>/home/development/git/M2Doc/docs/doc</location>
+		</link>
+	</linkedResources>
 </projectDescription>

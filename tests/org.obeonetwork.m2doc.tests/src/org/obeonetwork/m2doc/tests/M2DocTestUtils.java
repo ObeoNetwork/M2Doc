@@ -11,25 +11,21 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests;
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -70,11 +66,31 @@ public final class M2DocTestUtils {
     /**
      * The hash function for binary content.
      */
-    private static final HashFunction HF = Hashing.md5();
+    private static final MessageDigest MESSAGE_DIGEST = initialiseMessageDigest();
+
+    /**
+     * Initializes MD5 {@link MessageDigest}.
+     * 
+     * @return the MD5 {@link MessageDigest}
+     */
+    protected static MessageDigest initialiseMessageDigest() {
+        try {
+            return MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * Image comparison threshold.
      */
     private static final double IMAGE_THRESHOLD = 0.4;
+
+    /**
+     * The buffer size.
+     */
+    private static final int BUFFER_SIZE = 1024 * 8;
 
     /**
      * Constructor.
@@ -204,12 +220,12 @@ public final class M2DocTestUtils {
     public static String getPortableString(String textContent) {
         String res;
 
-        res = textContent.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc");
-        res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory");
-        res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");
+        res = textContent.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc"); // remove folder prefix
+        res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace localized message
+        res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");// strip lost usser doc date
         res = res.replaceAll("@[a-f0-9]{6,8} ", "@00000000 "); // object address in toString()
         res = res.replaceAll("(\\tat [a-zA-Z0-9$.]+\\((Unknown Source|Native Method|[a-zA-Z0-9$.]+java:[0-9]+)\\)\n?)+",
-                "...STACK...");
+                "...STACK..."); // strip stack traces
 
         return res;
     }
@@ -302,8 +318,45 @@ public final class M2DocTestUtils {
         final Map<String, byte[]> res = new HashMap<String, byte[]>();
         ZipEntry zipEntry;
         while ((zipEntry = zin.getNextEntry()) != null) {
-            res.put(zipEntry.getName(), ByteStreams.toByteArray(zin));
+            res.put(zipEntry.getName(), getBytes(zin));
         }
+        return res;
+    }
+
+    /**
+     * Gets byte array from the given {@link InputStream}.
+     * 
+     * @param stream
+     *            the {@link InputStream}
+     * @return the byte array from the given {@link InputStream}
+     * @throws IOException
+     *             if the given {@link InputStream} can't be read
+     */
+    private static byte[] getBytes(InputStream stream) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int size = stream.read(buffer, 0, buffer.length);
+        while (size != -1) {
+            out.write(buffer, 0, size);
+            size = stream.read(buffer, 0, buffer.length);
+        }
+        out.flush();
+
+        return out.toByteArray();
+    }
+
+    private static String getString(InputStream stream) {
+        final String res;
+
+        try (Scanner scanner = new Scanner(stream, "UTF-8"); Scanner s = scanner.useDelimiter("\\A");) {
+            if (s.hasNext()) {
+                res = s.next();
+            } else {
+                res = "";
+            }
+        }
+
         return res;
     }
 
@@ -338,7 +391,7 @@ public final class M2DocTestUtils {
         final StringBuilder result = new StringBuilder();
 
         result.append(String.format("\n%s | ", entryName));
-        String fileContent = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+        String fileContent = getString(inputStream);
         fileContent = indentXML(fileContent);
         // normalizing on \n to have a cross-platform comparison.
         fileContent = fileContent.replace("\r\n", "\n");
@@ -366,11 +419,32 @@ public final class M2DocTestUtils {
     private static String getZipEntryHash(InputStream inputStream, String entryName) throws IOException {
         final StringBuilder result = new StringBuilder();
 
-        final HashCode code = HF.hashBytes(ByteStreams.toByteArray(inputStream));
+        final byte[] code = MESSAGE_DIGEST.digest(getBytes(inputStream));
         result.append(String.format("\n%s | ", entryName));
-        result.append(String.format("\n md5:%s", code.toString()));
+        result.append(String.format("\n md5:%s", getHexString(code)));
 
         return result.toString();
+    }
+
+    /**
+     * Gets the {@link String} hexadecimal representation of the given bytes.
+     * 
+     * @param bytes
+     *            the bytes
+     * @return the {@link String} hexadecimal representation of the given bytes
+     */
+    public static String getHexString(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(0xFF & bytes[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
     }
 
     /**

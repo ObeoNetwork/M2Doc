@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.doc;
 
-import com.google.common.io.Files;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
@@ -75,7 +73,9 @@ public final class DocumentationGenerator {
         try {
             File tocFile = new File(pluginFolder, "toc.xml");
             System.out.println("Writing the content of toc.xml in " + tocFile.getAbsolutePath());
-            Files.write(buffer, tocFile, Charset.forName(UTF8));
+            try (PrintWriter writer = new PrintWriter(tocFile, UTF8);) {
+                writer.print(buffer.toString());
+            }
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -91,7 +91,9 @@ public final class DocumentationGenerator {
                     File file = new File(documentationFolder, M2DocHelpContentUtils.M2DOC_HREF_PREFIX
                         + serviceProviderClass.getSimpleName().toLowerCase() + ".html");
                     System.out.println("Writing content of " + file.getAbsolutePath());
-                    Files.write(stringBuffer, file, Charset.forName(UTF8));
+                    try (PrintWriter writer = new PrintWriter(file, UTF8);) {
+                        writer.print(stringBuffer.toString());
+                    }
 
                     /*
                      * generating a documentation aggregating all the services
