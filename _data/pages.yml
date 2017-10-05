@@ -1,22 +1,21 @@
-- title: Overview
-  file: ref-doc/index
-  anchor: overview
+- title: OVERVIEW
+  file: overview/index
 
 
-- title: Download
+- title: DOWNLOAD
   file: download
 
-- category: Get started
+- category: GET STARTED
   pages:
   - title: Generate a document
-    file: ref-doc/index
+    file: ref-doc/1.0/index
     anchor: generate-a-document
   - title: Write a template
-    file: ref-doc/index
+    file: ref-doc/1.0/index
     anchor: write-a-template
 
 
-- category: Get involved
+- category: GET INVOLVED
   pages:
   - title: Report issues
     file: developer-guide/contribute
@@ -27,11 +26,15 @@
   - title: Contribute
     file: developer-guide/contribute
     anchor: contribute
-    
-- title: Reference
-  file: ref-doc
-
-- title: Support
+  
+- category: DOCUMENTATION
+  pages:
+  - title: 1.0
+    file: ref-doc/1.0/index
+  - title: Nightly
+    file: ref-doc/nightly/index
+  
+- title: SUPPORT
   file: support
 
 - title: FAQ
