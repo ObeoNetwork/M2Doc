@@ -107,7 +107,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                     queryEnvironment.registerCustomClassMapping(
                                             EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
                                             EStringToStringMapEntryImpl.class);
-                                    properties.configureQueryEnvironment(queryEnvironment);
+                                    properties.configureQueryEnvironmentWithResult(queryEnvironment);
                                     final AstValidator validator = new AstValidator(
                                             new ValidationServices(queryEnvironment));
                                     final Set<IType> possibleTypes = properties.getVariableTypes(validator,

@@ -39,7 +39,6 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -475,16 +474,12 @@ public final class M2DocUtils {
             IClassProvider classProvider, final XWPFDocument document) {
         final TemplateCustomProperties properties = new TemplateCustomProperties(document);
         final List<TemplateValidationMessage> messages = new ArrayList<>();
-        for (String nsURI : properties.getPackagesURIs()) {
-            final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-            if (ePackage != null) {
-                queryEnvironment.registerEPackage(ePackage);
-            } else {
-                final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
-                final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
-                        ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
-                messages.add(validationMessage);
-            }
+        final List<String> missingNsURIs = properties.configureQueryEnvironmentWithResult(queryEnvironment);
+        for (String nsURI : missingNsURIs) {
+            final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
+            final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
+                    ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
+            messages.add(validationMessage);
         }
         for (Entry<String, String> entry : properties.getServiceClasses().entrySet()) {
             try {

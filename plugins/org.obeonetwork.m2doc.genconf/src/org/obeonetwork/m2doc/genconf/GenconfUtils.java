@@ -226,7 +226,7 @@ public final class GenconfUtils {
         queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
         queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
                 EStringToStringMapEntryImpl.class);
-        templateCustomProperties.configureQueryEnvironment(queryEnvironment);
+        templateCustomProperties.configureQueryEnvironmentWithResult(queryEnvironment);
         final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
         final Map<String, Set<IType>> variablesTypes = templateCustomProperties.getVariableTypes(validator,
                 queryEnvironment);

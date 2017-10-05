@@ -347,12 +347,33 @@ public class TemplateCustomProperties {
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment} to configure
+     * @deprecated see {@link #configureQueryEnvironmentWithResult(IQueryEnvironment)}
      */
+    @Deprecated
     public void configureQueryEnvironment(IQueryEnvironment queryEnvironment) {
+        configureQueryEnvironmentWithResult(queryEnvironment);
+    }
+
+    /**
+     * Configures the given {@link IQueryEnvironment} with {@link #getPackagesURIs() declared EPackages}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment} to configure
+     * @return the {@link List} of nsURI with no {@link EPackage.Registry#put(String, Object) registered} {@link EPackage}
+     */
+    public List<String> configureQueryEnvironmentWithResult(IQueryEnvironment queryEnvironment) {
+        final List<String> res = new ArrayList<String>();
+
         for (String nsURI : getPackagesURIs()) {
             final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-            queryEnvironment.registerEPackage(ePackage);
+            if (ePackage != null) {
+                queryEnvironment.registerEPackage(ePackage);
+            } else {
+                res.add(nsURI);
+            }
         }
+
+        return res;
     }
 
     /**
