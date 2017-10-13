@@ -5,7 +5,7 @@ subtitle: Discover M2Doc
 relativePath: ..
 ---
 
-The M2Doc project provides Word document (.docx files) generation. It is based on a document template and [EMF](https://www.eclipse.org/modeling/emf/) models. The overall approach consists in creating templates in the OOX format where static text authoring benefits from the WYSIWYG capabilities of the usual tools (e.g. Microsoft Word, Libre Office, Open Office). Dynamic parts are inserted using a dedicated vocabulary of OOX fields code. Fields are mainly used to insert page numbers, references, etc. M2Doc makes use of them to describe documentation generation directives. This allows a total separation between the document and the M2Doc directives.
+The M2Doc project provides Word document (.docx files) generation. It is based on a document template and [EMF](https://www.eclipse.org/modeling/emf/) models. The overall approach consists in creating templates in the OOX format where static text authoring benefits from the WYSIWYG capabilities of Microsoft Word. Dynamic parts are inserted using a dedicated vocabulary of OOX fields code. Fields are mainly used to insert page numbers, references, etc. M2Doc makes use of them to describe documentation generation directives. This allows a total separation between the document and the M2Doc directives.
 
 The architecture of M2Doc is organized around three building blocs:
 * [Apache POI](https://poi.apache.org/) for the parsing and generation of [OOXML](https://fr.wikipedia.org/wiki/Office_Open_XML) documents
