@@ -249,7 +249,7 @@ public class M2DocTemplateEditor extends EditorPart {
         @Override
         protected void setValue(Object element, Object value) {
             final Entry<String, String> entry = (Entry<String, String>) element;
-            if (!entry.getValue().equals(element)) {
+            if (entry.getValue() == null && element != null || !entry.getValue().equals(element)) {
                 entry.setValue((String) value);
                 setDirty(true);
                 variablesTable.refresh();
@@ -360,7 +360,7 @@ public class M2DocTemplateEditor extends EditorPart {
         @Override
         protected void setValue(Object element, Object value) {
             final Entry<String, String> entry = (Entry<String, String>) element;
-            if (!entry.getValue().equals(value)) {
+            if (entry.getValue() == null && element != null || !entry.getValue().equals(value)) {
                 entry.setValue((String) value);
                 setDirty(true);
                 servicesTable.refresh();
