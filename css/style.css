@@ -24,7 +24,9 @@ html, body {
 }
 
 img {
-	margin: 15px 0;
+	display: block;
+  	margin: auto;
+  	text-align: center;
 }
 
 a, .first_section h3 a:hover, .section h3 a:hover, .section-colored h3 a:hover {
@@ -298,14 +300,14 @@ footer {
 }
 
 .title {
-  padding-top: 60px;
+  padding-top: 10px;
   padding-bottom: 10px;
   text-align: center;
    color: #fff;
 }
 
 .title h1 {
-  font-size: 160px;
+  font-size: 100px;
   line-height: 1;
   letter-spacing: -2px;
   font-weight: bold;
@@ -347,7 +349,3 @@ td, th {
 }
 
 }
-
-/* .bgimg {
-    background-image: url('../images/m2doc.png');
-}*/

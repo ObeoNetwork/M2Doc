@@ -1,11 +1,11 @@
 - question: What is M2Doc?
   answer: The M2Doc technology enables the generation of Office Open XML documents from models.
 - question: Where can I download M2Doc?
-  answer: Bundles and update sites are provided, read the "Download" section accessible from the navigation bar on top to find them.
+  answer: Update sites are provided, read the <a href="../download/">Download</a> to find them.
 - question: How can I contribute to M2Doc?
-  answer: Read the contribution guide accessible from the navigation bar on top "Get involved/Contribute".
+  answer: Read the <a href="../developer-guide/contribute.html#contribute">contribution guide</>.
 - question: Where could I find some help about M2Doc?
-  answer: Have a look to the support page to find community or professional supports.
+  answer: Have a look to the <a href="../support">support</a> page to find community or professional supports.
 - question: What is the M2Doc licence?
-  answer: M2Doc is available under the EPL license.
+  answer: M2Doc is available under the <a href="https://www.eclipse.org/legal/epl-v10.html">EPL</a> license.
   

@@ -8,17 +8,10 @@ relativePath: ..
 Install
 -------
 To install M2Doc:
-1. Download an [Obeo Designer](https://www.obeodesigner.com/en/download) or an Eclipse modeling tools bundle from the [Eclipse packages page](https://www.eclipse.org/downloads/eclipse-packages/).
+1. Download an [Obeo Designer](https://www.obeodesigner.com/en/download).
 2. Then you need to unpack the bundle and launch the executable.
 3. Install the M2Doc update site : the [latest]({{page.relativePath}}/download/latest-release) one or an [older version]({{page.relativePath}}/download/all-versions).
 That's it! You are ready to [start with M2Doc]({{page.relativePath}}/ref-doc#generate-a-document).
-
-### Latest release
-
-The latest release of M2Doc is the [1.0.0](https://github.com/ObeoNetwork/M2Doc/releases/latest).
-
-If you already have an Eclipse installed you can install it by using the M2Doc update site:
-`https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/1.0.0/repository/`.
 
 ### All versions
 
@@ -34,10 +27,6 @@ _Pay attention that the nightly build is unstable, this build is for testing pur
 ### Update Sites
 
 The update-sites provide a p2 repository for M2Doc. Don't know how to install a module from an Update Site ? Have a look to our [video](http://www.youtube.com/watch?v=qYTrO7THer0).
-
-### Marketplace
-
-It is also possible to install M2Doc from the [Eclipse marketplace](http://marketplace.eclipse.org/search/site/M2Doc). Don't know how to install a module from the marketplace? Have a look to the [marketplace client introduction](http://marketplace.eclipse.org/marketplace-client-intro).
 
 Releases
 --------

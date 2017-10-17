@@ -10,12 +10,12 @@ How you can help
 
 M2Doc is an open source project and everyone is encouraged to get involved! There are lots of ways you can contribute:
 
--   join our [forum]({{page.relativePath }}/developer-guide/contribute.html\#Forum) 
--   find and [report bugs]({{page.relativePath }}/developer-guide/contribute.html\#report-bugs) 
+-   ask [questions]({{page.relativePath }}/developer-guide/contribute.html#ask) 
+-   find and [report bugs]({{page.relativePath }}/developer-guide/contribute.html#report) 
 -   write tests for bugs
--   [improve the documentation]({{page.relativePath }}/developer-guide/contribute.html\#contribute-to-doc) 
--   [add new features]({{page.relativePath }}/developer-guide/contribute.html\#contribute-to-code) 
--   [fix bugs]({{page.relativePath }}/developer-guide/contribute.html\#contribute-to-code).
+-   improve the [documentation]({{page.relativePath }}/developer-guide/contribute.html#contribute) 
+-   add new [features]({{page.relativePath }}/developer-guide/contribute.html#contribute) 
+-   fix [bugs]({{page.relativePath }}/developer-guide/contribute.html#contribute)
 
 
 Make suggestions
