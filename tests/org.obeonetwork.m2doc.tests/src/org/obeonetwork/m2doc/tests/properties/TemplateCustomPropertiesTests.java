@@ -16,10 +16,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.Test;
 import org.obeonetwork.m2doc.POIServices;
@@ -42,9 +50,38 @@ public class TemplateCustomPropertiesTests {
                 URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final Map<String, String> variables = properties.getVariables();
-            assertEquals(2, variables.size());
-            assertEquals("database.Table", variables.get("variable1"));
-            assertEquals("database.Column", variables.get("variable2"));
+            assertEquals(3, variables.size());
+            assertEquals("ecore::EPackage", variables.get("variable1"));
+            assertEquals("ecore::EClass", variables.get("variable2"));
+            assertEquals(null, variables.get("variable3"));
+        }
+    }
+
+    @Test
+    public void parseVariableAndGetITypes() throws IOException, InvalidFormatException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final Map<String, String> variables = properties.getVariables();
+            assertEquals(3, variables.size());
+            assertEquals("ecore::EPackage", variables.get("variable1"));
+            assertEquals("ecore::EClass", variables.get("variable2"));
+            assertEquals(null, variables.get("variable3"));
+
+            IReadOnlyQueryEnvironment env = Query.newEnvironmentWithDefaultServices(null);
+            final Map<String, Set<IType>> types = properties
+                    .getVariableTypes(new AstValidator(new ValidationServices(env)), env);
+
+            final Set<IType> var1Types = types.get("variable1");
+            assertEquals(1, var1Types.size());
+            assertEquals(EcorePackage.eINSTANCE.getEPackage(), var1Types.iterator().next().getType());
+
+            final Set<IType> var2Types = types.get("variable2");
+            assertEquals(1, var2Types.size());
+            assertEquals(EcorePackage.eINSTANCE.getEClass(), var2Types.iterator().next().getType());
+
+            final Set<IType> var3Types = types.get("variable3");
+            assertTrue(var3Types.iterator().next() instanceof NothingType);
         }
     }
 
@@ -156,7 +193,7 @@ public class TemplateCustomPropertiesTests {
             assertEquals(2, properties.getServiceClasses().size());
             properties.getServiceClasses().clear();
 
-            assertEquals(2, properties.getVariables().size());
+            assertEquals(3, properties.getVariables().size());
             properties.getVariables().clear();
 
             properties.save();
@@ -191,7 +228,7 @@ public class TemplateCustomPropertiesTests {
             properties.getServiceClasses().put("org.obeonetwork.m2doc.services.test.ServicePackage100", "");
             properties.getServiceClasses().put("org.obeonetwork.m2doc.services.test.ServicePackage200", "");
 
-            assertEquals(2, properties.getVariables().size());
+            assertEquals(3, properties.getVariables().size());
             properties.getVariables().put("var100", "String");
             properties.getVariables().put("var200", "Integer");
 
@@ -216,8 +253,9 @@ public class TemplateCustomPropertiesTests {
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage200", serviceClasses.get(3));
 
             assertEquals(4, properties.getVariables().size());
-            assertEquals("database.Table", properties.getVariables().get("variable1"));
-            assertEquals("database.Column", properties.getVariables().get("variable2"));
+            assertEquals("ecore::EPackage", properties.getVariables().get("variable1"));
+            assertEquals("ecore::EClass", properties.getVariables().get("variable2"));
+            assertEquals(null, properties.getVariables().get("variable3"));
             assertEquals("String", properties.getVariables().get("var100"));
             assertEquals("Integer", properties.getVariables().get("var200"));
         }
