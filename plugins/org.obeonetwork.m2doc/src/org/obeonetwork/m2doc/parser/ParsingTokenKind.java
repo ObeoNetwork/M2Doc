@@ -38,10 +38,11 @@ public enum ParsingTokenKind {
     CONTENTCONTROL,;
 
     /**
-     * Gets the
+     * Gets the {@link ParsingTokenKind} from the given {@link BodyElementType}.
      * 
      * @param bodyElementType
-     * @return
+     *            the {@link BodyElementType}
+     * @return the {@link ParsingTokenKind} from the given {@link BodyElementType}
      */
     public static ParsingTokenKind getParsingTokenKind(BodyElementType bodyElementType) {
         final ParsingTokenKind res;

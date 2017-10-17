@@ -69,7 +69,9 @@ public class FieldUtils {
      * @param runs
      *            list of run where find tag
      * @return tag string
+     * @deprecated @see {@link #lookAheadTag(TokenProvider)}
      */
+    @Deprecated
     public String lookAheadTag(final List<XWPFRun> runs) {
         int i = 0;
         XWPFRun run = runs.get(i);
@@ -98,7 +100,9 @@ public class FieldUtils {
      * @param index
      *            run index in iterator
      * @return tag string
+     * @deprecated @see {@link #lookAheadTag(TokenProvider)}
      */
+    @Deprecated
     public String lookAheadTag(List<XWPFRun> runs, int index) {
         int i = index;
         // first run must begin a field.
