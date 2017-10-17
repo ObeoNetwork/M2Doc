@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: article-with-toc
 title: Reference Documentation
 subtitle: 1.0
 relativePath: ../..
