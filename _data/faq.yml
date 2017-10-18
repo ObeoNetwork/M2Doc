@@ -1,5 +1,5 @@
 - question: What is M2Doc?
-  answer: The M2Doc technology enables the generation of Office Open XML documents from models.
+  answer: The M2Doc technology enables the generation of <a href="https://en.wikipedia.org/wiki/Office_Open_XML">Office Open XML</a> documents from models.
 - question: Where can I download M2Doc?
   answer: Update sites are provided, read the <a href="../download/">Download</a> to find them.
 - question: How can I contribute to M2Doc?

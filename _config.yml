@@ -1,4 +1,4 @@
-name: M2Doc Site
+name: M2Doc
 markdown: kramdown
 highlighter: rouge
 gems: [jekyll-paginate, jekyll-gist]

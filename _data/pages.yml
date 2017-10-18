@@ -8,10 +8,10 @@
 - category: GET STARTED
   pages:
   - title: Generate a document
-    file: ref-doc/1.0/index
+    file: ref-doc/1.0.0/index
     anchor: generate-a-document
   - title: Write a template
-    file: ref-doc/1.0/index
+    file: ref-doc/1.0.0/index
     anchor: write-a-template
 
 
@@ -29,8 +29,8 @@
   
 - category: DOCUMENTATION
   pages:
-  - title: 1.0
-    file: ref-doc/1.0/index
+  - title: 1.0.0
+    file: ref-doc/1.0.0/index
   - title: Nightly
     file: ref-doc/nightly/index
   

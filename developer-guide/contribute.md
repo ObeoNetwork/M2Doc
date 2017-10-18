@@ -12,7 +12,7 @@ M2Doc is an open source project and everyone is encouraged to get involved! Ther
 
 -   ask [questions]({{page.relativePath }}/developer-guide/contribute.html#ask) 
 -   find and [report bugs]({{page.relativePath }}/developer-guide/contribute.html#report) 
--   write tests for bugs
+-   write [tests for bugs]({{page.relativePath }}/ref-doc/nightly/#template-testing)
 -   improve the [documentation]({{page.relativePath }}/developer-guide/contribute.html#contribute) 
 -   add new [features]({{page.relativePath }}/developer-guide/contribute.html#contribute) 
 -   fix [bugs]({{page.relativePath }}/developer-guide/contribute.html#contribute)
@@ -28,7 +28,7 @@ If you are using M2Doc and you have ideas for improvements, share them. We'd lov
 ### Report issues
 
 We hope you don't run into any obstacles, but if you do, we want to hear from you.
-Bug reports are really important, so please report any issues you have. When you report bugs, make sure you include lots of detail, reproducible tests, example code or anything else you think might help!
+Bug reports are really important, so please report any issues you have. When you report bugs, make sure you include lots of detail, [reproducible tests]({{page.relativePath }}/ref-doc/nightly/#template-testing), example code or anything else you think might help!
 
 The **bug tracker** is available on github : <https://github.com/ObeoNetwork/M2Doc/issues>.
 We are using the github [integrated issue tracker](https://guides.github.com/features/issues/).
@@ -56,7 +56,7 @@ We welcome and encourage all kinds of contributions to the project, not only cod
 ### Get the source code
 
 M2Doc is under an
-Open Source license (**EPL**) and the source code is hosted on [github](https://github.com/ObeoNetwork/M2Doc).
+Open Source license [(**EPL**)](https://en.wikipedia.org/wiki/Eclipse_Public_License) and the source code is hosted on [github](https://github.com/ObeoNetwork/M2Doc).
 
 To get the code just [clone](https://help.github.com/articles/which-remote-url-should-i-use) the repository :
 
@@ -70,5 +70,5 @@ M2Doc's code is hosted on Github. It's easy to get the code and build M2Doc from
 ### Contribute to the documentation
 
 Found an error in this web-site or in the documentation? Please help us and contribute.
-M2Doc's documentation is hosted on Github: <https://github.com/ObeoNetwork/M2Doc/tree/master/site>. Just clone our repository, update the documentation and trigger a [pull request](https://help.github.com/articles/using-pull-requests). The documentation is written with the [markdown](http://en.wikipedia.org/wiki/Markdown) syntax, so it is really easy to contribute.
+M2Doc's documentation is hosted on Github: <https://github.com/ObeoNetwork/M2Doc/tree/gh-pages>. Just clone our repository, update the documentation and trigger a [pull request](https://help.github.com/articles/using-pull-requests). The documentation is written with the [markdown](http://en.wikipedia.org/wiki/Markdown) syntax, so it is really easy to contribute.
 
