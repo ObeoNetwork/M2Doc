@@ -1,5 +1,5 @@
 ---
-layout: article-with-toc
+layout: article-with-toc-nightly
 title: Reference Documentation
 subtitle: Nightly
 relativePath: ../..
@@ -7,9 +7,8 @@ relativePath: ../..
 
 # Table of Content
 
-Following you will find the reference documentation corresponding to the nightly which has a work in progress status. This is a preview of what we are cooking for the next release.
-Consequently, pay attention that the nightly branch is **unstable**, this branch is for testing purposes only, do not use it for industrial deployment.
-If you need a stable version use one of our [released versions]({{page.relativePath}}/download/#all-versions). 
+Following you will find the reference documentation corresponding to the **Nightly** version.
+If you need an other version use one of our [released versions]({{page.relativePath}}/download/#all-versions). 
 
 * TOC
 {:toc}

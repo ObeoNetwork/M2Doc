@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="doc/ref-doc/nightly/index.html" label="index">
+	<topic href="doc/ref-doc/nightly/index.html" label="Table of Content">
+		<topic href="doc/ref-doc/nightly/index.html#starting-with-m2doc" label="Starting with M2Doc">
+			<topic href="doc/ref-doc/nightly/index.html#template-user" label="Template user"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#template-developper" label="Template developper"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#integrator" label="Integrator"></topic>
+		</topic>
+		<topic href="doc/ref-doc/nightly/index.html#generating-a-document" label="Generating a document">
+			<topic href="doc/ref-doc/nightly/index.html#launching-a-generation" label="Launching a generation"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#initializing-a-generation-configuration" label="Initializing a generation configuration"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#validating-a-generation-setup" label="Validating a generation setup"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#generation-configuration-editor" label="Generation configuration editor"></topic>
+		</topic>
+		<topic href="doc/ref-doc/nightly/index.html#template-authoring" label="Template authoring">
+			<topic href="doc/ref-doc/nightly/index.html#syntax" label="Syntax">
+				<topic href="doc/ref-doc/nightly/index.html#comment-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-nominal" label="Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#static-statement" label="Static statement"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#query-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-query-nominal" label="Query ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#conditional-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-conditional-nominal" label="Conditional ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#repetition-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal" label="Repetition ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#let-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-repetition-nominal" label="Let ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#bookmark-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-bookmark-nominal" label="Bookmark ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#link-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-bookmark-nominal" label="Link ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#user-documentation-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-userdoc-nominal" label="User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))"></topic>
+			</topic>
+			<topic href="doc/ref-doc/nightly/index.html#services" label="Services"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#template-editor" label="Template editor"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#template-custom-properties" label="Template custom properties">
+				<topic href="doc/ref-doc/nightly/index.html#variable-custom-properties" label="Variable custom properties"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#package-custom-properties" label="Package custom properties"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#service-custom-properties" label="Service custom properties"></topic>
+			</topic>
+		</topic>
+		<topic href="doc/ref-doc/nightly/index.html#providing-new-services" label="Providing new services">
+			<topic href="doc/ref-doc/nightly/index.html#service-class" label="Service class">
+				<topic href="doc/ref-doc/nightly/index.html#default-constructor" label="Default constructor"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#custom-constructor" label="Custom constructor"></topic>
+			</topic>
+			<topic href="doc/ref-doc/nightly/index.html#service-token" label="Service token"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#special-return-types" label="Special return types"></topic>
+		</topic>
+		<topic href="doc/ref-doc/nightly/index.html#template-testing" label="Template testing"></topic>
+		<topic href="doc/ref-doc/nightly/index.html#maven" label="Maven"></topic>
+		<topic href="doc/ref-doc/nightly/index.html#using-m2doc-programmatically" label="Using M2Doc programmatically">
+			<topic href="doc/ref-doc/nightly/index.html#parsing" label="Parsing"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#validation" label="Validation"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#generation" label="Generation">
+				<topic href="doc/ref-doc/nightly/index.html#core-generation-api" label="Core generation API"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#generation-configuration-api" label="Generation configuration API"></topic>
+			</topic>
+		</topic>
+	</topic>
+</toc>
