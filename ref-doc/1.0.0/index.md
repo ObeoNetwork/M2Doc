@@ -7,7 +7,8 @@ relativePath: ../..
 
 # Table of Content
 
-Following you will find the reference documentation corresponding to the **M2Doc 1.0.0** version.
+Following you will find the reference documentation corresponding to the **1.0.0** version.
+If you need an other version use one of our [released versions]({{page.relativePath}}/download/#all-versions). 
 
 * TOC
 {:toc}
