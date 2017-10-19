@@ -20,7 +20,7 @@ That's it! You are ready to [start with M2Doc]({{page.relativePath}}/ref-doc/1.0
 | <a href="https://github.com/ObeoNetwork/M2Doc/releases/tag/1.0.0">1.0.0</a>  |<a href="{{page.relativePath}}/ref-doc/1.0.0/index">Ref 1.0.0</a>| <a href="https://github.com/ObeoNetwork/M2Doc/tree/1.0.0">1.0.0 tag</a>  | `https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/1.0.0/repository`  |
 | <a href="https://github.com/ObeoNetwork/M2Doc/releases/tag/0.12.0">0.12.0</a>|                                                                 |<a href="https://github.com/ObeoNetwork/M2Doc/tree/0.12.0">0.12.0 tag</a>| `https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/0.12.0/repository` |
 | <a href="https://github.com/ObeoNetwork/M2Doc/releases/tag/0.11.0">0.11.0</a>|                                                                 |<a href="https://github.com/ObeoNetwork/M2Doc/tree/0.11.0">0.11.0 tag</a>| `https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/0.11.0/repository` |
-| <a href="https://github.com/ObeoNetwork/M2Doc/milestones">_Nightly_</a>      |<a href="{{page.relativePath}}/ref-doc/nightly/index">_Ref nightly_</a> |<a href="https://github.com/ObeoNetwork/M2Doc/tree/master">_master_</a>    | `https://s3-eu-west-1.amazonaws.com/obeo-m2doc-nightly/master/repository`  |
+| <a href="https://github.com/ObeoNetwork/M2Doc/milestones">_Nightly_</a>      |<a href="{{page.relativePath}}/ref-doc/nightly/index">_Ref nightly_</a> |<a href="https://github.com/ObeoNetwork/M2Doc/tree/master">_master_</a>    | `https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/master/nightly/repository`  |
 
 _Pay attention that the nightly build is unstable, this build is for testing purposes only._
 
