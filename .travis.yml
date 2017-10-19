@@ -10,17 +10,39 @@ env:
   - PROFILE=platform-oxygen,tests,updatesites
 jdk:
 - oraclejdk8
-sudo: false
+sudo: required
 install: true
 before_script:
+# for RCPTT tests
 - export SWT_GTK3=0
 - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile
   --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16"
 - sh -e /etc/init.d/xvfb start
-- sleep 10
+# for the web site
+- sudo apt-get install ruby-dev
+- gem install jekyll
+- gem install jekyll-paginate
+- gem install jekyll-gist
+- gem install pygments.rb
+- gem install redcarpet
+- gem install RedCloth
 script:
+# Build documentation web site
+- mkdir web-site
+- cd web-site
+- echo "Clone gh-pages"
+- git clone https://$GH_TOKEN@github.com/ObeoNetwork/M2Doc.git -b gh-pages --quiet .
+- if [[ "$TRAVIS_TAG" != "" ]]; then chmod a+x ./promote.sh; ./promote.sh ${TRAVIS_TAG}; fi
+- echo "Build gh-pages"
+- jekyll build
+- ls
+# copy to documentation plugin
+- echo "Copy to documentation plugin"
+- mkdir ../plugins/org.obeonetwork.m2doc.doc/doc
+- cp -Rf _site/* ../plugins/org.obeonetwork.m2doc.doc/doc/
+- cd -
+# Java build
 - mvn -v
-- cp -Rf docs/doc/ plugins/org.obeonetwork.m2doc.doc
 - mvn clean verify -fae -P$PROFILE
 - export TAG_OR_BRANCH="${TRAVIS_BRANCH}/nightly"
 - if [[ "$TRAVIS_TAG" != "" ]]; then export TAG_OR_BRANCH="${TRAVIS_TAG}"; fi
