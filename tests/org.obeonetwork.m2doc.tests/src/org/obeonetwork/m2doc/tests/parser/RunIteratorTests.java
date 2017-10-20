@@ -16,8 +16,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
+import org.apache.poi.EmptyFileException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -83,7 +83,7 @@ public class RunIteratorTests {
         }
     }
 
-    @Test(expected = NotOfficeXmlFileException.class)
+    @Test(expected = EmptyFileException.class)
     public void testEmptyDoc() throws InvalidFormatException, IOException {
         final File file = new File("resources/document/empty/empty-template.docx");
         assertTrue(file.exists());
