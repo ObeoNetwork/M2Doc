@@ -1,5 +1,5 @@
 ---
-layout: article-with-toc-nightly
+layout: article
 title: Reference Documentation
 subtitle: Nightly
 relativePath: ../..
