@@ -164,7 +164,7 @@ h5, .h5 {
  }
 
 .navbar-inverse{
-	border-bottom: 1px solid #badfe1;
+	border-bottom: 0px solid #badfe1;
 }
 
 .navbar-inverse .navbar-brand {
