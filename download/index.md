@@ -8,11 +8,11 @@ relativePath: ..
 Install
 -------
 To install M2Doc:
-1. Download an [Obeo Designer](https://www.obeodesigner.com/en/download).
+1. Download an <a href="https://www.obeodesigner.com/en/download" target="_blank">Obeo Designer</a>.
 2. Then you need to unpack the bundle and launch the executable.
 3. Install the M2Doc update site: [all versions]({{page.relativePath}}/download#all-versions).
 
-That's it! You are ready to [start with M2Doc]({{page.relativePath}}/ref-doc/1.0/#generate-a-document).
+That's it! You are ready to [start with M2Doc]({{page.relativePath}}/ref-doc/1.0.0/#generate-a-document).
 
 ### All versions
 
@@ -27,7 +27,8 @@ _Pay attention that the nightly build is unstable, this build is for testing pur
 
 ### Update Sites
 
-The update-sites provide a p2 repository for M2Doc. 
+The update-sites provide a p2 repository for M2Doc.
+
 Don't know how to install a module from an Update Site ? Have a look to our [video](http://www.youtube.com/watch?v=qYTrO7THer0).
 
 Releases
