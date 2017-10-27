@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Overview
+title: Overview - M2Doc
 subtitle: Discover M2Doc
 relativePath: ..
 ---

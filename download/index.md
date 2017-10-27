@@ -1,7 +1,7 @@
 ---
 layout: article
 title: Download
-subtitle: Get M2Doc
+subtitle: Download - M2Doc
 relativePath: ..
 ---
 

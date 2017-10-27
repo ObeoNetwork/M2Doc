@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Get involved
+title: Get involved - M2Doc
 subtitle: Developer guide
 relativePath: ..
 ---
