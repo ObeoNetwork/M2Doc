@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Reference Documentation - M2Doc
+title: Reference Documentation
 subtitle: Nightly
 relativePath: ../..
 ---
