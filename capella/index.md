@@ -1,7 +1,7 @@
 ---
 layout: article
-title: Reference Documentation
-subtitle: 1.0.0
+title: Capella M2Doc tutorial
+subtitle: In-Flight Entertainment System (IFE) example
 relativePath: ..
 ---
 
