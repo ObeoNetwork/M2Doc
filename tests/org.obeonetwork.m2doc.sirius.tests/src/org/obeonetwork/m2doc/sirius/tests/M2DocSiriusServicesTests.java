@@ -26,10 +26,25 @@ import org.obeonetwork.m2doc.template.Link;
  */
 public class M2DocSiriusServicesTests extends AbstractTemplatesTestSuite {
 
+    /**
+     * Constructor.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @throws IOException
+     *             if the tested template can't be read
+     * @throws DocumentParserException
+     *             if the tested template can't be parsed
+     */
     public M2DocSiriusServicesTests(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
     }
 
+    /**
+     * Gets the {@link Collection} of test folders.
+     * 
+     * @return the {@link Collection} of test folders
+     */
     @Parameters(name = "{0}")
     public static Collection<Object[]> retrieveTestFolders() {
         return retrieveTestFolders("resources/m2DocSiriusServices");
