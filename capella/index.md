@@ -21,7 +21,9 @@ Once your download is finished, extract the downloaded archive and run the eclip
 
 * [http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full](http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full)
 
-This update site contains [M2Doc](http://m2Doc.org) and the [Capella](http://polarsys.org/capella/) integration.
+This update site contains [M2Doc](http://m2Doc.org) and the [Capella](http://polarsys.org/capella/) integration. Select the following feature:
+
+![The feature to install.]({{page.relativePath}}/capella/images/Install.png "The feature to install.")
 
 ## Deploying the In-Flight Entertainment System (IFE) example
 
