@@ -245,6 +245,8 @@ public final class M2DocTestUtils {
         res = res.replaceAll("@[a-f0-9]{6,8} ", "@00000000 "); // object address in toString()
         res = res.replaceAll("(\\tat [a-zA-Z0-9$.]+\\((Unknown Source|Native Method|[a-zA-Z0-9$.]+java:[0-9]+)\\)\n?)+",
                 "...STACK..."); // strip stack traces
+        res = res.replaceAll("127.0.0.100:12 345", "127.0.0.100:12345"); // localized port...
+        res = res.replaceAll("127.0.0.100:12,345", "127.0.0.100:12345"); // localized port...
 
         return res;
     }
@@ -366,7 +368,7 @@ public final class M2DocTestUtils {
      * @throws IOException
      */
     protected static Map<String, byte[]> getContentMap(ZipInputStream zin) throws IOException {
-        final Map<String, byte[]> res = new HashMap<String, byte[]>();
+        final Map<String, byte[]> res = new HashMap<>();
         ZipEntry zipEntry;
         while ((zipEntry = zin.getNextEntry()) != null) {
             res.put(zipEntry.getName(), getBytes(zin));
