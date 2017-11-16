@@ -99,7 +99,7 @@ public class ModelDefinitionItemProviderTests {
         final ResourceSet rs = new ResourceSetImpl();
         rs.getURIConverter().getURIHandlers().add(0, uriHandler);
         rs.getResourceFactoryRegistry().getContentTypeToFactoryMap().put("*", new XMIResourceFactoryImpl());
-        final Resource res = rs.createResource(URI.createURI("m2doctests://resources/test.genconf"));
+        final Resource res = rs.createResource(URI.createURI(MemoryURIHandler.PROTOCOL + "://resources/test.genconf"));
 
         final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
         generation.setTemplateFileName("test.docx");
@@ -148,7 +148,7 @@ public class ModelDefinitionItemProviderTests {
      */
     protected void saveDocument() {
         try (OutputStream stream = URIConverter.INSTANCE
-                .createOutputStream(URI.createURI("m2doctests://resources/test.docx"))) {
+                .createOutputStream(URI.createURI(MemoryURIHandler.PROTOCOL + "://resources/test.docx"))) {
             document.write(stream);
         } catch (IOException e) {
             e.printStackTrace();

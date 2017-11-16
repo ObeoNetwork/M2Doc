@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -38,8 +39,8 @@ import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -91,7 +92,7 @@ public abstract class AbstractTemplatesTestSuite {
     /**
      * The {@link URIHandler} that check we don't have adherence to {@link File}.
      */
-    private static MemoryURIHandler uriHandler = new MemoryURIHandler();
+    private final MemoryURIHandler uriHandler = new MemoryURIHandler();
 
     /**
      * The {@link DocumentTemplate}.
@@ -124,6 +125,11 @@ public abstract class AbstractTemplatesTestSuite {
     private final Map<String, Object> variables;
 
     /**
+     * The {@link ResourceSet} for models.
+     */
+    private final ResourceSet resourceSetForModels;
+
+    /**
      * Constructor.
      * 
      * @param testFolder
@@ -147,10 +153,22 @@ public abstract class AbstractTemplatesTestSuite {
         final URI templateURI = getTemplateURI(new File(testFolderPath));
         setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
         queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
-        documentTemplate = M2DocUtils.parse(templateURI, queryEnvironment,
+        final List<Exception> exceptions = new ArrayList<Exception>();
+        resourceSetForModels = GenconfUtils.createResourceSetForModels(exceptions, generation);
+        resourceSetForModels.getURIConverter().getURIHandlers().add(0, uriHandler);
+        documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()));
-        final ResourceSet resourceSetForModels = GenconfUtils.createResourceSetForModels(generation);
+        for (Exception e : exceptions) {
+            final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
+            documentTemplate.getBody().getValidationMessages()
+                    .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, e.getMessage(), run));
+        }
         variables = GenconfUtils.getVariables(generation, resourceSetForModels);
+    }
+
+    @After
+    public void after() {
+        uriHandler.clear();
     }
 
     /**
@@ -166,15 +184,6 @@ public abstract class AbstractTemplatesTestSuite {
     }
 
     /**
-     * Registers the {@link MemoryURIHandler}.
-     */
-    @BeforeClass
-    public static void beforeClass() {
-        URIConverter.INSTANCE.getURIHandlers().add(0, uriHandler);
-        uriHandler.clear();
-    }
-
-    /**
      * Closes the {@link DocumentTemplate} and unregister the {@link MemoryURIHandler}.
      * 
      * @throws IOException
@@ -183,7 +192,6 @@ public abstract class AbstractTemplatesTestSuite {
     @AfterClass
     public static void afterClass() throws IOException {
         documentTemplate.close();
-        URIConverter.INSTANCE.getURIHandlers().remove(uriHandler);
     }
 
     /**
@@ -234,15 +242,15 @@ public abstract class AbstractTemplatesTestSuite {
     public void parsing() throws FileNotFoundException, IOException {
         final URI expectedASTURI = getExpectedASTURI(new File(testFolderPath));
         final String actualAst = templateAstSerializer.serialize(documentTemplate);
-        if (!URIConverter.INSTANCE.exists(expectedASTURI, Collections.EMPTY_MAP)) {
+        if (!resourceSetForModels.getURIConverter().exists(expectedASTURI, Collections.EMPTY_MAP)) {
             final URI actualASTURI = getActualASTURI(new File(testFolderPath));
-            try (OutputStream stream = URIConverter.INSTANCE.createOutputStream(actualASTURI);) {
+            try (OutputStream stream = resourceSetForModels.getURIConverter().createOutputStream(actualASTURI);) {
                 setContent(stream, "UTF-8", actualAst);
             }
             fail(expectedASTURI + DOESN_T_EXISTS);
         }
 
-        try (InputStream stream = URIConverter.INSTANCE.createInputStream(expectedASTURI)) {
+        try (InputStream stream = resourceSetForModels.getURIConverter().createInputStream(expectedASTURI)) {
             final String expectedAst = getContent(stream, "UTF-8");
             assertEquals(expectedAst.replaceAll("\r\n", "\n"), actualAst.replaceAll("\r\n", "\n"));
         }
@@ -261,31 +269,44 @@ public abstract class AbstractTemplatesTestSuite {
         final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment);
 
         final URI expectedValidationURI = getExpectedValidatedURI(new File(testFolderPath));
-        final URI tempURI;
-        if (URIConverter.INSTANCE.exists(expectedValidationURI, Collections.EMPTY_MAP)) {
-            tempURI = URI.createURI("m2doctests://" + testFolderPath + "-validation-test.docx");
+        final URI outputURI;
+        if (resourceSetForModels.getURIConverter().exists(expectedValidationURI, Collections.EMPTY_MAP)) {
+            outputURI = getValidationOutputURI(testFolderPath);
             if (validationLevel != ValidationMessageLevel.OK) {
-                M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, tempURI);
+                M2DocUtils.serializeValidatedDocumentTemplate(resourceSetForModels.getURIConverter(), documentTemplate,
+                        outputURI);
             }
         } else {
-            tempURI = getActualValidatedURI(new File(testFolderPath));
+            outputURI = getActualValidatedURI(new File(testFolderPath));
             if (validationLevel != ValidationMessageLevel.OK) {
-                M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, tempURI);
+                M2DocUtils.serializeValidatedDocumentTemplate(resourceSetForModels.getURIConverter(), documentTemplate,
+                        outputURI);
             } else {
-                touch(tempURI);
+                touch(outputURI);
             }
             fail(expectedValidationURI + DOESN_T_EXISTS);
         }
 
-        if (!isEmpty(tempURI)) {
-            M2DocTestUtils.assertDocx(expectedValidationURI, tempURI);
+        if (!isEmpty(outputURI)) {
+            M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedValidationURI, outputURI);
         } else {
             assertEquals(ValidationMessageLevel.OK, validationLevel);
-            assertTrue(URIConverter.INSTANCE.exists(expectedValidationURI, Collections.EMPTY_MAP));
+            assertTrue(resourceSetForModels.getURIConverter().exists(expectedValidationURI, Collections.EMPTY_MAP));
             assertTrue(isEmpty(expectedValidationURI));
         }
 
-        URIConverter.INSTANCE.delete(tempURI, Collections.EMPTY_MAP);
+        resourceSetForModels.getURIConverter().delete(outputURI, Collections.EMPTY_MAP);
+    }
+
+    /**
+     * Gets the validation output {@link URI} from the given test folder path.
+     * 
+     * @param testFolderPath
+     *            the test folder path
+     * @return the validation output {@link URI} from the given test folder path
+     */
+    private URI getValidationOutputURI(String testFolderPath) {
+        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-validation-test.docx");
     }
 
     /**
@@ -297,8 +318,8 @@ public abstract class AbstractTemplatesTestSuite {
      */
     private boolean isEmpty(URI uri) {
         try {
-            try (InputStream inputStream = URIConverter.INSTANCE.createInputStream(uri);) {
-                return URIConverter.INSTANCE.createInputStream(uri).read() == -1;
+            try (InputStream inputStream = resourceSetForModels.getURIConverter().createInputStream(uri);) {
+                return resourceSetForModels.getURIConverter().createInputStream(uri).read() == -1;
             }
         } catch (IOException e) {
             return true;
@@ -317,8 +338,8 @@ public abstract class AbstractTemplatesTestSuite {
         final URI userContentURI = getUserContentURI(new File(testFolderPath));
 
         URI outputURI = null;
-        if (URIConverter.INSTANCE.exists(expectedGeneratedURI, Collections.EMPTY_MAP)) {
-            outputURI = URI.createURI("m2doctests://" + testFolderPath + "-generation-test.docx");
+        if (resourceSetForModels.getURIConverter().exists(expectedGeneratedURI, Collections.EMPTY_MAP)) {
+            outputURI = getGenerationOutputURI(testFolderPath);
         } else {
             outputURI = getActualGeneratedURI(new File(testFolderPath));
             prepareoutputAndGenerate(userContentURI, outputURI);
@@ -326,18 +347,18 @@ public abstract class AbstractTemplatesTestSuite {
         }
 
         final GenerationResult generationResult = prepareoutputAndGenerate(userContentURI, outputURI);
-        M2DocTestUtils.assertDocx(expectedGeneratedURI, outputURI);
+        M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedGeneratedURI, outputURI);
 
         List<URI> expectedLostFiles = getExpectedLostURIs(testFolderPath);
         for (Entry<String, URI> entry : generationResult.getLostUserContents().entrySet()) {
             final URI actualLostURI = entry.getValue();
             final URI expectedLostURI = URI
                     .createURI(expectedGeneratedURI.toString() + "-" + entry.getKey() + LOST_DOCX);
-            if (!URIConverter.INSTANCE.exists(expectedLostURI, Collections.emptyMap())) {
+            if (!resourceSetForModels.getURIConverter().exists(expectedLostURI, Collections.emptyMap())) {
                 copy(actualLostURI, URI.createURI(expectedLostURI.toString().replace("-expected-", "-actual-")));
                 fail(expectedLostURI + DOESN_T_EXISTS);
             }
-            M2DocTestUtils.assertDocx(expectedLostURI, actualLostURI);
+            M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedLostURI, actualLostURI);
             expectedLostFiles.remove(expectedLostURI);
         }
         // make sure we didn't miss an expected lost file
@@ -346,17 +367,30 @@ public abstract class AbstractTemplatesTestSuite {
         final String actualGenerationMessages = getGenerationMessageText(generationResult);
         final URI expectedGenerationMessageURI = getExpectedGenerationMessageURI(new File(testFolderPath));
         final URI actualValidationMessageURI = getActualGenerationMessageURI(new File(testFolderPath));
-        if (!URIConverter.INSTANCE.exists(expectedGenerationMessageURI, Collections.emptyMap())) {
-            try (OutputStream stream = URIConverter.INSTANCE.createOutputStream(actualValidationMessageURI);) {
+        if (!resourceSetForModels.getURIConverter().exists(expectedGenerationMessageURI, Collections.emptyMap())) {
+            try (OutputStream stream = resourceSetForModels.getURIConverter()
+                    .createOutputStream(actualValidationMessageURI);) {
                 setContent(stream, "UTF-8", actualGenerationMessages);
             }
             fail("missing " + expectedGenerationMessageURI.toString());
         }
-        try (InputStream stream = URIConverter.INSTANCE.createInputStream(expectedGenerationMessageURI)) {
+        try (InputStream stream = resourceSetForModels.getURIConverter()
+                .createInputStream(expectedGenerationMessageURI)) {
             final String expectedGenerationMessages = getContent(stream, "UTF-8");
             assertEquals(expectedGenerationMessages.replaceAll("\r\n", "\n"),
                     actualGenerationMessages.replaceAll("\r\n", "\n"));
         }
+    }
+
+    /**
+     * Gets the generation output {@link URI} for the given test folder path.
+     * 
+     * @param testFolderPath
+     *            the test folder path
+     * @return the generation output {@link URI} for the given test folder path
+     */
+    protected URI getGenerationOutputURI(String testFolderPath) {
+        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-generation-test.docx");
     }
 
     /**
@@ -391,7 +425,7 @@ public abstract class AbstractTemplatesTestSuite {
      *             if the generation fails
      */
     private GenerationResult prepareoutputAndGenerate(final URI userContentURI, URI outputURI) throws Exception {
-        if (URIConverter.INSTANCE.exists(userContentURI, Collections.EMPTY_MAP)) {
+        if (resourceSetForModels.getURIConverter().exists(userContentURI, Collections.EMPTY_MAP)) {
             copy(userContentURI, outputURI);
         }
         for (URI userContentLostURI : getUserContentLostURI(new File(testFolderPath))) {
@@ -400,7 +434,7 @@ public abstract class AbstractTemplatesTestSuite {
             copy(userContentLostURI, destURI);
         }
         final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment, variables,
-                URIConverter.INSTANCE, outputURI, new BasicMonitor());
+                resourceSetForModels.getURIConverter(), outputURI, new BasicMonitor());
         return generationResult;
     }
 
@@ -440,7 +474,7 @@ public abstract class AbstractTemplatesTestSuite {
      *            the test folder path
      * @return the template file from the test folder path
      */
-    protected final URI getTemplateURI(File testFolder) {
+    protected URI getTemplateURI(File testFolder) {
         return URI.createURI(getTemplateFileInternal(testFolder).toURI().toString());
     }
 
@@ -589,7 +623,7 @@ public abstract class AbstractTemplatesTestSuite {
      *            the test folder path
      * @return the template file from the test folder path
      */
-    private static File getTemplateFileInternal(File testFolder) {
+    protected static File getTemplateFileInternal(File testFolder) {
         return new File(testFolder.getAbsolutePath() + File.separator + testFolder.getName() + "-template.docx");
     }
 
@@ -684,7 +718,7 @@ public abstract class AbstractTemplatesTestSuite {
      *             if the content can't be written
      */
     private void touch(URI uri) throws IOException {
-        try (OutputStream dest = URIConverter.INSTANCE.createOutputStream(uri);) {
+        try (OutputStream dest = resourceSetForModels.getURIConverter().createOutputStream(uri);) {
             dest.write(new byte[] {});
         }
     }
@@ -700,9 +734,9 @@ public abstract class AbstractTemplatesTestSuite {
      * @throws IOException
      *             if the copy can't be done
      */
-    private static long copy(URI sourceURI, URI destURI) throws IOException {
-        try (InputStream source = URIConverter.INSTANCE.createInputStream(sourceURI);
-                OutputStream dest = URIConverter.INSTANCE.createOutputStream(destURI);) {
+    private long copy(URI sourceURI, URI destURI) throws IOException {
+        try (InputStream source = resourceSetForModels.getURIConverter().createInputStream(sourceURI);
+                OutputStream dest = resourceSetForModels.getURIConverter().createOutputStream(destURI);) {
             long nread = 0L;
             byte[] buf = new byte[BUFFER_SIZE];
             int n;

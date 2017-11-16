@@ -193,8 +193,8 @@ public final class M2DocUtils {
             exception = null;
         }
         if (exception != null) {
-            try (final ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    final PrintWriter printWriter = new PrintWriter(out);) {
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    PrintWriter printWriter = new PrintWriter(out);) {
                 exception.printStackTrace(printWriter);
                 printWriter.flush();
                 out.flush();

@@ -203,11 +203,30 @@ public final class M2DocTestUtils {
      *             if .docx files can't be read
      */
     public static void assertDocx(URI expectedURI, URI actualURI) throws FileNotFoundException, IOException {
-        final String expectedTextContent = getPortableString(getTextContent(expectedURI));
-        final String actualTextContent = getPortableString(getTextContent(actualURI));
+        assertDocx(URIConverter.INSTANCE, expectedURI, actualURI);
+    }
+
+    /**
+     * Asserts that the given expected .docx and given actual .docx are the same.
+     * 
+     * @param uriConverter
+     *            the {@link URIConverter}
+     * @param expectedURI
+     *            the expected .docx {@link URI}
+     * @param actualURI
+     *            the actual .docx path {@link URI}
+     * @throws FileNotFoundException
+     *             if .docx files can't be found
+     * @throws IOException
+     *             if .docx files can't be read
+     */
+    public static void assertDocx(URIConverter uriConverter, URI expectedURI, URI actualURI)
+            throws FileNotFoundException, IOException {
+        final String expectedTextContent = getPortableString(getTextContent(uriConverter, expectedURI));
+        final String actualTextContent = getPortableString(getTextContent(uriConverter, actualURI));
         assertEquals(expectedTextContent, actualTextContent);
 
-        assertArchiveContent(expectedURI, actualURI);
+        assertArchiveContent(uriConverter, expectedURI, actualURI);
     }
 
     /**
@@ -238,9 +257,22 @@ public final class M2DocTestUtils {
      * @return the textual element of the .docx at the given {@link URI}
      */
     public static String getTextContent(URI uri) {
+        return getTextContent(URIConverter.INSTANCE, uri);
+    }
+
+    /**
+     * Gets the textual element of the .docx at the given {@link URI}.
+     * 
+     * @param uriConverter
+     *            the {@link URIConverter}
+     * @param uri
+     *            the .docx {@link URI}
+     * @return the textual element of the .docx at the given {@link URI}
+     */
+    public static String getTextContent(URIConverter uriConverter, URI uri) {
         String result = "";
 
-        try (InputStream is = URIConverter.INSTANCE.createInputStream(uri);
+        try (InputStream is = uriConverter.createInputStream(uri);
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);
                 XWPFWordExtractor ex = new XWPFWordExtractor(document);) {
@@ -270,10 +302,28 @@ public final class M2DocTestUtils {
      *             if .docx can't be found
      */
     public static void assertArchiveContent(URI expectedURI, URI actualURI) throws IOException, FileNotFoundException {
+        assertArchiveContent(URIConverter.INSTANCE, expectedURI, actualURI);
+    }
 
-        try (InputStream expectedIs = URIConverter.INSTANCE.createInputStream(expectedURI);
+    /**
+     * Asserts the archive content of expected and actual .docx.
+     * 
+     * @param uriConverter
+     *            the {@link URIConverter}
+     * @param expectedURI
+     *            the expected {@link URI}
+     * @param actualURI
+     *            the actual {@link URI}
+     * @throws IOException
+     *             if .docx can't be read
+     * @throws FileNotFoundException
+     *             if .docx can't be found
+     */
+    public static void assertArchiveContent(URIConverter uriConverter, URI expectedURI, URI actualURI)
+            throws IOException, FileNotFoundException {
+        try (InputStream expectedIs = uriConverter.createInputStream(expectedURI);
                 ZipInputStream expectedZin = new ZipInputStream(new BufferedInputStream(expectedIs));
-                InputStream actualIs = URIConverter.INSTANCE.createInputStream(actualURI);
+                InputStream actualIs = uriConverter.createInputStream(actualURI);
                 ZipInputStream actualZin = new ZipInputStream(new BufferedInputStream(actualIs))) {
 
             final Map<String, byte[]> expectedContent = getContentMap(expectedZin);
@@ -302,6 +352,7 @@ public final class M2DocTestUtils {
                     assertEquals(expectedHash, actualHash);
                 }
             }
+
             assertEquals(expectedContent.size(), actualContent.size());
         }
     }

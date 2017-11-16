@@ -13,8 +13,11 @@ package org.obeonetwork.m2doc.sirius.providers.configuration;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -46,6 +49,21 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
  */
 @SuppressWarnings("restriction")
 public class SiriusConfigurationProvider implements IConfigurationProvider {
+
+    /**
+     * Mapping of {@link Generation} to {@link Session}.
+     */
+    private final Map<Generation, Session> sessions = new HashMap<>();
+
+    /**
+     * {@link Set} of {@link Session} that need to be closed.
+     */
+    private final Set<Session> sessionToClose = new HashSet<>();
+
+    /**
+     * Mapping of {@link Session} to {@link SessionTransientAttachment}.
+     */
+    private final Map<Session, SessionTransientAttachment> trasiantAttachments = new HashMap<>();
 
     /**
      * {@inheritDoc}
@@ -111,7 +129,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      * @return uris list
      */
     protected List<String> addURIs(Session session) {
-        List<String> uris = new ArrayList<String>();
+        List<String> uris = new ArrayList<>();
         for (Resource resource : session.getSemanticResources()) {
             if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof EObject
                 && resource.getContents().get(0).eClass() != null
@@ -146,7 +164,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.genconf.Generation)
      */
     @Override
-    public boolean postValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation) {
+    public boolean postValidateTemplate(URI templateURI, DocumentTemplate documentTemplate, Generation generation) {
         // do nothing.
         return true;
     }
@@ -158,7 +176,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      *      org.obeonetwork.m2doc.template.DocumentTemplate, org.obeonetwork.m2doc.genconf.Generation)
      */
     @Override
-    public void preValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation) {
+    public void preValidateTemplate(URI templateURI, DocumentTemplate documentTemplate, Generation generation) {
         // do nothing.
     }
 
@@ -181,9 +199,17 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      *      org.obeonetwork.m2doc.template.DocumentTemplate)
      */
     @Override
-    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate template) {
-        // do nothing.
-        return new ArrayList<URI>();
+    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate documentTemplate) {
+        final Session session = sessions.remove(generation);
+        if (session != null) {
+            session.getTransactionalEditingDomain().getResourceSet().eAdapters()
+                    .remove(trasiantAttachments.remove(session));
+            if (sessionToClose.remove(session)) {
+                session.close(new NullProgressMonitor());
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     @Override
@@ -194,10 +220,16 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
         if (representationsFileName != null && representationsFileName.endsWith("aird")) {
             final URI sessionURI = GenconfUtils.getResolvedURI(generation, URI.createURI(representationsFileName));
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
-                final Session s = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
-                s.open(new NullProgressMonitor());
-                created = s.getTransactionalEditingDomain().getResourceSet();
-                created.eAdapters().add(new SessionTransientAttachment(s));
+                final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
+                sessions.put(generation, session);
+                if (!session.isOpen()) {
+                    session.open(new NullProgressMonitor());
+                    sessionToClose.add(session);
+                }
+                created = session.getTransactionalEditingDomain().getResourceSet();
+                SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
+                created.eAdapters().add(transiantAttachment);
+                trasiantAttachments.put(session, transiantAttachment);
             }
         }
         return created;

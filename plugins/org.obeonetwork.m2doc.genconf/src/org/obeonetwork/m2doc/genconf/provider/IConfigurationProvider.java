@@ -59,25 +59,25 @@ public interface IConfigurationProvider {
      * 
      * @param templateURI
      *            the template {@link URI}
-     * @param template
+     * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param generation
      *            the {@link Generation}
      * @return validation result, must return true by default.
      */
-    boolean postValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation);
+    boolean postValidateTemplate(URI templateURI, DocumentTemplate documentTemplate, Generation generation);
 
     /**
      * Pre operation before template validation.
      * 
      * @param templateURI
      *            the template {@link URI}
-     * @param template
+     * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param generation
      *            the {@link Generation}
      */
-    void preValidateTemplate(URI templateURI, DocumentTemplate template, Generation generation);
+    void preValidateTemplate(URI templateURI, DocumentTemplate documentTemplate, Generation generation);
 
     /**
      * Pre operation before generation.
@@ -100,11 +100,11 @@ public interface IConfigurationProvider {
      *            the template {@link URI}
      * @param generatedURI
      *            the generated {@link URI}
-     * @param template
+     * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @return URI list to return after the generation. Generation result and validation log are already in there.
      */
-    List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate template);
+    List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate documentTemplate);
 
     /**
      * Create a new resourceSet which would need specific initialization for loading the models specified in the Generation objects.

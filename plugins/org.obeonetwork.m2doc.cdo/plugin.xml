@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.obeonetwork.m2doc.genconf.configuration">
+      <configuration
+            providerClass="org.obeonetwork.m2doc.cdo.providers.configuration.CDOConfigurationProvider">
+      </configuration>
+   </extension>
+   <extension
+         point="org.obeonetwork.m2doc.ide.servicesConfigurator">
+      <servicesConfigurators
+            class="org.obeonetwork.m2doc.cdo.services.configurator.CDOServicesConfigurator">
+      </servicesConfigurators>
+   </extension>
+
+</plugin>

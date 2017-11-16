@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -51,6 +52,7 @@ import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
@@ -415,26 +417,29 @@ public final class GenconfUtils {
     private static List<URI> generate(Generation generation, IClassProvider classProvider, URI templateURI,
             URI generatedURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
-        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
+        final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
         monitor.beginTask("Loading models.", 2);
-        ResourceSet resourceSetForModels = createResourceSetForModels(generation);
+        final List<Exception> exceptions = new ArrayList<Exception>();
+        final ResourceSet resourceSetForModels = createResourceSetForModels(exceptions, generation);
         monitor.worked(1);
 
-        // create definitions
-        Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
-        monitor.done();
-
         // create generated file
-        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
+                queryEnvironment, classProvider)) {
+
+            // create definitions
+            Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
+            monitor.done();
 
             // validate template
             monitor.beginTask("Validating template.", 1);
-            final URI validationURI = validate(generatedURI, template, queryEnvironment, generation);
+            final URI validationURI = validate(resourceSetForModels.getURIConverter(), generatedURI, documentTemplate,
+                    queryEnvironment, generation);
             monitor.done();
 
             // launch generation
-            M2DocUtils.generate(template, queryEnvironment, definitions, generatedURI, monitor);
+            M2DocUtils.generate(documentTemplate, queryEnvironment, definitions, generatedURI, monitor);
 
             List<URI> generatedFiles = new ArrayList<URI>();
             generatedFiles.add(generatedURI);
@@ -442,24 +447,48 @@ public final class GenconfUtils {
                 URI validationFile = validationURI;
                 generatedFiles.add(validationFile);
             }
+            for (IConfigurationProvider provider : ConfigurationProviderService.getInstance().getProviders()) {
+                provider.postGenerate(generation, templateURI, generatedURI, documentTemplate);
+            }
 
             return generatedFiles;
         }
     }
 
     /**
-     * Create a new resourceSet suitable for loading the models specified in the Generation objects.
+     * Create a new {@link ResourceSet} suitable for loading the models specified in the {@link Generation}.
      * 
      * @param generation
      *            the generation object.
-     * @return a resourceset suitable for loading the models specified in the Generation object.
+     * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
+     * @deprecated see {@link #createResourceSetForModels(DocumentTemplate, Generation)}
      */
     public static ResourceSet createResourceSetForModels(Generation generation) {
+        return createResourceSetForModels(new ArrayList<Exception>(), generation);
+    }
+
+    /**
+     * Create a new {@link ResourceSet} suitable for loading the {@link ModelDefinition} specified in the {@link Generation}.
+     * 
+     * @param exceptions
+     *            the {@link List} of resulting exceptions (filled by this method)
+     *            the {@link DocumentTemplate} that can be used for error reporting
+     * @param generation
+     *            the generation object.
+     * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
+     */
+    public static ResourceSet createResourceSetForModels(List<Exception> exceptions, Generation generation) {
         ResourceSet created = null;
         Iterator<IConfigurationProvider> it = ConfigurationProviderService.getInstance().getProviders().iterator();
         while (created == null && it.hasNext()) {
             IConfigurationProvider cur = it.next();
-            created = cur.createResourceSetForModels(generation);
+            try {
+                created = cur.createResourceSetForModels(generation);
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                exceptions.add(e);
+            }
         }
         if (created == null) {
             created = new ResourceSetImpl();
@@ -490,8 +519,11 @@ public final class GenconfUtils {
             throws IOException, DocumentParserException, DocumentGenerationException {
         final boolean res;
 
+        final List<Exception> exceptions = new ArrayList<Exception>();
+        final ResourceSet resourceSetForModel = createResourceSetForModels(exceptions, generation);
+
         // get the template path and parses it.
-        String templateFilePath = generation.getTemplateFileName();
+        final String templateFilePath = generation.getTemplateFileName();
         if (templateFilePath == null) {
             throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
         }
@@ -505,11 +537,18 @@ public final class GenconfUtils {
         IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
         // parse template
-        try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModel.getURIConverter(), templateURI,
+                queryEnvironment, classProvider)) {
+            for (Exception e : exceptions) {
+                final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
+                documentTemplate.getBody().getValidationMessages()
+                        .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, e.getMessage(), run));
+            }
 
             // validate template
-            if (template != null) {
-                res = validate(templateURI, template, queryEnvironment, generation) != null;
+            if (documentTemplate != null) {
+                res = validate(resourceSetForModel.getURIConverter(), templateURI, documentTemplate, queryEnvironment,
+                        generation) != null;
             } else {
                 res = true;
             }
@@ -521,6 +560,8 @@ public final class GenconfUtils {
     /**
      * Validates template with templateInfo information.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter}
      * @param templateURI
      *            the template {@link URI}
      * @param documentTemplate
@@ -535,7 +576,7 @@ public final class GenconfUtils {
      * @throws IOException
      *             IOException
      */
-    private static URI validate(URI templateURI, DocumentTemplate documentTemplate,
+    private static URI validate(URIConverter uriConverter, URI templateURI, DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, Generation generation)
             throws DocumentGenerationException, IOException {
         final URI res;
@@ -543,7 +584,7 @@ public final class GenconfUtils {
         final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment);
         if (validationLevel != ValidationMessageLevel.OK) {
             res = getValidationLogFile(templateURI, validationLevel);
-            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, res);
+            M2DocUtils.serializeValidatedDocumentTemplate(uriConverter, documentTemplate, res);
         } else {
             res = null;
         }

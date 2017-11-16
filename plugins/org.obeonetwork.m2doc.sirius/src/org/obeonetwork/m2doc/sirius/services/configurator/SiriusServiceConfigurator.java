@@ -55,6 +55,19 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
      */
     private final Map<IReadOnlyQueryEnvironment, M2DocSiriusServices> services = new HashMap<IReadOnlyQueryEnvironment, M2DocSiriusServices>();
 
+    /**
+     * Initializes options.
+     * 
+     * @return the {@link List} of options.
+     */
+    private static List<String> initOptions() {
+        final List<String> res = new ArrayList<String>();
+
+        res.add(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+
+        return res;
+    }
+
     @Override
     public Map<String, String> getInitializedOptions(Map<String, String> options) {
         final Map<String, String> res = new HashMap<String, String>();
@@ -66,19 +79,6 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                 res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
             }
         }
-        return res;
-    }
-
-    /**
-     * Initializes options.
-     * 
-     * @return the {@link List} of options.
-     */
-    private static List<String> initOptions() {
-        final List<String> res = new ArrayList<String>();
-
-        res.add(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
-
         return res;
     }
 

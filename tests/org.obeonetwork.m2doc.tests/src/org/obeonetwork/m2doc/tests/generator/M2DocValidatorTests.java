@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests.generator;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -46,7 +47,7 @@ import static org.obeonetwork.m2doc.tests.M2DocTestUtils.assertTemplateValidatio
  */
 public class M2DocValidatorTests {
 
-    public void conditionalInferedTypeInElse() {
+    public void conditionalInferedTypeInElse() throws IOException {
         IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
         final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
         final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
@@ -63,24 +64,25 @@ public class M2DocValidatorTests {
         final Template template = TemplatePackage.eINSTANCE.getTemplateFactory().createTemplate();
         template.setBody(TemplatePackage.eINSTANCE.getTemplateFactory().createBlock());
         template.getBody().getStatements().add(conditional);
-        final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);
+        try (final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(template);) {
 
-        final M2DocValidator validator = new M2DocValidator();
+            final M2DocValidator validator = new M2DocValidator();
 
-        final Map<String, Set<IType>> types = new HashMap<String, Set<IType>>();
-        final Set<IType> selfTypes = new LinkedHashSet<IType>();
-        types.put("self", selfTypes);
-        selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
-        selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
+            final Map<String, Set<IType>> types = new HashMap<>();
+            final Set<IType> selfTypes = new LinkedHashSet<>();
+            types.put("self", selfTypes);
+            selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
+            selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 
-        validator.validate(documentTemplate, queryEnvironment);
+            validator.validate(documentTemplate, queryEnvironment);
 
-        assertEquals(0, conditional.getValidationMessages().size());
+            assertEquals(0, conditional.getValidationMessages().size());
 
-        assertEquals(1, alternative.getValidationMessages().size());
-        assertTemplateValidationMessage(alternative.getValidationMessages().get(0), ValidationMessageLevel.INFO,
-                "Always true:\nNothing inferred when self (EClassifier=EPackage) is not kind of EClassifierLiteral=EPackage",
-                alternative.getRuns().get(1));
+            assertEquals(1, alternative.getValidationMessages().size());
+            assertTemplateValidationMessage(alternative.getValidationMessages().get(0), ValidationMessageLevel.INFO,
+                    "Always true:\nNothing inferred when self (EClassifier=EPackage) is not kind of EClassifierLiteral=EPackage",
+                    alternative.getRuns().get(1));
+        }
     }
 
     @Test

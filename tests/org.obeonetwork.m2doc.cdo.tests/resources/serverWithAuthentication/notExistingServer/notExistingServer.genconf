@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="nominal" templateFileName="nominal-template.docx">
+  <definitions xsi:type="genconf:ModelDefinition" key="self">
+    <value href="cdo://5ef25598-0af9-4436-b7df-5764732e4c0b/anydsl.ecore#L3"/>
+  </definitions>
+  <options name="CDOServer" value="tcp://127.0.0.100:12345"/>
+  <options name="CDORepository" value="testRepo"/>
+  <options name="CDOLogin" value="user"/>
+  <options name="CDOPassword" value="password"/>
+</genconf:Generation>

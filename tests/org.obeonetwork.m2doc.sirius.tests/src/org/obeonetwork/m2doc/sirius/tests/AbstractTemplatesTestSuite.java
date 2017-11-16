@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.Option;
@@ -38,15 +37,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     }
 
     /**
-     * Registers the {@link SiriusDiagramByTitleProvider}.
-     */
-    @BeforeClass
-    public static void beforeClass() {
-        org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite.beforeClass();
-    }
-
-    /**
-     * Unregisters the {@link SiriusDiagramByTitleProvider}.
+     * Unregisters.
      * 
      * @throws IOException
      *             if the {@link DocumentTemplate} can't be closed

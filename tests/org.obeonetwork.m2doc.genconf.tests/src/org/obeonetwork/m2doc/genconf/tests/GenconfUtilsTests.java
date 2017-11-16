@@ -225,7 +225,7 @@ public class GenconfUtilsTests {
     @Test
     public void getNewDefinitionsNotExistingModelDefinition() throws IOException {
         final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
-        try (final XWPFDocument document = new XWPFDocument()) {
+        try (XWPFDocument document = new XWPFDocument()) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
             properties.getVariables().put("variable", "ecore::EClass");
@@ -241,7 +241,7 @@ public class GenconfUtilsTests {
     @Test
     public void getNewDefinitionsNotExistingStringDefinition() throws IOException {
         final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
-        try (final XWPFDocument document = new XWPFDocument()) {
+        try (XWPFDocument document = new XWPFDocument()) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
             properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
@@ -261,7 +261,7 @@ public class GenconfUtilsTests {
         stringDefinition.setKey("variable");
         generation.getDefinitions().add(stringDefinition);
 
-        try (final XWPFDocument document = new XWPFDocument()) {
+        try (XWPFDocument document = new XWPFDocument()) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
             properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
@@ -279,7 +279,7 @@ public class GenconfUtilsTests {
         stringDefinition.setKey("variable");
         generation.getDefinitions().add(stringDefinition);
 
-        try (final XWPFDocument document = new XWPFDocument()) {
+        try (XWPFDocument document = new XWPFDocument()) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
             properties.getVariables().put("variable", "ecore::EClass");

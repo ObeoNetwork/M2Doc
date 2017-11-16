@@ -31,9 +31,14 @@ import org.eclipse.emf.ecore.resource.URIHandler;
 public class MemoryURIHandler implements URIHandler {
 
     /**
+     * The protocol name.
+     */
+    public static final String PROTOCOL = "m2doctests";
+
+    /**
      * Resources.
      */
-    private final Map<URI, ByteArrayOutputStream> resources = new HashMap<URI, ByteArrayOutputStream>();
+    private final Map<URI, ByteArrayOutputStream> resources = new HashMap<>();
 
     /**
      * Clears the memory.
@@ -44,7 +49,7 @@ public class MemoryURIHandler implements URIHandler {
 
     @Override
     public boolean canHandle(URI uri) {
-        return "m2doctests".equals(uri.scheme());
+        return PROTOCOL.equals(uri.scheme());
     }
 
     @Override

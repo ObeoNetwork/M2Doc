@@ -59,13 +59,13 @@ public class TemplateValidationGeneratorTests {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils.parse(
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()))) {
-            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-            template.getBody().getValidationMessages().add(
+            final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            documentTemplate.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.INFO, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
+            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, URI.createFileURI(tempFile.getAbsolutePath()));
         }
         assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
@@ -98,13 +98,13 @@ public class TemplateValidationGeneratorTests {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils.parse(
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()))) {
-            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-            template.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
+            final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
                     "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
+            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, URI.createFileURI(tempFile.getAbsolutePath()));
         }
         assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
@@ -137,13 +137,13 @@ public class TemplateValidationGeneratorTests {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils.parse(
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()))) {
-            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-            template.getBody().getValidationMessages().add(
+            final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            documentTemplate.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.ERROR, "XXXXXXXXXXXXXXXXXXXXXXXX", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
+            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, URI.createFileURI(tempFile.getAbsolutePath()));
         }
         assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
@@ -176,19 +176,19 @@ public class TemplateValidationGeneratorTests {
                 .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
-        try (DocumentTemplate template = M2DocUtils.parse(
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()))) {
-            final XWPFRun location = ((XWPFParagraph) template.getDocument().getBodyElements().get(0)).getRuns().get(0);
-            template.getBody().getValidationMessages()
+            final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns().get(0);
+            documentTemplate.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "AAAA", location));
-            template.getBody().getValidationMessages()
+            documentTemplate.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "BBBB", location));
-            template.getBody().getValidationMessages()
+            documentTemplate.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "CCCC", location));
-            template.getBody().getValidationMessages()
+            documentTemplate.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "DDDD", location));
-            M2DocUtils.serializeValidatedDocumentTemplate(template, URI.createFileURI(tempFile.getAbsolutePath()));
+            M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, URI.createFileURI(tempFile.getAbsolutePath()));
         }
         assertTrue(new File(tempFile.getAbsolutePath()).exists());
 
