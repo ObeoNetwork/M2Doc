@@ -29,18 +29,10 @@
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-    <pluginRepository>
-      <id>rcptt-snapshots</id>
-      <name>RCPTT Maven Snapshots repository</name>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-      <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
-    </pluginRepository>
   </pluginRepositories> 
 
   <properties>
-    <rcptt-maven-version>2.2.0-SNAPSHOT</rcptt-maven-version>
+    <rcptt-maven-version>2.2.0</rcptt-maven-version>
   </properties> 
   <build>
     <plugins>
@@ -50,6 +42,9 @@
         <version>${rcptt-maven-version}</version>
         <extensions>true</extensions>
         <configuration>
+          <runner>
+            <version>${rcptt-maven-version}</version>
+          </runner>
           <aut>
             <groupId>org.obeonetwork.m2doc</groupId>
             <artifactId>org.obeonetwork.m2doc.product</artifactId>

@@ -8,6 +8,7 @@ location "http://download.eclipse.org/sirius/updates/releases/5.0.1/oxygen/" {
 	org.eclipse.sirius.diagram.ui lazy
 	org.eclipse.sirius.table lazy
 	org.eclipse.sirius.table.ui lazy
+	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
 }
 
 location Acceleo-3.7 "http://download.eclipse.org/acceleo/updates/releases/3.7/R201610150614" {
@@ -15,4 +16,3 @@ location Acceleo-3.7 "http://download.eclipse.org/acceleo/updates/releases/3.7/R
 	org.eclipse.acceleo.query.source.feature.group lazy
 	org.antlr.runtime [4.3.0,4.4.0)
 }
-

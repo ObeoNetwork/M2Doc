@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -472,32 +471,52 @@ public final class GenconfUtils {
      * 
      * @param exceptions
      *            the {@link List} of resulting exceptions (filled by this method)
-     *            the {@link DocumentTemplate} that can be used for error reporting
      * @param generation
      *            the generation object.
      * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
      */
     public static ResourceSet createResourceSetForModels(List<Exception> exceptions, Generation generation) {
-        ResourceSet created = null;
-        Iterator<IConfigurationProvider> it = ConfigurationProviderService.getInstance().getProviders().iterator();
-        while (created == null && it.hasNext()) {
-            IConfigurationProvider cur = it.next();
+        final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
+
+        defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
+                new XMIResourceFactoryImpl());
+
+        return createResourceSetForModels(exceptions, defaultResourceSet, generation);
+    }
+
+    /**
+     * Create a new {@link ResourceSet} suitable for loading the {@link ModelDefinition} specified in the {@link Generation}.
+     * 
+     * @param exceptions
+     *            the {@link List} of resulting exceptions (filled by this method)
+     * @param defaultResourceSet
+     *            the default {@link ResourceSet} to use if none is created
+     * @param generation
+     *            the generation object.
+     * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
+     */
+    public static ResourceSet createResourceSetForModels(List<Exception> exceptions, ResourceSet defaultResourceSet,
+            Generation generation) {
+        ResourceSet res = null;
+
+        for (IConfigurationProvider provider : ConfigurationProviderService.getInstance().getProviders()) {
             try {
-                created = cur.createResourceSetForModels(generation);
+                res = provider.createResourceSetForModels(generation);
+                if (res != null) {
+                    break;
+                }
                 // CHECKSTYLE:OFF
             } catch (Exception e) {
                 // CHECKSTYLE:ON
                 exceptions.add(e);
             }
         }
-        if (created == null) {
-            created = new ResourceSetImpl();
 
-            created.getPackageRegistry().put(GenconfPackage.eNS_URI, GenconfPackage.eINSTANCE);
-            created.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-
+        if (res == null) {
+            res = defaultResourceSet;
         }
-        return created;
+
+        return res;
     }
 
     /**

@@ -53,7 +53,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     /**
      * Mapping from {@link IReadOnlyQueryEnvironment} to {@link M2DocSiriusServices}.
      */
-    private final Map<IReadOnlyQueryEnvironment, M2DocSiriusServices> services = new HashMap<IReadOnlyQueryEnvironment, M2DocSiriusServices>();
+    private final Map<IReadOnlyQueryEnvironment, M2DocSiriusServices> services = new HashMap<>();
 
     /**
      * Initializes options.
@@ -61,7 +61,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
      * @return the {@link List} of options.
      */
     private static List<String> initOptions() {
-        final List<String> res = new ArrayList<String>();
+        final List<String> res = new ArrayList<>();
 
         res.add(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
 
@@ -70,7 +70,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
 
     @Override
     public Map<String, String> getInitializedOptions(Map<String, String> options) {
-        final Map<String, String> res = new HashMap<String, String>();
+        final Map<String, String> res = new HashMap<>();
 
         if (!options.containsKey(M2DocSiriusUtils.SIRIUS_SESSION_OPTION)) {
             final String genConfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
@@ -95,18 +95,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         if (genConfURIStr != null) {
             final URI genConfURI = URI.createURI(genConfURIStr);
             if (URIConverter.INSTANCE.exists(genConfURI, Collections.emptyMap()) && genConfURI.isPlatformResource()) {
-                final String filePath = genConfURI.toPlatformString(true);
-                final IFile genconfFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
-                Option<ModelingProject> optionalModelingProject = ModelingProject
-                        .asModelingProject(genconfFile.getProject());
-                if (optionalModelingProject.some()) {
-                    final ModelingProject project = optionalModelingProject.get();
-                    final Session session = project.getSession();
-                    final URI sessionURI = session.getSessionResource().getURI();
-                    res = sessionURI.deresolve(genConfURI).toString();
-                } else {
-                    res = null;
-                }
+                res = getSessionFromPlatformResource(genConfURI);
             } else {
                 res = null;
             }
@@ -117,9 +106,36 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         return res;
     }
 
+    /**
+     * Gets the {@link Session} path form the given platform resource {@link URI}.
+     * 
+     * @param platformResourceURI
+     *            the platform resource {@link URI}
+     * @return the {@link Session} path form the given platform resource {@link URI} if any, <code>null</code> otherwise
+     */
+    private String getSessionFromPlatformResource(final URI platformResourceURI) {
+        final String res;
+        final String filePath = platformResourceURI.toPlatformString(true);
+        final IFile genconfFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
+        Option<ModelingProject> optionalModelingProject = ModelingProject.asModelingProject(genconfFile.getProject());
+        if (optionalModelingProject.some()) {
+            final ModelingProject project = optionalModelingProject.get();
+            final Session session = project.getSession();
+            if (session != null) {
+                final URI sessionURI = session.getSessionResource().getURI();
+                res = sessionURI.deresolve(platformResourceURI).toString();
+            } else {
+                res = null;
+            }
+        } else {
+            res = null;
+        }
+        return res;
+    }
+
     @Override
     public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options) {
-        final Set<IService> res = new LinkedHashSet<IService>();
+        final Set<IService> res = new LinkedHashSet<>();
 
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null) {
@@ -156,7 +172,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     @Override
     public Map<String, List<Diagnostic>> validate(IReadOnlyQueryEnvironment queryEnvironment,
             Map<String, String> options) {
-        final Map<String, List<Diagnostic>> res = new HashMap<String, List<Diagnostic>>();
+        final Map<String, List<Diagnostic>> res = new HashMap<>();
 
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null) {
@@ -166,7 +182,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                 sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr));
             }
             if (!URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
-                final List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+                final List<Diagnostic> diagnostics = new ArrayList<>();
                 res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, diagnostics);
                 diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocSiriusUtils.PLUGIN_ID, 0,
                         "The Sirius session doesn't exist: " + sessionURI.toString(), new Object[] {sessionURI}));

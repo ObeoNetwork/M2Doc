@@ -111,16 +111,11 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="org.obeonetwork.m2doc.feature"/>
       <feature id="org.obeonetwork.m2doc.sirius.feature"/>
       <feature id="org.obeonetwork.m2doc.ui.feature"/>
+      <feature id="org.obeonetwork.m2doc.rcptt.feature"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.epp.mpc"/>
    </features>
    
-   <plugins>
-      <feature id="org.obeonetwork.m2doc.rcptt.ui"/>
-      <feature id="org.obeonetwork.m2doc.rcptt.a"/>
-      <feature id="org.obeonetwork.m2doc.rcptt.b"/>
-   </plugins>
-
    <configurations>
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />

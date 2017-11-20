@@ -313,13 +313,12 @@
         <module>tests/org.obeonetwork.m2doc.genconf.tests</module>
         <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
         <module>tests/org.obeonetwork.m2doc.cdo.tests</module>
-<!--
         <module>tests/org.obeonetwork.m2doc.rcptt.a</module>
         <module>tests/org.obeonetwork.m2doc.rcptt.b</module>
         <module>tests/org.obeonetwork.m2doc.rcptt.ui</module>
         <module>releng/org.obeonetwork.m2doc.product</module>
         <module>tests/org.obeonetwork.m2doc.rcptt</module>
- -->
+        <module>features/org.obeonetwork.m2doc.rcptt.feature</module>
       </modules>
     </profile>
     <profile>

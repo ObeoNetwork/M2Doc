@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: __qJ28HjqEee_D69tof7gbQ
-Runtime-Version: 2.1.0.201606221726
-Save-Time: 8/7/17 10:37 AM
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 11/17/17 3:15 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -24,7 +24,7 @@ with [get-window Preferences] {
     }
     get-button "Add..." -after [get-label "Associated editors:"] | click
     get-window "Editor Selection" | get-tree | select "M2Doc Template Editor" | double-click
-    get-button OK | click
+    get-button "Apply and Close" | click
 }
 
 get-view "Project Explorer" | get-tree | select "test/missingVariables.docx" | double-click
@@ -38,6 +38,6 @@ with [get-window Preferences] {
     get-tree | select "General/Editors/File Associations"
     get-table | select "*.docx"
     get-button Remove | click
-    get-button OK | click
+    get-button "Apply and Close" | click
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
