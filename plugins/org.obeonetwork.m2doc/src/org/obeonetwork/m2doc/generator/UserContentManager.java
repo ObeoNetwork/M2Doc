@@ -194,7 +194,7 @@ public class UserContentManager {
      */
     private File tempCopyFile(URI source) throws IOException {
         // Create temporary file
-        File dest = File.createTempFile(source.lastSegment(), TEMP_DEST_SUFFIX);
+        File dest = File.createTempFile(source.lastSegment() + "-m2doc", TEMP_DEST_SUFFIX);
         // Copy generated file in temp file
         copyFile(source, dest);
         return dest;

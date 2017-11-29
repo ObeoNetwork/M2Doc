@@ -307,7 +307,7 @@ public class M2DocSiriusServices {
     public MImage asImage(final DRepresentation representation) throws SizeTooLargeException, IOException {
         final MImage res;
 
-        final File tmpFile = File.createTempFile(representation.getName(), ".jpg");
+        final File tmpFile = File.createTempFile(representation.getName() + "-m2doc", ".jpg");
         tmpFiles.add(tmpFile);
 
         // Make sure to run the Sirius image export in the UI thread.
