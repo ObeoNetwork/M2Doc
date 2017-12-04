@@ -105,7 +105,7 @@ public final class M2DocUtils {
      * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
      * {@link IServicesConfiguratorDescriptor}.
      */
-    private static final List<IServicesConfiguratorDescriptor> CONFIGURATORS = new ArrayList<IServicesConfiguratorDescriptor>();
+    private static final List<IServicesConfiguratorDescriptor> CONFIGURATORS = new ArrayList<>();
 
     /**
      * Constructor.
@@ -145,7 +145,7 @@ public final class M2DocUtils {
      */
     public static List<TemplateValidationMessage> appendDiagnosticMessage(XWPFParagraph paragraph,
             Diagnostic diagnostic) {
-        final List<TemplateValidationMessage> res = new ArrayList<TemplateValidationMessage>();
+        final List<TemplateValidationMessage> res = new ArrayList<>();
 
         for (Diagnostic child : diagnostic.getChildren()) {
             switch (child.getSeverity()) {
@@ -692,11 +692,6 @@ public final class M2DocUtils {
         try (InputStream is = uriConverter.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
-            // clear the document
-            int size = destinationDocument.getBodyElements().size();
-            for (int i = 0; i < size; i++) {
-                destinationDocument.removeBodyElement(0);
-            }
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(uriConverter, documentTemplate,
@@ -763,7 +758,7 @@ public final class M2DocUtils {
      *         {@link IServicesConfigurator}
      */
     public static List<IServicesConfigurator> getConfigurators() {
-        final List<IServicesConfigurator> res = new ArrayList<IServicesConfigurator>();
+        final List<IServicesConfigurator> res = new ArrayList<>();
 
         synchronized (CONFIGURATORS) {
             for (IServicesConfiguratorDescriptor descriptor : CONFIGURATORS) {
@@ -785,7 +780,7 @@ public final class M2DocUtils {
      * @return the {@link Map} of initialized options
      */
     public static Map<String, String> getInitializedOptions(Map<String, String> options) {
-        final Map<String, String> res = new LinkedHashMap<String, String>();
+        final Map<String, String> res = new LinkedHashMap<>();
 
         for (IServicesConfigurator configurator : getConfigurators()) {
             res.putAll(configurator.getInitializedOptions(options));

@@ -99,7 +99,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
  * @author Romain Guider
  */
 @SuppressWarnings("restriction")
-public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
+public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     /**
      * Error message when a {@link Bookmark} errors.
@@ -245,92 +245,114 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
      */
     public GenerationResult generate(DocumentTemplate documentTemplate, Map<String, Object> variables,
             IBody destinationDocument) {
-        this.generatedDocument = destinationDocument;
-        variablesStack.push(variables);
-        result = new GenerationResult();
-        result.getDuplicatedUserContentIDs().addAll(userContentManager.getDuplicatedUserContentIDs());
+        generatedDocument = destinationDocument;
 
-        doSwitch(documentTemplate);
+        variablesStack.push(variables);
+        try {
+            result = new GenerationResult();
+            result.getDuplicatedUserContentIDs().addAll(userContentManager.getDuplicatedUserContentIDs());
+
+            doSwitch(documentTemplate);
+        } finally {
+            variablesStack.pop();
+        }
 
         return result;
     }
 
     @Override
-    public IConstruct caseDocumentTemplate(DocumentTemplate documentTemplate) {
+    public XWPFParagraph caseDocumentTemplate(DocumentTemplate documentTemplate) {
+        cleanBody(generatedDocument);
         doSwitch(documentTemplate.getBody());
 
         final XWPFDocument document = (XWPFDocument) generatedDocument;
         final Iterator<XWPFFooter> footers = document.getFooterList().iterator();
         for (final Template footer : documentTemplate.getFooters()) {
             final XWPFFooter f = footers.next();
-            cleanHeaderFooter(f);
+            cleanBody(f);
             generatedDocument = f;
             doSwitch(footer);
         }
         final Iterator<XWPFHeader> headers = document.getHeaderList().iterator();
         for (final Template header : documentTemplate.getHeaders()) {
             final XWPFHeader h = headers.next();
-            cleanHeaderFooter(h);
+            cleanBody(h);
             generatedDocument = h;
             doSwitch(header);
         }
 
-        return null;
+        return currentGeneratedParagraph;
     }
 
     /**
-     * Clear up the header or footer from the existing paragraphs and tables.
+     * Cleans the given {@link IBody}.
      * 
-     * @param headerFooter
-     *            the header or footer to clean up.
+     * @param body
+     *            the {@link IBody} to clean up
      */
-    void cleanHeaderFooter(XWPFHeaderFooter headerFooter) {
-        CTHdrFtr ctHdrFtr = (CTHdrFtr) headerFooter._getHdrFtr().copy();
-        ctHdrFtr.getPList().clear();
-        ctHdrFtr.getTblList().clear();
-        // XXX : there are many other lists in the header and footer that should
-        // probably be cleaned.
-        headerFooter.setHeaderFooter(ctHdrFtr);
-    }
-
-    @Override
-    public IConstruct caseTemplate(Template template) {
-        doSwitch(template.getBody());
-
-        return template;
-    }
-
-    @Override
-    public IConstruct caseStaticFragment(StaticFragment staticFragment) {
-        for (XWPFRun run : staticFragment.getRuns()) {
-            insertRun(run);
+    private void cleanBody(IBody body) {
+        if (body instanceof XWPFDocument) {
+            int size = body.getBodyElements().size();
+            for (int i = 0; i < size; i++) {
+                ((XWPFDocument) body).removeBodyElement(0);
+            }
+        } else if (body instanceof XWPFHeaderFooter) {
+            CTHdrFtr ctHdrFtr = (CTHdrFtr) ((XWPFHeaderFooter) body)._getHdrFtr().copy();
+            ctHdrFtr.getPList().clear();
+            ctHdrFtr.getTblList().clear();
+            // XXX : there are many other lists in the header and footer that should
+            // probably be cleaned.
+            ((XWPFHeaderFooter) body).setHeaderFooter(ctHdrFtr);
         }
-        return staticFragment;
+    }
+
+    @Override
+    public XWPFParagraph caseTemplate(Template template) {
+        XWPFParagraph currentParagraph = doSwitch(template.getBody());
+
+        return currentParagraph;
+    }
+
+    @Override
+    public XWPFParagraph caseStaticFragment(StaticFragment staticFragment) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        for (XWPFRun run : staticFragment.getRuns()) {
+            currentParagraph = (XWPFParagraph) insertRun(currentParagraph, run).getParent();
+        }
+
+        return currentParagraph;
     }
 
     /**
      * Inserts a run in the generated document. The new run is a copy from the specified run.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param srcRun
      *            the run to copy
-     * @return the inserted run.
+     * @return the inserted {@link XWPFRun}
      */
-    private XWPFRun insertRun(XWPFRun srcRun) {
+    private XWPFRun insertRun(XWPFParagraph paragraph, XWPFRun srcRun) {
+
+        final XWPFParagraph newParagraph;
         if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph) {
-            createNewParagraph((XWPFParagraph) srcRun.getParent());
+            newParagraph = createNewParagraph(generatedDocument, (XWPFParagraph) srcRun.getParent());
             forceNewParagraph = false;
+        } else {
+            newParagraph = paragraph;
         }
+
         XWPFRun newRun = null;
         if (srcRun instanceof XWPFHyperlinkRun) {
             // Hyperlinks meta information is saved in the paragraph and not in the run. So we have to update the paragrapah with a copy of
             // the hyperlink to insert.
-            CTHyperlink newHyperlink = currentGeneratedParagraph.getCTP().addNewHyperlink();
+            CTHyperlink newHyperlink = newParagraph.getCTP().addNewHyperlink();
             newHyperlink.set(((XWPFHyperlinkRun) srcRun).getCTHyperlink());
 
             newRun = new XWPFHyperlinkRun(newHyperlink, srcRun.getCTR(), srcRun.getParent());
-            currentGeneratedParagraph.addRun(newRun);
+            newParagraph.addRun(newRun);
         } else {
-            newRun = currentGeneratedParagraph.createRun();
+            newRun = newParagraph.createRun();
             newRun.getCTR().set(srcRun.getCTR());
         }
         return newRun;
@@ -339,30 +361,38 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Inserts a run in the generated document and set it's text to the specified replacement. The new run is a copy from the specified run.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param srcRun
      *            the run to copy
      * @param replacement
      *            the text to set
      * @return the inserted run
      */
-    private XWPFRun insertFieldRunReplacement(XWPFRun srcRun, String replacement) {
+    private XWPFRun insertFieldRunReplacement(XWPFParagraph paragraph, XWPFRun srcRun, String replacement) {
+        final XWPFParagraph newParagraph;
         if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph) {
-            createNewParagraph((XWPFParagraph) srcRun.getParent());
+            newParagraph = createNewParagraph(generatedDocument, (XWPFParagraph) srcRun.getParent());
             forceNewParagraph = false;
+        } else {
+            newParagraph = paragraph;
         }
-        return insertString(srcRun, replacement);
+
+        return insertString(newParagraph, srcRun, replacement);
     }
 
     /**
      * Insert the given text into to given {@link XWPFRun}. This take care of new lines and tabulations.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param srcRun
      *            the {@link XWPFRun} to populate
      * @param text
-     *            the text
+     *            the text to insert
      * @return the last inserted {@link XWPFRun}.
      */
-    private XWPFRun insertString(XWPFRun srcRun, String text) {
+    private XWPFRun insertString(XWPFParagraph paragraph, XWPFRun srcRun, String text) {
         int fragmentStart = 0;
 
         XWPFRun inserted;
@@ -370,19 +400,19 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             final char current = text.charAt(i);
             switch (current) {
                 case '\n':
-                    inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
+                    inserted = insertFragment(paragraph, srcRun, text.substring(fragmentStart, i));
                     inserted.addBreak();
                     fragmentStart = i + 1;
                     break;
                 case '\t':
-                    inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
+                    inserted = insertFragment(paragraph, srcRun, text.substring(fragmentStart, i));
                     inserted.addTab();
                     fragmentStart = i + 1;
                     break;
                 case '\r':
                     // CHECKSTYLE:OFF
                     if (i + 1 < text.length() && text.charAt(i + 1) == '\n') {
-                        inserted = insertFragment(srcRun, text.substring(fragmentStart, i));
+                        inserted = insertFragment(paragraph, srcRun, text.substring(fragmentStart, i));
                         inserted.addBreak();
                         i++;
                         fragmentStart = i + 1;
@@ -395,20 +425,22 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             }
         }
 
-        return insertFragment(srcRun, text.substring(fragmentStart, text.length()));
+        return insertFragment(paragraph, srcRun, text.substring(fragmentStart, text.length()));
     }
 
     /**
-     * Insert a new run containing the given text.
+     * Inserts a {@link XWPFRun} run containing the given text to the given {@link XWPFParagraph}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param srcRun
-     *            the run to copy the style from.
+     *            the {@link XWPFRun} to copy the style from
      * @param fragment
      *            the text fragment to insert
-     * @return the generated run.
+     * @return the inserted {@link XWPFRun}
      */
-    private XWPFRun insertFragment(XWPFRun srcRun, String fragment) {
-        XWPFRun generatedRun = currentGeneratedParagraph.createRun();
+    private XWPFRun insertFragment(XWPFParagraph paragraph, XWPFRun srcRun, String fragment) {
+        XWPFRun generatedRun = paragraph.createRun();
         generatedRun.getCTR().set(srcRun.getCTR().copy());
         generatedRun.getCTR().getInstrTextList().clear();
         generatedRun.setText(fragment);
@@ -418,33 +450,39 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Creates a new paragraph and replaces the currentParagrap variable.
      * 
+     * @param body
+     *            the {@link IBody} to modify
      * @param srcParagraph
-     *            the origin paragraph to copy the style from.
+     *            the origin paragraph to copy the style from
+     * @return the created {@link XWPFParagraph}
      */
-    private void createNewParagraph(XWPFParagraph srcParagraph) {
+    private XWPFParagraph createNewParagraph(IBody body, XWPFParagraph srcParagraph) {
+        final XWPFParagraph res;
+
         // create a new paragraph.
-        XWPFParagraph newParagraph;
-        if (generatedDocument instanceof XWPFTableCell) {
-            XWPFTableCell cell = (XWPFTableCell) generatedDocument;
-            newParagraph = cell.addParagraph();
-        } else if (generatedDocument instanceof XWPFDocument) {
-            newParagraph = ((XWPFDocument) generatedDocument).createParagraph();
-        } else if (generatedDocument instanceof XWPFHeaderFooter) {
-            newParagraph = ((XWPFHeaderFooter) generatedDocument).createParagraph();
+        if (body instanceof XWPFTableCell) {
+            XWPFTableCell cell = (XWPFTableCell) body;
+            res = cell.addParagraph();
+        } else if (body instanceof XWPFDocument) {
+            res = ((XWPFDocument) body).createParagraph();
+        } else if (body instanceof XWPFHeaderFooter) {
+            res = ((XWPFHeaderFooter) body).createParagraph();
         } else {
-            throw new UnsupportedOperationException("unkown IBody type :" + generatedDocument.getClass());
+            throw new UnsupportedOperationException("unkown IBody type :" + body.getClass());
         }
         CTP ctp = (CTP) srcParagraph.getCTP().copy();
         ctp.getRList().clear();
         ctp.getFldSimpleList().clear();
         ctp.getHyperlinkList().clear();
-        newParagraph.getCTP().set(ctp);
-        int runNb = newParagraph.getRuns().size();
+        res.getCTP().set(ctp);
+        int runNb = res.getRuns().size();
         for (int i = 0; i < runNb; i++) {
-            newParagraph.removeRun(i);
+            res.removeRun(i);
         }
         currentTemplateParagraph = srcParagraph;
-        currentGeneratedParagraph = newParagraph;
+        currentGeneratedParagraph = res;
+
+        return res;
     }
 
     /**
@@ -470,113 +508,141 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseQuery(Query query) {
+    public XWPFParagraph caseQuery(Query query) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(query)) {
-            insertQuerySyntaxMessages(query, INVALID_QUERY_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, query, INVALID_QUERY_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(query.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(query, queryResult.getDiagnostic());
+                currentParagraph = insertQueryEvaluationMessages(currentParagraph, query, queryResult.getDiagnostic());
             } else {
                 final Object value = queryResult.getResult();
                 final XWPFRun styleRun = query.getStyleRun();
-                insertObject(value, styleRun);
+                currentParagraph = insertObject(currentParagraph, value, styleRun);
             }
         }
 
-        return query;
+        return currentParagraph;
     }
 
     /**
      * Inserts the given {@link Object} in the given {@link XWPFRun}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param object
      *            the {@link Object} to insert
      * @param run
      *            the {@link XWPFRun}
+     * @return the last inserted or modified {@link XWPFRun}
      */
-    private void insertObject(Object object, XWPFRun run) {
+    private XWPFParagraph insertObject(XWPFParagraph paragraph, Object object, XWPFRun run) {
+        final XWPFParagraph res;
+
         if (object instanceof Collection<?>) {
+            XWPFParagraph currentParagraph = paragraph;
             for (Object child : (Collection<?>) object) {
-                insertObject(child, run);
+                currentParagraph = insertObject(currentParagraph, child, run);
             }
+            res = currentParagraph;
         } else if (object instanceof MHyperLink) {
-            final XWPFRun linkRun = insertFieldRunReplacement(run, "");
-            insertMHyperLink(linkRun, (MHyperLink) object);
+            final XWPFRun linkRun = insertFieldRunReplacement(paragraph, run, "");
+            insertMHyperLink((XWPFParagraph) linkRun.getParent(), linkRun, (MHyperLink) object);
+            res = (XWPFParagraph) linkRun.getParent();
         } else if (object instanceof MBookmark) {
-            insertMBookmark(run, (MBookmark) object);
+            insertMBookmark(paragraph, run, (MBookmark) object);
+            res = paragraph;
         } else if (object instanceof MImage) {
-            final XWPFRun imageRun = insertFieldRunReplacement(run, "");
-            insertMImage(imageRun, (MImage) object);
+            final XWPFRun imageRun = insertFieldRunReplacement(paragraph, run, "");
+            insertMImage((XWPFParagraph) imageRun.getParent(), imageRun, (MImage) object);
+            res = (XWPFParagraph) imageRun.getParent();
         } else if (object instanceof MText) {
-            insertMText(run, (MText) object);
+            res = (XWPFParagraph) insertMText(paragraph, run, (MText) object).getParent();
         } else if (object instanceof MTable) {
             XWPFRun tableRun = run;
             tableRun.getCTR().getInstrTextList().clear();
             insertMTable(tableRun, (MTable) object);
+            res = (XWPFParagraph) tableRun.getParent();
         } else if (object instanceof MPagination) {
-            insertMPagination(run, (MPagination) object);
+            res = insertMPagination(paragraph, run, (MPagination) object);
         } else if (object == null) {
-            insertFieldRunReplacement(run, "");
+            res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
         } else {
-            insertFieldRunReplacement(run, object.toString());
+            res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, object.toString()).getParent();
         }
+
+        return res;
     }
 
     /**
      * Inserts the given {@link MText}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param run
      *            the {@link XWPFRun}
      * @param text
      *            the {@link MText}
+     * @return the last inserted XWPFRun
      */
-    private void insertMText(XWPFRun run, MText text) {
+    private XWPFRun insertMText(XWPFParagraph paragraph, XWPFRun run, MText text) {
+        final XWPFRun res;
+
         if (text.getText() != null) {
-            final XWPFRun textRun = insertFieldRunReplacement(run, text.getText());
+            final XWPFRun textRun = insertFieldRunReplacement(paragraph, run, text.getText());
             if (text.getStyle() != null) {
                 applyMStyle(textRun, text.getStyle());
             }
+            res = textRun;
+        } else {
+            res = run;
         }
+
+        return res;
     }
 
     @Override
-    public IConstruct caseComment(Comment comment) {
+    public XWPFParagraph caseComment(Comment comment) {
         // nothing to do here
-        return comment;
+        return currentGeneratedParagraph;
     }
 
     /**
      * Inserts a {@link MBookmark} in the given {@link XWPFRun}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param run
      *            the {@link XWPFRun}
      * @param bookmark
      *            the {@link MBookmark}
      */
-    private void insertMBookmark(XWPFRun run, MBookmark bookmark) {
-        insertFieldRunReplacement(run, "");
+    private void insertMBookmark(XWPFParagraph paragraph, XWPFRun run, MBookmark bookmark) {
+        XWPFParagraph newParagraph = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
         if (bookmark.isReference()) {
-            bookmarkManager.insertReference(currentGeneratedParagraph, bookmark.getId(), bookmark.getText());
+            bookmarkManager.insertReference(newParagraph, bookmark.getId(), bookmark.getText());
         } else {
-            bookmarkManager.startBookmark(result, currentGeneratedParagraph, bookmark.getId());
-            insertFieldRunReplacement(run, bookmark.getText());
-            bookmarkManager.endBookmark(result, currentGeneratedParagraph, bookmark.getId());
+            bookmarkManager.startBookmark(result, newParagraph, bookmark.getId());
+            insertFieldRunReplacement(newParagraph, run, bookmark.getText());
+            bookmarkManager.endBookmark(result, newParagraph, bookmark.getId());
         }
     }
 
     /**
      * Inserts the given {@link MHyperLink}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param run
      *            the {@link XWPFRun}
      * @param hyperLink
      *            the {@link MHyperLink}
      */
-    private void insertMHyperLink(XWPFRun run, MHyperLink hyperLink) {
-        final String id = currentGeneratedParagraph.getDocument().getPackagePart()
+    private void insertMHyperLink(XWPFParagraph paragraph, XWPFRun run, MHyperLink hyperLink) {
+        final String id = paragraph.getDocument().getPackagePart()
                 .addExternalRelationship(hyperLink.getUrl(), XWPFRelation.HYPERLINK.getRelation()).getId();
-        final CTHyperlink cLink = currentGeneratedParagraph.getCTP().addNewHyperlink();
+        final CTHyperlink cLink = paragraph.getCTP().addNewHyperlink();
         cLink.setId(id);
         CTText ctText = CTText.Factory.newInstance();
         ctText.setStringValue(hyperLink.getText());
@@ -590,12 +656,14 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Inserts the given {@link MImage}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param run
      *            the {@link XWPFRun} to insert to
      * @param image
      *            the {@link MImage} to insert
      */
-    private void insertMImage(XWPFRun run, MImage image) {
+    private void insertMImage(XWPFParagraph paragraph, XWPFRun run, MImage image) {
         try {
             int heigth = Units.toEMU(image.getHeight());
             int width = Units.toEMU(image.getWidth());
@@ -604,10 +672,10 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 run.addPicture(imageStream, image.getType().getPoiType(), image.getURI().toString(), width, heigth);
             }
         } catch (InvalidFormatException e) {
-            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+            insertMessage(paragraph, ValidationMessageLevel.ERROR,
                     String.format(PICTURE_INVALID_FORMAT, image.getURI().toString(), e.getMessage()));
         } catch (IOException e) {
-            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+            insertMessage(paragraph, ValidationMessageLevel.ERROR,
                     String.format(AN_I_O_PROBLEM_OCCURED_WHILE_READING, image.getURI().toString(), e.getMessage()));
         }
     }
@@ -615,39 +683,49 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Insert the given {@link MPagination}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param run
      *            the {@link XWPFRun} to insert to
      * @param mPagination
      *            the {@link MPagination}
+     * @return the last inserted {@link XWPFParagraph}
      */
-    private void insertMPagination(XWPFRun run, MPagination mPagination) {
+    private XWPFParagraph insertMPagination(XWPFParagraph paragraph, XWPFRun run, MPagination mPagination) {
+        final XWPFParagraph res;
         switch (mPagination) {
             case newColumn:
                 run.addBreak(BreakType.COLUMN);
+                res = paragraph;
                 break;
 
             case newParagraph:
-                createNewParagraph((XWPFParagraph) run.getParent());
+                res = createNewParagraph(generatedDocument, (XWPFParagraph) run.getParent());
                 break;
 
             case newPage:
                 run.addBreak(BreakType.PAGE);
+                res = paragraph;
                 break;
 
             case newTableOfContent:
-                CTP ctP = currentGeneratedParagraph.getCTP();
+                CTP ctP = paragraph.getCTP();
                 CTSimpleField toc = ctP.addNewFldSimple();
                 toc.setInstr("TOC \\h");
                 toc.setDirty(STOnOff.TRUE);
+                res = paragraph;
                 break;
 
             case newTextWrapping:
                 run.addBreak(BreakType.TEXT_WRAPPING);
+                res = paragraph;
                 break;
 
             default:
                 throw new IllegalStateException("Not supported MPagination.");
         }
+
+        return res;
     }
 
     /**
@@ -772,7 +850,7 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 currentGeneratedParagraph = cellParagraph;
                 currentTemplateParagraph = cellParagraph;
                 try {
-                    insertObject(contents, cellRun);
+                    insertObject(cellParagraph, contents, cellRun);
                 } finally {
                     generatedDocument = savedGeneratedDocument;
                     currentGeneratedParagraph = savedGeneratedParagraph;
@@ -824,13 +902,15 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseRepetition(Repetition repetition) {
+    public XWPFParagraph caseRepetition(Repetition repetition) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(repetition)) {
-            insertQuerySyntaxMessages(repetition, INVALID_REPETITION_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, repetition, INVALID_REPETITION_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(repetition.getQuery(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(repetition, queryResult.getDiagnostic());
+                currentParagraph = insertQueryEvaluationMessages(currentParagraph, repetition,
+                        queryResult.getDiagnostic());
             } else {
                 final List<Object> iteration = new ArrayList<>();
                 if (queryResult.getResult() instanceof Collection) {
@@ -838,15 +918,15 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
                 } else if (queryResult.getResult() != null) {
                     iteration.add(queryResult.getResult());
                 } else {
-                    insertMessage(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
+                    insertMessage(currentParagraph, ValidationMessageLevel.WARNING,
                             repetition.getIterationVar() + " value is null.");
                 }
-                final Map<String, Object> newVariables = new HashMap<String, Object>(variablesStack.peek());
+                final Map<String, Object> newVariables = new HashMap<>(variablesStack.peek());
                 variablesStack.push(newVariables);
                 try {
                     for (Object val : iteration) {
                         newVariables.put(repetition.getIterationVar(), val);
-                        doSwitch(repetition.getBody());
+                        currentParagraph = doSwitch(repetition.getBody());
                         closingRepretition(repetition);
                     }
                 } finally {
@@ -855,12 +935,12 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             }
         }
 
-        return repetition;
+        return currentParagraph;
 
     }
 
     @Override
-    public IConstruct doSwitch(EObject eObject) {
+    public XWPFParagraph doSwitch(EObject eObject) {
         if (!monitor.isCanceled()) {
             return super.doSwitch(eObject);
         }
@@ -869,127 +949,112 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseLet(Let let) {
+    public XWPFParagraph caseLet(Let let) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(let)) {
-            insertQuerySyntaxMessages(let, INVALID_LET_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, let, INVALID_LET_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(let.getValue(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(let, queryResult.getDiagnostic());
+                currentParagraph = insertQueryEvaluationMessages(currentParagraph, let, queryResult.getDiagnostic());
             } else {
-                final Map<String, Object> newVariables = new HashMap<String, Object>(variablesStack.peek());
+                final Map<String, Object> newVariables = new HashMap<>(variablesStack.peek());
                 variablesStack.push(newVariables);
                 try {
                     newVariables.put(let.getName(), queryResult.getResult());
-                    doSwitch(let.getBody());
+                    currentParagraph = doSwitch(let.getBody());
                 } finally {
                     variablesStack.pop();
                 }
             }
         }
 
-        return let;
+        return currentParagraph;
     }
 
     @Override
-    public IConstruct caseUserDoc(UserDoc userDoc) {
+    public XWPFParagraph caseUserDoc(UserDoc userDoc) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(userDoc)) {
-            insertQuerySyntaxMessages(userDoc, INVALID_USERDOC_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, userDoc, INVALID_USERDOC_STATEMENT);
         } else {
             final EvaluationResult queryResult = evaluator.eval(userDoc.getId(), variablesStack.peek());
             if (queryResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(userDoc, queryResult.getDiagnostic());
+                currentParagraph = insertQueryEvaluationMessages(currentParagraph, userDoc,
+                        queryResult.getDiagnostic());
             } else {
                 if (queryResult.getResult() == null) {
-                    insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                            "User doc id can't be null.");
+                    insertMessage(currentParagraph, ValidationMessageLevel.ERROR, "User doc id can't be null.");
                 } else {
                     final String id = queryResult.getResult().toString();
-                    insertUserContent(userDoc, id);
+                    currentParagraph = insertUserContent(currentParagraph, userDoc, id);
                 }
             }
         }
 
-        return userDoc;
+        return currentParagraph;
     }
 
     /**
      * Inserts the {@link UserContent}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param userDoc
      *            the source {@link UserDoc}
      * @param id
      *            the ID
+     * @return the current {@link XWPFParagraph}
      */
-    private void insertUserContent(UserDoc userDoc, final String id) {
+    private XWPFParagraph insertUserContent(XWPFParagraph paragraph, UserDoc userDoc, final String id) {
+        XWPFParagraph currentParagraph = paragraph;
         // Tag UserContent with evaluated id
-        addStartUserDocField(userDoc, id);
+        currentParagraph = addStartUserDocField(currentParagraph, userDoc, id);
         // manage user Doc Id Uniqueness
-        manageUserDocIdUniqueness(id, userDoc);
+        manageUserDocIdUniqueness(currentParagraph, id, userDoc);
         // Copy userdoc content
         UserContent userContent = userContentManager.consumeUserContent(id);
         boolean needNewParagraphBeforeEndTag = true;
         if (userContent == null) {
-            doSwitch(userDoc.getBody());
-            needNewParagraphBeforeEndTag = needNewParagraph(userDoc);
+            currentParagraph = doSwitch(userDoc.getBody());
         } else {
             final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
             try {
-                currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
-                        generatedDocument);
+                currentParagraph = userContentRawCopy.copy(userContent, currentParagraph, generatedDocument);
                 needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
-                // Affect currentTemplateParagraph after Raw copy
-                if (userDoc.getClosingRuns().size() != 0) {
-                    currentTemplateParagraph = (XWPFParagraph) userDoc.getClosingRuns()
-                            .get(userDoc.getClosingRuns().size() - 1).getParent();
-                }
             } catch (InvalidFormatException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
                         UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             } catch (XmlException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
                         UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             } catch (IOException e) {
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
                         UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             }
         }
-
         // Tag m:enduserContent
-        addEndUserDocField(userDoc, needNewParagraphBeforeEndTag);
-    }
+        currentParagraph = addEndUserDocField(currentParagraph, userDoc, needNewParagraphBeforeEndTag);
 
-    /**
-     * Tells if the given {@link IConstruct} need new paragraph before end tag.
-     * 
-     * @param construct
-     *            the {@link IConstruct}
-     * @return <code>true</code> if the given {@link IConstruct} need new paragraph before end tag, <code>false</code> otherwise
-     */
-    private boolean needNewParagraph(IConstruct construct) {
-        boolean needNewParagraph = true;
-        if (construct.getClosingRuns().size() != 0) {
-            if (construct.getClosingRuns().get(0).getParent() == currentTemplateParagraph) {
-                needNewParagraph = false;
-            }
-        }
-        return needNewParagraph;
+        return currentParagraph;
     }
 
     /**
      * userDoc Id Uniqueness test.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param id
-     *            id
+     *            the {@link UserDoc} evaluated ID
      * @param userdoc
-     *            userdoc EObject
+     *            the {@link UserDoc}
      */
-    private void manageUserDocIdUniqueness(String id, UserDoc userdoc) {
+    private void manageUserDocIdUniqueness(XWPFParagraph paragraph, String id, UserDoc userdoc) {
         if (userDocIds.contains(id)) {
             // insert the error message.
             String msgError = "The id '" + id
                 + "' is already used in generated document. Ids must be unique otherwise document part contained userContent could be lost at next generation.";
-            insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR, msgError);
+            insertMessage(paragraph, ValidationMessageLevel.ERROR, msgError);
 
             TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, msgError, userdoc.getRuns().get(userdoc.getRuns().size() - 1));
@@ -1003,34 +1068,60 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     /**
      * Add Start UserContent word Document Field.
      * 
-     * @param object
-     *            AbstractConstruct where add field
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param userDoc
+     *            the {@link UserDoc} where add field
      * @param id
-     *            UserDoc Id
+     *            the {@link UserDoc} evaluated ID
+     * @return the current {@link XWPFParagraph}
      */
-    private void addStartUserDocField(IConstruct object, String id) {
-        if (currentTemplateParagraph == null
-            || object.getRuns().size() != 0 && object.getRuns().get(0).getParent() != currentTemplateParagraph) {
-            createNewParagraph((XWPFParagraph) object.getRuns().get(0).getParent());
+    private XWPFParagraph addStartUserDocField(XWPFParagraph paragraph, UserDoc userDoc, String id) {
+        final XWPFParagraph res;
+
+        if (paragraph == null
+            || userDoc.getRuns().size() != 0 && userDoc.getRuns().get(0).getParent() != currentTemplateParagraph) {
+            final XWPFParagraph newParagraph = createNewParagraph(generatedDocument,
+                    (XWPFParagraph) userDoc.getRuns().get(0).getParent());
+            newParagraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
+            res = newParagraph;
+        } else {
+            paragraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
+            res = paragraph;
         }
-        currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
+
+        return res;
     }
 
     /**
      * Add End UserContent word Document Field.
      * 
-     * @param object
-     *            AbstractConstruct where add field
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param userDoc
+     *            the {@link UserDoc} where add field
      * @param needNewParagraph
      *            need New Paragraph boolean
+     * @return the current {@link XWPFParagraph}
      */
-    private void addEndUserDocField(IConstruct object, boolean needNewParagraph) {
-        if (object.getClosingRuns().size() != 0) {
+    private XWPFParagraph addEndUserDocField(XWPFParagraph paragraph, UserDoc userDoc, boolean needNewParagraph) {
+        final XWPFParagraph res;
+
+        if (userDoc.getClosingRuns().size() != 0) {
             if (needNewParagraph) {
-                createNewParagraph((XWPFParagraph) object.getClosingRuns().get(0).getParent());
+                final XWPFParagraph newParagraph = createNewParagraph(generatedDocument,
+                        (XWPFParagraph) userDoc.getClosingRuns().get(0).getParent());
+                newParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
+                res = newParagraph;
+            } else {
+                paragraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
+                res = paragraph;
             }
-            currentGeneratedParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
+        } else {
+            res = paragraph;
         }
+
+        return res;
     }
 
     /**
@@ -1055,52 +1146,55 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseBlock(Block block) {
+    public XWPFParagraph caseBlock(Block block) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(block)) {
-            insertQuerySyntaxMessages(block, INVALID_BLOCK_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, block, INVALID_BLOCK_STATEMENT);
         } else {
             for (IConstruct construct : block.getStatements()) {
-                doSwitch(construct);
+                currentParagraph = doSwitch(construct);
             }
         }
 
-        return block;
+        return currentParagraph;
     }
 
     @Override
-    public IConstruct caseConditional(Conditional conditional) {
+    public XWPFParagraph caseConditional(Conditional conditional) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(conditional)) {
-            insertQuerySyntaxMessages(conditional, INVALID_CONDITIONAL_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, conditional, INVALID_CONDITIONAL_STATEMENT);
         } else {
             final EvaluationResult evaluationResult = evaluator.eval(conditional.getCondition(), variablesStack.peek());
             if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(conditional, evaluationResult.getDiagnostic());
+                currentParagraph = insertQueryEvaluationMessages(currentParagraph, conditional,
+                        evaluationResult.getDiagnostic());
                 for (XWPFRun tagRun : conditional.getClosingRuns()) {
-                    insertRun(tagRun);
+                    currentParagraph = (XWPFParagraph) insertRun(currentParagraph, tagRun).getParent();
                 }
             } else if (evaluationResult.getResult() instanceof Boolean) {
                 if ((Boolean) evaluationResult.getResult()) {
-                    doSwitch(conditional.getThen());
+                    currentParagraph = doSwitch(conditional.getThen());
                 } else if (conditional.getElse() != null) {
-                    doSwitch(conditional.getElse());
+                    currentParagraph = doSwitch(conditional.getElse());
                 }
             } else {
                 for (XWPFRun tagRun : conditional.getRuns()) {
-                    insertRun(tagRun);
+                    currentParagraph = (XWPFParagraph) insertRun(currentParagraph, tagRun).getParent();
                 }
-                insertMessage(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
                         "Condition evaluation result must be a boolean.");
                 for (XWPFRun tagRun : conditional.getClosingRuns()) {
-                    insertRun(tagRun);
+                    currentParagraph = (XWPFParagraph) insertRun(currentParagraph, tagRun).getParent();
                 }
             }
         }
 
-        return conditional;
+        return currentParagraph;
     }
 
     @Override
-    public IConstruct caseTable(Table table) {
+    public XWPFParagraph caseTable(Table table) {
         // Create the table structure in the destination document.
 
         CTTbl copy = (CTTbl) table.getTable().getCTTbl().copy();
@@ -1144,11 +1238,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             currentGeneratedTable = saveTable;
         }
 
-        return table;
+        return currentGeneratedParagraph;
     }
 
     @Override
-    public IConstruct caseRow(Row row) {
+    public XWPFParagraph caseRow(Row row) {
         final XWPFTableRow savedRow = currentGeneratedRow;
         try {
             currentGeneratedRow = currentGeneratedTable.createRow();
@@ -1163,11 +1257,11 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             currentGeneratedRow = savedRow;
         }
 
-        return null;
+        return currentGeneratedParagraph;
     }
 
     @Override
-    public IConstruct caseCell(Cell cell) {
+    public XWPFParagraph caseCell(Cell cell) {
         final XWPFTableCell newCell = currentGeneratedRow.createCell();
         final CTTc ctCell = (CTTc) cell.getTableCell().getCTTc().copy();
         ctCell.getPList().clear();
@@ -1186,82 +1280,96 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
             currentTemplateParagraph = savedTemplateParagraph;
         }
 
-        return null;
+        return currentGeneratedParagraph;
     }
 
     @Override
-    public IConstruct caseBookmark(Bookmark bookmark) {
+    public XWPFParagraph caseBookmark(Bookmark bookmark) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(bookmark)) {
-            insertQuerySyntaxMessages(bookmark, INVALID_BOOKMARK_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, bookmark, INVALID_BOOKMARK_STATEMENT);
         } else {
             final EvaluationResult evaluationResult = evaluator.eval(bookmark.getName(), variablesStack.peek());
             if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(bookmark, evaluationResult.getDiagnostic());
+                currentParagraph = insertQueryEvaluationMessages(currentParagraph, bookmark,
+                        evaluationResult.getDiagnostic());
             } else {
-                bookmarkManager.startBookmark(result, currentGeneratedParagraph,
-                        evaluationResult.getResult().toString());
-                doSwitch(bookmark.getBody());
-                bookmarkManager.endBookmark(result, currentGeneratedParagraph, evaluationResult.getResult().toString());
+                bookmarkManager.startBookmark(result, currentParagraph, evaluationResult.getResult().toString());
+                currentParagraph = doSwitch(bookmark.getBody());
+                bookmarkManager.endBookmark(result, currentParagraph, evaluationResult.getResult().toString());
             }
         }
 
-        return super.caseBookmark(bookmark);
+        return currentParagraph;
     }
 
     @Override
-    public IConstruct caseContentControl(ContentControl contentControl) {
+    public XWPFParagraph caseContentControl(ContentControl contentControl) {
         // Doing nothing here seems to insert the control anyway
         // I think there is some king of side effect in the way
         // we produce a new document
-        return super.caseContentControl(contentControl);
+        return currentGeneratedParagraph;
     }
 
     /**
      * Inserts evaluation messages for the given {@link IConstruct}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param construct
      *            the {@link IConstruct}
      * @param diagnostic
      *            the {@link Diagnostic}
+     * @return the {@link XWPFParagraph}
      */
-    protected void insertQueryEvaluationMessages(IConstruct construct, Diagnostic diagnostic) {
+    protected XWPFParagraph insertQueryEvaluationMessages(XWPFParagraph paragraph, IConstruct construct,
+            Diagnostic diagnostic) {
+        XWPFParagraph currentParagraph = paragraph;
         for (XWPFRun tagRun : construct.getRuns()) {
-            insertRun(tagRun);
+            currentParagraph = (XWPFParagraph) insertRun(currentParagraph, tagRun).getParent();
         }
-        for (TemplateValidationMessage message : M2DocUtils.appendDiagnosticMessage(currentGeneratedParagraph,
-                diagnostic)) {
+        for (TemplateValidationMessage message : M2DocUtils.appendDiagnosticMessage(currentParagraph, diagnostic)) {
             result.addMessage(message);
         }
         for (XWPFRun tagRun : construct.getClosingRuns()) {
-            insertRun(tagRun);
+            currentParagraph = (XWPFParagraph) insertRun(currentParagraph, tagRun).getParent();
         }
+
+        return currentParagraph;
     }
 
     /**
      * Inserts AQL query syntax messages for the given {@link IConstruct}.
      * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
      * @param construct
      *            the {@link IConstruct}
      * @param errorPrefix
      *            error message prefix
+     * @return the {@link XWPFParagraph}
      */
-    protected void insertQuerySyntaxMessages(IConstruct construct, String errorPrefix) {
+    protected XWPFParagraph insertQuerySyntaxMessages(XWPFParagraph paragraph, IConstruct construct,
+            String errorPrefix) {
+        XWPFParagraph currentParagraph = paragraph;
         for (XWPFRun tagRun : construct.getRuns()) {
-            insertRun(tagRun);
+            currentParagraph = (XWPFParagraph) insertRun(currentParagraph, tagRun).getParent();
         }
         for (TemplateValidationMessage message : construct.getValidationMessages()) {
-            insertMessage(currentGeneratedParagraph, message.getLevel(), errorPrefix + message.getMessage());
+            insertMessage(currentParagraph, message.getLevel(), errorPrefix + message.getMessage());
         }
         for (XWPFRun tagRun : construct.getClosingRuns()) {
-            insertRun(tagRun);
+            currentParagraph = (XWPFParagraph) insertRun(currentParagraph, tagRun).getParent();
         }
+
+        return currentParagraph;
     }
 
     /**
      * Inserts the given message with the given {@link ValidationMessageLevel}.
      * 
      * @param paragraph
-     *            the {@link XWPFParagraph}
+     *            the {@link XWPFParagraph} to modify
      * @param level
      *            the {@link ValidationMessageLevel}
      * @param message
@@ -1272,25 +1380,27 @@ public class M2DocEvaluator extends TemplateSwitch<IConstruct> {
     }
 
     @Override
-    public IConstruct caseLink(Link link) {
+    public XWPFParagraph caseLink(Link link) {
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(link)) {
-            insertQuerySyntaxMessages(link, INVALID_LINK_STATEMENT);
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, link, INVALID_LINK_STATEMENT);
         } else {
             final EvaluationResult nameResult = evaluator.eval(link.getName(), variablesStack.peek());
             if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                insertQueryEvaluationMessages(link, nameResult.getDiagnostic());
+                currentParagraph = insertQueryEvaluationMessages(currentParagraph, link, nameResult.getDiagnostic());
             } else {
                 final EvaluationResult textResult = evaluator.eval(link.getText(), variablesStack.peek());
                 if (nameResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
-                    insertQueryEvaluationMessages(link, textResult.getDiagnostic());
+                    currentParagraph = insertQueryEvaluationMessages(currentParagraph, link,
+                            textResult.getDiagnostic());
                 } else {
-                    bookmarkManager.insertReference(currentGeneratedParagraph, nameResult.getResult().toString(),
+                    bookmarkManager.insertReference(currentParagraph, nameResult.getResult().toString(),
                             textResult.getResult().toString());
                 }
             }
         }
 
-        return link;
+        return currentParagraph;
     }
 
 }
