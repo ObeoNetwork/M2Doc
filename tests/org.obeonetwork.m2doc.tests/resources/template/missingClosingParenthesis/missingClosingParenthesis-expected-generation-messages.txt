@@ -1,0 +1,3 @@
+ERROR - Couldn't find the 'a' variable
+ERROR - Couldn't find the 'a' variable
+WARNING - Couldn't find the 'add(org.eclipse.acceleo.query.runtime.impl.Nothing,org.eclipse.acceleo.query.runtime.impl.Nothing)' service

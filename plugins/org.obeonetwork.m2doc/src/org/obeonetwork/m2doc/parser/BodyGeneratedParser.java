@@ -26,6 +26,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.Block;
+import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 
@@ -107,7 +108,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
     }
 
     @Override
-    protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
+    public Block parseBlock(List<Template> templates, TokenType... endTypes) throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
 
         TokenType type = getNextTokenType();
@@ -195,7 +196,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         }
 
         // read up the tags until the "m:enduserdoc" tag is encountered.
-        final Block body = parseBlock(TokenType.ENDUSERCONTENT);
+        final Block body = parseBlock(null, TokenType.ENDUSERCONTENT);
         userContent.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(userContent, userContent.getClosingRuns());

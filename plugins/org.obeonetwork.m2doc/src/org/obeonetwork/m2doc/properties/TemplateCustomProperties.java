@@ -58,6 +58,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.M2DocParser;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Let;
@@ -128,17 +129,17 @@ public class TemplateCustomProperties {
     /**
      * A map that associates variables declared in the template with their intended type.
      */
-    private final Map<String, String> variables = new LinkedHashMap<String, String>();
+    private final Map<String, String> variables = new LinkedHashMap<>();
 
     /**
      * The list of nsURIs declared in the template.
      */
-    private final List<String> nsURIs = new ArrayList<String>();
+    private final List<String> nsURIs = new ArrayList<>();
 
     /**
      * The {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).
      */
-    private final Map<String, String> serviceClasses = new LinkedHashMap<String, String>();
+    private final Map<String, String> serviceClasses = new LinkedHashMap<>();
 
     /**
      * The {@link XWPFDocument}.
@@ -199,11 +200,11 @@ public class TemplateCustomProperties {
     public void save() {
         final CustomProperties props = document.getProperties().getCustomProperties();
         final List<CTProperty> properties = props.getUnderlyingProperties().getPropertyList();
-        final List<Integer> indexToDelete = new ArrayList<Integer>();
+        final List<Integer> indexToDelete = new ArrayList<>();
         int currentIndex = 0;
-        List<String> tmpNsURI = new ArrayList<String>(nsURIs);
-        Map<String, String> tmpServiceImports = new LinkedHashMap<String, String>(serviceClasses);
-        Map<String, String> tmpVars = new LinkedHashMap<String, String>(variables);
+        List<String> tmpNsURI = new ArrayList<>(nsURIs);
+        Map<String, String> tmpServiceImports = new LinkedHashMap<>(serviceClasses);
+        Map<String, String> tmpVars = new LinkedHashMap<>(variables);
         for (CTProperty property : properties) {
             final String propertyName = property.getName();
             final String nsURI = getNsURI(propertyName);
@@ -362,7 +363,7 @@ public class TemplateCustomProperties {
      * @return the {@link List} of nsURI with no {@link EPackage.Registry#put(String, Object) registered} {@link EPackage}
      */
     public List<String> configureQueryEnvironmentWithResult(IQueryEnvironment queryEnvironment) {
-        final List<String> res = new ArrayList<String>();
+        final List<String> res = new ArrayList<>();
 
         for (String nsURI : getPackagesURIs()) {
             final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
@@ -387,7 +388,7 @@ public class TemplateCustomProperties {
      */
     public Map<String, Set<IType>> getVariableTypes(AstValidator validator,
             IReadOnlyQueryEnvironment queryEnvironment) {
-        final Map<String, Set<IType>> res = new LinkedHashMap<String, Set<IType>>();
+        final Map<String, Set<IType>> res = new LinkedHashMap<>();
 
         for (Entry<String, String> entry : getVariables().entrySet()) {
             final Set<IType> types = getVariableTypes(validator, queryEnvironment, entry.getValue());
@@ -410,7 +411,7 @@ public class TemplateCustomProperties {
      */
     public Set<IType> getVariableTypes(AstValidator validator, IReadOnlyQueryEnvironment queryEnvironment,
             String type) {
-        final Set<IType> res = new LinkedHashSet<IType>();
+        final Set<IType> res = new LinkedHashSet<>();
 
         final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
         final IValidationResult validationResult = validator.validate(Collections.<String, Set<IType>> emptyMap(),
@@ -463,9 +464,9 @@ public class TemplateCustomProperties {
         } else {
             ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral) EcoreUtil
                     .create(AstPackage.eINSTANCE.getErrorTypeLiteral());
-            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
+            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<>(1);
             errors.add(errorTypeLiteral);
-            final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+            final Map<Object, Integer> positions = new HashMap<>();
             if (type != null) {
                 positions.put(errorTypeLiteral, Integer.valueOf(0));
             }
@@ -495,13 +496,14 @@ public class TemplateCustomProperties {
      * @return the {@link List} of missing variable names
      */
     public List<String> getMissingVariables() {
-        final List<String> res = new ArrayList<String>();
+        final List<String> res = new ArrayList<>();
 
         final M2DocParser parser = new M2DocParser(document, Query.newEnvironment());
         try {
-            final Template template = parser.parseTemplate();
-            final Set<String> missing = new LinkedHashSet<String>();
-            walkForNeededVariables(new ArrayList<String>(getVariables().keySet()), missing, template);
+            final List<Template> templates = new ArrayList<Template>();
+            final Block block = parser.parseBlock(templates);
+            final Set<String> missing = new LinkedHashSet<>();
+            walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, block);
             res.addAll(missing);
         } catch (DocumentParserException e) {
             // can't parse then nothing is missing
@@ -551,7 +553,7 @@ public class TemplateCustomProperties {
             walkForNeededVariables(declarations, missing,
                     ((org.obeonetwork.m2doc.template.Query) eObj).getQuery().getAst());
         } else if (eObj instanceof Lambda) {
-            final List<String> lambdaDeclartations = new ArrayList<String>();
+            final List<String> lambdaDeclartations = new ArrayList<>();
             for (VariableDeclaration parameter : ((Lambda) eObj).getParameters()) {
                 lambdaDeclartations.add(parameter.getName());
             }
@@ -559,7 +561,7 @@ public class TemplateCustomProperties {
             walkForNeededVariables(declarations, missing, ((Lambda) eObj).getExpression());
             declarations.removeAll(lambdaDeclartations);
         } else if (eObj instanceof org.eclipse.acceleo.query.ast.Let) {
-            final List<String> letDeclartations = new ArrayList<String>();
+            final List<String> letDeclartations = new ArrayList<>();
             for (Binding binding : ((org.eclipse.acceleo.query.ast.Let) eObj).getBindings()) {
                 letDeclartations.add(binding.getName());
                 walkForNeededVariables(declarations, missing, binding.getValue());

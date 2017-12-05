@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Invalid initialization expression :
   
   for v | ***ERROR***.aqlFeatureAccess(self) do
@@ -11,3 +11,5 @@ template
   
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

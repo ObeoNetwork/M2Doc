@@ -12,7 +12,6 @@ package org.obeonetwork.m2doc.template;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 
 /**
@@ -33,7 +32,7 @@ import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface IConstruct extends EObject {
+public interface IConstruct extends IGenerateable {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

@@ -38,8 +38,8 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.POSITION;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Query;
-import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
@@ -122,6 +122,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createBlock();
             case TemplatePackage.TEMPLATE:
                 return createTemplate();
+            case TemplatePackage.PARAMETER:
+                return createParameter();
             case TemplatePackage.STATIC_FRAGMENT:
                 return createStaticFragment();
             case TemplatePackage.TABLE:
@@ -154,8 +156,6 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
-            case TemplatePackage.QUERY_BEHAVIOR:
-                return createQueryBehaviorFromString(eDataType, initialValue);
             case TemplatePackage.POSITION:
                 return createPOSITIONFromString(eDataType, initialValue);
             case TemplatePackage.INPUT_STREAM:
@@ -195,8 +195,6 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
-            case TemplatePackage.QUERY_BEHAVIOR:
-                return convertQueryBehaviorToString(eDataType, instanceValue);
             case TemplatePackage.POSITION:
                 return convertPOSITIONToString(eDataType, instanceValue);
             case TemplatePackage.INPUT_STREAM:
@@ -321,6 +319,17 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    public Parameter createParameter() {
+        ParameterImpl parameter = new ParameterImpl();
+        return parameter;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     public StaticFragment createStaticFragment() {
         StaticFragmentImpl staticFragment = new StaticFragmentImpl();
         return staticFragment;
@@ -412,30 +421,6 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
     public ContentControl createContentControl() {
         ContentControlImpl contentControl = new ContentControlImpl();
         return contentControl;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public QueryBehavior createQueryBehaviorFromString(EDataType eDataType, String initialValue) {
-        QueryBehavior result = QueryBehavior.get(initialValue);
-        if (result == null)
-            throw new IllegalArgumentException(
-                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-        return result;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public String convertQueryBehaviorToString(EDataType eDataType, Object instanceValue) {
-        return instanceValue == null ? null : instanceValue.toString();
     }
 
     /**

@@ -58,6 +58,8 @@ import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
+import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
+import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -69,6 +71,7 @@ import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.IGenerateable;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
@@ -202,6 +205,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     private final IQueryEvaluationEngine evaluator;
 
     /**
+     * The {@link IReadOnlyQueryEnvironment}.
+     */
+    private final IReadOnlyQueryEnvironment queryEnvironment;
+
+    /**
      * The {@link GenerationResult}.
      */
     private GenerationResult result;
@@ -229,30 +237,31 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
+        this.queryEnvironment = queryEnvironment;
         this.monitor = monitor;
     }
 
     /**
-     * Generates the given {@link DocumentTemplate}.
+     * Generates the given {@link IGenerateable}.
      * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate}
+     * @param generateable
+     *            the {@link IGenerateable}
      * @param variables
      *            the variables
      * @param destinationDocument
      *            the destination document.
      * @return the {@link GenerationResult}
      */
-    public GenerationResult generate(DocumentTemplate documentTemplate, Map<String, Object> variables,
+    public GenerationResult generate(IGenerateable generateable, Map<String, Object> variables,
             IBody destinationDocument) {
         generatedDocument = destinationDocument;
 
         variablesStack.push(variables);
         try {
-            result = new GenerationResult();
+            result = new GenerationResult(destinationDocument);
             result.getDuplicatedUserContentIDs().addAll(userContentManager.getDuplicatedUserContentIDs());
 
-            doSwitch(documentTemplate);
+            doSwitch(generateable);
         } finally {
             variablesStack.pop();
         }
@@ -267,14 +276,14 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
         final XWPFDocument document = (XWPFDocument) generatedDocument;
         final Iterator<XWPFFooter> footers = document.getFooterList().iterator();
-        for (final Template footer : documentTemplate.getFooters()) {
+        for (final Block footer : documentTemplate.getFooters()) {
             final XWPFFooter f = footers.next();
             cleanBody(f);
             generatedDocument = f;
             doSwitch(footer);
         }
         final Iterator<XWPFHeader> headers = document.getHeaderList().iterator();
-        for (final Template header : documentTemplate.getHeaders()) {
+        for (final Block header : documentTemplate.getHeaders()) {
             final XWPFHeader h = headers.next();
             cleanBody(h);
             generatedDocument = h;
@@ -284,13 +293,20 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         return currentGeneratedParagraph;
     }
 
+    @Override
+    public XWPFParagraph caseTemplate(Template template) {
+        cleanBody(generatedDocument);
+
+        return doSwitch(template.getBody());
+    }
+
     /**
      * Cleans the given {@link IBody}.
      * 
      * @param body
      *            the {@link IBody} to clean up
      */
-    private void cleanBody(IBody body) {
+    public void cleanBody(IBody body) {
         if (body instanceof XWPFDocument) {
             int size = body.getBodyElements().size();
             for (int i = 0; i < size; i++) {
@@ -304,13 +320,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             // probably be cleaned.
             ((XWPFHeaderFooter) body).setHeaderFooter(ctHdrFtr);
         }
-    }
-
-    @Override
-    public XWPFParagraph caseTemplate(Template template) {
-        XWPFParagraph currentParagraph = doSwitch(template.getBody());
-
-        return currentParagraph;
     }
 
     @Override
@@ -460,16 +469,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFParagraph res;
 
         // create a new paragraph.
-        if (body instanceof XWPFTableCell) {
-            XWPFTableCell cell = (XWPFTableCell) body;
-            res = cell.addParagraph();
-        } else if (body instanceof XWPFDocument) {
-            res = ((XWPFDocument) body).createParagraph();
-        } else if (body instanceof XWPFHeaderFooter) {
-            res = ((XWPFHeaderFooter) body).createParagraph();
-        } else {
-            throw new UnsupportedOperationException("unkown IBody type :" + body.getClass());
-        }
+        res = createParagraph(body);
         CTP ctp = (CTP) srcParagraph.getCTP().copy();
         ctp.getRList().clear();
         ctp.getFldSimpleList().clear();
@@ -481,6 +481,30 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
         currentTemplateParagraph = srcParagraph;
         currentGeneratedParagraph = res;
+
+        return res;
+    }
+
+    /**
+     * Creates a {@link XWPFParagraph} in the given {@link IBody}.
+     * 
+     * @param body
+     *            the {@link IBody}
+     * @return the created {@link XWPFParagraph}
+     */
+    private XWPFParagraph createParagraph(IBody body) {
+        final XWPFParagraph res;
+
+        if (body instanceof XWPFTableCell) {
+            XWPFTableCell cell = (XWPFTableCell) body;
+            res = cell.addParagraph();
+        } else if (body instanceof XWPFDocument) {
+            res = ((XWPFDocument) body).createParagraph();
+        } else if (body instanceof XWPFHeaderFooter) {
+            res = ((XWPFHeaderFooter) body).createParagraph();
+        } else {
+            throw new UnsupportedOperationException("unkown IBody type :" + body.getClass());
+        }
 
         return res;
     }
@@ -566,10 +590,79 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             res = (XWPFParagraph) tableRun.getParent();
         } else if (object instanceof MPagination) {
             res = insertMPagination(paragraph, run, (MPagination) object);
+        } else if (object instanceof IBody) {
+            final XWPFRun bodyRun = insertFieldRunReplacement(paragraph, run, "");
+            res = insertBody((XWPFParagraph) bodyRun.getParent(), bodyRun, (IBody) object);
+        } else if (object instanceof GenerationResult) {
+            final XWPFRun generationRun = insertFieldRunReplacement(paragraph, run, "");
+            res = insertGenerationResult((XWPFParagraph) generationRun.getParent(), generationRun,
+                    (GenerationResult) object);
         } else if (object == null) {
             res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
         } else {
             res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, object.toString()).getParent();
+        }
+
+        return res;
+    }
+
+    /**
+     * Inserts the given {@link GenerationResult}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param run
+     *            the {@link XWPFRun}
+     * @param generationResult
+     *            the {@link GenerationResult}
+     * @return the last inserted {@link XWPFParagraph}
+     */
+    private XWPFParagraph insertGenerationResult(XWPFParagraph paragraph, XWPFRun run,
+            GenerationResult generationResult) {
+        for (TemplateValidationMessage message : generationResult.getMessages()) {
+            result.addMessage(message);
+        }
+
+        return insertBody(paragraph, run, generationResult.getBody());
+    }
+
+    /**
+     * Inserts the given {@link IBody}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param run
+     *            the {@link XWPFRun}
+     * @param body
+     *            the {@link IBody}
+     * @return the last inserted {@link XWPFParagraph}
+     */
+    private XWPFParagraph insertBody(XWPFParagraph paragraph, XWPFRun run, IBody body) {
+        XWPFParagraph res;
+
+        final BodyGeneratedParser parser = new BodyGeneratedParser(body, (IQueryEnvironment) queryEnvironment);
+        try {
+            final Block block = parser.parseBlock(null, TokenType.EOF);
+            final UserContentRawCopy copier = new UserContentRawCopy();
+            final XWPFParagraph inputParagraph;
+            if (!body.getParagraphs().isEmpty()) {
+                inputParagraph = body.getParagraphs().get(0);
+            } else {
+                inputParagraph = null;
+            }
+            res = copier.copyStatements(paragraph, inputParagraph, inputParagraph, block.getStatements());
+        } catch (DocumentParserException e) {
+            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
+            res = paragraph;
+        } catch (InvalidFormatException e) {
+            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
+            res = paragraph;
+        } catch (IOException e) {
+            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
+            res = paragraph;
+        } catch (XmlException e) {
+            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
+            res = paragraph;
         }
 
         return res;
@@ -1152,6 +1245,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     public XWPFParagraph caseBlock(Block block) {
         XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(block)) {
+            if (currentParagraph == null && block.getRuns().isEmpty()) {
+                currentParagraph = createParagraph(generatedDocument);
+            }
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, block, INVALID_BLOCK_STATEMENT);
         } else {
             for (IConstruct construct : block.getStatements()) {
@@ -1278,7 +1374,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFParagraph savedTemplateParagraph = currentTemplateParagraph;
         generatedDocument = newCell;
         try {
-            doSwitch(cell.getTemplate());
+            doSwitch(cell.getBody());
         } finally {
             generatedDocument = savedGeneratedDocument;
             currentGeneratedParagraph = savedGeneratedParagraph;

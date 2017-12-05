@@ -2,75 +2,77 @@
 === HEADER ===
 
 === BODY ===
-template
+
   A simple demonstration of a static table :
   table
     row
-      template
+      
         A
-      template
+      
         Z
-      template
+      
         E
       
     row
-      template
+      
         R
-      template
+      
         T
-      template
+      
         Y
       
     row
-      template
+      
         U
-      template
+      
         table
           row
-            template
+            
               1
-            template
+            
               2
-            template
+            
               3
             
           row
-            template
+            
               4
-            template
+            
               5
-            template
+            
               6
             
           row
-            template
+            
               7
-            template
+            
               8
-            template
+            
               9
             
           
         
-      template
+      
         O
       
     row
-      template
+      
         P
-      template
+      
         Q
-      template
+      
         S
       
     row
-      template
+      
         D
-      template
+      
         F
-      template
+      
         G
       
     
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

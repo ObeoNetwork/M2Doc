@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.IGenerateable;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -82,9 +83,9 @@ public class UserContentManager {
     private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<>();
 
     /**
-     * The input {@link DocumentTemplate}.
+     * The input {@link IGenerateable}.
      */
-    private final DocumentTemplate documentTemplate;
+    private final IGenerateable generateable;
 
     /**
      * The destination {@link URI}.
@@ -101,17 +102,17 @@ public class UserContentManager {
      * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
-     * @param documentTemplate
-     *            the input {@link DocumentTemplate}
+     * @param generateable
+     *            the input {@link IGenerateable}
      * @param destination
      *            the destination {@link URI}
      * @throws IOException
      *             IOException if the destination can't be copied to a temporary file
      */
-    public UserContentManager(URIConverter uriConverter, DocumentTemplate documentTemplate, URI destination)
+    public UserContentManager(URIConverter uriConverter, IGenerateable generateable, URI destination)
             throws IOException {
         this.uriConverter = uriConverter;
-        this.documentTemplate = documentTemplate;
+        this.generateable = generateable;
         this.destination = destination;
         if (uriConverter.exists(destination, Collections.EMPTY_MAP)) {
             // Copy file
@@ -271,7 +272,7 @@ public class UserContentManager {
                 inputURI = lostUserContentURI;
                 isNewUserContentLoss = false;
             } else {
-                inputURI = documentTemplate.eResource().getURI();
+                inputURI = generateable.eResource().getURI();
                 isNewUserContentLoss = true;
             }
 

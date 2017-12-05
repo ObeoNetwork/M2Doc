@@ -5,7 +5,8 @@
   <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
     <details key="documentation" value="This metamodel describes the M2Doc abstract syntax tree."/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EClass" name="IConstruct" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="IConstruct" abstract="true" interface="true"
+      eSuperTypes="#//IGenerateable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="styleRun" eType="#//Run"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="runs" upperBound="-1" eType="#//Run"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="closingRuns" upperBound="-1"
@@ -97,13 +98,21 @@
   <eClassifiers xsi:type="ecore:EClass" name="Statement" abstract="true" interface="true"
       eSuperTypes="#//IConstruct"/>
   <eClassifiers xsi:type="ecore:EClass" name="Template" eSuperTypes="#//IConstruct">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="XWPFBody" eType="#//Body"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" lowerBound="1"
+        upperBound="-1" eType="#//Parameter" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Block"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
         <details key="documentation" value="The {@link Block} of {@link Statement}."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="documentTemplate" lowerBound="1"
+        eType="#//DocumentTemplate" eOpposite="#//DocumentTemplate/templates"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//AstResult"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="InputStream" instanceClassName="java.io.InputStream"/>
   <eClassifiers xsi:type="ecore:EDataType" name="OPCPackage" instanceClassName="org.apache.poi.openxml4j.opc.OPCPackage"/>
@@ -111,11 +120,6 @@
   <eClassifiers xsi:type="ecore:EDataType" name="WTable" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTable"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Run" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFRun"/>
   <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//Statement"/>
-  <eClassifiers xsi:type="ecore:EEnum" name="QueryBehavior">
-    <eLiterals name="ICON"/>
-    <eLiterals name="LABEL" value="1"/>
-    <eLiterals name="TEXT" value="2"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="AstResult" instanceClassName="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"/>
   <eClassifiers xsi:type="ecore:EDataType" name="TemplateValidationMessage" instanceClassName="org.obeonetwork.m2doc.parser.TemplateValidationMessage"/>
   <eClassifiers xsi:type="ecore:EClass" name="Table" eSuperTypes="#//Statement">
@@ -129,18 +133,18 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tableRow" eType="#//WTableRow"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Cell">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="template" eType="#//Template"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//Block"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tableCell" eType="#//WTableCell"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="WTableRow" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTableRow"/>
   <eClassifiers xsi:type="ecore:EDataType" name="WTableCell" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTableCell"/>
-  <eClassifiers xsi:type="ecore:EClass" name="DocumentTemplate">
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentTemplate" eSuperTypes="#//IGenerateable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="headers" upperBound="-1"
-        eType="#//Template" containment="true"/>
+        eType="#//Block" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="footers" upperBound="-1"
-        eType="#//Template" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Template"
+        eType="#//Block" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Block"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="inputStream" lowerBound="1"
         eType="#//InputStream"/>
@@ -148,6 +152,8 @@
         eType="#//OPCPackage"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="document" lowerBound="1"
         eType="#//Document"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="templates" upperBound="-1"
+        eType="#//Template" containment="true" eOpposite="#//Template/documentTemplate"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="POSITION">
     <eLiterals name="ABOVE"/>
@@ -182,4 +188,5 @@
         eType="#//XWPFSDT"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="XWPFSDT" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFSDT"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IGenerateable" abstract="true" interface="true"/>
 </ecore:EPackage>

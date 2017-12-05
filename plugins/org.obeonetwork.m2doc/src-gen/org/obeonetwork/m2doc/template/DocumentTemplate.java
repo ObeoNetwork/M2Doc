@@ -16,7 +16,6 @@ import java.io.InputStream;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,13 +31,14 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getDocument <em>Document</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.DocumentTemplate#getTemplates <em>Templates</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate()
  * @model
  * @generated NOT
  */
-public interface DocumentTemplate extends EObject, Closeable {
+public interface DocumentTemplate extends IGenerateable, Closeable {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -49,7 +49,7 @@ public interface DocumentTemplate extends EObject, Closeable {
 
     /**
      * Returns the value of the '<em><b>Headers</b></em>' containment reference list.
-     * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
+     * The list contents are of type {@link org.obeonetwork.m2doc.template.Block}.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Headers</em>' containment reference list isn't clear,
@@ -62,11 +62,11 @@ public interface DocumentTemplate extends EObject, Closeable {
      * @model containment="true"
      * @generated
      */
-    EList<Template> getHeaders();
+    EList<Block> getHeaders();
 
     /**
      * Returns the value of the '<em><b>Footers</b></em>' containment reference list.
-     * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
+     * The list contents are of type {@link org.obeonetwork.m2doc.template.Block}.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Footers</em>' containment reference list isn't clear,
@@ -79,7 +79,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * @model containment="true"
      * @generated
      */
-    EList<Template> getFooters();
+    EList<Block> getFooters();
 
     /**
      * Returns the value of the '<em><b>Body</b></em>' containment reference.
@@ -91,12 +91,12 @@ public interface DocumentTemplate extends EObject, Closeable {
      * <!-- end-user-doc -->
      * 
      * @return the value of the '<em>Body</em>' containment reference.
-     * @see #setBody(Template)
+     * @see #setBody(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Body()
      * @model containment="true" required="true"
      * @generated
      */
-    Template getBody();
+    Block getBody();
 
     /**
      * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}' containment reference.
@@ -108,7 +108,7 @@ public interface DocumentTemplate extends EObject, Closeable {
      * @see #getBody()
      * @generated
      */
-    void setBody(Template value);
+    void setBody(Block value);
 
     /**
      * Returns the value of the '<em><b>Input Stream</b></em>' attribute.
@@ -196,5 +196,24 @@ public interface DocumentTemplate extends EObject, Closeable {
      * @generated
      */
     void setDocument(XWPFDocument value);
+
+    /**
+     * Returns the value of the '<em><b>Templates</b></em>' containment reference list.
+     * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
+     * It is bidirectional and its opposite is '{@link org.obeonetwork.m2doc.template.Template#getDocumentTemplate <em>Document Template</em>}'.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Templates</em>' reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * 
+     * @return the value of the '<em>Templates</em>' containment reference list.
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Templates()
+     * @see org.obeonetwork.m2doc.template.Template#getDocumentTemplate
+     * @model opposite="documentTemplate" containment="true"
+     * @generated
+     */
+    EList<Template> getTemplates();
 
 } // DocumentTemplate

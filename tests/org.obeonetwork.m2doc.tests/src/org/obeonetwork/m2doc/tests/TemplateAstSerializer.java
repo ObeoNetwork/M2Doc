@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +47,7 @@ import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
@@ -371,7 +373,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         newLine();
         builder.append("=== HEADER ===");
         newLine();
-        for (Template header : documentTemplate.getHeaders()) {
+        for (Block header : documentTemplate.getHeaders()) {
             doSwitch(header);
         }
         newLine();
@@ -381,8 +383,15 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         newLine();
         builder.append("=== FOOTER ===");
         newLine();
-        for (Template footer : documentTemplate.getFooters()) {
+        for (Block footer : documentTemplate.getFooters()) {
             doSwitch(footer);
+        }
+
+        newLine();
+        builder.append("=== TEMPLATES ===");
+        for (Template template : documentTemplate.getTemplates()) {
+            newLine();
+            doSwitch(template);
         }
 
         return null;
@@ -390,8 +399,35 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
 
     @Override
     public Void caseTemplate(Template template) {
-        builder.append("template");
+        newLine();
+        builder.append("template ");
+        builder.append(template.getName());
+        builder.append(" (");
+        if (!template.getParameters().isEmpty()) {
+            final Iterator<Parameter> it = template.getParameters().iterator();
+            doSwitch(it.next());
+            while (it.hasNext()) {
+                builder.append(", ");
+                doSwitch(it.next());
+            }
+        }
+        builder.append(")");
         doSwitch(template.getBody());
+
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseParameter(org.obeonetwork.m2doc.template.Parameter)
+     */
+    @Override
+    public Void caseParameter(Parameter parameter) {
+        builder.append(parameter.getName());
+        builder.append(" : ");
+        builder.append(querySerializer.serialize(parameter.getType().getAst()));
+
         return null;
     }
 
@@ -524,7 +560,7 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
 
     @Override
     public Void caseCell(Cell cell) {
-        doSwitch(cell.getTemplate());
+        doSwitch(cell.getBody());
 
         return null;
     }

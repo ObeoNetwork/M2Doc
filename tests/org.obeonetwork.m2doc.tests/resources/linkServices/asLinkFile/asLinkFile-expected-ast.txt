@@ -2,8 +2,10 @@
 === HEADER ===
 
 === BODY ===
-template
+
   A simple demonstration of an http hyperlink:
   [query: .asLink('Mona Lisa', 'Mona_Lisa.jpg')]
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Basic if demonstration :
   
   if .equals(.aqlFeatureAccess(self, 'name'), 'anydsl') then
@@ -10,3 +10,5 @@ template
   endif
   
 === FOOTER ===
+
+=== TEMPLATES ===

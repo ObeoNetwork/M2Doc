@@ -24,8 +24,10 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getQuery()
- * @model annotation=
- *        "http://www.eclipse.org/emf/2002/Ecore documentation='The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.' syntax='{m:<aql query>}'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The query produce the {@link Query#getQuery() query} evaluation
+ *        result in the produced document. More inforamation about &lt;a
+ *        href=\"https://www.eclipse.org/acceleo/documentation/aql.html\"&gt;Acceleo Query Language&lt;/a&gt;.' syntax='{m:&lt;aql
+ *        query&gt;}'"
  * @generated
  */
 public interface Query extends Statement {

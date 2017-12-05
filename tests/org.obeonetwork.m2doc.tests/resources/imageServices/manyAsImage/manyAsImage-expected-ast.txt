@@ -2,8 +2,10 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Checks ImageServices registration :
   [query: Sequence{.setWidth(.asImage('dh1.gif'), 50), .setWidth(.asImage('dh1.gif'), 50), .setWidth(.asImage('dh1.gif'), 50)}]
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

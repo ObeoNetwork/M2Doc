@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Basic let demonstration :
   
   let v = .divOp(1, 0) in
@@ -13,3 +13,5 @@ template
   
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

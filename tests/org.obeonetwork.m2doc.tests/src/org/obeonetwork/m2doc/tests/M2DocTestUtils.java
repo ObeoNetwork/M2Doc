@@ -49,9 +49,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
-import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
 import static org.junit.Assert.assertEquals;
@@ -146,11 +146,11 @@ public final class M2DocTestUtils {
      * Creates a new {@link DocumentTemplate} with the given {@link DocumentTemplate#getBody() body}. The body is linked to {@link XWPFRun}.
      * 
      * @param body
-     *            the {@link Template}
+     *            the {@link Block}
      * @return a new {@link DocumentTemplate}
      */
     @SuppressWarnings("resource")
-    public static DocumentTemplate createDocumentTemplate(Template body) {
+    public static DocumentTemplate createDocumentTemplate(Block body) {
         final DocumentTemplate res = TemplatePackage.eINSTANCE.getTemplateFactory().createDocumentTemplate();
 
         final XWPFDocument document = new XWPFDocument();

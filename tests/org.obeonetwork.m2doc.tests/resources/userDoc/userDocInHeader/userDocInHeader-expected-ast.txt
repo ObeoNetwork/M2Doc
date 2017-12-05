@@ -1,8 +1,8 @@
 
 === HEADER ===
-template
-  template
-  template
+
+  
+  
   
   userdoc 'zone1' do
     
@@ -11,10 +11,11 @@ template
   
   
 === BODY ===
-template
+
   A simple demonstration of a user doc :End of demonstration.
 === FOOTER ===
-template
-  template
-  template
+
   
+  
+  
+=== TEMPLATES ===

@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.template.Cell#getTemplate <em>Template</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.Cell#getBody <em>Body</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.Cell#getTableCell <em>Table Cell</em>}</li>
  * </ul>
  *
@@ -39,33 +39,33 @@ public interface Cell extends EObject {
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
-     * Returns the value of the '<em><b>Template</b></em>' containment reference.
+     * Returns the value of the '<em><b>Body</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Template</em>' containment reference isn't clear,
+     * If the meaning of the '<em>Body</em>' containment reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
      * 
-     * @return the value of the '<em>Template</em>' containment reference.
-     * @see #setTemplate(Template)
-     * @see org.obeonetwork.m2doc.template.TemplatePackage#getCell_Template()
+     * @return the value of the '<em>Body</em>' containment reference.
+     * @see #setBody(Block)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getCell_Body()
      * @model containment="true"
      * @generated
      */
-    Template getTemplate();
+    Block getBody();
 
     /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Cell#getTemplate <em>Template</em>}' containment reference.
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Cell#getBody <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @param value
-     *            the new value of the '<em>Template</em>' containment reference.
-     * @see #getTemplate()
+     *            the new value of the '<em>Body</em>' containment reference.
+     * @see #getBody()
      * @generated
      */
-    void setTemplate(Template value);
+    void setBody(Block value);
 
     /**
      * Returns the value of the '<em><b>Table Cell</b></em>' attribute.

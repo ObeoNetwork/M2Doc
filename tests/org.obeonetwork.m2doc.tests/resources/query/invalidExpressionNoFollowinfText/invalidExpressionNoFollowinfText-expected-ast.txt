@@ -2,7 +2,9 @@
 === HEADER ===
 
 === BODY ===
-template
+
   A simple demonstration of a query :
   [query: ***ERROR***.aqlFeatureAccess(self)]
 === FOOTER ===
+
+=== TEMPLATES ===

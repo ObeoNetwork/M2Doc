@@ -22,8 +22,10 @@ import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.IGenerateable;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
@@ -154,6 +156,11 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseParameter(Parameter object) {
+            return createParameterAdapter();
+        }
+
+        @Override
         public Adapter caseStaticFragment(StaticFragment object) {
             return createStaticFragmentAdapter();
         }
@@ -196,6 +203,11 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseContentControl(ContentControl object) {
             return createContentControlAdapter();
+        }
+
+        @Override
+        public Adapter caseIGenerateable(IGenerateable object) {
+            return createIGenerateableAdapter();
         }
 
         @Override
@@ -370,6 +382,21 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.Parameter <em>Parameter</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * 
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.Parameter
+     * @generated
+     */
+    public Adapter createParameterAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.StaticFragment <em>Static Fragment</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -501,6 +528,21 @@ public class TemplateAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createContentControlAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.obeonetwork.m2doc.template.IGenerateable <em>IGenerateable</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * 
+     * @return the new adapter.
+     * @see org.obeonetwork.m2doc.template.IGenerateable
+     * @generated
+     */
+    public Adapter createIGenerateableAdapter() {
         return null;
     }
 

@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   A simple demonstration of a user doc :
   
   userdoc OrderedSet{'zone1', 'zone2'} do
@@ -12,3 +12,5 @@ template
   
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

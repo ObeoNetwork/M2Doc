@@ -2,8 +2,10 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Checks ImageServices registration :
   [query: .asImage('dh1.gif')]
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

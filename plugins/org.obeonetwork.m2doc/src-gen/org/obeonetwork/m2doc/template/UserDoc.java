@@ -25,8 +25,8 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getUserDoc()
- * @model annotation=
- *        "http://www.eclipse.org/emf/2002/Ecore documentation='UserDoc  tag\r\n\r\nTag template to keep user part modification in previous generated \r\nresult file.'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='UserDoc tag\r\n\r\nTag template to keep user part modification in
+ *        previous generated \r\nresult file.'"
  * @generated
  */
 public interface UserDoc extends Statement {

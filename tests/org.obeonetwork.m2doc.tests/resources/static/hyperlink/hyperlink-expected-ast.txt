@@ -2,6 +2,8 @@
 === HEADER ===
 
 === BODY ===
-template
+
   A simple demonstration of a static hyperlink :Obeo’s websiteEnd of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

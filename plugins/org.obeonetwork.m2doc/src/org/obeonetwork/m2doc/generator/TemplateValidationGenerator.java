@@ -71,11 +71,15 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseDocumentTemplate(DocumentTemplate documentTemplate) {
-        for (Template template : documentTemplate.getHeaders()) {
+        for (Block template : documentTemplate.getHeaders()) {
             doSwitch(template);
         }
         doSwitch(documentTemplate.getBody());
-        for (Template template : documentTemplate.getFooters()) {
+        for (Block template : documentTemplate.getFooters()) {
+            doSwitch(template);
+        }
+
+        for (Template template : documentTemplate.getTemplates()) {
             doSwitch(template);
         }
 
@@ -170,7 +174,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
 
     @Override
     public Void caseCell(Cell cell) {
-        doSwitch(cell.getTemplate());
+        doSwitch(cell.getBody());
 
         return null;
     }
@@ -197,7 +201,7 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
      */
     protected void insertErrorMessages(IConstruct abstractConstruct) {
         final List<TemplateValidationMessage> messages = abstractConstruct.getValidationMessages();
-        final Map<XWPFRun, Integer> offsets = new HashMap<XWPFRun, Integer>();
+        final Map<XWPFRun, Integer> offsets = new HashMap<>();
         for (TemplateValidationMessage message : messages) {
             offsets.put(message.getLocation(), 0);
         }

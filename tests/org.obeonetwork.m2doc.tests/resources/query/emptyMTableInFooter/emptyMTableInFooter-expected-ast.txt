@@ -2,10 +2,11 @@
 === HEADER ===
 
 === BODY ===
-template
+
   
 === FOOTER ===
-template
+
   A simple demonstration of a query :
   [query: .emptyTable('')]
   End of demonstration.
+=== TEMPLATES ===

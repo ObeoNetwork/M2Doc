@@ -2,8 +2,10 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Checks BooleanServices registration :
   [query: .yesNo(null)]
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

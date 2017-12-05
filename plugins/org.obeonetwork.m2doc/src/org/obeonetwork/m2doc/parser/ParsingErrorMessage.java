@@ -80,7 +80,11 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when a block is closed while parsing an other block.
      */
-    DIDYOUFORGETENDBLOCK("Did you forget the {0}?");
+    DIDYOUFORGETENDBLOCK("Did you forget the {0}?"),
+    /**
+     * Error message issued when a template is found in a block where it's not allowed.
+     */
+    TEMPLATE_NOT_ALLOWED_IN_THIS_BLOCK("Template construct not allowed in this block.");
     /**
      * The error message.
      */

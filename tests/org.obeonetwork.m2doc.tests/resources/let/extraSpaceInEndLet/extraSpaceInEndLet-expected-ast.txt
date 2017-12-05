@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Basic let demonstration :
   
   let v = .aqlFeatureAccess(self, 'name') in
@@ -14,3 +14,5 @@ template
   endfor
   
 === FOOTER ===
+
+=== TEMPLATES ===

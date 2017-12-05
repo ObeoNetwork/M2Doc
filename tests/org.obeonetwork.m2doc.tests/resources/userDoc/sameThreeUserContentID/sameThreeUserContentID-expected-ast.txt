@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   A simple demonstration of a user doc :
   
   userdoc 'zone1' do
@@ -24,3 +24,5 @@ template
   
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

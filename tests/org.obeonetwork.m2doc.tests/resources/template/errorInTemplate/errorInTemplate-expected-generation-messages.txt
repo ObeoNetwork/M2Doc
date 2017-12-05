@@ -1,0 +1,2 @@
+ERROR - Couldn't find the 'b' variable
+WARNING - Couldn't find the 'add(java.lang.Integer,org.eclipse.acceleo.query.runtime.impl.Nothing)' service

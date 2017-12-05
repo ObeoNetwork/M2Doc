@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Missing pipe arter variable name :
   
   for null | ***ERROR*** do
@@ -11,3 +11,5 @@ template
   
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

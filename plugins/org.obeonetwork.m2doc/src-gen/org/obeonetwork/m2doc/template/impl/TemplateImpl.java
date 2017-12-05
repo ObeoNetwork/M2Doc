@@ -12,7 +12,6 @@ package org.obeonetwork.m2doc.template.impl;
 
 import java.util.Collection;
 
-import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -22,8 +21,13 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.template.Block;
+import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
@@ -39,8 +43,10 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getRuns <em>Runs</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getClosingRuns <em>Closing Runs</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getValidationMessages <em>Validation Messages</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getXWPFBody <em>XWPF Body</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getParameters <em>Parameters</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getDocumentTemplate <em>Document Template</em>}</li>
  * </ul>
  *
  * @generated
@@ -110,26 +116,37 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
     protected EList<TemplateValidationMessage> validationMessages;
 
     /**
-     * The default value of the '{@link #getXWPFBody() <em>XWPF Body</em>}' attribute.
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see #getXWPFBody()
+     * @see #getName()
      * @generated
      * @ordered
      */
-    protected static final IBody XWPF_BODY_EDEFAULT = null;
+    protected static final String NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getXWPFBody() <em>XWPF Body</em>}' attribute.
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see #getXWPFBody()
+     * @see #getName()
      * @generated
      * @ordered
      */
-    protected IBody xwpfBody = XWPF_BODY_EDEFAULT;
+    protected String name = NAME_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getParameters()
+     * @generated
+     * @ordered
+     */
+    protected EList<Parameter> parameters;
 
     /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
@@ -234,8 +251,8 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
-    public IBody getXWPFBody() {
-        return xwpfBody;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -244,12 +261,25 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
-    public void setXWPFBody(IBody newXWPFBody) {
-        IBody oldXWPFBody = xwpfBody;
-        xwpfBody = newXWPFBody;
+    public void setName(String newName) {
+        String oldName = name;
+        name = newName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__XWPF_BODY, oldXWPFBody,
-                    xwpfBody));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__NAME, oldName, name));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EList<Parameter> getParameters() {
+        if (parameters == null) {
+            parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this,
+                    TemplatePackage.TEMPLATE__PARAMETERS);
+        }
+        return parameters;
     }
 
     /**
@@ -309,13 +339,99 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    public DocumentTemplate getDocumentTemplate() {
+        if (eContainerFeatureID() != TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE)
+            return null;
+        return (DocumentTemplate) eInternalContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public NotificationChain basicSetDocumentTemplate(DocumentTemplate newDocumentTemplate, NotificationChain msgs) {
+        msgs = eBasicSetContainer((InternalEObject) newDocumentTemplate, TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE,
+                msgs);
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public void setDocumentTemplate(DocumentTemplate newDocumentTemplate) {
+        if (newDocumentTemplate != eInternalContainer()
+            || (eContainerFeatureID() != TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE && newDocumentTemplate != null)) {
+            if (EcoreUtil.isAncestor(this, newDocumentTemplate))
+                throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+            NotificationChain msgs = null;
+            if (eInternalContainer() != null)
+                msgs = eBasicRemoveFromContainer(msgs);
+            if (newDocumentTemplate != null)
+                msgs = ((InternalEObject) newDocumentTemplate).eInverseAdd(this,
+                        TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES, DocumentTemplate.class, msgs);
+            msgs = basicSetDocumentTemplate(newDocumentTemplate, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE,
+                    newDocumentTemplate, newDocumentTemplate));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE:
+                if (eInternalContainer() != null)
+                    msgs = eBasicRemoveFromContainer(msgs);
+                return basicSetDocumentTemplate((DocumentTemplate) otherEnd, msgs);
+        }
+        return super.eInverseAdd(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
+            case TemplatePackage.TEMPLATE__PARAMETERS:
+                return ((InternalEList<?>) getParameters()).basicRemove(otherEnd, msgs);
             case TemplatePackage.TEMPLATE__BODY:
                 return basicSetBody(null, msgs);
+            case TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE:
+                return basicSetDocumentTemplate(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+        switch (eContainerFeatureID()) {
+            case TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE:
+                return eInternalContainer().eInverseRemove(this, TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES,
+                        DocumentTemplate.class, msgs);
+        }
+        return super.eBasicRemoveFromContainerFeature(msgs);
     }
 
     /**
@@ -335,10 +451,14 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 return getClosingRuns();
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 return getValidationMessages();
-            case TemplatePackage.TEMPLATE__XWPF_BODY:
-                return getXWPFBody();
+            case TemplatePackage.TEMPLATE__NAME:
+                return getName();
+            case TemplatePackage.TEMPLATE__PARAMETERS:
+                return getParameters();
             case TemplatePackage.TEMPLATE__BODY:
                 return getBody();
+            case TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE:
+                return getDocumentTemplate();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -368,11 +488,18 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 getValidationMessages().clear();
                 getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>) newValue);
                 return;
-            case TemplatePackage.TEMPLATE__XWPF_BODY:
-                setXWPFBody((IBody) newValue);
+            case TemplatePackage.TEMPLATE__NAME:
+                setName((String) newValue);
+                return;
+            case TemplatePackage.TEMPLATE__PARAMETERS:
+                getParameters().clear();
+                getParameters().addAll((Collection<? extends Parameter>) newValue);
                 return;
             case TemplatePackage.TEMPLATE__BODY:
                 setBody((Block) newValue);
+                return;
+            case TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE:
+                setDocumentTemplate((DocumentTemplate) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -399,11 +526,17 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 return;
-            case TemplatePackage.TEMPLATE__XWPF_BODY:
-                setXWPFBody(XWPF_BODY_EDEFAULT);
+            case TemplatePackage.TEMPLATE__NAME:
+                setName(NAME_EDEFAULT);
+                return;
+            case TemplatePackage.TEMPLATE__PARAMETERS:
+                getParameters().clear();
                 return;
             case TemplatePackage.TEMPLATE__BODY:
                 setBody((Block) null);
+                return;
+            case TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE:
+                setDocumentTemplate((DocumentTemplate) null);
                 return;
         }
         super.eUnset(featureID);
@@ -426,10 +559,14 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 return closingRuns != null && !closingRuns.isEmpty();
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 return validationMessages != null && !validationMessages.isEmpty();
-            case TemplatePackage.TEMPLATE__XWPF_BODY:
-                return XWPF_BODY_EDEFAULT == null ? xwpfBody != null : !XWPF_BODY_EDEFAULT.equals(xwpfBody);
+            case TemplatePackage.TEMPLATE__NAME:
+                return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+            case TemplatePackage.TEMPLATE__PARAMETERS:
+                return parameters != null && !parameters.isEmpty();
             case TemplatePackage.TEMPLATE__BODY:
                 return body != null;
+            case TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE:
+                return getDocumentTemplate() != null;
         }
         return super.eIsSet(featureID);
     }
@@ -454,8 +591,8 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
         result.append(closingRuns);
         result.append(", validationMessages: ");
         result.append(validationMessages);
-        result.append(", XWPFBody: ");
-        result.append(xwpfBody);
+        result.append(", name: ");
+        result.append(name);
         result.append(')');
         return result.toString();
     }

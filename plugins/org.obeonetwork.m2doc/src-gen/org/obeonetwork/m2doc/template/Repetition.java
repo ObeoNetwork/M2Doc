@@ -26,8 +26,10 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getRepetition()
- * @model annotation=
- *        "http://www.eclipse.org/emf/2002/Ecore documentation='This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.' syntax='{m:for var | query} body {m:endfor}'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='This produce the {@link Repetition#getBody() body} for each value
+ *        of the {@link Repetition#getQuery() query} evaluation result. More inforamation about &lt;a
+ *        href=\"https://www.eclipse.org/acceleo/documentation/aql.html\"&gt;Acceleo Query Language&lt;/a&gt;.' syntax='{m:for var | query}
+ *        body {m:endfor}'"
  * @generated
  */
 public interface Repetition extends Statement {

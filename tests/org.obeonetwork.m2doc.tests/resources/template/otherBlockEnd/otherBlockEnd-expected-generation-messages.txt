@@ -1,0 +1,2 @@
+ERROR - Invalid block: Unexpected tag m:endfor at this location
+INFO - Invalid block: Did you forget the [ENDTEMPLATE]?

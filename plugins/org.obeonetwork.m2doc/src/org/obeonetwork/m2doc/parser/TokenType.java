@@ -15,11 +15,13 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.obeonetwork.m2doc.template.Bookmark;
+import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -32,7 +34,17 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 public enum TokenType {
 
     /**
-     * A comment tag.
+     * A {@link Template} tag.
+     */
+    TEMPLATE("m:template"),
+
+    /**
+     * A {@link Template} end tag.
+     */
+    ENDTEMPLATE("m:endtemplate"),
+
+    /**
+     * A {@link Comment} tag.
      */
     COMMENT("m:comment"),
 
@@ -47,7 +59,7 @@ public enum TokenType {
     FOR("m:for"),
 
     /**
-     * A end {@link Repetition} tag.
+     * A {@link Repetition} end tag.
      */
     ENDFOR("m:endfor"),
 

@@ -1,0 +1,1 @@
+WARNING - Couldn't find the 'myTemplate(java.lang.Integer)' service

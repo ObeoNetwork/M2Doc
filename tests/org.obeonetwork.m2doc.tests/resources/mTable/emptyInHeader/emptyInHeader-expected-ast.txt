@@ -1,10 +1,12 @@
 
 === HEADER ===
-template
+
   A simple demonstration of an empty table :
   [query: .emptyTable('An empty table')]
   End of demonstration.
 === BODY ===
-template
+
   
 === FOOTER ===
+
+=== TEMPLATES ===

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -40,17 +41,32 @@ public class GenerationResult {
     /**
      * Mapping of lost fragments from {@link UserDoc#getId() user doc ID} to fragment {@link URI}.
      */
-    private final Map<String, URI> lostUserContents = new HashMap<String, URI>();
+    private final Map<String, URI> lostUserContents = new HashMap<>();
 
     /**
      * The {@link List} of duplicated {@link UserContent#getId() user content ID}.
      */
-    private final List<String> duplicatedUserContentIDs = new ArrayList<String>();
+    private final List<String> duplicatedUserContentIDs = new ArrayList<>();
 
     /**
      * The {@link List} of {@link TemplateValidationMessage} produced at generation time.
      */
-    private final List<TemplateValidationMessage> messages = new ArrayList<TemplateValidationMessage>();
+    private final List<TemplateValidationMessage> messages = new ArrayList<>();
+
+    /**
+     * The result {@link IBody}.
+     */
+    private final IBody body;
+
+    /**
+     * Constructor.
+     * 
+     * @param body
+     *            the resulting {@link IBody}
+     */
+    public GenerationResult(IBody body) {
+        this.body = body;
+    }
 
     /**
      * Updates the current {@link #getLevel() level} with the given {@link ValidationMessageLevel}.
@@ -110,6 +126,15 @@ public class GenerationResult {
     public void addMessage(TemplateValidationMessage message) {
         messages.add(message);
         updateLevel(message.getLevel());
+    }
+
+    /**
+     * Gets the resulting {@link IBody}.
+     * 
+     * @return the resulting {@link IBody}
+     */
+    public IBody getBody() {
+        return body;
     }
 
 }

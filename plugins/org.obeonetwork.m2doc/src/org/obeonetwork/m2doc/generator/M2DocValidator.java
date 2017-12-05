@@ -34,6 +34,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -44,6 +45,7 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
@@ -74,7 +76,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     /**
      * The {@link Stack} of variables types.
      */
-    private final Stack<Map<String, Set<IType>>> stack = new Stack<Map<String, Set<IType>>>();
+    private final Stack<Map<String, Set<IType>>> stack = new Stack<>();
 
     /**
      * AQL {@link AstValidator}.
@@ -95,7 +97,11 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
                 documentTemplate.getDocument());
-        Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+        for (Template template : documentTemplate.getTemplates()) {
+            ((IQueryEnvironment) queryEnvironment)
+                    .registerService(new M2DocTemplateService(template, queryEnvironment));
+        }
+        Map<String, Set<IType>> types = new LinkedHashMap<>();
         for (Entry<String, String> entry : templateProperties.getVariables().entrySet()) {
             final Set<IType> variableTypes = templateProperties.getVariableTypes(aqlValidator, queryEnvironment,
                     entry.getValue());
@@ -119,24 +125,50 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseDocumentTemplate(DocumentTemplate documentTemplate) {
         ValidationMessageLevel headerLevel = ValidationMessageLevel.OK;
-        for (Template header : documentTemplate.getHeaders()) {
+        for (Block header : documentTemplate.getHeaders()) {
             headerLevel = ValidationMessageLevel.updateLevel(headerLevel, doSwitch(header));
         }
         final ValidationMessageLevel bodyLevel = doSwitch(documentTemplate.getBody());
         ValidationMessageLevel footerLevel = ValidationMessageLevel.OK;
-        for (Template footer : documentTemplate.getFooters()) {
+        for (Block footer : documentTemplate.getFooters()) {
             footerLevel = ValidationMessageLevel.updateLevel(footerLevel, doSwitch(footer));
         }
 
-        return ValidationMessageLevel.updateLevel(headerLevel, bodyLevel, footerLevel);
+        ValidationMessageLevel templateLevel = ValidationMessageLevel.OK;
+        for (Template template : documentTemplate.getTemplates()) {
+            templateLevel = ValidationMessageLevel.updateLevel(templateLevel, doSwitch(template));
+        }
+
+        return ValidationMessageLevel.updateLevel(headerLevel, bodyLevel, footerLevel, templateLevel);
     }
 
     @Override
     public ValidationMessageLevel caseTemplate(Template template) {
         final ValidationMessageLevel parsingLevel = getHighestMessageLevel(template);
-        final ValidationMessageLevel bodyLevel = doSwitch(template.getBody());
 
-        return ValidationMessageLevel.updateLevel(parsingLevel, bodyLevel);
+        final Map<String, Set<IType>> parameters = new HashMap<>();
+        ValidationMessageLevel parameterLevel = ValidationMessageLevel.OK;
+        for (Parameter parameter : template.getParameters()) {
+            final IValidationResult validationResult = aqlValidator.validate(null, parameter.getType());
+            final XWPFRun run = template.getRuns().get(1);
+            addValidationMessages(template, run, validationResult);
+            if (parameters.containsKey(parameter.getName())) {
+                parameterLevel = ValidationMessageLevel.ERROR;
+                template.getValidationMessages().add(new TemplateValidationMessage(parameterLevel,
+                        String.format("duplicated parameter (%s).", parameter.getName()), run));
+            }
+            Set<IType> possibleTypes = validationResult.getPossibleTypes(parameter.getType().getAst());
+            parameters.put(parameter.getName(), possibleTypes);
+        }
+        stack.push(parameters);
+        final ValidationMessageLevel bodyLevel;
+        try {
+            bodyLevel = doSwitch(template.getBody());
+        } finally {
+            stack.pop();
+        }
+
+        return ValidationMessageLevel.updateLevel(parsingLevel, bodyLevel, parameterLevel);
     }
 
     @Override
@@ -214,7 +246,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
             conditionLevel = ValidationMessageLevel.ERROR;
         }
 
-        final Map<String, Set<IType>> thenVariables = new HashMap<String, Set<IType>>(stack.peek());
+        final Map<String, Set<IType>> thenVariables = new HashMap<>(stack.peek());
         thenVariables
                 .putAll(validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.TRUE));
         stack.push(thenVariables);
@@ -226,7 +258,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         }
         final ValidationMessageLevel elseLevel;
         if (conditional.getElse() != null) {
-            final Map<String, Set<IType>> elseVariables = new HashMap<String, Set<IType>>(stack.peek());
+            final Map<String, Set<IType>> elseVariables = new HashMap<>(stack.peek());
             elseVariables.putAll(
                     validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.FALSE));
             stack.push(elseVariables);
@@ -347,7 +379,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                             run));
         }
 
-        final Set<IType> iteratorTypes = new LinkedHashSet<IType>();
+        final Set<IType> iteratorTypes = new LinkedHashSet<>();
         for (IType type : types) {
             if (type instanceof ICollectionType) {
                 iteratorTypes.add(((ICollectionType) type).getCollectionType());
@@ -356,7 +388,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         if (iteratorTypes.isEmpty()) {
             iteratorTypes.add(new NothingType("No collection type for the iterator " + repetition.getIterationVar()));
         }
-        final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
+        final Map<String, Set<IType>> iterationVariables = new HashMap<>(stack.peek());
         iterationVariables.put(repetition.getIterationVar(), iteratorTypes);
         stack.push(iterationVariables);
         final ValidationMessageLevel bodyLevel;
@@ -388,7 +420,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                     String.format("The variable mask an existing variable (%s).", let.getName()), run));
         }
 
-        final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
+        final Map<String, Set<IType>> iterationVariables = new HashMap<>(stack.peek());
         iterationVariables.put(let.getName(), types);
         stack.push(iterationVariables);
         final ValidationMessageLevel bodyLevel;
@@ -469,7 +501,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseCell(Cell cell) {
-        return doSwitch(cell.getTemplate());
+        return doSwitch(cell.getBody());
     }
 
     @Override

@@ -157,7 +157,7 @@ public class UserContentRawCopy {
      *             if the copy fails
      */
     @SuppressWarnings("resource")
-    private XWPFParagraph copyStatements(XWPFParagraph outputParagraph, XWPFParagraph currentInputParagraph,
+    public XWPFParagraph copyStatements(XWPFParagraph outputParagraph, XWPFParagraph currentInputParagraph,
             XWPFParagraph previousInputParagraph, final List<Statement> statements)
             throws InvalidFormatException, IOException, XmlException {
         XWPFParagraph localCurrentInputParagraph = currentInputParagraph;

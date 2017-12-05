@@ -1,37 +1,38 @@
 
 === HEADER ===
-template
+
   
 === BODY ===
-template
+
   This demonstrate the simple usage of asTableByRepresentationName service :
   table
     row
-      template
+      
         
-      template
+      
         
-      template
+      
         
       
     row
-      template
+      
         
-      template
+      
         [query: .asTableByRepresentationName('new Names')]
-      template
+      
         
       
     row
-      template
+      
         
-      template
+      
         
-      template
+      
         
       
     
   End of demonstration.
 === FOOTER ===
-template
+
   
+=== TEMPLATES ===

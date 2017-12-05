@@ -2,8 +2,10 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Checks ImageServices registration :
   [query: .fit(.setConserveRatio(.asImage('dh1.gif'), false), 200, 300)]
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

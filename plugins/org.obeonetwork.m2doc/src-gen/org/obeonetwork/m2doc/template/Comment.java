@@ -22,8 +22,8 @@ package org.obeonetwork.m2doc.template;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getComment()
- * @model annotation=
- *        "http://www.eclipse.org/emf/2002/Ecore documentation='A comment produce nothing in the generated document.' syntax='{m:comment <comment text>}'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='A comment produce nothing in the generated document.'
+ *        syntax='{m:comment &lt;comment text&gt;}'"
  * @generated
  */
 public interface Comment extends Statement {

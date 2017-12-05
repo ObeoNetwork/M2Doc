@@ -26,10 +26,10 @@ import org.obeonetwork.m2doc.tests.userdoc.UserdocTests;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(
-    value = {GeneratorTests.class, ParserTests.class, PropertiesTests.class, ServicesTests.class, UserdocTests.class,
-        BookmarkTests.class, CommentTests.class, ConditionalTests.class, LetTests.class, QueryTests.class,
-        RepetitionTests.class, StaticTests.class, UserDocTests.class, M2DocUtilsTests.class, MTableTests.class, })
+@SuiteClasses(value = {GeneratorTests.class, ParserTests.class, PropertiesTests.class, ServicesTests.class,
+    UserdocTests.class, BookmarkTests.class, CommentTests.class, ConditionalTests.class, LetTests.class,
+    QueryTests.class, RepetitionTests.class, StaticTests.class, UserDocTests.class, M2DocUtilsTests.class,
+    MTableTests.class, TemplateTests.class })
 public class AllTests {
 
 }

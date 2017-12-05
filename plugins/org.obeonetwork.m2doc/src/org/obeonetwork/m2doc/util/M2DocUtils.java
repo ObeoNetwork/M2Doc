@@ -55,15 +55,18 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.M2DocParser;
 import org.obeonetwork.m2doc.parser.ParsingErrorMessage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
+import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Template;
@@ -436,7 +439,7 @@ public final class M2DocUtils {
                     classProvider, document);
             r.getContents().add(result);
             final M2DocParser parser = new M2DocParser(document, queryEnvironment);
-            final Template documentBody = parser.parseTemplate();
+            final Block documentBody = parser.parseBlock(result.getTemplates(), TokenType.EOF);
             for (TemplateValidationMessage validationMessage : messages) {
                 documentBody.getValidationMessages().add(validationMessage);
             }
@@ -446,11 +449,11 @@ public final class M2DocUtils {
             result.setDocument(document);
             for (XWPFFooter footer : document.getFooterList()) {
                 final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
-                result.getFooters().add(footerParser.parseTemplate());
+                result.getFooters().add(footerParser.parseBlock(null, TokenType.EOF));
             }
             for (XWPFHeader header : document.getHeaderList()) {
                 final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
-                result.getHeaders().add(headerParser.parseTemplate());
+                result.getHeaders().add(headerParser.parseBlock(null, TokenType.EOF));
             }
 
         } catch (IOException e) {
@@ -546,17 +549,17 @@ public final class M2DocUtils {
             final XWPFDocument document = new XWPFDocument(oPackage);
             r.getContents().add(result);
             final BodyGeneratedParser parser = new BodyGeneratedParser(document, queryEnvironment);
-            result.setBody(parser.parseTemplate());
+            result.setBody(parser.parseBlock(null));
             result.setInputStream(is);
             result.setOpcPackage(oPackage);
             result.setDocument(document);
             for (XWPFFooter footer : document.getFooterList()) {
                 final BodyGeneratedParser footerParser = new BodyGeneratedParser(footer, queryEnvironment);
-                result.getFooters().add(footerParser.parseTemplate());
+                result.getFooters().add(footerParser.parseBlock(null));
             }
             for (XWPFHeader header : document.getHeaderList()) {
                 final BodyGeneratedParser headerParser = new BodyGeneratedParser(header, queryEnvironment);
-                result.getHeaders().add(headerParser.parseTemplate());
+                result.getHeaders().add(headerParser.parseBlock(null));
             }
 
         } catch (IOException e) {
@@ -699,10 +702,14 @@ public final class M2DocUtils {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(uriConverter, documentTemplate,
                     destination);
-            final M2DocEvaluator processor = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
+            final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
                     monitor);
+            for (Template template : documentTemplate.getTemplates()) {
+                ((IQueryEnvironment) queryEnvironment).registerService(new M2DocTemplateService(template, uriConverter,
+                        bookmarkManager, userContentManager, queryEnvironment, monitor));
+            }
 
-            final GenerationResult result = processor.generate(documentTemplate, variables, destinationDocument);
+            final GenerationResult result = evaluator.generate(documentTemplate, variables, destinationDocument);
 
             bookmarkManager.markDanglingReferences(result);
             bookmarkManager.markOpenBookmarks(result);

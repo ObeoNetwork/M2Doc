@@ -36,10 +36,11 @@ import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.IGenerateable;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Query;
-import org.obeonetwork.m2doc.template.QueryBehavior;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Statement;
@@ -153,6 +154,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    private EClass parameterEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     private EClass staticFragmentEClass = null;
 
     /**
@@ -225,7 +234,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    private EEnum queryBehaviorEEnum = null;
+    private EClass iGenerateableEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -666,7 +675,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EAttribute getTemplate_XWPFBody() {
+    public EAttribute getTemplate_Name() {
         return (EAttribute) templateEClass.getEStructuralFeatures().get(0);
     }
 
@@ -676,8 +685,58 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EReference getTemplate_Body() {
+    public EReference getTemplate_Parameters() {
         return (EReference) templateEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EReference getTemplate_Body() {
+        return (EReference) templateEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EReference getTemplate_DocumentTemplate() {
+        return (EReference) templateEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EClass getParameter() {
+        return parameterEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EAttribute getParameter_Name() {
+        return (EAttribute) parameterEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EAttribute getParameter_Type() {
+        return (EAttribute) parameterEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -766,7 +825,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EReference getCell_Template() {
+    public EReference getCell_Body() {
         return (EReference) cellEClass.getEStructuralFeatures().get(0);
     }
 
@@ -848,6 +907,16 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      */
     public EAttribute getDocumentTemplate_Document() {
         return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public EReference getDocumentTemplate_Templates() {
+        return (EReference) documentTemplateEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -976,8 +1045,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EEnum getQueryBehavior() {
-        return queryBehaviorEEnum;
+    public EClass getIGenerateable() {
+        return iGenerateableEClass;
     }
 
     /**
@@ -1168,8 +1237,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         statementEClass = createEClass(STATEMENT);
 
         templateEClass = createEClass(TEMPLATE);
-        createEAttribute(templateEClass, TEMPLATE__XWPF_BODY);
+        createEAttribute(templateEClass, TEMPLATE__NAME);
+        createEReference(templateEClass, TEMPLATE__PARAMETERS);
         createEReference(templateEClass, TEMPLATE__BODY);
+        createEReference(templateEClass, TEMPLATE__DOCUMENT_TEMPLATE);
+
+        parameterEClass = createEClass(PARAMETER);
+        createEAttribute(parameterEClass, PARAMETER__NAME);
+        createEAttribute(parameterEClass, PARAMETER__TYPE);
 
         staticFragmentEClass = createEClass(STATIC_FRAGMENT);
 
@@ -1182,7 +1257,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(rowEClass, ROW__TABLE_ROW);
 
         cellEClass = createEClass(CELL);
-        createEReference(cellEClass, CELL__TEMPLATE);
+        createEReference(cellEClass, CELL__BODY);
         createEAttribute(cellEClass, CELL__TABLE_CELL);
 
         documentTemplateEClass = createEClass(DOCUMENT_TEMPLATE);
@@ -1192,6 +1267,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__INPUT_STREAM);
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__OPC_PACKAGE);
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__DOCUMENT);
+        createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__TEMPLATES);
 
         bookmarkEClass = createEClass(BOOKMARK);
         createEAttribute(bookmarkEClass, BOOKMARK__NAME);
@@ -1209,8 +1285,9 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         contentControlEClass = createEClass(CONTENT_CONTROL);
         createEAttribute(contentControlEClass, CONTENT_CONTROL__CONTROL);
 
+        iGenerateableEClass = createEClass(IGENERATEABLE);
+
         // Create enums
-        queryBehaviorEEnum = createEEnum(QUERY_BEHAVIOR);
         positionEEnum = createEEnum(POSITION);
 
         // Create data types
@@ -1258,6 +1335,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         // Set bounds for type parameters
 
         // Add supertypes to classes
+        iConstructEClass.getESuperTypes().add(this.getIGenerateable());
         commentEClass.getESuperTypes().add(this.getStatement());
         conditionalEClass.getESuperTypes().add(this.getStatement());
         repetitionEClass.getESuperTypes().add(this.getStatement());
@@ -1269,6 +1347,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         templateEClass.getESuperTypes().add(this.getIConstruct());
         staticFragmentEClass.getESuperTypes().add(this.getStatement());
         tableEClass.getESuperTypes().add(this.getStatement());
+        documentTemplateEClass.getESuperTypes().add(this.getIGenerateable());
         bookmarkEClass.getESuperTypes().add(this.getStatement());
         linkEClass.getESuperTypes().add(this.getStatement());
         letEClass.getESuperTypes().add(this.getStatement());
@@ -1342,11 +1421,24 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getTemplate_XWPFBody(), this.getBody(), "XWPFBody", null, 0, 1, Template.class, !IS_TRANSIENT,
+        initEAttribute(getTemplate_Name(), ecorePackage.getEString(), "name", null, 1, 1, Template.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getTemplate_Parameters(), this.getParameter(), null, "parameters", null, 1, -1, Template.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getTemplate_Body(), this.getBlock(), null, "body", null, 1, 1, Template.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
+        initEReference(getTemplate_DocumentTemplate(), this.getDocumentTemplate(), this.getDocumentTemplate_Templates(),
+                "documentTemplate", null, 1, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getParameter_Name(), ecorePackage.getEString(), "name", null, 1, 1, Parameter.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getParameter_Type(), this.getAstResult(), "type", null, 1, 1, Parameter.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(staticFragmentEClass, StaticFragment.class, "StaticFragment", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -1366,7 +1458,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(cellEClass, Cell.class, "Cell", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getCell_Template(), this.getTemplate(), null, "template", null, 0, 1, Cell.class, !IS_TRANSIENT,
+        initEReference(getCell_Body(), this.getBlock(), null, "body", null, 0, 1, Cell.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
         initEAttribute(getCell_TableCell(), this.getWTableCell(), "tableCell", null, 0, 1, Cell.class, !IS_TRANSIENT,
@@ -1374,13 +1466,13 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         initEClass(documentTemplateEClass, DocumentTemplate.class, "DocumentTemplate", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getDocumentTemplate_Headers(), this.getTemplate(), null, "headers", null, 0, -1,
+        initEReference(getDocumentTemplate_Headers(), this.getBlock(), null, "headers", null, 0, -1,
                 DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentTemplate_Footers(), this.getTemplate(), null, "footers", null, 0, -1,
+        initEReference(getDocumentTemplate_Footers(), this.getBlock(), null, "footers", null, 0, -1,
                 DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentTemplate_Body(), this.getTemplate(), null, "body", null, 1, 1, DocumentTemplate.class,
+        initEReference(getDocumentTemplate_Body(), this.getBlock(), null, "body", null, 1, 1, DocumentTemplate.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDocumentTemplate_InputStream(), this.getInputStream(), "inputStream", null, 1, 1,
@@ -1392,6 +1484,9 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEAttribute(getDocumentTemplate_Document(), this.getDocument(), "document", null, 1, 1,
                 DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentTemplate_Templates(), this.getTemplate(), this.getTemplate_DocumentTemplate(),
+                "templates", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -1420,12 +1515,10 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEAttribute(getContentControl_Control(), this.getXWPFSDT(), "control", null, 1, 1, ContentControl.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        // Initialize enums and add enum literals
-        initEEnum(queryBehaviorEEnum, QueryBehavior.class, "QueryBehavior");
-        addEEnumLiteral(queryBehaviorEEnum, QueryBehavior.ICON);
-        addEEnumLiteral(queryBehaviorEEnum, QueryBehavior.LABEL);
-        addEEnumLiteral(queryBehaviorEEnum, QueryBehavior.TEXT);
+        initEClass(iGenerateableEClass, IGenerateable.class, "IGenerateable", IS_ABSTRACT, IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
 
+        // Initialize enums and add enum literals
         initEEnum(positionEEnum, org.obeonetwork.m2doc.template.POSITION.class, "POSITION");
         addEEnumLiteral(positionEEnum, org.obeonetwork.m2doc.template.POSITION.ABOVE);
         addEEnumLiteral(positionEEnum, org.obeonetwork.m2doc.template.POSITION.BELOW);
@@ -1470,20 +1563,18 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
                 new String[] {"documentation", "This metamodel describes the M2Doc abstract syntax tree." });
         addAnnotation(commentEClass, source, new String[] {"documentation",
             "A comment produce nothing in the generated document.", "syntax", "{m:comment <comment text>}" });
-        addAnnotation(conditionalEClass, source,
-                new String[] {"documentation",
-                    "If {@link Conditional#getCondition() condition} is evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}",
-                    "syntax", "{m:if expr} runs1 [{m:elseif <expr>} runs_n]* [{m:else} run_else]{m:endif}" });
+        addAnnotation(conditionalEClass, source, new String[] {"documentation",
+            "If {@link Conditional#getCondition() condition} is evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}",
+            "syntax", "{m:if expr} runs1 [{m:elseif <expr>} runs_n]* [{m:else} run_else]{m:endif}" });
         addAnnotation(getConditional_Condition(), source, new String[] {"documentation",
             "If evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}" });
         addAnnotation(getConditional_Then(), source, new String[] {"documentation",
             "The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>true</code>." });
         addAnnotation(getConditional_Else(), source, new String[] {"documentation",
             "The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>false</code>." });
-        addAnnotation(repetitionEClass, source,
-                new String[] {"documentation",
-                    "This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
-                    "syntax", "{m:for var | query} body {m:endfor}" });
+        addAnnotation(repetitionEClass, source, new String[] {"documentation",
+            "This produce the {@link Repetition#getBody() body} for each value of the {@link Repetition#getQuery() query} evaluation result. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
+            "syntax", "{m:for var | query} body {m:endfor}" });
         addAnnotation(getRepetition_Body(), source,
                 new String[] {"documentation", "The {@link Block} of {@link Statement}." });
         addAnnotation(userDocEClass, source, new String[] {"documentation",
@@ -1494,10 +1585,9 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
             "UserDocDest  tag\r\n\r\nTag in generated document neede to extract user part modification.\r\nUserDocDest is generated by M2Doc\r\n\r\n." });
         addAnnotation(getUserContent_Body(), source,
                 new String[] {"documentation", "The {@link Block} of {@link Statement}." });
-        addAnnotation(queryEClass, source,
-                new String[] {"documentation",
-                    "The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
-                    "syntax", "{m:<aql query>}" });
+        addAnnotation(queryEClass, source, new String[] {"documentation",
+            "The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
+            "syntax", "{m:<aql query>}" });
         addAnnotation(getTemplate_Body(), source,
                 new String[] {"documentation", "The {@link Block} of {@link Statement}." });
         addAnnotation(getBookmark_Body(), source,

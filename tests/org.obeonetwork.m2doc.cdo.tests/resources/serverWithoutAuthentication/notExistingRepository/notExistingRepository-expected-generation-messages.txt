@@ -1,4 +1,2 @@
-WARNING - aqlFeatureAccess(org.eclipse.emf.ecore.EObject,java.lang.String) with arguments [org.eclipse.emf.ecore.impl.EObjectImpl@00000000 (eProxyURI: cdo://5ef25598-0af9-4436-b7df-5764732e4c0b/anydsl.ecore#L3), name] failed:
-	Feature name not found in EClass EObject
-org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException: Feature name not found in EClass EObject
+ERROR - Invalid block: org.eclipse.emf.cdo.server.RepositoryNotFoundException: Repository not found: NotExistingRepo
 ...STACK...

@@ -2,37 +2,39 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Basic for demonstration :
   table
     row
-      template
+      
         
-      template
+      
         
-      template
+      
         
       
     row
-      template
+      
         
-      template
+      
         
         for v | Sequence{} do
         endfor
         
         
-      template
+      
         
       
     row
-      template
+      
         
-      template
+      
         
-      template
+      
         
       
     
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

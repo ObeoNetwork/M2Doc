@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate(2, 3, 4)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (a : java.lang.Integer, b : java.lang.Integer, c : java.lang.Integer)
+  [query: .add(.add(a, b), c)]

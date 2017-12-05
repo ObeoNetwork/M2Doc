@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :Inlined 
+  [query: .myTemplate(2)]
+   some text.End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (a : java.lang.Integer)
+  [query: .add(a, a)]

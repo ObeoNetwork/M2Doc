@@ -26,8 +26,10 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional()
- * @model annotation=
- *        "http://www.eclipse.org/emf/2002/Ecore documentation='If {@link Conditional#getCondition() condition} is evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}' syntax='{m:if expr} runs1 [{m:elseif <expr>} runs_n]* [{m:else} run_else]{m:endif}'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore documentation='If {@link Conditional#getCondition() condition} is evaluated to
+ *        &lt;code&gt;true&lt;/code&gt; the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the
+ *        {@link Conditional#getElse() else} {@link Compound}' syntax='{m:if expr} runs1 [{m:elseif &lt;expr&gt;} runs_n]* [{m:else}
+ *        run_else]{m:endif}'"
  * @generated
  */
 public interface Conditional extends Statement {
@@ -52,8 +54,9 @@ public interface Conditional extends Statement {
      * @see #setCondition(AstResult)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional_Condition()
      * @model dataType="org.obeonetwork.m2doc.template.AstResult" required="true"
-     *        annotation=
-     *        "http://www.eclipse.org/emf/2002/Ecore documentation='If evaluated to <code>true</code> the {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else} {@link Compound}'"
+     *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='If evaluated to &lt;code&gt;true&lt;/code&gt; the
+     *        {@link Conditional#getThen() then} {@link Compound} is executed, otherwise the {@link Conditional#getElse() else}
+     *        {@link Compound}'"
      * @generated
      */
     AstResult getCondition();
@@ -83,8 +86,8 @@ public interface Conditional extends Statement {
      * @see #setThen(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional_Then()
      * @model containment="true" required="true"
-     *        annotation=
-     *        "http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>true</code>.'"
+     *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Compound} is executed if
+     *        {@link Conditional#getCondition() condition} is evaluated to &lt;code&gt;true&lt;/code&gt;.'"
      * @generated
      */
     Block getThen();
@@ -114,8 +117,8 @@ public interface Conditional extends Statement {
      * @see #setElse(Block)
      * @see org.obeonetwork.m2doc.template.TemplatePackage#getConditional_Else()
      * @model containment="true"
-     *        annotation=
-     *        "http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Compound} is executed if {@link Conditional#getCondition() condition} is evaluated to <code>false</code>.'"
+     *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The {@link Compound} is executed if
+     *        {@link Conditional#getCondition() condition} is evaluated to &lt;code&gt;false&lt;/code&gt;.'"
      * @generated
      */
     Block getElse();

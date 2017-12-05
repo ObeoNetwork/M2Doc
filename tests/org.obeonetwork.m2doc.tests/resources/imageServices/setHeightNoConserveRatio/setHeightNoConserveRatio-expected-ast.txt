@@ -2,8 +2,10 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Checks ImageServices registration :
   [query: .setHeight(.setConserveRatio(.asImage('Mona_Lisa.jpg'), false), 100)]
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

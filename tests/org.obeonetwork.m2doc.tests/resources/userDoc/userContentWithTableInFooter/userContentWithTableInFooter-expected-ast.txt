@@ -2,56 +2,57 @@
 === HEADER ===
 
 === BODY ===
-template
+
   
 === FOOTER ===
-template
+
   A simple demonstration of a user doc :
   
   userdoc 'zone1' do
     
       table
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         
   enduserdoc
   
   End of demonstration.
+=== TEMPLATES ===

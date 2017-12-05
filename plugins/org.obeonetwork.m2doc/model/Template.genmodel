@@ -9,11 +9,6 @@
   <foreignModel>Template.ecore</foreignModel>
   <genPackages prefix="Template" basePackage="org.obeonetwork.m2doc" disposableProviderFactory="true"
       ecorePackage="Template.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Template.ecore#//QueryBehavior">
-      <genEnumLiterals ecoreEnumLiteral="Template.ecore#//QueryBehavior/ICON"/>
-      <genEnumLiterals ecoreEnumLiteral="Template.ecore#//QueryBehavior/LABEL"/>
-      <genEnumLiterals ecoreEnumLiteral="Template.ecore#//QueryBehavior/TEXT"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Template.ecore#//POSITION">
       <genEnumLiterals ecoreEnumLiteral="Template.ecore#//POSITION/ABOVE"/>
       <genEnumLiterals ecoreEnumLiteral="Template.ecore#//POSITION/BELOW"/>
@@ -64,8 +59,14 @@
     </genClasses>
     <genClasses image="false" ecoreClass="Template.ecore#//Statement"/>
     <genClasses ecoreClass="Template.ecore#//Template">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Template/XWPFBody"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Template/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Template/parameters"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference Template.ecore#//Template/body"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Template.ecore#//Template/documentTemplate"/>
+    </genClasses>
+    <genClasses ecoreClass="Template.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Parameter/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute Template.ecore#//Parameter/type"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//StaticFragment"/>
     <genClasses ecoreClass="Template.ecore#//Table">
@@ -77,7 +78,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Row/tableRow"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Cell">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Cell/template"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Cell/body"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Cell/tableCell"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//DocumentTemplate">
@@ -87,6 +88,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/inputStream"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/opcPackage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/document"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/templates"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Bookmark">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Bookmark/name"/>
@@ -104,5 +106,6 @@
     <genClasses ecoreClass="Template.ecore#//ContentControl">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//ContentControl/control"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="Template.ecore#//IGenerateable"/>
   </genPackages>
 </genmodel:GenModel>

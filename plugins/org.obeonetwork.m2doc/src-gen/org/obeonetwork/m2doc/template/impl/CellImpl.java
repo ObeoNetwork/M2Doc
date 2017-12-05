@@ -17,8 +17,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
-import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 
 /**
@@ -29,7 +29,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.template.impl.CellImpl#getTemplate <em>Template</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.CellImpl#getBody <em>Body</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.CellImpl#getTableCell <em>Table Cell</em>}</li>
  * </ul>
  *
@@ -45,15 +45,15 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
     public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
-     * The cached value of the '{@link #getTemplate() <em>Template</em>}' containment reference.
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see #getTemplate()
+     * @see #getBody()
      * @generated
      * @ordered
      */
-    protected Template template;
+    protected Block body;
 
     /**
      * The default value of the '{@link #getTableCell() <em>Table Cell</em>}' attribute.
@@ -104,8 +104,8 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
-    public Template getTemplate() {
-        return template;
+    public Block getBody() {
+        return body;
     }
 
     /**
@@ -114,12 +114,12 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
-    public NotificationChain basicSetTemplate(Template newTemplate, NotificationChain msgs) {
-        Template oldTemplate = template;
-        template = newTemplate;
+    public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
+        Block oldBody = body;
+        body = newBody;
         if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-                    TemplatePackage.CELL__TEMPLATE, oldTemplate, newTemplate);
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TemplatePackage.CELL__BODY,
+                    oldBody, newBody);
             if (msgs == null)
                 msgs = notification;
             else msgs.add(notification);
@@ -133,21 +133,20 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
-    public void setTemplate(Template newTemplate) {
-        if (newTemplate != template) {
+    public void setBody(Block newBody) {
+        if (newBody != body) {
             NotificationChain msgs = null;
-            if (template != null)
-                msgs = ((InternalEObject) template).eInverseRemove(this,
-                        EOPPOSITE_FEATURE_BASE - TemplatePackage.CELL__TEMPLATE, null, msgs);
-            if (newTemplate != null)
-                msgs = ((InternalEObject) newTemplate).eInverseAdd(this,
-                        EOPPOSITE_FEATURE_BASE - TemplatePackage.CELL__TEMPLATE, null, msgs);
-            msgs = basicSetTemplate(newTemplate, msgs);
+            if (body != null)
+                msgs = ((InternalEObject) body).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - TemplatePackage.CELL__BODY, null, msgs);
+            if (newBody != null)
+                msgs = ((InternalEObject) newBody).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - TemplatePackage.CELL__BODY, null, msgs);
+            msgs = basicSetBody(newBody, msgs);
             if (msgs != null)
                 msgs.dispatch();
         } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CELL__TEMPLATE, newTemplate,
-                    newTemplate));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CELL__BODY, newBody, newBody));
     }
 
     /**
@@ -183,8 +182,8 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case TemplatePackage.CELL__TEMPLATE:
-                return basicSetTemplate(null, msgs);
+            case TemplatePackage.CELL__BODY:
+                return basicSetBody(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -198,8 +197,8 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case TemplatePackage.CELL__TEMPLATE:
-                return getTemplate();
+            case TemplatePackage.CELL__BODY:
+                return getBody();
             case TemplatePackage.CELL__TABLE_CELL:
                 return getTableCell();
         }
@@ -215,8 +214,8 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case TemplatePackage.CELL__TEMPLATE:
-                setTemplate((Template) newValue);
+            case TemplatePackage.CELL__BODY:
+                setBody((Block) newValue);
                 return;
             case TemplatePackage.CELL__TABLE_CELL:
                 setTableCell((XWPFTableCell) newValue);
@@ -234,8 +233,8 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case TemplatePackage.CELL__TEMPLATE:
-                setTemplate((Template) null);
+            case TemplatePackage.CELL__BODY:
+                setBody((Block) null);
                 return;
             case TemplatePackage.CELL__TABLE_CELL:
                 setTableCell(TABLE_CELL_EDEFAULT);
@@ -253,8 +252,8 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case TemplatePackage.CELL__TEMPLATE:
-                return template != null;
+            case TemplatePackage.CELL__BODY:
+                return body != null;
             case TemplatePackage.CELL__TABLE_CELL:
                 return TABLE_CELL_EDEFAULT == null ? tableCell != null : !TABLE_CELL_EDEFAULT.equals(tableCell);
         }

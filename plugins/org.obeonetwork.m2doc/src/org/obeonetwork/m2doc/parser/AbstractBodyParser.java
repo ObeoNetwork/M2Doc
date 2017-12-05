@@ -114,31 +114,17 @@ public abstract class AbstractBodyParser {
     protected abstract TokenType getNextTokenType();
 
     /**
-     * Returns the template contained in the document.
-     * 
-     * @return the parsed template.
-     * @throws DocumentParserException
-     *             if a syntax problem is detected during parsing.
-     */
-    public Template parseTemplate() throws DocumentParserException {
-        final Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
-        template.setXWPFBody(this.document);
-        final Block body = parseBlock(TokenType.EOF);
-        template.setBody(body);
-
-        return template;
-    }
-
-    /**
      * Parses a {@link Block}.
      * 
+     * @param templates
+     *            <code>true</code> if {@link Template} are allowed in this {@link Block}, <code>false</code> otherwise
      * @param endTypes
      *            the token types that mark the end of the parsed compound
      * @return the parsed {@link Block}
      * @throws DocumentParserException
      *             if a problem occurs while parsing
      */
-    protected abstract Block parseBlock(TokenType... endTypes) throws DocumentParserException;
+    public abstract Block parseBlock(List<Template> templates, TokenType... endTypes) throws DocumentParserException;
 
     /**
      * Reads up a tag so that it can be parsed as a simple string.
@@ -206,7 +192,7 @@ public abstract class AbstractBodyParser {
      */
     protected List<TemplateValidationMessage> getValidationMessage(Diagnostic diagnostic, String queryText,
             XWPFRun location) {
-        final List<TemplateValidationMessage> res = new ArrayList<TemplateValidationMessage>();
+        final List<TemplateValidationMessage> res = new ArrayList<>();
 
         for (Diagnostic child : diagnostic.getChildren()) {
             final ValidationMessageLevel level;
@@ -274,7 +260,7 @@ public abstract class AbstractBodyParser {
                 row.getCells().add(cell);
                 cell.setTableCell(tableCell);
                 AbstractBodyParser parser = getNewParser(tableCell);
-                cell.setTemplate(parser.parseTemplate());
+                cell.setBody(parser.parseBlock(null, TokenType.EOF));
             }
         }
         return table;

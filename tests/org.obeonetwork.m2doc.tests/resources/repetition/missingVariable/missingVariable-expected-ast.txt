@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Missing variable :
   
   for  | .aqlFeatureAccess(self, 'eClassifiers') do
@@ -11,3 +11,5 @@ template
   
   End demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

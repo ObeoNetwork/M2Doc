@@ -2,7 +2,7 @@
 === HEADER ===
 
 === BODY ===
-template
+
   This template demonstrates the use of bookmarks. It creates two links to the same bookmark.Test link before bookmark : 
   
   link 'bookmark1' 'a reference to bookmark1' endlink
@@ -20,3 +20,5 @@ template
   endbookmark
   
 === FOOTER ===
+
+=== TEMPLATES ===

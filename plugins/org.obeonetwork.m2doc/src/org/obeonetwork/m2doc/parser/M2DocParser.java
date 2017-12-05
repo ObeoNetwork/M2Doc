@@ -36,6 +36,7 @@ import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
+import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
@@ -51,8 +52,10 @@ import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
@@ -126,8 +129,8 @@ public class M2DocParser extends AbstractBodyParser {
      */
     @Override
     protected TokenType getNextTokenType() {
-        ParsingToken token = runIterator.lookAhead(1);
-        TokenType result;
+        final ParsingToken token = runIterator.lookAhead(1);
+        final TokenType result;
         if (token == null) {
             result = TokenType.EOF;
         } else if (token.getKind() == ParsingTokenKind.TABLE) {
@@ -138,7 +141,7 @@ public class M2DocParser extends AbstractBodyParser {
             XWPFRun run = token.getRun();
             // is run a field begin run
             if (fieldUtils.isFieldBegin(run)) {
-                String code = fieldUtils.lookAheadTag(runIterator);
+                final String code = fieldUtils.lookAheadTag(runIterator);
                 if (code.startsWith(TokenType.FOR.getValue())) {
                     result = TokenType.FOR;
                 } else if (code.startsWith(TokenType.ENDFOR.getValue())) {
@@ -167,6 +170,10 @@ public class M2DocParser extends AbstractBodyParser {
                     result = TokenType.LINK;
                 } else if (code.startsWith(TokenType.COMMENT.getValue())) {
                     result = TokenType.COMMENT;
+                } else if (code.startsWith(TokenType.TEMPLATE.getValue())) {
+                    result = TokenType.TEMPLATE;
+                } else if (code.startsWith(TokenType.ENDTEMPLATE.getValue())) {
+                    result = TokenType.ENDTEMPLATE;
                 } else if (code.startsWith(TokenType.QUERY.getValue())) {
                     result = TokenType.QUERY;
                 } else {
@@ -180,7 +187,7 @@ public class M2DocParser extends AbstractBodyParser {
     }
 
     @Override
-    protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
+    public Block parseBlock(List<Template> templates, TokenType... endTypes) throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
         TokenType type = getNextTokenType();
         Set<TokenType> endTypeSet = new HashSet<>(Arrays.asList(endTypes));
@@ -208,6 +215,7 @@ public class M2DocParser extends AbstractBodyParser {
                 case ENDLET:
                 case ENDBOOKMARK:
                 case ENDUSERDOC:
+                case ENDTEMPLATE:
                     // report the error and ignore the problem so that parsing
                     // continues in other parts of the document.
                     XWPFRun run = runIterator.lookAhead(1).getRun();
@@ -250,6 +258,23 @@ public class M2DocParser extends AbstractBodyParser {
                     break;
                 case CONTENTCONTROL:
                     res.getStatements().add(parseContentControl((XWPFSDT) runIterator.next().getBodyElement()));
+                    break;
+                case TEMPLATE:
+                    if (templates != null) {
+                        templates.add(parseTemplate());
+                    } else {
+                        // report the error and ignore the problem so that parsing
+                        // continues in other parts of the document.
+                        XWPFRun templateRun = runIterator.lookAhead(1).getRun();
+                        if (templateRun == null) {
+                            throw new IllegalStateException(
+                                    "Token of type " + type + " detected. Run shouldn't be null at this place.");
+                        }
+                        res.getValidationMessages()
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                        M2DocUtils.message(ParsingErrorMessage.TEMPLATE_NOT_ALLOWED_IN_THIS_BLOCK),
+                                        templateRun));
+                    }
                     break;
                 default:
                     throw new UnsupportedOperationException(
@@ -307,7 +332,7 @@ public class M2DocParser extends AbstractBodyParser {
             let.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryString, lastRun));
         }
 
-        final Block body = parseBlock(TokenType.ENDLET);
+        final Block body = parseBlock(null, TokenType.ENDLET);
         let.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(let, let.getClosingRuns());
@@ -388,7 +413,7 @@ public class M2DocParser extends AbstractBodyParser {
             final XWPFRun lastRun = conditional.getRuns().get(conditional.getRuns().size() - 1);
             conditional.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
         }
-        final Block thenCompound = parseBlock(TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
+        final Block thenCompound = parseBlock(null, TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
         conditional.setThen(thenCompound);
         TokenType nextRunType = getNextTokenType();
         switch (nextRunType) {
@@ -400,7 +425,7 @@ public class M2DocParser extends AbstractBodyParser {
             case ELSE:
                 final Block block = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
                 readTag(block, block.getRuns());
-                final Block elseCompound = parseBlock(TokenType.ENDIF);
+                final Block elseCompound = parseBlock(null, TokenType.ENDIF);
                 conditional.setElse(elseCompound);
 
                 // read up the m:endif tag if it exists
@@ -458,12 +483,132 @@ public class M2DocParser extends AbstractBodyParser {
             }
         }
         // read up the tags until the "m:endfor" tag is encountered.
-        final Block body = parseBlock(TokenType.ENDFOR);
+        final Block body = parseBlock(null, TokenType.ENDFOR);
         repetition.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(repetition, repetition.getClosingRuns());
         }
         return repetition;
+    }
+
+    /**
+     * Parse a template construct. Template are of the form
+     * <code>{m:template myTemplate (param1 : Integer, param2 : Integer)} runs {m:endtemplate}</code>
+     * 
+     * @return the created object
+     * @throws DocumentParserException
+     *             if something wrong happens during parsing.
+     */
+    private Template parseTemplate() throws DocumentParserException {
+        // first read the tag that opens the repetition
+        final Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
+        String tagText = readTag(template, template.getRuns()).trim();
+        // remove the prefix
+        tagText = tagText.substring(TokenType.TEMPLATE.getValue().length());
+        // extract the name
+        final int indexOfOpenParenthesis = tagText.indexOf('(');
+        if (indexOfOpenParenthesis < 0) {
+            M2DocUtils.validationError(template, "Malformed tag m:template, no '(' found.");
+            template.setName(tagText);
+            final Block body = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
+            template.setBody(body);
+        } else {
+            final String name = tagText.substring(0, indexOfOpenParenthesis).trim();
+            if ("".equals(name)) {
+                M2DocUtils.validationError(template, "Malformed tag m:template : no name specified.");
+            }
+            template.setName(name);
+            final int parametersStart = indexOfOpenParenthesis + 1;
+            if (tagText.length() == parametersStart) {
+                M2DocUtils.validationError(template, "Malformed tag m:template : parameted specified." + tagText);
+            }
+            final int indexOfCloseParenthesis = tagText.indexOf(')');
+            final List<Parameter> parameters;
+            if (indexOfCloseParenthesis < 0) {
+                parameters = parseParameters(template, tagText.substring(indexOfOpenParenthesis));
+                M2DocUtils.validationError(template, "Malformed tag m:template, no ')' found.");
+            } else {
+                parameters = parseParameters(template,
+                        tagText.substring(indexOfOpenParenthesis + 1, indexOfCloseParenthesis));
+            }
+            if (parameters.isEmpty()) {
+                M2DocUtils.validationError(template, "At least one parameter is needed.");
+            } else {
+                template.getParameters().addAll(parameters);
+            }
+        }
+        // read up the tags until the "m:endtemplate" tag is encountered.
+        final Block body = parseBlock(null, TokenType.ENDTEMPLATE);
+        template.setBody(body);
+        if (getNextTokenType() != TokenType.EOF) {
+            readTag(template, template.getClosingRuns());
+        }
+        return template;
+    }
+
+    /**
+     * Parse a {@link List} of {@link Parameter} for the given {@link Template} from the given {@link String}.
+     * 
+     * @param template
+     *            the {@link Template}
+     * @param paramStr
+     *            the {@link String} to parse
+     * @return the created objects
+     */
+    private List<Parameter> parseParameters(Template template, String paramStr) {
+        final List<Parameter> parameters = new ArrayList<>();
+
+        final String[] prmStrs = paramStr.trim().split(",");
+        if (!(prmStrs.length == 1 && prmStrs[0].trim().length() == 0)) {
+            for (String prm : prmStrs) {
+                parameters.add(parseParameter(template, prm.trim()));
+            }
+        }
+        if (paramStr.endsWith(",")) {
+            M2DocUtils.validationError(template, "Malformed prameter, no ':' found.");
+        }
+
+        return parameters;
+    }
+
+    /**
+     * Parse a {@link Parameter} for the given {@link Template} from the given {@link String}.
+     * 
+     * @param template
+     *            the {@link Template}
+     * @param paramStr
+     *            the {@link String} to parse
+     * @return the created object
+     */
+    private Parameter parseParameter(Template template, String paramStr) {
+        final Parameter parameter = (Parameter) EcoreUtil.create(TemplatePackage.Literals.PARAMETER);
+
+        // extract the name
+        int indexOfColon = paramStr.indexOf(':');
+        if (indexOfColon < 0) {
+            M2DocUtils.validationError(template, "Malformed prameter, no ':' found.");
+            parameter.setName(paramStr);
+            final AstResult type = parseWhileAqlTypeLiteral("");
+            parameter.setType(type);
+            if (!type.getErrors().isEmpty()) {
+                final XWPFRun lastRun = template.getRuns().get(template.getRuns().size() - 1);
+                template.getValidationMessages().addAll(getValidationMessage(type.getDiagnostic(), "", lastRun));
+            }
+        } else {
+            final String name = paramStr.substring(0, indexOfColon).trim();
+            if ("".equals(name)) {
+                M2DocUtils.validationError(template, "Malformed parameter no name specified.");
+            }
+            parameter.setName(name);
+            final AstResult type = parseWhileAqlTypeLiteral(paramStr.substring(indexOfColon + 1));
+            parameter.setType(type);
+            if (!type.getErrors().isEmpty()) {
+                final XWPFRun lastRun = template.getRuns().get(template.getRuns().size() - 1);
+                template.getValidationMessages().addAll(getValidationMessage(type.getDiagnostic(), name, lastRun));
+            }
+        }
+
+        return parameter;
     }
 
     /**
@@ -488,7 +633,7 @@ public class M2DocParser extends AbstractBodyParser {
             bookmark.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), tagText, lastRun));
         }
         // read up the tags until the "m:endbookmark" tag is encountered.
-        final Block body = parseBlock(TokenType.ENDBOOKMARK);
+        final Block body = parseBlock(null, TokenType.ENDBOOKMARK);
         bookmark.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(bookmark, bookmark.getClosingRuns());
@@ -556,7 +701,7 @@ public class M2DocParser extends AbstractBodyParser {
         }
 
         // read up the tags until the "m:enduserdoc" tag is encountered.
-        final Block body = parseBlock(TokenType.ENDUSERDOC);
+        final Block body = parseBlock(null, TokenType.ENDUSERDOC);
         userDoc.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(userDoc, userDoc.getClosingRuns());
@@ -602,6 +747,49 @@ public class M2DocParser extends AbstractBodyParser {
             diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
                     "null or empty string.", new Object[] {errorExpression }));
             result = new AstResult(errorExpression, positions, positions, errors, diagnostic);
+        }
+
+        return result;
+    }
+
+    /**
+     * Parses while matching an AQL type literal.
+     * 
+     * @param expression
+     *            the expression to parse
+     * @return the corresponding {@link AstResult}
+     */
+    protected AstResult parseWhileAqlTypeLiteral(String expression) {
+        final IQueryBuilderEngine.AstResult result;
+
+        if (expression != null && expression.length() > 0) {
+            AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+            CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
+            QueryLexer lexer = new QueryLexer(input);
+            lexer.setTokenFactory(new CommonTokenFactory(true));
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(astBuilder.getErrorListener());
+            TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
+            QueryParser parser = new QueryParser(tokens);
+            parser.addParseListener(astBuilder);
+            parser.removeErrorListeners();
+            parser.addErrorListener(astBuilder.getErrorListener());
+            // parser.setTrace(true);
+            parser.typeLiteral();
+            result = astBuilder.getAstResult();
+        } else {
+            ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral) EcoreUtil
+                    .create(AstPackage.eINSTANCE.getErrorTypeLiteral());
+            List<org.eclipse.acceleo.query.ast.Error> errs = new ArrayList<>(1);
+            errs.add(errorTypeLiteral);
+            final Map<Object, Integer> positions = new HashMap<>();
+            if (expression != null) {
+                positions.put(errorTypeLiteral, Integer.valueOf(0));
+            }
+            final BasicDiagnostic diagnostic = new BasicDiagnostic();
+            diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
+                    "missing type literal", new Object[] {errorTypeLiteral }));
+            result = new AstResult(errorTypeLiteral, positions, positions, errs, diagnostic);
         }
 
         return result;

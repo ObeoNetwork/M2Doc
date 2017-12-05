@@ -1,49 +1,49 @@
 
 === HEADER ===
-template
+
   A simple demonstration of a user doc :
   
   userdoc 'zone1' do
     
       table
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         row
-          template
+          
             
-          template
+          
             
-          template
+          
             
-          template
+          
             
           
         
@@ -51,6 +51,8 @@ template
   
   End of demonstration.
 === BODY ===
-template
+
   
 === FOOTER ===
+
+=== TEMPLATES ===

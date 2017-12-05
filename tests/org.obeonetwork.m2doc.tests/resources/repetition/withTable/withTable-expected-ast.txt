@@ -2,13 +2,13 @@
 === HEADER ===
 
 === BODY ===
-template
+
   Demonstrate the For with a table: 
   table
     row
-      template
+      
         Label
-      template
+      
         Name
       
     
@@ -18,9 +18,9 @@ template
   for v | .aqlFeatureAccess(self, 'eClassifiers') do
     table
       row
-        template
+        
           Name :
-        template
+        
           [query: .aqlFeatureAccess(v, 'name')]
         
       
@@ -28,3 +28,5 @@ template
   
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===

@@ -21,8 +21,10 @@ import org.obeonetwork.m2doc.template.Conditional;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.IGenerateable;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
+import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Query;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Row;
@@ -109,6 +111,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 IConstruct iConstruct = (IConstruct) theEObject;
                 T result = caseIConstruct(iConstruct);
                 if (result == null)
+                    result = caseIGenerateable(iConstruct);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -119,6 +123,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                     result = caseStatement(comment);
                 if (result == null)
                     result = caseIConstruct(comment);
+                if (result == null)
+                    result = caseIGenerateable(comment);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -131,6 +137,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = caseIConstruct(conditional);
                 if (result == null)
+                    result = caseIGenerateable(conditional);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -141,6 +149,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                     result = caseStatement(repetition);
                 if (result == null)
                     result = caseIConstruct(repetition);
+                if (result == null)
+                    result = caseIGenerateable(repetition);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -153,6 +163,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = caseIConstruct(userDoc);
                 if (result == null)
+                    result = caseIGenerateable(userDoc);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -163,6 +175,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                     result = caseStatement(userContent);
                 if (result == null)
                     result = caseIConstruct(userContent);
+                if (result == null)
+                    result = caseIGenerateable(userContent);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -175,6 +189,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = caseIConstruct(query);
                 if (result == null)
+                    result = caseIGenerateable(query);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -183,6 +199,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 T result = caseBlock(block);
                 if (result == null)
                     result = caseIConstruct(block);
+                if (result == null)
+                    result = caseIGenerateable(block);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -193,6 +211,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = caseIConstruct(statement);
                 if (result == null)
+                    result = caseIGenerateable(statement);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -201,6 +221,15 @@ public class TemplateSwitch<T> extends Switch<T> {
                 T result = caseTemplate(template);
                 if (result == null)
                     result = caseIConstruct(template);
+                if (result == null)
+                    result = caseIGenerateable(template);
+                if (result == null)
+                    result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.PARAMETER: {
+                Parameter parameter = (Parameter) theEObject;
+                T result = caseParameter(parameter);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -213,6 +242,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = caseIConstruct(staticFragment);
                 if (result == null)
+                    result = caseIGenerateable(staticFragment);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -223,6 +254,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                     result = caseStatement(table);
                 if (result == null)
                     result = caseIConstruct(table);
+                if (result == null)
+                    result = caseIGenerateable(table);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -245,6 +278,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 DocumentTemplate documentTemplate = (DocumentTemplate) theEObject;
                 T result = caseDocumentTemplate(documentTemplate);
                 if (result == null)
+                    result = caseIGenerateable(documentTemplate);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -255,6 +290,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                     result = caseStatement(bookmark);
                 if (result == null)
                     result = caseIConstruct(bookmark);
+                if (result == null)
+                    result = caseIGenerateable(bookmark);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -267,6 +304,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = caseIConstruct(link);
                 if (result == null)
+                    result = caseIGenerateable(link);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -278,6 +317,8 @@ public class TemplateSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = caseIConstruct(let);
                 if (result == null)
+                    result = caseIGenerateable(let);
+                if (result == null)
                     result = defaultCase(theEObject);
                 return result;
             }
@@ -288,6 +329,15 @@ public class TemplateSwitch<T> extends Switch<T> {
                     result = caseStatement(contentControl);
                 if (result == null)
                     result = caseIConstruct(contentControl);
+                if (result == null)
+                    result = caseIGenerateable(contentControl);
+                if (result == null)
+                    result = defaultCase(theEObject);
+                return result;
+            }
+            case TemplatePackage.IGENERATEABLE: {
+                IGenerateable iGenerateable = (IGenerateable) theEObject;
+                T result = caseIGenerateable(iGenerateable);
                 if (result == null)
                     result = defaultCase(theEObject);
                 return result;
@@ -468,6 +518,23 @@ public class TemplateSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Parameter</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Parameter</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseParameter(Parameter object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Static Fragment</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -617,6 +684,23 @@ public class TemplateSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseContentControl(ContentControl object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>IGenerateable</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * 
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>IGenerateable</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIGenerateable(IGenerateable object) {
         return null;
     }
 
