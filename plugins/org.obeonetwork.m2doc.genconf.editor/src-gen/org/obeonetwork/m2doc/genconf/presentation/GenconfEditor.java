@@ -64,8 +64,10 @@ import org.eclipse.emf.edit.ui.util.EditUIMarkerHelper;
 import org.eclipse.emf.edit.ui.util.EditUIUtil;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 import org.eclipse.emf.transaction.TransactionalCommandStack;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.impl.TransactionalCommandStackImpl;
 import org.eclipse.emf.transaction.impl.TransactionalEditingDomainImpl;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
@@ -527,6 +529,36 @@ public class GenconfEditor extends MultiPageEditorPart
     };
 
     /**
+     * The {@link CommandStackListener}.
+     * 
+     * @generated NOT
+     */
+    private CommandStackListener commandStackListener = new CommandStackListener() {
+        public void commandStackChanged(final EventObject event) {
+            getContainer().getDisplay().asyncExec(new Runnable() {
+                public void run() {
+                    firePropertyChange(IEditorPart.PROP_DIRTY);
+
+                    // Try to select the affected objects.
+                    //
+                    Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
+                    if (mostRecentCommand != null) {
+                        setSelectionToViewer(mostRecentCommand.getAffectedObjects());
+                    }
+                    for (Iterator<PropertySheetPage> i = propertySheetPages.iterator(); i.hasNext();) {
+                        PropertySheetPage propertySheetPage = i.next();
+                        if (propertySheetPage.getControl().isDisposed()) {
+                            i.remove();
+                        } else {
+                            propertySheetPage.refresh();
+                        }
+                    }
+                }
+            });
+        }
+    };
+
+    /**
      * Handles activation of the editor or it's associated views.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -687,43 +719,29 @@ public class GenconfEditor extends MultiPageEditorPart
         adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
         adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
-        // Create the command stack that will notify this editor as commands are executed.
-        //
-        TransactionalCommandStack commandStack = new TransactionalCommandStackImpl();
-
-        // Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
-        //
-        commandStack.addCommandStackListener(new CommandStackListener() {
-            public void commandStackChanged(final EventObject event) {
-                getContainer().getDisplay().asyncExec(new Runnable() {
-                    public void run() {
-                        firePropertyChange(IEditorPart.PROP_DIRTY);
-
-                        // Try to select the affected objects.
-                        //
-                        Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
-                        if (mostRecentCommand != null) {
-                            setSelectionToViewer(mostRecentCommand.getAffectedObjects());
-                        }
-                        for (Iterator<PropertySheetPage> i = propertySheetPages.iterator(); i.hasNext();) {
-                            PropertySheetPage propertySheetPage = i.next();
-                            if (propertySheetPage.getControl().isDisposed()) {
-                                i.remove();
-                            } else {
-                                propertySheetPage.refresh();
-                            }
-                        }
-                    }
-                });
-            }
-        });
-
-        // Create the editing domain with a special command stack.
-        //
-        if (resourceSet != null) {
-            editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack, resourceSet);
+        final TransactionalEditingDomain resourceSetEditingDomain = TransactionUtil.getEditingDomain(resourceSet);
+        if (resourceSetEditingDomain instanceof TransactionalEditingDomainImpl) {
+            editingDomain = (TransactionalEditingDomainImpl) resourceSetEditingDomain;
+            // Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
+            //
+            editingDomain.getCommandStack().addCommandStackListener(commandStackListener);
         } else {
-            editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack);
+
+            // Create the command stack that will notify this editor as commands are executed.
+            //
+            TransactionalCommandStack commandStack = new TransactionalCommandStackImpl();
+
+            // Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
+            //
+            commandStack.addCommandStackListener(commandStackListener);
+
+            // Create the editing domain with a special command stack.
+            //
+            if (resourceSet != null) {
+                editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack, resourceSet);
+            } else {
+                editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack);
+            }
         }
     }
 
@@ -1811,7 +1829,7 @@ public class GenconfEditor extends MultiPageEditorPart
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @generated
+     * @generated NOT
      */
     @Override
     public void dispose() {
@@ -1821,7 +1839,11 @@ public class GenconfEditor extends MultiPageEditorPart
 
         getSite().getPage().removePartListener(partListener);
 
-        adapterFactory.dispose();
+        editingDomain.getCommandStack().removeCommandStackListener(commandStackListener);
+
+        if (adapterFactory != null) {
+            adapterFactory.dispose();
+        }
 
         if (getActionBarContributor().getActiveEditor() == this) {
             getActionBarContributor().setActiveEditor(null);
