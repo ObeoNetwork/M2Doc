@@ -854,15 +854,6 @@ public class CustomGenconfEditor extends GenconfEditor {
         return editingDomain.getResourceSet().getResources().get(0);
     }
 
-    /**
-     * Gets the edited {@link Generation}.
-     * 
-     * @return the edited {@link Generation}
-     */
-    protected Generation getGeneration() {
-        return (Generation) getGenconfResource().getContents().get(0);
-    }
-
     @Override
     public void dispose() {
         removeGenerationListener(getGeneration(), generationListener);

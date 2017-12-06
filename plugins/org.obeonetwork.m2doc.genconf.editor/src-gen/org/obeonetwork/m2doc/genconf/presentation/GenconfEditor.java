@@ -42,6 +42,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -120,6 +121,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
+import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.GenconfItemProviderAdapterFactory;
 
 /**
@@ -268,6 +271,13 @@ public class GenconfEditor extends MultiPageEditorPart
      * @generated
      */
     protected ISelectionChangedListener selectionChangedListener;
+
+    /**
+     * The edited {@link Generation}.
+     * 
+     * @generated NOT
+     */
+    private Generation generation;
 
     /**
      * This keeps track of all the {@link org.eclipse.jface.viewers.ISelectionChangedListener}s that are listening to this editor.
@@ -654,11 +664,10 @@ public class GenconfEditor extends MultiPageEditorPart
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @generated
+     * @generated NOT
      */
     public GenconfEditor() {
         super();
-        initializeEditingDomain();
     }
 
     /**
@@ -668,7 +677,7 @@ public class GenconfEditor extends MultiPageEditorPart
      * 
      * @generated NOT
      */
-    protected void initializeEditingDomain() {
+    protected void initializeEditingDomain(ResourceSet resourceSet) {
         // Create an adapter factory that yields item providers.
         //
         adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
@@ -711,7 +720,11 @@ public class GenconfEditor extends MultiPageEditorPart
 
         // Create the editing domain with a special command stack.
         //
-        editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack);
+        if (resourceSet != null) {
+            editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack, resourceSet);
+        } else {
+            editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack);
+        }
     }
 
     /**
@@ -930,22 +943,44 @@ public class GenconfEditor extends MultiPageEditorPart
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @generated
+     * @generated NOT
      */
     public void createModel() {
         URI resourceURI = EditUIUtil.getURI(getEditorInput());
         Exception exception = null;
         Resource resource = null;
+
+        final List<Exception> exceptions = new ArrayList<Exception>();
+        final ResourceSet rs = new ResourceSetImpl();
+        Generation gen;
+        try {
+            gen = (Generation) rs.getResource(resourceURI, true).getContents().get(0);
+        } catch (Exception e) {
+            exception = e;
+            gen = (Generation) rs.getResource(resourceURI, false).getContents().get(0);
+        }
+        final ResourceSet resourceSet;
+        if (gen != null) {
+            resourceSet = GenconfUtils.createResourceSetForModels(exceptions, gen);
+        } else {
+            resourceSet = null;
+        }
+        initializeEditingDomain(resourceSet);
         try {
             // Load the resource through the editing domain.
             //
             resource = editingDomain.getResourceSet().getResource(resourceURI, true);
+            generation = (Generation) resource.getContents().get(0);
         } catch (Exception e) {
             exception = e;
             resource = editingDomain.getResourceSet().getResource(resourceURI, false);
+            generation = (Generation) resource.getContents().get(0);
         }
 
         Diagnostic diagnostic = analyzeResourceProblems(resource, exception);
+        for (Exception e : exceptions) {
+            diagnostic.getChildren().add(analyzeResourceProblems(resource, e));
+        }
         if (diagnostic.getSeverity() != Diagnostic.OK) {
             resourceToDiagnosticMap.put(resource, analyzeResourceProblems(resource, exception));
         }
@@ -1571,7 +1606,8 @@ public class GenconfEditor extends MultiPageEditorPart
         setInputWithNotify(editorInput);
         setPartName(editorInput.getName());
         IProgressMonitor progressMonitor = getActionBars().getStatusLineManager() != null
-                ? getActionBars().getStatusLineManager().getProgressMonitor() : new NullProgressMonitor();
+                ? getActionBars().getStatusLineManager().getProgressMonitor()
+                : new NullProgressMonitor();
         doSave(progressMonitor);
     }
 
@@ -1679,7 +1715,8 @@ public class GenconfEditor extends MultiPageEditorPart
      */
     public void setStatusLineManager(ISelection selection) {
         IStatusLineManager statusLineManager = currentViewer != null && currentViewer == contentOutlineViewer
-                ? contentOutlineStatusLineManager : getActionBars().getStatusLineManager();
+                ? contentOutlineStatusLineManager
+                : getActionBars().getStatusLineManager();
 
         if (statusLineManager != null) {
             if (selection instanceof IStructuredSelection) {
@@ -1811,4 +1848,15 @@ public class GenconfEditor extends MultiPageEditorPart
     protected boolean showOutlineView() {
         return true;
     }
+
+    /**
+     * Gets the edited {@link Generation}.
+     * 
+     * @return the edited {@link Generation}
+     * @generated NOT
+     */
+    protected Generation getGeneration() {
+        return generation;
+    }
+
 }
