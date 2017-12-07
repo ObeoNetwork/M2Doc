@@ -722,6 +722,9 @@ public class GenconfEditor extends MultiPageEditorPart
         final TransactionalEditingDomain resourceSetEditingDomain = TransactionUtil.getEditingDomain(resourceSet);
         if (resourceSetEditingDomain instanceof TransactionalEditingDomainImpl) {
             editingDomain = (TransactionalEditingDomainImpl) resourceSetEditingDomain;
+            if (editingDomain.getResourceToReadOnlyMap() == null) {
+                editingDomain.setResourceToReadOnlyMap(new HashMap<Resource, Boolean>());
+            }
             // Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
             //
             editingDomain.getCommandStack().addCommandStackListener(commandStackListener);
