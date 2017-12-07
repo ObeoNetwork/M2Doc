@@ -42,6 +42,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -722,9 +723,6 @@ public class GenconfEditor extends MultiPageEditorPart
         final TransactionalEditingDomain resourceSetEditingDomain = TransactionUtil.getEditingDomain(resourceSet);
         if (resourceSetEditingDomain instanceof TransactionalEditingDomainImpl) {
             editingDomain = (TransactionalEditingDomainImpl) resourceSetEditingDomain;
-            if (editingDomain.getResourceToReadOnlyMap() == null) {
-                editingDomain.setResourceToReadOnlyMap(new HashMap<Resource, Boolean>());
-            }
             // Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
             //
             editingDomain.getCommandStack().addCommandStackListener(commandStackListener);
@@ -1505,7 +1503,7 @@ public class GenconfEditor extends MultiPageEditorPart
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @generated
+     * @generated NOT
      */
     @Override
     public void doSave(IProgressMonitor progressMonitor) {
@@ -1527,7 +1525,7 @@ public class GenconfEditor extends MultiPageEditorPart
                 boolean first = true;
                 for (Resource resource : editingDomain.getResourceSet().getResources()) {
                     if ((first || !resource.getContents().isEmpty() || isPersisted(resource))
-                        && !editingDomain.isReadOnly(resource)) {
+                        && !isReadOnly(resource)) {
                         try {
                             long timeStamp = resource.getTimeStamp();
                             resource.save(saveOptions);
@@ -1541,6 +1539,32 @@ public class GenconfEditor extends MultiPageEditorPart
                     }
                 }
             }
+
+            /**
+             * This is a workaround for some buggus implementation of {@link TransactionalEditingDomain}.
+             * 
+             * @param resource
+             *            the {@link Resource} to test
+             * @return <code>true</code> if the given {@link Resource} is read only, <code>false</code> otherwise
+             */
+            private boolean isReadOnly(Resource resource) {
+                if (editingDomain.getResourceToReadOnlyMap() == null) {
+                    editingDomain.setResourceToReadOnlyMap(new HashMap<Resource, Boolean>());
+                }
+
+                Boolean result = editingDomain.getResourceToReadOnlyMap().get(resource);
+                if (result == null && resource != null) {
+                    Map<?, ?> options = Collections.singletonMap(URIConverter.OPTION_REQUESTED_ATTRIBUTES,
+                            Collections.singleton(URIConverter.ATTRIBUTE_READ_ONLY));
+                    Map<String, ?> attributes = (resource.getResourceSet() == null ? editingDomain.getResourceSet()
+                            : resource.getResourceSet()).getURIConverter().getAttributes(resource.getURI(), options);
+                    result = Boolean.TRUE.equals(attributes.get(URIConverter.ATTRIBUTE_READ_ONLY));
+                    editingDomain.getResourceToReadOnlyMap().put(resource, result);
+                }
+
+                return Boolean.TRUE.equals(result);
+            }
+
         };
 
         updateProblemIndication = false;
