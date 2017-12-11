@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
@@ -64,6 +65,7 @@ import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.emf.edit.ui.util.EditUIMarkerHelper;
 import org.eclipse.emf.edit.ui.util.EditUIUtil;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalCommandStack;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.impl.TransactionalCommandStackImpl;
@@ -101,6 +103,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -137,6 +140,14 @@ import org.obeonetwork.m2doc.genconf.provider.GenconfItemProviderAdapterFactory;
  */
 public class GenconfEditor extends MultiPageEditorPart
         implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerProvider, IGotoMarker {
+
+    /**
+     * The editor ID.
+     * 
+     * @generated NOT
+     */
+    public static final String ID = "org.obeonetwork.m2doc.genconf.presentation.GenconfEditorID";
+
     /**
      * This keeps track of the editing domain that is used to track all changes to the model.
      * <!-- begin-user-doc -->
@@ -283,6 +294,11 @@ public class GenconfEditor extends MultiPageEditorPart
     private Generation generation;
 
     /**
+     * Tells if the {@link ResourceSet} for model is the default one.
+     */
+    private boolean isDefaultResourceSet;
+
+    /**
      * This keeps track of all the {@link org.eclipse.jface.viewers.ISelectionChangedListener}s that are listening to this editor.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -405,6 +421,8 @@ public class GenconfEditor extends MultiPageEditorPart
      * @generated
      */
     protected EContentAdapter problemIndicationAdapter = new EContentAdapter() {
+        protected boolean dispatching;
+
         @Override
         public void notifyChanged(Notification notification) {
             if (notification.getNotifier() instanceof Resource) {
@@ -419,19 +437,24 @@ public class GenconfEditor extends MultiPageEditorPart
                         } else {
                             resourceToDiagnosticMap.remove(resource);
                         }
-
-                        if (updateProblemIndication) {
-                            getSite().getShell().getDisplay().asyncExec(new Runnable() {
-                                public void run() {
-                                    updateProblemIndication();
-                                }
-                            });
-                        }
+                        dispatchUpdateProblemIndication();
                         break;
                     }
                 }
             } else {
                 super.notifyChanged(notification);
+            }
+        }
+
+        protected void dispatchUpdateProblemIndication() {
+            if (updateProblemIndication && !dispatching) {
+                dispatching = true;
+                getSite().getShell().getDisplay().asyncExec(new Runnable() {
+                    public void run() {
+                        dispatching = false;
+                        updateProblemIndication();
+                    }
+                });
             }
         }
 
@@ -444,13 +467,7 @@ public class GenconfEditor extends MultiPageEditorPart
         protected void unsetTarget(Resource target) {
             basicUnsetTarget(target);
             resourceToDiagnosticMap.remove(target);
-            if (updateProblemIndication) {
-                getSite().getShell().getDisplay().asyncExec(new Runnable() {
-                    public void run() {
-                        updateProblemIndication();
-                    }
-                });
-            }
+            dispatchUpdateProblemIndication();
         }
     };
 
@@ -459,35 +476,38 @@ public class GenconfEditor extends MultiPageEditorPart
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @generated
+     * @generated NOT
      */
     protected IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
         public void resourceChanged(IResourceChangeEvent event) {
             IResourceDelta delta = event.getDelta();
             try {
                 class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-                    protected ResourceSet resourceSet = editingDomain.getResourceSet();
                     protected Collection<Resource> changedResources = new ArrayList<Resource>();
                     protected Collection<Resource> removedResources = new ArrayList<Resource>();
 
                     public boolean visit(IResourceDelta delta) {
-                        if (delta.getResource().getType() == IResource.FILE) {
-                            if (delta.getKind() == IResourceDelta.REMOVED || delta.getKind() == IResourceDelta.CHANGED
-                                && delta.getFlags() != IResourceDelta.MARKERS) {
-                                Resource resource = resourceSet.getResource(
-                                        URI.createPlatformResourceURI(delta.getFullPath().toString(), true), false);
-                                if (resource != null) {
-                                    if (delta.getKind() == IResourceDelta.REMOVED) {
-                                        removedResources.add(resource);
-                                    } else if (!savedResources.remove(resource)) {
-                                        changedResources.add(resource);
+                        if (editingDomain != null) {
+                            if (delta.getResource().getType() == IResource.FILE) {
+                                if (delta.getKind() == IResourceDelta.REMOVED
+                                    || delta.getKind() == IResourceDelta.CHANGED
+                                        && delta.getFlags() != IResourceDelta.MARKERS) {
+                                    Resource resource = editingDomain.getResourceSet().getResource(
+                                            URI.createPlatformResourceURI(delta.getFullPath().toString(), true), false);
+                                    if (resource != null) {
+                                        if (delta.getKind() == IResourceDelta.REMOVED) {
+                                            removedResources.add(resource);
+                                        } else if (!savedResources.remove(resource)) {
+                                            changedResources.add(resource);
+                                        }
                                     }
                                 }
+                                return false;
                             }
+                            return true;
+                        } else {
                             return false;
                         }
-
-                        return true;
                     }
 
                     public Collection<Resource> getChangedResources() {
@@ -701,6 +721,59 @@ public class GenconfEditor extends MultiPageEditorPart
      */
     public GenconfEditor() {
         super();
+    }
+
+    /**
+     * This sets up the editing domain for the model editor.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated NOT
+     * @deprecated
+     */
+    protected void initializeEditingDomain() {
+        // Create an adapter factory that yields item providers.
+        //
+        adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+        adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
+        adapterFactory.addAdapterFactory(new GenconfItemProviderAdapterFactory());
+        adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+
+        // Create the command stack that will notify this editor as commands are executed.
+        //
+        TransactionalCommandStack commandStack = new TransactionalCommandStackImpl();
+
+        // Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
+        //
+        commandStack.addCommandStackListener(new CommandStackListener() {
+            public void commandStackChanged(final EventObject event) {
+                getContainer().getDisplay().asyncExec(new Runnable() {
+                    public void run() {
+                        firePropertyChange(IEditorPart.PROP_DIRTY);
+
+                        // Try to select the affected objects.
+                        //
+                        Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
+                        if (mostRecentCommand != null) {
+                            setSelectionToViewer(mostRecentCommand.getAffectedObjects());
+                        }
+                        for (Iterator<PropertySheetPage> i = propertySheetPages.iterator(); i.hasNext();) {
+                            PropertySheetPage propertySheetPage = i.next();
+                            if (propertySheetPage.getControl().isDisposed()) {
+                                i.remove();
+                            } else {
+                                propertySheetPage.refresh();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        // Create the editing domain with a special command stack.
+        //
+        editingDomain = new TransactionalEditingDomainImpl(adapterFactory, commandStack);
     }
 
     /**
@@ -980,7 +1053,11 @@ public class GenconfEditor extends MultiPageEditorPart
         }
         final ResourceSet resourceSet;
         if (gen != null) {
-            resourceSet = GenconfUtils.createResourceSetForModels(exceptions, gen);
+            final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
+            defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
+                    new XMIResourceFactoryImpl());
+            resourceSet = GenconfUtils.createResourceSetForModels(exceptions, defaultResourceSet, gen);
+            isDefaultResourceSet = resourceSet == defaultResourceSet;
         } else {
             resourceSet = null;
         }
@@ -996,12 +1073,13 @@ public class GenconfEditor extends MultiPageEditorPart
             generation = (Generation) resource.getContents().get(0);
         }
 
-        Diagnostic diagnostic = analyzeResourceProblems(resource, exception);
+        final BasicDiagnostic globalDiagnostic = new BasicDiagnostic();
+        globalDiagnostic.add(analyzeResourceProblems(resource, exception));
         for (Exception e : exceptions) {
-            diagnostic.getChildren().add(analyzeResourceProblems(resource, e));
+            globalDiagnostic.add(analyzeResourceProblems(resource, e));
         }
-        if (diagnostic.getSeverity() != Diagnostic.OK) {
-            resourceToDiagnosticMap.put(resource, analyzeResourceProblems(resource, exception));
+        if (globalDiagnostic.getSeverity() != Diagnostic.OK) {
+            resourceToDiagnosticMap.put(resource, globalDiagnostic);
         }
         editingDomain.getResourceSet().eAdapters().add(problemIndicationAdapter);
     }
@@ -1068,6 +1146,7 @@ public class GenconfEditor extends MultiPageEditorPart
 
                 selectionViewer = (TreeViewer) viewerPane.getViewer();
                 selectionViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
+                selectionViewer.setUseHashlookup(true);
 
                 selectionViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
                 selectionViewer.setInput(editingDomain.getResourceSet());
@@ -1086,6 +1165,7 @@ public class GenconfEditor extends MultiPageEditorPart
             //
             {
                 ViewerPane viewerPane = new ViewerPane(getSite().getPage(), GenconfEditor.this) {
+
                     @Override
                     public Viewer createViewer(Composite composite) {
                         Tree tree = new Tree(composite, SWT.MULTI);
@@ -1107,13 +1187,16 @@ public class GenconfEditor extends MultiPageEditorPart
                 parentViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
 
                 createContextMenuFor(parentViewer);
+
                 int pageIndex = addPage(viewerPane.getControl());
+
                 setPageText(pageIndex, getString("_UI_ParentPage_label"));
             }
 
             // This is the page for the list viewer
             //
             {
+
                 ViewerPane viewerPane = new ViewerPane(getSite().getPage(), GenconfEditor.this) {
                     @Override
                     public Viewer createViewer(Composite composite) {
@@ -1133,6 +1216,7 @@ public class GenconfEditor extends MultiPageEditorPart
 
                 createContextMenuFor(listViewer);
                 int pageIndex = addPage(viewerPane.getControl());
+
                 setPageText(pageIndex, getString("_UI_ListPage_label"));
             }
 
@@ -1374,6 +1458,7 @@ public class GenconfEditor extends MultiPageEditorPart
 
                     // Set up the tree viewer.
                     //
+                    contentOutlineViewer.setUseHashlookup(true);
                     contentOutlineViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
                     contentOutlineViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
                     contentOutlineViewer.setInput(editingDomain.getResourceSet());
@@ -1582,6 +1667,59 @@ public class GenconfEditor extends MultiPageEditorPart
             //
             M2docconfEditorPlugin.INSTANCE.log(exception);
         }
+
+        List<Exception> exceptions = new ArrayList<Exception>();
+
+        final ResourceSet newResourceSet;
+        if (isDefaultResourceSet) {
+            newResourceSet = GenconfUtils.createResourceSetForModels(exceptions, editingDomain.getResourceSet(),
+                    generation);
+        } else {
+            final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
+            defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
+                    new XMIResourceFactoryImpl());
+            newResourceSet = GenconfUtils.createResourceSetForModels(exceptions, defaultResourceSet, generation);
+            isDefaultResourceSet = newResourceSet == defaultResourceSet;
+        }
+        if (exceptions.isEmpty()) {
+            if (newResourceSet != editingDomain.getResourceSet()) {
+                Display.getDefault().syncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // MessageBox dialog = new MessageBox(getSite().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                        // dialog.setText("Editor need to be reloaded");
+                        // dialog.setMessage(
+                        // "The options change in the generation configuration need to restart the editor to take effect.");
+                        // dialog.open();
+                        getEditorSite().getPage().closeEditor(GenconfEditor.this, false);
+                        editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+
+                            @Override
+                            protected void doExecute() {
+                                editingDomain.getResourceSet().getResources().remove(generation.eResource());
+                            }
+                        });
+                        try {
+                            getEditorSite().getPage().openEditor(getEditorInput(), ID, true);
+                        } catch (PartInitException e) {
+                            M2docconfEditorPlugin.INSTANCE.log(e);
+                        }
+                    }
+                });
+            }
+        } else {
+            final Resource resource = generation.eResource();
+            final BasicDiagnostic globalDiagnostic = new BasicDiagnostic();
+            for (Exception e : exceptions) {
+                globalDiagnostic.add(analyzeResourceProblems(resource, e));
+            }
+            if (globalDiagnostic.getSeverity() != Diagnostic.OK) {
+                resourceToDiagnosticMap.put(resource, globalDiagnostic);
+            }
+            editingDomain.getResourceSet().eAdapters().add(problemIndicationAdapter);
+        }
+
         updateProblemIndication = true;
         updateProblemIndication();
     }

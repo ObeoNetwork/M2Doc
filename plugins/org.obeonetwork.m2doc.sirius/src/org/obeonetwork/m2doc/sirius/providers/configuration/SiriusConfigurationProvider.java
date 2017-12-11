@@ -199,7 +199,8 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
      *      org.obeonetwork.m2doc.template.DocumentTemplate)
      */
     @Override
-    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI, DocumentTemplate documentTemplate) {
+    public List<URI> postGenerate(Generation generation, URI templateURI, URI generatedURI,
+            DocumentTemplate documentTemplate) {
         final Session session = sessions.remove(generation);
         if (session != null) {
             session.getTransactionalEditingDomain().getResourceSet().eAdapters()
@@ -217,7 +218,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
         ResourceSet created = null;
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         final String representationsFileName = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
-        if (representationsFileName != null && representationsFileName.endsWith("aird")) {
+        if (representationsFileName != null) {
             final URI sessionURI = GenconfUtils.getResolvedURI(generation, URI.createURI(representationsFileName));
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
@@ -230,6 +231,8 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
                 SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
                 created.eAdapters().add(transiantAttachment);
                 trasiantAttachments.put(session, transiantAttachment);
+            } else {
+                throw new IllegalArgumentException("The Sirius session doesn't exists: " + sessionURI);
             }
         }
         return created;
