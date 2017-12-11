@@ -20,6 +20,7 @@ package org.obeonetwork.m2doc.genconf;
 public interface IntegerDefinition extends Definition {
     /**
      * Returns the value of the '<em><b>Value</b></em>' attribute.
+     * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Value</em>' attribute isn't clear,
@@ -30,7 +31,7 @@ public interface IntegerDefinition extends Definition {
      * @return the value of the '<em>Value</em>' attribute.
      * @see #setValue(int)
      * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getIntegerDefinition_Value()
-     * @model
+     * @model default="0"
      * @generated
      */
     int getValue();

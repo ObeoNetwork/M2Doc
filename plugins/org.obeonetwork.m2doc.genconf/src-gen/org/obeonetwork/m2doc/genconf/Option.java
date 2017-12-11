@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 public interface Option extends EObject {
     /**
      * Returns the value of the '<em><b>Name</b></em>' attribute.
+     * The default value is <code>""</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Name</em>' attribute isn't clear,
@@ -33,7 +34,7 @@ public interface Option extends EObject {
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getOption_Name()
-     * @model required="true"
+     * @model default="" required="true"
      * @generated
      */
     String getName();
@@ -52,6 +53,7 @@ public interface Option extends EObject {
 
     /**
      * Returns the value of the '<em><b>Value</b></em>' attribute.
+     * The default value is <code>""</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Value</em>' attribute isn't clear,
@@ -62,7 +64,7 @@ public interface Option extends EObject {
      * @return the value of the '<em>Value</em>' attribute.
      * @see #setValue(String)
      * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getOption_Value()
-     * @model required="true"
+     * @model default="" required="true"
      * @generated
      */
     String getValue();

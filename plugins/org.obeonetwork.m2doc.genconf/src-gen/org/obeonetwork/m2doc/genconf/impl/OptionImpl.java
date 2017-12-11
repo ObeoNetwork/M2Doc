@@ -33,7 +33,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * @generated
      * @ordered
      */
-    protected static final String NAME_EDEFAULT = null;
+    protected static final String NAME_EDEFAULT = "";
 
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -55,7 +55,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * @generated
      * @ordered
      */
-    protected static final String VALUE_EDEFAULT = null;
+    protected static final String VALUE_EDEFAULT = "";
 
     /**
      * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.

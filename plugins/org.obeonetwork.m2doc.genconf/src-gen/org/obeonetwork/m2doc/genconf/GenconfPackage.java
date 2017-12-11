@@ -533,8 +533,8 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_Name();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getTemplateFileName
-     * <em>Template File Name</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getTemplateFileName <em>Template File
+     * Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -546,8 +546,7 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_TemplateFileName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getResultFileName
-     * <em>Result File Name</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getResultFileName <em>Result File Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -571,8 +570,8 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_TimeStamped();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#isRefreshRepresentations
-     * <em>Refresh Representations</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#isRefreshRepresentations <em>Refresh
+     * Representations</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -922,8 +921,7 @@ public interface GenconfPackage extends EPackage {
         EReference MODEL_DEFINITION__VALUE = eINSTANCE.getModelDefinition_Value();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl <em>String Definition</em>}'
-         * class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl <em>String Definition</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
@@ -943,8 +941,7 @@ public interface GenconfPackage extends EPackage {
         EAttribute STRING_DEFINITION__VALUE = eINSTANCE.getStringDefinition_Value();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerDefinitionImpl <em>Integer Definition</em>}'
-         * class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerDefinitionImpl <em>Integer Definition</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
@@ -984,8 +981,7 @@ public interface GenconfPackage extends EPackage {
         EAttribute REAL_DEFINITION__VALUE = eINSTANCE.getRealDefinition_Value();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanDefinitionImpl <em>Boolean Definition</em>}'
-         * class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanDefinitionImpl <em>Boolean Definition</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 

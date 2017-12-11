@@ -525,31 +525,31 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
 
         initEClass(stringDefinitionEClass, StringDefinition.class, "StringDefinition", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getStringDefinition_Value(), ecorePackage.getEString(), "value", null, 0, 1,
+        initEAttribute(getStringDefinition_Value(), ecorePackage.getEString(), "value", "", 0, 1,
                 StringDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
 
         initEClass(integerDefinitionEClass, IntegerDefinition.class, "IntegerDefinition", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getIntegerDefinition_Value(), ecorePackage.getEInt(), "value", null, 0, 1,
+        initEAttribute(getIntegerDefinition_Value(), ecorePackage.getEInt(), "value", "0", 0, 1,
                 IntegerDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
 
         initEClass(realDefinitionEClass, RealDefinition.class, "RealDefinition", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getRealDefinition_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, RealDefinition.class,
+        initEAttribute(getRealDefinition_Value(), ecorePackage.getEDouble(), "value", "0", 0, 1, RealDefinition.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(booleanDefinitionEClass, BooleanDefinition.class, "BooleanDefinition", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getBooleanDefinition_Value(), ecorePackage.getEBoolean(), "value", null, 0, 1,
+        initEAttribute(getBooleanDefinition_Value(), ecorePackage.getEBoolean(), "value", "false", 0, 1,
                 BooleanDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
 
         initEClass(optionEClass, Option.class, "Option", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getOption_Name(), ecorePackage.getEString(), "name", null, 1, 1, Option.class, !IS_TRANSIENT,
+        initEAttribute(getOption_Name(), ecorePackage.getEString(), "name", "", 1, 1, Option.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getOption_Value(), ecorePackage.getEString(), "value", null, 1, 1, Option.class, !IS_TRANSIENT,
+        initEAttribute(getOption_Value(), ecorePackage.getEString(), "value", "", 1, 1, Option.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource

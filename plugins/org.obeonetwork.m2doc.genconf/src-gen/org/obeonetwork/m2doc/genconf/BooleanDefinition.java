@@ -20,6 +20,7 @@ package org.obeonetwork.m2doc.genconf;
 public interface BooleanDefinition extends Definition {
     /**
      * Returns the value of the '<em><b>Value</b></em>' attribute.
+     * The default value is <code>"false"</code>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Value</em>' attribute isn't clear,
@@ -30,7 +31,7 @@ public interface BooleanDefinition extends Definition {
      * @return the value of the '<em>Value</em>' attribute.
      * @see #setValue(boolean)
      * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getBooleanDefinition_Value()
-     * @model
+     * @model default="false"
      * @generated
      */
     boolean isValue();
