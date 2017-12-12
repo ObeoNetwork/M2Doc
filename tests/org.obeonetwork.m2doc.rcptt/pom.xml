@@ -59,6 +59,9 @@
               </injection>
             </injections>
           </aut>
+          <skipTags>
+            <skipTag>fail</skipTag>
+           </skipTags>
         </configuration>
       </plugin>
     </plugins>

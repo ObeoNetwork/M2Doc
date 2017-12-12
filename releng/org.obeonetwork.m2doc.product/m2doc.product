@@ -109,6 +109,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
     <features>
       <feature id="org.obeonetwork.m2doc.feature"/>
+      <feature id="org.obeonetwork.m2doc.cdo.feature"/>
       <feature id="org.obeonetwork.m2doc.sirius.feature"/>
       <feature id="org.obeonetwork.m2doc.ui.feature"/>
       <feature id="org.obeonetwork.m2doc.rcptt.feature"/>
