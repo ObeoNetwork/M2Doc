@@ -153,8 +153,10 @@ public abstract class AbstractTemplatesTestSuite {
         final URI templateURI = getTemplateURI(new File(testFolderPath));
         setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
         queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
-        final List<Exception> exceptions = new ArrayList<Exception>();
-        resourceSetForModels = GenconfUtils.createResourceSetForModels(exceptions, generation);
+        final List<Exception> exceptions = new ArrayList<>();
+        final ResourceSet rs = new ResourceSetImpl();
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+        resourceSetForModels = GenconfUtils.createResourceSetForModels(exceptions, rs, generation);
         resourceSetForModels.getURIConverter().getURIHandlers().add(0, uriHandler);
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()));

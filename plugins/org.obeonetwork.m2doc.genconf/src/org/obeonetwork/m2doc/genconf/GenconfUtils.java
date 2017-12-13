@@ -44,7 +44,6 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
@@ -476,12 +475,7 @@ public final class GenconfUtils {
      * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
      */
     public static ResourceSet createResourceSetForModels(List<Exception> exceptions, Generation generation) {
-        final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
-
-        defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
-                new XMIResourceFactoryImpl());
-
-        return createResourceSetForModels(exceptions, defaultResourceSet, generation);
+        return createResourceSetForModels(exceptions, new ResourceSetImpl(), generation);
     }
 
     /**
