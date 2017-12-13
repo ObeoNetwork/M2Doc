@@ -58,7 +58,7 @@ public class M2DocSiriusServices {
          * The {@link Set} of jobs.
          */
 
-        private Set<Runnable> jobs = new LinkedHashSet<Runnable>();
+        private Set<Runnable> jobs = new LinkedHashSet<>();
 
         /**
          * Registers a job on a key.
@@ -211,7 +211,7 @@ public class M2DocSiriusServices {
                     .getRepresentationDescriptors(targetRootObject, session)) {
                 if (representation != null && representation.getDescription() == description) {
                     registry.registerJob(new CleaningAIRDJob(targetRootObject, session, representation));
-                    result = new ArrayList<DRepresentationDescriptor>();
+                    result = new ArrayList<>();
                     result.add(representation);
                 }
             }
@@ -264,7 +264,7 @@ public class M2DocSiriusServices {
 
         if (representation instanceof DDiagram) {
             final DDiagram diagram = (DDiagram) representation;
-            final List<Layer> layers = new ArrayList<Layer>();
+            final List<Layer> layers = new ArrayList<>();
             for (Layer layer : diagram.getDescription().getAllLayers()) {
                 if (layerNames.contains(layer.getName())) {
                     layers.add(layer);
@@ -307,7 +307,7 @@ public class M2DocSiriusServices {
     public MImage asImage(final DRepresentation representation) throws SizeTooLargeException, IOException {
         final MImage res;
 
-        final File tmpFile = File.createTempFile(representation.getName() + "-m2doc", ".jpg");
+        final File tmpFile = File.createTempFile(sanitize(representation.getName()) + "-m2doc", ".jpg");
         tmpFiles.add(tmpFile);
 
         // Make sure to run the Sirius image export in the UI thread.
@@ -332,6 +332,17 @@ public class M2DocSiriusServices {
         res = new MImageImpl(URI.createFileURI(tmpFile.getAbsolutePath()));
 
         return res;
+    }
+
+    /**
+     * Sanitizes the given filename.
+     * 
+     * @param name
+     *            the filename
+     * @return the sanitized filename
+     */
+    private String sanitize(String name) {
+        return name.replaceAll("[<>:\"/\\|?*'\0]", "_");
     }
 
     // @formatter:off
@@ -367,7 +378,7 @@ public class M2DocSiriusServices {
     // @formatter:on
     public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName, boolean refresh,
             Set<String> layerNames) throws SizeTooLargeException, IOException {
-        final List<MImage> res = new ArrayList<MImage>();
+        final List<MImage> res = new ArrayList<>();
 
         for (DRepresentation representation : SiriusRepresentationUtils
                 .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName)) {
@@ -392,7 +403,7 @@ public class M2DocSiriusServices {
     // @formatter:on
     public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName)
             throws SizeTooLargeException, IOException {
-        final List<MImage> res = new ArrayList<MImage>();
+        final List<MImage> res = new ArrayList<>();
 
         for (DRepresentation representation : SiriusRepresentationUtils
                 .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName)) {
@@ -482,10 +493,10 @@ public class M2DocSiriusServices {
     public MImage asImageByRepresentationName(String representationName) throws SizeTooLargeException, IOException {
         final MImage res;
 
-        final DRepresentationDescriptor description = SiriusRepresentationUtils
+        final DRepresentationDescriptor descriptor = SiriusRepresentationUtils
                 .getAssociatedRepresentationByName(representationName, session);
-        if (description != null) {
-            res = asImage(description.getRepresentation());
+        if (descriptor != null) {
+            res = asImage(descriptor.getRepresentation());
         } else {
             res = null;
         }
