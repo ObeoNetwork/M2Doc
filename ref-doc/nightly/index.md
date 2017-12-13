@@ -101,6 +101,8 @@ The second table of the editor at the bottom can be used to set options for spec
 * `Initialize option` will initialize an option (see [services with custom constructor](index.html#custom-constructor) for more details)
 * `Delete` will delete the selected options 
 
+Note that modifying option can modify the accessible variable values. For instance after referencing a Sirius session, semantic elements of the session are accessible.
+
 ## Template authoring
 
 The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use `ALT+F9`. To insert a new field, use `CTRL+F9`.
