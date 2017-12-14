@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.command;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -31,9 +31,7 @@ import org.eclipse.ui.progress.IProgressService;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
-import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
  * Generate docx from docx template.
@@ -55,17 +53,22 @@ public class GenerateHandler extends AbstractGenerationHandler {
                     try {
                         generatedfiles.addAll(GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(),
                                 BasicMonitor.toMonitor(pm)));
-
-                    } catch (IOException e) {
-                        throw new InvocationTargetException(e);
-                    } catch (DocumentParserException e) {
-                        throw new InvocationTargetException(e);
-                    } catch (DocumentGenerationException e) {
-                        throw new InvocationTargetException(e);
                         // CHECKSTYLE:OFF any error should be reported back.
-                    } catch (RuntimeException e) {// do not let exception leak out.
+                    } catch (final Exception e) {// do not let exception leak out.
                         // CHECKSTYLE:ON
-                        throw new InvocationTargetException(e);
+                        Display.getDefault().asyncExec(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                String msg = e.getMessage();
+                                M2docconfEditorPlugin.getPlugin().getLog()
+                                        .log(new Status(Status.ERROR,
+                                                M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR,
+                                                "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
+                                MessageDialog.openError(shell, "Generation problem. See the error log for details",
+                                        msg);
+                            }
+                        });
                     }
                 }
             });
@@ -83,7 +86,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
             M2docconfEditorPlugin.getPlugin().getLog()
                     .log(new Status(Status.ERROR, M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR,
                             "M2Doc : technical error" + (msg == null ? "." : " : " + msg), e));
-            MessageDialog.openError(shell, "Generation problem. See the error log for details", e.getMessage());
+            MessageDialog.openError(shell, "Generation problem. See the error log for details", msg);
         }
     }
 
