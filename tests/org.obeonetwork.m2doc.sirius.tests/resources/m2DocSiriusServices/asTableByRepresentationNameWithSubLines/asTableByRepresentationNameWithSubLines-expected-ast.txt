@@ -1,0 +1,12 @@
+
+=== HEADER ===
+template
+  
+=== BODY ===
+template
+  This demonstrate the simple usage of asTableByRepresentationName service :
+  [query: .asTableByRepresentationName('new Names')]
+  End of demonstration.
+=== FOOTER ===
+template
+  

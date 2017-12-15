@@ -1,0 +1,1029 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:description_2="http://www.eclipse.org/sirius/table/description/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:table="http://www.eclipse.org/sirius/table/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/table/description/1.1.0 http://www.eclipse.org/sirius/table/1.1.0#//description">
+  <viewpoint:DAnalysis xmi:id="__mhUwLe2EeadeJgQTriozQ" selectedViews="_AS6gsLe3EeadeJgQTriozQ" version="11.1.0.201608251200">
+    <semanticResources>anydsl.ecore</semanticResources>
+    <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
+    <semanticResources>nominal.genconf</semanticResources>
+    <semanticResources>isRepresentationNameTrue.genconf</semanticResources>
+    <semanticResources>asImageByRepresentationName.genconf</semanticResources>
+    <ownedViews xmi:type="viewpoint:DView" xmi:id="_AS6gsLe3EeadeJgQTriozQ">
+      <viewpoint xmi:type="description:Viewpoint" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']"/>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_8t6roBOaEeeLmO8hPdE7Qw" name="anydsl class diagram">
+        <description xmi:type="description_1:DiagramDescription" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Entities']"/>
+        <target xmi:type="ecore:EPackage" href="anydsl.ecore#/"/>
+      </ownedRepresentationDescriptors>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_S04pQCWjEee7IqxR0ASXXA" name="new Names" repPath="#_S07skCWjEee7IqxR0ASXXA">
+        <description xmi:type="description_2:EditionTableDescription" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']"/>
+        <target xmi:type="ecore:EPackage" href="anydsl.ecore#/"/>
+      </ownedRepresentationDescriptors>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_yJ444OGCEeeP-rDrcF7ayQ" name="new Names" repPath="#_Qwhf4CUWEeeWS8vwTkpYUw">
+        <description xmi:type="description_2:EditionTableDescription" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']"/>
+        <target xmi:type="ecore:EPackage" href="anydsl.ecore#/"/>
+      </ownedRepresentationDescriptors>
+    </ownedViews>
+  </viewpoint:DAnalysis>
+  <table:DTable xmi:id="_S07skCWjEee7IqxR0ASXXA" name="new Names" headerColumnWidth="290">
+    <target xmi:type="ecore:EPackage" href="anydsl.ecore#/"/>
+    <lines xmi:type="table:DLine" xmi:id="_S07skSWjEee7IqxR0ASXXA" label="World">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj1Z8OGDEeeP-rDrcF7ayQ" label="companies : Company">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkDcYOGDEeeP-rDrcF7ayQ" label="companies" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj5EUOGDEeeP-rDrcF7ayQ" label="foods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkDcYeGDEeeP-rDrcF7ayQ" label="foods" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj5EUeGDEeeP-rDrcF7ayQ" label="sources : Source">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEDcOGDEeeP-rDrcF7ayQ" label="sources" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07skiWjEee7IqxR0ASXXA" label="World" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07skyWjEee7IqxR0ASXXA" label="MultiNamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj5rYOGDEeeP-rDrcF7ayQ" label="name : SingleString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEDceGDEeeP-rDrcF7ayQ" label="name" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07slCWjEee7IqxR0ASXXA" label="MultiNamedElement" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07slSWjEee7IqxR0ASXXA" label="NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj6ScOGDEeeP-rDrcF7ayQ" label="name : SingleString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEDcuGDEeeP-rDrcF7ayQ" label="name" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07sliWjEee7IqxR0ASXXA" label="NamedElement" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07slyWjEee7IqxR0ASXXA" label="Producer -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj65gOGDEeeP-rDrcF7ayQ" label="adress : Adress">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEqgOGDEeeP-rDrcF7ayQ" label="adress" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj65geGDEeeP-rDrcF7ayQ" label="company : Company">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEqgeGDEeeP-rDrcF7ayQ" label="company" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj65guGDEeeP-rDrcF7ayQ" label="foods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEqguGDEeeP-rDrcF7ayQ" label="foods" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07smCWjEee7IqxR0ASXXA" label="Producer" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07smSWjEee7IqxR0ASXXA" label="Adress">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj7gkOGDEeeP-rDrcF7ayQ" label="zipCode : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEqg-GDEeeP-rDrcF7ayQ" label="zipCode" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj7gkeGDEeeP-rDrcF7ayQ" label="city : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkEqhOGDEeeP-rDrcF7ayQ" label="city" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj7gkuGDEeeP-rDrcF7ayQ" label="country : CountryData">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkFRkOGDEeeP-rDrcF7ayQ" label="country" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07smiWjEee7IqxR0ASXXA" label="Adress" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07smyWjEee7IqxR0ASXXA" label="Company -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj7gk-GDEeeP-rDrcF7ayQ" label="adress : Adress">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkFRkeGDEeeP-rDrcF7ayQ" label="adress" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8HoOGDEeeP-rDrcF7ayQ" label="world : World">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkFRkuGDEeeP-rDrcF7ayQ" label="world" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07snCWjEee7IqxR0ASXXA" label="Company" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07snSWjEee7IqxR0ASXXA" label="ProductionCompany -> Company">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8HoeGDEeeP-rDrcF7ayQ" label="producers : Producer">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkFRk-GDEeeP-rDrcF7ayQ" label="producers" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07sniWjEee7IqxR0ASXXA" label="ProductionCompany" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07snyWjEee7IqxR0ASXXA" label="Restaurant -> Company">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8HouGDEeeP-rDrcF7ayQ" label="chefs : Chef">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkF4oOGDEeeP-rDrcF7ayQ" label="chefs" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8Ho-GDEeeP-rDrcF7ayQ" label="menu : EStringToRecipeMap">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkF4oeGDEeeP-rDrcF7ayQ" label="menu" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07soCWjEee7IqxR0ASXXA" label="Restaurant" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07soSWjEee7IqxR0ASXXA" label="Chef -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8usOGDEeeP-rDrcF7ayQ" label="adress : Adress">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkGfsOGDEeeP-rDrcF7ayQ" label="adress" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8useGDEeeP-rDrcF7ayQ" label="recipes : Recipe">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkGfseGDEeeP-rDrcF7ayQ" label="recipes" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07soiWjEee7IqxR0ASXXA" label="Chef" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07soyWjEee7IqxR0ASXXA" label="Recipe -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8usuGDEeeP-rDrcF7ayQ" label="ingredients : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkGfsuGDEeeP-rDrcF7ayQ" label="ingredients" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07spCWjEee7IqxR0ASXXA" label="Recipe" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07spSWjEee7IqxR0ASXXA" label="Food -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj8us-GDEeeP-rDrcF7ayQ" label="color : Color">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkHGwOGDEeeP-rDrcF7ayQ" label="color" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj9VwOGDEeeP-rDrcF7ayQ" label="caliber : Caliber">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkHGweGDEeeP-rDrcF7ayQ" label="caliber" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj9VweGDEeeP-rDrcF7ayQ" label="relatedFoods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkHGwuGDEeeP-rDrcF7ayQ" label="relatedFoods" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj9VwuGDEeeP-rDrcF7ayQ" label="group : Group">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkHt0OGDEeeP-rDrcF7ayQ" label="group" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj9Vw-GDEeeP-rDrcF7ayQ" label="label : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkHt0eGDEeeP-rDrcF7ayQ" label="label" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj9VxOGDEeeP-rDrcF7ayQ" label="source : Source">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkHt0uGDEeeP-rDrcF7ayQ" label="source" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj9VxeGDEeeP-rDrcF7ayQ" label="producers : Producer">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkIU4OGDEeeP-rDrcF7ayQ" label="producers" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07spiWjEee7IqxR0ASXXA" label="Food" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07spyWjEee7IqxR0ASXXA" label="Source -> MultiNamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj980OGDEeeP-rDrcF7ayQ" label="foods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkIU4eGDEeeP-rDrcF7ayQ" label="foods" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj980eGDEeeP-rDrcF7ayQ" label="origin : CountryData">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkIU4uGDEeeP-rDrcF7ayQ" label="origin" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07sqCWjEee7IqxR0ASXXA" label="Source" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07sqSWjEee7IqxR0ASXXA" label="Plant -> Source">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj980uGDEeeP-rDrcF7ayQ" label="kind : Kind">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkI78OGDEeeP-rDrcF7ayQ" label="kind" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07sqiWjEee7IqxR0ASXXA" label="Plant" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07sqyWjEee7IqxR0ASXXA" label="Animal -> Source">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj980-GDEeeP-rDrcF7ayQ" label="part : Part">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkI78eGDEeeP-rDrcF7ayQ" label="part" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07srCWjEee7IqxR0ASXXA" label="Animal" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07srSWjEee7IqxR0ASXXA" label="Color">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07sriWjEee7IqxR0ASXXA" label="Color" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07sryWjEee7IqxR0ASXXA" label="Caliber">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07ssCWjEee7IqxR0ASXXA" label="Caliber" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07ssSWjEee7IqxR0ASXXA" label="Group">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07ssiWjEee7IqxR0ASXXA" label="Group" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07ssyWjEee7IqxR0ASXXA" label="Continent">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07stCWjEee7IqxR0ASXXA" label="Continent" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07stSWjEee7IqxR0ASXXA" label="Kind">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07stiWjEee7IqxR0ASXXA" label="Kind" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07styWjEee7IqxR0ASXXA" label="Part">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07suCWjEee7IqxR0ASXXA" label="Part" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07suSWjEee7IqxR0ASXXA" label="CountryData [anydsl.Country]">
+      <target xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+      <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07suiWjEee7IqxR0ASXXA" label="CountryData" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+        <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07suyWjEee7IqxR0ASXXA" label="SingleString [java.lang.String]">
+      <target xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+      <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07svCWjEee7IqxR0ASXXA" label="SingleString" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+        <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_S07svSWjEee7IqxR0ASXXA" label="EStringToRecipeMap [java.util.Map$Entry]">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+      <lines xmi:type="table:DLine" xmi:id="_Aj_K8OGDEeeP-rDrcF7ayQ" label="key : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkJjAOGDEeeP-rDrcF7ayQ" label="key" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_Aj_K8eGDEeeP-rDrcF7ayQ" label="value : Recipe">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_AkKKEOGDEeeP-rDrcF7ayQ" label="value" column="_S07svyWjEee7IqxR0ASXXA">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_S07sviWjEee7IqxR0ASXXA" label="EStringToRecipeMap" column="_S07svyWjEee7IqxR0ASXXA">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+      </cells>
+    </lines>
+    <columns xmi:type="table:DFeatureColumn" xmi:id="_S07svyWjEee7IqxR0ASXXA" label="'Name'" cells="_S07skiWjEee7IqxR0ASXXA _S07slCWjEee7IqxR0ASXXA _S07sliWjEee7IqxR0ASXXA _S07smCWjEee7IqxR0ASXXA _S07smiWjEee7IqxR0ASXXA _S07snCWjEee7IqxR0ASXXA _S07sniWjEee7IqxR0ASXXA _S07soCWjEee7IqxR0ASXXA _S07soiWjEee7IqxR0ASXXA _S07spCWjEee7IqxR0ASXXA _S07spiWjEee7IqxR0ASXXA _S07sqCWjEee7IqxR0ASXXA _S07sqiWjEee7IqxR0ASXXA _S07srCWjEee7IqxR0ASXXA _S07sriWjEee7IqxR0ASXXA _S07ssCWjEee7IqxR0ASXXA _S07ssiWjEee7IqxR0ASXXA _S07stCWjEee7IqxR0ASXXA _S07stiWjEee7IqxR0ASXXA _S07suCWjEee7IqxR0ASXXA _S07suiWjEee7IqxR0ASXXA _S07svCWjEee7IqxR0ASXXA _S07sviWjEee7IqxR0ASXXA _AkDcYOGDEeeP-rDrcF7ayQ _AkDcYeGDEeeP-rDrcF7ayQ _AkEDcOGDEeeP-rDrcF7ayQ _AkEDceGDEeeP-rDrcF7ayQ _AkEDcuGDEeeP-rDrcF7ayQ _AkEqgOGDEeeP-rDrcF7ayQ _AkEqgeGDEeeP-rDrcF7ayQ _AkEqguGDEeeP-rDrcF7ayQ _AkEqg-GDEeeP-rDrcF7ayQ _AkEqhOGDEeeP-rDrcF7ayQ _AkFRkOGDEeeP-rDrcF7ayQ _AkFRkeGDEeeP-rDrcF7ayQ _AkFRkuGDEeeP-rDrcF7ayQ _AkFRk-GDEeeP-rDrcF7ayQ _AkF4oOGDEeeP-rDrcF7ayQ _AkF4oeGDEeeP-rDrcF7ayQ _AkGfsOGDEeeP-rDrcF7ayQ _AkGfseGDEeeP-rDrcF7ayQ _AkGfsuGDEeeP-rDrcF7ayQ _AkHGwOGDEeeP-rDrcF7ayQ _AkHGweGDEeeP-rDrcF7ayQ _AkHGwuGDEeeP-rDrcF7ayQ _AkHt0OGDEeeP-rDrcF7ayQ _AkHt0eGDEeeP-rDrcF7ayQ _AkHt0uGDEeeP-rDrcF7ayQ _AkIU4OGDEeeP-rDrcF7ayQ _AkIU4eGDEeeP-rDrcF7ayQ _AkIU4uGDEeeP-rDrcF7ayQ _AkI78OGDEeeP-rDrcF7ayQ _AkI78eGDEeeP-rDrcF7ayQ _AkJjAOGDEeeP-rDrcF7ayQ _AkKKEOGDEeeP-rDrcF7ayQ" featureName="name">
+      <originMapping xmi:type="description_2:FeatureColumnMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedColumnMappings[name='NameColumn']"/>
+    </columns>
+    <description xmi:type="description_2:EditionTableDescription" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']"/>
+  </table:DTable>
+  <table:DTable xmi:id="_Qwhf4CUWEeeWS8vwTkpYUw" name="new Names" headerColumnWidth="290">
+    <target xmi:type="ecore:EPackage" href="anydsl.ecore#/"/>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG8CUWEeeWS8vwTkpYUw" label="World">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_GZoOGDEeeP-rDrcF7ayQ" label="companies : Company">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_NuYOGDEeeP-rDrcF7ayQ" label="companies" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/companies"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_HAsOGDEeeP-rDrcF7ayQ" label="foods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_NuYeGDEeeP-rDrcF7ayQ" label="foods" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/foods"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_HAseGDEeeP-rDrcF7ayQ" label="sources : Source">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_OVcOGDEeeP-rDrcF7ayQ" label="sources" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//World/sources"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG8SUWEeeWS8vwTkpYUw" label="World" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//World"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG8iUWEeeWS8vwTkpYUw" label="MultiNamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_HAsuGDEeeP-rDrcF7ayQ" label="name : SingleString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_OVceGDEeeP-rDrcF7ayQ" label="name" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//MultiNamedElement/name"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG8yUWEeeWS8vwTkpYUw" label="MultiNamedElement" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//MultiNamedElement"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG9CUWEeeWS8vwTkpYUw" label="NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_HnwOGDEeeP-rDrcF7ayQ" label="name : SingleString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_O8gOGDEeeP-rDrcF7ayQ" label="name" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//NamedElement/name"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG9SUWEeeWS8vwTkpYUw" label="NamedElement" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//NamedElement"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG9iUWEeeWS8vwTkpYUw" label="Producer -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_HnweGDEeeP-rDrcF7ayQ" label="adress : Adress">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_O8geGDEeeP-rDrcF7ayQ" label="adress" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/adress"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_IO0OGDEeeP-rDrcF7ayQ" label="company : Company">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_PjkOGDEeeP-rDrcF7ayQ" label="company" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/company"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_IO0eGDEeeP-rDrcF7ayQ" label="foods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_PjkeGDEeeP-rDrcF7ayQ" label="foods" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Producer/foods"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG9yUWEeeWS8vwTkpYUw" label="Producer" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Producer"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG-CUWEeeWS8vwTkpYUw" label="Adress">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_IO0uGDEeeP-rDrcF7ayQ" label="zipCode : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_PjkuGDEeeP-rDrcF7ayQ" label="zipCode" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/zipCode"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_IO0-GDEeeP-rDrcF7ayQ" label="city : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_Pjk-GDEeeP-rDrcF7ayQ" label="city" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/city"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_I14OGDEeeP-rDrcF7ayQ" label="country : CountryData">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_QKoOGDEeeP-rDrcF7ayQ" label="country" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Adress/country"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG-SUWEeeWS8vwTkpYUw" label="Adress" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Adress"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG-iUWEeeWS8vwTkpYUw" label="Company -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_I14eGDEeeP-rDrcF7ayQ" label="adress : Adress">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_QKoeGDEeeP-rDrcF7ayQ" label="adress" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/adress"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_I14uGDEeeP-rDrcF7ayQ" label="world : World">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_QKouGDEeeP-rDrcF7ayQ" label="world" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Company/world"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG-yUWEeeWS8vwTkpYUw" label="Company" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Company"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG_CUWEeeWS8vwTkpYUw" label="ProductionCompany -> Company">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_Jc8OGDEeeP-rDrcF7ayQ" label="producers : Producer">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_QxsOGDEeeP-rDrcF7ayQ" label="producers" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//ProductionCompany/producers"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG_SUWEeeWS8vwTkpYUw" label="ProductionCompany" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//ProductionCompany"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiG_iUWEeeWS8vwTkpYUw" label="Restaurant -> Company">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_Jc8eGDEeeP-rDrcF7ayQ" label="chefs : Chef">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_QxseGDEeeP-rDrcF7ayQ" label="chefs" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/chefs"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_Jc8uGDEeeP-rDrcF7ayQ" label="menu : EStringToRecipeMap">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_QxsuGDEeeP-rDrcF7ayQ" label="menu" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Restaurant/menu"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiG_yUWEeeWS8vwTkpYUw" label="Restaurant" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Restaurant"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHACUWEeeWS8vwTkpYUw" label="Chef -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_KEAOGDEeeP-rDrcF7ayQ" label="adress : Adress">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_RYwOGDEeeP-rDrcF7ayQ" label="adress" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/adress"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_KEAeGDEeeP-rDrcF7ayQ" label="recipes : Recipe">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_RYweGDEeeP-rDrcF7ayQ" label="recipes" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Chef/recipes"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHASUWEeeWS8vwTkpYUw" label="Chef" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Chef"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHAiUWEeeWS8vwTkpYUw" label="Recipe -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_KEAuGDEeeP-rDrcF7ayQ" label="ingredients : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_RYwuGDEeeP-rDrcF7ayQ" label="ingredients" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Recipe/ingredients"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHAyUWEeeWS8vwTkpYUw" label="Recipe" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Recipe"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHBCUWEeeWS8vwTkpYUw" label="Food -> NamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_KrEOGDEeeP-rDrcF7ayQ" label="color : Color">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_RYw-GDEeeP-rDrcF7ayQ" label="color" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/color"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_KrEeGDEeeP-rDrcF7ayQ" label="caliber : Caliber">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_R_0OGDEeeP-rDrcF7ayQ" label="caliber" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/caliber"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_LSIOGDEeeP-rDrcF7ayQ" label="relatedFoods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_R_0eGDEeeP-rDrcF7ayQ" label="relatedFoods" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/relatedFoods"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_LSIeGDEeeP-rDrcF7ayQ" label="group : Group">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_R_0uGDEeeP-rDrcF7ayQ" label="group" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/group"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_LSIuGDEeeP-rDrcF7ayQ" label="label : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_R_0-GDEeeP-rDrcF7ayQ" label="label" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Food/label.1"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_LSI-GDEeeP-rDrcF7ayQ" label="source : Source">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_Sm4OGDEeeP-rDrcF7ayQ" label="source" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/source"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_LSJOGDEeeP-rDrcF7ayQ" label="producers : Producer">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_Sm4eGDEeeP-rDrcF7ayQ" label="producers" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Food/producers"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHBSUWEeeWS8vwTkpYUw" label="Food" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Food"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHBiUWEeeWS8vwTkpYUw" label="Source -> MultiNamedElement">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_L5MOGDEeeP-rDrcF7ayQ" label="foods : Food">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_Sm4uGDEeeP-rDrcF7ayQ" label="foods" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//Source/foods"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_L5MeGDEeeP-rDrcF7ayQ" label="origin : CountryData">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_Sm4-GDEeeP-rDrcF7ayQ" label="origin" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Source/origin"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHByUWEeeWS8vwTkpYUw" label="Source" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Source"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHCCUWEeeWS8vwTkpYUw" label="Plant -> Source">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_MgQOGDEeeP-rDrcF7ayQ" label="kind : Kind">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_TN8OGDEeeP-rDrcF7ayQ" label="kind" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Plant/kind"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHCSUWEeeWS8vwTkpYUw" label="Plant" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Plant"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHCiUWEeeWS8vwTkpYUw" label="Animal -> Source">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_MgQeGDEeeP-rDrcF7ayQ" label="part : Part">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_TN8eGDEeeP-rDrcF7ayQ" label="part" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//Animal/part"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHCyUWEeeWS8vwTkpYUw" label="Animal" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//Animal"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHDCUWEeeWS8vwTkpYUw" label="Color">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHDSUWEeeWS8vwTkpYUw" label="Color" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Color"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHDiUWEeeWS8vwTkpYUw" label="Caliber">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHDyUWEeeWS8vwTkpYUw" label="Caliber" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Caliber"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHECUWEeeWS8vwTkpYUw" label="Group">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHESUWEeeWS8vwTkpYUw" label="Group" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Group"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHEiUWEeeWS8vwTkpYUw" label="Continent">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHEyUWEeeWS8vwTkpYUw" label="Continent" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Continent"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHFCUWEeeWS8vwTkpYUw" label="Kind">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHFSUWEeeWS8vwTkpYUw" label="Kind" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Kind"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHFiUWEeeWS8vwTkpYUw" label="Part">
+      <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+      <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHFyUWEeeWS8vwTkpYUw" label="Part" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+        <semanticElements xmi:type="ecore:EEnum" href="anydsl.ecore#//Part"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHGCUWEeeWS8vwTkpYUw" label="CountryData [anydsl.Country]">
+      <target xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+      <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHGSUWEeeWS8vwTkpYUw" label="CountryData" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+        <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//CountryData"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHGiUWEeeWS8vwTkpYUw" label="SingleString [java.lang.String]">
+      <target xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+      <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHGyUWEeeWS8vwTkpYUw" label="SingleString" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+        <semanticElements xmi:type="ecore:EDataType" href="anydsl.ecore#//SingleString"/>
+      </cells>
+    </lines>
+    <lines xmi:type="table:DLine" xmi:id="_QwiHHCUWEeeWS8vwTkpYUw" label="EStringToRecipeMap [java.util.Map$Entry]">
+      <target xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+      <lines xmi:type="table:DLine" xmi:id="_A_NHUOGDEeeP-rDrcF7ayQ" label="key : EString">
+        <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_T1AOGDEeeP-rDrcF7ayQ" label="key" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+          <semanticElements xmi:type="ecore:EAttribute" href="anydsl.ecore#//EStringToRecipeMap/key"/>
+        </cells>
+      </lines>
+      <lines xmi:type="table:DLine" xmi:id="_A_NHUeGDEeeP-rDrcF7ayQ" label="value : Recipe">
+        <target xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+        <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+        <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']/@ownedSubLines[name='EStructuralFeatureLine']"/>
+        <cells xmi:type="table:DCell" xmi:id="_A_T1AeGDEeeP-rDrcF7ayQ" label="value" column="_QwiHHiUWEeeWS8vwTkpYUw">
+          <target xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+          <semanticElements xmi:type="ecore:EReference" href="anydsl.ecore#//EStringToRecipeMap/value"/>
+        </cells>
+      </lines>
+      <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+      <originMapping xmi:type="description_2:LineMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedLineMappings[name='EClassifierLine']"/>
+      <cells xmi:type="table:DCell" xmi:id="_QwiHHSUWEeeWS8vwTkpYUw" label="EStringToRecipeMap" column="_QwiHHiUWEeeWS8vwTkpYUw">
+        <target xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+        <semanticElements xmi:type="ecore:EClass" href="anydsl.ecore#//EStringToRecipeMap"/>
+      </cells>
+    </lines>
+    <columns xmi:type="table:DFeatureColumn" xmi:id="_QwiHHiUWEeeWS8vwTkpYUw" label="'Name'" cells="_QwiG8SUWEeeWS8vwTkpYUw _QwiG8yUWEeeWS8vwTkpYUw _QwiG9SUWEeeWS8vwTkpYUw _QwiG9yUWEeeWS8vwTkpYUw _QwiG-SUWEeeWS8vwTkpYUw _QwiG-yUWEeeWS8vwTkpYUw _QwiG_SUWEeeWS8vwTkpYUw _QwiG_yUWEeeWS8vwTkpYUw _QwiHASUWEeeWS8vwTkpYUw _QwiHAyUWEeeWS8vwTkpYUw _QwiHBSUWEeeWS8vwTkpYUw _QwiHByUWEeeWS8vwTkpYUw _QwiHCSUWEeeWS8vwTkpYUw _QwiHCyUWEeeWS8vwTkpYUw _QwiHDSUWEeeWS8vwTkpYUw _QwiHDyUWEeeWS8vwTkpYUw _QwiHESUWEeeWS8vwTkpYUw _QwiHEyUWEeeWS8vwTkpYUw _QwiHFSUWEeeWS8vwTkpYUw _QwiHFyUWEeeWS8vwTkpYUw _QwiHGSUWEeeWS8vwTkpYUw _QwiHGyUWEeeWS8vwTkpYUw _QwiHHSUWEeeWS8vwTkpYUw _A_NuYOGDEeeP-rDrcF7ayQ _A_NuYeGDEeeP-rDrcF7ayQ _A_OVcOGDEeeP-rDrcF7ayQ _A_OVceGDEeeP-rDrcF7ayQ _A_O8gOGDEeeP-rDrcF7ayQ _A_O8geGDEeeP-rDrcF7ayQ _A_PjkOGDEeeP-rDrcF7ayQ _A_PjkeGDEeeP-rDrcF7ayQ _A_PjkuGDEeeP-rDrcF7ayQ _A_Pjk-GDEeeP-rDrcF7ayQ _A_QKoOGDEeeP-rDrcF7ayQ _A_QKoeGDEeeP-rDrcF7ayQ _A_QKouGDEeeP-rDrcF7ayQ _A_QxsOGDEeeP-rDrcF7ayQ _A_QxseGDEeeP-rDrcF7ayQ _A_QxsuGDEeeP-rDrcF7ayQ _A_RYwOGDEeeP-rDrcF7ayQ _A_RYweGDEeeP-rDrcF7ayQ _A_RYwuGDEeeP-rDrcF7ayQ _A_RYw-GDEeeP-rDrcF7ayQ _A_R_0OGDEeeP-rDrcF7ayQ _A_R_0eGDEeeP-rDrcF7ayQ _A_R_0uGDEeeP-rDrcF7ayQ _A_R_0-GDEeeP-rDrcF7ayQ _A_Sm4OGDEeeP-rDrcF7ayQ _A_Sm4eGDEeeP-rDrcF7ayQ _A_Sm4uGDEeeP-rDrcF7ayQ _A_Sm4-GDEeeP-rDrcF7ayQ _A_TN8OGDEeeP-rDrcF7ayQ _A_TN8eGDEeeP-rDrcF7ayQ _A_T1AOGDEeeP-rDrcF7ayQ _A_T1AeGDEeeP-rDrcF7ayQ" featureName="name">
+      <originMapping xmi:type="description_2:FeatureColumnMapping" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']/@ownedColumnMappings[name='NameColumn']"/>
+    </columns>
+    <description xmi:type="description_2:EditionTableDescription" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Names']"/>
+  </table:DTable>
+</xmi:XMI>
