@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -189,14 +190,14 @@ public class M2DocTemplateEditor extends EditorPart {
 
         @Override
         protected CellEditor getCellEditor(Object element) {
-            List<String> availableTypes = new ArrayList<String>();
+            List<String> availableTypes = new ArrayList<>();
 
             availableTypes.add(TemplateCustomProperties.STRING_TYPE);
             availableTypes.add(TemplateCustomProperties.INTEGER_TYPE);
             availableTypes.add(TemplateCustomProperties.REAL_TYPE);
             availableTypes.add(TemplateCustomProperties.BOOLEAN_TYPE);
 
-            final List<String> availiablesTypes = new ArrayList<String>();
+            final List<String> availiablesTypes = new ArrayList<>();
             availableTypes.addAll(getEClassifiers(EcorePackage.eINSTANCE));
             if (templateCustomProperties != null) {
                 for (String nsURI : templateCustomProperties.getPackagesURIs()) {
@@ -220,7 +221,7 @@ public class M2DocTemplateEditor extends EditorPart {
          * @return the {@link List} of all classifiers in the given {@link EPackage}
          */
         private List<String> getEClassifiers(EPackage ePkg) {
-            final List<String> res = new ArrayList<String>();
+            final List<String> res = new ArrayList<>();
 
             for (EClassifier eClassifier : ePkg.getEClassifiers()) {
                 res.add(ePkg.getName() + "::" + eClassifier.getName());
@@ -833,19 +834,7 @@ public class M2DocTemplateEditor extends EditorPart {
         addPackageMenu.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(
-                        Display.getCurrent().getActiveShell(), true, PlatformUI.getWorkbench().getProgressService(),
-                        SearchEngine.createJavaSearchScope(new IJavaElement[] {project, }), IJavaSearchConstants.CLASS);
-                if (dialog.open() == Dialog.OK && dialog.getResult() != null) {
-                    if (dialog.getResult().length != 0) {
-                        for (Object object : dialog.getResult()) {
-                            customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(),
-                                    ((IType) object).getJavaProject().getProject().getName());
-                        }
-                        setDirty(true);
-                        servicesTable.refresh();
-                    }
-                }
+                openClassSelectionDialog(customProperties);
             }
         });
 
@@ -895,6 +884,37 @@ public class M2DocTemplateEditor extends EditorPart {
         if (dirty != value) {
             dirty = value;
             firePropertyChange(PROP_DIRTY);
+        }
+    }
+
+    /**
+     * Opens the class selection dialog to add services to the given {@link TemplateCustomProperties}.
+     * 
+     * @param customProperties
+     *            the {@link TemplateCustomProperties}
+     */
+    private void openClassSelectionDialog(final TemplateCustomProperties customProperties) {
+        FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(Display.getCurrent().getActiveShell(),
+                true, PlatformUI.getWorkbench().getProgressService(),
+                SearchEngine.createJavaSearchScope(new IJavaElement[] {project, }), IJavaSearchConstants.CLASS);
+        if (dialog.open() == Dialog.OK && dialog.getResult() != null && dialog.getResult().length != 0) {
+            for (Object object : dialog.getResult()) {
+                IPath parentPath = ((IType) object).getParent().getPath();
+                if (parentPath.getFileExtension().equals("jar")) {
+                    int indexOfUnderscore = parentPath.lastSegment().indexOf('_');
+                    if (indexOfUnderscore > -1) {
+                        final String pluginName = parentPath.lastSegment().substring(0, indexOfUnderscore);
+                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(), pluginName);
+                    } else {
+                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(), "");
+                    }
+                } else {
+                    customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(),
+                            ((IType) object).getJavaProject().getProject().getName());
+                }
+            }
+            setDirty(true);
+            servicesTable.refresh();
         }
     }
 
