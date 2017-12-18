@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -140,6 +141,7 @@ public abstract class AbstractTemplatesTestSuite {
      *             if the tested template can't be parsed
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
+        UMLPackage.eINSTANCE.getName(); // make sure UML2 is loaded
         this.testFolderPath = testFolder.replaceAll("\\\\", "/");
         final URI genconfURI = getGenconfURI(new File(testFolderPath));
         if (URIConverter.INSTANCE.exists(genconfURI, Collections.EMPTY_MAP)) {
