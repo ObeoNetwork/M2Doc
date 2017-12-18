@@ -19,6 +19,13 @@ First you need to download the version 1.1.x of [Capella](http://polarsys.org/ca
 
 Once your download is finished, extract the downloaded archive and run the eclipe executable in the eclipse sub folder. You are now ready for the last step of the installation. You will need to [add a new update site](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm):
 
+### Installation Capella 1.2.x
+
+* [http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.2.0/full](http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.2.0/full)
+
+
+### Installation Capella 1.1.x
+
 * [http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full](http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full)
 
 This update site contains [M2Doc](http://m2Doc.org) and the [Capella](http://polarsys.org/capella/) integration. Select the following feature:
