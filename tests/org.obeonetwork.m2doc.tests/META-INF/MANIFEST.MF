@@ -15,7 +15,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.antlr.runtime;bundle-version="4.3.0",
  org.apache.poi;bundle-version="[3.16.0,3.17.0)",
  com.google.guava;bundle-version="[15.0.0,16.0.0)",
- org.eclipse.uml2.uml
+ org.eclipse.uml2.uml,
+ org.xtext.example.mydsl;bundle-version="1.0.0",
+ org.eclipse.emf.mwe.core,
+ com.google.inject
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %providerName
 Export-Package: org.obeonetwork.m2doc.tests,

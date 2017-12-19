@@ -42,7 +42,6 @@
     <module>features/org.obeonetwork.m2doc.sirius.feature</module>
     <module>features/org.obeonetwork.m2doc.launcher.feature</module>
     <module>features/org.obeonetwork.m2doc.cdo.feature</module>
-    
   </modules>
 
   <properties>
@@ -165,7 +164,7 @@
          <consoleOutput>true</consoleOutput>
          <failsOnError>true</failsOnError>
          <linkXRef>false</linkXRef>
-         <excludes>**/tests/**/*</excludes>
+         <excludes>**/tests/**/*,**/example/mydsl/**/*</excludes>
        </configuration>
        <goals>
          <goal>check</goal>
@@ -319,6 +318,10 @@
         <module>tests/org.obeonetwork.m2doc.genconf.tests</module>
         <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
         <module>tests/org.obeonetwork.m2doc.cdo.tests</module>
+
+        <module>tests/org.xtext.example.mydsl</module>
+        <module>tests/org.xtext.example.mydsl.ide</module>
+        <module>tests/org.xtext.example.mydsl.ui</module>
       </modules>
     </profile>
     <profile>

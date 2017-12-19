@@ -57,6 +57,8 @@ import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.xtext.example.mydsl.MyDslStandaloneSetup;
+import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -141,6 +143,7 @@ public abstract class AbstractTemplatesTestSuite {
      *             if the tested template can't be parsed
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
+        MyDslPackage.eINSTANCE.getName();// make sure MyDsl is loaded (XText)
         UMLPackage.eINSTANCE.getName(); // make sure UML2 is loaded
         this.testFolderPath = testFolder.replaceAll("\\\\", "/");
         final URI genconfURI = getGenconfURI(new File(testFolderPath));
@@ -157,7 +160,12 @@ public abstract class AbstractTemplatesTestSuite {
         queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
         final List<Exception> exceptions = new ArrayList<>();
         final ResourceSet rs = new ResourceSetImpl();
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+        final XMIResourceFactoryImpl xmiResourceFactory = new XMIResourceFactoryImpl();
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", xmiResourceFactory);
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", xmiResourceFactory);
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("genconf", xmiResourceFactory);
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("uml", xmiResourceFactory);
+        new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
         resourceSetForModels = GenconfUtils.createResourceSetForModels(exceptions, rs, generation);
         resourceSetForModels.getURIConverter().getURIHandlers().add(0, uriHandler);
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,

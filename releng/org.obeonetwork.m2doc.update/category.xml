@@ -35,6 +35,10 @@
    <bundle id="org.obeonetwork.m2doc.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.cdo.tests" version="0.0.0"/>
 
+   <bundle id="org.xtext.example.mydsl" version="0.0.0"/>
+   <bundle id="org.xtext.example.mydsl.ide" version="0.0.0"/>
+   <bundle id="org.xtext.example.mydsl.ui" version="0.0.0"/>
+
    <feature id="org.eclipse.acceleo.query" version="0.0.0"/>
    <feature id="org.eclipse.acceleo.query.source" version="0.0.0"/>
 
