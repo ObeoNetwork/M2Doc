@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.ide.ui.editor;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
@@ -33,12 +35,12 @@ import org.eclipse.emf.ecore.presentation.EcoreActionBarContributor.ExtendedLoad
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.emf.edit.ui.dnd.ViewerDragAdapter;
 import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
+import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
 import org.eclipse.jface.action.MenuManager;
@@ -81,6 +83,7 @@ import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.ServiceRegistry;
+import org.osgi.framework.Bundle;
 
 /**
  * M2Doc template editor.
@@ -894,9 +897,10 @@ public class M2DocTemplateEditor extends EditorPart {
      *            the {@link TemplateCustomProperties}
      */
     private void openClassSelectionDialog(final TemplateCustomProperties customProperties) {
-        FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(Display.getCurrent().getActiveShell(),
-                true, PlatformUI.getWorkbench().getProgressService(),
-                SearchEngine.createJavaSearchScope(new IJavaElement[] {project, }), IJavaSearchConstants.CLASS);
+        final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
+        final FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(
+                Display.getCurrent().getActiveShell(), true, PlatformUI.getWorkbench().getProgressService(), scope,
+                IJavaSearchConstants.CLASS);
         if (dialog.open() == Dialog.OK && dialog.getResult() != null && dialog.getResult().length != 0) {
             for (Object object : dialog.getResult()) {
                 IPath parentPath = ((IType) object).getParent().getPath();
@@ -909,13 +913,40 @@ public class M2DocTemplateEditor extends EditorPart {
                         customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(), "");
                     }
                 } else {
-                    customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(),
-                            ((IType) object).getJavaProject().getProject().getName());
+                    final String bundleName = getBundleName((IType) object);
+                    if (bundleName != null) {
+                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(), bundleName);
+                    } else {
+                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(),
+                                ((IType) object).getJavaProject().getProject().getName());
+                    }
                 }
             }
             setDirty(true);
             servicesTable.refresh();
         }
+    }
+
+    /**
+     * Gets the bundle name of the given {@link IType}.
+     * 
+     * @param type
+     *            the {@link IType}
+     * @return the bundle name of the given {@link IType} if any, <code>null</code> otherwise
+     */
+    private String getBundleName(IType type) {
+        final String packageName = type.getParent().getParent().getElementName();
+        final List<String> segments = Arrays.asList(packageName.split("\\."));
+        while (!segments.isEmpty()) {
+            String bundleName = String.join(".", segments);
+            final Bundle bundle = Platform.getBundle(bundleName);
+            if (bundle != null) {
+                return bundle.getSymbolicName();
+            }
+            segments.remove(segments.size() - 1);
+        }
+
+        return null;
     }
 
 }
