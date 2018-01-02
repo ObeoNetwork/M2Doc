@@ -12,3 +12,8 @@ location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.6/
 	org.eclipse.emf.cdo.sdk.feature.group lazy
 	org.eclipse.net4j.feature.group lazy
 }
+
+location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" {
+    // for testing purpose only
+	org.eclipse.xtext.sdk.feature.group lazy
+}

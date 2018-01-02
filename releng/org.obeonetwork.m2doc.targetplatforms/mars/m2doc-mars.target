@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Mars Target Platform" sequenceNumber="1513673830">
+<target name="M2Doc Mars Target Platform" sequenceNumber="1514898163">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
@@ -15,6 +15,10 @@
       <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.net4j.feature.group" version="0.0.0"/>
       <repository id="CDO" location="http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.6/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
+      <repository id="XText" location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
@@ -47,7 +51,6 @@
       <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
       <repository id="Eclipse" location="http://download.eclipse.org/releases/mars"/>
     </location>
   </locations>

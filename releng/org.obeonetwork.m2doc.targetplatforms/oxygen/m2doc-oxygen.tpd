@@ -22,5 +22,4 @@ location Eclipse "http://download.eclipse.org/releases/oxygen" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
-	org.eclipse.xtext.sdk.feature.group lazy
 }
