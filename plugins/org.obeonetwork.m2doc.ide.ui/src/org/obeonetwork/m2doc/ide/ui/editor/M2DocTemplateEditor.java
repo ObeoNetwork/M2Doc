@@ -936,7 +936,7 @@ public class M2DocTemplateEditor extends EditorPart {
      */
     private String getBundleName(IType type) {
         final String packageName = type.getParent().getParent().getElementName();
-        final List<String> segments = Arrays.asList(packageName.split("\\."));
+        final List<String> segments = new ArrayList<>(Arrays.asList(packageName.split("\\.")));
         while (!segments.isEmpty()) {
             String bundleName = String.join(".", segments);
             final Bundle bundle = Platform.getBundle(bundleName);
