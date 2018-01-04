@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -537,13 +538,12 @@ public final class GenconfUtils {
 
         // get the template path and parses it.
         final String templateFilePath = generation.getTemplateFileName();
-        if (templateFilePath == null) {
+        if (templateFilePath == null || templateFilePath.isEmpty()) {
             throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
         }
 
-        // get template and result file
-        URI templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName()));
-        if (!URIConverter.INSTANCE.exists(templateURI, Collections.EMPTY_MAP)) {
+        final URI templateURI = getResolvedURI(generation, URI.createURI(templateFilePath));
+        if (!resourceSetForModel.getURIConverter().exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
         }
         // get AQL environment
@@ -552,22 +552,56 @@ public final class GenconfUtils {
         // parse template
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModel.getURIConverter(), templateURI,
                 queryEnvironment, classProvider)) {
+            final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
             for (Exception e : exceptions) {
-                final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
                 documentTemplate.getBody().getValidationMessages()
                         .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, e.getMessage(), run));
             }
 
             // validate template
-            if (documentTemplate != null) {
-                res = validate(resourceSetForModel.getURIConverter(), templateURI, documentTemplate, queryEnvironment,
-                        generation) != null;
-            } else {
-                res = true;
+            res = validate(resourceSetForModel.getURIConverter(), templateURI, documentTemplate, queryEnvironment,
+                    generation) != null;
+        }
+
+        // validate output path
+        final String outputPath = generation.getResultFileName();
+        if (outputPath == null || outputPath.isEmpty()) {
+            throw new DocumentGenerationException("The output path isn't set in the provided configuration");
+        } else {
+            final URI outputURI = getResolvedURI(generation, URI.createURI(outputPath));
+            if (resourceSetForModel.getURIConverter().exists(outputURI, Collections.EMPTY_MAP)) {
+                final Map<Object, Object> options = new HashMap<Object, Object>();
+                final List<String> attributs = new ArrayList<String>();
+                attributs.add(URIConverter.ATTRIBUTE_DIRECTORY);
+                attributs.add(URIConverter.ATTRIBUTE_READ_ONLY);
+                options.put(URIConverter.OPTION_REQUESTED_ATTRIBUTES, attributs);
+                Map<String, ?> attributeValues = resourceSetForModel.getURIConverter().getAttributes(outputURI,
+                        options);
+                if ((Boolean) attributeValues.get(URIConverter.ATTRIBUTE_DIRECTORY)) {
+                    throw new DocumentGenerationException("The output path is a folder");
+                } else if ((Boolean) attributeValues.get(URIConverter.ATTRIBUTE_READ_ONLY)) {
+                    throw new DocumentGenerationException("The output path is read only");
+                }
             }
         }
 
         return res;
+    }
+
+    /**
+     * Validates the given variables according to the {@link TemplateCustomProperties} of the given {@link XWPFDocument}.
+     * 
+     * @param variables
+     *            the {@link Map} of name to variable
+     * @param document
+     *            the template {@link XWPFDocument}
+     * @param queryEnvironment
+     *            the
+     */
+    private static void validateVariables(Map<String, Object> variables, XWPFDocument document,
+            IReadOnlyQueryEnvironment queryEnvironment) {
+        // TODO Auto-generated method stub
+
     }
 
     /**
