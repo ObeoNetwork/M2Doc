@@ -58,6 +58,7 @@ import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.BooleanServices;
+import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
@@ -375,6 +376,8 @@ public final class M2DocUtils {
         services = ServiceUtils.getServices(queryEnvironment, PaginationServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, new ImageServices(uriConverter, templateURI));
+        ServiceUtils.registerServices(queryEnvironment, services);
+        services = ServiceUtils.getServices(queryEnvironment, new ExcelServices(uriConverter, templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
         for (IServicesConfigurator configurator : getConfigurators()) {
             ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment, options));

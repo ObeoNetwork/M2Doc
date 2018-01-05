@@ -22,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {ServiceRegistryTests.class, BooleanServicesTests.class, ImageServicesTests.class,
-    LinkServicesTests.class, PaginationServicesTests.class, })
+    LinkServicesTests.class, PaginationServicesTests.class, ExcelServicesTests.class })
 public class ServicesTests {
 
 }

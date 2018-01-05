@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.obeonetwork.m2doc.services.BooleanServices;
+import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
@@ -45,7 +46,8 @@ public final class DocumentationGenerator {
      */
     // CHECKSTYLE:OFF
     private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] {BooleanServices.class,
-        ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,};
+        ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
+        ExcelServices.class};
     // CHECKSTYLE:ON
 
     /**

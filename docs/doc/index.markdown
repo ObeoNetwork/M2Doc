@@ -178,6 +178,7 @@ If you want examples of templates you can have a look at the nominal cases in [u
 All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#providing-new-services).
 
 * [Boolean services](m2doc_service_booleanservices.html)
+* [Excel services](m2doc_service_excelservices.html)
 * [Image services](m2doc_service_imageservices.html)
 * [Link services](m2doc_service_linkservices.html)
 * [Pagination services](m2doc_service_paginationservices.html)

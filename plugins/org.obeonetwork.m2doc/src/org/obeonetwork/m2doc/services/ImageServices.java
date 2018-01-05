@@ -96,8 +96,7 @@ public class ImageServices {
      */
     private MImage asImage(String uriStr, PictureType type) {
         final URI imageURI = URI.createURI(uriStr);
-
-        URI uri = imageURI.resolve(templateURI);
+        final URI uri = imageURI.resolve(templateURI);
 
         return new MImageImpl(uriConverter, uri, type);
     }
