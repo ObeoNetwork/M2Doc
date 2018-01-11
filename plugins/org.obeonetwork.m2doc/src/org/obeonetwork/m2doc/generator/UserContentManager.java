@@ -79,7 +79,7 @@ public class UserContentManager {
     /**
      * Map for id to the {@link List} of .
      */
-    private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<String, List<UserContent>>();
+    private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<>();
 
     /**
      * The input {@link DocumentTemplate}.
@@ -144,7 +144,7 @@ public class UserContentManager {
                         final String id = userContent.getId();
                         List<UserContent> userContents = mapIdUserContent.get(id);
                         if (userContents == null) {
-                            userContents = new ArrayList<UserContent>();
+                            userContents = new ArrayList<>();
                             mapIdUserContent.put(id, userContents);
                         }
                         userContents.add(userContent);
@@ -240,7 +240,7 @@ public class UserContentManager {
      * @return the {@link List} of duplicated {@link UserContent#getId() user content ID}
      */
     public List<String> getDuplicatedUserContentIDs() {
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
 
         for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
             if (entry.getValue().size() > 1) {
@@ -294,8 +294,7 @@ public class UserContentManager {
                     final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
                     try {
                         currentGeneratedParagraph = destinationDocument.createParagraph();
-                        currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph,
-                                destinationDocument);
+                        currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph);
                     } catch (InvalidFormatException e) {
                         result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
                                 ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));

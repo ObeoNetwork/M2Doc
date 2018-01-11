@@ -33,7 +33,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlToken;
 import org.obeonetwork.m2doc.template.ContentControl;
-import org.obeonetwork.m2doc.template.IConstruct;
+import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
@@ -45,43 +45,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
  * @author ohaegi
  */
 public class UserContentRawCopy {
-
-    /**
-     * Current Input Paragraph.
-     */
-    private XWPFParagraph currentInputParagraph;
-
-    /**
-     * Current Output Paragraph.
-     */
-    private XWPFParagraph currentOutputParagraph;
-    /**
-     * Previous Input Paragraph of UserContent tag content.
-     */
-    private XWPFParagraph previousInputParagraph;
-
-    /**
-     * List of Output Paragraphs.
-     * Used to custom id relation picture.
-     */
-    private List<XWPFParagraph> listOutputParagraphs = new ArrayList<XWPFParagraph>();
-    /**
-     * List Output Tables.
-     * Used to custom id relation picture.
-     */
-    private List<XWPFTable> listOutputTables = new ArrayList<XWPFTable>();
-    /**
-     * List Output Runs.
-     * Those runs is located at begin of usercontent tag content before first paragraph
-     * Used to custom id relation picture.
-     */
-    private List<XWPFRun> listOutputRuns = new ArrayList<XWPFRun>();
-
-    /**
-     * Input Picute Id To Output map.
-     * Used to custom id relation picture.
-     */
-    private Map<String, String> inputPicuteIdToOutputmap = new HashMap<String, String>();
 
     /**
      * Need new paragraph after copy.
@@ -114,44 +77,109 @@ public class UserContentRawCopy {
      *             XmlException
      * @throws IOException
      *             if the copy fails
+     * @deprecated use {@link #copy(UserContent, XWPFParagraph)}
      */
-    @SuppressWarnings("resource")
+    @Deprecated
     public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent,
             IBody outputBody) throws InvalidFormatException, XmlException, IOException {
-        XWPFDocument containerOutputDocument = outputParagraphBeforeUserDocContent.getDocument();
+        return copy(userContent, outputParagraphBeforeUserDocContent);
+    }
+
+    /**
+     * Copy.
+     * 
+     * @param userContent
+     *            UserContent EObject
+     * @param outputParagraphBeforeUserDocContent
+     *            Output Paragraph Before User Doc Dest content (User Code dest is writen by {@link M2DocEvaluator} )
+     * @return last paragraph created by copy
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws XmlException
+     *             XmlException
+     * @throws IOException
+     *             if the copy fails
+     */
+    public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent)
+            throws InvalidFormatException, XmlException, IOException {
+
         // Test if run before userContent is in same XWPFParagraph than first run of userContent
-        if (!userDocContentIsFirstRunOfParagraph(userContent)) {
-            previousInputParagraph = (XWPFParagraph) userContent.getRuns().get(userContent.getRuns().size() - 1)
-                    .getParent();
-            currentInputParagraph = previousInputParagraph;
-            currentOutputParagraph = outputParagraphBeforeUserDocContent;
+        final XWPFParagraph previousInputParagraph = (XWPFParagraph) userContent.getRuns()
+                .get(userContent.getRuns().size() - 1).getParent();
+        XWPFParagraph currentInputParagraph = previousInputParagraph;
+        final List<Statement> statements = userContent.getBody().getStatements();
+
+        XWPFParagraph currentOutputParagraph = copyStatements(outputParagraphBeforeUserDocContent,
+                currentInputParagraph, previousInputParagraph, statements);
+
+        // test if the last statement last run is different from the closing run
+        if (!userContent.getClosingRuns().isEmpty() && !statements.isEmpty()) {
+            final Statement lastStatment = statements.get(statements.size() - 1);
+            if (!lastStatment.getRuns().isEmpty()) {
+                needNewParagraph = lastStatment.getRuns().get(lastStatment.getRuns().size() - 1)
+                        .getParent() != userContent.getClosingRuns().get(0).getParent();
+            }
         }
-        XWPFParagraph currentRunParagraph = null;
-        for (IConstruct abstractConstruct : userContent.getBody().getStatements()) {
-            for (XWPFRun inputRun : abstractConstruct.getRuns()) {
-                currentRunParagraph = (XWPFParagraph) inputRun.getParent();
-                if (currentRunParagraph != currentInputParagraph) {
-                    currentInputParagraph = currentRunParagraph;
+
+        return currentOutputParagraph;
+    }
+
+    /**
+     * Copies the given {@link List} of {@link Statement} from the given {@link XWPFParagraph} to the given output {@link XWPFParagraph}.
+     * 
+     * @param outputParagraph
+     *            the output {@link XWPFParagraph}
+     * @param currentInputParagraph
+     *            the current input {@link XWPFParagraph}
+     * @param previousInputParagraph
+     *            the previous input {@link XWPFParagraph} if any, <code>null</code> otherwise
+     * @param statements
+     *            the {@link List} of {@link Statement} to copy
+     * @return last paragraph created by copy
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     * @throws XmlException
+     *             XmlException
+     * @throws IOException
+     *             if the copy fails
+     */
+    @SuppressWarnings("resource")
+    private XWPFParagraph copyStatements(XWPFParagraph outputParagraph, XWPFParagraph currentInputParagraph,
+            XWPFParagraph previousInputParagraph, final List<Statement> statements)
+            throws InvalidFormatException, IOException, XmlException {
+        XWPFParagraph localCurrentInputParagraph = currentInputParagraph;
+        final XWPFDocument containerOutputDocument = outputParagraph.getDocument();
+        final IBody outputBody = outputParagraph.getBody();
+        final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
+        final List<XWPFTable> listOutputTables = new ArrayList<>();
+        final List<XWPFRun> listOutputRuns = new ArrayList<>();
+        final Map<String, String> inputPicuteIdToOutputmap = new HashMap<>();
+        XWPFParagraph currentOutputParagraph = outputParagraph;
+        for (Statement statement : statements) {
+            for (XWPFRun inputRun : statement.getRuns()) {
+                final XWPFParagraph currentRunParagraph = (XWPFParagraph) inputRun.getParent();
+                if (currentRunParagraph != localCurrentInputParagraph) {
+                    localCurrentInputParagraph = currentRunParagraph;
                     // currentOutputParagraph = outputDocument.createParagraph();
                     currentOutputParagraph = createNewParagraph(outputBody);
                     // Copy new paragraph
-                    currentOutputParagraph.getCTP().set(currentInputParagraph.getCTP());
+                    currentOutputParagraph.getCTP().set(localCurrentInputParagraph.getCTP());
                     listOutputParagraphs.add(currentOutputParagraph);
                 }
                 // Test if some run exist between userContent tag and first paragraph in this tag
                 if (currentRunParagraph == previousInputParagraph) {
                     // Clone run directly, paragraph is already generate by normal processing
-                    XWPFRun outputRun = currentOutputParagraph.createRun();
+                    final XWPFRun outputRun = currentOutputParagraph.createRun();
                     outputRun.getCTR().set(inputRun.getCTR());
                     // Keep run to change relation id later
                     listOutputRuns.add(outputRun);
                 }
                 // Create picture embedded in run and keep relation id in map (input to output)
-                createPictures(inputRun, containerOutputDocument);
+                createPictures(inputPicuteIdToOutputmap, inputRun, containerOutputDocument);
             }
             // In case of table (no run in abstractConstruct)
-            if (abstractConstruct instanceof Table) {
-                Table table = (Table) abstractConstruct;
+            if (statement instanceof Table) {
+                Table table = (Table) statement;
                 XWPFTable inputTable = table.getTable();
                 // XWPFTable outputTable = contenerOutputDocument.createTable();
                 XWPFTable outputTable = createNewTable(outputBody, inputTable);
@@ -159,20 +187,15 @@ public class UserContentRawCopy {
                 copyTableStyle(inputTable, containerOutputDocument);
                 listOutputTables.add(outputTable);
                 // Inspect table to extract all picture ID in run
-                collectRelationId(inputTable, containerOutputDocument);
-            } else if (abstractConstruct instanceof ContentControl) {
-                final ContentControl contentControl = (ContentControl) abstractConstruct;
+                collectRelationId(inputPicuteIdToOutputmap, inputTable, containerOutputDocument);
+            } else if (statement instanceof ContentControl) {
+                final ContentControl contentControl = (ContentControl) statement;
                 final XWPFSDT control = contentControl.getControl();
                 copyControl(outputBody, control);
             }
         }
         // Change Picture Id by xml replacement
-        changePictureId();
-
-        if (userContent.getClosingRuns().size() != 0
-            && currentInputParagraph == userContent.getClosingRuns().get(0).getParent()) {
-            needNewParagraph = false;
-        }
+        changePictureId(inputPicuteIdToOutputmap, listOutputRuns, listOutputParagraphs, listOutputTables);
         return currentOutputParagraph;
     }
 
@@ -292,6 +315,8 @@ public class UserContentRawCopy {
      * Collect Relation Id in table.
      * Put picture in output document and keep old and new picture id in map.
      * 
+     * @param inputPicuteIdToOutputmap
+     *            the picture ID mapping
      * @param inputWTable
      *            inputWTable
      * @param outputDoc
@@ -299,11 +324,12 @@ public class UserContentRawCopy {
      * @throws InvalidFormatException
      *             InvalidFormatException
      */
-    private void collectRelationId(XWPFTable inputWTable, XWPFDocument outputDoc) throws InvalidFormatException {
+    private void collectRelationId(Map<String, String> inputPicuteIdToOutputmap, XWPFTable inputWTable,
+            XWPFDocument outputDoc) throws InvalidFormatException {
         for (XWPFTableRow row : inputWTable.getRows()) {
             for (XWPFTableCell cell : row.getTableCells()) {
                 for (XWPFParagraph paragraph : cell.getParagraphs()) {
-                    collectRelationId(paragraph, outputDoc);
+                    collectRelationId(inputPicuteIdToOutputmap, paragraph, outputDoc);
                 }
             }
         }
@@ -311,7 +337,9 @@ public class UserContentRawCopy {
 
     /**
      * Collect Relation Id in paragraph.
-     * 
+     *
+     * @param inputPicuteIdToOutputmap
+     *            the picture ID mapping
      * @param paragraph
      *            paragraph
      * @param outputDoc
@@ -319,36 +347,46 @@ public class UserContentRawCopy {
      * @throws InvalidFormatException
      *             InvalidFormatException
      */
-    private void collectRelationId(XWPFParagraph paragraph, XWPFDocument outputDoc) throws InvalidFormatException {
+    private void collectRelationId(Map<String, String> inputPicuteIdToOutputmap, XWPFParagraph paragraph,
+            XWPFDocument outputDoc) throws InvalidFormatException {
         for (XWPFRun run : paragraph.getRuns()) {
-            createPictures(run, outputDoc);
+            createPictures(inputPicuteIdToOutputmap, run, outputDoc);
         }
     }
 
     /**
      * Change Picture Id.
      * 
+     * @param inputPicuteIdToOutputmap
+     *            the picture ID mapping
+     * @param listOutputRuns
+     *            the {@link List} of output {@link XWPFRun}
+     * @param listOutputParagraphs
+     *            the {@link List} of output {@link XWPFParagraph}
+     * @param listOutputTables
+     *            the {@link List} of output {@link XWPFTable}
      * @throws XmlException
      *             XmlException
      */
-    private void changePictureId() throws XmlException {
+    private void changePictureId(Map<String, String> inputPicuteIdToOutputmap, List<XWPFRun> listOutputRuns,
+            List<XWPFParagraph> listOutputParagraphs, List<XWPFTable> listOutputTables) throws XmlException {
 
         for (XWPFRun run : listOutputRuns) {
-            XmlToken outputXmlObject = getXmlWithOuputId(run.getCTR().xmlText());
+            XmlToken outputXmlObject = getXmlWithOuputId(inputPicuteIdToOutputmap, run.getCTR().xmlText());
             if (outputXmlObject != null) {
                 run.getCTR().set(outputXmlObject);
             }
         }
 
         for (XWPFParagraph paragraph : listOutputParagraphs) {
-            XmlToken outputXmlObject = getXmlWithOuputId(paragraph.getCTP().xmlText());
+            XmlToken outputXmlObject = getXmlWithOuputId(inputPicuteIdToOutputmap, paragraph.getCTP().xmlText());
             if (outputXmlObject != null) {
                 paragraph.getCTP().set(outputXmlObject);
             }
         }
 
         for (XWPFTable table : listOutputTables) {
-            XmlToken outputXmlObject = getXmlWithOuputId(table.getCTTbl().xmlText());
+            XmlToken outputXmlObject = getXmlWithOuputId(inputPicuteIdToOutputmap, table.getCTTbl().xmlText());
             if (outputXmlObject != null) {
                 table.getCTTbl().set(outputXmlObject);
             }
@@ -359,13 +397,16 @@ public class UserContentRawCopy {
     /**
      * Get Xml With Ouput picture Id.
      * 
+     * @param inputPicuteIdToOutputmap
+     *            the picture ID mapping
      * @param xmlText
      *            xmlText
      * @return Xml With Ouput picture Id
      * @throws XmlException
      *             XmlException
      */
-    private XmlToken getXmlWithOuputId(String xmlText) throws XmlException {
+    private XmlToken getXmlWithOuputId(Map<String, String> inputPicuteIdToOutputmap, String xmlText)
+            throws XmlException {
         String outputXmlStr = xmlText;
         for (Map.Entry<String, String> entry : inputPicuteIdToOutputmap.entrySet()) {
             String inputID = entry.getKey();
@@ -382,29 +423,10 @@ public class UserContentRawCopy {
     }
 
     /**
-     * Test if first userContent content begin by a paragraph.
-     * 
-     * @param userContent
-     *            userContent EObject
-     * @return true if userContent content begin by a paragraph
-     */
-    private boolean userDocContentIsFirstRunOfParagraph(UserContent userContent) {
-        boolean result = true;
-        if (userContent.getBody() != null && userContent.getBody().getStatements().size() > 0
-            && userContent.getBody().getStatements().get(0).getRuns().size() > 0) {
-            XWPFRun userContentFirstRun = userContent.getBody().getStatements().get(0).getRuns().get(0);
-            XWPFParagraph userContentFirstRunParagraph = (XWPFParagraph) userContentFirstRun.getParent();
-            if (userContentFirstRunParagraph != null && userContentFirstRunParagraph.getRuns().size() > 0) {
-                XWPFRun paragraphFirstRun = userContentFirstRunParagraph.getRuns().get(0);
-                result = userContentFirstRun == paragraphFirstRun;
-            }
-        }
-        return result;
-    }
-
-    /**
      * createPictures in document.
      * 
+     * @param inputPicuteIdToOutputmap
+     *            the picture ID mapping
      * @param inputRun
      *            input Run
      * @param outputDoc
@@ -412,7 +434,8 @@ public class UserContentRawCopy {
      * @throws InvalidFormatException
      *             InvalidFormatException
      */
-    private void createPictures(XWPFRun inputRun, XWPFDocument outputDoc) throws InvalidFormatException {
+    private void createPictures(Map<String, String> inputPicuteIdToOutputmap, XWPFRun inputRun, XWPFDocument outputDoc)
+            throws InvalidFormatException {
         // Add picture in document and keep relation id change idRelation reference
         for (XWPFPicture inputPic : inputRun.getEmbeddedPictures()) {
             byte[] img = inputPic.getPictureData().getData();

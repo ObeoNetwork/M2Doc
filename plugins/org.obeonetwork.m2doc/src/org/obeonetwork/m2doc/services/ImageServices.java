@@ -32,7 +32,7 @@ public class ImageServices {
     /**
      * The URI converter to use.
      */
-    private URIConverter uriConverter;
+    private final URIConverter uriConverter;
 
     /**
      * The template URI.

@@ -1020,7 +1020,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         } else {
             final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
             try {
-                currentParagraph = userContentRawCopy.copy(userContent, currentParagraph, generatedDocument);
+                currentParagraph = userContentRawCopy.copy(userContent, currentParagraph);
                 needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
             } catch (InvalidFormatException e) {
                 insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
