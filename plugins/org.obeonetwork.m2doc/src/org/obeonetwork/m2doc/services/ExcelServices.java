@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.services;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Locale;
 
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -66,11 +67,6 @@ public class ExcelServices {
     private final URI templateURI;
 
     /**
-     * The {@link DataFormatter}.
-     */
-    private final DataFormatter dataFormatter = new DataFormatter();
-
-    /**
      * Constructor.
      * 
      * @param uriConverter
@@ -100,6 +96,27 @@ public class ExcelServices {
     // @formatter:on
     public MTable asTable(String uriStr, String sheetName, String topLeftCellAdress, String bottomRightCellAdress)
             throws IOException {
+        return asTable(uriStr, sheetName, topLeftCellAdress, bottomRightCellAdress, null);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert a table from an Excel .xlsx file.",
+        params = {
+            @Param(name = "uri", value = "The Excel .xlsx file uri, it can be relative to the template"),
+            @Param(name = "sheetName", value = "The sheet name"),
+            @Param(name = "topLeftCellAdress", value = "The top left cell address"),
+            @Param(name = "bottomRightCellAdress", value = "The bottom right cell address"),
+            @Param(name = "languageTag", value = "The language tag for the locale"),
+        },
+        result = "insert the table",
+        examples = {
+            @Example(expression = "'excel.xlsx'.asTable('Feuil1', 'C3', 'F7', 'fr-FR')", result = "insert the table from 'excel.xlsx'"),
+        }
+    )
+    // @formatter:on
+    public MTable asTable(String uriStr, String sheetName, String topLeftCellAdress, String bottomRightCellAdress,
+            String languageTag) throws IOException {
         final MTable res = new MTableImpl();
 
         final URI xlsxURI = URI.createURI(uriStr, false);
@@ -111,6 +128,13 @@ public class ExcelServices {
             if (sheet == null) {
                 throw new IllegalArgumentException(String.format("The sheet %s doesn't exists in %s.", sheetName, uri));
             } else {
+                final Locale locale;
+                if (languageTag != null) {
+                    locale = Locale.forLanguageTag(languageTag);
+                } else {
+                    locale = Locale.getDefault();
+                }
+                final DataFormatter dataFormatter = new DataFormatter(locale);
                 final CellAddress start = new CellAddress(topLeftCellAdress);
                 final CellAddress end = new CellAddress(bottomRightCellAdress);
                 int rowIndex = start.getRow();
