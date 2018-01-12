@@ -93,7 +93,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         final String res;
 
         if (genConfURIStr != null) {
-            final URI genConfURI = URI.createURI(genConfURIStr);
+            final URI genConfURI = URI.createURI(genConfURIStr, false);
             if (URIConverter.INSTANCE.exists(genConfURI, Collections.emptyMap()) && genConfURI.isPlatformResource()) {
                 res = getSessionFromPlatformResource(genConfURI);
             } else {
@@ -139,10 +139,10 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
 
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null) {
-            URI sessionURI = URI.createURI(sessionURIStr);
+            URI sessionURI = URI.createURI(sessionURIStr, false);
             final String genconfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
             if (genconfURIStr != null) {
-                sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr));
+                sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr, false));
             }
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
@@ -176,10 +176,10 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
 
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null) {
-            URI sessionURI = URI.createURI(sessionURIStr);
+            URI sessionURI = URI.createURI(sessionURIStr, false);
             final String genconfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
             if (genconfURIStr != null) {
-                sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr));
+                sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr, false));
             }
             if (!URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final List<Diagnostic> diagnostics = new ArrayList<>();

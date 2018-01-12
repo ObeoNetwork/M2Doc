@@ -90,7 +90,7 @@ public class TemplateCustomPropertiesTests {
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
-            final List<String> serviceClasses = new ArrayList<String>(properties.getServiceClasses().keySet());
+            final List<String> serviceClasses = new ArrayList<>(properties.getServiceClasses().keySet());
             assertEquals(2, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));
@@ -138,7 +138,7 @@ public class TemplateCustomPropertiesTests {
     @Test
     public void addProperties() throws IOException {
         final File tempFile = File.createTempFile("properties", "-add.docx");
-        final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
+        final URI tempFileURI = URI.createURI(tempFile.toURI().toString(), false);
         tempFile.deleteOnExit();
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/properties/noProperties.docx"));) {
@@ -167,7 +167,7 @@ public class TemplateCustomPropertiesTests {
             assertEquals("http://www.eclipse.org/meta100", properties.getPackagesURIs().get(0));
             assertEquals("http://www.eclipse.org/meta200", properties.getPackagesURIs().get(1));
 
-            final List<String> serviceClasses = new ArrayList<String>(properties.getServiceClasses().keySet());
+            final List<String> serviceClasses = new ArrayList<>(properties.getServiceClasses().keySet());
             assertEquals(2, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage100", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage200", serviceClasses.get(1));
@@ -181,7 +181,7 @@ public class TemplateCustomPropertiesTests {
     @Test
     public void deleteProperties() throws IOException {
         final File tempFile = File.createTempFile("properties", "-add.docx");
-        final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
+        final URI tempFileURI = URI.createURI(tempFile.toURI().toString(), false);
         tempFile.deleteOnExit();
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/properties/properties-template.docx"));) {
@@ -214,7 +214,7 @@ public class TemplateCustomPropertiesTests {
     @Test
     public void updateProperties() throws IOException {
         final File tempFile = File.createTempFile("properties", "-add.docx");
-        final URI tempFileURI = URI.createURI(tempFile.toURI().toString());
+        final URI tempFileURI = URI.createURI(tempFile.toURI().toString(), false);
         tempFile.deleteOnExit();
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/properties/properties-template.docx"));) {
@@ -245,7 +245,7 @@ public class TemplateCustomPropertiesTests {
             assertEquals("http://www.eclipse.org/meta100", properties.getPackagesURIs().get(2));
             assertEquals("http://www.eclipse.org/meta200", properties.getPackagesURIs().get(3));
 
-            final List<String> serviceClasses = new ArrayList<String>(properties.getServiceClasses().keySet());
+            final List<String> serviceClasses = new ArrayList<>(properties.getServiceClasses().keySet());
             assertEquals(4, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));

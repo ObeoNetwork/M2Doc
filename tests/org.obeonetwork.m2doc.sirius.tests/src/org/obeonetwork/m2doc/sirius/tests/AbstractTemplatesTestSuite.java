@@ -62,7 +62,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      * @return the session {@link URI} from the test folder path
      */
     protected URI getSessionURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + ".aird");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + ".aird", false);
     }
 
     @Override

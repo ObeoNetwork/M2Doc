@@ -159,15 +159,8 @@ public abstract class AbstractTemplatesTestSuite {
         setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
         queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
         final List<Exception> exceptions = new ArrayList<>();
-        final ResourceSet rs = new ResourceSetImpl();
-        final XMIResourceFactoryImpl xmiResourceFactory = new XMIResourceFactoryImpl();
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", xmiResourceFactory);
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", xmiResourceFactory);
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("genconf", xmiResourceFactory);
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("uml", xmiResourceFactory);
         new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
-        resourceSetForModels = GenconfUtils.createResourceSetForModels(exceptions, rs, generation);
-        resourceSetForModels.getURIConverter().getURIHandlers().add(0, uriHandler);
+        resourceSetForModels = getResourceSetForModel(exceptions);
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()));
         for (Exception e : exceptions) {
@@ -176,6 +169,21 @@ public abstract class AbstractTemplatesTestSuite {
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, e.getMessage(), run));
         }
         variables = GenconfUtils.getVariables(generation, resourceSetForModels);
+    }
+
+    protected ResourceSet getResourceSetForModel(final List<Exception> exceptions) {
+        final ResourceSet rs = new ResourceSetImpl();
+
+        final XMIResourceFactoryImpl xmiResourceFactory = new XMIResourceFactoryImpl();
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", xmiResourceFactory);
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", xmiResourceFactory);
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("genconf", xmiResourceFactory);
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("uml", xmiResourceFactory);
+
+        final ResourceSet res = GenconfUtils.createResourceSetForModels(exceptions, rs, generation);
+        res.getURIConverter().getURIHandlers().add(0, uriHandler);
+
+        return res;
     }
 
     @After
@@ -318,7 +326,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the validation output {@link URI} from the given test folder path
      */
     private URI getValidationOutputURI(String testFolderPath) {
-        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-validation-test.docx");
+        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-validation-test.docx", false);
     }
 
     /**
@@ -365,9 +373,9 @@ public abstract class AbstractTemplatesTestSuite {
         for (Entry<String, URI> entry : generationResult.getLostUserContents().entrySet()) {
             final URI actualLostURI = entry.getValue();
             final URI expectedLostURI = URI
-                    .createURI(expectedGeneratedURI.toString() + "-" + entry.getKey() + LOST_DOCX);
+                    .createURI(expectedGeneratedURI.toString() + "-" + entry.getKey() + LOST_DOCX, false);
             if (!resourceSetForModels.getURIConverter().exists(expectedLostURI, Collections.emptyMap())) {
-                copy(actualLostURI, URI.createURI(expectedLostURI.toString().replace("-expected-", "-actual-")));
+                copy(actualLostURI, URI.createURI(expectedLostURI.toString().replace("-expected-", "-actual-"), false));
                 fail(expectedLostURI + DOESN_T_EXISTS);
             }
             M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedLostURI, actualLostURI);
@@ -402,7 +410,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the generation output {@link URI} for the given test folder path
      */
     protected URI getGenerationOutputURI(String testFolderPath) {
-        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-generation-test.docx");
+        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-generation-test.docx", false);
     }
 
     /**
@@ -441,8 +449,10 @@ public abstract class AbstractTemplatesTestSuite {
             copy(userContentURI, outputURI);
         }
         for (URI userContentLostURI : getUserContentLostURI(new File(testFolderPath))) {
-            final URI destURI = URI.createURI(outputURI.toString() + userContentLostURI.lastSegment()
-                    .substring(userContentLostURI.lastSegment().indexOf(USER_CONTENT_TAG) + USER_CONTENT_TAG.length()));
+            final URI destURI = URI.createURI(
+                    outputURI.toString() + userContentLostURI.lastSegment().substring(
+                            userContentLostURI.lastSegment().indexOf(USER_CONTENT_TAG) + USER_CONTENT_TAG.length()),
+                    false);
             copy(userContentLostURI, destURI);
         }
         final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment, variables,
@@ -473,7 +483,7 @@ public abstract class AbstractTemplatesTestSuite {
         Arrays.sort(children);
 
         for (File file : children) {
-            result.add(URI.createURI(file.toURI().toString()));
+            result.add(URI.createURI(file.toURI().toString(), false));
         }
 
         return result;
@@ -487,7 +497,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the template file from the test folder path
      */
     protected URI getTemplateURI(File testFolder) {
-        return URI.createURI(getTemplateFileInternal(testFolder).toURI().toString());
+        return URI.createURI(getTemplateFileInternal(testFolder).toURI().toString(), false);
     }
 
     /**
@@ -498,7 +508,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the expected AST file from the test folder path
      */
     protected URI getExpectedASTURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-ast.txt");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-ast.txt", false);
     }
 
     /**
@@ -509,7 +519,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the actual AST file from the test folder path
      */
     protected URI getActualASTURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-ast.txt");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-ast.txt", false);
     }
 
     /**
@@ -520,8 +530,8 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the expected validation messages file from the test folder path
      */
     protected URI getExpectedGenerationMessageURI(File testFolder) {
-        return URI
-                .createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-generation-messages.txt");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-generation-messages.txt",
+                false);
     }
 
     /**
@@ -532,7 +542,8 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the actual AST file from the test folder path
      */
     protected URI getActualGenerationMessageURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-generation-messages.txt");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-generation-messages.txt",
+                false);
     }
 
     /**
@@ -543,7 +554,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the expected template file from the test folder path
      */
     protected URI getExpectedValidatedURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-validation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-validation.docx", false);
     }
 
     /**
@@ -554,7 +565,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the actual template file from the test folder path
      */
     protected URI getActualValidatedURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-validation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-validation.docx", false);
     }
 
     /**
@@ -565,7 +576,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the expected template file from the test folder path
      */
     protected URI getExpectedGeneratedURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-generation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-generation.docx", false);
     }
 
     /**
@@ -576,7 +587,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the actual generated file from the test folder path
      */
     protected URI getActualGeneratedURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-generation.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-generation.docx", false);
     }
 
     /**
@@ -587,7 +598,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the user content file from the test folder path
      */
     protected URI getUserContentURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-userContent.docx");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-userContent.docx", false);
     }
 
     /**
@@ -611,7 +622,7 @@ public abstract class AbstractTemplatesTestSuite {
         });
         Arrays.sort(children);
         for (File child : children) {
-            result.add(URI.createURI(child.toURI().toString()));
+            result.add(URI.createURI(child.toURI().toString(), false));
         }
 
         return result;
@@ -625,7 +636,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the genconf file from the test folder path
      */
     protected URI getGenconfURI(File testFolder) {
-        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + ".genconf");
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + ".genconf", false);
     }
 
     /**

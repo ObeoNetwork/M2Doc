@@ -102,7 +102,7 @@ public class ExcelServices {
             throws IOException {
         final MTable res = new MTableImpl();
 
-        final URI xlsxURI = URI.createURI(uriStr);
+        final URI xlsxURI = URI.createURI(uriStr, false);
         final URI uri = xlsxURI.resolve(templateURI);
 
         try (XSSFWorkbook workbook = new XSSFWorkbook(uriConverter.createInputStream(uri));) {

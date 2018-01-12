@@ -156,7 +156,7 @@ public final class GenconfUtils {
      */
     public static IQueryEnvironment getQueryEnvironment(Generation generation) {
         final URI templateURI;
-        templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName()));
+        templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
@@ -360,8 +360,8 @@ public final class GenconfUtils {
         }
 
         // get template and result file
-        URI templateFile = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName()));
-        URI generatedFile = getResolvedURI(generation, URI.createURI(generation.getResultFileName()));
+        URI templateFile = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
+        URI generatedFile = getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false));
 
         if (!URIConverter.INSTANCE.exists(templateFile, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
@@ -542,7 +542,7 @@ public final class GenconfUtils {
             throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
         }
 
-        final URI templateURI = getResolvedURI(generation, URI.createURI(templateFilePath));
+        final URI templateURI = getResolvedURI(generation, URI.createURI(templateFilePath, false));
         if (!resourceSetForModel.getURIConverter().exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
         }
@@ -568,7 +568,7 @@ public final class GenconfUtils {
         if (outputPath == null || outputPath.isEmpty()) {
             throw new DocumentGenerationException("The output path isn't set in the provided configuration");
         } else {
-            final URI outputURI = getResolvedURI(generation, URI.createURI(outputPath));
+            final URI outputURI = getResolvedURI(generation, URI.createURI(outputPath, false));
             if (resourceSetForModel.getURIConverter().exists(outputURI, Collections.EMPTY_MAP)) {
                 final Map<Object, Object> options = new HashMap<Object, Object>();
                 final List<String> attributs = new ArrayList<String>();

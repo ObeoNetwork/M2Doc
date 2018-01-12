@@ -49,7 +49,7 @@ public class ServerWithAuthenticationTemplateOnServerGenerateToServer extends Se
         return URI.createURI(templateURI.toString()
                 .replaceAll("5ef25598-0af9-4436-b7df-5764732e4c0b/",
                         "5ef25598-0af9-4436-b7df-5764732e4c0b/" + testFolderPath)
-                .replaceAll(".docx", "-generation-test.docx"));
+                .replaceAll(".docx", "-generation-test.docx"), false);
     }
 
 }

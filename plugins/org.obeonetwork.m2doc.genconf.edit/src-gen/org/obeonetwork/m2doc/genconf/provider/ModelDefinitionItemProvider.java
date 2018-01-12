@@ -99,7 +99,7 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                 TemplateCustomProperties properties;
                                 try {
                                     final IQueryEnvironment queryEnvironment = Query.newEnvironment();
-                                    URI templateURI = URI.createURI(generation.getTemplateFileName())
+                                    URI templateURI = URI.createURI(generation.getTemplateFileName(), false)
                                             .resolve(generation.eResource().getURI());
                                     properties = POIServices.getInstance()
                                             .getTemplateCustomProperties(URIConverter.INSTANCE, templateURI);

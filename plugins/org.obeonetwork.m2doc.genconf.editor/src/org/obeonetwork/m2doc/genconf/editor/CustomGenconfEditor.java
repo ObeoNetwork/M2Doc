@@ -806,7 +806,7 @@ public class CustomGenconfEditor extends GenconfEditor {
                 if (!templateURIText.getText().equals(generation.getTemplateFileName())) {
                     editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
                             GenconfPackage.Literals.GENERATION__TEMPLATE_FILE_NAME, templateURIText.getText()));
-                    updateTemplateCustomProperties(URI.createURI(templateURIText.getText()));
+                    updateTemplateCustomProperties(URI.createURI(templateURIText.getText(), false));
                 }
             }
 
@@ -830,7 +830,7 @@ public class CustomGenconfEditor extends GenconfEditor {
                     final URI genconfURI = getGenconfResource().getURI();
                     final String relativeTemplatePath = URI.decode(templateURI.deresolve(genconfURI).toString());
                     templateURIText.setText(relativeTemplatePath);
-                    updateTemplateCustomProperties(URI.createURI(relativeTemplatePath));
+                    updateTemplateCustomProperties(URI.createURI(relativeTemplatePath, false));
                     editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
                             GenconfPackage.Literals.GENERATION__TEMPLATE_FILE_NAME, relativeTemplatePath));
                     if (generation.getResultFileName() == null || generation.getResultFileName().isEmpty()) {

@@ -134,7 +134,7 @@ public class UserContentManager {
                 .newEnvironmentWithDefaultServices(null);
 
         try (DocumentTemplate userDocDocument = M2DocUtils.parseUserContent(uriConverter,
-                URI.createURI(generatedFileCopy.toURI().toString()), queryEnvironment);) {
+                URI.createURI(generatedFileCopy.toURI().toString(), false), queryEnvironment);) {
             final TreeIterator<EObject> iter = userDocDocument.eAllContents();
             while (iter.hasNext()) {
                 EObject eObject = iter.next();
@@ -323,7 +323,7 @@ public class UserContentManager {
      *         ID}
      */
     protected URI getLostUserContentURI(URI dest, String id) {
-        final URI res = URI.createURI("./" + dest.lastSegment() + "-" + id + "-lost.docx");
+        final URI res = URI.createURI("./" + dest.lastSegment() + "-" + id + "-lost.docx", false);
 
         return res.resolve(dest);
     }

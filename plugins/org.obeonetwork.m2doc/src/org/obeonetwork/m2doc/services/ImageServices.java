@@ -65,7 +65,7 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage asImage(String uriStr) {
-        final URI imageURI = URI.createURI(uriStr);
+        final URI imageURI = URI.createURI(uriStr, false);
         return asImage(uriStr, PictureType.toType(imageURI));
     }
 
@@ -95,7 +95,7 @@ public class ImageServices {
      * @return the {@link MImage} corresponding to the given path
      */
     private MImage asImage(String uriStr, PictureType type) {
-        final URI imageURI = URI.createURI(uriStr);
+        final URI imageURI = URI.createURI(uriStr, false);
         final URI uri = imageURI.resolve(templateURI);
 
         return new MImageImpl(uriConverter, uri, type);
