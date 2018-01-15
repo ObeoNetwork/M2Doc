@@ -23,9 +23,11 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
@@ -870,6 +872,65 @@ public class GenconfEditor extends MultiPageEditorPart
     }
 
     /**
+     * Creates the model {@link ResourceSet}.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class CreateResourceSetForModelsJob implements ICoreRunnable {
+
+        /**
+         * The {@link Generation}.
+         */
+        private final Generation gen;
+
+        /**
+         * The default {@link ResourceSet}.
+         */
+        private final ResourceSet defaultResourceSet;
+
+        /**
+         * The {@link List} of {@link Exception}.
+         */
+        private final List<Exception> exceptions;
+
+        /**
+         * The created {@link ResourceSet}.
+         */
+        private ResourceSet resourceSet;
+
+        /**
+         * Constructor.
+         * 
+         * @param gen
+         *            the {@link Generation}
+         * @param defaultResourceSet
+         *            the default {@link ResourceSet}
+         * @param exceptions
+         *            the {@link List} of {@link Exception}
+         */
+        private CreateResourceSetForModelsJob(Generation gen, ResourceSet defaultResourceSet,
+                List<Exception> exceptions) {
+            this.gen = gen;
+            this.defaultResourceSet = defaultResourceSet;
+            this.exceptions = exceptions;
+        }
+
+        @Override
+        public void run(IProgressMonitor monitor) throws CoreException {
+            resourceSet = GenconfUtils.createResourceSetForModels(exceptions, defaultResourceSet, gen);
+        }
+
+        /**
+         * Gets the created {@link ResourceSet}.
+         * 
+         * @return the created {@link ResourceSet}
+         */
+        public ResourceSet getResourceSet() {
+            return resourceSet;
+        }
+    }
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -1056,7 +1117,7 @@ public class GenconfEditor extends MultiPageEditorPart
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
-            resourceSet = GenconfUtils.createResourceSetForModels(exceptions, defaultResourceSet, gen);
+            resourceSet = createResourceSetForModels(exceptions, defaultResourceSet, gen);
             isDefaultResourceSet = resourceSet == defaultResourceSet;
         } else {
             resourceSet = null;
@@ -1583,6 +1644,21 @@ public class GenconfEditor extends MultiPageEditorPart
         return ((BasicCommandStack) editingDomain.getCommandStack()).isSaveNeeded();
     }
 
+    protected ResourceSet createResourceSetForModels(final List<Exception> exceptions,
+            final ResourceSet defaultResourceSet, final Generation gen) {
+        final CreateResourceSetForModelsJob runnable = new CreateResourceSetForModelsJob(gen, defaultResourceSet,
+                exceptions);
+        final Job job = Job.create("Get ResourceSet for model", runnable);
+        job.schedule();
+        try {
+            job.join();
+        } catch (InterruptedException e) {
+            M2docconfEditorPlugin.INSTANCE.log(e);
+        }
+
+        return runnable.getResourceSet();
+    }
+
     /**
      * This is for implementing {@link IEditorPart} and simply saves the model file.
      * <!-- begin-user-doc -->
@@ -1672,13 +1748,12 @@ public class GenconfEditor extends MultiPageEditorPart
 
         final ResourceSet newResourceSet;
         if (isDefaultResourceSet) {
-            newResourceSet = GenconfUtils.createResourceSetForModels(exceptions, editingDomain.getResourceSet(),
-                    generation);
+            newResourceSet = createResourceSetForModels(exceptions, editingDomain.getResourceSet(), generation);
         } else {
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
-            newResourceSet = GenconfUtils.createResourceSetForModels(exceptions, defaultResourceSet, generation);
+            newResourceSet = createResourceSetForModels(exceptions, defaultResourceSet, generation);
             isDefaultResourceSet = newResourceSet == defaultResourceSet;
         }
         if (exceptions.isEmpty()) {
