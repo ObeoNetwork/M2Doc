@@ -142,7 +142,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             URI sessionURI = URI.createURI(sessionURIStr, false);
             final String genconfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
             if (genconfURIStr != null) {
-                sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr, false));
+                sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr));
             }
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());

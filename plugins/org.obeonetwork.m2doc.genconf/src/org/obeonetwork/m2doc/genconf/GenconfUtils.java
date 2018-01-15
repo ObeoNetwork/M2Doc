@@ -112,10 +112,12 @@ public final class GenconfUtils {
             res.put(GENCONF_URI_OPTION, eResource.getURI().toString());
         }
         if (generation.getTemplateFileName() != null) {
-            res.put(TEMPLATE_URI_OPTION, generation.getTemplateFileName());
+            res.put(TEMPLATE_URI_OPTION,
+                    getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false)).toString());
         }
         if (generation.getResultFileName() != null) {
-            res.put(RESULT_URI_OPTION, generation.getResultFileName());
+            res.put(RESULT_URI_OPTION,
+                    getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false)).toString());
         }
         for (Option option : generation.getOptions()) {
             res.put(option.getName(), option.getValue());
