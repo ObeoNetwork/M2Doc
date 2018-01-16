@@ -16,7 +16,7 @@
   </prerequisites>
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>org.obeonetwork.m2doc.parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -376,7 +376,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-neon</artifactId>
-                  <version>1.0.0-SNAPSHOT</version>
+                  <version>1.1.0-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -406,7 +406,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-mars</artifactId>
-                  <version>1.0.0-SNAPSHOT</version>
+                  <version>1.1.0-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -436,7 +436,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-luna</artifactId>
-                  <version>1.0.0-SNAPSHOT</version>
+                  <version>1.1.0-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
