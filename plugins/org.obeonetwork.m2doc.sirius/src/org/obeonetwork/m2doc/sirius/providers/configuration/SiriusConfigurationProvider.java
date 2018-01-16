@@ -65,7 +65,7 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
     /**
      * Mapping of {@link Session} to {@link SessionTransientAttachment}.
      */
-    private final Map<Session, SessionTransientAttachment> trasiantAttachments = new HashMap<>();
+    private final Map<Session, SessionTransientAttachment> transientAttachments = new HashMap<>();
 
     /**
      * {@inheritDoc}
@@ -205,8 +205,10 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
             DocumentTemplate documentTemplate) {
         final Session session = sessions.remove(generation);
         if (session != null) {
-            session.getTransactionalEditingDomain().getResourceSet().eAdapters()
-                    .remove(trasiantAttachments.remove(session));
+            if (session.isOpen()) {
+                session.getTransactionalEditingDomain().getResourceSet().eAdapters()
+                        .remove(transientAttachments.remove(session));
+            }
             if (sessionToClose.remove(session)) {
                 session.close(new NullProgressMonitor());
             }
@@ -224,13 +226,17 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
             final URI sessionURI = GenconfUtils.getResolvedURI(generation,
                     URI.createURI(representationsFileName, false));
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
-                final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
-                sessions.put(generation, session);
                 try {
+                    final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
+                    sessions.put(generation, session);
                     if (!session.isOpen()) {
                         session.open(new NullProgressMonitor());
                         sessionToClose.add(session);
                     }
+                    created = session.getTransactionalEditingDomain().getResourceSet();
+                    SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
+                    created.eAdapters().add(transiantAttachment);
+                    transientAttachments.put(session, transiantAttachment);
                     // CHECKSTYLE:OFF
                 } catch (Exception e) {
                     // CHECKSTYLE:ON
@@ -239,14 +245,10 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
                         MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                                 "Unable to open Sirius Session",
                                 "Check the " + M2DocSiriusUtils.SIRIUS_SESSION_OPTION
-                                    + " option or try to open the session manually by double click the .aird file:\n"
+                                    + " option or try to open the session manually by double clicking the .aird file:\n"
                                     + e.getMessage());
                     }
                 }
-                created = session.getTransactionalEditingDomain().getResourceSet();
-                SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
-                created.eAdapters().add(transiantAttachment);
-                trasiantAttachments.put(session, transiantAttachment);
             } else {
                 throw new IllegalArgumentException("The Sirius session doesn't exists: " + sessionURI);
             }
