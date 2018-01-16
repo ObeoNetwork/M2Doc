@@ -74,12 +74,12 @@ public class GenerateHandler extends AbstractGenerationHandler {
             });
             if (generatedfiles.size() == 1) {
                 MessageDialog.openInformation(shell, "M2Doc generation",
-                        "The document '" + generatedfiles.get(0) + "' is generated.");
+                        "The document '" + URI.decode(generatedfiles.get(0).toString()) + "' is generated.");
             } else if (generatedfiles.size() == 2) {
                 MessageDialog.openInformation(shell, "M2Doc generation",
-                        "The document '" + generatedfiles.get(0).toString()
+                        "The document '" + URI.decode(generatedfiles.get(0).toString())
                             + "' is generated. \n\n The template file contains validation errors, please read '"
-                            + generatedfiles.get(1) + "'.");
+                            + URI.decode(generatedfiles.get(1).toString()) + "'.");
             }
         } catch (InvocationTargetException | InterruptedException e) {
             String msg = e.getMessage();
