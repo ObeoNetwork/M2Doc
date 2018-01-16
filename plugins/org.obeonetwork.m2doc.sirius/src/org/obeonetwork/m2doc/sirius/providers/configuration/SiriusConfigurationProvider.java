@@ -28,12 +28,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
 import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
+import org.eclipse.ui.PlatformUI;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
@@ -224,9 +226,22 @@ public class SiriusConfigurationProvider implements IConfigurationProvider {
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
                 sessions.put(generation, session);
-                if (!session.isOpen()) {
-                    session.open(new NullProgressMonitor());
-                    sessionToClose.add(session);
+                try {
+                    if (!session.isOpen()) {
+                        session.open(new NullProgressMonitor());
+                        sessionToClose.add(session);
+                    }
+                    // CHECKSTYLE:OFF
+                } catch (Exception e) {
+                    // CHECKSTYLE:ON
+                    // TODO remove this workaround see https://support.jira.obeo.fr/browse/VP-5389
+                    if (PlatformUI.isWorkbenchRunning()) {
+                        MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                                "Unable to open Sirius Session",
+                                "Check the " + M2DocSiriusUtils.SIRIUS_SESSION_OPTION
+                                    + " option or try to open the session manually by double click the .aird file:\n"
+                                    + e.getMessage());
+                    }
                 }
                 created = session.getTransactionalEditingDomain().getResourceSet();
                 SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
