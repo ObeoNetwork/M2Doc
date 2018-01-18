@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.IBody;
@@ -45,6 +47,17 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
  * @author ohaegi
  */
 public class UserContentRawCopy {
+
+    /**
+     * The replacement picture id {@link Pattern}.
+     */
+    private static final Pattern REPLACEMENT_PICTURE_ID_PATTERN = Pattern
+            .compile("<a:blip( .*). r:embed=\\\"([^\\\"]+)\\\"( .* )?>");
+
+    /**
+     * The replacement picture id {@link Pattern}.
+     */
+    private static final int REPLACEMENT_PICTURE_ID_GROUP_ID = 2;
 
     /**
      * Need new paragraph after copy.
@@ -407,19 +420,19 @@ public class UserContentRawCopy {
      */
     private XmlToken getXmlWithOuputId(Map<String, String> inputPicuteIdToOutputmap, String xmlText)
             throws XmlException {
-        String outputXmlStr = xmlText;
-        for (Map.Entry<String, String> entry : inputPicuteIdToOutputmap.entrySet()) {
-            String inputID = entry.getKey();
-            String outputID = entry.getValue();
-            outputXmlStr = outputXmlStr.replaceAll("<a:blip r:embed=\"" + inputID + "\"",
-                    "<a:blip r:embed=NEW\"" + outputID + "\"");
-        }
-        // Clean build string
-        outputXmlStr = outputXmlStr.replaceAll("<a:blip r:embed=NEW", "<a:blip r:embed=");
+        final StringBuilder builder = new StringBuilder(xmlText.length());
 
-        XmlToken outputXmlObject = null;
-        outputXmlObject = XmlToken.Factory.parse(outputXmlStr);
-        return outputXmlObject;
+        final Matcher matcher = REPLACEMENT_PICTURE_ID_PATTERN.matcher(xmlText);
+
+        int lastIndex = 0;
+        while (matcher.find()) {
+            builder.append(xmlText.subSequence(lastIndex, matcher.start(REPLACEMENT_PICTURE_ID_GROUP_ID)));
+            builder.append(inputPicuteIdToOutputmap.get(matcher.group(REPLACEMENT_PICTURE_ID_GROUP_ID)));
+            lastIndex = matcher.end(REPLACEMENT_PICTURE_ID_GROUP_ID);
+        }
+        builder.append(xmlText.substring(lastIndex, xmlText.length()));
+
+        return XmlToken.Factory.parse(builder.toString());
     }
 
     /**
