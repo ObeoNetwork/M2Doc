@@ -10,6 +10,8 @@ relativePath: ..
 Following you will find the tutorial to use [M2Doc](http://m2Doc.org) document generation with [Capella](http://polarsys.org/capella/).
 This will cover installation of integration plugins and deployement of the In-Flight Entertainment System (IFE) example.
 
+Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer). You can test the generation by sharing the IFE example project provided in the extensions. Then edit the .genconf file to reference the shared SystemEngineering model element. You might need to open the Capella session first by double clicking the .aird file.
+
 * TOC
 {:toc}
 

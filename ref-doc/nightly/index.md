@@ -190,10 +190,11 @@ If you want more examples of templates you can have a look at the nominal cases 
 All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#providing-new-services).
 
 * [Boolean services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_booleanservices.html)
+* [Excel services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_excelervices.html)
 * [Image services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_imageservices.html)
 * [Link services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_linkservices.html)
 * [Pagination services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_paginationservices.html)
-* [Sirius services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docsiriusservices.html)
+* [Sirius services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docsiriusservices.html) (Note: M2Doc versions 1.1.0 and above are compatible with [Obeo Designer Team Edition](https://www.obeodesigner.com/en/collaborative-features).)
 
 ### Template editor
 
