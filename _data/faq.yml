@@ -5,7 +5,10 @@
 - question: How can I contribute to M2Doc?
   answer: Read the <a href="../developer-guide/contribute.html#contribute">contribution guide</>.
 - question: Where could I find some help about M2Doc?
-  answer: Have a look to the <a href="../support">support</a> page to find community or professional supports.
+  answer: Have a look at the <a href="../support">support</a> page to find community or professional supports.
 - question: What is the M2Doc licence?
   answer: M2Doc is available under the <a href="https://www.eclipse.org/legal/epl-v10.html">EPL</a> license.
+- question: How do I install M2Doc in Capella?
+  answer: Have a look at the <a href="../capella/">installation tutorial</a> dedicated to Capella.
+  
   
