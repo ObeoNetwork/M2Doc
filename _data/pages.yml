@@ -13,6 +13,8 @@
   - title: Write a template
     file: ref-doc/1.0.0/index
     anchor: write-a-template
+  - title: Use with Capella
+    file: capella/index
 
 
 - category: GET INVOLVED

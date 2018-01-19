@@ -7,12 +7,14 @@ relativePath: ..
 
 Install
 -------
-To install M2Doc:
+To install M2Doc on Obeo Designer:
 1. Download an <a href="https://www.obeodesigner.com/en/download" target="_blank">Obeo Designer</a>.
 2. Then you need to unpack the bundle and launch the executable.
 3. Install the M2Doc update site: [all versions]({{page.relativePath}}/download#all-versions).
 
 That's it! You are ready to [start with M2Doc]({{page.relativePath}}/ref-doc/1.0.0/#generate-a-document).
+
+To install M2Doc on Capella: see the [dedicated tutorial]({{page.relativePath}}/capella).
 
 ### All versions
 
