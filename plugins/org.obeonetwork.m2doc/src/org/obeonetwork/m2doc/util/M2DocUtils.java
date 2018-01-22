@@ -112,7 +112,7 @@ public final class M2DocUtils {
      * Constructor.
      */
     private M2DocUtils() {
-        super();
+        // nothing to do here
     }
 
     /**
