@@ -1224,7 +1224,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             } else if (generatedDocument instanceof XWPFTableCell) {
                 XWPFTableCell tCell = (XWPFTableCell) generatedDocument;
                 int tableRank = tCell.getTables().size();
-                XWPFTable newTable = new XWPFTable(copy, tCell, 0, 0);
+                final CTTbl tbl = tCell.getCTTc().addNewTbl();
+                tbl.set(copy);
+                final XWPFTable newTable = new XWPFTable(tbl, tCell);
                 if (newTable.getRows().size() > 0) {
                     newTable.removeRow(0);
                 }

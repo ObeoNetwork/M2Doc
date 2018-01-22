@@ -43,7 +43,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
      * User Conetnt Ids list.
      * Used for uniqueness test.
      */
-    private List<String> userContentIds = new ArrayList<String>();
+    private List<String> userContentIds = new ArrayList<>();
 
     /**
      * Creates a new {@link BodyGeneratedParser} instance.
@@ -79,8 +79,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
      */
     @Override
     protected TokenType getNextTokenType() {
-        int index = 1;
-        ParsingToken token = runIterator.lookAhead(index);
+        ParsingToken token = runIterator.lookAhead(1);
         TokenType result;
         if (token == null) {
             result = TokenType.EOF;
@@ -112,7 +111,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
 
         TokenType type = getNextTokenType();
-        Set<TokenType> endTypeSet = new HashSet<TokenType>(Arrays.asList(endTypes));
+        Set<TokenType> endTypeSet = new HashSet<>(Arrays.asList(endTypes));
         endBlock: while (!endTypeSet.contains(type)) {
             switch (type) {
                 case USERCONTENT:

@@ -106,7 +106,7 @@ public class M2DocParser extends AbstractBodyParser {
      * @return the mapping of {@link TokenType} to extra spaces {@link Pattern}
      */
     private static Map<TokenType, Pattern> initExtraSpacesPatterns() {
-        final Map<TokenType, Pattern> res = new HashMap<TokenType, Pattern>();
+        final Map<TokenType, Pattern> res = new HashMap<>();
 
         for (TokenType tokenType : TokenType.values()) {
             if (tokenType.needExtraSpacesCheck()) {
@@ -126,8 +126,7 @@ public class M2DocParser extends AbstractBodyParser {
      */
     @Override
     protected TokenType getNextTokenType() {
-        int index = 1;
-        ParsingToken token = runIterator.lookAhead(index);
+        ParsingToken token = runIterator.lookAhead(1);
         TokenType result;
         if (token == null) {
             result = TokenType.EOF;
@@ -184,7 +183,7 @@ public class M2DocParser extends AbstractBodyParser {
     protected Block parseBlock(TokenType... endTypes) throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
         TokenType type = getNextTokenType();
-        Set<TokenType> endTypeSet = new HashSet<TokenType>(Arrays.asList(endTypes));
+        Set<TokenType> endTypeSet = new HashSet<>(Arrays.asList(endTypes));
         endBlock: while (!endTypeSet.contains(type)) {
             switch (type) {
                 case QUERY:
@@ -593,9 +592,9 @@ public class M2DocParser extends AbstractBodyParser {
         } else {
             ErrorExpression errorExpression = (ErrorExpression) EcoreUtil
                     .create(AstPackage.eINSTANCE.getErrorExpression());
-            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
+            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<>(1);
             errors.add(errorExpression);
-            final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+            final Map<Object, Integer> positions = new HashMap<>();
             if (expression != null) {
                 positions.put(errorExpression, Integer.valueOf(0));
             }
