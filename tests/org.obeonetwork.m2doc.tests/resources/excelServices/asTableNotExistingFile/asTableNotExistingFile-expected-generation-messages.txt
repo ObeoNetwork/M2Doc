@@ -1,5 +1,5 @@
 ERROR - asTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String) with arguments [excel.xlsx, Feuil1, C3, F7, fr-FR] failed:
-	/home/development/git/M2Doc/tests/org.obeonetwork.m2doc.tests/resources/excelServices/asTableNotExistingFile/excel.xlsx (No such file or directory)
-java.io.FileNotFoundException: /home/development/git/M2Doc/tests/org.obeonetwork.m2doc.tests/resources/excelServices/asTableNotExistingFile/excel.xlsx (No such file or directory)
+	/home/.../M2Doc/tests/org.obeonetwork.m2doc.tests/resources/excelServices/asTableNotExistingFile/excel.xlsx (No such file or directory)
+java.io.FileNotFoundException: /home/.../M2Doc/tests/org.obeonetwork.m2doc.tests/resources/excelServices/asTableNotExistingFile/excel.xlsx (No such file or directory)
 ...STACK...	at java.io.FileInputStream.<init>(FileInputStream.java:138)
 ...STACK...
