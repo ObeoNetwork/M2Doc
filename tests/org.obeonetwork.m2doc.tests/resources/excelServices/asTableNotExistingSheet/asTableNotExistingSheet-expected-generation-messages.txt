@@ -1,0 +1,4 @@
+ERROR - asTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String) with arguments [excel.xlsx, NotExistingSheet, C3, F7, fr-FR] failed:
+	The sheet NotExistingSheet doesn't exists in file:/.../M2Doc/tests/org.obeonetwork.m2doc.tests/resources/excelServices/asTableNotExistingSheet/excel.xlsx.
+java.lang.IllegalArgumentException: The sheet NotExistingSheet doesn't exists in file:/.../M2Doc/tests/org.obeonetwork.m2doc.tests/resources/excelServices/asTableNotExistingSheet/excel.xlsx.
+...STACK...
