@@ -239,8 +239,8 @@ public final class M2DocTestUtils {
     public static String getPortableString(String textContent) {
         String res;
 
-        res = textContent.replaceAll(" /home/.*/M2Doc", " /home/.../M2Doc"); // remove folder prefix
-        res = textContent.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc"); // remove folder prefix
+        res = textContent.replaceAll("/home/.*/M2Doc", "/home/.../M2Doc"); // remove folder prefix
+        res = res.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc"); // remove folder prefix
         res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace localized message
         res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");// strip lost user doc date
         res = res.replaceAll("@[a-f0-9]{6,8} ", "@00000000 "); // object address in toString()
