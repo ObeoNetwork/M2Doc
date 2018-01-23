@@ -266,7 +266,10 @@ public class UserContentRawCopy {
         } else if (document instanceof XWPFTableCell) {
             XWPFTableCell tCell = (XWPFTableCell) document;
             int tableRank = tCell.getTables().size();
-            tCell.insertTable(tableRank, new XWPFTable(copy, tCell, 0, 0));
+            final CTTbl tbl = tCell.getCTTc().addNewTbl();
+            final XWPFTable newTable = new XWPFTable(tbl, tCell);
+            tbl.set(copy);
+            tCell.insertTable(tableRank, newTable);
             generatedTable = tCell.getTables().get(tableRank);
         } else {
             throw new UnsupportedOperationException("unknown type of IBody : " + document.getClass());
