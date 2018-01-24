@@ -65,5 +65,5 @@ deploy:
   on:
     all_branches: true
     repo: ObeoNetwork/M2Doc
-    condition: $UPDATE_SITES = true
+    condition: "$UPDATE_SITES = true"
 
