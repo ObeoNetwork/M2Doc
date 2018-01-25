@@ -26,7 +26,7 @@ echo $?
 sed -i "s+master+$1+g" ref-doc/$1/index.md
 echo $?
 
-if [[ -z $2 ]]; then
+if [ ! -z $2 ]; then
   #commit
   echo "Commit ref-doc/$1."
   git config user.email "yvan.lussaud@obeo.fr"
