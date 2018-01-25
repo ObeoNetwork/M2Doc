@@ -26,18 +26,19 @@ echo $?
 sed -i "s+master+$1+g" ref-doc/$1/index.md
 echo $?
 
-#commit
-echo "Commit ref-doc/$1."
-git config user.email "yvan.lussaud@obeo.fr"
-echo $?
-git config user.name "Yvan Lussaud"
-echo $?
-git add _data/pages.yml
-echo $?
-git add ref-doc/$1
-echo $?
-git commit -m "Integration promoting web site for $1. ($TRAVIS_COMMIT)"
-echo $?
-git push origin gh-pages
-echo $?
-
+if [[ -z $2 ]]; then
+  #commit
+  echo "Commit ref-doc/$1."
+  git config user.email "yvan.lussaud@obeo.fr"
+  echo $?
+  git config user.name "Yvan Lussaud"
+  echo $?
+  git add _data/pages.yml
+  echo $?
+  git add ref-doc/$1
+  echo $?
+  git commit -m "Integration promoting web site for $1. ($2)"
+  echo $?
+  git push origin gh-pages
+  echo $?
+fi
