@@ -17,7 +17,7 @@ Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.o
 
 ## Installation
 
-First you need to download the version 1.1.x of [Capella](http://polarsys.org/capella/). It can be downloaded from this [download page](http://polarsys.org/capella/download.html).
+First you need to download [Capella](http://polarsys.org/capella/). It can be downloaded from this [download page](http://polarsys.org/capella/download.html).
 
 Once your download is finished, extract the downloaded archive and run the eclipe executable in the eclipse sub folder. You are now ready for the last step of the installation. You will need to [add a new update site](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm):
 
