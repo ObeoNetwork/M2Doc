@@ -183,7 +183,17 @@ Generates a user content block in the resulting document. If the generated docum
 
 If a user content exists in a previously generated document and the id is not re-generated, the user content will by removed from the generated document and saved in a &#171;lost&#187; file.
 
-If you want more examples of templates you can have a look at the nominal cases in [unit tests](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources).
+#### Template construct ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/template/nominal))
+
+A template construct is basically a block of template with parameters that can be called like a service. When the template construct is called its contents is inserted after all dynamic parts have been interpreted by M2Doc.
+
+`{m:template myTemplate(a : Integer, b : Integer)} ...user block... {m:endtemplate}`
+
+This template can be called as follow using a simple [query](index.html#query-example):
+
+`{m:1.myTemplate(3)}`
+
+If you want more examples of M2Doc syntax you can have a look at the nominal cases in [unit tests](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources).
 
 ### Services
 
