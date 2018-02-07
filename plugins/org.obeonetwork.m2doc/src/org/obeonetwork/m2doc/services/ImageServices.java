@@ -138,7 +138,7 @@ public class ImageServices {
 
     // @formatter:off
     @Documentation(
-        value = "Sets the height of the image.",
+        value = "Gets the height of the image.",
         params = {
             @Param(name = "image", value = "The Image"),
         },
