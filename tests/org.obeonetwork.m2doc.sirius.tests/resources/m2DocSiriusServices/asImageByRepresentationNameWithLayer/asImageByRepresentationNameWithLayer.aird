@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
-  <viewpoint:DAnalysis xmi:id="__mhUwLe2EeadeJgQTriozQ" selectedViews="_AS6gsLe3EeadeJgQTriozQ" version="12.0.0.201704271200">
+  <viewpoint:DAnalysis xmi:id="__mhUwLe2EeadeJgQTriozQ" selectedViews="_AS6gsLe3EeadeJgQTriozQ" version="11.1.0.201608251200">
     <semanticResources>anydsl.ecore</semanticResources>
     <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
     <semanticResources>nominal.genconf</semanticResources>
     <semanticResources>isRepresentationNameTrue.genconf</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_AS6gsLe3EeadeJgQTriozQ">
       <viewpoint xmi:type="description:Viewpoint" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_8t6roBOaEeeLmO8hPdE7Qw" name="anydsl class diagram" repPath="#_CbYCALe3EeadeJgQTriozQ">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_8t6roBOaEeeLmO8hPdE7Qw" name="anydsl class diagram" representation="_CbYCALe3EeadeJgQTriozQ">
         <description xmi:type="description_1:DiagramDescription" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="anydsl.ecore#/"/>
       </ownedRepresentationDescriptors>
