@@ -1,6 +1,6 @@
-target "sirius50" with source requirements
+target "sirius51" with source requirements
 
-location "http://download.eclipse.org/sirius/updates/releases/5.0.2/oxygen/" {
+location "http://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen" {
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy

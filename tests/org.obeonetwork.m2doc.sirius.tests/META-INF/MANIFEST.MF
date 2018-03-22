@@ -18,7 +18,8 @@ Require-Bundle: org.junit,
  org.apache.poi;bundle-version="[3.17.0,3.18.0)",
  org.eclipse.emf.transaction,
  org.eclipse.acceleo.query,
- org.obeonetwork.m2doc.ide;bundle-version="[1.1.0,2.0.0)"
+ org.obeonetwork.m2doc.ide;bundle-version="[1.1.0,2.0.0)",
+ org.apache.xerces;bundle-version="2.9.0"
 Export-Package: org.obeonetwork.m2doc.sirius.tests
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.obeonetwork.m2doc.sirius.tests.M2DocSiriusTestPlugin

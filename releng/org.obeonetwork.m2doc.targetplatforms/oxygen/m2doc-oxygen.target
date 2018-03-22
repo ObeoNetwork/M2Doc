@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="M2Doc Oxygen Target Platform" sequenceNumber="1521017565">
-<locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.apache.poi.feature.feature.group" version="0.0.0"/>
-<repository location="http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.net4j.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.6/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sirius" version="0.0.0"/>
-<unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
-<unit id="org.eclipse.sirius.diagram.ui" version="0.0.0"/>
-<unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.sirius.table" version="0.0.0"/>
-<unit id="org.eclipse.sirius.table.ui" version="0.0.0"/>
-<repository location="http://download.eclipse.org/sirius/updates/releases/5.0.2/oxygen/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
-<unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/acceleo/updates/releases/3.7/R201610150614"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.core.runtime" version="0.0.0"/>
-<unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.epp.mpc.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.gmf" version="0.0.0"/>
-<unit id="org.eclipse.gmf.runtime.diagram.ui" version="0.0.0"/>
-<unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
-<unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.platform.sdk" version="0.0.0"/>
-<unit id="org.eclipse.ui" version="0.0.0"/>
-<unit id="org.eclipse.ui.views.log" version="0.0.0"/>
-<unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
-<unit id="org.junit" version="4.12.0.v201504281640"/>
-<repository location="http://download.eclipse.org/releases/oxygen"/>
-</location>
-</locations>
+<?pde?>
+<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
+<target name="M2Doc Oxygen Target Platform" sequenceNumber="1521715445">
+  <locations>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.apache.poi.feature.feature.group" version="0.0.0"/>
+      <repository id="ObeoNetworkBits" location="http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.net4j.feature.group" version="0.0.0"/>
+      <repository id="CDO" location="http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.6/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
+      <repository id="XText" location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.sirius" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram.ui" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.table" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.table.ui" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
+      <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
+      <repository id="Acceleo-3.7" location="http://download.eclipse.org/acceleo/updates/releases/3.7/R201610150614"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.core.runtime" version="0.0.0"/>
+      <unit id="org.eclipse.ui" version="0.0.0"/>
+      <unit id="org.eclipse.ui.views.log" version="0.0.0"/>
+      <unit id="org.eclipse.epp.mpc.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.junit" version="4.12.0.v201504281640"/>
+      <unit id="org.eclipse.gmf" version="0.0.0"/>
+      <unit id="org.eclipse.gmf.runtime.diagram.ui" version="0.0.0"/>
+      <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
+      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
+      <repository id="Eclipse" location="http://download.eclipse.org/releases/oxygen"/>
+    </location>
+  </locations>
 </target>
