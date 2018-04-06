@@ -15,5 +15,4 @@ location Eclipse "http://download.eclipse.org/releases/oxygen" {
 	org.eclipse.gmf lazy
 	org.eclipse.gmf.runtime.diagram.ui lazy
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
-
 }
