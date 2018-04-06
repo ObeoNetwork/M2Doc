@@ -1,7 +1,7 @@
 target "M2Doc Oxygen Target Platform"
 
 include "../common/common.tpd"
-include "../common/sirius50.tpd"
+include "../common/sirius51.tpd"
 
 with source requirements
 
