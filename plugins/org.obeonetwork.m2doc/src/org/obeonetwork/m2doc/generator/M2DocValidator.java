@@ -79,6 +79,7 @@ import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
+import org.obeonetwork.m2doc.util.AQL56Compatibility;
 
 /**
  * Validates {@link DocumentTemplate}.
@@ -101,7 +102,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     /**
      * The {@link Stack} of variables types.
      */
-    private final Stack<Map<String, Set<IType>>> stack = new Stack<Map<String, Set<IType>>>();
+    private final Stack<Map<String, Set<IType>>> stack = new Stack<>();
 
     /**
      * AQL {@link AstValidator}.
@@ -155,7 +156,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      */
     public static Set<IType> getVariableTypes(AstValidator validator, IReadOnlyQueryEnvironment queryEnvironment,
             String type) {
-        final Set<IType> res = new LinkedHashSet<IType>();
+        final Set<IType> res = new LinkedHashSet<>();
 
         final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
         final IValidationResult validationResult = validator.validate(Collections.<String, Set<IType>> emptyMap(),
@@ -190,7 +191,8 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final IQueryBuilderEngine.AstResult result;
 
         if (type != null && type.length() > 0) {
-            AstBuilderListener astBuilder = new AstBuilderListener((IQueryEnvironment) queryEnvironment);
+            AstBuilderListener astBuilder = AQL56Compatibility
+                    .createAstBuilderListener((IQueryEnvironment) queryEnvironment);
             CharStream input = new UnbufferedCharStream(new StringReader(type), type.length());
             QueryLexer lexer = new QueryLexer(input);
             lexer.setTokenFactory(new CommonTokenFactory(true));
@@ -207,9 +209,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         } else {
             ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral) EcoreUtil
                     .create(AstPackage.eINSTANCE.getErrorTypeLiteral());
-            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(1);
+            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<>(1);
             errors.add(errorTypeLiteral);
-            final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+            final Map<Object, Integer> positions = new HashMap<>();
             if (type != null) {
                 positions.put(errorTypeLiteral, Integer.valueOf(0));
             }
@@ -320,7 +322,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
             conditionLevel = ValidationMessageLevel.ERROR;
         }
 
-        final Map<String, Set<IType>> thenVariables = new HashMap<String, Set<IType>>(stack.peek());
+        final Map<String, Set<IType>> thenVariables = new HashMap<>(stack.peek());
         thenVariables
                 .putAll(validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.TRUE));
         stack.push(thenVariables);
@@ -332,7 +334,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         }
         final ValidationMessageLevel elseLevel;
         if (conditional.getElse() != null) {
-            final Map<String, Set<IType>> elseVariables = new HashMap<String, Set<IType>>(stack.peek());
+            final Map<String, Set<IType>> elseVariables = new HashMap<>(stack.peek());
             elseVariables.putAll(
                     validationResult.getInferredVariableTypes(conditional.getCondition().getAst(), Boolean.FALSE));
             stack.push(elseVariables);
@@ -453,7 +455,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                             run));
         }
 
-        final Set<IType> iteratorTypes = new LinkedHashSet<IType>();
+        final Set<IType> iteratorTypes = new LinkedHashSet<>();
         for (IType type : types) {
             if (type instanceof ICollectionType) {
                 iteratorTypes.add(((ICollectionType) type).getCollectionType());
@@ -462,7 +464,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         if (iteratorTypes.isEmpty()) {
             iteratorTypes.add(new NothingType("No collection type for the iterator " + repetition.getIterationVar()));
         }
-        final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
+        final Map<String, Set<IType>> iterationVariables = new HashMap<>(stack.peek());
         iterationVariables.put(repetition.getIterationVar(), iteratorTypes);
         stack.push(iterationVariables);
         final ValidationMessageLevel bodyLevel;
@@ -494,7 +496,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                     String.format("The variable mask an existing variable (%s).", let.getName()), run));
         }
 
-        final Map<String, Set<IType>> iterationVariables = new HashMap<String, Set<IType>>(stack.peek());
+        final Map<String, Set<IType>> iterationVariables = new HashMap<>(stack.peek());
         iterationVariables.put(let.getName(), types);
         stack.push(iterationVariables);
         final ValidationMessageLevel bodyLevel;
@@ -582,14 +584,13 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     public ValidationMessageLevel caseAbstractProviderClient(AbstractProviderClient providerClient) {
         ValidationMessageLevel res = ValidationMessageLevel.WARNING;
         final XWPFRun run = providerClient.getStyleRun();
-        providerClient.getValidationMessages()
-                .add(new TemplateValidationMessage(res,
-                        "Providers are deprecated use services instead:\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/ImageServices.java\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/M2DocSiriusServices.java",
-                        run));
+        providerClient.getValidationMessages().add(new TemplateValidationMessage(res,
+                "Providers are deprecated use services instead:\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/ImageServices.java\nhttps://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/M2DocSiriusServices.java",
+                run));
 
         if (providerClient.getProvider() != null) {
             ValidationMessageLevel optionsLevel = ValidationMessageLevel.OK;
-            Map<String, Object> options = new LinkedHashMap<String, Object>(providerClient.getOptionValueMap().size());
+            Map<String, Object> options = new LinkedHashMap<>(providerClient.getOptionValueMap().size());
             for (Entry<String, Object> entry : providerClient.getOptionValueMap()) {
                 if (providerClient.getProvider().getOptionTypes().get(entry.getKey()) == OptionType.AQL_EXPRESSION) {
                     final AstResult astResult = (AstResult) entry.getValue();
