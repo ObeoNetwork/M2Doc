@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -1026,6 +1027,19 @@ public class CustomGenconfEditor extends GenconfEditor {
                 }
             }
         });
+    }
+
+    @Override
+    public Diagnostic analyzeResourceProblems(Resource resource, Exception exception) {
+        final Diagnostic res;
+
+        if (resource != null) {
+            res = super.analyzeResourceProblems(resource, exception);
+        } else {
+            res = Diagnostic.OK_INSTANCE;
+        }
+
+        return res;
     }
 
 }
