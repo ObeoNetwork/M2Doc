@@ -52,6 +52,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -483,7 +484,13 @@ public class CustomGenconfEditor extends GenconfEditor {
                                 break;
                         }
                         if (!variablesTable.getTable().isDisposed()) {
-                            variablesTable.refresh();
+                            Display.getDefault().asyncExec(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    variablesTable.refresh();
+                                }
+                            });
                         }
                         break;
                     case GenconfPackage.GENERATION__OPTIONS:
@@ -510,7 +517,13 @@ public class CustomGenconfEditor extends GenconfEditor {
                                 break;
                         }
                         if (!optionsTable.getTable().isDisposed()) {
-                            optionsTable.refresh();
+                            Display.getDefault().asyncExec(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    optionsTable.refresh();
+                                }
+                            });
                         }
                         break;
                     default:
@@ -518,11 +531,23 @@ public class CustomGenconfEditor extends GenconfEditor {
                 }
             } else if (msg.getNotifier() instanceof Definition) {
                 if (!variablesTable.getTable().isDisposed()) {
-                    variablesTable.refresh();
+                    Display.getDefault().asyncExec(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            variablesTable.refresh();
+                        }
+                    });
                 }
             } else if (msg.getNotifier() instanceof Option) {
                 if (!optionsTable.getTable().isDisposed()) {
-                    optionsTable.refresh();
+                    Display.getDefault().asyncExec(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            optionsTable.refresh();
+                        }
+                    });
                 }
             }
         }
