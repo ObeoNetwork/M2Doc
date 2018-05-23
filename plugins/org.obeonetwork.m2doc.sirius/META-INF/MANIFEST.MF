@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.sirius;singleton:=true
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.sirius;bundle-version="[4.1.0,6.0.0)",
  org.eclipse.sirius.diagram;bundle-version="[4.1.0,6.0.0)",
@@ -11,11 +11,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.sirius.diagram.ui;bundle-version="[4.1.0,6.0.0)",
  org.eclipse.sirius.ext.base;bundle-version="[4.1.0,6.0.0)",
  org.eclipse.sirius.table;bundle-version="[4.1.0,6.0.0)",
- org.obeonetwork.m2doc;bundle-version="[1.1.0,2.0.0)",
- org.obeonetwork.m2doc.genconf;bundle-version="[1.1.0,2.0.0)",
+ org.obeonetwork.m2doc;bundle-version="[2.0.0,3.0.0)",
+ org.obeonetwork.m2doc.genconf;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.sirius.common;bundle-version="[4.1.0,6.0.0)",
  org.eclipse.acceleo.query;bundle-version="[5.0.0,7.0.0)",
- org.obeonetwork.m2doc.ide;bundle-version="[1.1.0,2.0.0)",
+ org.obeonetwork.m2doc.ide;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.acceleo.annotations;bundle-version="[5.0.0,7.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
