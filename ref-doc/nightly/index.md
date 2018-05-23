@@ -111,7 +111,19 @@ The template should be edited using your Microsoft Word document editor. M2Doc u
 
 All syntax elements of M2Doc should be placed into fields using `ALT+F9` to show fields and `CTRL+F9` to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
 
-In the following table`{` and `}` denote a Word field. 
+In order to create your [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions with completion and see the result for a selected object you can use the [Sirius interpreter](https://www.eclipse.org/sirius/doc/specifier/general/Writing_Queries.html) after installing [Sirius](https://eclipse.org/sirius/). The interpreter view is as follow and you should select `Sirius interpreter` and prefix your expressions with `aql:`:
+
+![Sirius interpreter.]({{page.relativePath}}/ref-doc/nightly/images/Sirius%20interpreter.png "Sirius interpreter.")
+
+In the following explanations `{` and `}` will denote a Word field.
+
+Note that fields are also used by Microsoft Word page number, table of contents, ... Switching from field visualization mode to field edition mode will change the visualization of the document:
+
+![Fields edition.]({{page.relativePath}}/ref-doc/nightly/images/Field%20edition.png "Fields edition.")
+
+`ALT+F9`
+
+![Fields visualization.]({{page.relativePath}}/ref-doc/nightly/images/Field%20visualization.png "Fields visualization.")
 
 #### Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))
 
@@ -209,7 +221,17 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 
 ### Template editor
 
-The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services. The template editor modifies template custom properties. You can also read [template custom properties](index.html#template-custom-properties) section to change them manually. 
+The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services. The template editor modifies template custom properties. You can also read [template custom properties](index.html#template-custom-properties) section to change them manually.
+
+To open a template with the template editor right click on the template .docx file and select open with. If the template editor is not in the list select `other ...`:
+
+![Open with menu.]({{page.relativePath}}/ref-doc/nightly/images/Open%20with%20menu.png "Open with menu.")
+
+Make sure to select `Internal editors` in the editor selection dialog:
+
+![Editor selection dialog.]({{page.relativePath}}/ref-doc/nightly/images/Editor%20selection%20dialog.png "Editor selection dialog.")
+
+You should then see the following editor:
 
 ![The template editor.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor.png "The template editor.")
 
