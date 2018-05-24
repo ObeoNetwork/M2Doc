@@ -63,67 +63,6 @@ public class FieldUtils {
     }
 
     /**
-     * Extract tag string (word field) from runs list.
-     * The tag must begin at the first run, return empty sting if not.
-     * 
-     * @param runs
-     *            list of run where find tag
-     * @return tag string
-     * @deprecated @see {@link #lookAheadTag(TokenProvider)}
-     */
-    @Deprecated
-    public String lookAheadTag(final List<XWPFRun> runs) {
-        int i = 0;
-        XWPFRun run = runs.get(i);
-        if (run != null) {
-            if (isFieldBegin(run)) {
-                StringBuilder builder = new StringBuilder();
-                i++;
-                run = runs.get(i);
-                // run is null when EOF is reached or a table is encountered.
-                while (run != null && !isFieldEnd(run)) {
-                    builder.append(readUpInstrText(run));
-                    run = runs.get(++i);
-                }
-                return builder.toString().trim();
-            }
-        }
-        return "";
-    }
-
-    /**
-     * Extract tag string (word field) from runs list.
-     * The tag must begin at the first run, return empty sting if not.
-     * 
-     * @param runs
-     *            list of run where find tag
-     * @param index
-     *            run index in iterator
-     * @return tag string
-     * @deprecated @see {@link #lookAheadTag(TokenProvider)}
-     */
-    @Deprecated
-    public String lookAheadTag(List<XWPFRun> runs, int index) {
-        int i = index;
-        // first run must begin a field.
-        XWPFRun run = runs.get(i);
-        if (run != null) {
-            if (isFieldBegin(run)) {
-                StringBuilder builder = new StringBuilder();
-                i++;
-                run = runs.get(i);
-                // run is null when EOF is reached or a table is encountered.
-                while (run != null && !isFieldEnd(run)) {
-                    builder.append(readUpInstrText(run));
-                    run = runs.get(++i);
-                }
-                return builder.toString().trim();
-            }
-        }
-        return "";
-    }
-
-    /**
      * Returns <code>true</code> when the specified run is a field begin run and <code>false</code> otherwise.
      * 
      * @param run

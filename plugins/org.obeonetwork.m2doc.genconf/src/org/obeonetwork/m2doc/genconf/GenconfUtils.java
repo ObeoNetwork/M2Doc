@@ -457,18 +457,6 @@ public final class GenconfUtils {
     }
 
     /**
-     * Create a new {@link ResourceSet} suitable for loading the models specified in the {@link Generation}.
-     * 
-     * @param generation
-     *            the generation object.
-     * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
-     * @deprecated see {@link #createResourceSetForModels(DocumentTemplate, Generation)}
-     */
-    public static ResourceSet createResourceSetForModels(Generation generation) {
-        return createResourceSetForModels(new ArrayList<Exception>(), generation);
-    }
-
-    /**
      * Create a new {@link ResourceSet} suitable for loading the {@link ModelDefinition} specified in the {@link Generation}.
      * 
      * @param exceptions

@@ -35,7 +35,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -621,30 +620,6 @@ public final class M2DocUtils {
 
         generator.doSwitch(documentTemplate);
         POIServices.getInstance().saveFile(uriConverter, documentTemplate.getDocument(), destination);
-    }
-
-    /**
-     * Generates the given template into the given destination.
-     * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate}
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param variables
-     *            variables
-     * @param destination
-     *            the destination
-     * @return the {@link GenerationResult}
-     * @throws DocumentGenerationException
-     *             if the generation fails
-     * @deprecated the method with a monitor parameter should be preferred.
-     */
-    @Deprecated
-    public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URI destination)
-            throws DocumentGenerationException {
-        return generate(documentTemplate, queryEnvironment, variables, URIConverter.INSTANCE, destination,
-                new BasicMonitor());
     }
 
     /**

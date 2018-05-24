@@ -348,18 +348,6 @@ public class TemplateCustomProperties {
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment} to configure
-     * @deprecated see {@link #configureQueryEnvironmentWithResult(IQueryEnvironment)}
-     */
-    @Deprecated
-    public void configureQueryEnvironment(IQueryEnvironment queryEnvironment) {
-        configureQueryEnvironmentWithResult(queryEnvironment);
-    }
-
-    /**
-     * Configures the given {@link IQueryEnvironment} with {@link #getPackagesURIs() declared EPackages}.
-     * 
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment} to configure
      * @return the {@link List} of nsURI with no {@link EPackage.Registry#put(String, Object) registered} {@link EPackage}
      */
     public List<String> configureQueryEnvironmentWithResult(IQueryEnvironment queryEnvironment) {

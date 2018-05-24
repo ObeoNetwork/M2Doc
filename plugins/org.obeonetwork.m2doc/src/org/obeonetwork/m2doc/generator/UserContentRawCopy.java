@@ -81,30 +81,6 @@ public class UserContentRawCopy {
      *            UserContent EObject
      * @param outputParagraphBeforeUserDocContent
      *            Output Paragraph Before User Doc Dest content (User Code dest is writen by {@link M2DocEvaluator} )
-     * @param outputBody
-     *            output body
-     * @return last paragraph created by copy
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws XmlException
-     *             XmlException
-     * @throws IOException
-     *             if the copy fails
-     * @deprecated use {@link #copy(UserContent, XWPFParagraph)}
-     */
-    @Deprecated
-    public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent,
-            IBody outputBody) throws InvalidFormatException, XmlException, IOException {
-        return copy(userContent, outputParagraphBeforeUserDocContent);
-    }
-
-    /**
-     * Copy.
-     * 
-     * @param userContent
-     *            UserContent EObject
-     * @param outputParagraphBeforeUserDocContent
-     *            Output Paragraph Before User Doc Dest content (User Code dest is writen by {@link M2DocEvaluator} )
      * @return last paragraph created by copy
      * @throws InvalidFormatException
      *             InvalidFormatException
