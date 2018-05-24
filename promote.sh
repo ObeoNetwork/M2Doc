@@ -17,8 +17,6 @@ echo $?
 
 #update the documentation
 echo "Make other replacements in ref-doc/$1/index.md."
-sed -i "s+article-with-toc-nightly+article-with-toc+g" ref-doc/$1/index.md
-echo $?
 sed -i "s+nightly+$1+g" ref-doc/$1/index.md
 echo $?
 sed -i "s+Nightly+$1+g" ref-doc/$1/index.md
