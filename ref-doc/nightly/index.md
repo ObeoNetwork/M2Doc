@@ -13,22 +13,65 @@ If you need an other version use one of our [released versions]({{page.relativeP
 * TOC
 {:toc}
 
-## Starting with M2Doc
+## Overview
 
-First a have look at the M2Doc's overall architecture available on the [Overview]({{page.relativePath}}/overview) page.
+The M2Doc project provides Word document (.docx files) generation based on a document template and [EMF](https://www.eclipse.org/modeling/emf/) models. 
 
-Then you probably want to start with the [Download]({{page.relativePath}}/download) section. 
+The overall approach consists in creating templates in the [OOXML](https://en.wikipedia.org/wiki/Office_Open_XML) format where static text authoring benefits from the WYSIWYG capabilities of Microsoft Word. Dynamic parts are inserted using a dedicated vocabulary of [OOXML](https://en.wikipedia.org/wiki/Office_Open_XML) fields code. Fields are mainly used to insert page numbers, references, etc. M2Doc makes use of them to describe documentation generation directives. This allows a total separation between the document and the M2Doc directives.
+
+![Overview]({{page.relativePath}}/ref-doc/nightly/images/m2doc-overview.png)
+
+As an example, here is a fragment of a M2Doc template used to generate the documentation of a database model:
+
+![DB Template]({{page.relativePath}}/ref-doc/nightly/images/DBTemplate.png)
+ 
+The generation looks like this: 
+
+![DB Result]({{page.relativePath}}/ref-doc/nightly/images/DBResult.png)
+
+The template language makes an extensive use of the [Acceleo Query Language](https://www.eclipse.org/acceleo/documentation/aql.html) which provides a full-fledged, extensible model query language and engine. 
+The M2Doc templates can be validated. If errors are found, an annotated templates is produced describing the problems found.
+
+### Principles
+
+* Definition of model entry points
+  * Declaration of variables (see the [template editor](index.html#template-editor) section)
+  * Mapping with model elements (see the [generation configuration editor](index.html#generation-configuration-editor) section)
+
+![Variable definition]({{page.relativePath}}/ref-doc/nightly/images/Variable%20definition.png "Variable definition.")
+
+* Extraction of information by navigating the model (see the [Template authoring](index.html#template-authoring) section)
+  * From the entry points
+  * Using model relations
+
+![Extracting information]({{page.relativePath}}/ref-doc/nightly/images/Extracting%20information.png "Extracting information.")
+
+* Formatting of the output information
+  * Using Microsoft Word functionalities
+
+![Formatting template]({{page.relativePath}}/ref-doc/nightly/images/Formatting%20template.png "Formatting template.")
+
+### Main steps
+
+* Definition of content, navigation, and format (see the [Template authoring](index.html#template-authoring) section)
+* Declaration of variables (see the [template editor](index.html#template-editor) section)
+* Mapping of variables with model elements, definition of input model and output file (see the [generation configuration editor](index.html#generation-configuration-editor) section)
+* Generation of output document (see the [Generate a document](index.html#generating-a-document) section)
+
+![Main steps]({{page.relativePath}}/ref-doc/nightly/images/Main%20steps.png "Main steps.")
+
+### M2Doc roles
 
 Ready to try M2Doc! You might have one of the following roles:
 
-### Template user
+#### Template user
 
 You already have the template and want to generate the document:
 
 * see [Generate a document](index.html#generating-a-document)
 * see [Maven](index.html#maven) (optional)
 
-### Template developper
+#### Template developer
 
 You want to create your own template:
 
@@ -37,15 +80,29 @@ You want to create your own template:
 * see [Validating a generation](index.html#validating-a-generation-setup) (optional)
 * see [Template testing](index.html#template-testing) (optional)
 
-### Integrator
-
-<a name="generate-a-document"></a>
+#### Integrator
 
 You want to provide document generation in your own project using M2Doc:
 
 * see [Using M2Doc programmatically](index.html#using-m2doc-programmatically)
 * see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)
 
+## Architecture
+
+The main workflow:
+
+![M2Doc Workflow]({{page.relativePath}}/ref-doc/nightly/images/M2DocWorkflow.png)
+
+The template is parsed in an internal representation (the AST). From here you can bind the variables to their values, using elements from a model for instance and evaluate the template to generate the output document. An added benefit of using M2Doc is the hability to validate a template to produce an annotated template containing informations, warnings and errors the template might contain.
+
+The architecture of M2Doc is organized around three building blocks:
+* [Apache POI](https://poi.apache.org/) for the parsing and generation of [OOXML](https://en.wikipedia.org/wiki/Office_Open_XML) documents
+* [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying the models
+* [EMF](https://www.eclipse.org/modeling/emf/) as a general platform
+
+![Technical architecture]({{page.relativePath}}/ref-doc/nightly/images/TechnicalArchitecture.png)
+
+<a name="generate-a-document"></a>
 ## Generating a document
 
 To generate a document you will need at least a template file (.docx file) and a generation configuration model (.genconf file). If you don&#8217;t have the template you can read the [template authoring](index.html#template-authoring) section. To create a generation model file you can read the [initialize generation](index.html#initializing-a-generation-configuration) section.
