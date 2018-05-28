@@ -38,6 +38,8 @@ import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -691,12 +693,12 @@ public final class M2DocUtils {
 
             userContentManager.generateLostFiles(result);
             userContentManager.dispose();
+            // At this point, the document has been generated and just needs to be written on disk.
+            POIServices.getInstance().saveFile(uriConverter, destinationDocument, destination);
+
             for (IServicesConfigurator configurator : getConfigurators()) {
                 configurator.cleanServices(queryEnvironment);
             }
-
-            // At this point, the document has been generated and just needs to be written on disk.
-            POIServices.getInstance().saveFile(uriConverter, destinationDocument, destination);
 
             return result;
         } catch (IOException e) {
@@ -772,6 +774,58 @@ public final class M2DocUtils {
         }
 
         return res;
+    }
+
+    /**
+     * Create a new {@link ResourceSet} suitable for loading {@link EObject} from the given options.
+     * 
+     * @param exceptions
+     *            the {@link List} of resulting exceptions (filled by this method)
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param defaultResourceSet
+     *            the default {@link ResourceSet} to use if none is created
+     * @param options
+     *            the {@link Map} of existing options.
+     * @return the {@link ResourceSet} suitable for loading {@link EObject} from the given options if any, the default {@link ResourceSet}
+     *         otherwise
+     * @see #cleanResourceSetForModels(IReadOnlyQueryEnvironment)
+     */
+    public static ResourceSet createResourceSetForModels(List<Exception> exceptions,
+            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet defaultResourceSet, Map<String, String> options) {
+        ResourceSet res = null;
+
+        for (IServicesConfigurator configurator : getConfigurators()) {
+            try {
+                res = configurator.createResourceSetForModels(queryEnvironment, options);
+                if (res != null) {
+                    break;
+                }
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                exceptions.add(e);
+            }
+        }
+
+        if (res == null) {
+            res = defaultResourceSet;
+        }
+
+        return res;
+    }
+
+    /**
+     * Cleans the {@link #createResourceSetForModels(List, IReadOnlyQueryEnvironment, ResourceSet, Map) created} {@link ResourceSet} for the
+     * given {@link IReadOnlyQueryEnvironment}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     */
+    public static void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment) {
+        for (IServicesConfigurator configurator : getConfigurators()) {
+            configurator.cleanResourceSetForModels(queryEnvironment);
+        }
     }
 
 }

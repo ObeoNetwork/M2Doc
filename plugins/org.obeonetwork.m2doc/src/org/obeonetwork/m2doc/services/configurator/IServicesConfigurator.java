@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * Configure for {@link IReadOnlyQueryEnvironment}.
@@ -71,5 +72,26 @@ public interface IServicesConfigurator {
      *            the {@link IReadOnlyQueryEnvironment}
      */
     void cleanServices(IReadOnlyQueryEnvironment queryEnvironment);
+
+    /**
+     * Create a new resourceSet which would need specific initialization for loading the models according to the given options.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param options
+     *            the {@link Map} of options
+     * @return the created {@link ResourceSet} if any, <code>null</code> otherwise
+     * @see #cleanResourceSetForModels(IReadOnlyQueryEnvironment)
+     */
+    ResourceSet createResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options);
+
+    /**
+     * Cleans the {@link #createResourceSetForModels(IReadOnlyQueryEnvironment, Map) created} {@link ResourceSet} for the given
+     * {@link IReadOnlyQueryEnvironment}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     */
+    void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment);
 
 }

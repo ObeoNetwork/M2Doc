@@ -14,7 +14,6 @@
 
 
 <plugin>
-   <extension-point id="configuration" name="org.obeonetwork.m2doc.genconf.configuration" schema="schema/org.obeonetwork.m2doc.genconf.configuration.exsd"/>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated m2docconf -->

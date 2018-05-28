@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -46,8 +45,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.POIServices;
-import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
-import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
@@ -422,7 +419,8 @@ public final class GenconfUtils {
 
         monitor.beginTask("Loading models.", 2);
         final List<Exception> exceptions = new ArrayList<Exception>();
-        final ResourceSet resourceSetForModels = createResourceSetForModels(exceptions, generation);
+        final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment,
+                new ResourceSetImpl(), getOptions(generation));
         monitor.worked(1);
 
         // create generated file
@@ -448,60 +446,11 @@ public final class GenconfUtils {
                 URI validationFile = validationURI;
                 generatedFiles.add(validationFile);
             }
-            for (IConfigurationProvider provider : ConfigurationProviderService.getInstance().getProviders()) {
-                provider.postGenerate(generation, templateURI, generatedURI, documentTemplate);
-            }
+
+            M2DocUtils.cleanResourceSetForModels(queryEnvironment);
 
             return generatedFiles;
         }
-    }
-
-    /**
-     * Create a new {@link ResourceSet} suitable for loading the {@link ModelDefinition} specified in the {@link Generation}.
-     * 
-     * @param exceptions
-     *            the {@link List} of resulting exceptions (filled by this method)
-     * @param generation
-     *            the generation object.
-     * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
-     */
-    public static ResourceSet createResourceSetForModels(List<Exception> exceptions, Generation generation) {
-        return createResourceSetForModels(exceptions, new ResourceSetImpl(), generation);
-    }
-
-    /**
-     * Create a new {@link ResourceSet} suitable for loading the {@link ModelDefinition} specified in the {@link Generation}.
-     * 
-     * @param exceptions
-     *            the {@link List} of resulting exceptions (filled by this method)
-     * @param defaultResourceSet
-     *            the default {@link ResourceSet} to use if none is created
-     * @param generation
-     *            the generation object.
-     * @return a {@link ResourceSet} suitable for loading the models specified in the {@link Generation}
-     */
-    public static ResourceSet createResourceSetForModels(List<Exception> exceptions, ResourceSet defaultResourceSet,
-            Generation generation) {
-        ResourceSet res = null;
-
-        for (IConfigurationProvider provider : ConfigurationProviderService.getInstance().getProviders()) {
-            try {
-                res = provider.createResourceSetForModels(generation);
-                if (res != null) {
-                    break;
-                }
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
-                exceptions.add(e);
-            }
-        }
-
-        if (res == null) {
-            res = defaultResourceSet;
-        }
-
-        return res;
     }
 
     /**
@@ -523,8 +472,12 @@ public final class GenconfUtils {
             throws IOException, DocumentParserException, DocumentGenerationException {
         final boolean res;
 
+        // get AQL environment
+        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
+
         final List<Exception> exceptions = new ArrayList<Exception>();
-        final ResourceSet resourceSetForModel = createResourceSetForModels(exceptions, generation);
+        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment,
+                new ResourceSetImpl(), getOptions(generation));
 
         // get the template path and parses it.
         final String templateFilePath = generation.getTemplateFileName();
@@ -536,8 +489,6 @@ public final class GenconfUtils {
         if (!resourceSetForModel.getURIConverter().exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
         }
-        // get AQL environment
-        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
         // parse template
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModel.getURIConverter(), templateURI,
@@ -575,23 +526,9 @@ public final class GenconfUtils {
             }
         }
 
+        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
+
         return res;
-    }
-
-    /**
-     * Validates the given variables according to the {@link TemplateCustomProperties} of the given {@link XWPFDocument}.
-     * 
-     * @param variables
-     *            the {@link Map} of name to variable
-     * @param document
-     *            the template {@link XWPFDocument}
-     * @param queryEnvironment
-     *            the
-     */
-    private static void validateVariables(Map<String, Object> variables, XWPFDocument document,
-            IReadOnlyQueryEnvironment queryEnvironment) {
-        // TODO Auto-generated method stub
-
     }
 
     /**

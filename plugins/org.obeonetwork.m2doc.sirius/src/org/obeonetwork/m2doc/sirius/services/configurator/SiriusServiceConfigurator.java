@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.sirius.services.configurator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,15 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
 import org.eclipse.sirius.ext.base.Option;
+import org.eclipse.ui.PlatformUI;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.sirius.M2DocSiriusUtils;
@@ -43,6 +48,7 @@ import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class SiriusServiceConfigurator implements IServicesConfigurator {
 
     /**
@@ -54,6 +60,21 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
      * Mapping from {@link IReadOnlyQueryEnvironment} to {@link M2DocSiriusServices}.
      */
     private final Map<IReadOnlyQueryEnvironment, M2DocSiriusServices> services = new HashMap<>();
+
+    /**
+     * Mapping of {@link IReadOnlyQueryEnvironment} to {@link Session}.
+     */
+    private final Map<IReadOnlyQueryEnvironment, Session> sessions = new HashMap<>();
+
+    /**
+     * {@link Set} of {@link Session} that need to be closed.
+     */
+    private final Set<Session> sessionToClose = new HashSet<>();
+
+    /**
+     * Mapping of {@link Session} to {@link SessionTransientAttachment}.
+     */
+    private final Map<Session, SessionTransientAttachment> transientAttachments = new HashMap<>();
 
     /**
      * Initializes options.
@@ -161,7 +182,6 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         if (serviceInstance != null) {
             serviceInstance.clean();
         }
-        // TODO close the Session ?
     }
 
     @Override
@@ -190,6 +210,62 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         }
 
         return res;
+    }
+
+    @Override
+    public ResourceSet createResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment,
+            Map<String, String> options) {
+        ResourceSet created = null;
+        final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        if (sessionURIStr != null) {
+            URI sessionURI = URI.createURI(sessionURIStr, false);
+            final String genconfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
+            if (genconfURIStr != null) {
+                sessionURI = sessionURI.resolve(URI.createURI(genconfURIStr));
+            }
+            if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
+                try {
+                    final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
+                    sessions.put(queryEnvironment, session);
+                    if (!session.isOpen()) {
+                        session.open(new NullProgressMonitor());
+                        sessionToClose.add(session);
+                    }
+                    created = session.getTransactionalEditingDomain().getResourceSet();
+                    SessionTransientAttachment transiantAttachment = new SessionTransientAttachment(session);
+                    created.eAdapters().add(transiantAttachment);
+                    transientAttachments.put(session, transiantAttachment);
+                    // CHECKSTYLE:OFF
+                } catch (Exception e) {
+                    // CHECKSTYLE:ON
+                    // TODO remove this workaround see https://support.jira.obeo.fr/browse/VP-5389
+                    if (PlatformUI.isWorkbenchRunning()) {
+                        MessageDialog.openWarning(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                                "Unable to open Sirius Session",
+                                "Check the " + M2DocSiriusUtils.SIRIUS_SESSION_OPTION
+                                    + " option or try to open the session manually by double clicking the .aird file:\n"
+                                    + e.getMessage());
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("The Sirius session doesn't exists: " + sessionURI);
+            }
+        }
+        return created;
+    }
+
+    @Override
+    public void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment) {
+        final Session session = sessions.remove(queryEnvironment);
+        if (session != null) {
+            if (session.isOpen()) {
+                session.getTransactionalEditingDomain().getResourceSet().eAdapters()
+                        .remove(transientAttachments.remove(session));
+            }
+            if (sessionToClose.remove(session)) {
+                session.close(new NullProgressMonitor());
+            }
+        }
     }
 
 }

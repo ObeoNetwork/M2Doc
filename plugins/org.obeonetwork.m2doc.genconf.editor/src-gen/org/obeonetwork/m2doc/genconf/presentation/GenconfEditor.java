@@ -14,6 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -130,6 +132,7 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.GenconfItemProviderAdapterFactory;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * This is an example of a Genconf model editor.
@@ -292,6 +295,11 @@ public class GenconfEditor extends MultiPageEditorPart
      * @generated NOT
      */
     private Generation generation;
+
+    /**
+     * A {@link IReadOnlyQueryEnvironment} for {@link ResourceSet} initialization.
+     */
+    private final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
 
     /**
      * Tells if the {@link ResourceSet} for model is the default one.
@@ -1056,7 +1064,8 @@ public class GenconfEditor extends MultiPageEditorPart
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
-            resourceSet = GenconfUtils.createResourceSetForModels(exceptions, defaultResourceSet, gen);
+            resourceSet = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment, defaultResourceSet,
+                    GenconfUtils.getOptions(gen));
             isDefaultResourceSet = resourceSet == defaultResourceSet;
         } else {
             resourceSet = null;
@@ -1672,13 +1681,14 @@ public class GenconfEditor extends MultiPageEditorPart
 
         final ResourceSet newResourceSet;
         if (isDefaultResourceSet) {
-            newResourceSet = GenconfUtils.createResourceSetForModels(exceptions, editingDomain.getResourceSet(),
-                    generation);
+            newResourceSet = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment,
+                    editingDomain.getResourceSet(), GenconfUtils.getOptions(generation));
         } else {
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
-            newResourceSet = GenconfUtils.createResourceSetForModels(exceptions, defaultResourceSet, generation);
+            newResourceSet = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment, defaultResourceSet,
+                    GenconfUtils.getOptions(generation));
             isDefaultResourceSet = newResourceSet == defaultResourceSet;
         }
         if (exceptions.isEmpty()) {

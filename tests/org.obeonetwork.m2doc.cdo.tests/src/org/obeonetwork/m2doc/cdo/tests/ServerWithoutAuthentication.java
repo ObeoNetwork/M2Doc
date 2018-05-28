@@ -29,10 +29,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.cdo.M2DocCDOUtils;
-import org.obeonetwork.m2doc.cdo.providers.configuration.CDOConfigurationProvider;
 import org.obeonetwork.m2doc.cdo.services.configurator.CDOServicesConfigurator;
-import org.obeonetwork.m2doc.genconf.provider.ConfigurationProviderService;
-import org.obeonetwork.m2doc.genconf.provider.IConfigurationProvider;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
@@ -49,11 +46,6 @@ public class ServerWithoutAuthentication extends AbstractTemplatesTestSuite {
      * The {@link CDOServer}.
      */
     private static CDOServer server;
-
-    /**
-     * The instance of {@link CDOConfigurationProvider} for standalone use.
-     */
-    private static final IConfigurationProvider CONFIGURATION_PROVIDER = new CDOConfigurationProvider();
 
     /**
      * The instance of {@link CDOServicesConfigurator} for standalone use.
@@ -96,7 +88,6 @@ public class ServerWithoutAuthentication extends AbstractTemplatesTestSuite {
         connector.close();
 
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            ConfigurationProviderService.getInstance().register(CONFIGURATION_PROVIDER);
             M2DocUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
         }
     }
@@ -106,7 +97,6 @@ public class ServerWithoutAuthentication extends AbstractTemplatesTestSuite {
         server.stop();
 
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            ConfigurationProviderService.getInstance().getProviders().remove(CONFIGURATION_PROVIDER);
             M2DocUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
         }
     }

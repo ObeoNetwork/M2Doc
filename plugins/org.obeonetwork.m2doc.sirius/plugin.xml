@@ -13,12 +13,6 @@
 
 <plugin>
    <extension
-         point="org.obeonetwork.m2doc.genconf.configuration">
-      <configuration
-            providerClass="org.obeonetwork.m2doc.sirius.providers.configuration.SiriusConfigurationProvider">
-      </configuration>
-   </extension>
-   <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
             class="org.obeonetwork.m2doc.sirius.propertyTester.TeamGenerationPropertyTester"

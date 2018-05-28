@@ -180,7 +180,8 @@ public abstract class AbstractTemplatesTestSuite {
         rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("genconf", xmiResourceFactory);
         rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("uml", xmiResourceFactory);
 
-        final ResourceSet res = GenconfUtils.createResourceSetForModels(exceptions, rs, generation);
+        final ResourceSet res = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment, rs,
+                GenconfUtils.getOptions(generation));
         res.getURIConverter().getURIHandlers().add(0, uriHandler);
 
         return res;
@@ -188,6 +189,7 @@ public abstract class AbstractTemplatesTestSuite {
 
     @After
     public void after() {
+        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
         uriHandler.clear();
     }
 
