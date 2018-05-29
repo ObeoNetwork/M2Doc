@@ -1174,7 +1174,6 @@ public class GenconfEditor extends MultiPageEditorPart
             //
             {
                 ViewerPane viewerPane = new ViewerPane(getSite().getPage(), GenconfEditor.this) {
-
                     @Override
                     public Viewer createViewer(Composite composite) {
                         Tree tree = new Tree(composite, SWT.MULTI);
@@ -1196,16 +1195,13 @@ public class GenconfEditor extends MultiPageEditorPart
                 parentViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
 
                 createContextMenuFor(parentViewer);
-
                 int pageIndex = addPage(viewerPane.getControl());
-
                 setPageText(pageIndex, getString("_UI_ParentPage_label"));
             }
 
             // This is the page for the list viewer
             //
             {
-
                 ViewerPane viewerPane = new ViewerPane(getSite().getPage(), GenconfEditor.this) {
                     @Override
                     public Viewer createViewer(Composite composite) {
@@ -1225,7 +1221,6 @@ public class GenconfEditor extends MultiPageEditorPart
 
                 createContextMenuFor(listViewer);
                 int pageIndex = addPage(viewerPane.getControl());
-
                 setPageText(pageIndex, getString("_UI_ListPage_label"));
             }
 

@@ -103,6 +103,16 @@ public interface GenconfPackage extends EPackage {
     int GENERATION__RESULT_FILE_NAME = 2;
 
     /**
+     * The feature id for the '<em><b>Validation File Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int GENERATION__VALIDATION_FILE_NAME = 3;
+
+    /**
      * The feature id for the '<em><b>Time Stamped</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -110,7 +120,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION__TIME_STAMPED = 3;
+    int GENERATION__TIME_STAMPED = 4;
 
     /**
      * The feature id for the '<em><b>Refresh Representations</b></em>' attribute.
@@ -120,7 +130,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION__REFRESH_REPRESENTATIONS = 4;
+    int GENERATION__REFRESH_REPRESENTATIONS = 5;
 
     /**
      * The feature id for the '<em><b>Definitions</b></em>' containment reference list.
@@ -130,7 +140,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION__DEFINITIONS = 5;
+    int GENERATION__DEFINITIONS = 6;
 
     /**
      * The feature id for the '<em><b>Options</b></em>' containment reference list.
@@ -140,7 +150,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION__OPTIONS = 6;
+    int GENERATION__OPTIONS = 7;
 
     /**
      * The number of structural features of the '<em>Generation</em>' class.
@@ -150,7 +160,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION_FEATURE_COUNT = 7;
+    int GENERATION_FEATURE_COUNT = 8;
 
     /**
      * The number of operations of the '<em>Generation</em>' class.
@@ -558,6 +568,19 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_ResultFileName();
 
     /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getValidationFileName <em>Validation File
+     * Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute '<em>Validation File Name</em>'.
+     * @see org.obeonetwork.m2doc.genconf.Generation#getValidationFileName()
+     * @see #getGeneration()
+     * @generated
+     */
+    EAttribute getGeneration_ValidationFileName();
+
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#isTimeStamped <em>Time Stamped</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -843,6 +866,15 @@ public interface GenconfPackage extends EPackage {
          * @generated
          */
         EAttribute GENERATION__RESULT_FILE_NAME = eINSTANCE.getGeneration_ResultFileName();
+
+        /**
+         * The meta object literal for the '<em><b>Validation File Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute GENERATION__VALIDATION_FILE_NAME = eINSTANCE.getGeneration_ValidationFileName();
 
         /**
          * The meta object literal for the '<em><b>Time Stamped</b></em>' attribute feature.

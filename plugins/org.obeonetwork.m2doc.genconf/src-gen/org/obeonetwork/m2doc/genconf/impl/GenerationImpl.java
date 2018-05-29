@@ -29,6 +29,7 @@ import org.obeonetwork.m2doc.genconf.Option;
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getName <em>Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getTemplateFileName <em>Template File Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getResultFileName <em>Result File Name</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getValidationFileName <em>Validation File Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isTimeStamped <em>Time Stamped</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isRefreshRepresentations <em>Refresh Representations</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getDefinitions <em>Definitions</em>}</li>
@@ -103,6 +104,28 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * @ordered
      */
     protected String resultFileName = RESULT_FILE_NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getValidationFileName() <em>Validation File Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getValidationFileName()
+     * @generated
+     * @ordered
+     */
+    protected static final String VALIDATION_FILE_NAME_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getValidationFileName() <em>Validation File Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getValidationFileName()
+     * @generated
+     * @ordered
+     */
+    protected String validationFileName = VALIDATION_FILE_NAME_EDEFAULT;
 
     /**
      * The default value of the '{@link #isTimeStamped() <em>Time Stamped</em>}' attribute.
@@ -268,6 +291,30 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    public String getValidationFileName() {
+        return validationFileName;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public void setValidationFileName(String newValidationFileName) {
+        String oldValidationFileName = validationFileName;
+        validationFileName = newValidationFileName;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__VALIDATION_FILE_NAME,
+                    oldValidationFileName, validationFileName));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     public boolean isTimeStamped() {
         return timeStamped;
     }
@@ -369,6 +416,8 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return getTemplateFileName();
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 return getResultFileName();
+            case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
+                return getValidationFileName();
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 return isTimeStamped();
             case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
@@ -399,6 +448,9 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return;
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 setResultFileName((String) newValue);
+                return;
+            case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
+                setValidationFileName((String) newValue);
                 return;
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 setTimeStamped((Boolean) newValue);
@@ -436,6 +488,9 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 setResultFileName(RESULT_FILE_NAME_EDEFAULT);
                 return;
+            case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
+                setValidationFileName(VALIDATION_FILE_NAME_EDEFAULT);
+                return;
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 setTimeStamped(TIME_STAMPED_EDEFAULT);
                 return;
@@ -469,6 +524,9 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
                 return RESULT_FILE_NAME_EDEFAULT == null ? resultFileName != null
                         : !RESULT_FILE_NAME_EDEFAULT.equals(resultFileName);
+            case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
+                return VALIDATION_FILE_NAME_EDEFAULT == null ? validationFileName != null
+                        : !VALIDATION_FILE_NAME_EDEFAULT.equals(validationFileName);
             case GenconfPackage.GENERATION__TIME_STAMPED:
                 return timeStamped != TIME_STAMPED_EDEFAULT;
             case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
@@ -499,6 +557,8 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
         result.append(templateFileName);
         result.append(", resultFileName: ");
         result.append(resultFileName);
+        result.append(", validationFileName: ");
+        result.append(validationFileName);
         result.append(", timeStamped: ");
         result.append(timeStamped);
         result.append(", refreshRepresentations: ");

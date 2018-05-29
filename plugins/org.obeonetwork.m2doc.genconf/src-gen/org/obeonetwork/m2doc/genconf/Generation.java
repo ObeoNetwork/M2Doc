@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.obeonetwork.m2doc.genconf.Generation#getName <em>Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.Generation#getTemplateFileName <em>Template File Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.Generation#getResultFileName <em>Result File Name</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.genconf.Generation#getValidationFileName <em>Validation File Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.Generation#isTimeStamped <em>Time Stamped</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.Generation#isRefreshRepresentations <em>Refresh Representations</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.Generation#getDefinitions <em>Definitions</em>}</li>
@@ -113,6 +114,35 @@ public interface Generation extends EObject {
      * @generated
      */
     void setResultFileName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Validation File Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Validation File Name</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * 
+     * @return the value of the '<em>Validation File Name</em>' attribute.
+     * @see #setValidationFileName(String)
+     * @see org.obeonetwork.m2doc.genconf.GenconfPackage#getGeneration_ValidationFileName()
+     * @model
+     * @generated
+     */
+    String getValidationFileName();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.Generation#getValidationFileName <em>Validation File Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @param value
+     *            the new value of the '<em>Validation File Name</em>' attribute.
+     * @see #getValidationFileName()
+     * @generated
+     */
+    void setValidationFileName(String value);
 
     /**
      * Returns the value of the '<em><b>Time Stamped</b></em>' attribute.

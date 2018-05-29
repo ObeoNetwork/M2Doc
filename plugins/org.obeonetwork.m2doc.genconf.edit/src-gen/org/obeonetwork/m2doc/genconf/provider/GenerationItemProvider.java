@@ -58,6 +58,7 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
             addNamePropertyDescriptor(object);
             addTemplateFileNamePropertyDescriptor(object);
             addResultFileNamePropertyDescriptor(object);
+            addValidationFileNamePropertyDescriptor(object);
             addTimeStampedPropertyDescriptor(object);
             addRefreshRepresentationsPropertyDescriptor(object);
         }
@@ -112,6 +113,23 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
                         getString("_UI_PropertyDescriptor_description", "_UI_Generation_resultFileName_feature",
                                 "_UI_Generation_type"),
                         GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME, true, false, false,
+                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Validation File Name feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected void addValidationFileNamePropertyDescriptor(Object object) {
+        itemPropertyDescriptors
+                .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+                        getResourceLocator(), getString("_UI_Generation_validationFileName_feature"),
+                        getString("_UI_PropertyDescriptor_description", "_UI_Generation_validationFileName_feature",
+                                "_UI_Generation_type"),
+                        GenconfPackage.Literals.GENERATION__VALIDATION_FILE_NAME, true, false, false,
                         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
@@ -235,6 +253,7 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
             case GenconfPackage.GENERATION__NAME:
             case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
+            case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
             case GenconfPackage.GENERATION__TIME_STAMPED:
             case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

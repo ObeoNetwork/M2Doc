@@ -89,6 +89,11 @@ public final class GenconfUtils {
     public static final String RESULT_URI_OPTION = "ResultURI";
 
     /**
+     * The {@link Generation#getValidationFileName() result URI} option.
+     */
+    public static final String VALIDATION_URI_OPTION = "ValidationURI";
+
+    /**
      * Constructor.
      */
     private GenconfUtils() {
@@ -115,6 +120,10 @@ public final class GenconfUtils {
         if (generation.getResultFileName() != null) {
             res.put(RESULT_URI_OPTION,
                     getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false)).toString());
+        }
+        if (generation.getValidationFileName() != null) {
+            res.put(VALIDATION_URI_OPTION,
+                    getResolvedURI(generation, URI.createURI(generation.getValidationFileName(), false)).toString());
         }
         for (Option option : generation.getOptions()) {
             res.put(option.getName(), option.getValue());
@@ -346,28 +355,31 @@ public final class GenconfUtils {
         if (generation == null) {
             throw new IllegalArgumentException("Null configuration object passed.");
         }
-        // get the template path and parses it.
         String templateFilePath = generation.getTemplateFileName();
         if (templateFilePath == null) {
             throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
         }
 
-        // get the result path and parses it.
         String resultFilePath = generation.getResultFileName();
         if (resultFilePath == null) {
             throw new DocumentGenerationException("The result file path isn't set in the provided configuration");
         }
 
-        // get template and result file
-        URI templateFile = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
-        URI generatedFile = getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false));
+        final URI templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
+        final URI generatedURI = getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false));
+        final URI validationURI;
+        if (generation.getValidationFileName() != null) {
+            validationURI = getResolvedURI(generation, URI.createURI(generation.getValidationFileName(), false));
+        } else {
+            validationURI = null;
+        }
 
-        if (!URIConverter.INSTANCE.exists(templateFile, Collections.EMPTY_MAP)) {
+        if (!URIConverter.INSTANCE.exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
         }
 
-        // generate result file.
-        return generate(generation, classProvider, templateFile, generatedFile, monitor);
+        // generate result file and validation file.
+        return generate(generation, classProvider, templateURI, generatedURI, validationURI, monitor);
     }
 
     /**
@@ -402,6 +414,8 @@ public final class GenconfUtils {
      *            the template {@link URI}
      * @param generatedURI
      *            the generated docx {@link URI}
+     * @param validationURI
+     *            the validation docx {@link URI}
      * @param monitor
      *            used to track the progress will generating.
      * @return generated file and validation file if exists
@@ -413,7 +427,7 @@ public final class GenconfUtils {
      *             if the document couldn't be generated
      */
     private static List<URI> generate(Generation generation, IClassProvider classProvider, URI templateURI,
-            URI generatedURI, Monitor monitor)
+            URI generatedURI, URI validationURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
         final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
 
@@ -433,23 +447,22 @@ public final class GenconfUtils {
 
             // validate template
             monitor.beginTask("Validating template.", 1);
-            final URI validationURI = validate(resourceSetForModels.getURIConverter(), generatedURI, documentTemplate,
-                    queryEnvironment, generation);
+            final URI resultValidationURI = validate(resourceSetForModels.getURIConverter(), generatedURI,
+                    validationURI, documentTemplate, queryEnvironment);
             monitor.done();
 
             // launch generation
             M2DocUtils.generate(documentTemplate, queryEnvironment, definitions, generatedURI, monitor);
 
-            List<URI> generatedFiles = new ArrayList<URI>();
-            generatedFiles.add(generatedURI);
-            if (validationURI != null) {
-                URI validationFile = validationURI;
-                generatedFiles.add(validationFile);
+            List<URI> generatedURIs = new ArrayList<URI>();
+            generatedURIs.add(generatedURI);
+            if (resultValidationURI != null) {
+                generatedURIs.add(resultValidationURI);
             }
 
             M2DocUtils.cleanResourceSetForModels(queryEnvironment);
 
-            return generatedFiles;
+            return generatedURIs;
         }
     }
 
@@ -479,7 +492,7 @@ public final class GenconfUtils {
         final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment,
                 new ResourceSetImpl(), getOptions(generation));
 
-        // get the template path and parses it.
+        // get the template path
         final String templateFilePath = generation.getTemplateFileName();
         if (templateFilePath == null || templateFilePath.isEmpty()) {
             throw new DocumentGenerationException("The template file path isn't set in the provided configuration");
@@ -488,6 +501,15 @@ public final class GenconfUtils {
         final URI templateURI = getResolvedURI(generation, URI.createURI(templateFilePath, false));
         if (!resourceSetForModel.getURIConverter().exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
+        }
+
+        // get the validation path
+        final String validationFilePath = generation.getTemplateFileName();
+        final URI validationURI;
+        if (validationFilePath == null || validationFilePath.isEmpty()) {
+            validationURI = null;
+        } else {
+            validationURI = getResolvedURI(generation, URI.createURI(validationFilePath, false));
         }
 
         // parse template
@@ -500,8 +522,8 @@ public final class GenconfUtils {
             }
 
             // validate template
-            res = validate(resourceSetForModel.getURIConverter(), templateURI, documentTemplate, queryEnvironment,
-                    generation) != null;
+            res = validate(resourceSetForModel.getURIConverter(), templateURI, validationURI, documentTemplate,
+                    queryEnvironment) != null;
         }
 
         // validate output path
@@ -536,28 +558,32 @@ public final class GenconfUtils {
      * 
      * @param uriConverter
      *            the {@link URIConverter}
-     * @param templateURI
-     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated {@link URI}
+     * @param validationURI
+     *            the validation {@link URI}
      * @param documentTemplate
      *            DocumentTemplate
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
-     * @param generation
-     *            Generation
      * @return the validation {@link URI} if the validation isn't OK, <code>null</code> otherwise
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      * @throws IOException
      *             IOException
      */
-    private static URI validate(URIConverter uriConverter, URI templateURI, DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Generation generation)
+    private static URI validate(URIConverter uriConverter, URI generatedURI, URI validationURI,
+            DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment)
             throws DocumentGenerationException, IOException {
         final URI res;
 
         final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment);
         if (validationLevel != ValidationMessageLevel.OK) {
-            res = getValidationLogFile(templateURI, validationLevel);
+            if (validationURI != null) {
+                res = validationURI;
+            } else {
+                res = getValidationLogFile(generatedURI, validationLevel);
+            }
             M2DocUtils.serializeValidatedDocumentTemplate(uriConverter, documentTemplate, res);
         } else {
             res = null;
@@ -569,20 +595,20 @@ public final class GenconfUtils {
     /**
      * Gets the log {@link URI} for the given template {@link URI} and {@link ValidationMessageLevel}.
      * 
-     * @param templateURI
-     *            the template {@link URI}
+     * @param generatedURI
+     *            the generated {@link URI}
      * @param level
      *            the {@link ValidationMessageLevel}
      * @return the log {@link URI} for the given template {@link URI} and {@link ValidationMessageLevel}
      */
-    private static URI getValidationLogFile(URI templateURI, ValidationMessageLevel level) {
+    private static URI getValidationLogFile(URI generatedURI, ValidationMessageLevel level) {
         final URI res;
 
-        String lastSegmentNoExtension = templateURI.lastSegment().replaceFirst("[.][^.]+$", "");
-        final URI uri = templateURI.trimSegments(1)
+        String lastSegmentNoExtension = generatedURI.lastSegment().replaceFirst("[.][^.]+$", "");
+        final URI uri = generatedURI.trimSegments(1)
                 .appendSegment(lastSegmentNoExtension + "-" + level.name().toLowerCase());
-        if (URI.validSegment(templateURI.fileExtension())) {
-            res = uri.appendFileExtension(templateURI.fileExtension());
+        if (URI.validSegment(generatedURI.fileExtension())) {
+            res = uri.appendFileExtension(generatedURI.fileExtension());
         } else {
             res = uri;
         }

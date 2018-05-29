@@ -460,6 +460,12 @@ public class CustomGenconfEditor extends GenconfEditor {
                             destinationURIText.setText(newDestionationURI);
                         }
                         break;
+                    case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
+                        final String newValidationURI = (String) msg.getNewValue();
+                        if (!newValidationURI.equals(validationURIText.getText())) {
+                            validationURIText.setText(newValidationURI);
+                        }
+                        break;
                     case GenconfPackage.GENERATION__DEFINITIONS:
                         switch (msg.getEventType()) {
                             case Notification.ADD:
@@ -572,6 +578,10 @@ public class CustomGenconfEditor extends GenconfEditor {
      * The {@link Generation#getResultFileName() destination URI} {@link Text}.
      */
     protected Text destinationURIText;
+    /**
+     * The {@link Generation#getµValidationFileName() validation URI} {@link Text}.
+     */
+    protected Text validationURIText;
 
     /**
      * The {@link Generation#getDefinitions() variables} {@link TableViewer}.
@@ -608,6 +618,8 @@ public class CustomGenconfEditor extends GenconfEditor {
         createTemplateURIComposite(generation, composite);
 
         createDestinationURIComposite(generation, composite);
+
+        createValidationURIComposite(generation, composite);
 
         final Composite tablesComposite = new Composite(composite, SWT.NONE);
         tablesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -800,6 +812,62 @@ public class CustomGenconfEditor extends GenconfEditor {
                     destinationURIText.setText(relativeDestinationPath);
                     editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
                             GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME, relativeDestinationPath));
+                }
+            }
+
+        });
+    }
+
+    /**
+     * Creates the {@link Generation#getDefinitions() destination URI} composite.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @param composite
+     *            the container {@link Composite}
+     */
+    private void createValidationURIComposite(final Generation generation, final Composite composite) {
+        final Composite validationURIComposite = new Composite(composite, SWT.NONE);
+        validationURIComposite.setLayout(new GridLayout(3, false));
+        validationURIComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        final Label validationURILabel = new Label(validationURIComposite, SWT.None);
+        validationURILabel.setText("Validation URI:");
+        validationURIText = new Text(validationURIComposite, SWT.NONE);
+        if (generation.getValidationFileName() != null) {
+            validationURIText.setText(generation.getValidationFileName());
+        }
+        validationURIText.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!validationURIText.getText().equals(generation.getValidationFileName())) {
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                            GenconfPackage.Literals.GENERATION__VALIDATION_FILE_NAME, validationURIText.getText()));
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // nothing to do here
+            }
+        });
+        validationURIText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        Button validationURIButton = new Button(validationURIComposite, SWT.BORDER);
+        validationURIButton.setText("Browse");
+        validationURIButton.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final TempateSelectionDialog dialog = new TempateSelectionDialog(getSite().getShell(), SWT.NONE);
+
+                final IFile selected = dialog.open();
+                if (!dialog.isCanceled()) {
+                    final URI validationURI = URI.createPlatformResourceURI(selected.getFullPath().toString(), true);
+                    final URI genconfURI = getGenconfResource().getURI();
+                    final String relativeDestinationPath = URI.decode(validationURI.deresolve(genconfURI).toString());
+                    validationURIText.setText(relativeDestinationPath);
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                            GenconfPackage.Literals.GENERATION__VALIDATION_FILE_NAME, relativeDestinationPath));
                 }
             }
 

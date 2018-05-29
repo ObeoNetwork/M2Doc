@@ -203,7 +203,7 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * 
      * @generated
      */
-    public EAttribute getGeneration_TimeStamped() {
+    public EAttribute getGeneration_ValidationFileName() {
         return (EAttribute) generationEClass.getEStructuralFeatures().get(3);
     }
 
@@ -213,7 +213,7 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * 
      * @generated
      */
-    public EAttribute getGeneration_RefreshRepresentations() {
+    public EAttribute getGeneration_TimeStamped() {
         return (EAttribute) generationEClass.getEStructuralFeatures().get(4);
     }
 
@@ -223,8 +223,18 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * 
      * @generated
      */
+    public EAttribute getGeneration_RefreshRepresentations() {
+        return (EAttribute) generationEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     public EReference getGeneration_Definitions() {
-        return (EReference) generationEClass.getEStructuralFeatures().get(5);
+        return (EReference) generationEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -234,7 +244,7 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * @generated
      */
     public EReference getGeneration_Options() {
-        return (EReference) generationEClass.getEStructuralFeatures().get(6);
+        return (EReference) generationEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -423,6 +433,7 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
         createEAttribute(generationEClass, GENERATION__NAME);
         createEAttribute(generationEClass, GENERATION__TEMPLATE_FILE_NAME);
         createEAttribute(generationEClass, GENERATION__RESULT_FILE_NAME);
+        createEAttribute(generationEClass, GENERATION__VALIDATION_FILE_NAME);
         createEAttribute(generationEClass, GENERATION__TIME_STAMPED);
         createEAttribute(generationEClass, GENERATION__REFRESH_REPRESENTATIONS);
         createEReference(generationEClass, GENERATION__DEFINITIONS);
@@ -497,6 +508,9 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
                 Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGeneration_ResultFileName(), ecorePackage.getEString(), "resultFileName", null, 0, 1,
+                Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGeneration_ValidationFileName(), ecorePackage.getEString(), "validationFileName", null, 0, 1,
                 Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGeneration_TimeStamped(), ecorePackage.getEBoolean(), "timeStamped", "true", 0, 1,

@@ -105,6 +105,17 @@ public class GenconfUtilsTests {
     }
 
     @Test
+    public void getOptionsValidationURI() {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+
+        generation.setValidationFileName("test.docx");
+
+        final Map<String, String> options = GenconfUtils.getOptions(generation);
+        assertEquals(1, options.size());
+        assertEquals("test.docx", options.get(GenconfUtils.VALIDATION_URI_OPTION));
+    }
+
+    @Test
     public void getOptionsNoOptions() {
         final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
         final Resource resource = new ResourceImpl(URI.createFileURI("/generation.xmi"));
@@ -112,12 +123,14 @@ public class GenconfUtilsTests {
 
         generation.setTemplateFileName("template.docx");
         generation.setResultFileName("result.docx");
+        generation.setValidationFileName("validation.docx");
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
-        assertEquals(3, options.size());
+        assertEquals(4, options.size());
         assertEquals("file:/generation.xmi", options.get(GenconfUtils.GENCONF_URI_OPTION));
         assertEquals("file:/template.docx", options.get(GenconfUtils.TEMPLATE_URI_OPTION));
         assertEquals("file:/result.docx", options.get(GenconfUtils.RESULT_URI_OPTION));
+        assertEquals("file:/validation.docx", options.get(GenconfUtils.VALIDATION_URI_OPTION));
     }
 
     @Test
@@ -128,6 +141,7 @@ public class GenconfUtilsTests {
 
         generation.setTemplateFileName("template.docx");
         generation.setResultFileName("result.docx");
+        generation.setValidationFileName("validation.docx");
 
         final Option option1 = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
         option1.setName("option1");
@@ -145,10 +159,11 @@ public class GenconfUtilsTests {
         generation.getOptions().add(option3);
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
-        assertEquals(6, options.size());
+        assertEquals(7, options.size());
         assertEquals("file:/generation.xmi", options.get(GenconfUtils.GENCONF_URI_OPTION));
         assertEquals("file:/template.docx", options.get(GenconfUtils.TEMPLATE_URI_OPTION));
         assertEquals("file:/result.docx", options.get(GenconfUtils.RESULT_URI_OPTION));
+        assertEquals("file:/validation.docx", options.get(GenconfUtils.VALIDATION_URI_OPTION));
         assertEquals("value1", options.get("option1"));
         assertEquals("value2", options.get("option2"));
         assertEquals("value3", options.get("option3"));
