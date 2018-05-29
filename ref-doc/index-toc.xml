@@ -1,12 +1,16 @@
 <?xml version='1.0' encoding='utf-8' ?>
-<toc topic="doc/ref-doc/nightly/index.html" label="index">
+<toc topic="doc/ref-doc/nightly/index.html" label="M2Doc">
 	<topic href="doc/ref-doc/nightly/index.html" label="Table of Content">
-		<topic href="doc/ref-doc/nightly/index.html#starting-with-m2doc" label="Starting with M2Doc">
-			<topic href="doc/ref-doc/nightly/index.html#template-user" label="Template user"></topic>
-			<topic href="doc/ref-doc/nightly/index.html#template-developper" label="Template developper"></topic>
-			<topic href="doc/ref-doc/nightly/index.html#integrator" label="Integrator"></topic>
+		<topic href="doc/ref-doc/nightly/index.html#overview" label="Overview">
+			<topic href="doc/ref-doc/nightly/index.html#principles" label="Principles"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#main-steps" label="Main steps"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#m2doc-roles" label="M2Doc roles">
+				<topic href="doc/ref-doc/nightly/index.html#template-user" label="Template user"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#template-developer" label="Template developer"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#integrator" label="Integrator"></topic>
+			</topic>
 		</topic>
-		<topic href="doc/ref-doc/nightly/index.html#generating-a-document" label="Generating a document">
+		<topic href="doc/ref-doc/nightly/index.html#architecture" label="Architecture">
 			<topic href="doc/ref-doc/nightly/index.html#launching-a-generation" label="Launching a generation"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#initializing-a-generation-configuration" label="Initializing a generation configuration"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#validating-a-generation-setup" label="Validating a generation setup"></topic>
@@ -23,6 +27,7 @@
 				<topic href="doc/ref-doc/nightly/index.html#bookmark-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-bookmark-nominal" label="Bookmark ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#link-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-bookmark-nominal" label="Link ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#user-documentation-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-userdoc-nominal" label="User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#template-construct-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-template-nominal" label="Template construct ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/template/nominal))"></topic>
 			</topic>
 			<topic href="doc/ref-doc/nightly/index.html#services" label="Services"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#template-editor" label="Template editor"></topic>
