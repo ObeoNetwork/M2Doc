@@ -30,8 +30,6 @@ import org.obeonetwork.m2doc.genconf.Option;
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getTemplateFileName <em>Template File Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getResultFileName <em>Result File Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getValidationFileName <em>Validation File Name</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isTimeStamped <em>Time Stamped</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#isRefreshRepresentations <em>Refresh Representations</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getDefinitions <em>Definitions</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.genconf.impl.GenerationImpl#getOptions <em>Options</em>}</li>
  * </ul>
@@ -126,50 +124,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * @ordered
      */
     protected String validationFileName = VALIDATION_FILE_NAME_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isTimeStamped() <em>Time Stamped</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @see #isTimeStamped()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean TIME_STAMPED_EDEFAULT = true;
-
-    /**
-     * The cached value of the '{@link #isTimeStamped() <em>Time Stamped</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @see #isTimeStamped()
-     * @generated
-     * @ordered
-     */
-    protected boolean timeStamped = TIME_STAMPED_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #isRefreshRepresentations() <em>Refresh Representations</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @see #isRefreshRepresentations()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean REFRESH_REPRESENTATIONS_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isRefreshRepresentations() <em>Refresh Representations</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @see #isRefreshRepresentations()
-     * @generated
-     * @ordered
-     */
-    protected boolean refreshRepresentations = REFRESH_REPRESENTATIONS_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getDefinitions() <em>Definitions</em>}' containment reference list.
@@ -315,54 +269,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
-    public boolean isTimeStamped() {
-        return timeStamped;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setTimeStamped(boolean newTimeStamped) {
-        boolean oldTimeStamped = timeStamped;
-        timeStamped = newTimeStamped;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__TIME_STAMPED,
-                    oldTimeStamped, timeStamped));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public boolean isRefreshRepresentations() {
-        return refreshRepresentations;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setRefreshRepresentations(boolean newRefreshRepresentations) {
-        boolean oldRefreshRepresentations = refreshRepresentations;
-        refreshRepresentations = newRefreshRepresentations;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS,
-                    oldRefreshRepresentations, refreshRepresentations));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
     public EList<Definition> getDefinitions() {
         if (definitions == null) {
             definitions = new EObjectContainmentEList<Definition>(Definition.class, this,
@@ -418,10 +324,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return getResultFileName();
             case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
                 return getValidationFileName();
-            case GenconfPackage.GENERATION__TIME_STAMPED:
-                return isTimeStamped();
-            case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
-                return isRefreshRepresentations();
             case GenconfPackage.GENERATION__DEFINITIONS:
                 return getDefinitions();
             case GenconfPackage.GENERATION__OPTIONS:
@@ -451,12 +353,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
                 return;
             case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
                 setValidationFileName((String) newValue);
-                return;
-            case GenconfPackage.GENERATION__TIME_STAMPED:
-                setTimeStamped((Boolean) newValue);
-                return;
-            case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
-                setRefreshRepresentations((Boolean) newValue);
                 return;
             case GenconfPackage.GENERATION__DEFINITIONS:
                 getDefinitions().clear();
@@ -491,12 +387,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
                 setValidationFileName(VALIDATION_FILE_NAME_EDEFAULT);
                 return;
-            case GenconfPackage.GENERATION__TIME_STAMPED:
-                setTimeStamped(TIME_STAMPED_EDEFAULT);
-                return;
-            case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
-                setRefreshRepresentations(REFRESH_REPRESENTATIONS_EDEFAULT);
-                return;
             case GenconfPackage.GENERATION__DEFINITIONS:
                 getDefinitions().clear();
                 return;
@@ -527,10 +417,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
             case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
                 return VALIDATION_FILE_NAME_EDEFAULT == null ? validationFileName != null
                         : !VALIDATION_FILE_NAME_EDEFAULT.equals(validationFileName);
-            case GenconfPackage.GENERATION__TIME_STAMPED:
-                return timeStamped != TIME_STAMPED_EDEFAULT;
-            case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
-                return refreshRepresentations != REFRESH_REPRESENTATIONS_EDEFAULT;
             case GenconfPackage.GENERATION__DEFINITIONS:
                 return definitions != null && !definitions.isEmpty();
             case GenconfPackage.GENERATION__OPTIONS:
@@ -559,10 +445,6 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
         result.append(resultFileName);
         result.append(", validationFileName: ");
         result.append(validationFileName);
-        result.append(", timeStamped: ");
-        result.append(timeStamped);
-        result.append(", refreshRepresentations: ");
-        result.append(refreshRepresentations);
         result.append(')');
         return result.toString();
     }

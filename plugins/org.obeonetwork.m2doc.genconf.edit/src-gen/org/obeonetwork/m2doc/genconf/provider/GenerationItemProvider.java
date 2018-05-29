@@ -59,8 +59,6 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
             addTemplateFileNamePropertyDescriptor(object);
             addResultFileNamePropertyDescriptor(object);
             addValidationFileNamePropertyDescriptor(object);
-            addTimeStampedPropertyDescriptor(object);
-            addRefreshRepresentationsPropertyDescriptor(object);
         }
         return itemPropertyDescriptors;
     }
@@ -131,40 +129,6 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
                                 "_UI_Generation_type"),
                         GenconfPackage.Literals.GENERATION__VALIDATION_FILE_NAME, true, false, false,
                         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Time Stamped feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    protected void addTimeStampedPropertyDescriptor(Object object) {
-        itemPropertyDescriptors
-                .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-                        getResourceLocator(), getString("_UI_Generation_timeStamped_feature"),
-                        getString("_UI_PropertyDescriptor_description", "_UI_Generation_timeStamped_feature",
-                                "_UI_Generation_type"),
-                        GenconfPackage.Literals.GENERATION__TIME_STAMPED, true, false, false,
-                        ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Refresh Representations feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    protected void addRefreshRepresentationsPropertyDescriptor(Object object) {
-        itemPropertyDescriptors
-                .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-                        getResourceLocator(), getString("_UI_Generation_refreshRepresentations_feature"),
-                        getString("_UI_PropertyDescriptor_description", "_UI_Generation_refreshRepresentations_feature",
-                                "_UI_Generation_type"),
-                        GenconfPackage.Literals.GENERATION__REFRESH_REPRESENTATIONS, true, false, false,
-                        ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -254,8 +218,6 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
             case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
             case GenconfPackage.GENERATION__RESULT_FILE_NAME:
             case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
-            case GenconfPackage.GENERATION__TIME_STAMPED:
-            case GenconfPackage.GENERATION__REFRESH_REPRESENTATIONS:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case GenconfPackage.GENERATION__DEFINITIONS:

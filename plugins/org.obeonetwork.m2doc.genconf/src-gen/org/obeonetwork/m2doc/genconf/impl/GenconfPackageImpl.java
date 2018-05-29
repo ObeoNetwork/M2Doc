@@ -213,28 +213,8 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * 
      * @generated
      */
-    public EAttribute getGeneration_TimeStamped() {
-        return (EAttribute) generationEClass.getEStructuralFeatures().get(4);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public EAttribute getGeneration_RefreshRepresentations() {
-        return (EAttribute) generationEClass.getEStructuralFeatures().get(5);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
     public EReference getGeneration_Definitions() {
-        return (EReference) generationEClass.getEStructuralFeatures().get(6);
+        return (EReference) generationEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -244,7 +224,7 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
      * @generated
      */
     public EReference getGeneration_Options() {
-        return (EReference) generationEClass.getEStructuralFeatures().get(7);
+        return (EReference) generationEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -434,8 +414,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
         createEAttribute(generationEClass, GENERATION__TEMPLATE_FILE_NAME);
         createEAttribute(generationEClass, GENERATION__RESULT_FILE_NAME);
         createEAttribute(generationEClass, GENERATION__VALIDATION_FILE_NAME);
-        createEAttribute(generationEClass, GENERATION__TIME_STAMPED);
-        createEAttribute(generationEClass, GENERATION__REFRESH_REPRESENTATIONS);
         createEReference(generationEClass, GENERATION__DEFINITIONS);
         createEReference(generationEClass, GENERATION__OPTIONS);
 
@@ -513,12 +491,6 @@ public class GenconfPackageImpl extends EPackageImpl implements GenconfPackage {
         initEAttribute(getGeneration_ValidationFileName(), ecorePackage.getEString(), "validationFileName", null, 0, 1,
                 Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getGeneration_TimeStamped(), ecorePackage.getEBoolean(), "timeStamped", "true", 0, 1,
-                Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getGeneration_RefreshRepresentations(), ecorePackage.getEBoolean(), "refreshRepresentations",
-                "false", 0, 1, Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getGeneration_Definitions(), this.getDefinition(), null, "definitions", null, 0, -1,
                 Generation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

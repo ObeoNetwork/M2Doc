@@ -113,26 +113,6 @@ public interface GenconfPackage extends EPackage {
     int GENERATION__VALIDATION_FILE_NAME = 3;
 
     /**
-     * The feature id for the '<em><b>Time Stamped</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     * @ordered
-     */
-    int GENERATION__TIME_STAMPED = 4;
-
-    /**
-     * The feature id for the '<em><b>Refresh Representations</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     * @ordered
-     */
-    int GENERATION__REFRESH_REPRESENTATIONS = 5;
-
-    /**
      * The feature id for the '<em><b>Definitions</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -140,7 +120,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION__DEFINITIONS = 6;
+    int GENERATION__DEFINITIONS = 4;
 
     /**
      * The feature id for the '<em><b>Options</b></em>' containment reference list.
@@ -150,7 +130,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION__OPTIONS = 7;
+    int GENERATION__OPTIONS = 5;
 
     /**
      * The number of structural features of the '<em>Generation</em>' class.
@@ -160,7 +140,7 @@ public interface GenconfPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int GENERATION_FEATURE_COUNT = 8;
+    int GENERATION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Generation</em>' class.
@@ -581,31 +561,6 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_ValidationFileName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#isTimeStamped <em>Time Stamped</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @return the meta object for the attribute '<em>Time Stamped</em>'.
-     * @see org.obeonetwork.m2doc.genconf.Generation#isTimeStamped()
-     * @see #getGeneration()
-     * @generated
-     */
-    EAttribute getGeneration_TimeStamped();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#isRefreshRepresentations <em>Refresh
-     * Representations</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @return the meta object for the attribute '<em>Refresh Representations</em>'.
-     * @see org.obeonetwork.m2doc.genconf.Generation#isRefreshRepresentations()
-     * @see #getGeneration()
-     * @generated
-     */
-    EAttribute getGeneration_RefreshRepresentations();
-
-    /**
      * Returns the meta object for the containment reference list '{@link org.obeonetwork.m2doc.genconf.Generation#getDefinitions
      * <em>Definitions</em>}'.
      * <!-- begin-user-doc -->
@@ -875,24 +830,6 @@ public interface GenconfPackage extends EPackage {
          * @generated
          */
         EAttribute GENERATION__VALIDATION_FILE_NAME = eINSTANCE.getGeneration_ValidationFileName();
-
-        /**
-         * The meta object literal for the '<em><b>Time Stamped</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * 
-         * @generated
-         */
-        EAttribute GENERATION__TIME_STAMPED = eINSTANCE.getGeneration_TimeStamped();
-
-        /**
-         * The meta object literal for the '<em><b>Refresh Representations</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * 
-         * @generated
-         */
-        EAttribute GENERATION__REFRESH_REPRESENTATIONS = eINSTANCE.getGeneration_RefreshRepresentations();
 
         /**
          * The meta object literal for the '<em><b>Definitions</b></em>' containment reference list feature.
