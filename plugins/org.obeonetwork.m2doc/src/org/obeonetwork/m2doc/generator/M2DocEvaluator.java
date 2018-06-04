@@ -90,11 +90,13 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
 
 /**
  * The {@link M2DocEvaluator} class implements a switch over template that generates the doc.
@@ -980,6 +982,23 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
         if (style.getForegroundColor() != null) {
             run.setColor(hexColor(style.getForegroundColor()));
+        }
+        if (style.getBackgroundColor() != null) {
+            final CTRPr ctrpr;
+            if (run.getCTR().getRPr() != null) {
+                ctrpr = run.getCTR().getRPr();
+            } else {
+                ctrpr = run.getCTR().addNewRPr();
+            }
+            final CTShd ctshd;
+            if (ctrpr.getShd() != null) {
+                ctshd = ctrpr.getShd();
+            } else {
+                ctshd = ctrpr.addNewShd();
+            }
+            ctshd.setVal(STShd.CLEAR);
+            ctshd.setColor("auto");
+            ctshd.setFill(hexColor(style.getBackgroundColor()));
         }
     }
 

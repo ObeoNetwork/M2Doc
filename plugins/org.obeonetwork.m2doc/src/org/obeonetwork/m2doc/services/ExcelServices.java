@@ -213,8 +213,7 @@ public class ExcelServices {
         if (font.getUnderline() != 0) {
             modifiers |= MStyle.FONT_UNDERLINE;
         }
-
-        return new MStyleImpl(font.getFontHeightInPoints(), getColor(font.getXSSFColor()), modifiers);
+        return new MStyleImpl(font.getFontHeightInPoints(), getColor(font.getXSSFColor()), null, modifiers);
     }
 
     /**

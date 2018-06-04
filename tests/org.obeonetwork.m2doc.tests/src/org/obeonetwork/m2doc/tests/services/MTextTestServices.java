@@ -30,7 +30,7 @@ public class MTextTestServices {
     }
 
     public MText sampleText(String text, Integer fontSize) {
-        final MStyle style = new MStyleImpl(fontSize, Color.ORANGE, MStyle.FONT_BOLD);
+        final MStyle style = new MStyleImpl(fontSize, Color.ORANGE, Color.BLUE, MStyle.FONT_BOLD);
 
         return new MTextImpl(text, style);
     }

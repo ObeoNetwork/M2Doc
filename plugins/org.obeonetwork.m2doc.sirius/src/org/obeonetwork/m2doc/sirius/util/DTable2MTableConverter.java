@@ -43,7 +43,7 @@ import org.obeonetwork.m2doc.element.impl.MTextImpl;
 public final class DTable2MTableConverter {
 
     /** Header style. */
-    public static final MStyle HEADER_STYLE = new MStyleImpl(12, Color.BLACK, MStyle.FONT_BOLD);
+    public static final MStyle HEADER_STYLE = new MStyleImpl(12, Color.BLACK, null, MStyle.FONT_BOLD);
 
     /** Header background color. */
     public static final Color HEADER_BACKGROUND_COLOR = Color.GRAY;
@@ -191,10 +191,8 @@ public final class DTable2MTableConverter {
     public static MStyle convert(DTableElementStyle dStyle) {
         MStyle mStyle = null;
         if (dStyle != null) {
-            mStyle = new MStyleImpl();
-            mStyle.setForegroundColor(convert(dStyle.getForegroundColor()));
-            mStyle.setFontSize(dStyle.getLabelSize());
-            mStyle.setModifiers(convert(dStyle.getLabelFormat()));
+            mStyle = new MStyleImpl(dStyle.getLabelSize(), convert(dStyle.getForegroundColor()),
+                    convert(dStyle.getBackgroundColor()), convert(dStyle.getLabelFormat()));
         }
         return mStyle;
     }

@@ -33,29 +33,31 @@ public class MStyleImpl implements MStyle {
     private Color foregroundColor;
 
     /**
+     * The background {@link Color}.
+     */
+    private Color backgroundColor;
+
+    /**
      * Modifiers.
      */
     private int modifiers = -1;
 
     /**
-     * Default constructor.
-     */
-    public MStyleImpl() {
-    }
-
-    /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param fontSize
-     *            the font size to use.
+     *            the font size to use, <code>-1</code> for default
      * @param foregroundColor
-     *            the foreground color to use.
+     *            the foreground color to use, can be <code>null</code>
+     * @param backgroundColor
+     *            the background color to use, can be <code>null</code>
      * @param modifiers
-     *            the modifiers color to use.
+     *            the modifiers color to use, <code>-1</code> for default
      */
-    public MStyleImpl(int fontSize, Color foregroundColor, int modifiers) {
+    public MStyleImpl(int fontSize, Color foregroundColor, Color backgroundColor, int modifiers) {
         this.fontSize = fontSize;
         this.foregroundColor = foregroundColor;
+        this.backgroundColor = backgroundColor;
         this.modifiers = modifiers;
     }
 
@@ -77,6 +79,16 @@ public class MStyleImpl implements MStyle {
     @Override
     public void setForegroundColor(Color color) {
         this.foregroundColor = color;
+    }
+
+    @Override
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
+    public void setBackgroundColor(Color color) {
+        backgroundColor = color;
     }
 
     @Override
