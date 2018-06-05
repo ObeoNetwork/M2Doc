@@ -50,7 +50,8 @@
    <element name="token">
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="service"/>
+            <element ref="service" minOccurs="0" maxOccurs="1"/>
+            <element ref="package" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="name" type="string" use="required">
             <annotation>
@@ -72,6 +73,18 @@
                <appinfo>
                   <meta.attribute kind="java"/>
                </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="package">
+      <complexType>
+         <attribute name="uri" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

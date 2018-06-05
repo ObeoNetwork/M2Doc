@@ -13,9 +13,11 @@ package org.obeonetwork.m2doc.ide.ui.editor;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -35,7 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.services.ServiceRegistry;
+import org.obeonetwork.m2doc.services.TokenRegistry;
 
 /**
  * Service tokens selection dialog.
@@ -60,9 +62,9 @@ public class ServiceTokenSelectionDialog extends Dialog {
     private static final int X = 900;
 
     /**
-     * The {@link ServiceRegistry} providing values.
+     * The {@link TokenRegistry} providing values.
      */
-    protected final ServiceRegistry registry;
+    protected final TokenRegistry registry;
 
     /**
      * The {@link TemplateCustomProperties} to edit.
@@ -72,17 +74,17 @@ public class ServiceTokenSelectionDialog extends Dialog {
     /**
      * Selected {@link List} of service tokens.
      */
-    protected final List<String> selected = new ArrayList<String>();
+    protected final List<String> selected = new ArrayList<>();
 
     /**
      * The {@link List} of added token names.
      */
-    protected final List<String> added = new ArrayList<String>();
+    protected final List<String> added = new ArrayList<>();
 
     /**
      * The {@link List} of removed token names.
      */
-    protected final List<String> removed = new ArrayList<String>();
+    protected final List<String> removed = new ArrayList<>();
 
     /**
      * Create the dialog.
@@ -90,25 +92,31 @@ public class ServiceTokenSelectionDialog extends Dialog {
      * @param parentShell
      *            the parent {@link Shell}
      * @param registry
-     *            the {@link ServiceRegistry} providing values
+     *            the {@link TokenRegistry} providing values
      * @param properties
      *            the {@link TemplateCustomProperties} to edit
      */
-    public ServiceTokenSelectionDialog(Shell parentShell, ServiceRegistry registry,
-            TemplateCustomProperties properties) {
+    public ServiceTokenSelectionDialog(Shell parentShell, TokenRegistry registry, TemplateCustomProperties properties) {
         super(parentShell);
         this.registry = registry;
         this.properties = properties;
 
         for (String tokenName : registry.getRegisteredTokens()) {
             boolean isSelected = true;
-            for (Entry<String, List<String>> entry : registry.getServicePackages(tokenName).entrySet()) {
+            for (Entry<String, List<String>> entry : registry.getServices(tokenName).entrySet()) {
                 final String bundleName = entry.getKey();
                 for (String className : entry.getValue()) {
                     if (!bundleName.equals(properties.getServiceClasses().get(className))) {
                         isSelected = false;
                         break;
                     }
+                }
+            }
+            final Set<String> packages = new HashSet<>(properties.getPackagesURIs());
+            for (String pkg : registry.getPackages(tokenName)) {
+                if (!packages.contains(pkg)) {
+                    isSelected = false;
+                    break;
                 }
             }
             if (isSelected) {
@@ -196,7 +204,7 @@ public class ServiceTokenSelectionDialog extends Dialog {
     protected List<String> getTokenNames() {
         final List<String> res;
 
-        res = new ArrayList<String>(registry.getRegisteredTokens());
+        res = new ArrayList<>(registry.getRegisteredTokens());
         Collections.sort(res);
 
         return res;
@@ -225,7 +233,7 @@ public class ServiceTokenSelectionDialog extends Dialog {
     protected void okPressed() {
         super.okPressed();
         for (String tokenName : removed) {
-            final Map<String, List<String>> map = registry.getServicePackages(tokenName);
+            final Map<String, List<String>> map = registry.getServices(tokenName);
             for (Entry<String, List<String>> entry : map.entrySet()) {
                 final String bundleName = entry.getKey();
                 for (String className : entry.getValue()) {
@@ -234,15 +242,17 @@ public class ServiceTokenSelectionDialog extends Dialog {
                     }
                 }
             }
+            properties.getPackagesURIs().removeAll(registry.getPackages(tokenName));
         }
         for (String tokenName : added) {
-            final Map<String, List<String>> map = registry.getServicePackages(tokenName);
+            final Map<String, List<String>> map = registry.getServices(tokenName);
             for (Entry<String, List<String>> entry : map.entrySet()) {
                 final String bundleName = entry.getKey();
                 for (String className : entry.getValue()) {
                     properties.getServiceClasses().put(className, bundleName);
                 }
             }
+            properties.getPackagesURIs().addAll(registry.getPackages(tokenName));
         }
     }
 

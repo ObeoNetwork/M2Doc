@@ -11,6 +11,12 @@
          <service
                class="org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2">
          </service>
+         <package
+               uri="http://www.obeonetwork.org/m2doc/template/1.0">
+         </package>
+         <package
+               uri="http://www.eclipse.org/emf/2002/Ecore">
+         </package>
       </token>
    </extension>
 

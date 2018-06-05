@@ -82,7 +82,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.services.ServiceRegistry;
+import org.obeonetwork.m2doc.services.TokenRegistry;
 import org.osgi.framework.Bundle;
 
 /**
@@ -867,11 +867,12 @@ public class M2DocTemplateEditor extends EditorPart {
             @Override
             public void handleEvent(Event event) {
                 ServiceTokenSelectionDialog dialog = new ServiceTokenSelectionDialog(getSite().getShell(),
-                        ServiceRegistry.INSTANCE, templateCustomProperties);
+                        TokenRegistry.INSTANCE, templateCustomProperties);
                 dialog.open();
                 if (dialog.hasChanges()) {
                     setDirty(true);
                     servicesTable.refresh();
+                    packagesTable.refresh();
                 }
             }
         });

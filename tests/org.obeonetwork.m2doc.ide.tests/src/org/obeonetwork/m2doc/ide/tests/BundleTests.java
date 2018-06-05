@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.services.ServiceRegistry;
+import org.obeonetwork.m2doc.services.TokenRegistry;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.osgi.framework.Bundle;
 
@@ -45,7 +45,7 @@ public class BundleTests {
 
     @Test
     public void serviceTokenExtensionPoint() {
-        final Map<String, List<String>> map = ServiceRegistry.INSTANCE.getServicePackages("test token");
+        final Map<String, List<String>> map = TokenRegistry.INSTANCE.getServices("test token");
 
         assertNotNull(map);
         final List<String> list = map.get("org.obeonetwork.m2doc.ide.tests");
@@ -54,6 +54,16 @@ public class BundleTests {
         assertEquals(2, list.size());
         assertEquals("org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1", list.get(0));
         assertEquals("org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2", list.get(1));
+    }
+
+    @Test
+    public void packageTokenExtensionPoint() {
+        final List<String> list = TokenRegistry.INSTANCE.getPackages("test token");
+
+        assertNotNull(list);
+        assertEquals(2, list.size());
+        assertEquals("http://www.obeonetwork.org/m2doc/template/1.0", list.get(0));
+        assertEquals("http://www.eclipse.org/emf/2002/Ecore", list.get(1));
     }
 
 }
