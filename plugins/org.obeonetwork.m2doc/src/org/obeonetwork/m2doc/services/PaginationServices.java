@@ -66,7 +66,7 @@ public class PaginationServices {
                 styleIDs.put(style.getStyleId(), style.getName());
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException("can't load template to retreive style names.", e);
+            // nothing to do here
         }
     }
 
