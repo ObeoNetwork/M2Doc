@@ -53,6 +53,7 @@ import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MPagination;
+import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
@@ -592,6 +593,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             res = (XWPFParagraph) tableRun.getParent();
         } else if (object instanceof MPagination) {
             res = insertMPagination(paragraph, run, (MPagination) object);
+        } else if (object instanceof MParagraph) {
+            res = insertMParagraph(generatedDocument, (MParagraph) object, run);
         } else if (object instanceof IBody) {
             final XWPFRun bodyRun = insertFieldRunReplacement(paragraph, run, "");
             res = insertBody((XWPFParagraph) bodyRun.getParent(), bodyRun, (IBody) object);
@@ -821,6 +824,27 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
 
         return res;
+    }
+
+    /**
+     * Inserts the given {@link MParagraph}.
+     *
+     * @param body
+     *            the {@link IBody} to insert the paragraph into
+     * @param paragraph
+     *            the {@link MTable} to insert
+     * @param run
+     *            the source {@link XWPFRun}
+     * @return the last inserted {@link XWPFParagraph}
+     */
+    private XWPFParagraph insertMParagraph(IBody body, MParagraph paragraph, XWPFRun run) {
+        final XWPFParagraph newParagraph = createNewParagraph(body, (XWPFParagraph) run.getParent());
+
+        if (paragraph.getStyleName() != null) {
+            newParagraph.setStyle(paragraph.getStyleName());
+        }
+
+        return insertObject(newParagraph, paragraph.getContents(), run);
     }
 
     /**

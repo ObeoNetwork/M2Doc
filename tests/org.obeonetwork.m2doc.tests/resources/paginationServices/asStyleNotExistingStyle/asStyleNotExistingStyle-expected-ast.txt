@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of asStyle() :
+  [query: .asStyle('Section 1', 'NotExistingStyle')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

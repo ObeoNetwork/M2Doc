@@ -377,7 +377,7 @@ public final class M2DocUtils {
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, LinkServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
-        services = ServiceUtils.getServices(queryEnvironment, PaginationServices.class);
+        services = ServiceUtils.getServices(queryEnvironment, new PaginationServices(uriConverter, templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, new ImageServices(uriConverter, templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
