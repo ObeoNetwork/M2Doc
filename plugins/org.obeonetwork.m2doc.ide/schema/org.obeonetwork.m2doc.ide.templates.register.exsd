@@ -3,10 +3,10 @@
 <schema targetNamespace="org.obeonetwork.m2doc.ide" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.obeonetwork.m2doc.ide" id="org.obeonetwork.m2doc.ide.services.register" name="M2Doc Service Register"/>
+         <meta.schema plugin="org.obeonetwork.m2doc.ide" id="org.obeonetwork.m2doc.ide.template.register" name="M2Doc template Register"/>
       </appinfo>
       <documentation>
-         M2Doc Service and Package Regsitry Extension
+         M2Doc Template Regsitry Extension
       </documentation>
    </annotation>
 
@@ -17,8 +17,8 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="token"/>
+         <sequence>
+            <element ref="template" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,39 +47,18 @@
       </complexType>
    </element>
 
-   <element name="token">
+   <element name="template">
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="service" minOccurs="0" maxOccurs="1"/>
-            <element ref="package" minOccurs="0" maxOccurs="1"/>
-         </sequence>
-         <attribute name="name" type="string" use="required">
-            <annotation>
-               <documentation>
-                  A token used to isolate services used for a given usage.
-               </documentation>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="service">
-      <complexType>
-         <attribute name="class" type="string" use="required">
+         <attribute name="name" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java"/>
+                  <meta.attribute translatable="true"/>
                </appinfo>
             </annotation>
          </attribute>
-      </complexType>
-   </element>
-
-   <element name="package">
-      <complexType>
          <attribute name="uri" type="string">
             <annotation>
                <documentation>
@@ -90,16 +69,48 @@
       </complexType>
    </element>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
 
    <annotation>
       <appinfo>
          <meta.section type="copyright"/>
       </appinfo>
       <documentation>
-         Copyright (c) 2016 Obeo. 
+         Copyright (c) 2018 Obeo. 
    All rights reserved. This program and the accompanying materials
    are made available under the terms of the Eclipse Public License v1.0
    which accompanies this distribution, and is available at

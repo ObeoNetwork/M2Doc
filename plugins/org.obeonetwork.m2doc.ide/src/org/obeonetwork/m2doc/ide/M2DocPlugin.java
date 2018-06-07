@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.obeonetwork.m2doc.ide.services.DeclaredTokensListener;
 import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
 import org.obeonetwork.m2doc.ide.util.EclipseClassProvider;
 import org.obeonetwork.m2doc.util.ClassProvider;
@@ -78,8 +77,12 @@ public class M2DocPlugin extends EMFPlugin {
 
         /** The registry listener that will be used to listen to extension changes. */
         private ServicesConfiguratorRegistryListener registryListener = new ServicesConfiguratorRegistryListener();
-        /** The listener for M2Doc services. */
+
+        /** The listener for M2Doc services and package tokens. */
         private DeclaredTokensListener servicesListener = new DeclaredTokensListener();
+
+        /** The listener for M2Doc templates. */
+        private DeclaredTemplatesListener templatesListener = new DeclaredTemplatesListener();
 
         /**
          * Create the Eclipse Implementation.
@@ -106,6 +109,8 @@ public class M2DocPlugin extends EMFPlugin {
             registryListener.parseInitialContributions();
             registry.addListener(servicesListener, DeclaredTokensListener.SERVICE_REGISTERY_EXTENSION_POINT);
             servicesListener.parseInitialContributions();
+            registry.addListener(templatesListener, DeclaredTemplatesListener.TEMPLATE_REGISTERY_EXTENSION_POINT);
+            templatesListener.parseInitialContributions();
             classProvider = new EclipseClassProvider(context, this.getClass().getClassLoader());
         }
 

@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.services.TemplateRegistry;
 import org.obeonetwork.m2doc.services.TokenRegistry;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.osgi.framework.Bundle;
@@ -64,6 +66,16 @@ public class BundleTests {
         assertEquals(2, list.size());
         assertEquals("http://www.obeonetwork.org/m2doc/template/1.0", list.get(0));
         assertEquals("http://www.eclipse.org/emf/2002/Ecore", list.get(1));
+    }
+
+    @Test
+    public void templateExtensionPoint() {
+        final Map<String, URI> map = TemplateRegistry.INSTANCE.getTemplates();
+
+        assertNotNull(map);
+        assertEquals(1, map.size());
+        assertEquals("platform://plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx",
+                map.get("Test template").toString());
     }
 
 }
