@@ -44,6 +44,21 @@ public interface MStyle {
     void setFontSize(int fontSize);
 
     /**
+     * Gets the font name.
+     * 
+     * @return the font name if any, <code>null</code> otherwise
+     */
+    String getFontName();
+
+    /**
+     * Sets the font name.
+     * 
+     * @param fontName
+     *            the new font name, <code>null</code> for default
+     */
+    void setFontName(String fontName);
+
+    /**
      * Gets the foreground {@link Color}.
      * 
      * @return the foreground {@link Color} if any, <code>null</code> otherwise

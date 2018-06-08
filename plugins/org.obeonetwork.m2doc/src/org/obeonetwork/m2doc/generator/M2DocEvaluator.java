@@ -996,6 +996,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         if (style.getFontSize() != -1) {
             run.setFontSize(style.getFontSize());
         }
+        if (style.getFontName() != null) {
+            run.setFontFamily(style.getFontName());
+        }
         if (style.getFontModifiers() != -1) {
             run.setBold((style.getFontModifiers() & MStyle.FONT_BOLD) != 0);
             run.setItalic((style.getFontModifiers() & MStyle.FONT_ITALIC) != 0);

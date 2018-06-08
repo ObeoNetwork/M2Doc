@@ -104,7 +104,7 @@ public class MTableTestServices {
      * @return the {@link MStyle} for the given modifiers and {@link Color}
      */
     private MStyle getStyle(int modifiers, int fontSize, Color foregroundColor, Color backgroundColor) {
-        return new MStyleImpl(fontSize, foregroundColor, backgroundColor, modifiers);
+        return new MStyleImpl(null, fontSize, foregroundColor, backgroundColor, modifiers);
     }
 
     /**

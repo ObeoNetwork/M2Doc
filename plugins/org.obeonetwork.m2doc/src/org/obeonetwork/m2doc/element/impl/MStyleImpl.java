@@ -28,6 +28,11 @@ public class MStyleImpl implements MStyle {
     private int fontSize = -1;
 
     /**
+     * The font name.
+     */
+    private String fontName;
+
+    /**
      * The foreground {@link Color}.
      */
     private Color foregroundColor;
@@ -44,7 +49,9 @@ public class MStyleImpl implements MStyle {
 
     /**
      * Constructor.
-     * 
+     *
+     * @param fontName
+     *            the font name
      * @param fontSize
      *            the font size to use, <code>-1</code> for default
      * @param foregroundColor
@@ -54,8 +61,9 @@ public class MStyleImpl implements MStyle {
      * @param modifiers
      *            the modifiers color to use, <code>-1</code> for default
      */
-    public MStyleImpl(int fontSize, Color foregroundColor, Color backgroundColor, int modifiers) {
+    public MStyleImpl(String fontName, int fontSize, Color foregroundColor, Color backgroundColor, int modifiers) {
         this.fontSize = fontSize;
+        this.fontName = fontName;
         this.foregroundColor = foregroundColor;
         this.backgroundColor = backgroundColor;
         this.modifiers = modifiers;
@@ -69,6 +77,16 @@ public class MStyleImpl implements MStyle {
     @Override
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
+    }
+
+    @Override
+    public String getFontName() {
+        return fontName;
+    }
+
+    @Override
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
     }
 
     @Override
