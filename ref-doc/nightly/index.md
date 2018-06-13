@@ -383,10 +383,6 @@ When there is an explicit constructor with at least a parameter M2Doc can&#8217;
 
 An example of implementation can be found in the [Sirius](https://eclipse.org/sirius/) integration plug-in see the class [SiriusConfigurationProvider](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/providers/configuration/SiriusConfigurationProvider.java) and the extension in the [plugin.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/plugin.xml).
 
-### Service token
-
-The service token extension point org.obeonetwork.m2doc.ide.services.register can be used to reference a set of [service classes](index.html#default-constructor) using a token name. This token can be selected using &#171;Select tokens&#187; menu in the [template editor](index.html#template-editor).
-
 ### Special return types
 
 The M2Doc evaluation engine converts any object to a string in order to insert it in the generated document. To add flexibility in the produced document we chose to expose some special types to service creators. Those types are [MElement](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MElement.java) and allow directly inserting document artifacts:
@@ -399,6 +395,31 @@ The M2Doc evaluation engine converts any object to a string in order to insert i
 * [MText](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MText.java) to insert styled text.
 
 Default implementations are also provided by M2Doc in [this package](https://github.com/ObeoNetwork/M2Doc/tree/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/impl).
+
+## Extension points
+
+### Services and packages token
+
+The services and packages token extension point org.obeonetwork.m2doc.ide.services.register can be used to reference a set of [service classes](index.html#default-constructor) and packages using a token name. This token can be selected using &#171;Select tokens&#187; menu in the [template editor](index.html#template-editor). You can find an example of this extension point [here](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.ide.tests/plugin.xml).
+
+### Template registry
+
+It's possible to package your templates and deploy them in Eclipse plugins. To register them you can use the extension point org.obeonetwork.m2doc.ide.templates.register, ther is an example [here](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.ide.tests/plugin.xml).
+
+#### Import registered template
+
+Once a template is registered (see the [Template registry](index.html#template-registry) section), you can import it in the workspace for further modifications for instance:
+
+Select the template import wizard:
+
+![The import menu.]({{page.relativePath}}/ref-doc/nightly/images/Import%20menu.png "The import menu.")
+
+![Import Wizard Selection.]({{page.relativePath}}/ref-doc/nightly/images/Import%20Wizard%20Selection.png "Import Wizard Selection.")
+
+![Select a template.]({{page.relativePath}}/ref-doc/nightly/images/Template%20Import%20Wizard1.png "Select a template.")
+
+![Select the target folder.]({{page.relativePath}}/ref-doc/nightly/images/Template%20Import%20Wizard2.png "Select the target folder.")
+
 
 ## Template testing
 

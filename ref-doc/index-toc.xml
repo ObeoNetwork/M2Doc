@@ -42,8 +42,13 @@
 				<topic href="doc/ref-doc/nightly/index.html#default-constructor" label="Default constructor"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#custom-constructor" label="Custom constructor"></topic>
 			</topic>
-			<topic href="doc/ref-doc/nightly/index.html#service-token" label="Service token"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#special-return-types" label="Special return types"></topic>
+		</topic>
+		<topic href="doc/ref-doc/nightly/index.html#extension-points" label="Extension points">
+			<topic href="doc/ref-doc/nightly/index.html#services-and-packages-token" label="Services and packages token"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#template-registry" label="Template registry">
+				<topic href="doc/ref-doc/nightly/index.html#import-registered-template" label="Import registered template"></topic>
+			</topic>
 		</topic>
 		<topic href="doc/ref-doc/nightly/index.html#template-testing" label="Template testing"></topic>
 		<topic href="doc/ref-doc/nightly/index.html#maven" label="Maven"></topic>
