@@ -74,7 +74,7 @@ public class BundleTests {
 
         assertNotNull(map);
         assertEquals(1, map.size());
-        assertEquals("platform://plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx",
+        assertEquals("platform:/plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx",
                 map.get("Test template").toString());
     }
 

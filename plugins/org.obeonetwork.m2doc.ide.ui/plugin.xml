@@ -33,5 +33,19 @@
             name="M2Doc Template Editor">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <category
+            id="org.obeonetwork.m2doc.ide.ui.category"
+            name="M2Doc">
+      </category>
+      <wizard
+            category="org.obeonetwork.m2doc.ide.ui.category"
+            class="org.obeonetwork.m2doc.ide.ui.wizard.ImportTemplateWizard"
+            icon="icons/m2doc.gif"
+            id="org.obeonetwork.m2doc.ide.ui.importTemplate"
+            name="Import Template">
+      </wizard>
+   </extension>
 
 </plugin>

@@ -23,7 +23,7 @@
          point="org.obeonetwork.m2doc.ide.templates.register">
       <template
             name="Test template"
-            uri="platform://plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx">
+            uri="platform:/plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx">
       </template>
    </extension>
 

@@ -30,11 +30,6 @@ public final class TemplateRegistry {
     public static final TemplateRegistry INSTANCE = new TemplateRegistry();
 
     /**
-     * Default token used for registering services.
-     */
-    public static final String DEFAULT_TOKEN = "default";
-
-    /**
      * Mapping from template name to its {@link URI}.
      */
     private Map<String, URI> templatesRegistry = new LinkedHashMap<>();
