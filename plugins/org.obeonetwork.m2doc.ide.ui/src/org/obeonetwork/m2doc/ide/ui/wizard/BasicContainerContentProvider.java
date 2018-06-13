@@ -86,5 +86,10 @@ public class BasicContainerContentProvider implements ITreeContentProvider {
     public boolean hasChildren(Object element) {
         return getChildren(element).length > 0;
     }
+
+    @Override
+    public void dispose() {
+        // nothing to do here
+    }
 }
 // CHECKSTYLE:ON
