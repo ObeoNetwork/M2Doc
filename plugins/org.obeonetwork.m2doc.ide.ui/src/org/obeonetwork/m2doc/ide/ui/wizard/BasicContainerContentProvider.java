@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.Viewer;
 
 /**
  * Provides content for a tree viewer that shows only containers.
@@ -85,6 +86,11 @@ public class BasicContainerContentProvider implements ITreeContentProvider {
     @Override
     public boolean hasChildren(Object element) {
         return getChildren(element).length > 0;
+    }
+
+    @Override
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+        // nothing to do here
     }
 
     @Override
