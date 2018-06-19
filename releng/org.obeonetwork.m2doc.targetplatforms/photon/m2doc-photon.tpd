@@ -1,0 +1,25 @@
+target "M2Doc Oxygen Target Platform"
+
+include "../common/common.tpd"
+include "../common/sirius60.tpd"
+
+with source requirements
+
+location Eclipse "http://download.eclipse.org/releases/oxygen" {
+	org.eclipse.platform.sdk lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
+	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
+	org.eclipse.emf.sdk.feature.group lazy
+	org.junit [4.0.0,5.0.0)
+	org.eclipse.gmf lazy
+	org.eclipse.gmf.runtime.diagram.ui lazy
+	org.eclipse.gmf.runtime.diagram.ui.render lazy
+	org.eclipse.jdt.feature.group lazy
+
+    // for testing purpose only
+	org.eclipse.uml2.feature.group lazy
+}
