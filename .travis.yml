@@ -7,7 +7,8 @@ env:
   - PROFILE=platform-luna,tests
   - PROFILE=platform-mars,tests
   - PROFILE=platform-neon,tests
-  - PROFILE=platform-oxygen,tests,updatesites
+  - PROFILE=platform-oxygen,tests
+  - PROFILE=platform-photon,tests,updatesites
 jdk:
 - oraclejdk8
 sudo: required
