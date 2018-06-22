@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -105,8 +106,8 @@ public class SelectRegisteredTemplatePage extends WizardPage {
 
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
-                setSelectedTemplateURI(
-                        TemplateRegistry.INSTANCE.getTemplates().get(event.getStructuredSelection().getFirstElement()));
+                setSelectedTemplateURI(TemplateRegistry.INSTANCE.getTemplates()
+                        .get(((IStructuredSelection) event.getSelection()).getFirstElement()));
                 setPageComplete(selectedTemplateURI != null);
             }
         });
