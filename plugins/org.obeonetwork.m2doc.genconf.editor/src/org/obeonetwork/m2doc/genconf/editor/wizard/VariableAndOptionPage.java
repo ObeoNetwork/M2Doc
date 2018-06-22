@@ -339,7 +339,8 @@ public class VariableAndOptionPage extends WizardPage {
 
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
-                editButton.setEnabled(event.getStructuredSelection().getFirstElement() instanceof Definition);
+                editButton.setEnabled(
+                        ((IStructuredSelection) event.getSelection()).getFirstElement() instanceof Definition);
             }
         });
         editButton.addSelectionListener(new EditeDefinitionSelectionListener(variablesViewer, gen));
