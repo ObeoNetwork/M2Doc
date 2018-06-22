@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -18,9 +19,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.ide.ui.Activator;
 import org.obeonetwork.m2doc.services.TemplateRegistry;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Import templates from {@link TemplateRegistry}.
@@ -35,46 +38,67 @@ public class ImportTemplateWizard extends Wizard implements IImportWizard {
     }
 
     /**
-     * The {@link ImportTemplatePage}.
+     * The {@link SelectRegisteredTemplatePage}.
      */
-    private ImportTemplatePage importPage = new ImportTemplatePage();
+    private SelectRegisteredTemplatePage importPage;
 
     /**
      * The {@link SelectContainerPage}.
      */
-    private SelectContainerPage containerPage = new SelectContainerPage();
+    private WizardNewFileCreationPage creationPage;
+
+    /**
+     * The {@link IStructuredSelection}.
+     */
+    private IStructuredSelection structuredSelection;
 
     @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         setWindowTitle("Template import");
-        if (selection.getFirstElement() instanceof IFile) {
-            containerPage.setSelectedContainer(((IFile) selection.getFirstElement()).getParent());
-        } else if (selection.getFirstElement() instanceof IContainer) {
-            containerPage.setSelectedContainer((IContainer) selection.getFirstElement());
-        }
+        this.structuredSelection = selection;
     }
 
     @Override
     public void addPages() {
         super.addPages();
+        creationPage = new WizardNewFileCreationPage("Select destination Template file", structuredSelection);
+        creationPage.setAllowExistingResources(true);
+        creationPage.setFileExtension(M2DocUtils.DOCX_EXTENSION_FILE);
+
+        importPage = new SelectRegisteredTemplatePage() {
+
+            @Override
+            protected void setSelectedTemplateURI(URI selectedTemplateURI) {
+                super.setSelectedTemplateURI(selectedTemplateURI);
+                creationPage.setFileName(selectedTemplateURI.lastSegment());
+            }
+
+        };
+
         addPage(importPage);
-        addPage(containerPage);
+        addPage(creationPage);
     }
 
     @Override
     public boolean performFinish() {
-        boolean res = false;
-        final IContainer container = containerPage.getSelectedContainer();
-        for (URI templateURI : importPage.getSelectedTemplateURIs()) {
+        boolean res;
+        final IContainer container;
+        if (creationPage.getContainerFullPath().segmentCount() == 1) {
+            container = ResourcesPlugin.getWorkspace().getRoot()
+                    .getProject(creationPage.getContainerFullPath().lastSegment());
+        } else {
+            container = ResourcesPlugin.getWorkspace().getRoot().getFolder(creationPage.getContainerFullPath());
+        }
+        final URI templateURI = importPage.getSelectedTemplateURI();
+        if (templateURI != null) {
             try (InputStream is = URIConverter.INSTANCE.createInputStream(templateURI)) {
-                final IFile file = container.getFile(new Path(templateURI.lastSegment()));
+                final IFile file = container.getFile(new Path(creationPage.getFileName()));
                 if (!file.exists()) {
                     file.create(is, true, new NullProgressMonitor());
-                    res = true;
                 } else if (openConfirmationDialog(file)) {
                     file.setContents(is, true, true, new NullProgressMonitor());
-                    res = true;
                 }
+                res = true;
             } catch (IOException e) {
                 Activator.getDefault().getLog()
                         .log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't open input stream", e));
@@ -84,6 +108,8 @@ public class ImportTemplateWizard extends Wizard implements IImportWizard {
                         .log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't save file", e));
                 res = false;
             }
+        } else {
+            res = false;
         }
 
         return res;

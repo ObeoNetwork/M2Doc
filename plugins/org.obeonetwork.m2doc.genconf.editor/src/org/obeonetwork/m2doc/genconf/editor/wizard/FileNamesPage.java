@@ -1,0 +1,521 @@
+/*******************************************************************************
+ *  Copyright (c) 2018 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
+package org.obeonetwork.m2doc.genconf.editor.wizard;
+
+import java.util.List;
+
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.edit.command.SetCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
+import org.obeonetwork.m2doc.POIServices;
+import org.obeonetwork.m2doc.genconf.Definition;
+import org.obeonetwork.m2doc.genconf.GenconfPackage;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
+import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.editor.GenerationListener;
+import org.obeonetwork.m2doc.genconf.editor.ITemplateCustomPropertiesProvider;
+import org.obeonetwork.m2doc.ide.ui.wizard.M2DocFileSelectionDialog;
+import org.obeonetwork.m2doc.ide.ui.wizard.SelectRegistredTemplateDialog;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.util.M2DocUtils;
+
+/**
+ * Files selection {@link WizardPage}.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
+public class FileNamesPage extends WizardPage implements ITemplateCustomPropertiesProvider {
+
+    /**
+     * The {@link GenconfPackage}.
+     */
+    private Generation generation;
+
+    /**
+     * The {@link GenerationListener}.
+     */
+    private final GenerationListener generationListener;
+
+    /**
+     * The genconf {@link URI} {@link Text}.
+     */
+    private Text genConfURIText;
+
+    /**
+     * The {@link Generation#getTemplateFileName() template URI} {@link Text}.
+     */
+    private Text templateURIText;
+
+    /**
+     * The {@link Generation#getValidationFileName() validation URI} {@link Text}.
+     */
+    private Text validationURIText;
+
+    /**
+     * The {@link Generation#getResultFileName() result URI} {@link Text}.
+     */
+    private Text resultURIText;
+
+    /**
+     * The {@link TemplateCustomProperties} if any, <code>null</code> otherwise.
+     */
+    private TemplateCustomProperties templateCustomProperties;
+
+    /**
+     * Constructor.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @param generationListener
+     *            the {@link GenerationListener}
+     */
+    protected FileNamesPage(Generation generation, GenerationListener generationListener) {
+        super("Select files");
+        this.generation = generation;
+        this.generationListener = generationListener;
+    }
+
+    @Override
+    public void createControl(Composite parent) {
+        final Composite container = new Composite(parent, SWT.NULL);
+        container.setLayout(new GridLayout(1, false));
+        setControl(container);
+
+        final EditingDomain editingDomain = TransactionUtil.getEditingDomain(generation);
+
+        genConfURIText = createGenconfURIComposite(generation, container);
+
+        final Group relativeToGenconfGroup = new Group(container, SWT.BORDER);
+        relativeToGenconfGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+        relativeToGenconfGroup.setLayout(new GridLayout(1, false));
+        relativeToGenconfGroup.setText("Relative to generation file");
+
+        templateURIText = createTemplateURIComposite(generation, relativeToGenconfGroup);
+        generationListener.setTemplateURIText(templateURIText);
+
+        validationURIText = createURIComposite(generation, relativeToGenconfGroup, "Validation file:", new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(),
+                        "Select validation file.", getFileName(GenconfUtils.getResolvedURI(generation,
+                                URI.createURI(generation.getValidationFileName()))),
+                        M2DocUtils.DOCX_EXTENSION_FILE);
+                final int dialogResult = dialog.open();
+                if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
+                    final URI validationURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
+                    final URI genconfURI = generation.eResource().getURI();
+                    final String relativeDestinationPath = URI.decode(validationURI.deresolve(genconfURI).toString());
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                            GenconfPackage.Literals.GENERATION__VALIDATION_FILE_NAME, relativeDestinationPath));
+                }
+            }
+
+        });
+        generationListener.setValidationURIText(validationURIText);
+        if (generation.getValidationFileName() != null) {
+            validationURIText.setText(generation.getValidationFileName());
+        }
+        validationURIText.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!validationURIText.getText().equals(generation.getValidationFileName())) {
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                            GenconfPackage.Literals.GENERATION__VALIDATION_FILE_NAME, validationURIText.getText()));
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // nothing to do here
+            }
+        });
+
+        resultURIText = createURIComposite(generation, relativeToGenconfGroup, "Result file:", new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(), "Select result file.",
+                        getFileName(
+                                GenconfUtils.getResolvedURI(generation, URI.createURI(generation.getResultFileName()))),
+                        M2DocUtils.DOCX_EXTENSION_FILE);
+                final int dialogResult = dialog.open();
+                if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
+                    final URI validationURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
+                    final URI genconfURI = generation.eResource().getURI();
+                    final String relativeDestinationPath = URI.decode(validationURI.deresolve(genconfURI).toString());
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                            GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME, relativeDestinationPath));
+                }
+            }
+
+        });
+        generationListener.setDestinationURIText(resultURIText);
+        if (generation.getResultFileName() != null) {
+            resultURIText.setText(generation.getResultFileName());
+        }
+        resultURIText.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!resultURIText.getText().equals(generation.getResultFileName())) {
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, generation,
+                            GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME, resultURIText.getText()));
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // nothing to do here
+            }
+        });
+
+    }
+
+    /**
+     * Creates the {@link Generation#getDefinitions() destination URI} composite.
+     * 
+     * @param gen
+     *            the {@link Generation}
+     * @param composite
+     *            the container {@link Composite}
+     * @return the created {@link Text}
+     */
+    private Text createGenconfURIComposite(final Generation gen, final Composite composite) {
+        final Composite uriComposite = new Composite(composite, SWT.NONE);
+        uriComposite.setLayout(new GridLayout(3, false));
+        uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        final Label uriLabel = new Label(uriComposite, SWT.None);
+        uriLabel.setText("Generation file:");
+        final Text uriText = new Text(uriComposite, SWT.NONE);
+        uriText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        if (gen.eResource().getURI() != null) {
+            uriText.setText(gen.eResource().getURI().toString());
+        }
+        uriText.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                gen.eResource().setURI(URI.createURI(uriText.getText()));
+                validatePage(gen, GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // nothing to do here
+            }
+        });
+        Button uriButton = new Button(uriComposite, SWT.BORDER);
+        uriButton.setText("Browse");
+        uriButton.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(),
+                        "Select generation file.", getFileName(gen.eResource().getURI()),
+                        GenconfUtils.GENCONF_EXTENSION_FILE);
+                final int dialogResult = dialog.open();
+                if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
+                    gen.eResource().setURI(URI.createPlatformResourceURI(dialog.getFileName(), true));
+                    validatePage(gen,
+                            GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
+                }
+            }
+        });
+
+        return uriText;
+    }
+
+    /**
+     * Creates the template {@link URI} {@link Composite}.
+     * 
+     * @param gen
+     *            the {@link Generation}
+     * @param composite
+     *            the container {@link Composite}
+     * @return the template {@link URI} {@link Composite}
+     */
+    private Text createTemplateURIComposite(final Generation gen, Composite composite) {
+        final Composite uriComposite = new Composite(composite, SWT.NONE);
+        uriComposite.setLayout(new GridLayout(4, false));
+        uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
+        final Label uriLabel = new Label(uriComposite, SWT.None);
+        uriLabel.setText("Template File:");
+        final Text uriText = new Text(uriComposite, SWT.NONE);
+        uriText.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                templateCustomProperties = validatePage(gen,
+                        GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
+            }
+        });
+        if (gen.getTemplateFileName() != null) {
+            uriText.setText(gen.getTemplateFileName());
+            templateCustomProperties = validatePage(gen,
+                    GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
+        }
+        uriText.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!uriText.getText().equals(gen.getTemplateFileName())) {
+                    editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, gen,
+                            GenconfPackage.Literals.GENERATION__TEMPLATE_FILE_NAME, uriText.getText()));
+                    templateCustomProperties = validatePage(gen,
+                            GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // nothing to do here
+            }
+        });
+        uriText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        uriText.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!uriText.getText().equals(gen.eResource().getURI().toString())) {
+                    updateTemplateURI(gen, URI.createURI(uriText.getText()));
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // nothing to do here
+            }
+        });
+
+        final Button workspaceButton = new Button(uriComposite, SWT.BORDER);
+        workspaceButton.setText("Browse workspace");
+        workspaceButton.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(),
+                        "Select generation file.",
+                        getFileName(GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName()))),
+                        M2DocUtils.DOCX_EXTENSION_FILE);
+                final int dialogResult = dialog.open();
+                if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
+                    final URI templateURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
+                    updateTemplateURI(gen, templateURI);
+                }
+            }
+
+        });
+
+        final Button registeryButton = new Button(uriComposite, SWT.BORDER);
+        registeryButton.setText("Browse registery");
+        registeryButton.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final SelectRegistredTemplateDialog dialog = new SelectRegistredTemplateDialog(getShell());
+
+                final int dialogResult = dialog.open();
+                if ((dialogResult == IDialogConstants.OK_ID) && dialog.getTemplateURI() != null) {
+                    updateTemplateURI(gen, dialog.getTemplateURI());
+                }
+            }
+
+        });
+
+        return uriText;
+    }
+
+    /**
+     * Updates the {@link Generation#getTemplateFileName() template URI}.
+     * 
+     * @param gen
+     *            the {@link Generation}
+     * @param templateURI
+     *            the new {@link Generation#getTemplateFileName() template URI}
+     */
+    private void updateTemplateURI(Generation gen, final URI templateURI) {
+        final URI genconfURI = gen.eResource().getURI();
+        final String relativeTemplatePath;
+        if (!templateURI.isPlatformPlugin()) {
+            relativeTemplatePath = URI.decode(templateURI.deresolve(genconfURI).toString());
+        } else {
+            relativeTemplatePath = URI.decode(templateURI.toString());
+        }
+        final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
+        templateCustomProperties = validatePage(gen,
+                GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
+        editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, gen,
+                GenconfPackage.Literals.GENERATION__TEMPLATE_FILE_NAME, relativeTemplatePath));
+        if (gen.getResultFileName() == null || gen.getResultFileName().isEmpty()) {
+            editingDomain.getCommandStack()
+                    .execute(SetCommand.create(editingDomain, gen, GenconfPackage.Literals.GENERATION__RESULT_FILE_NAME,
+                            relativeTemplatePath.replace("." + M2DocUtils.DOCX_EXTENSION_FILE, "-generated.docx")));
+        }
+        if (gen.getValidationFileName() == null || gen.getValidationFileName().isEmpty()) {
+            editingDomain.getCommandStack()
+                    .execute(SetCommand.create(editingDomain, gen,
+                            GenconfPackage.Literals.GENERATION__VALIDATION_FILE_NAME,
+                            relativeTemplatePath.replace("." + M2DocUtils.DOCX_EXTENSION_FILE, "-validation.docx")));
+        }
+    }
+
+    /**
+     * Creates the {@link Generation#getDefinitions() destination URI} composite.
+     * 
+     * @param gen
+     *            the {@link Generation}
+     * @param composite
+     *            the container {@link Composite}
+     * @param label
+     *            the label
+     * @param buttonListener
+     *            the {@link Button} {@link Listener}
+     * @return the created {@link Text}
+     */
+    private Text createURIComposite(final Generation gen, final Composite composite, String label,
+            Listener buttonListener) {
+        final Composite uriComposite = new Composite(composite, SWT.NONE);
+        uriComposite.setLayout(new GridLayout(3, false));
+        uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        final Label uriLabel = new Label(uriComposite, SWT.None);
+        uriLabel.setText(label);
+        final Text uriText = new Text(uriComposite, SWT.NONE);
+        uriText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        Button uriButton = new Button(uriComposite, SWT.BORDER);
+        uriButton.setText("Browse");
+        uriButton.addListener(SWT.Selection, buttonListener);
+
+        return uriText;
+    }
+
+    /**
+     * Validates the page and gets the {@link TemplateCustomProperties} if any.
+     * 
+     * @param gen
+     *            the {@link Generation}
+     * @param uri
+     *            the template {@link URI}
+     * @return the {@link TemplateCustomProperties} if any, <code>null</code> otherwise
+     */
+    private TemplateCustomProperties validatePage(Generation gen, URI uri) {
+        TemplateCustomProperties res;
+
+        final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
+
+        final URI absoluteURI = uri.resolve(gen.eResource().getURI());
+        if (URIConverter.INSTANCE.exists(absoluteURI, null)) {
+            try {
+                res = POIServices.getInstance().getTemplateCustomProperties(absoluteURI);
+                final List<Definition> oldDefinitions = GenconfUtils.getOldDefinitions(gen, res);
+                final Command removeCommand = RemoveCommand.create(editingDomain, gen,
+                        GenconfPackage.GENERATION__DEFINITIONS, oldDefinitions);
+                editingDomain.getCommandStack().execute(removeCommand);
+
+                final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, res);
+                final Command addCommand = AddCommand.create(editingDomain, gen, GenconfPackage.GENERATION__DEFINITIONS,
+                        newDefinitions);
+                editingDomain.getCommandStack().execute(addCommand);
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                res = null;
+            }
+        } else {
+            res = null;
+            setErrorMessage("Template " + absoluteURI + " doesn't exist.");
+        }
+
+        if (res != null) {
+            setPageComplete(true);
+            setErrorMessage(null);
+        } else {
+            setPageComplete(false);
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the genconf {@link URI} {@link Text}.
+     * 
+     * @return the genconf {@link URI} {@link Text}
+     */
+    public Text getGenConfURIText() {
+        return genConfURIText;
+    }
+
+    /**
+     * Gets the {@link Generation#getTemplateFileName() template URI} {@link Text}.
+     * 
+     * @return the {@link Generation#getTemplateFileName() template URI} {@link Text}
+     */
+    public Text getTemplateURIText() {
+        return templateURIText;
+    }
+
+    public Text getValidationURIText() {
+        return validationURIText;
+    }
+
+    public Text getResultURIText() {
+        return resultURIText;
+    }
+
+    @Override
+    public TemplateCustomProperties getTemplateCustomProperties() {
+        return templateCustomProperties;
+    }
+
+    /**
+     * Gets the file name from the given {@link URI}.
+     * 
+     * @param uri
+     *            the {@link URI}
+     * @return the file name from the given {@link URI}
+     */
+    private String getFileName(URI uri) {
+        final String res;
+
+        if (uri.isPlatformResource()) {
+            res = uri.toPlatformString(true);
+        } else {
+            res = "";
+        }
+
+        return res;
+    }
+
+}

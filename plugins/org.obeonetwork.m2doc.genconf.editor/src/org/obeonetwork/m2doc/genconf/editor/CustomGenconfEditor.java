@@ -11,36 +11,22 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
@@ -52,28 +38,19 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.IPropertySource;
 import org.obeonetwork.m2doc.POIServices;
-import org.obeonetwork.m2doc.genconf.BooleanDefinition;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
-import org.obeonetwork.m2doc.genconf.IntegerDefinition;
-import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
-import org.obeonetwork.m2doc.genconf.RealDefinition;
-import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.GenconfEditor;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -81,488 +58,12 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class CustomGenconfEditor extends GenconfEditor {
-
-    /**
-     * Variable value {@link CellLabelProvider}.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    private final class VariableValueCellLabelProvider extends CellLabelProvider {
-
-        @Override
-        public void update(ViewerCell cell) {
-            final Definition definition = (Definition) cell.getElement();
-            if (definition instanceof StringDefinition) {
-                cell.setText(((StringDefinition) definition).getValue());
-            } else if (definition instanceof IntegerDefinition) {
-                cell.setText(String.valueOf(((IntegerDefinition) definition).getValue()));
-            } else if (definition instanceof RealDefinition) {
-                cell.setText(String.valueOf(((RealDefinition) definition).getValue()));
-            } else if (definition instanceof BooleanDefinition) {
-                cell.setText(String.valueOf(((BooleanDefinition) definition).isValue()));
-            } else if (definition instanceof ModelDefinition) {
-                final String text;
-                final EObject eObj = ((ModelDefinition) definition).getValue();
-                if (eObj != null) {
-                    final IItemLabelProvider itemProvider = (IItemLabelProvider) adapterFactory.adapt(eObj,
-                            IItemLabelProvider.class);
-
-                    if (itemProvider == null) {
-                        text = eObj.toString();
-                    } else {
-                        text = itemProvider.getText(eObj);
-                    }
-                    cell.setText(text);
-                } else {
-                    cell.setText("");
-                }
-            } else {
-                cell.setText(DON_T_KNOW_WHAT_TO_DO_WITH + definition.getClass().getCanonicalName());
-            }
-        }
-    }
-
-    /**
-     * {@link Definition#getKey() variable name} editing support.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    private final class VariableNameEditingSupport extends EditingSupport {
-        /**
-         * The Editor.
-         */
-        private final ComboBoxViewerCellEditor editor;
-
-        /**
-         * Constructor.
-         * 
-         * @param viewer
-         *            the {@link ColumnViewer}
-         */
-        private VariableNameEditingSupport(ColumnViewer viewer) {
-            super(viewer);
-            editor = new ComboBoxViewerCellEditor((Composite) viewer.getControl());
-            editor.setContentProvider(new IStructuredContentProvider() {
-
-                @Override
-                public Object[] getElements(Object inputElement) {
-                    return ((List<?>) inputElement).toArray();
-                }
-
-                @Override
-                public void dispose() {
-                    // nothing to do here
-                }
-
-                @Override
-                public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-                    // nothing to do here
-                }
-            });
-        }
-
-        @Override
-        protected void setValue(Object element, Object value) {
-            final Definition definition = (Definition) element;
-            if (!definition.getKey().equals(value)) {
-                editingDomain.getCommandStack().execute(
-                        SetCommand.create(editingDomain, definition, GenconfPackage.Literals.DEFINITION__KEY, value));
-            }
-        }
-
-        @Override
-        protected Object getValue(Object element) {
-            return ((Definition) element).getKey();
-        }
-
-        @Override
-        protected CellEditor getCellEditor(Object element) {
-            final List<String> variableNames = new ArrayList<String>();
-
-            if (templateCustomProperties != null) {
-                if (element instanceof StringDefinition) {
-                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
-                        if (TemplateCustomProperties.STRING_TYPE.equals(entry.getValue())) {
-                            variableNames.add(entry.getKey());
-                        }
-                    }
-                } else if (element instanceof IntegerDefinition) {
-                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
-                        if (TemplateCustomProperties.INTEGER_TYPE.equals(entry.getValue())) {
-                            variableNames.add(entry.getKey());
-                        }
-                    }
-                } else if (element instanceof RealDefinition) {
-                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
-                        if (TemplateCustomProperties.REAL_TYPE.equals(entry.getValue())) {
-                            variableNames.add(entry.getKey());
-                        }
-                    }
-                } else if (element instanceof BooleanDefinition) {
-                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
-                        if (TemplateCustomProperties.BOOLEAN_TYPE.equals(entry.getValue())) {
-                            variableNames.add(entry.getKey());
-                        }
-                    }
-                } else if (element instanceof ModelDefinition) {
-                    for (Entry<String, String> entry : templateCustomProperties.getVariables().entrySet()) {
-                        if (!TemplateCustomProperties.STRING_TYPE.equals(entry.getValue())
-                            && !TemplateCustomProperties.INTEGER_TYPE.equals(entry.getValue())
-                            && !TemplateCustomProperties.REAL_TYPE.equals(entry.getValue())
-                            && !TemplateCustomProperties.BOOLEAN_TYPE.equals(entry.getValue())) {
-                            variableNames.add(entry.getKey());
-                        }
-                    }
-                } else {
-                    throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + element.getClass());
-                }
-            }
-
-            editor.setInput(variableNames);
-            return editor;
-        }
-
-        @Override
-        protected boolean canEdit(Object element) {
-            return templateCustomProperties != null;
-        }
-    }
-
-    /**
-     * {@link Definition#getKey() variable name} editing support.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    private final class VariableValueEditingSupport extends EditingSupport {
-
-        /**
-         * Constructor.
-         * 
-         * @param viewer
-         *            the {@link ColumnViewer}
-         */
-        private VariableValueEditingSupport(ColumnViewer viewer) {
-            super(viewer);
-        }
-
-        @Override
-        protected CellEditor getCellEditor(Object element) {
-            final Definition definition = (Definition) element;
-            final EStructuralFeature valueFeature = getValueFeature(definition);
-            final AdapterFactoryContentProvider contentProvider = new AdapterFactoryContentProvider(adapterFactory);
-            IPropertySource propertySource = contentProvider.getPropertySource(element);
-            IPropertyDescriptor[] propertyDescriptors = propertySource.getPropertyDescriptors();
-            for (IPropertyDescriptor propertyDescriptor : propertyDescriptors) {
-                if (valueFeature.getName().equals(propertyDescriptor.getId())) {
-                    return propertyDescriptor.createPropertyEditor((Composite) getViewer().getControl());
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected boolean canEdit(Object element) {
-            return templateCustomProperties != null;
-        }
-
-        @Override
-        protected Object getValue(Object element) {
-            final Definition definition = (Definition) element;
-            final EStructuralFeature valueFeature = getValueFeature(definition);
-
-            return definition.eGet(valueFeature);
-        }
-
-        @Override
-        protected void setValue(Object element, Object value) {
-            final Definition definition = (Definition) element;
-            final EStructuralFeature valueFeature = getValueFeature(definition);
-            final Object currentValue = definition.eGet(valueFeature);
-            if ((currentValue == null && value != null) || (currentValue != null && !currentValue.equals(value))) {
-                editingDomain.getCommandStack()
-                        .execute(SetCommand.create(editingDomain, definition, valueFeature, value));
-            }
-        }
-
-        /**
-         * Gets the {@link EStructuralFeature} containing the value of the {@link Definition}.
-         * 
-         * @param definition
-         *            the {@link Definition}
-         * @return the {@link EStructuralFeature} containing the value of the {@link Definition}.
-         */
-        EStructuralFeature getValueFeature(Definition definition) {
-            final EStructuralFeature res;
-
-            if (definition instanceof ModelDefinition) {
-                res = GenconfPackage.Literals.MODEL_DEFINITION__VALUE;
-            } else if (definition instanceof StringDefinition) {
-                res = GenconfPackage.Literals.STRING_DEFINITION__VALUE;
-            } else {
-                throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + definition.getClass().getCanonicalName());
-            }
-
-            return res;
-        }
-
-    }
-
-    /**
-     * {@link Option#getName() Option name} editing support.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    private final class OptionNameEditingSupport extends EditingSupport {
-
-        /**
-         * The Editor.
-         */
-        private final ComboBoxViewerCellEditor editor;
-
-        /**
-         * Constructor.
-         * 
-         * @param viewer
-         *            the {@link ColumnViewer}
-         */
-        private OptionNameEditingSupport(ColumnViewer viewer) {
-            super(viewer);
-            editor = new ComboBoxViewerCellEditor((Composite) viewer.getControl());
-            editor.setContentProvider(new IStructuredContentProvider() {
-
-                @Override
-                public Object[] getElements(Object inputElement) {
-                    return ((List<?>) inputElement).toArray();
-                }
-
-                @Override
-                public void dispose() {
-                    // nothing to do here
-                }
-
-                @Override
-                public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-                    // nothing to do here
-                }
-            });
-        }
-
-        @Override
-        protected CellEditor getCellEditor(Object element) {
-            List<String> availableOptions = getAviliableOptionNames();
-
-            availableOptions.add(0, ((Option) element).getName());
-            editor.setInput(availableOptions);
-
-            return editor;
-        }
-
-        @Override
-        protected boolean canEdit(Object element) {
-            return true;
-        }
-
-        @Override
-        protected Object getValue(Object element) {
-            final Option option = (Option) element;
-
-            return option.getName();
-        }
-
-        @Override
-        protected void setValue(Object element, Object value) {
-            final Option option = (Option) element;
-
-            if ((option.getName() == null && value != null)
-                || (option.getName() != null && !option.getName().equals(value))) {
-                editingDomain.getCommandStack()
-                        .execute(SetCommand.create(editingDomain, option, GenconfPackage.Literals.OPTION__NAME, value));
-            }
-        }
-
-    }
-
-    /**
-     * {@link Option#getValue() Option value} editing support.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    private final class OptionValueEditingSupport extends EditingSupport {
-
-        /**
-         * The Editor.
-         */
-        private final TextCellEditor editor;
-
-        /**
-         * Constructor.
-         * 
-         * @param viewer
-         *            the {@link ColumnViewer}
-         */
-        private OptionValueEditingSupport(ColumnViewer viewer) {
-            super(viewer);
-            editor = new TextCellEditor((Composite) viewer.getControl());
-        }
-
-        @Override
-        protected CellEditor getCellEditor(Object element) {
-            return editor;
-        }
-
-        @Override
-        protected boolean canEdit(Object element) {
-            return true;
-        }
-
-        @Override
-        protected Object getValue(Object element) {
-            final Option option = (Option) element;
-
-            return option.getValue();
-        }
-
-        @Override
-        protected void setValue(Object element, Object value) {
-            final Option option = (Option) element;
-
-            if ((option.getValue() == null && value != null)
-                || (option.getValue() != null && !option.getValue().equals(value))) {
-                editingDomain.getCommandStack().execute(
-                        SetCommand.create(editingDomain, option, GenconfPackage.Literals.OPTION__VALUE, value));
-            }
-        }
-
-    }
-
-    /**
-     * Update GUI elements according to {@link Generation} changes.
-     * 
-     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-     */
-    private final class GenerationListener extends AdapterImpl {
-        @SuppressWarnings("unchecked")
-        @Override
-        public void notifyChanged(Notification msg) {
-            super.notifyChanged(msg);
-            if (msg.getNotifier() instanceof Generation) {
-                switch (msg.getFeatureID(Generation.class)) {
-                    case GenconfPackage.GENERATION__TEMPLATE_FILE_NAME:
-                        final String newTemplateURI = (String) msg.getNewValue();
-                        if (!newTemplateURI.equals(templateURIText.getText())) {
-                            templateURIText.setText(newTemplateURI);
-                        }
-                        break;
-                    case GenconfPackage.GENERATION__RESULT_FILE_NAME:
-                        final String newDestionationURI = (String) msg.getNewValue();
-                        if (!newDestionationURI.equals(destinationURIText.getText())) {
-                            destinationURIText.setText(newDestionationURI);
-                        }
-                        break;
-                    case GenconfPackage.GENERATION__VALIDATION_FILE_NAME:
-                        final String newValidationURI = (String) msg.getNewValue();
-                        if (!newValidationURI.equals(validationURIText.getText())) {
-                            validationURIText.setText(newValidationURI);
-                        }
-                        break;
-                    case GenconfPackage.GENERATION__DEFINITIONS:
-                        switch (msg.getEventType()) {
-                            case Notification.ADD:
-                                final Definition newDefinition = (Definition) msg.getNewValue();
-                                newDefinition.eAdapters().add(this);
-                                break;
-                            case Notification.ADD_MANY:
-                                for (Definition definition : (List<Definition>) msg.getOldValue()) {
-                                    definition.eAdapters().add(this);
-                                }
-                                break;
-                            case Notification.REMOVE:
-                                final Definition oldDefinition = (Definition) msg.getOldValue();
-                                oldDefinition.eAdapters().remove(this);
-                                break;
-                            case Notification.REMOVE_MANY:
-                                for (Definition definition : (List<Definition>) msg.getOldValue()) {
-                                    definition.eAdapters().remove(this);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!variablesTable.getTable().isDisposed()) {
-                            Display.getDefault().asyncExec(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    variablesTable.refresh();
-                                }
-                            });
-                        }
-                        break;
-                    case GenconfPackage.GENERATION__OPTIONS:
-                        switch (msg.getEventType()) {
-                            case Notification.ADD:
-                                final Option newOption = (Option) msg.getNewValue();
-                                newOption.eAdapters().add(this);
-                                break;
-                            case Notification.ADD_MANY:
-                                for (Option option : (List<Option>) msg.getOldValue()) {
-                                    option.eAdapters().add(this);
-                                }
-                                break;
-                            case Notification.REMOVE:
-                                final Option oldoption = (Option) msg.getOldValue();
-                                oldoption.eAdapters().remove(this);
-                                break;
-                            case Notification.REMOVE_MANY:
-                                for (Option option : (List<Option>) msg.getOldValue()) {
-                                    option.eAdapters().remove(this);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!optionsTable.getTable().isDisposed()) {
-                            Display.getDefault().asyncExec(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    optionsTable.refresh();
-                                }
-                            });
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            } else if (msg.getNotifier() instanceof Definition) {
-                if (!variablesTable.getTable().isDisposed()) {
-                    Display.getDefault().asyncExec(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            variablesTable.refresh();
-                        }
-                    });
-                }
-            } else if (msg.getNotifier() instanceof Option) {
-                if (!optionsTable.getTable().isDisposed()) {
-                    Display.getDefault().asyncExec(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            optionsTable.refresh();
-                        }
-                    });
-                }
-            }
-        }
-    }
+public class CustomGenconfEditor extends GenconfEditor implements ITemplateCustomPropertiesProvider {
 
     /**
      * Illegal state message.
      */
-    private static final String DON_T_KNOW_WHAT_TO_DO_WITH = "don't know what to do with ";
+    static final String DON_T_KNOW_WHAT_TO_DO_WITH = "don't know what to do with ";
 
     /**
      * Default width.
@@ -572,36 +73,36 @@ public class CustomGenconfEditor extends GenconfEditor {
     /**
      * The {@link Generation#getTemplateFileName() template URI} {@link Text}.
      */
-    protected Text templateURIText;
+    private Text templateURIText;
 
     /**
      * The {@link Generation#getResultFileName() destination URI} {@link Text}.
      */
-    protected Text destinationURIText;
+    private Text destinationURIText;
     /**
      * The {@link Generation#getµValidationFileName() validation URI} {@link Text}.
      */
-    protected Text validationURIText;
+    private Text validationURIText;
 
     /**
      * The {@link Generation#getDefinitions() variables} {@link TableViewer}.
      */
-    protected TableViewer variablesTable;
+    private TableViewer variablesTable;
 
     /**
      * The {@link Generation#getOptions() options} {@link TableViewer}.
      */
-    protected TableViewer optionsTable;
+    private TableViewer optionsTable;
 
     /**
-     * An {@link Adapter} listening to {@link #getGeneration() the edited generation}.
+     * The {@link GenerationListener}.
      */
-    protected Adapter generationListener;
+    private GenerationListener generationListener;
 
     /**
      * Current {@link TemplateCustomProperties}.
      */
-    protected TemplateCustomProperties templateCustomProperties;
+    private TemplateCustomProperties templateCustomProperties;
 
     @Override
     public void createPages() {
@@ -638,7 +139,12 @@ public class CustomGenconfEditor extends GenconfEditor {
         setPageText(pageIndex, "Overview");
 
         generationListener = new GenerationListener();
-        installGenerationListener(generation, generationListener);
+        generationListener.installGenerationListener(generation);
+        generationListener.setTemplateURIText(templateURIText);
+        generationListener.setDestinationURIText(destinationURIText);
+        generationListener.setValidationURIText(validationURIText);
+        generationListener.setVariablesViewer(variablesTable);
+        generationListener.setOptionsViewer(optionsTable);
     }
 
     /**
@@ -655,11 +161,11 @@ public class CustomGenconfEditor extends GenconfEditor {
         TableViewerColumn nameColumn = new TableViewerColumn(optionsTable, SWT.NONE);
         nameColumn.getColumn().setText("Option name");
         nameColumn.getColumn().setWidth(WIDTH);
-        nameColumn.setEditingSupport(new OptionNameEditingSupport(optionsTable));
+        nameColumn.setEditingSupport(new OptionNameEditingSupport(optionsTable, editingDomain));
         TableViewerColumn valueColumn = new TableViewerColumn(optionsTable, SWT.NONE);
         valueColumn.getColumn().setText("Option value");
         valueColumn.getColumn().setWidth(WIDTH);
-        valueColumn.setEditingSupport(new OptionValueEditingSupport(optionsTable));
+        valueColumn.setEditingSupport(new OptionValueEditingSupport(optionsTable, editingDomain));
         optionsTable.setContentProvider(new IStructuredContentProvider() {
 
             @Override
@@ -747,9 +253,9 @@ public class CustomGenconfEditor extends GenconfEditor {
                 cell.setText(definition.getKey());
             }
         });
-        nameColumn.setEditingSupport(new VariableNameEditingSupport(variablesTable));
-        valueColumn.setLabelProvider(new VariableValueCellLabelProvider());
-        valueColumn.setEditingSupport(new VariableValueEditingSupport(variablesTable));
+        valueColumn.setLabelProvider(new VariableValueCellLabelProvider(adapterFactory));
+        valueColumn.setEditingSupport(
+                new VariableValueEditingSupport(variablesTable, editingDomain, adapterFactory, this));
         createContextMenuFor(variablesTable);
         variablesTable.setInput(generation);
         variablesTable.getControl().getMenu().addListener(SWT.Show, new Listener() {
@@ -950,44 +456,8 @@ public class CustomGenconfEditor extends GenconfEditor {
 
     @Override
     public void dispose() {
-        removeGenerationListener(getGeneration(), generationListener);
+        generationListener.removeGenerationListener(getGeneration());
         super.dispose();
-    }
-
-    /**
-     * Installs the listener.
-     * 
-     * @param generation
-     *            the {@link #getGeneration() the edited generation}
-     * @param listener
-     *            the {@link Adapter}
-     */
-    protected void installGenerationListener(Generation generation, Adapter listener) {
-        generation.eAdapters().add(listener);
-        for (Definition definition : generation.getDefinitions()) {
-            definition.eAdapters().add(listener);
-        }
-        for (Option option : generation.getOptions()) {
-            option.eAdapters().add(listener);
-        }
-    }
-
-    /**
-     * Removes the listener.
-     * 
-     * @param generation
-     *            the {@link #getGeneration() the edited generation}
-     * @param listener
-     *            the {@link Adapter}
-     */
-    private void removeGenerationListener(Generation generation, Adapter listener) {
-        generation.eAdapters().remove(listener);
-        for (Definition definition : generation.getDefinitions()) {
-            definition.eAdapters().remove(listener);
-        }
-        for (Option option : generation.getOptions()) {
-            option.eAdapters().remove(listener);
-        }
     }
 
     /**
@@ -1015,23 +485,6 @@ public class CustomGenconfEditor extends GenconfEditor {
     }
 
     /**
-     * Gets the {@link List} of availiable {@link Option#getName() option names}.
-     * 
-     * @return the {@link List} of availiable {@link Option#getName() option names}
-     */
-    protected List<String> getAviliableOptionNames() {
-        List<String> availableOptions = new ArrayList<String>();
-
-        for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
-            availableOptions.addAll(configurator.getOptions());
-        }
-        for (Option option : getGeneration().getOptions()) {
-            availableOptions.remove(option.getName());
-        }
-        return availableOptions;
-    }
-
-    /**
      * Contribute {@link Option} menus.
      * 
      * @param generation
@@ -1041,12 +494,13 @@ public class CustomGenconfEditor extends GenconfEditor {
         new MenuItem(optionsTable.getControl().getMenu(), SWT.SEPARATOR);
         final MenuItem addOptionMenu = new MenuItem(optionsTable.getControl().getMenu(), SWT.PUSH);
         addOptionMenu.setText("Add option");
-        addOptionMenu.setEnabled(!getAviliableOptionNames().isEmpty());
+        final List<String> aviliableOptionNames = GenconfUtils.getAviliableOptionNames(generation);
+        addOptionMenu.setEnabled(!aviliableOptionNames.isEmpty());
         addOptionMenu.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
                 final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
-                option.setName(getAviliableOptionNames().get(0));
+                option.setName(aviliableOptionNames.get(0));
                 editingDomain.getCommandStack().execute(
                         AddCommand.create(editingDomain, generation, GenconfPackage.GENERATION__OPTIONS, option));
             }
@@ -1133,6 +587,11 @@ public class CustomGenconfEditor extends GenconfEditor {
         }
 
         return res;
+    }
+
+    @Override
+    public TemplateCustomProperties getTemplateCustomProperties() {
+        return templateCustomProperties;
     }
 
 }

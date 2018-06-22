@@ -36,16 +36,23 @@
    <extension
          point="org.eclipse.ui.importWizards">
       <category
-            id="org.obeonetwork.m2doc.ide.ui.category"
+            id="org.obeonetwork.m2doc.ide.ui.importCategory"
             name="M2Doc">
       </category>
       <wizard
-            category="org.obeonetwork.m2doc.ide.ui.category"
+            category="org.obeonetwork.m2doc.ide.ui.importCategory"
             class="org.obeonetwork.m2doc.ide.ui.wizard.ImportTemplateWizard"
             icon="icons/m2doc.gif"
             id="org.obeonetwork.m2doc.ide.ui.importTemplate"
             name="Import Template">
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.obeonetwork.m2doc.ide.ui.newCategory"
+            name="M2Doc">
+      </category>
    </extension>
 
 </plugin>

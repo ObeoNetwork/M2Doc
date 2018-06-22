@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +30,10 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
@@ -51,6 +54,7 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -220,8 +224,40 @@ public final class GenconfUtils {
     }
 
     /**
+     * Gets the {@link List} of old {@link Definition} delta between the given {@link Generation} and the given
+     * {@link TemplateCustomProperties}. {@link Definition} that can be removed from the {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @param templateCustomProperties
+     *            the {@link TemplateCustomProperties}
+     * @return the {@link List} of new {@link Definition}
+     */
+    public static List<Definition> getOldDefinitions(Generation generation,
+            TemplateCustomProperties templateCustomProperties) {
+        final List<Definition> oldDefinitions = new ArrayList<Definition>();
+
+        final IQueryEnvironment queryEnvironment = Query.newEnvironment();
+        queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+        queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
+                EStringToStringMapEntryImpl.class);
+        templateCustomProperties.configureQueryEnvironmentWithResult(queryEnvironment);
+        final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+        final Map<String, Set<IType>> variablesTypes = templateCustomProperties.getVariableTypes(validator,
+                queryEnvironment);
+        for (Definition definition : generation.getDefinitions()) {
+            if (!variablesTypes.containsKey(definition.getKey())
+                || !isValidDefinitionForType(queryEnvironment, definition, variablesTypes.get(definition.getKey()))) {
+                oldDefinitions.add(definition);
+            }
+        }
+
+        return oldDefinitions;
+    }
+
+    /**
      * Gets the {@link List} of new {@link Definition} delta between the given {@link Generation} and the given
-     * {@link TemplateCustomProperties}.
+     * {@link TemplateCustomProperties}. {@link Definition} that can be added to the {@link Generation}.
      * 
      * @param generation
      *            the {@link Generation}
@@ -241,10 +277,12 @@ public final class GenconfUtils {
                 queryEnvironment);
         final Set<String> existingVariables = new HashSet<String>();
         for (Definition definition : generation.getDefinitions()) {
-            if (isValidDefinitionForType(queryEnvironment, definition, variablesTypes.get(definition.getKey()))) {
+            if (variablesTypes.containsKey(definition.getKey())
+                && isValidDefinitionForType(queryEnvironment, definition, variablesTypes.get(definition.getKey()))) {
                 existingVariables.add(definition.getKey());
             }
         }
+
         final List<Definition> newDefinitions = new ArrayList<Definition>();
         for (Entry<String, Set<IType>> entry : variablesTypes.entrySet()) {
             if (!existingVariables.contains(entry.getKey())) {
@@ -254,6 +292,7 @@ public final class GenconfUtils {
                 }
             }
         }
+
         return newDefinitions;
     }
 
@@ -756,6 +795,73 @@ public final class GenconfUtils {
         }
 
         return res;
+    }
+
+    /**
+     * Gets the {@link List} of availiable {@link Option#getName() option names} for the given {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @return the {@link List} of availiable {@link Option#getName() option names}
+     */
+    public static List<String> getAviliableOptionNames(Generation generation) {
+        List<String> availableOptions = new ArrayList<String>();
+
+        for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
+            availableOptions.addAll(configurator.getOptions());
+        }
+        for (Option option : generation.getOptions()) {
+            availableOptions.remove(option.getName());
+        }
+        return availableOptions;
+    }
+
+    /**
+     * Initializes the {@link Generation#getDefinitions() variable definitions} from the given {@link Generation} with the given
+     * {@link ResourceSet}.
+     * 
+     * @param generation
+     *            the {@link Generation} to initialize
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param properties
+     *            the {@link TemplateCustomProperties}
+     * @param resourceSet
+     *            the {@link ResourceSet} to get values from
+     */
+    public static void initializeVariableDefinition(Generation generation, IReadOnlyQueryEnvironment queryEnvironment,
+            TemplateCustomProperties properties, ResourceSet resourceSet) {
+        final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+        final Map<ModelDefinition, Set<IType>> toInitialilize = new HashMap<ModelDefinition, Set<IType>>();
+        for (Definition definition : generation.getDefinitions()) {
+            if (definition instanceof ModelDefinition && ((ModelDefinition) definition).getValue() == null) {
+                final ModelDefinition modelDefinition = (ModelDefinition) definition;
+                final Set<IType> possibleTypes = properties.getVariableTypes(validator, queryEnvironment,
+                        properties.getVariables().get(modelDefinition.getKey()));
+                toInitialilize.put(modelDefinition, possibleTypes);
+            }
+        }
+
+        final Iterator<Notifier> it = resourceSet.getAllContents();
+        while (!toInitialilize.isEmpty() && it.hasNext()) {
+            final Notifier notifier = it.next();
+            if (notifier instanceof EObject) {
+                EObject element = (EObject) notifier;
+                final EClassifierType elementType = new EClassifierType(queryEnvironment, element.eClass());
+                ModelDefinition initialized = null;
+                for (Entry<ModelDefinition, Set<IType>> entry : toInitialilize.entrySet()) {
+                    for (IType definitionType : entry.getValue()) {
+                        if (definitionType.isAssignableFrom(elementType)) {
+                            initialized = entry.getKey();
+                            initialized.setValue(element);
+                        }
+                    }
+                }
+                if (initialized != null) {
+                    toInitialilize.remove(initialized);
+                }
+            }
+        }
     }
 
 }

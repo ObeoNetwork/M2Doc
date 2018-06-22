@@ -177,7 +177,8 @@ public abstract class AbstractTemplatesTestSuite {
         final XMIResourceFactoryImpl xmiResourceFactory = new XMIResourceFactoryImpl();
         rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", xmiResourceFactory);
         rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", xmiResourceFactory);
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("genconf", xmiResourceFactory);
+        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(GenconfUtils.GENCONF_EXTENSION_FILE,
+                xmiResourceFactory);
         rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("uml", xmiResourceFactory);
 
         final ResourceSet res = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment, rs,

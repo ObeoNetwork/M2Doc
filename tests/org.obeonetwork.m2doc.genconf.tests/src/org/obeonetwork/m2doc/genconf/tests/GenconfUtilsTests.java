@@ -307,4 +307,102 @@ public class GenconfUtilsTests {
         }
     }
 
+    @Test
+    public void getNewDefinitionsExistingNotDeclared() throws IOException {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        final StringDefinition stringDefinition = GenconfPackage.eINSTANCE.getGenconfFactory().createStringDefinition();
+        stringDefinition.setKey("variable");
+        generation.getDefinitions().add(stringDefinition);
+
+        try (XWPFDocument document = new XWPFDocument()) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, properties);
+
+            assertEquals(0, definitions.size());
+        }
+    }
+
+    @Test
+    public void getOldDefinitionsNotExistingModelDefinition() throws IOException {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        try (XWPFDocument document = new XWPFDocument()) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            properties.getVariables().put("variable", "ecore::EClass");
+
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+
+            assertEquals(0, definitions.size());
+        }
+    }
+
+    @Test
+    public void getOldDefinitionsNotExistingStringDefinition() throws IOException {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        try (XWPFDocument document = new XWPFDocument()) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
+
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+
+            assertEquals(0, definitions.size());
+        }
+    }
+
+    @Test
+    public void getOldDefinitionsExisting() throws IOException {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        final StringDefinition stringDefinition = GenconfPackage.eINSTANCE.getGenconfFactory().createStringDefinition();
+        stringDefinition.setKey("variable");
+        generation.getDefinitions().add(stringDefinition);
+
+        try (XWPFDocument document = new XWPFDocument()) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
+
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+
+            assertEquals(0, definitions.size());
+        }
+    }
+
+    @Test
+    public void getOldDefinitionsExistingInvalidType() throws IOException {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        final StringDefinition stringDefinition = GenconfPackage.eINSTANCE.getGenconfFactory().createStringDefinition();
+        stringDefinition.setKey("variable");
+        generation.getDefinitions().add(stringDefinition);
+
+        try (XWPFDocument document = new XWPFDocument()) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            properties.getVariables().put("variable", "ecore::EClass");
+
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+
+            assertEquals(1, definitions.size());
+            assertEquals(stringDefinition, definitions.get(0));
+        }
+    }
+
+    @Test
+    public void getOldDefinitionsExistingNotDeclared() throws IOException {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        final StringDefinition stringDefinition = GenconfPackage.eINSTANCE.getGenconfFactory().createStringDefinition();
+        stringDefinition.setKey("variable");
+        generation.getDefinitions().add(stringDefinition);
+
+        try (XWPFDocument document = new XWPFDocument()) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+
+            assertEquals(1, definitions.size());
+            assertEquals(stringDefinition, definitions.get(0));
+        }
+    }
+
 }

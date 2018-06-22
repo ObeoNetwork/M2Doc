@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 
 /**
@@ -45,7 +46,8 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
             while (it.hasNext()) {
                 final Object selected = it.next();
                 final Generation generation;
-                if (selected instanceof IFile && "genconf".equals(((IFile) selected).getFileExtension())) {
+                if (selected instanceof IFile
+                    && GenconfUtils.GENCONF_EXTENSION_FILE.equals(((IFile) selected).getFileExtension())) {
                     URI genconfURI = URI.createPlatformResourceURI(((IFile) selected).getFullPath().toString(), true);
                     generation = getGeneration(genconfURI);
                 } else if (selected instanceof Generation) {

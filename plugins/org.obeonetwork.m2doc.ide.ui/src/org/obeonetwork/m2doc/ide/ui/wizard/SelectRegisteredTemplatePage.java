@@ -14,17 +14,15 @@ package org.obeonetwork.m2doc.ide.ui.wizard;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -36,14 +34,31 @@ import org.obeonetwork.m2doc.services.TemplateRegistry;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ImportTemplatePage extends WizardPage {
+public class SelectRegisteredTemplatePage extends WizardPage {
+
+    /**
+     * Template {@link URI} can be setted.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    public interface TemplateURISettable {
+
+        /**
+         * Sets the template {@link URI}.
+         * 
+         * @param templateURI
+         *            the new template {@link URI}
+         */
+        void setTemplateURI(URI templateURI);
+
+    }
 
     /**
      * {@link Collection} {@link ITreeContentProvider}.
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    private static class CollectionContentProvider extends ArrayContentProvider implements ITreeContentProvider {
+    public static class CollectionContentProvider extends ArrayContentProvider implements ITreeContentProvider {
 
         @Override
         public Object[] getChildren(Object parentElement) {
@@ -63,14 +78,14 @@ public class ImportTemplatePage extends WizardPage {
     }
 
     /**
-     * The {@link Set} of selected template {@link URI}.
+     * The selected template {@link URI}.
      */
-    private final Set<URI> selectedTemplateURIs = new HashSet<>();
+    private URI selectedTemplateURI;
 
     /**
      * Constructor.
      */
-    protected ImportTemplatePage() {
+    protected SelectRegisteredTemplatePage() {
         super("Select a registered template");
         setTitle("Select templates to import in the workspace.");
     }
@@ -81,7 +96,7 @@ public class ImportTemplatePage extends WizardPage {
         setControl(container);
         container.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 
-        final CheckboxTreeViewer templatesTreeViewer = new CheckboxTreeViewer(container, SWT.BORDER);
+        final TreeViewer templatesTreeViewer = new TreeViewer(container, SWT.BORDER);
         templatesTreeViewer.setContentProvider(new CollectionContentProvider());
         templatesTreeViewer.setLabelProvider(new ColumnLabelProvider());
         final List<String> registeredTemplates = new ArrayList<>(TemplateRegistry.INSTANCE.getTemplates().keySet());
@@ -90,15 +105,13 @@ public class ImportTemplatePage extends WizardPage {
 
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
-                selectedTemplateURIs.clear();
-                for (Object templateName : templatesTreeViewer.getCheckedElements()) {
-                    selectedTemplateURIs.add(TemplateRegistry.INSTANCE.getTemplates().get(templateName));
-                }
-                setPageComplete(!selectedTemplateURIs.isEmpty());
+                setSelectedTemplateURI(
+                        TemplateRegistry.INSTANCE.getTemplates().get(event.getStructuredSelection().getFirstElement()));
+                setPageComplete(selectedTemplateURI != null);
             }
         });
         templatesTreeViewer.setInput(registeredTemplates);
-        setPageComplete(!selectedTemplateURIs.isEmpty());
+        setPageComplete(selectedTemplateURI != null);
     }
 
     /**
@@ -106,8 +119,18 @@ public class ImportTemplatePage extends WizardPage {
      * 
      * @return the selected template {@link URI}
      */
-    public Set<URI> getSelectedTemplateURIs() {
-        return selectedTemplateURIs;
+    public URI getSelectedTemplateURI() {
+        return selectedTemplateURI;
+    }
+
+    /**
+     * Sets the selected template {@link URI}.
+     * 
+     * @param selectedTemplateURI
+     *            the selected template {@link URI} to set
+     */
+    protected void setSelectedTemplateURI(URI selectedTemplateURI) {
+        this.selectedTemplateURI = selectedTemplateURI;
     }
 
 }
