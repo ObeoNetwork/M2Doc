@@ -13,11 +13,9 @@ package org.obeonetwork.m2doc.ide.ui.editor;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -74,7 +72,7 @@ public class ServiceTokenSelectionDialog extends Dialog {
     /**
      * Selected {@link List} of service tokens.
      */
-    protected final List<String> selected = new ArrayList<>();
+    protected final List<String> selected;
 
     /**
      * The {@link List} of added token names.
@@ -101,28 +99,7 @@ public class ServiceTokenSelectionDialog extends Dialog {
         this.registry = registry;
         this.properties = properties;
 
-        for (String tokenName : registry.getRegisteredTokens()) {
-            boolean isSelected = true;
-            for (Entry<String, List<String>> entry : registry.getServices(tokenName).entrySet()) {
-                final String bundleName = entry.getKey();
-                for (String className : entry.getValue()) {
-                    if (!bundleName.equals(properties.getServiceClasses().get(className))) {
-                        isSelected = false;
-                        break;
-                    }
-                }
-            }
-            final Set<String> packages = new HashSet<>(properties.getPackagesURIs());
-            for (String pkg : registry.getPackages(tokenName)) {
-                if (!packages.contains(pkg)) {
-                    isSelected = false;
-                    break;
-                }
-            }
-            if (isSelected) {
-                selected.add(tokenName);
-            }
-        }
+        selected = registry.getSelectedToken(properties);
     }
 
     /**

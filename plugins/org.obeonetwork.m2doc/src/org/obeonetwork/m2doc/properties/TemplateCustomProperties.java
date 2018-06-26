@@ -488,13 +488,37 @@ public class TemplateCustomProperties {
 
         final M2DocParser parser = new M2DocParser(document, Query.newEnvironment());
         try {
-            final List<Template> templates = new ArrayList<Template>();
+            final List<Template> templates = new ArrayList<>();
             final Block block = parser.parseBlock(templates);
             final Set<String> missing = new LinkedHashSet<>();
-            walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, block);
+            final Set<String> used = new LinkedHashSet<>();
+            walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, block);
             res.addAll(missing);
         } catch (DocumentParserException e) {
             // can't parse then nothing is missing
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link List} of unused variable names.
+     * 
+     * @return the {@link List} of unused variable names
+     */
+    public List<String> getUnusedDeclarations() {
+        final List<String> res = new ArrayList<>(getVariables().keySet());
+
+        final M2DocParser parser = new M2DocParser(document, Query.newEnvironment());
+        try {
+            final List<Template> templates = new ArrayList<>();
+            final Block block = parser.parseBlock(templates);
+            final Set<String> missing = new LinkedHashSet<>();
+            final Set<String> used = new LinkedHashSet<>();
+            walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, block);
+            res.removeAll(used);
+        } catch (DocumentParserException e) {
+            // can't parse then nothing is used
         }
 
         return res;
@@ -507,38 +531,43 @@ public class TemplateCustomProperties {
      *            the known declarations
      * @param missing
      *            the missing declarations
+     * @param used
+     *            the used declarations
      * @param eObj
      *            the current {@link EObject} to walk
      */
-    private void walkForNeededVariables(List<String> declarations, Set<String> missing, EObject eObj) {
+    private void walkForNeededVariables(List<String> declarations, Set<String> missing, Set<String> used,
+            EObject eObj) {
         if (eObj instanceof VarRef) {
-            if (!declarations.contains(((VarRef) eObj).getVariableName())) {
-                missing.add(((VarRef) eObj).getVariableName());
+            final String variableName = ((VarRef) eObj).getVariableName();
+            used.add(variableName);
+            if (!declarations.contains(variableName)) {
+                missing.add(variableName);
             }
         } else if (eObj instanceof Repetition) {
-            walkForNeededVariables(declarations, missing, ((Repetition) eObj).getQuery().getAst());
+            walkForNeededVariables(declarations, missing, used, ((Repetition) eObj).getQuery().getAst());
             declarations.add(((Repetition) eObj).getIterationVar());
-            walkForNeededVariables(declarations, missing, ((Repetition) eObj).getBody());
+            walkForNeededVariables(declarations, missing, used, ((Repetition) eObj).getBody());
             declarations.remove(((Repetition) eObj).getIterationVar());
         } else if (eObj instanceof Let) {
-            walkForNeededVariables(declarations, missing, ((Let) eObj).getValue().getAst());
+            walkForNeededVariables(declarations, missing, used, ((Let) eObj).getValue().getAst());
             declarations.add(((Let) eObj).getName());
-            walkForNeededVariables(declarations, missing, ((Let) eObj).getBody());
+            walkForNeededVariables(declarations, missing, used, ((Let) eObj).getBody());
             declarations.remove(((Let) eObj).getName());
         } else if (eObj instanceof Conditional) {
-            walkForNeededVariables(declarations, missing, ((Conditional) eObj).getCondition().getAst());
-            walkForNeededVariables(declarations, missing, ((Conditional) eObj).getThen());
+            walkForNeededVariables(declarations, missing, used, ((Conditional) eObj).getCondition().getAst());
+            walkForNeededVariables(declarations, missing, used, ((Conditional) eObj).getThen());
             if (((Conditional) eObj).getElse() != null) {
-                walkForNeededVariables(declarations, missing, ((Conditional) eObj).getElse());
+                walkForNeededVariables(declarations, missing, used, ((Conditional) eObj).getElse());
             }
         } else if (eObj instanceof Link) {
-            walkForNeededVariables(declarations, missing, ((Link) eObj).getName().getAst());
-            walkForNeededVariables(declarations, missing, ((Link) eObj).getText().getAst());
+            walkForNeededVariables(declarations, missing, used, ((Link) eObj).getName().getAst());
+            walkForNeededVariables(declarations, missing, used, ((Link) eObj).getText().getAst());
         } else if (eObj instanceof Bookmark) {
-            walkForNeededVariables(declarations, missing, ((Bookmark) eObj).getName().getAst());
-            walkForNeededVariables(declarations, missing, ((Bookmark) eObj).getBody());
+            walkForNeededVariables(declarations, missing, used, ((Bookmark) eObj).getName().getAst());
+            walkForNeededVariables(declarations, missing, used, ((Bookmark) eObj).getBody());
         } else if (eObj instanceof org.obeonetwork.m2doc.template.Query) {
-            walkForNeededVariables(declarations, missing,
+            walkForNeededVariables(declarations, missing, used,
                     ((org.obeonetwork.m2doc.template.Query) eObj).getQuery().getAst());
         } else if (eObj instanceof Lambda) {
             final List<String> lambdaDeclartations = new ArrayList<>();
@@ -546,20 +575,20 @@ public class TemplateCustomProperties {
                 lambdaDeclartations.add(parameter.getName());
             }
             declarations.addAll(lambdaDeclartations);
-            walkForNeededVariables(declarations, missing, ((Lambda) eObj).getExpression());
+            walkForNeededVariables(declarations, missing, used, ((Lambda) eObj).getExpression());
             declarations.removeAll(lambdaDeclartations);
         } else if (eObj instanceof org.eclipse.acceleo.query.ast.Let) {
             final List<String> letDeclartations = new ArrayList<>();
             for (Binding binding : ((org.eclipse.acceleo.query.ast.Let) eObj).getBindings()) {
                 letDeclartations.add(binding.getName());
-                walkForNeededVariables(declarations, missing, binding.getValue());
+                walkForNeededVariables(declarations, missing, used, binding.getValue());
             }
             declarations.addAll(letDeclartations);
-            walkForNeededVariables(declarations, missing, ((org.eclipse.acceleo.query.ast.Let) eObj).getBody());
+            walkForNeededVariables(declarations, missing, used, ((org.eclipse.acceleo.query.ast.Let) eObj).getBody());
             declarations.removeAll(letDeclartations);
         } else {
             for (EObject child : eObj.eContents()) {
-                walkForNeededVariables(declarations, missing, child);
+                walkForNeededVariables(declarations, missing, used, child);
             }
         }
     }

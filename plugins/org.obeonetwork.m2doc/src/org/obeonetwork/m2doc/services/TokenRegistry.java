@@ -13,13 +13,16 @@ package org.obeonetwork.m2doc.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EPackage;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 /**
  * {@link TokenRegistry} is used to register AQL services and {@link EPackage#getNsURI() nsURI}. When launching a
@@ -191,6 +194,42 @@ public final class TokenRegistry {
 
         res.addAll(servicesRegistry.keySet());
         res.addAll(packagesRegistry.keySet());
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link List} of selected tokens for the given {@link TemplateCustomProperties}.
+     * 
+     * @param properties
+     *            the {@link TemplateCustomProperties}
+     * @return the {@link List} of selected tokens for the given {@link TemplateCustomProperties}
+     */
+    public List<String> getSelectedToken(TemplateCustomProperties properties) {
+        final List<String> res = new ArrayList<>();
+
+        for (String tokenName : getRegisteredTokens()) {
+            boolean isSelected = true;
+            for (Entry<String, List<String>> entry : getServices(tokenName).entrySet()) {
+                final String bundleName = entry.getKey();
+                for (String className : entry.getValue()) {
+                    if (!bundleName.equals(properties.getServiceClasses().get(className))) {
+                        isSelected = false;
+                        break;
+                    }
+                }
+            }
+            final Set<String> packages = new HashSet<>(properties.getPackagesURIs());
+            for (String pkg : getPackages(tokenName)) {
+                if (!packages.contains(pkg)) {
+                    isSelected = false;
+                    break;
+                }
+            }
+            if (isSelected) {
+                res.add(tokenName);
+            }
+        }
 
         return res;
     }

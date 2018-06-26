@@ -18,7 +18,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -102,7 +101,7 @@ public class M2DocFileSelectionDialog extends MessageDialog {
         container.setLayout(new GridLayout(1, false));
         container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-        fileText = createTemplateURIComposite(container, defaultFileName);
+        fileText = createFilePathComposite(container, defaultFileName);
 
         final TreeViewer containerTreeViewer = new TreeViewer(container, SWT.BORDER);
         Tree tree = containerTreeViewer.getTree();
@@ -146,15 +145,15 @@ public class M2DocFileSelectionDialog extends MessageDialog {
     }
 
     /**
-     * Creates the template {@link URI} {@link Composite}.
+     * Creates the file path {@link Composite}.
      * 
      * @param container
      *            the pasent {@link Composite}
      * @param defaultName
      *            the fefault file name
-     * @return the template {@link URI} {@link Text}
+     * @return the file path {@link Text}
      */
-    protected Text createTemplateURIComposite(final Composite container, String defaultName) {
+    protected Text createFilePathComposite(final Composite container, String defaultName) {
         final Composite fileComposite = new Composite(container, SWT.NONE);
         fileComposite.setLayout(new GridLayout(2, false));
         fileComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));

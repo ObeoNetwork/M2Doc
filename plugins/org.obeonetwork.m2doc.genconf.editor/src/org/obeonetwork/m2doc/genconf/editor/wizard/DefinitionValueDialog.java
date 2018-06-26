@@ -118,7 +118,8 @@ public class DefinitionValueDialog extends MessageDialog {
      */
     public DefinitionValueDialog(Shell parentShell, AdapterFactory adapterFactory, Definition definition,
             IReadOnlyQueryEnvironment queryEnvironment, TemplateCustomProperties properties, ResourceSet resourceSet) {
-        super(parentShell, "Select value for " + definition.getKey(), null, "Select a value.", MessageDialog.QUESTION,
+        super(parentShell, "Select value for " + definition.getKey(), null,
+                "Select a value of type " + properties.getVariables().get(definition.getKey()), MessageDialog.QUESTION,
                 new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL}, 0);
         this.definition = definition;
         this.resourceSet = resourceSet;

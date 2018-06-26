@@ -306,4 +306,16 @@ public class TemplateCustomPropertiesTests {
         }
     }
 
+    @Test
+    public void getUnusedVariables() throws IOException, InvalidFormatException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/unusedVariables.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> unusedVariables = properties.getUnusedDeclarations();
+
+            assertEquals(1, unusedVariables.size());
+            assertEquals("unusedVariable", unusedVariables.get(0));
+        }
+    }
+
 }

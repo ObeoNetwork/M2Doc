@@ -34,7 +34,6 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
         dialog.open();
 
         return null;
-
     }
 
 }
