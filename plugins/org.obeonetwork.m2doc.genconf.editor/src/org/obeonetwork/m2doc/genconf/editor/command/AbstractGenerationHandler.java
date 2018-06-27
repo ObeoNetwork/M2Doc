@@ -39,7 +39,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        ISelection selection = HandlerUtil.getCurrentSelection(event);
+        final ISelection selection = HandlerUtil.getCurrentSelection(event);
         final Shell shell = HandlerUtil.getActiveShell(event);
         if (selection instanceof IStructuredSelection) {
             Iterator<?> it = ((IStructuredSelection) selection).iterator();
