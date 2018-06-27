@@ -135,6 +135,32 @@
                   </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="org.obeonetwork.m2doc.genconf.editor.initializeConfigurations"
+               icon="icons/m2doc_init.png"
+               label="Edit Documentation Configurations"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <or>
+                        <test
+                              forcePluginActivation="true"
+                              property="org.obeonetwork.m2doc.genconf.editor.testGeneration">
+                        </test>
+                        <test
+                              property="org.eclipse.core.resources.extension"
+                              value="genconf">
+                        </test>
+                     </or>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension

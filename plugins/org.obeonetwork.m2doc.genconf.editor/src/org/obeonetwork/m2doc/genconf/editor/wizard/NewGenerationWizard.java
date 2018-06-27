@@ -89,17 +89,39 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
     public void addPages() {
         super.addPages();
 
-        final URI genconfURI = getGenconfURI(selection);
-        if (genconfURI != null) {
-            generation.eResource().setURI(genconfURI);
+        final Generation loadedGeneration = getGeneration(selection);
+        if (loadedGeneration == null) {
+            final URI genconfURI = getGenconfURI(selection);
+            if (genconfURI != null) {
+                generation.eResource().setURI(genconfURI);
+                final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(generation);
+                editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+
+                    @Override
+                    protected void doExecute() {
+                        generation.setTemplateFileName(URI.decode(getTemplateFileName(genconfURI).toString()));
+                        generation.setValidationFileName(getValidationFileName(genconfURI));
+                        generation.setResultFileName(getResultFileName(genconfURI));
+                        GenconfUtils.initializeOptions(generation);
+
+                        initializeVariableDefinition(generation);
+                    }
+
+                });
+            }
+        } else {
+            generation.eResource().setURI(loadedGeneration.eResource().getURI());
             final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(generation);
             editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
 
                 @Override
                 protected void doExecute() {
-                    generation.setTemplateFileName(URI.decode(getTemplateFileName(genconfURI).toString()));
-                    generation.setValidationFileName(getValidationFileName(genconfURI));
-                    generation.setResultFileName(getResultFileName(genconfURI));
+                    generation.setName(loadedGeneration.getName());
+                    generation.setTemplateFileName(loadedGeneration.getTemplateFileName());
+                    generation.setValidationFileName(loadedGeneration.getValidationFileName());
+                    generation.setResultFileName(loadedGeneration.getResultFileName());
+                    generation.getDefinitions().addAll(loadedGeneration.getDefinitions());
+                    generation.getOptions().addAll(loadedGeneration.getOptions());
                     GenconfUtils.initializeOptions(generation);
 
                     initializeVariableDefinition(generation);
@@ -115,6 +137,29 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
         addPage(fileNamesPage);
         optionPage = new VariableAndOptionPage(generation, generationListener, fileNamesPage);
         addPage(optionPage);
+    }
+
+    /**
+     * Gets the {@link Generation} from the given {@link IStructuredSelection}.
+     * 
+     * @param selected
+     *            the {@link IStructuredSelection}
+     * @return the {@link Generation} from the given {@link IStructuredSelection} if any, <code>null</code> otherwise
+     */
+    private Generation getGeneration(IStructuredSelection selected) {
+        final Generation res;
+
+        final ResourceSet rs = new ResourceSetImpl();
+        final URI genconfURI = URI
+                .createPlatformResourceURI(((IFile) selection.getFirstElement()).getFullPath().toString(), true);
+        final Resource resource = rs.getResource(genconfURI, true);
+        if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Generation) {
+            res = (Generation) resource.getContents().get(0);
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     /**
