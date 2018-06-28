@@ -11,9 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.command;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -22,9 +19,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
-import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
  * Initialize configurations for documention generation.
@@ -45,22 +40,13 @@ public class ValidateHandler extends AbstractGenerationHandler {
                 MessageDialog.openInformation(shell, "M2Doc validation",
                         "Error(s) detected during validation. A log file has been generated next to the template file.");
             }
-        } catch (FileNotFoundException e) {
+            // CHECKSTYLE:OFF
+        } catch (Exception e) {
+            // CHECKSTYLE:ON
             M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
                     M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
-            MessageDialog.openError(shell, "File not found, see the error log for details", e.getMessage());
-        } catch (IOException e) {
-            M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
-                    M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
-            MessageDialog.openError(shell, "I/O problem, see the error log for details", e.getMessage());
-        } catch (DocumentParserException e) {
-            M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
-                    M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
-            MessageDialog.openError(shell, "Template parsing problem, see the error log for details", e.getMessage());
-        } catch (DocumentGenerationException e) {
-            M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
-                    M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
-            MessageDialog.openError(shell, "Generation problem, see the error log for details", e.getMessage());
+            MessageDialog.openError(shell, "Can't save validation file.",
+                    "Can't save validation file, see the error log for details and check if the file is not opened elsewhere.");
         }
     }
 
