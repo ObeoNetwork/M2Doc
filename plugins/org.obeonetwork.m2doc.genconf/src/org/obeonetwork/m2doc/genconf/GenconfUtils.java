@@ -543,7 +543,7 @@ public final class GenconfUtils {
         }
 
         // get the validation path
-        final String validationFilePath = generation.getTemplateFileName();
+        final String validationFilePath = generation.getValidationFileName();
         final URI validationURI;
         if (validationFilePath == null || validationFilePath.isEmpty()) {
             validationURI = null;
