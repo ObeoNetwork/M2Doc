@@ -318,4 +318,27 @@ public class TemplateCustomPropertiesTests {
         }
     }
 
+    @Test
+    public void getM2DocVersion() throws IOException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template-m2docVersion.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            assertEquals("2.0.0", properties.getM2DocVersion());
+        }
+    }
+
+    @Test
+    public void setM2DocVersion() throws IOException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template-m2docVersion.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            assertEquals("2.0.0", properties.getM2DocVersion());
+
+            properties.setM2DocVersion("3.0.0");
+
+            assertEquals("3.0.0", properties.getM2DocVersion());
+        }
+    }
 }

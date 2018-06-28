@@ -97,6 +97,11 @@ public class TemplateCustomProperties {
     public static final String BOOLEAN_TYPE = "Boolean";
 
     /**
+     * M2Doc version custom properties.
+     */
+    public static final String M2DOC_VERSION_PROPERTY = "m:M2DocVersion";
+
+    /**
      * Prefix of the variable declaration custom properties.
      */
     public static final String VAR_PROPERTY_PREFIX = "m:var:";
@@ -125,6 +130,11 @@ public class TemplateCustomProperties {
      * Prefix of the service import custom properties length.
      */
     public static final int SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH = SERVICE_IMPORT_PROPERTY_PREFIX.length();
+
+    /**
+     * The M2Doc version.
+     */
+    private String m2DocVersion;
 
     /**
      * A map that associates variables declared in the template with their intended type.
@@ -172,6 +182,11 @@ public class TemplateCustomProperties {
                 continue;
             }
             propertyName = propertyName.trim();
+
+            if (M2DOC_VERSION_PROPERTY.equals(propertyName)) {
+                m2DocVersion = property.getLpwstr();
+            }
+
             final String nsURI = getNsURI(propertyName);
             if (nsURI != null) {
                 nsURIs.add(nsURI);
@@ -205,8 +220,15 @@ public class TemplateCustomProperties {
         List<String> tmpNsURI = new ArrayList<>(nsURIs);
         Map<String, String> tmpServiceImports = new LinkedHashMap<>(serviceClasses);
         Map<String, String> tmpVars = new LinkedHashMap<>(variables);
+        boolean versionAdded = false;
         for (CTProperty property : properties) {
             final String propertyName = property.getName();
+
+            if (M2DOC_VERSION_PROPERTY.equals(propertyName)) {
+                property.setLpwstr(m2DocVersion);
+                versionAdded = true;
+            }
+
             final String nsURI = getNsURI(propertyName);
             if (nsURI != null) {
                 if (!tmpNsURI.remove(nsURI)) {
@@ -238,6 +260,10 @@ public class TemplateCustomProperties {
                 }
             }
             currentIndex++;
+        }
+
+        if (!versionAdded) {
+            props.addProperty(M2DOC_VERSION_PROPERTY, m2DocVersion);
         }
 
         for (int i = indexToDelete.size() - 1; i > -1; i--) {
@@ -591,6 +617,25 @@ public class TemplateCustomProperties {
                 walkForNeededVariables(declarations, missing, used, child);
             }
         }
+    }
+
+    /**
+     * Sets the M2Doc version.
+     * 
+     * @param m2DocVersion
+     *            the M2Doc version to set
+     */
+    public void setM2DocVersion(String m2DocVersion) {
+        this.m2DocVersion = m2DocVersion;
+    }
+
+    /**
+     * Gets the M2Doc version.
+     * 
+     * @return the M2Doc version
+     */
+    public String getM2DocVersion() {
+        return m2DocVersion;
     }
 
 }

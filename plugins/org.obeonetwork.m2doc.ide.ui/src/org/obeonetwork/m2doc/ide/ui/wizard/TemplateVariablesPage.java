@@ -34,14 +34,19 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Variable page.
@@ -160,6 +165,57 @@ public class TemplateVariablesPage extends WizardPage {
             }
         });
         editButton.setEnabled(false);
+
+        createM2DocVersion(container, properties);
+        new Label(container, SWT.NONE);
+    }
+
+    /**
+     * Creates the M2Doc version {@link Composite}.
+     * 
+     * @param container
+     *            the container {@link Composite}
+     * @param customProperties
+     *            the {@link TemplateCustomProperties}
+     * @return the created {@link Composite}
+     */
+    private Composite createM2DocVersion(Composite container, TemplateCustomProperties customProperties) {
+        final Composite res = new Composite(container, SWT.NULL);
+        res.setLayout(new GridLayout(3, false));
+        res.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+
+        final Label versionLabel = new Label(res, SWT.NONE);
+        versionLabel.setText("M2Doc version: ");
+
+        final Text versionText = new Text(res, SWT.NONE);
+        versionText.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                properties.setM2DocVersion(versionText.getText());
+            }
+        });
+        if (properties.getM2DocVersion() != null) {
+            versionText.setText(properties.getM2DocVersion());
+        } else {
+            versionText.setText(M2DocUtils.VERSION);
+        }
+        final Button versionButton = new Button(res, SWT.NONE);
+        versionButton.setText("Current version");
+        versionButton.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                versionText.setText(M2DocUtils.VERSION);
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // nothing to do here
+            }
+        });
+
+        return res;
     }
 
     /**

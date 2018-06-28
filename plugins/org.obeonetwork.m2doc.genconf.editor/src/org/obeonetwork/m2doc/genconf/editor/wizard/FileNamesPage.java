@@ -116,7 +116,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         genConfURIText = createGenconfURIComposite(generation, container);
 
         final Group relativeToGenconfGroup = new Group(container, SWT.BORDER);
-        relativeToGenconfGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+        relativeToGenconfGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         relativeToGenconfGroup.setLayout(new GridLayout(1, false));
         relativeToGenconfGroup.setText("Relative to generation file");
 

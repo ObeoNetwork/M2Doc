@@ -11,6 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -153,6 +156,16 @@ public class M2DocUtilsTests {
                 new HashMap<String, String>());
 
         assertEquals(TestServiceConfigurator.RESOURCE_SET, rs);
+    }
+
+    @Test
+    public void versionTest() throws IOException {
+        final String manifest = new String(Files.readAllBytes(Paths.get("META-INF/MANIFEST.MF")));
+
+        final String version = manifest.substring(manifest.indexOf("Bundle-Version: ") + 16,
+                manifest.indexOf(".qualifier"));
+
+        assertEquals(version, M2DocUtils.VERSION);
     }
 
 }

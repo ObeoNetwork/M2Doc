@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a static text :Some text.End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

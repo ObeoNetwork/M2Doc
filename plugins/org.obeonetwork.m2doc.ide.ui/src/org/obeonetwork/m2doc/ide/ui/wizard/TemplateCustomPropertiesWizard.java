@@ -53,6 +53,12 @@ public class TemplateCustomPropertiesWizard extends Wizard {
      * The selected {@link XWPFDocument}.
      */
     XWPFDocument document;
+
+    /**
+     * The template {@link URI}.
+     */
+    private URI templateURI;
+
     /**
      * The {@link TemplateCustomProperties} to edit.
      */
@@ -62,7 +68,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
     public void addPages() {
         final IFile templateFile = (IFile) ((IStructuredSelection) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                 .getSelectionService().getSelection()).getFirstElement();
-        final URI templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
+        templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
         try {
             document = POIServices.getInstance().getXWPFDocument(templateURI);
             properties = new TemplateCustomProperties(document);
@@ -87,6 +93,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
     public boolean performFinish() {
         properties.save();
         try {
+            POIServices.getInstance().saveFile(document, templateURI);
             document.close();
         } catch (IOException e) {
             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));

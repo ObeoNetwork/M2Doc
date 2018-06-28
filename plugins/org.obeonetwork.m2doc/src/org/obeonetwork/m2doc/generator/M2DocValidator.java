@@ -54,6 +54,7 @@ import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Validates {@link DocumentTemplate}.
@@ -97,6 +98,15 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
                 documentTemplate.getDocument());
+        final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
+        if (templateProperties.getM2DocVersion() == null) {
+            documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(
+                    ValidationMessageLevel.WARNING, "No M2Doc version set in the template.", run));
+        } else if (!M2DocUtils.VERSION.equals(templateProperties.getM2DocVersion())) {
+            documentTemplate.getBody().getValidationMessages().add(
+                    new TemplateValidationMessage(ValidationMessageLevel.WARNING, "M2Doc version mismatch: template is "
+                        + templateProperties.getM2DocVersion() + " and runtime is " + M2DocUtils.VERSION, run));
+        }
         for (Template template : documentTemplate.getTemplates()) {
             ((IQueryEnvironment) queryEnvironment)
                     .registerService(new M2DocTemplateService(template, queryEnvironment));
