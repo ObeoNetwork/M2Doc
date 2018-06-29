@@ -101,6 +101,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
      */
     protected FileNamesPage(Generation generation, GenerationListener generationListener) {
         super("Select files");
+        setTitle("Select files");
         this.generation = generation;
         this.generationListener = generationListener;
     }
@@ -116,7 +117,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         genConfURIText = createGenconfURIComposite(generation, container);
 
         final Group relativeToGenconfGroup = new Group(container, SWT.BORDER);
-        relativeToGenconfGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+        relativeToGenconfGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         relativeToGenconfGroup.setLayout(new GridLayout(1, false));
         relativeToGenconfGroup.setText("Relative to generation file");
 
@@ -200,7 +201,6 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
                 // nothing to do here
             }
         });
-
     }
 
     /**
@@ -269,7 +269,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
     private Text createTemplateURIComposite(final Generation gen, Composite composite) {
         final Composite uriComposite = new Composite(composite, SWT.NONE);
         uriComposite.setLayout(new GridLayout(4, false));
-        uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
         final Label uriLabel = new Label(uriComposite, SWT.None);
         uriLabel.setText("Template File:");
@@ -409,7 +409,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
             Listener buttonListener) {
         final Composite uriComposite = new Composite(composite, SWT.NONE);
         uriComposite.setLayout(new GridLayout(3, false));
-        uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         final Label uriLabel = new Label(uriComposite, SWT.None);
         uriLabel.setText(label);
         final Text uriText = new Text(uriComposite, SWT.NONE);

@@ -152,9 +152,13 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
         final ResourceSet rs = new ResourceSetImpl();
         final URI genconfURI = URI
                 .createPlatformResourceURI(((IFile) selection.getFirstElement()).getFullPath().toString(), true);
-        final Resource resource = rs.getResource(genconfURI, true);
-        if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Generation) {
-            res = (Generation) resource.getContents().get(0);
+        if (GenconfUtils.GENCONF_EXTENSION_FILE.equals(genconfURI.fileExtension())) {
+            final Resource resource = rs.getResource(genconfURI, true);
+            if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Generation) {
+                res = (Generation) resource.getContents().get(0);
+            } else {
+                res = null;
+            }
         } else {
             res = null;
         }

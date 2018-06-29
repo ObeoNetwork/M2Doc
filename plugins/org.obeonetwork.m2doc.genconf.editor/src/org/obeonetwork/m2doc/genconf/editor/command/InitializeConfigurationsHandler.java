@@ -30,6 +30,16 @@ import org.obeonetwork.m2doc.genconf.editor.wizard.NewGenerationWizard;
  */
 public class InitializeConfigurationsHandler extends AbstractHandler {
 
+    /**
+     * The height.
+     */
+    private static final int HEIGHT = 400;
+
+    /**
+     * The width.
+     */
+    private static final int WIDTH = 900;
+
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         final Shell shell = HandlerUtil.getActiveShell(event);
@@ -44,7 +54,14 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
             workbench = null;
         }
         newWizard.init(workbench, (IStructuredSelection) selection);
-        WizardDialog dialog = new WizardDialog(shell, newWizard);
+        WizardDialog dialog = new WizardDialog(shell, newWizard) {
+            @Override
+            public void create() {
+                super.create();
+                getShell().setText("Generation configuration");
+                getShell().setMinimumSize(WIDTH, HEIGHT);
+            }
+        };
         dialog.open();
 
         return null;

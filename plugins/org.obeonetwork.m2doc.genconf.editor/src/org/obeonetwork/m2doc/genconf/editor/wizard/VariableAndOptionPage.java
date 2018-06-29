@@ -203,7 +203,8 @@ public class VariableAndOptionPage extends WizardPage {
      */
     public VariableAndOptionPage(Generation generation, GenerationListener generationListener,
             ITemplateCustomPropertiesProvider provider) {
-        super("Set Options");
+        super("Set Variables and Options");
+        setTitle("Set Variables and Options");
         this.generation = generation;
         this.generationListener = generationListener;
         this.templateCustomPropertiesProvider = provider;
