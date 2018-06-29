@@ -79,7 +79,7 @@ public class TemplateVariablesPage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        setMessage("Select varaible types");
+        setMessage("Select variable types");
 
         final Composite container = new Composite(parent, SWT.NULL);
         setControl(container);
@@ -187,7 +187,8 @@ public class TemplateVariablesPage extends WizardPage {
         final Label versionLabel = new Label(res, SWT.NONE);
         versionLabel.setText("M2Doc version: ");
 
-        final Text versionText = new Text(res, SWT.NONE);
+        final Text versionText = new Text(res, SWT.NONE | SWT.SINGLE);
+        versionText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         versionText.addModifyListener(new ModifyListener() {
 
             @Override
@@ -195,6 +196,7 @@ public class TemplateVariablesPage extends WizardPage {
                 properties.setM2DocVersion(versionText.getText());
             }
         });
+
         if (properties.getM2DocVersion() != null) {
             versionText.setText(properties.getM2DocVersion());
         } else {

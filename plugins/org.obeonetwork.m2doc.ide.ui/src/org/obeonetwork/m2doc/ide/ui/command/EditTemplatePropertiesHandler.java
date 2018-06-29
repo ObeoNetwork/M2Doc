@@ -19,7 +19,15 @@ public class EditTemplatePropertiesHandler extends AbstractHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         final Shell shell = HandlerUtil.getActiveShell(event);
 
-        WizardDialog dialog = new WizardDialog(shell, new TemplateCustomPropertiesWizard());
+        WizardDialog dialog = new WizardDialog(shell, new TemplateCustomPropertiesWizard()) {
+
+            @Override
+            public void create() {
+                super.create();
+                getShell().setText("Template properties");
+            }
+
+        };
         dialog.open();
 
         return null;

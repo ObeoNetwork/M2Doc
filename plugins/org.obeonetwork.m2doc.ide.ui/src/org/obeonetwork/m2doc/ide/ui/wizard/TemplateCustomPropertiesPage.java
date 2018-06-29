@@ -131,7 +131,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
     private void addServicesTabItem(TabFolder tabFolder, final CheckboxTableViewer tokenViewer,
             final TemplateCustomProperties customProperties) {
         final TabItem servicesTabItem = new TabItem(tabFolder, SWT.NULL);
-        servicesTabItem.setText("nsURI (expert)");
+        servicesTabItem.setText("Services (expert)");
         final Composite servicesContainer = new Composite(tabFolder, SWT.NULL);
         servicesTabItem.setControl(servicesContainer);
         servicesContainer.setLayout(new GridLayout(2, false));
