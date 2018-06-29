@@ -30,13 +30,13 @@ The generation looks like this:
 ![DB Result]({{page.relativePath}}/ref-doc/nightly/images/DBResult.png)
 
 The template language makes an extensive use of the [Acceleo Query Language](https://www.eclipse.org/acceleo/documentation/aql.html) which provides a full-fledged, extensible model query language and engine. 
-The M2Doc templates can be validated. If errors are found, an annotated templates is produced describing the problems found.
+The M2Doc templates can be [validated](index.html#validating-a-generation-setup). If errors are found, an annotated templates is produced describing the problems found.
 
 ### Principles
 
 * Definition of model entry points
-  * Declaration of variables (see the [template editor](index.html#template-editor) section)
-  * Mapping with model elements (see the [generation configuration editor](index.html#generation-configuration-editor) section)
+  * Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) section)
+  * Mapping with model elements (see the [Generation configuration wizard](index.html#generation-configuration-wizard) or the [Generation configuration editor](index.html#generation-configuration-editor) section)
 
 ![Variable definition]({{page.relativePath}}/ref-doc/nightly/images/Variable%20definition.png "Variable definition.")
 
@@ -54,8 +54,8 @@ The M2Doc templates can be validated. If errors are found, an annotated template
 ### Main steps
 
 * Definition of content, navigation, and format (see the [Template authoring](index.html#template-authoring) section)
-* Declaration of variables (see the [template editor](index.html#template-editor) section)
-* Mapping of variables with model elements, definition of input model and output file (see the [generation configuration editor](index.html#generation-configuration-editor) section)
+* Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) section)
+* Mapping of variables with model elements, definition of input model and output file (see the [Generation configuration wizard](index.html#generation-configuration-wizard) or the [Generation configuration editor](index.html#generation-configuration-editor) section)
 * Generation of output document (see the [Generate a document](index.html#generating-a-document) section)
 
 ![Main steps]({{page.relativePath}}/ref-doc/nightly/images/Main%20steps.png "Main steps.")
@@ -93,7 +93,7 @@ The main workflow:
 
 ![M2Doc Workflow]({{page.relativePath}}/ref-doc/nightly/images/M2DocWorkflow.png)
 
-The template is parsed in an internal representation (the AST). From here you can bind the variables to their values, using elements from a model for instance and evaluate the template to generate the output document. An added benefit of using M2Doc is the hability to validate a template to produce an annotated template containing informations, warnings and errors the template might contain.
+The template is parsed in an internal representation (the AST). From here you can bind the variables to their values, using elements from a model for instance and evaluate the template to generate the output document. An added benefit of using M2Doc is the hability to [validate](index.html#validating-a-generation-setup) a template to produce an annotated template containing informations, warnings and errors the template might contain.
 
 The architecture of M2Doc is organized around three building blocks:
 * [Apache POI](https://poi.apache.org/) for the parsing and generation of [OOXML](https://en.wikipedia.org/wiki/Office_Open_XML) documents
@@ -123,7 +123,7 @@ Right click on the template file and select the &#171;Initialize Documentation C
 
 ![The Initialize Documentation Configuration menu.]({{page.relativePath}}/ref-doc/nightly/images/Initialize%20Documentation%20Configuration%20menu.png "The Initialize Documentation Configuration menu.")
 
-To edit the created generation model file you can use the [generation configuration editor](index.html#generation-configuration-editor).
+To edit the created generation model file you can use the [Generation configuration wizard](index.html#generation-configuration-wizard) or the [Generation configuration editor](index.html#generation-configuration-editor).
 
 ### Validating a generation setup
 
@@ -133,9 +133,35 @@ To validate a generation setup (template plus generation configuration) you can 
 
 If you don&#8217;t have the the generation configuration model file you can create it using the [initialize generation](index.html#initializing-a-generation-configuration) section. If the validation succeeds with no informations, warnings, or errors you will be prompted. If something went wrong a .docx file with the name of the template and suffixed with &#171;info&#187;, &#171;warning&#187;, or &#171;error&#187; will be created. This new file contains details of the validation issues. The template is *not* modified.
 
+### Generation configuration wizard
+
+You can access the generation configuration wizard in two different ways, one for creating it and one for further edition when the .genconf file already exists.
+
+To create and initialize the generation configuration, select the template .docx file to use for generation and right click on it:
+
+![The Initialize Documentation Configuration menu.]({{page.relativePath}}/ref-doc/nightly/images/Initialize%20Documentation%20Configuration%20menu.png "The Initialize Documentation Configuration menu.")
+
+To edit an existing generation configuration .genconf file you can select the .genconf file and right click on it:
+
+![The Edit Documentation Configuration menu.]({{page.relativePath}}/ref-doc/nightly/images/Edit%20Documentation%20Configuration%20menu.png "The Edit Documentation Configuration menu.")
+
+At this point you should be on the first page of the generation configuration wizard:
+
+![The Generation Configuration Wizard.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20Configuration%20Wizard1.png "The Generation Configuration Wizard.")
+
+On this page you can select the path of the generation configuration .genconf file. It can be changed to create a copy of an existing file for instance. Other file paths are relative to the generation configuration file. This allow to move a folder containing all the files needed for a generation without breaking the generation configuration. The template can be selected from the workspace or the [Template registry](index.html#template-registry). In the later case the path will be absolute to reference the template in the deployed plug-ins.
+
+The next page of the wizard is dedicated to variables and binding values to them:
+
+![The Generation Configuration Wizard.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20Configuration%20Wizard2.png "The Generation Configuration Wizard.")
+
+To reference new values you can load new resources using the `Load resource` button. Note the `Options (expert)` tab that allow to set advanced options to find values from a Sirius session for instance.
+
+When the `Finish` button is pushed the generation configuration file is created or edited.
+
 ### Generation configuration editor
 
-The generation configuration model (.genconf file) references the template [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) and the result [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier). It also binds the variables defined using the [template editor](index.html#template-editor) to the desired value. It can also contain a set of options to configure [specific services](index.html#custom-constructor).
+The generation configuration model (.genconf file) references the template [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) and the result [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier). It also binds the variables defined using the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) to the desired value. It can also contain a set of options to configure [specific services](index.html#custom-constructor).
 
 ![The generation configuration editor.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20configuration%20editor.png "The generation configuration editor.")
 
@@ -145,7 +171,7 @@ The first table of the editor is used to bind variables. The first column is the
 
 ![The variable menu.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20configuration%20editor%20-%20variables%20menu.png "The variable menu.")
 
-* `Add variables` will add all variables defined in the referenced template. To define variables you can use the [template editor](index.html#template-editor)
+* `Add variables` will add all variables defined in the referenced template. To define variables you can use the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor)
 * `Remove definition` will remove the selected bindings
 
 Another menu can be useful to set EMF model values. It&#8217;s the &#171;Load Resource...&#187; menu. It adds the EMF elements of the selected resources to possible values of a variable.
@@ -274,7 +300,25 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 * [Link services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_linkservices.html)
 * [Pagination services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_paginationservices.html)
 * [Sirius services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docsiriusservices.html) (Note: M2Doc versions 1.1.0 and above are compatible with [Obeo Designer Team Edition](https://www.obeodesigner.com/en/collaborative-features).)
-  * you will have to add the following packages nsURI (see [Template editor](index.html#template-editor)): http://www.eclipse.org/sirius/1.1.0, http://www.eclipse.org/sirius/diagram/1.1.0, and/or http://www.eclipse.org/sirius/diagram/sequence/2.0.0.
+  * you will have to add the following packages nsURI (see [Template properties wizard](index.html#template-properties-wizard) or [Template editor](index.html#template-editor) section): http://www.eclipse.org/sirius/1.1.0, http://www.eclipse.org/sirius/diagram/1.1.0, and/or http://www.eclipse.org/sirius/diagram/sequence/2.0.0.
+
+### Template properties wizard
+
+To open the template properties wizard, you can select a template .docx file and right click on it:
+
+![The Edit Template properties menu.]({{page.relativePath}}/ref-doc/nightly/images/Edit%20Template%20Properties%20menu.png "The Edit Template properties menu.")
+
+The first page of the wizard let you select template metamodels and services packages.
+
+![The Edit Template properties wizard.]({{page.relativePath}}/ref-doc/nightly/images/Template%20Properties%20Wizard1.png "The Edit Template properties wizard.")
+
+Note you can also use the `nsURI (expert)` and `Services (expert)` to select metamodels and services manually.
+
+The second page is dedicated to variable declarations. The list of declarations is initialized from the variable used in the template.
+
+![The Edit Template properties wizard.]({{page.relativePath}}/ref-doc/nightly/images/Template%20Properties%20Wizard2.png "The Edit Template properties wizard.")
+
+The M2Doc version to use with this template can be changed on this page. Not having this property set will trigger a warning while [validating](index.html#validating-a-generation-setup) with M2Doc 2.0.0 or above.
 
 ### Template editor
 
@@ -292,7 +336,7 @@ You should then see the following editor:
 
 ![The template editor.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor.png "The template editor.")
 
-The first table at the top lists variables needed by the template. Each variable has a declared [type](https://www.eclipse.org/acceleo/documentation/aql.html#Typeliterals). This type is used to validate the template and to select a value in the [generation configuration editor](index.html#generation-configuration-editor). Three menus are accessible using right click on the variable table.
+The first table at the top lists variables needed by the template. Each variable has a declared [type](https://www.eclipse.org/acceleo/documentation/aql.html#Typeliterals). This type is used to [validate](index.html#validating-a-generation-setup) the template and to select a value in the [Generation configuration wizard](index.html#generation-configuration-wizard) and the [Generation configuration editor](index.html#generation-configuration-editor). Three menus are accessible using right click on the variable table.
 
 ![The variables menu.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor%20-%20variables%20menu.png "The variables menu.")
 
@@ -327,7 +371,21 @@ If your class doesn't appear in the dialog you might want to check the Window>Pr
 
 ### Template custom properties
 
-You can use the [template editor](index.html#template-editor) or edit them using your Microsoft Word document editor (see [this page](https://support.office.com/en-us/article/View-or-change-the-properties-for-an-Office-file-21d604c2-481e-4379-8e54-1dd4622c6b75?CorrelationId=866914c3-b0b5-42e8-aeb2-e9f7bcc216e2&ui=en-US&rs=en-US&ad=US&ocmsassetID=HA010047524)). This section will describe possible properties name and value used by M2Doc.
+You can use the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor). But you can also edit them using your Microsoft Word document editor (see [this page](https://support.office.com/en-us/article/View-or-change-the-properties-for-an-Office-file-21d604c2-481e-4379-8e54-1dd4622c6b75?CorrelationId=866914c3-b0b5-42e8-aeb2-e9f7bcc216e2&ui=en-US&rs=en-US&ad=US&ocmsassetID=HA010047524)). This section will describe possible properties name and value used by M2Doc.
+
+#### M2Doc version custom properties
+
+To define the version of M2Doc to use with this template you can set a custom property as follow
+
+* Name: `m:M2DocVersion`
+* Value: **M2Doc version**
+
+For example:
+
+* Name: `m:M2DocVersion`
+* Value: `2.0.0`
+
+Not having this property set will trigger a warning while [validating](index.html#validating-a-generation-setup) with M2Doc 2.0.0 or above.
 
 #### Variable custom properties
 
@@ -367,7 +425,7 @@ For example:
 
 ## Providing new services
 
-You can extends M2Doc by adding services to your templates using the [template editor](index.html#template-editor). A service is a simple Java method with at least one parameter and a return value.
+You can extends M2Doc by adding services to your templates using the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor). A service is a simple Java method with at least one parameter and a return value.
 
 ### Service class
 
@@ -375,7 +433,7 @@ There are two cases for the class containing the service: either it has a [defau
 
 #### Default constructor
 
-When the class has no explicit constructor or the constructor doesn&#8217;t have any parameters. In this case you don&#8217;t need any specific development except for your service method. You can have a look at [specific return types](index.html#special-return-types) if you want to insert images, table, etc... To use your services in your template simply add them through the [template editor](index.html#template-editor).
+When the class has no explicit constructor or the constructor doesn&#8217;t have any parameters. In this case you don&#8217;t need any specific development except for your service method. You can have a look at [specific return types](index.html#special-return-types) if you want to insert images, table, etc... To use your services in your template simply add them through the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor).
 
 #### Custom constructor
 
@@ -400,7 +458,7 @@ Default implementations are also provided by M2Doc in [this package](https://git
 
 ### Services and packages token
 
-The services and packages token extension point org.obeonetwork.m2doc.ide.services.register can be used to reference a set of [service classes](index.html#default-constructor) and packages using a token name. This token can be selected using &#171;Select tokens&#187; menu in the [template editor](index.html#template-editor). You can find an example of this extension point [here](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.ide.tests/plugin.xml).
+The services and packages token extension point org.obeonetwork.m2doc.ide.services.register can be used to reference a set of [service classes](index.html#default-constructor) and packages using a token name. This token can be selected using &#171;Select tokens&#187; menu in the [template editor](index.html#template-editor) or the [Template properties wizard](index.html#template-properties-wizard). You can find an example of this extension point [here](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.ide.tests/plugin.xml).
 
 ### Template registry
 
