@@ -1,12 +1,12 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Context-Type: org.eclipse.rcptt.ctx.workspace
-Element-Name: Sirius project
+Element-Name: Initialize Generation Wizard
 Element-Type: context
 Element-Version: 2.0
-Id: _cOyesHgzEeeKcP-oL2U8_A
-Runtime-Version: 2.1.0.201606221726
-Save-Time: 8/3/17 12:06 PM
+Id: _msgLkH3uEeii_sZyBcvLmQ
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/2/18 1:54 PM
 
 ------=_contents/test/.project-692291b7-4dfa-3e9e-9272-95fc5cc5f39a
 Content-Type: q7/binary
@@ -50,13 +50,13 @@ Content-Type: q7/binary
 Entry-Name: .q7.content
 
 UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAAClkl1LwzAUhu/3K0Lu
-l+iuRmk3/AKHnyiidyMkZzHaJiE5s52/3nS2dQhDZHenPc95Dqdv83lTleQDQjTOFvSYHVECVjplrC7o
-GlfjKZ3PRrkLmoEsjY/AgvSITGLDahfeoxcSsue+OnMWoUHSVCYbtJNWmxbZmKX3BX1F9BnndV0zV2mW
-5PzlZtEjf+waxnumHd9yPHF84Cixokr0owlmHYkP7g0kUmJUQZfybgPxUn9eAFzJ+7G7njxNlyd0NiIk
-l+0JFts6PXVzsbMhRKTfrdRcmRL6joiLSmg43TyADxCTQWC6/hyiDMa35W3ixgiVLwUCU042lB+gYrpN
-yq72SFh/8UE7hAlqn8FuVCxTVC7ALuJKlYLvIPXjGz7bL89WwFwijbY7It6ZuiB4n8Q2JD6klPP//pyz
-0RdQSwcIcK9lRzsBAAD3AgAAUEsBAhQAFAAICAgAAAAhAHCvZUc7AQAA9wIAAAgACQAAAAAAAAAAAAAA
-AAAAAC5jb250ZW50VVQFAAEAAAAAUEsFBgAAAAABAAEAPwAAAHoBAAAAAA==
+l/hxI6XdYCo6mILeTLwZIT2rcc0Hydna7deb1rYOYYjs7rTnyXOSvEmntS7JDnxQ1mT0kl1QAkbaXJki
+o1tcj2/odDJKrS8YyFK5AMxLh8gk1qyyfhOckJAs++rWGoQaSa1VMmivGm0cZEIS/2f0A9ElnFdVxawu
+WJTzt6d5j/wxa1jeM83yluOR4wNHiRE60nOjUIlSHYA8gAEvMO6JLNVB+JwSlWd0pUOx2Dxeb+9BqVV4
+38/kbqFf6GRESCqbAxls6vjlvP0EiaFzIwSk363YXKsS+o4Icy0KmO1fwXkI0dDOvYMgvXJN+Ry5MYJ2
+pUBguZU15WeoWNHkZtYnJKzb+XkzhIp3dsJg9nkoY3DWwzFiyzw+gw7Kf3zDtf3ytAJmI6kKcyTinakL
+gvdJtCHxIaWU//epTkZfUEsHCJqrT+5IAQAABQMAAFBLAQIUABQACAgIAAAAIQCaq0/uSAEAAAUDAAAI
+AAkAAAAAAAAAAAAAAAAAAAAuY29udGVudFVUBQABAAAAAFBLBQYAAAAAAQABAD8AAACHAQAAAAA=
 ------=_.q7.content-3d2e0690-ce48-3609-83e0-c704d49f1eaf--
 ------=_contents/test/anydsl.ecore-8c791932-71be-3671-a164-6b5f0baa5f24
 Content-Type: q7/binary

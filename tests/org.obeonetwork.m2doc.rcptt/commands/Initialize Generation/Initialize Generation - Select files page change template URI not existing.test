@@ -1,0 +1,43 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_msgLkH3uEeii_sZyBcvLmQ
+Element-Name: Initialize Generation - Select files page change template URI not existing
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _uScpQH3uEeii_sZyBcvLmQ
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/2/18 3:42 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName-template.docx" | get-menu 
+    -path "Initialize Documentation Configurations" | click
+with [get-window "Generation configuration"] {
+    with [get-group "Relative to generation file"] {
+        get-editbox -after [get-label "Template File:"] | get-property text 
+            | equals "asImageByRepresentationDescriptionName-template.docx" | verify-true
+    }
+}
+with [get-window "Generation configuration"] {
+    get-group "Relative to generation file" | get-button "Browse workspace" | click
+    with [get-window "Select generation file."] {
+        get-editbox -after [get-label "File:"] 
+            | type-text "NotExisting"
+        get-button OK | click
+    }
+}
+with [get-window "Generation configuration"] {
+    get-editbox -after [get-label "Select files"] | get-property text 
+        | equals "Template platform:/resource/NotExisting/test/asImageByRepresentationDescriptionName-template.docx doesn't exist." 
+        | verify-true
+    get-group "Relative to generation file" | get-editbox -after [get-label "Template File:"] | get-property text 
+        | equals "/resource/NotExisting/test/asImageByRepresentationDescriptionName-template.docx" | verify-true
+    get-button "Next >" | get-property enablement | equals false | verify-true
+    get-button Finish | get-property enablement | equals false | verify-true
+}
+get-window "Generation configuration" | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -8,6 +8,7 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
@@ -151,7 +152,7 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
 
         final ResourceSet rs = new ResourceSetImpl();
         final URI genconfURI = URI
-                .createPlatformResourceURI(((IFile) selection.getFirstElement()).getFullPath().toString(), true);
+                .createPlatformResourceURI(((IResource) selection.getFirstElement()).getFullPath().toString(), true);
         if (GenconfUtils.GENCONF_EXTENSION_FILE.equals(genconfURI.fileExtension())) {
             final Resource resource = rs.getResource(genconfURI, true);
             if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Generation) {

@@ -247,7 +247,9 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
                         GenconfUtils.GENCONF_EXTENSION_FILE);
                 final int dialogResult = dialog.open();
                 if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
-                    gen.eResource().setURI(URI.createPlatformResourceURI(dialog.getFileName(), true));
+                    URI newGenconfURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
+                    gen.eResource().setURI(newGenconfURI);
+                    uriText.setText(newGenconfURI.toString());
                     validatePage(gen,
                             GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
                 }

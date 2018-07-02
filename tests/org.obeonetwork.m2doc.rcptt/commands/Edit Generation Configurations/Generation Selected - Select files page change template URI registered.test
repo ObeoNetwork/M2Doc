@@ -1,0 +1,36 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_DwpogH31Eeiu8KolG1i86A
+Element-Name: Generation Selected - Select files page change template URI registered
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _Dw1OsH31Eeiu8KolG1i86A
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/2/18 3:40 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName.genconf" | get-menu 
+    -path "Edit Documentation Configurations" | click
+with [get-window "Generation configuration"] {
+    with [get-group "Relative to generation file"] {
+        get-editbox -after [get-label "Template File:"] | get-property text 
+            | equals "asImageByRepresentationDescriptionName-template.docx" | verify-true
+    }
+}
+with [get-window "Generation configuration"] {
+    get-group "Relative to generation file" | get-button "Browse registery" | click
+    with [get-window "Select registered template."] {
+        get-table | select "Test template"
+        get-button OK | click
+    }
+}
+get-window "Generation configuration" | get-group "Relative to generation file" | get-editbox 
+    -after [get-label "Template File:"] | get-property text 
+    | equals "platform:/plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx" | verify-true
+get-window "Generation configuration" | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -1,0 +1,36 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_msgLkH3uEeii_sZyBcvLmQ
+Element-Name: Initialize Generation - Variables and options page load resource
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _uSj-AH3uEeii_sZyBcvLmQ
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/2/18 3:42 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName-template.docx" | get-menu 
+    -path "Initialize Documentation Configurations" | click
+with [get-window "Generation configuration"] {
+    get-button "Next >" | click
+    get-button "Load resource" | click
+    with [get-window "Load Resource"] {
+        get-button "Browse Workspace..." | click
+        with [get-window "File Selection"] {
+            get-tree | select "test/anydsl.ecore"
+            get-button OK | click
+        }
+        get-button OK | click
+    }
+}
+with [get-window "Generation configuration" | get-table] {
+    get-item -path self | get-property "columns[0]" | equals self | verify-true
+    get-item -path self | get-property "columns[1]" | equals anydsl | verify-true
+}
+get-window "Generation configuration" | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

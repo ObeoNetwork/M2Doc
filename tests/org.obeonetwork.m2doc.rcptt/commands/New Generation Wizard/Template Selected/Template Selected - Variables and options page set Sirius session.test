@@ -1,0 +1,47 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_mcYH4H3NEeiGZoLGvms2Lg
+Element-Name: Template Selected - Variables and options page set Sirius session
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _dcC8kH3dEeii_sZyBcvLmQ
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/2/18 1:52 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName-template.docx" | get-menu 
+    -path "New/Other..." | click
+with [get-window New] {
+    get-tree | select "M2Doc/New Generation"
+    get-button "Next >" | click
+}
+with [get-window -class WizardDialog] {
+    get-button "Next >" | click
+}
+with [get-window -class WizardDialog] {
+    get-tab-folder | get-tab-item "Options (expert)" | click
+    get-button Add | click
+    with [get-table] {
+        select CDOServer | activate-cell-edit -type MouseClickSelection
+        get-combo | select SiriusSession
+        select CDOServer | apply-cell-edit -deactivate
+        select SiriusSession | activate-cell-edit -column 1 -type MouseClickSelection
+        cancel-cell-edit
+        deactivate-cell-edit
+        select SiriusSession | activate-cell-edit -column 1 -type MouseClickSelection
+        get-editbox | set-text "asImageByRepresentationDescriptionName.aird"
+        apply-cell-edit -deactivate
+    }
+}
+get-window -class WizardDialog | get-tab-folder | get-tab-item Variables | click
+with [get-window -class WizardDialog | get-table] {
+    get-item -path self | get-property "columns[0]" | equals self | verify-true
+    get-item -path self | get-property "columns[1]" | equals anydsl | verify-true
+}
+get-window -class WizardDialog | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

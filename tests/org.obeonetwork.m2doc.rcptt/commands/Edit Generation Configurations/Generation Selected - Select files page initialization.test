@@ -1,0 +1,46 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_DwpogH31Eeiu8KolG1i86A
+Element-Name: Generation Selected - Select files page initialization
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _Dw7VUH31Eeiu8KolG1i86A
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/2/18 3:40 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName.genconf" | get-menu 
+    -path "Edit Documentation Configurations" | click
+with [get-window "Generation configuration"] {
+    get-editbox -after [get-label "Generation file:"] | get-property text 
+        | equals "platform:/resource/test/asImageByRepresentationDescriptionName.genconf" | verify-true
+    with [get-group "Relative to generation file"] {
+        get-editbox -after [get-label "Template File:"] | get-property text 
+            | equals "asImageByRepresentationDescriptionName-template.docx" | verify-true
+        get-editbox -after [get-label "Validation file:"] | get-property text 
+            | equals "asImageByRepresentationDescriptionName-validation.docx" | verify-true
+        get-editbox -after [get-label "Result file:"] | get-property text 
+            | equals "asImageByRepresentationDescriptionName-generated.docx" | verify-true
+    }
+    get-button "Next >" | get-property enablement | equals true | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+get-window "Generation configuration" | get-button "Next >" | click
+with [get-window "Generation configuration" | get-table] {
+    get-item -path self | get-property "columns[0]" | equals self | verify-true
+    get-item -path self | get-property "columns[1]" | equals "anydsl" | verify-true
+}
+with [get-window "Generation configuration"] {
+    get-tab-folder | get-tab-item "Options (expert)" | click
+}
+with [get-window "Generation configuration" | get-table] {
+    get-item -path SiriusSession | get-property "columns[0]" | equals SiriusSession | verify-true
+    get-item -path SiriusSession | get-property "columns[1]" | equals "asImageByRepresentationDescriptionName.aird" | verify-true
+}
+get-window "Generation configuration" | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

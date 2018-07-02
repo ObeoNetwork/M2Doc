@@ -3,6 +3,7 @@ package org.obeonetwork.m2doc.ide.ui.command;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -27,6 +28,11 @@ public class EditTemplatePropertiesHandler extends AbstractHandler {
                 getShell().setText("Template properties");
             }
 
+            @Override
+            public void showPage(IWizardPage page) {
+                super.showPage(page);
+                getShell().setText("Template properties");
+            }
         };
         dialog.open();
 

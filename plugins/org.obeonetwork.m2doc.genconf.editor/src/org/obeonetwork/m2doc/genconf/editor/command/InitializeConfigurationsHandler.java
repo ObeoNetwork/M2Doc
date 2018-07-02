@@ -16,6 +16,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
@@ -60,6 +61,12 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
                 super.create();
                 getShell().setText("Generation configuration");
                 getShell().setMinimumSize(WIDTH, HEIGHT);
+            }
+
+            @Override
+            public void showPage(IWizardPage page) {
+                super.showPage(page);
+                getShell().setText("Generation configuration");
             }
         };
         dialog.open();
