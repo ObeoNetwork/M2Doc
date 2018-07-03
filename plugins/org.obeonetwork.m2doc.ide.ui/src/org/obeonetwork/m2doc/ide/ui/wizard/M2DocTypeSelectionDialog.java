@@ -13,7 +13,9 @@ package org.obeonetwork.m2doc.ide.ui.wizard;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
@@ -128,23 +130,23 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
      * @return the {@link List} of available types for the given {@link TemplateCustomProperties}
      */
     List<String> getAvailableTypes(TemplateCustomProperties customProperties) {
-        final List<String> res = new ArrayList<>();
+        final Set<String> types = new HashSet<>();
 
-        res.add(TemplateCustomProperties.STRING_TYPE);
-        res.add(TemplateCustomProperties.INTEGER_TYPE);
-        res.add(TemplateCustomProperties.REAL_TYPE);
-        res.add(TemplateCustomProperties.BOOLEAN_TYPE);
+        types.add(TemplateCustomProperties.STRING_TYPE);
+        types.add(TemplateCustomProperties.INTEGER_TYPE);
+        types.add(TemplateCustomProperties.REAL_TYPE);
+        types.add(TemplateCustomProperties.BOOLEAN_TYPE);
 
-        res.addAll(getEClassifiers(EcorePackage.eINSTANCE));
+        types.addAll(getEClassifiers(EcorePackage.eINSTANCE));
         if (customProperties != null) {
             for (String nsURI : customProperties.getPackagesURIs()) {
                 final EPackage ePkg = EPackageRegistryImpl.INSTANCE.getEPackage(nsURI);
-                res.addAll(getEClassifiers(ePkg));
+                types.addAll(getEClassifiers(ePkg));
             }
         }
 
+        final List<String> res = new ArrayList<>(types);
         Collections.sort(res);
-        res.addAll(res);
 
         return res;
     }
