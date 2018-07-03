@@ -86,7 +86,7 @@ public class GenerationListener extends AdapterImpl {
                             newDefinition.eAdapters().add(this);
                             break;
                         case Notification.ADD_MANY:
-                            for (Definition definition : (List<Definition>) msg.getOldValue()) {
+                            for (Definition definition : (List<Definition>) msg.getNewValue()) {
                                 definition.eAdapters().add(this);
                             }
                             break;
@@ -121,7 +121,7 @@ public class GenerationListener extends AdapterImpl {
                             newOption.eAdapters().add(this);
                             break;
                         case Notification.ADD_MANY:
-                            for (Option option : (List<Option>) msg.getOldValue()) {
+                            for (Option option : (List<Option>) msg.getNewValue()) {
                                 option.eAdapters().add(this);
                             }
                             break;
