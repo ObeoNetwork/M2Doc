@@ -32,6 +32,7 @@ import org.eclipse.emf.edit.ui.action.LoadResourceAction.LoadResourceDialog;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -65,8 +66,6 @@ import org.obeonetwork.m2doc.genconf.RealDefinition;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.editor.GenerationListener;
 import org.obeonetwork.m2doc.genconf.editor.ITemplateCustomPropertiesProvider;
-import org.obeonetwork.m2doc.genconf.editor.OptionNameEditingSupport;
-import org.obeonetwork.m2doc.genconf.editor.OptionValueEditingSupport;
 import org.obeonetwork.m2doc.genconf.editor.VariableValueCellLabelProvider;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -371,15 +370,9 @@ public class VariableAndOptionPage extends WizardPage {
         TableViewerColumn nameColumn = new TableViewerColumn(res, SWT.NONE);
         nameColumn.getColumn().setText("Option name");
         nameColumn.getColumn().setWidth(WIDTH);
-        final EditingDomain generationDomain = TransactionUtil.getEditingDomain(gen);
-        final OptionNameEditingSupport optionNameEditingSupport = new OptionNameEditingSupport(res, generationDomain);
-        nameColumn.setEditingSupport(optionNameEditingSupport);
         TableViewerColumn valueColumn = new TableViewerColumn(res, SWT.NONE);
         valueColumn.getColumn().setText("Option value");
         valueColumn.getColumn().setWidth(WIDTH);
-        final OptionValueEditingSupport optionValueEditingSupport = new OptionValueEditingSupport(res,
-                generationDomain);
-        valueColumn.setEditingSupport(optionValueEditingSupport);
         res.setContentProvider(new IStructuredContentProvider() {
 
             @Override
@@ -433,7 +426,7 @@ public class VariableAndOptionPage extends WizardPage {
         container.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, true, 1, 1));
         container.setLayout(new GridLayout(1, false));
 
-        final EditingDomain genEditingDomain = TransactionUtil.getEditingDomain(gen);
+        final TransactionalEditingDomain genEditingDomain = TransactionUtil.getEditingDomain(gen);
 
         final Button addButton = new Button(container, SWT.NONE);
         addButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
@@ -448,6 +441,7 @@ public class VariableAndOptionPage extends WizardPage {
                     option.setName(aviliableOptionNames.get(0));
                     genEditingDomain.getCommandStack().execute(
                             AddCommand.create(genEditingDomain, gen, GenconfPackage.GENERATION__OPTIONS, option));
+                    editOption(genEditingDomain, gen, option);
                 } else {
                     final MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
                     dialog.setText("No option availible");
@@ -459,6 +453,31 @@ public class VariableAndOptionPage extends WizardPage {
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // nothing to do here
+            }
+        });
+
+        final Button editButton = new Button(container, SWT.NONE);
+        editButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+        editButton.setText("Edit");
+        editButton.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final Option option = (Option) ((IStructuredSelection) optionsViewer.getSelection()).getFirstElement();
+                editOption(genEditingDomain, gen, option);
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // nothing to do here
+            }
+        });
+        editButton.setEnabled(!optionsViewer.getSelection().isEmpty());
+        optionsViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                editButton.setEnabled(!event.getSelection().isEmpty());
             }
         });
 
@@ -487,6 +506,33 @@ public class VariableAndOptionPage extends WizardPage {
                 removeButton.setEnabled(!event.getSelection().isEmpty());
             }
         });
+    }
+
+    /**
+     * Edits the given {@link Option}.
+     * 
+     * @param genEditingDomain
+     *            the {@link TransactionalEditingDomain}
+     * @param gen
+     *            the {@link Generation}
+     * @param option
+     *            the {@link Option} to edit
+     */
+    private void editOption(final TransactionalEditingDomain genEditingDomain, final Generation gen,
+            final Option option) {
+        final M2DocOptionDialog dialog = new M2DocOptionDialog(getShell(), gen, option);
+        final int dialogResult = dialog.open();
+        if (dialogResult == IDialogConstants.OK_ID) {
+            genEditingDomain.getCommandStack().execute(new RecordingCommand(genEditingDomain) {
+
+                @Override
+                protected void doExecute() {
+                    option.setName(dialog.getOptionName());
+                    option.setValue(dialog.getOptionValue());
+                }
+            });
+
+        }
     }
 
     /**

@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _uSo2gH3uEeii_sZyBcvLmQ
 Runtime-Version: 2.2.0.201706152316
-Save-Time: 7/2/18 3:42 PM
+Save-Time: 7/4/18 10:56 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -22,17 +22,16 @@ with [get-window "Generation configuration"] {
 with [get-window "Generation configuration"] {
     get-tab-folder | get-tab-item "Options (expert)" | click
     get-button Add | click
-    with [get-table] {
-        select CDOServer | activate-cell-edit -type MouseClickSelection
-        get-combo | select SiriusSession
-        select CDOServer | apply-cell-edit -deactivate
-        select SiriusSession | activate-cell-edit -column 1 -type MouseClickSelection
-        cancel-cell-edit
-        deactivate-cell-edit
-        select SiriusSession | activate-cell-edit -column 1 -type MouseClickSelection
-        get-editbox | set-text "asImageByRepresentationDescriptionName.aird"
-        apply-cell-edit -deactivate
+    with [get-window "Set option name and value."] {
+        get-combo -after [get-label "Set option name and value."] | select SiriusSession
+        get-editbox -after [get-label "Set option name and value."] | set-text "asImageByRepresentationDescriptionName.aird"
+        get-button OK | click
     }
+}
+with [get-window "Generation configuration" | get-table] {
+    get-item -path SiriusSession | get-property "columns[0]" | equals SiriusSession | verify-true
+    get-item -path SiriusSession | get-property "columns[1]" | equals "asImageByRepresentationDescriptionName.aird" 
+        | verify-true
 }
 get-window "Generation configuration" | get-tab-folder | get-tab-item Variables | click
 with [get-window "Generation configuration" | get-table] {
