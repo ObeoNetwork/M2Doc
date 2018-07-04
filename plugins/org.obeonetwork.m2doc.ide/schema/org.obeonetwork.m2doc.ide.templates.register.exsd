@@ -6,7 +6,7 @@
          <meta.schema plugin="org.obeonetwork.m2doc.ide" id="org.obeonetwork.m2doc.ide.template.register" name="M2Doc template Register"/>
       </appinfo>
       <documentation>
-         M2Doc Template Regsitry Extension
+         M2Doc Template Registry Extension
       </documentation>
    </annotation>
 
@@ -74,7 +74,7 @@
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         2.0.0
       </documentation>
    </annotation>
 
@@ -83,7 +83,14 @@
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         [Enter extension point usage example here.]
+            &lt;extension
+         point=&quot;org.obeonetwork.m2doc.ide.templates.register&quot;&gt;
+      &lt;template
+            name=&quot;Test template&quot;
+            uri=&quot;platform:/plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx&quot;&gt;
+      &lt;/template&gt;
+   &lt;/extension&gt;
+
       </documentation>
    </annotation>
 
@@ -92,7 +99,7 @@
          <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-         [Enter API information here.]
+         see TemplateRegistry.
       </documentation>
    </annotation>
 
@@ -101,7 +108,7 @@
          <meta.section type="implementation"/>
       </appinfo>
       <documentation>
-         [Enter information about supplied implementation of this extension point.]
+         see TemplateRegistry.
       </documentation>
    </annotation>
 

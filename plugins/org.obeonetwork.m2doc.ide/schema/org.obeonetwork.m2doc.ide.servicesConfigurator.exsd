@@ -76,7 +76,12 @@
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         [Enter extension point usage example here.]
+            &lt;extension
+         point=&quot;org.obeonetwork.m2doc.ide.servicesConfigurator&quot;&gt;
+      &lt;servicesConfigurators
+            class=&quot;org.obeonetwork.m2doc.sirius.services.configurator.SiriusServiceConfigurator&quot;&gt;
+      &lt;/servicesConfigurators&gt;
+   &lt;/extension&gt;
       </documentation>
    </annotation>
 
@@ -85,7 +90,7 @@
          <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-         see IServiceConfigurator
+         see IServiceConfigurator.
       </documentation>
    </annotation>
 
@@ -94,7 +99,7 @@
          <meta.section type="implementation"/>
       </appinfo>
       <documentation>
-         [Enter information about supplied implementation of this extension point.]
+         see SiriusServiceConfigurator.
       </documentation>
    </annotation>
 

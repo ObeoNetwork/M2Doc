@@ -6,7 +6,7 @@
          <meta.schema plugin="org.obeonetwork.m2doc.ide" id="org.obeonetwork.m2doc.ide.services.register" name="M2Doc Service Register"/>
       </appinfo>
       <documentation>
-         M2Doc Service and Package Regsitry Extension
+         M2Doc Service and Package Registry Extension. It allows to attach a name to a set of nsURI and service classes. The goal is to ease the configuration of templates by selecting the defined name directly instead of selecting each nsURI and service class.
       </documentation>
    </annotation>
 
@@ -90,9 +90,59 @@
       </complexType>
    </element>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         2.0.0
+      </documentation>
+   </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+            &lt;extension
+         point=&quot;org.obeonetwork.m2doc.ide.services.register&quot;&gt;
+      &lt;token
+            name=&quot;test token&quot;&gt;
+         &lt;service
+               class=&quot;org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1&quot;&gt;
+         &lt;/service&gt;
+         &lt;service
+               class=&quot;org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2&quot;&gt;
+         &lt;/service&gt;
+         &lt;package
+               uri=&quot;http://www.obeonetwork.org/m2doc/template/1.0&quot;&gt;
+         &lt;/package&gt;
+         &lt;package
+               uri=&quot;http://www.eclipse.org/emf/2002/Ecore&quot;&gt;
+         &lt;/package&gt;
+      &lt;/token&gt;
+   &lt;/extension&gt;
 
+      </documentation>
+   </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         see the TokenRegistry.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         see the TokenRegistry.
+      </documentation>
+   </annotation>
 
    <annotation>
       <appinfo>
