@@ -132,6 +132,17 @@ public class M2DocFileSelectionDialog extends MessageDialog {
                     final IFile file = (IFile) selected;
                     fileText.setText(file.getFullPath().toString());
                     fileName = file.getFullPath().toString();
+                } else if (selected instanceof IContainer) {
+                    final IContainer container = (IContainer) selected;
+                    final int lastSlashIndex = fileName.lastIndexOf("/");
+                    final String newFileName;
+                    if (lastSlashIndex >= 0) {
+                        newFileName = container.getFullPath().toString() + fileName.substring(lastSlashIndex);
+                    } else {
+                        newFileName = container.getFullPath().toString() + "/" + fileName;
+                    }
+                    fileText.setText(newFileName);
+                    fileName = newFileName;
                 }
             }
         });

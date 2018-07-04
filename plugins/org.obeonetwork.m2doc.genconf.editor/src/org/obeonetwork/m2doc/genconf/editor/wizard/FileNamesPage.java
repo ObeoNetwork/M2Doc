@@ -20,6 +20,8 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardPage;
@@ -227,7 +229,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
 
             @Override
             public void keyReleased(KeyEvent e) {
-                gen.eResource().setURI(URI.createURI(uriText.getText()));
+                updateGenconfURI(gen, URI.createURI(uriText.getText()));
                 validatePage(gen, GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
             }
 
@@ -248,7 +250,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
                 final int dialogResult = dialog.open();
                 if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
                     URI newGenconfURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
-                    gen.eResource().setURI(newGenconfURI);
+                    updateGenconfURI(gen, newGenconfURI);
                     uriText.setText(newGenconfURI.toString());
                     validatePage(gen,
                             GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false)));
@@ -257,6 +259,35 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         });
 
         return uriText;
+    }
+
+    /**
+     * Updates the generation URI.
+     * 
+     * @param gen
+     *            the {@link Generation}
+     * @param newGenconfURI
+     *            the new generation URI
+     */
+    private void updateGenconfURI(final Generation gen, final URI newGenconfURI) {
+        final URI templateAbsolutURI = GenconfUtils.getResolvedURI(gen,
+                URI.createURI(gen.getTemplateFileName(), false));
+        final URI validationAbsolutURI = GenconfUtils.getResolvedURI(gen,
+                URI.createURI(gen.getValidationFileName(), false));
+        final URI resultAbsolutURI = GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getResultFileName(), false));
+
+        gen.eResource().setURI(newGenconfURI);
+
+        final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
+        editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+
+            @Override
+            protected void doExecute() {
+                gen.setTemplateFileName(templateAbsolutURI.deresolve(newGenconfURI).toString());
+                gen.setValidationFileName(validationAbsolutURI.deresolve(newGenconfURI).toString());
+                gen.setResultFileName(resultAbsolutURI.deresolve(newGenconfURI).toString());
+            }
+        });
     }
 
     /**
