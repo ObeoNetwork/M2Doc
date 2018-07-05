@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# $1 the version
+# $2 the commit on master
+
 # add document page to menu
 echo "Create entry $1 in the ref-doc menu."
 sed -i "s+#---TAG---+#---TAG---\n  - title: $1\n    file: ref-doc/$1/index+g" _data/pages.yml
@@ -17,11 +20,11 @@ echo $?
 
 #update the documentation
 echo "Make other replacements in ref-doc/$1/index.md."
-sed -i "s+nightly+$1+g" ref-doc/$1/index.md
+sed -i "s+nightly+$1+g" ref-doc/$1/*.md
 echo $?
-sed -i "s+Nightly+$1+g" ref-doc/$1/index.md
+sed -i "s+Nightly+$1+g" ref-doc/$1/*.md
 echo $?
-sed -i "s+master+$1+g" ref-doc/$1/index.md
+sed -i "s+master+$1+g" ref-doc/$1/*.md
 echo $?
 
 if [ ! -z $2 ]; then
