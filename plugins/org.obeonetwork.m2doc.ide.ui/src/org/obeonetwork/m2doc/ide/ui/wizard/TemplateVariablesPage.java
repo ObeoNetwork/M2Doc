@@ -149,6 +149,7 @@ public class TemplateVariablesPage extends WizardPage {
                 if (dialogResult == IDialogConstants.OK_ID) {
                     properties.getVariables().put(variableName, dialog.getSelectedType());
                     variablesTable.refresh();
+                    validatePage(properties);
                 }
             }
 
@@ -167,7 +168,7 @@ public class TemplateVariablesPage extends WizardPage {
         editButton.setEnabled(false);
 
         createM2DocVersion(container, properties);
-        new Label(container, SWT.NONE);
+        validatePage(properties);
     }
 
     /**
@@ -249,6 +250,8 @@ public class TemplateVariablesPage extends WizardPage {
             if (!isValidDeclaration) {
                 setErrorMessage(message);
                 valide = false;
+            } else {
+                setErrorMessage(null);
             }
         }
 
