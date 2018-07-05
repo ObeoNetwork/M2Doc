@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _Dw0AkH31Eeiu8KolG1i86A
 Runtime-Version: 2.2.0.201706152316
-Save-Time: 7/2/18 3:40 PM
+Save-Time: 7/5/18 9:34 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -29,13 +29,19 @@ with [get-window "Generation configuration"] {
     }
 }
 with [get-window "Generation configuration"] {
-    get-editbox -after [get-label "Select files"] | get-property text 
-        | equals "Template platform:/resource/NEW/test/asImageByRepresentationDescriptionName-template.docx doesn't exist." 
-        | verify-true
+    get-editbox -after [get-label "Select files"] | get-property text | equals "" | verify-true
     get-editbox -after [get-label "Generation file:"] | get-property text 
         | equals "platform:/resource/NEW/test/asImageByRepresentationDescriptionName.genconf" | verify-true
-    get-button "Next >" | get-property enablement | equals false | verify-true
-    get-button Finish | get-property enablement | equals false | verify-true
+    get-button "Next >" | get-property enablement | equals true | verify-true
+    get-button Finish | get-property enablement | equals true | verify-true
+}
+with [get-window "Generation configuration" | get-group "Relative to generation file"] {
+    get-editbox -after [get-label "Template File:"] | get-property text 
+        | equals "/resource/test/asImageByRepresentationDescriptionName-template.docx" | verify-true
+    get-editbox -after [get-label "Validation file:"] | get-property text 
+        | equals "/resource/test/asImageByRepresentationDescriptionName-validation.docx" | verify-true
+    get-editbox -after [get-label "Result file:"] | get-property text 
+        | equals "/resource/test/asImageByRepresentationDescriptionName-generated.docx" | verify-true
 }
 get-window "Generation configuration" | get-button Cancel | click
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
