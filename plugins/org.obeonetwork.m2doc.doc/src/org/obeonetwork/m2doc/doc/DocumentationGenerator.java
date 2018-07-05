@@ -23,10 +23,10 @@ import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
 
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.body;
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.head;
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.header;
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.html;
+import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.md;
+import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.mdBody;
+import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.mdHead;
+import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.mdHeader;
 
 /**
  * Utility class used to generate the M2Doc documentation.
@@ -87,11 +87,11 @@ public final class DocumentationGenerator {
         for (Class<?> serviceProviderClass : STANDARD_SERVICE_PROVIDERS) {
             if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
                 try {
-                    List<StringBuffer> sections = M2DocHelpContentUtils.computeServiceSections(serviceProviderClass);
-                    StringBuffer stringBuffer = html(head(), body(header(false), sections));
+                    List<StringBuffer> sections = M2DocHelpContentUtils.mdServiceSections(serviceProviderClass);
+                    StringBuffer stringBuffer = md(mdHead(), mdBody(mdHeader(false), sections));
 
                     File file = new File(documentationFolder, M2DocHelpContentUtils.M2DOC_HREF_PREFIX
-                        + serviceProviderClass.getSimpleName().toLowerCase() + ".html");
+                        + serviceProviderClass.getSimpleName().toLowerCase() + ".md");
                     System.out.println("Writing content of " + file.getAbsolutePath());
                     try (PrintWriter writer = new PrintWriter(file, UTF8);) {
                         writer.print(stringBuffer.toString());
@@ -101,7 +101,7 @@ public final class DocumentationGenerator {
                      * generating a documentation aggregating all the services
                      * at once.
                      */
-                    List<StringBuffer> sectionsForAggregatedServices = M2DocHelpContentUtils.computeServiceSections(
+                    List<StringBuffer> sectionsForAggregatedServices = M2DocHelpContentUtils.htmlServiceSections(
                             serviceProviderClass, 3, M2DocHelpContentUtils.METHOD_SIGNATURE_GENERATOR_2016);
                     for (StringBuffer b : sectionsForAggregatedServices) {
                         aggregated.append(b);
