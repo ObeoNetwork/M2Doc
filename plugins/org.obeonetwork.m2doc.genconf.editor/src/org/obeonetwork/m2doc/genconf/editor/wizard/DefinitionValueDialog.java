@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.wizard;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.parser.AstValidator;
@@ -19,8 +20,13 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -30,6 +36,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -186,24 +194,86 @@ public class DefinitionValueDialog extends MessageDialog {
                 }
             }
         });
-        treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
         treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
-        treeViewer.setInput(resourceSet);
+        treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
         final GridData gdTable = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
         gdTable.minimumWidth = TABLE_MINIMUM_WIDTH;
         gdTable.minimumHeight = TABLE_MINIMUM_HEIGHT;
         treeViewer.getTree().setLayoutData(gdTable);
-        // TODO filter
-        // treeViewer.addFilter(new ViewerFilter() {
-        //
-        // @Override
-        // public boolean select(Viewer viewer, Object parentElement, Object element) {
-        // return element instanceof EObject && isValidValue(def, (EObject) element);
-        // }
-        // });
-        if (def.getValue() != null) {
-            treeViewer.setSelection(new StructuredSelection(def.getValue()));
+        final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+        final Iterator<IType> it = properties
+                .getVariableTypes(validator, queryEnvironment, properties.getVariables().get(def.getKey())).iterator();
+        if (it.hasNext()) {
+            final IType type = it.next();
+            if (type.getType() instanceof EClass) {
+                final EClass eCls = (EClass) type.getType();
+                final Set<EStructuralFeature> containingFeatures = queryEnvironment.getEPackageProvider()
+                        .getAllContainingEStructuralFeatures(eCls);
+                treeViewer.addFilter(new ViewerFilter() {
+
+                    @Override
+                    public boolean select(Viewer viewer, Object parentElement, Object element) {
+                        final boolean res;
+
+                        if (element instanceof EObject) {
+                            final EStructuralFeature containingFeature = ((EObject) element).eContainingFeature();
+                            res = containingFeature == null || containingFeatures.contains(containingFeature);
+                        } else if (element instanceof Resource) {
+                            final Resource resource = (Resource) element;
+                            res = canContainsOrHas(resource, containingFeatures, eCls);
+                        } else {
+                            res = false;
+                        }
+
+                        return res;
+                    }
+                });
+            }
         }
+        treeViewer.setInput(resourceSet);
+        if (def.getValue() != null) {
+            treeViewer.setSelection(
+                    new StructuredSelection(resourceSet.getEObject(EcoreUtil.getURI(def.getValue()), true)), true);
+        } else {
+            final Button okButton = getButton(OK);
+            if (okButton != null) {
+                okButton.setEnabled(false);
+            }
+        }
+    }
+
+    /**
+     * Tells if the given {@link Resource} has {@link EObject} that have any of the given {@link EStructuralFeature} or has an instance of the
+     * given {@link EClass}.
+     * 
+     * @param resource
+     *            the {@link Resource} to check
+     * @param containingFeatures
+     *            the {@link Set} of {@link EStructuralFeature}
+     * @param eCls
+     *            the {@link EClass}
+     * @return <code>true</code> if the given {@link Resource} has {@link EObject} that have any of the given {@link EStructuralFeature} or has
+     *         an instance of the given {@link EClass}, <code>false</code> otherwise
+     */
+    private boolean canContainsOrHas(final Resource resource, final Set<EStructuralFeature> containingFeatures,
+            EClass eCls) {
+        boolean res = false;
+
+        contains: for (EObject content : resource.getContents()) {
+            if (eCls.isInstance(content)) {
+                res = true;
+                break;
+            } else {
+                for (EReference reference : content.eClass().getEAllReferences()) {
+                    if (containingFeatures.contains(reference)) {
+                        res = true;
+                        break contains;
+                    }
+                }
+            }
+        }
+
+        return res;
     }
 
     /**

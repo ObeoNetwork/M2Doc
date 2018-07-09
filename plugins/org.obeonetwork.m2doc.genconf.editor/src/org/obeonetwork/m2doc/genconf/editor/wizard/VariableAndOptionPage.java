@@ -113,28 +113,29 @@ public class VariableAndOptionPage extends WizardPage {
             final DefinitionValueDialog dialog = new DefinitionValueDialog(getShell(), adapterFactory, def,
                     queryEnvironment, templateCustomPropertiesProvider.getTemplateCustomProperties(),
                     getEditingDomain(gen).getResourceSet());
-            dialog.open();
-            final TransactionalEditingDomain generationDomain = TransactionUtil.getEditingDomain(gen);
-            generationDomain.getCommandStack().execute(new RecordingCommand(generationDomain) {
+            final int dialogResult = dialog.open();
+            if (dialogResult == IDialogConstants.OK_ID) {
+                final TransactionalEditingDomain generationDomain = TransactionUtil.getEditingDomain(gen);
+                generationDomain.getCommandStack().execute(new RecordingCommand(generationDomain) {
 
-                @Override
-                protected void doExecute() {
-                    if (def instanceof BooleanDefinition) {
-                        ((BooleanDefinition) def).setValue((boolean) dialog.getValue());
-                    } else if (def instanceof IntegerDefinition) {
-                        ((IntegerDefinition) def).setValue((int) dialog.getValue());
-                    } else if (def instanceof ModelDefinition) {
-                        ((ModelDefinition) def).setValue((EObject) dialog.getValue());
-                    } else if (def instanceof RealDefinition) {
-                        ((RealDefinition) def).setValue((double) dialog.getValue());
-                    } else if (def instanceof StringDefinition) {
-                        ((StringDefinition) def).setValue((String) dialog.getValue());
-                    } else {
-                        throw new IllegalStateException("don't know what to do with " + def);
+                    @Override
+                    protected void doExecute() {
+                        if (def instanceof BooleanDefinition) {
+                            ((BooleanDefinition) def).setValue((boolean) dialog.getValue());
+                        } else if (def instanceof IntegerDefinition) {
+                            ((IntegerDefinition) def).setValue((int) dialog.getValue());
+                        } else if (def instanceof ModelDefinition) {
+                            ((ModelDefinition) def).setValue((EObject) dialog.getValue());
+                        } else if (def instanceof RealDefinition) {
+                            ((RealDefinition) def).setValue((double) dialog.getValue());
+                        } else if (def instanceof StringDefinition) {
+                            ((StringDefinition) def).setValue((String) dialog.getValue());
+                        } else {
+                            throw new IllegalStateException("don't know what to do with " + def);
+                        }
                     }
-                }
-            });
-
+                });
+            }
         }
 
         @Override
