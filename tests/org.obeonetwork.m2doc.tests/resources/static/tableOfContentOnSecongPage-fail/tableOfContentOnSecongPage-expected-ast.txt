@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Document title
+
+  
+  content control
+  
+   
+Titre1Titre1.2Titre 2
+=== FOOTER ===
+
+=== TEMPLATES ===
