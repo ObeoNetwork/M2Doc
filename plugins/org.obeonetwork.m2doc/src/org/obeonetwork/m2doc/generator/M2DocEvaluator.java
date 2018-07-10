@@ -17,9 +17,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -200,7 +202,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * User Doc Ids list.
      * Used for uniqueness test.
      */
-    private List<String> userDocIds = new ArrayList<>();
+    private Set<String> encountereduserDocIds = new HashSet<>();
 
     /**
      * The {@link IQueryEvaluationEngine}.
@@ -1175,7 +1177,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         if (!currentParagraph.getCTP().xmlText()
                 .contains("<w:instrText>" + TokenType.ENDUSERCONTENT.getValue() + "</w:instrText>")) {
             // Tag m:enduserContent
-            currentParagraph = addEndUserDocField(currentParagraph, userDoc, needNewParagraphBeforeEndTag);
+            currentParagraph = addEndUserContentField(currentParagraph, userDoc, needNewParagraphBeforeEndTag);
         }
 
         return currentParagraph;
@@ -1192,7 +1194,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            the {@link UserDoc}
      */
     private void manageUserDocIdUniqueness(XWPFParagraph paragraph, String id, UserDoc userdoc) {
-        if (userDocIds.contains(id)) {
+        if (!encountereduserDocIds.add(id)) {
             // insert the error message.
             String msgError = "The id '" + id
                 + "' is already used in generated document. Ids must be unique otherwise document part contained userContent could be lost at next generation.";
@@ -1201,8 +1203,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, msgError, userdoc.getRuns().get(userdoc.getRuns().size() - 1));
             userdoc.getValidationMessages().add(templateValidationMessage);
-        } else {
-            userDocIds.add(id);
         }
 
     }
@@ -1246,20 +1246,15 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            need New Paragraph boolean
      * @return the current {@link XWPFParagraph}
      */
-    private XWPFParagraph addEndUserDocField(XWPFParagraph paragraph, UserDoc userDoc, boolean needNewParagraph) {
+    private XWPFParagraph addEndUserContentField(XWPFParagraph paragraph, UserDoc userDoc, boolean needNewParagraph) {
         final XWPFParagraph res;
 
-        if (userDoc.getClosingRuns().size() != 0) {
-            if (needNewParagraph) {
-                final XWPFParagraph newParagraph = createNewParagraph(generatedDocument,
-                        (XWPFParagraph) userDoc.getClosingRuns().get(0).getParent());
-                newParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
-                res = newParagraph;
-            } else {
-                paragraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
-                res = paragraph;
-            }
+        if (needNewParagraph) {
+            final XWPFParagraph newParagraph = createNewParagraph(generatedDocument, paragraph);
+            newParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
+            res = newParagraph;
         } else {
+            paragraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
             res = paragraph;
         }
 
