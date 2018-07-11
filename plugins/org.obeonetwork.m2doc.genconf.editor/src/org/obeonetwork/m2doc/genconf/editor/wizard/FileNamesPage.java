@@ -94,18 +94,27 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
     private TemplateCustomProperties templateCustomProperties;
 
     /**
+     * Tells if we can change the template file.
+     */
+    private boolean canChangeTemplateFile;
+
+    /**
      * Constructor.
      * 
      * @param generation
      *            the {@link Generation}
      * @param generationListener
      *            the {@link GenerationListener}
+     * @param canChangeTemplateFile
+     *            <code>true</code> if change is possible, <code>false</code> otherwise
      */
-    protected FileNamesPage(Generation generation, GenerationListener generationListener) {
+    protected FileNamesPage(Generation generation, GenerationListener generationListener,
+            boolean canChangeTemplateFile) {
         super("Select files");
         setTitle("Select files");
         this.generation = generation;
         this.generationListener = generationListener;
+        this.canChangeTemplateFile = canChangeTemplateFile;
     }
 
     @Override
@@ -123,7 +132,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         relativeToGenconfGroup.setLayout(new GridLayout(1, false));
         relativeToGenconfGroup.setText("Relative to generation file");
 
-        templateURIText = createTemplateURIComposite(generation, relativeToGenconfGroup);
+        templateURIText = createTemplateURIComposite(generation, relativeToGenconfGroup, canChangeTemplateFile);
         generationListener.setTemplateURIText(templateURIText);
 
         validationURIText = createURIComposite(generation, relativeToGenconfGroup, "Validation file:", new Listener() {
@@ -297,9 +306,11 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
      *            the {@link Generation}
      * @param composite
      *            the container {@link Composite}
+     * @param canChange
+     *            <code>true</code> if change is possible, <code>false</code> otherwise
      * @return the template {@link URI} {@link Composite}
      */
-    private Text createTemplateURIComposite(final Generation gen, Composite composite) {
+    private Text createTemplateURIComposite(final Generation gen, Composite composite, boolean canChange) {
         final Composite uriComposite = new Composite(composite, SWT.NONE);
         uriComposite.setLayout(new GridLayout(4, false));
         uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
@@ -307,6 +318,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         final Label uriLabel = new Label(uriComposite, SWT.None);
         uriLabel.setText("Template File:");
         final Text uriText = new Text(uriComposite, SWT.NONE);
+        uriText.setEnabled(canChange);
         uriText.addModifyListener(new ModifyListener() {
 
             @Override
@@ -354,6 +366,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         });
 
         final Button workspaceButton = new Button(uriComposite, SWT.BORDER);
+        workspaceButton.setEnabled(canChange);
         workspaceButton.setText("Browse workspace");
         workspaceButton.addListener(SWT.Selection, new Listener() {
 
@@ -373,6 +386,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         });
 
         final Button registeryButton = new Button(uriComposite, SWT.BORDER);
+        registeryButton.setEnabled(canChange);
         registeryButton.setText("Browse registery");
         registeryButton.addListener(SWT.Selection, new Listener() {
 

@@ -70,6 +70,11 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
     private GenerationListener generationListener;
 
     /**
+     * Tells if we can change the template file.
+     */
+    private boolean canChangeTemplateFile = true;
+
+    /**
      * Constructor.
      */
     public NewGenerationWizard() {
@@ -84,6 +89,16 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
     @Override
     public void init(IWorkbench workbench, IStructuredSelection selected) {
         selection = selected;
+    }
+
+    /**
+     * Sets can change template file.
+     * 
+     * @param canChange
+     *            <code>true</code> if change is possible, <code>false</code> otherwise
+     */
+    public void setCanChangeTemplateFile(boolean canChange) {
+        canChangeTemplateFile = canChange;
     }
 
     @Override
@@ -134,7 +149,7 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
         generationListener = new GenerationListener();
         generationListener.installGenerationListener(generation);
 
-        fileNamesPage = new FileNamesPage(generation, generationListener);
+        fileNamesPage = new FileNamesPage(generation, generationListener, canChangeTemplateFile);
         addPage(fileNamesPage);
         optionPage = new VariableAndOptionPage(generation, generationListener, fileNamesPage);
         addPage(optionPage);

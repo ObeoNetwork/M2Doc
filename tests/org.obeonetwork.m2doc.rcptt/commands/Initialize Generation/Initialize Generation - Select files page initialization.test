@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _uSa0EH3uEeii_sZyBcvLmQ
 Runtime-Version: 2.2.0.201706152316
-Save-Time: 7/2/18 3:42 PM
+Save-Time: 7/11/18 4:34 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -22,6 +22,9 @@ with [get-window "Generation configuration"] {
     with [get-group "Relative to generation file"] {
         get-editbox -after [get-label "Template File:"] | get-property text 
             | equals "asImageByRepresentationDescriptionName-template.docx" | verify-true
+        get-editbox -after [get-label "Template File:"] | get-property enablement | equals false | verify-true
+        get-button "Browse workspace" | get-property enablement | equals false | verify-true
+        get-button "Browse registery" | get-property enablement | equals false | verify-true
         get-editbox -after [get-label "Validation file:"] | get-property text 
             | equals "asImageByRepresentationDescriptionName-template.validation.docx" | verify-true
         get-editbox -after [get-label "Result file:"] | get-property text 
