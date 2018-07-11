@@ -38,7 +38,6 @@ import org.eclipse.emf.edit.ui.provider.UnwrappingSelectionProvider;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -673,10 +672,9 @@ public class M2DocTemplateEditor extends EditorPart {
                 templateURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
                 document = POIServices.getInstance().getXWPFDocument(templateURI);
                 templateCustomProperties = new TemplateCustomProperties(document);
-            } catch (IOException e) {
-                Activator.getDefault().getLog().log(
-                        new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Editor is unable to open the template", e));
-            } catch (JavaModelException e) {
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
                 Activator.getDefault().getLog().log(
                         new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Editor is unable to open the template", e));
             }

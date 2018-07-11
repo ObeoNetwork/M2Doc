@@ -484,6 +484,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
                 // CHECKSTYLE:OFF
             } catch (Exception e) {
                 // CHECKSTYLE:ON
+                setErrorMessage("Invalid template: " + e.getMessage());
                 res = null;
             }
         } else {

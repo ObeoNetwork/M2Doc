@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -573,7 +574,7 @@ public final class GenconfUtils {
             final URI outputURI = getResolvedURI(generation, URI.createURI(outputPath, false));
             if (resourceSetForModel.getURIConverter().exists(outputURI, Collections.EMPTY_MAP)) {
                 final Map<Object, Object> options = new HashMap<Object, Object>();
-                final List<String> attributs = new ArrayList<String>();
+                final Set<String> attributs = new LinkedHashSet<String>();
                 attributs.add(URIConverter.ATTRIBUTE_DIRECTORY);
                 attributs.add(URIConverter.ATTRIBUTE_READ_ONLY);
                 options.put(URIConverter.OPTION_REQUESTED_ATTRIBUTES, attributs);

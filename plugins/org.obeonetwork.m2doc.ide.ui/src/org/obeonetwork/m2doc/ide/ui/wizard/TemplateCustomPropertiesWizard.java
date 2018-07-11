@@ -20,6 +20,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
@@ -84,7 +87,19 @@ public class TemplateCustomPropertiesWizard extends Wizard {
                     templateVariablesProperties);
             addPage(templateCustomPropertiesPage);
             addPage(templateVariablesProperties);
-        } catch (IOException e) {
+            // CHECKSTYLE:OFF
+        } catch (final Exception e) {
+            // CHECKSTYLE:ON
+            addPage(new WizardPage("Invalid template") {
+
+                @Override
+                public void createControl(Composite parent) {
+                    final Composite container = new Composite(parent, SWT.NULL);
+                    setControl(container);
+                    setErrorMessage("Template invalid: " + e.getMessage());
+                    setPageComplete(false);
+                }
+            });
             Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
         }
     }
@@ -104,10 +119,12 @@ public class TemplateCustomPropertiesWizard extends Wizard {
 
     @Override
     public boolean performCancel() {
-        try {
-            document.close();
-        } catch (IOException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+        if (document != null) {
+            try {
+                document.close();
+            } catch (IOException e) {
+                Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            }
         }
         return super.performCancel();
     }
