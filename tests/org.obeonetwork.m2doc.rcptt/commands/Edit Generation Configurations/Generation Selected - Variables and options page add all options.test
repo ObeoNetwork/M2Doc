@@ -1,0 +1,47 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_DwpogH31Eeiu8KolG1i86A
+Element-Name: Generation Selected - Variables and options page add all options
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _JCraAIXQEeiTHPcT0aJVUA
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/12/18 3:14 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName.genconf" | get-menu 
+    -path "Edit Documentation Configurations" | click
+get-window "Generation configuration" | get-button "Next >" | click
+with [get-window "Generation configuration"] {
+    with [get-table] {
+        get-item -path self | get-property "columns[0]" | equals self | verify-true
+        get-item -path self | get-property "columns[1]" | equals "anydsl" | verify-true
+    }
+    get-button "Load resource" | get-property enablement | equals true | verify-true
+    get-button Edit | get-property enablement | equals false | verify-true
+    get-button "Next >" | get-property enablement | equals false | verify-true
+}
+get-window "Generation configuration" | get-tab-folder | get-tab-item "Options (expert)" | click
+get-window "Generation configuration" | get-button Add | click
+with [get-window "Generation configuration"] {
+    get-window "Set option name and value." | get-button OK | click
+    get-button Add | click
+    get-window "Set option name and value." | get-button OK | click
+    get-button Add | click
+    get-window "Set option name and value." | get-button OK | click
+    get-button Add | click
+    get-window "Set option name and value." | get-button OK | click
+    get-button Add | click
+    get-window "Set option name and value." | get-button OK | click
+}
+with [get-window "Generation configuration"] {
+    get-table | get-property itemCount | equals 6 | verify-true
+    get-button Add | get-property enablement | equals false | verify-true
+}
+get-window "Generation configuration" | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -50,7 +50,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
@@ -436,17 +435,13 @@ public class VariableAndOptionPage extends WizardPage {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
-                final List<String> aviliableOptionNames = GenconfUtils.getAviliableOptionNames(gen);
-                if (!aviliableOptionNames.isEmpty()) {
-                    option.setName(aviliableOptionNames.get(0));
+                final List<String> availableOptionNames = GenconfUtils.getAviliableOptionNames(gen);
+                if (!availableOptionNames.isEmpty()) {
+                    option.setName(availableOptionNames.get(0));
                     genEditingDomain.getCommandStack().execute(
                             AddCommand.create(genEditingDomain, gen, GenconfPackage.GENERATION__OPTIONS, option));
                     editOption(genEditingDomain, gen, option);
-                } else {
-                    final MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                    dialog.setText("No option availible");
-                    dialog.setMessage("All possible options are already defined.");
-                    dialog.open();
+                    addButton.setEnabled(availableOptionNames.size() > 1);
                 }
             }
 
@@ -492,6 +487,7 @@ public class VariableAndOptionPage extends WizardPage {
                 final List<?> selected = ((IStructuredSelection) optionsViewer.getSelection()).toList();
                 genEditingDomain.getCommandStack().execute(
                         RemoveCommand.create(genEditingDomain, gen, GenconfPackage.GENERATION__OPTIONS, selected));
+                addButton.setEnabled(true);
             }
 
             @Override
@@ -531,7 +527,6 @@ public class VariableAndOptionPage extends WizardPage {
                     option.setValue(dialog.getOptionValue());
                 }
             });
-
         }
     }
 
