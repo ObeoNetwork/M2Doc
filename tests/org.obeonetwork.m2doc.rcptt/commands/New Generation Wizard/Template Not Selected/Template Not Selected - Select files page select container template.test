@@ -1,0 +1,43 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_mcYH4H3NEeiGZoLGvms2Lg
+Element-Name: Template Not Selected - Select files page select container template
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _ZH1bUIWyEeiTHPcT0aJVUA
+Runtime-Version: 2.2.0.201706152316
+Save-Time: 7/12/18 1:41 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test" | get-menu 
+    -path "New/Other..." | click
+with [get-window New] {
+    get-tree | select "M2Doc/New Generation"
+    get-button "Next >" | click
+}
+get-window -class WizardDialog | get-group "Relative to generation file" | get-editbox 
+    -after [get-label "Template File:"] | get-property text 
+    | equals "MyGeneration.docx" | verify-true
+get-window -class WizardDialog | get-group "Relative to generation file" | get-button "Browse workspace" | click
+with [get-window -class WizardDialog | get-window "Select generation file."] {
+    get-editbox -after [get-label "File:"] | get-property text 
+        | equals "/test/MyGeneration.docx" | verify-true
+    get-button OK | get-property enablement | equals true | verify-true
+}
+get-window -class WizardDialog | get-window "Select generation file." | get-tree | select "test/description"
+with [get-window -class WizardDialog | get-window "Select generation file."] {
+    get-editbox -after [get-label "File:"] | get-property text 
+        | equals "/test/MyGeneration.docx" | verify-true
+    get-button OK | get-property enablement | equals false | verify-true
+}
+get-window -class WizardDialog | get-window "Select generation file." | get-button Cancel | click
+get-window -class WizardDialog | get-group "Relative to generation file" | get-editbox 
+    -after [get-label "Template File:"] | get-property text 
+    | equals "MyGeneration.docx" | verify-true
+get-window -class WizardDialog | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

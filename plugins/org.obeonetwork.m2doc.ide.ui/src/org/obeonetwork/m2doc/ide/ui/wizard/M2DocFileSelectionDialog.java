@@ -30,6 +30,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -45,6 +46,43 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class M2DocFileSelectionDialog extends MessageDialog {
+
+    /**
+     * Listen to selection changes of the container tree.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class ContainerSelectionChangedListener implements ISelectionChangedListener {
+        @Override
+        public void selectionChanged(SelectionChangedEvent event) {
+            final Object selected = ((IStructuredSelection) event.getSelection()).getFirstElement();
+            final Button okButton = getButton(OK);
+            final boolean enableOkButton;
+            if (selected instanceof IFile) {
+                final IFile file = (IFile) selected;
+                fileText.setText(file.getFullPath().toString());
+                fileName = file.getFullPath().toString();
+                enableOkButton = true;
+            } else if (!onlyFileSelection && selected instanceof IContainer) {
+                final IContainer container = (IContainer) selected;
+                final int lastSlashIndex = fileName.lastIndexOf("/");
+                final String newFileName;
+                if (lastSlashIndex >= 0) {
+                    newFileName = container.getFullPath().toString() + fileName.substring(lastSlashIndex);
+                } else {
+                    newFileName = container.getFullPath().toString() + "/" + fileName;
+                }
+                fileText.setText(newFileName);
+                fileName = newFileName;
+                enableOkButton = true;
+            } else {
+                enableOkButton = false;
+            }
+            if (okButton != null && !okButton.isDisposed()) {
+                okButton.setEnabled(enableOkButton);
+            }
+        }
+    }
 
     /**
      * The table minimum height.
@@ -77,6 +115,11 @@ public class M2DocFileSelectionDialog extends MessageDialog {
     private String fileName;
 
     /**
+     * Tells if only file selection is allowed.
+     */
+    private boolean onlyFileSelection;
+
+    /**
      * Constructor.
      * 
      * @param parentShell
@@ -87,12 +130,16 @@ public class M2DocFileSelectionDialog extends MessageDialog {
      *            the default file name
      * @param fileExtension
      *            the filtered file extension
+     * @param onlyFileSelection
+     *            tells if only file selection is allowed
      */
-    public M2DocFileSelectionDialog(Shell parentShell, String title, String defaultFileName, String fileExtension) {
+    public M2DocFileSelectionDialog(Shell parentShell, String title, String defaultFileName, String fileExtension,
+            boolean onlyFileSelection) {
         super(parentShell, title, null, "Select a file.", MessageDialog.QUESTION,
                 new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0);
         this.defaultFileName = defaultFileName;
         this.fileExtension = fileExtension;
+        this.onlyFileSelection = onlyFileSelection;
     }
 
     @Override
@@ -123,29 +170,7 @@ public class M2DocFileSelectionDialog extends MessageDialog {
             }
         });
         containerTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
-        containerTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                final Object selected = ((IStructuredSelection) event.getSelection()).getFirstElement();
-                if (selected instanceof IFile) {
-                    final IFile file = (IFile) selected;
-                    fileText.setText(file.getFullPath().toString());
-                    fileName = file.getFullPath().toString();
-                } else if (selected instanceof IContainer) {
-                    final IContainer container = (IContainer) selected;
-                    final int lastSlashIndex = fileName.lastIndexOf("/");
-                    final String newFileName;
-                    if (lastSlashIndex >= 0) {
-                        newFileName = container.getFullPath().toString() + fileName.substring(lastSlashIndex);
-                    } else {
-                        newFileName = container.getFullPath().toString() + "/" + fileName;
-                    }
-                    fileText.setText(newFileName);
-                    fileName = newFileName;
-                }
-            }
-        });
+        containerTreeViewer.addSelectionChangedListener(new ContainerSelectionChangedListener());
         containerTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
         if (defaultFileName != null) {
             final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(defaultFileName));

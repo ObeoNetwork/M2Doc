@@ -140,9 +140,10 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
             @Override
             public void handleEvent(Event event) {
                 final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(),
-                        "Select validation file.", getFileName(GenconfUtils.getResolvedURI(generation,
+                        "Select validation file.",
+                        getFileName(GenconfUtils.getResolvedURI(generation,
                                 URI.createURI(generation.getValidationFileName()))),
-                        M2DocUtils.DOCX_EXTENSION_FILE);
+                        M2DocUtils.DOCX_EXTENSION_FILE, false);
                 final int dialogResult = dialog.open();
                 if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
                     final URI validationURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
@@ -181,7 +182,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
                 final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(), "Select result file.",
                         getFileName(
                                 GenconfUtils.getResolvedURI(generation, URI.createURI(generation.getResultFileName()))),
-                        M2DocUtils.DOCX_EXTENSION_FILE);
+                        M2DocUtils.DOCX_EXTENSION_FILE, false);
                 final int dialogResult = dialog.open();
                 if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
                     final URI validationURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
@@ -255,7 +256,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
             public void handleEvent(Event event) {
                 final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(),
                         "Select generation file.", getFileName(gen.eResource().getURI()),
-                        GenconfUtils.GENCONF_EXTENSION_FILE);
+                        GenconfUtils.GENCONF_EXTENSION_FILE, false);
                 final int dialogResult = dialog.open();
                 if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
                     URI newGenconfURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
@@ -375,7 +376,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
                 final M2DocFileSelectionDialog dialog = new M2DocFileSelectionDialog(getShell(),
                         "Select generation file.",
                         getFileName(GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName()))),
-                        M2DocUtils.DOCX_EXTENSION_FILE);
+                        M2DocUtils.DOCX_EXTENSION_FILE, true);
                 final int dialogResult = dialog.open();
                 if ((dialogResult == IDialogConstants.OK_ID) && !dialog.getFileName().isEmpty()) {
                     final URI templateURI = URI.createPlatformResourceURI(dialog.getFileName(), true);
