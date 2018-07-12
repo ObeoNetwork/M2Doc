@@ -217,7 +217,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             Map<String, String> options) {
         ResourceSet created = null;
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
-        if (sessionURIStr != null) {
+        if (sessionURIStr != null && !sessionURIStr.isEmpty()) {
             URI sessionURI = URI.createURI(sessionURIStr, false);
             final String genconfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
             if (genconfURIStr != null) {
