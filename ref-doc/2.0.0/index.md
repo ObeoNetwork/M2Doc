@@ -161,6 +161,8 @@ When the `Finish` button is pushed the generation configuration file is created 
 
 ### Generation configuration editor
 
+**Note: This editor is deprecated and will be removed in future release. Use [Generation configuration wizard](index.html#generation-configuration-wizard) instead.**
+
 The generation configuration model (.genconf file) references the template [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) and the result [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier). It also binds the variables defined using the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) to the desired value. It can also contain a set of options to configure [specific services](index.html#custom-constructor).
 
 ![The generation configuration editor.]({{page.relativePath}}/ref-doc/2.0.0/images/Generation%20configuration%20editor.png "The generation configuration editor.")
@@ -321,6 +323,8 @@ The second page is dedicated to variable declarations. The list of declarations 
 The M2Doc version to use with this template can be changed on this page. Not having this property set will trigger a warning while [validating](index.html#validating-a-generation-setup) with M2Doc 2.0.0 or above.
 
 ### Template editor
+
+**Note: This editor is deprecated and will be removed in future release. Use [Template properties wizard](index.html#template-properties-wizard) instead.**
 
 The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services. The template editor modifies template custom properties. You can also read [template custom properties](index.html#template-custom-properties) section to change them manually.
 
