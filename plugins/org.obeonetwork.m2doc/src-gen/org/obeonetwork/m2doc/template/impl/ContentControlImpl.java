@@ -13,7 +13,6 @@ package org.obeonetwork.m2doc.template.impl;
 import java.util.Collection;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -23,6 +22,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.TemplatePackage;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +36,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * <li>{@link org.obeonetwork.m2doc.template.impl.ContentControlImpl#getRuns <em>Runs</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.ContentControlImpl#getClosingRuns <em>Closing Runs</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.ContentControlImpl#getValidationMessages <em>Validation Messages</em>}</li>
- * <li>{@link org.obeonetwork.m2doc.template.impl.ContentControlImpl#getControl <em>Control</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.ContentControlImpl#getBlock <em>Block</em>}</li>
  * </ul>
  *
  * @generated
@@ -106,26 +106,26 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
     protected EList<TemplateValidationMessage> validationMessages;
 
     /**
-     * The default value of the '{@link #getControl() <em>Control</em>}' attribute.
+     * The default value of the '{@link #getBlock() <em>Block</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see #getControl()
+     * @see #getBlock()
      * @generated
      * @ordered
      */
-    protected static final XWPFSDT CONTROL_EDEFAULT = null;
+    protected static final CTSdtBlock BLOCK_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getControl() <em>Control</em>}' attribute.
+     * The cached value of the '{@link #getBlock() <em>Block</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see #getControl()
+     * @see #getBlock()
      * @generated
      * @ordered
      */
-    protected XWPFSDT control = CONTROL_EDEFAULT;
+    protected CTSdtBlock block = BLOCK_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -219,8 +219,8 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
      * 
      * @generated
      */
-    public XWPFSDT getControl() {
-        return control;
+    public CTSdtBlock getBlock() {
+        return block;
     }
 
     /**
@@ -229,12 +229,12 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
      * 
      * @generated
      */
-    public void setControl(XWPFSDT newControl) {
-        XWPFSDT oldControl = control;
-        control = newControl;
+    public void setBlock(CTSdtBlock newBlock) {
+        CTSdtBlock oldBlock = block;
+        block = newBlock;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONTENT_CONTROL__CONTROL, oldControl,
-                    control));
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.CONTENT_CONTROL__BLOCK, oldBlock,
+                    block));
     }
 
     /**
@@ -254,8 +254,8 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
                 return getClosingRuns();
             case TemplatePackage.CONTENT_CONTROL__VALIDATION_MESSAGES:
                 return getValidationMessages();
-            case TemplatePackage.CONTENT_CONTROL__CONTROL:
-                return getControl();
+            case TemplatePackage.CONTENT_CONTROL__BLOCK:
+                return getBlock();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -285,8 +285,8 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
                 getValidationMessages().clear();
                 getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>) newValue);
                 return;
-            case TemplatePackage.CONTENT_CONTROL__CONTROL:
-                setControl((XWPFSDT) newValue);
+            case TemplatePackage.CONTENT_CONTROL__BLOCK:
+                setBlock((CTSdtBlock) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -313,8 +313,8 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
             case TemplatePackage.CONTENT_CONTROL__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 return;
-            case TemplatePackage.CONTENT_CONTROL__CONTROL:
-                setControl(CONTROL_EDEFAULT);
+            case TemplatePackage.CONTENT_CONTROL__BLOCK:
+                setBlock(BLOCK_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -337,8 +337,8 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
                 return closingRuns != null && !closingRuns.isEmpty();
             case TemplatePackage.CONTENT_CONTROL__VALIDATION_MESSAGES:
                 return validationMessages != null && !validationMessages.isEmpty();
-            case TemplatePackage.CONTENT_CONTROL__CONTROL:
-                return CONTROL_EDEFAULT == null ? control != null : !CONTROL_EDEFAULT.equals(control);
+            case TemplatePackage.CONTENT_CONTROL__BLOCK:
+                return BLOCK_EDEFAULT == null ? block != null : !BLOCK_EDEFAULT.equals(block);
         }
         return super.eIsSet(featureID);
     }
@@ -363,8 +363,8 @@ public class ContentControlImpl extends MinimalEObjectImpl.Container implements 
         result.append(closingRuns);
         result.append(", validationMessages: ");
         result.append(validationMessages);
-        result.append(", control: ");
-        result.append(control);
+        result.append(", block: ");
+        result.append(block);
         result.append(')');
         return result.toString();
     }

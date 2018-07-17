@@ -32,12 +32,14 @@ import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRelation;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -93,6 +95,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
@@ -313,17 +316,24 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      */
     public void cleanBody(IBody body) {
         if (body instanceof XWPFDocument) {
-            int size = body.getBodyElements().size();
+            final XWPFDocument document = (XWPFDocument) body;
+            final int size = body.getBodyElements().size();
             for (int i = 0; i < size; i++) {
-                ((XWPFDocument) body).removeBodyElement(0);
+                document.removeBodyElement(0);
             }
+            // TODO remove this is here because in XWPFDocument.removeBodyElement(int)
+            // Sdt are not processed it should be patched in POI
+            document.getDocument().getBody().getSdtList().clear();
         } else if (body instanceof XWPFHeaderFooter) {
             CTHdrFtr ctHdrFtr = (CTHdrFtr) ((XWPFHeaderFooter) body)._getHdrFtr().copy();
             ctHdrFtr.getPList().clear();
             ctHdrFtr.getTblList().clear();
+            ctHdrFtr.getSdtList().clear();
             // XXX : there are many other lists in the header and footer that should
             // probably be cleaned.
             ((XWPFHeaderFooter) body).setHeaderFooter(ctHdrFtr);
+        } else {
+            throw new UnsupportedOperationException("unkown IBody type :" + body.getClass());
         }
     }
 
@@ -1408,6 +1418,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final CTTc ctCell = (CTTc) cell.getTableCell().getCTTc().copy();
         ctCell.getPList().clear();
         ctCell.getTblList().clear();
+        ctCell.getSdtList().clear();
         newCell.getCTTc().set(ctCell);
 
         final IBody savedGeneratedDocument = generatedDocument;
@@ -1447,9 +1458,24 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseContentControl(ContentControl contentControl) {
-        // Doing nothing here seems to insert the control anyway
-        // I think there is some king of side effect in the way
-        // we produce a new document
+        final CTSdtBlock sdtBlock;
+
+        if (generatedDocument instanceof XWPFDocument) {
+            sdtBlock = ((XWPFDocument) generatedDocument).getDocument().getBody().addNewSdt();
+        } else if (generatedDocument instanceof XWPFHeaderFooter) {
+            sdtBlock = ((XWPFHeaderFooter) generatedDocument)._getHdrFtr().addNewSdt();
+        } else if (generatedDocument instanceof XWPFFootnote) {
+            sdtBlock = ((XWPFFootnote) generatedDocument).getCTFtnEdn().addNewSdt();
+        } else if (generatedDocument instanceof XWPFTableCell) {
+            sdtBlock = ((XWPFTableCell) generatedDocument).getCTTc().addNewSdt();
+        } else {
+            throw new IllegalStateException(
+                    "can't insert control in " + generatedDocument.getClass().getCanonicalName());
+        }
+
+        sdtBlock.set(contentControl.getBlock().copy());
+        new XWPFSDT(sdtBlock, generatedDocument); // this do the insertion
+
         return currentGeneratedParagraph;
     }
 

@@ -10,7 +10,7 @@
  */
 package org.obeonetwork.m2doc.template;
 
-import org.apache.poi.xwpf.usermodel.XWPFSDT;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,7 +20,7 @@ import org.apache.poi.xwpf.usermodel.XWPFSDT;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.obeonetwork.m2doc.template.ContentControl#getControl <em>Control</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.ContentControl#getBlock <em>Block</em>}</li>
  * </ul>
  *
  * @see org.obeonetwork.m2doc.template.TemplatePackage#getContentControl()
@@ -37,32 +37,32 @@ public interface ContentControl extends Statement {
     String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v1.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v10.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
-     * Returns the value of the '<em><b>Control</b></em>' attribute.
+     * Returns the value of the '<em><b>Block</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Control</em>' attribute isn't clear,
+     * If the meaning of the '<em>Block</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
      * 
-     * @return the value of the '<em>Control</em>' attribute.
-     * @see #setControl(XWPFSDT)
-     * @see org.obeonetwork.m2doc.template.TemplatePackage#getContentControl_Control()
-     * @model dataType="org.obeonetwork.m2doc.template.XWPFSDT" required="true"
+     * @return the value of the '<em>Block</em>' attribute.
+     * @see #setBlock(CTSdtBlock)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getContentControl_Block()
+     * @model dataType="org.obeonetwork.m2doc.template.CTSdtBlock" required="true"
      * @generated
      */
-    XWPFSDT getControl();
+    CTSdtBlock getBlock();
 
     /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.template.ContentControl#getControl <em>Control</em>}' attribute.
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.ContentControl#getBlock <em>Block</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @param value
-     *            the new value of the '<em>Control</em>' attribute.
-     * @see #getControl()
+     *            the new value of the '<em>Block</em>' attribute.
+     * @see #getBlock()
      * @generated
      */
-    void setControl(XWPFSDT value);
+    void setBlock(CTSdtBlock value);
 
 } // ContentControl

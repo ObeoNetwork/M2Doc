@@ -184,9 +184,8 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContentControl" eSuperTypes="#//Statement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="control" lowerBound="1"
-        eType="#//XWPFSDT"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="block" lowerBound="1" eType="#//CTSdtBlock"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="XWPFSDT" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFSDT"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="CTSdtBlock" instanceClassName="org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="IGenerateable" abstract="true" interface="true"/>
 </ecore:EPackage>

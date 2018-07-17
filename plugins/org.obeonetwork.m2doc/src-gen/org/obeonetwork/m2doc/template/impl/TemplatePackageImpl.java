@@ -51,6 +51,7 @@ import org.obeonetwork.m2doc.template.TemplateFactory;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
 /**
  * <!-- begin-user-doc -->
@@ -330,7 +331,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    private EDataType xwpfsdtEDataType = null;
+    private EDataType ctSdtBlockEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1035,7 +1036,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EAttribute getContentControl_Control() {
+    public EAttribute getContentControl_Block() {
         return (EAttribute) contentControlEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1165,8 +1166,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EDataType getXWPFSDT() {
-        return xwpfsdtEDataType;
+    public EDataType getCTSdtBlock() {
+        return ctSdtBlockEDataType;
     }
 
     /**
@@ -1283,7 +1284,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEReference(letEClass, LET__BODY);
 
         contentControlEClass = createEClass(CONTENT_CONTROL);
-        createEAttribute(contentControlEClass, CONTENT_CONTROL__CONTROL);
+        createEAttribute(contentControlEClass, CONTENT_CONTROL__BLOCK);
 
         iGenerateableEClass = createEClass(IGENERATEABLE);
 
@@ -1301,7 +1302,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         wTableRowEDataType = createEDataType(WTABLE_ROW);
         wTableCellEDataType = createEDataType(WTABLE_CELL);
         bodyEDataType = createEDataType(BODY);
-        xwpfsdtEDataType = createEDataType(XWPFSDT);
+        ctSdtBlockEDataType = createEDataType(CT_SDT_BLOCK);
     }
 
     /**
@@ -1512,7 +1513,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         initEClass(contentControlEClass, ContentControl.class, "ContentControl", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getContentControl_Control(), this.getXWPFSDT(), "control", null, 1, 1, ContentControl.class,
+        initEAttribute(getContentControl_Block(), this.getCTSdtBlock(), "block", null, 1, 1, ContentControl.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(iGenerateableEClass, IGenerateable.class, "IGenerateable", IS_ABSTRACT, IS_INTERFACE,
@@ -1539,7 +1540,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEDataType(wTableCellEDataType, XWPFTableCell.class, "WTableCell", IS_SERIALIZABLE,
                 !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(bodyEDataType, IBody.class, "Body", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-        initEDataType(xwpfsdtEDataType, org.apache.poi.xwpf.usermodel.XWPFSDT.class, "XWPFSDT", IS_SERIALIZABLE,
+        initEDataType(ctSdtBlockEDataType, CTSdtBlock.class, "CTSdtBlock", IS_SERIALIZABLE,
                 !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource

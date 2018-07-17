@@ -1742,14 +1742,14 @@ public interface TemplatePackage extends EPackage {
     int CONTENT_CONTROL__VALIDATION_MESSAGES = STATEMENT__VALIDATION_MESSAGES;
 
     /**
-     * The feature id for the '<em><b>Control</b></em>' attribute.
+     * The feature id for the '<em><b>Block</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @generated
      * @ordered
      */
-    int CONTENT_CONTROL__CONTROL = STATEMENT_FEATURE_COUNT + 0;
+    int CONTENT_CONTROL__BLOCK = STATEMENT_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Content Control</em>' class.
@@ -1893,15 +1893,15 @@ public interface TemplatePackage extends EPackage {
     int BODY = 31;
 
     /**
-     * The meta object id for the '<em>XWPFSDT</em>' data type.
+     * The meta object id for the '<em>CT Sdt Block</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see org.apache.poi.xwpf.usermodel.XWPFSDT
-     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getXWPFSDT()
+     * @see org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCTSdtBlock()
      * @generated
      */
-    int XWPFSDT = 32;
+    int CT_SDT_BLOCK = 32;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}'.
@@ -2647,16 +2647,16 @@ public interface TemplatePackage extends EPackage {
     EClass getContentControl();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.ContentControl#getControl <em>Control</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.ContentControl#getBlock <em>Block</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @return the meta object for the attribute '<em>Control</em>'.
-     * @see org.obeonetwork.m2doc.template.ContentControl#getControl()
+     * @return the meta object for the attribute '<em>Block</em>'.
+     * @see org.obeonetwork.m2doc.template.ContentControl#getBlock()
      * @see #getContentControl()
      * @generated
      */
-    EAttribute getContentControl_Control();
+    EAttribute getContentControl_Block();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.IGenerateable <em>IGenerateable</em>}'.
@@ -2801,16 +2801,16 @@ public interface TemplatePackage extends EPackage {
     EDataType getBody();
 
     /**
-     * Returns the meta object for data type '{@link org.apache.poi.xwpf.usermodel.XWPFSDT <em>XWPFSDT</em>}'.
+     * Returns the meta object for data type '{@link org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock <em>CT Sdt Block</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @return the meta object for data type '<em>XWPFSDT</em>'.
-     * @see org.apache.poi.xwpf.usermodel.XWPFSDT
-     * @model instanceClass="org.apache.poi.xwpf.usermodel.XWPFSDT"
+     * @return the meta object for data type '<em>CT Sdt Block</em>'.
+     * @see org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock
+     * @model instanceClass="org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock"
      * @generated
      */
-    EDataType getXWPFSDT();
+    EDataType getCTSdtBlock();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -3445,13 +3445,13 @@ public interface TemplatePackage extends EPackage {
         EClass CONTENT_CONTROL = eINSTANCE.getContentControl();
 
         /**
-         * The meta object literal for the '<em><b>Control</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Block</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
          * @generated
          */
-        EAttribute CONTENT_CONTROL__CONTROL = eINSTANCE.getContentControl_Control();
+        EAttribute CONTENT_CONTROL__BLOCK = eINSTANCE.getContentControl_Block();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.IGenerateable <em>IGenerateable</em>}' class.
@@ -3586,15 +3586,15 @@ public interface TemplatePackage extends EPackage {
         EDataType BODY = eINSTANCE.getBody();
 
         /**
-         * The meta object literal for the '<em>XWPFSDT</em>' data type.
+         * The meta object literal for the '<em>CT Sdt Block</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
-         * @see org.apache.poi.xwpf.usermodel.XWPFSDT
-         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getXWPFSDT()
+         * @see org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCTSdtBlock()
          * @generated
          */
-        EDataType XWPFSDT = eINSTANCE.getXWPFSDT();
+        EDataType CT_SDT_BLOCK = eINSTANCE.getCTSdtBlock();
 
     }
 

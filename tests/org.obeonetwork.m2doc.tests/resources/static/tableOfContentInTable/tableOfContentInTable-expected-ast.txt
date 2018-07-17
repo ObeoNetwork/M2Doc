@@ -1,0 +1,38 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+        content control
+        
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  Titre1Titre1.2Titre 2
+=== FOOTER ===
+
+=== TEMPLATES ===

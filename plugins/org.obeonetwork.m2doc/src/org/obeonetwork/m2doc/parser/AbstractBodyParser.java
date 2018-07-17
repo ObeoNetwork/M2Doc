@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFootnote;
+import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -35,6 +39,7 @@ import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.FieldUtils;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
 import static org.obeonetwork.m2doc.util.FieldUtils.readUpInstrText;
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
@@ -278,9 +283,67 @@ public abstract class AbstractBodyParser {
             throw new IllegalArgumentException("parseContentControl can't be called on a null argument.");
         }
         ContentControl contentControl = (ContentControl) EcoreUtil.create(TemplatePackage.Literals.CONTENT_CONTROL);
-        contentControl.setControl(control);
+        contentControl.setBlock(getCTSdtBlock(document, control));
 
         return contentControl;
+    }
+
+    /**
+     * Gets the {@link CTSdtBlock} corresponding to the given {@link ContentControl}.
+     * 
+     * @param body
+     *            the {@link IBody}
+     * @param sdt
+     *            the {@link XWPFSDT}
+     * @return the {@link CTSdtBlock} corresponding to the given {@link ContentControl}
+     */
+    private CTSdtBlock getCTSdtBlock(IBody body, XWPFSDT sdt) {
+        final CTSdtBlock res;
+
+        int sdtIndex = -1;
+        for (IBodyElement element : document.getBodyElements()) {
+            if (element instanceof XWPFSDT) {
+                sdtIndex++;
+                if (element == sdt) {
+                    break;
+                }
+            }
+        }
+
+        if (sdtIndex > -1) {
+            res = getCTSdtBlock(document, sdtIndex);
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link CTSdtBlock} at the given sdtIndex in the given {@link IBody}.
+     * 
+     * @param body
+     *            the {@link IBody}
+     * @param sdtIndex
+     *            the index in internal sdt list
+     * @return the {@link CTSdtBlock} at the given sdtIndex in the given {@link IBody}
+     */
+    private CTSdtBlock getCTSdtBlock(IBody body, int sdtIndex) {
+        final CTSdtBlock res;
+
+        if (body instanceof XWPFDocument) {
+            res = ((XWPFDocument) body).getDocument().getBody().getSdtArray(sdtIndex);
+        } else if (body instanceof XWPFHeaderFooter) {
+            res = ((XWPFHeaderFooter) body)._getHdrFtr().getSdtArray(sdtIndex);
+        } else if (body instanceof XWPFFootnote) {
+            res = ((XWPFFootnote) body).getCTFtnEdn().getSdtArray(sdtIndex);
+        } else if (body instanceof XWPFTableCell) {
+            res = ((XWPFTableCell) body).getCTTc().getSdtArray(sdtIndex);
+        } else {
+            throw new IllegalStateException("can't insert control in " + body.getClass().getCanonicalName());
+        }
+
+        return res;
     }
 
     /**

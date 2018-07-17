@@ -23,7 +23,7 @@
     <genDataTypes ecoreDataType="Template.ecore#//WTableRow"/>
     <genDataTypes ecoreDataType="Template.ecore#//WTableCell"/>
     <genDataTypes ecoreDataType="Template.ecore#//Body"/>
-    <genDataTypes ecoreDataType="Template.ecore#//XWPFSDT"/>
+    <genDataTypes ecoreDataType="Template.ecore#//CTSdtBlock"/>
     <genClasses image="false" ecoreClass="Template.ecore#//IConstruct">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//IConstruct/styleRun"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//IConstruct/runs"/>
@@ -104,7 +104,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Template.ecore#//Let/body"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//ContentControl">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//ContentControl/control"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//ContentControl/block"/>
     </genClasses>
     <genClasses image="false" ecoreClass="Template.ecore#//IGenerateable"/>
   </genPackages>

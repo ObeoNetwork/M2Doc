@@ -179,8 +179,7 @@ public class UserContentRawCopy {
                 collectRelationId(inputPicuteIdToOutputmap, inputTable, containerOutputDocument);
             } else if (statement instanceof ContentControl) {
                 final ContentControl contentControl = (ContentControl) statement;
-                final XWPFSDT control = contentControl.getControl();
-                copyControl(outputBody, control);
+                copyCTSdtBlock(outputBody, contentControl.getBlock());
             }
         }
         // Change Picture Id by xml replacement
@@ -189,28 +188,28 @@ public class UserContentRawCopy {
     }
 
     /**
-     * Copies the given {@link XWPFSDT} in the given output {@link IBody}.
+     * Copies the given {@link CTSdtBlock} in the given output {@link IBody}.
      * 
      * @param outputBody
      *            the output {@link IBody}
-     * @param control
-     *            the {@link XWPFSDT} to insert
+     * @param block
+     *            the {@link CTSdtBlock} to insert
      */
-    private void copyControl(IBody outputBody, XWPFSDT control) {
-        final CTSdtBlock sdt;
+    private void copyCTSdtBlock(IBody outputBody, CTSdtBlock block) {
+        final CTSdtBlock stdBlock;
         if (outputBody instanceof XWPFDocument) {
-            sdt = ((XWPFDocument) outputBody).getDocument().getBody().addNewSdt();
+            stdBlock = ((XWPFDocument) outputBody).getDocument().getBody().addNewSdt();
         } else if (outputBody instanceof XWPFHeaderFooter) {
-            sdt = ((XWPFHeaderFooter) outputBody)._getHdrFtr().addNewSdt();
+            stdBlock = ((XWPFHeaderFooter) outputBody)._getHdrFtr().addNewSdt();
         } else if (outputBody instanceof XWPFFootnote) {
-            sdt = ((XWPFFootnote) outputBody).getCTFtnEdn().addNewSdt();
+            stdBlock = ((XWPFFootnote) outputBody).getCTFtnEdn().addNewSdt();
         } else if (outputBody instanceof XWPFTableCell) {
-            sdt = ((XWPFTableCell) outputBody).getCTTc().addNewSdt();
+            stdBlock = ((XWPFTableCell) outputBody).getCTTc().addNewSdt();
         } else {
             throw new IllegalStateException("can't insert control in " + outputBody.getClass().getCanonicalName());
         }
-        // TODO we miss POI write API
-        // XWPFSDT c = new XWPFSDT(sdt, outputBody);
+        stdBlock.set(block.copy());
+        new XWPFSDT(stdBlock, outputBody); // this do the insertion
     }
 
     /**

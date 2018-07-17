@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+  content control
+  
+  
+=== BODY ===
+
+  Titre1Titre1.2Titre 2
+=== FOOTER ===
+
+=== TEMPLATES ===
