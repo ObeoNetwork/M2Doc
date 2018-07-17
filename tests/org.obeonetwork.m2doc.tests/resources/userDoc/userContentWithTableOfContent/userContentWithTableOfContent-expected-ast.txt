@@ -12,3 +12,5 @@
   
   End of demonstration.
 === FOOTER ===
+
+=== TEMPLATES ===
