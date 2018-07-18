@@ -1,0 +1,68 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Basic for demonstration :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        Basic for demonstration : 
+        
+        for v | Sequence{'a', 'b', 'c'} do
+          table
+            row
+              
+                
+              
+                
+              
+                
+              
+            row
+              
+                
+              
+                [query: v]
+              
+                
+              
+            row
+              
+                
+              
+                
+              
+                
+              
+            
+          [query: v]
+        endfor
+        
+        End of demonstration.
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

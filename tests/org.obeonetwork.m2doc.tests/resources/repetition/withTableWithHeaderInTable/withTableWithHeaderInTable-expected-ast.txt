@@ -1,0 +1,59 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Demonstrate the For with a table: 
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        Demonstrate the For with a table: 
+        table
+          row
+            
+              Label
+            
+              Name
+            
+          
+        Tableau 1 package classes 
+        [query: .aqlFeatureAccess(self, 'name')]
+        
+        for v | .aqlFeatureAccess(self, 'eClassifiers') do
+          table
+            row
+              
+                Name :
+              
+                [query: .aqlFeatureAccess(v, 'name')]
+              
+            
+        endfor
+        
+        End of demonstration.
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

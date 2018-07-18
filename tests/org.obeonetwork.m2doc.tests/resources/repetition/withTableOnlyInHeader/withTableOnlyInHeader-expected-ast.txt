@@ -1,0 +1,29 @@
+
+=== HEADER ===
+
+  Demonstrate the For with a table: 
+  
+  for v | .aqlFeatureAccess(self, 'eClassifiers') do
+    table
+      row
+        
+          Name :
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+      row
+        
+          ID :
+        
+          [query: .getClassifierID(v)]
+        
+      
+  endfor
+  
+  End of demonstration.
+=== BODY ===
+
+  
+=== FOOTER ===
+
+=== TEMPLATES ===

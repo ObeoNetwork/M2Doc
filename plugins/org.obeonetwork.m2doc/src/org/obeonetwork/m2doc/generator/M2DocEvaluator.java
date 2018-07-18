@@ -1280,12 +1280,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            {@link Repetition} to close
      */
     private void closingRepretition(Repetition repetition) {
-        int bodySize = repetition.getBody().getStatements().size();
+        final int bodySize = repetition.getBody().getStatements().size();
         if (bodySize > 0 && repetition.getBody().getStatements().get(bodySize - 1).getRuns().size() > 0) {
-            IConstruct lastBodyPart = repetition.getBody().getStatements().get(bodySize - 1);
-            int runNumber = lastBodyPart.getRuns().size();
-            XWPFRun lastRun = lastBodyPart.getRuns().get(runNumber - 1);
-            int closingRunNumber = repetition.getClosingRuns().size();
+            final IConstruct lastBodyPart = repetition.getBody().getStatements().get(bodySize - 1);
+            final int runNumber = lastBodyPart.getRuns().size();
+            final XWPFRun lastRun = lastBodyPart.getRuns().get(runNumber - 1);
+            final int closingRunNumber = repetition.getClosingRuns().size();
             if (closingRunNumber > 0 && repetition.getClosingRuns().get(0).getParent() != lastRun.getParent()) {
                 forceNewParagraph = true;
             }
