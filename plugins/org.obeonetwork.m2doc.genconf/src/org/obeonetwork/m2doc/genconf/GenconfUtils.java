@@ -193,19 +193,21 @@ public final class GenconfUtils {
         Map<String, Object> result = new HashMap<String, Object>();
         for (Definition def : generation.getDefinitions()) {
             if (def instanceof ModelDefinition) {
-                URI uri = EcoreUtil.getURI(((ModelDefinition) def).getValue());
                 EObject val = null;
-                try {
-                    val = resourceSet.getEObject(uri, true);
-                } catch (WrappedException e) {
-                    /*
-                     * The resource could not be loaded, in that case the value is reset to a proxy with the same uri.
-                     */
-                    if (((ModelDefinition) def).getValue() != null) {
-                        InternalEObject eobj = (InternalEObject) EcoreUtil
-                                .create(((ModelDefinition) def).getValue().eClass());
-                        eobj.eSetProxyURI(uri);
-                        val = eobj;
+                final EObject originalValue = ((ModelDefinition) def).getValue();
+                if (originalValue != null) {
+                    URI uri = EcoreUtil.getURI(originalValue);
+                    try {
+                        val = resourceSet.getEObject(uri, true);
+                    } catch (WrappedException e) {
+                        /*
+                         * The resource could not be loaded, in that case the value is reset to a proxy with the same uri.
+                         */
+                        if (originalValue != null) {
+                            InternalEObject eobj = (InternalEObject) EcoreUtil.create(originalValue.eClass());
+                            eobj.eSetProxyURI(uri);
+                            val = eobj;
+                        }
                     }
                 }
                 result.put(((ModelDefinition) def).getKey(), val);

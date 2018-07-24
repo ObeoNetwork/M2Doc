@@ -9,6 +9,13 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
@@ -30,6 +37,7 @@ import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.editor.GenerationListener;
+import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -293,15 +301,27 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
 
     @Override
     public boolean performFinish() {
-        boolean res = true;
-        try {
-            generation.eResource().save(Collections.emptyMap());
-        } catch (IOException e) {
-            res = false;
-            e.printStackTrace();
+        final Job job = new WorkspaceJob(
+                "Saving generation configuration: " + URI.decode(generation.eResource().getURI().toString())) {
 
-        }
-        return res;
+            @Override
+            public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+                Status status = new Status(IStatus.OK, M2docconfEditorPlugin.getPlugin().getSymbolicName(),
+                        "Generation configuration succesfully saved");
+
+                try {
+                    generation.eResource().save(Collections.emptyMap());
+                } catch (IOException e) {
+                    status = new Status(Status.ERROR, M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR,
+                            "M2Doc : technical error" + (e.getMessage() == null ? "." : " : " + e.getMessage()), e);
+                }
+                return status;
+            }
+        };
+        job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+        job.schedule();
+
+        return true;
     }
 
 }

@@ -15,8 +15,13 @@ import java.io.IOException;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -106,14 +111,27 @@ public class TemplateCustomPropertiesWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-        properties.save();
-        try {
-            POIServices.getInstance().saveFile(document, templateURI);
-            document.close();
-        } catch (IOException e) {
-            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-            return false;
-        }
+
+        final Job job = new WorkspaceJob("Saving template") {
+
+            @Override
+            public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+                Status status = new Status(IStatus.OK, Activator.PLUGIN_ID, "Template saved succesfully");
+
+                properties.save();
+                try {
+                    POIServices.getInstance().saveFile(document, templateURI);
+                    document.close();
+                } catch (IOException e) {
+                    status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+                    Activator.getDefault().getLog().log(status);
+                }
+                return status;
+            }
+        };
+        job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+        job.schedule();
+
         return true;
     }
 

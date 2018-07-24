@@ -6,19 +6,25 @@ import java.io.InputStream;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.ide.ui.Activator;
@@ -31,6 +37,135 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class ImportTemplateWizard extends Wizard implements IImportWizard {
+
+    /**
+     * Open {@link MessageBox}.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class OpenMessageBoxRunnable implements Runnable {
+
+        /**
+         * The file name.
+         */
+        private final String fileName;
+
+        /**
+         * The result of the {@link MessageBox}.
+         */
+        private int result;
+
+        /**
+         * Constructor.
+         * 
+         * @param fileName
+         *            the file name
+         */
+        private OpenMessageBoxRunnable(String fileName) {
+            this.fileName = fileName;
+        }
+
+        @Override
+        public void run() {
+            final MessageBox dialog = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                    SWT.ICON_QUESTION | SWT.OK | SWT.CANCEL);
+            dialog.setText(fileName + " already exists");
+            dialog.setMessage("Do you want to overrite it?");
+            result = dialog.open();
+        }
+
+        /**
+         * Gets the result of the {@link MessageBox}.
+         * 
+         * @return the result of the {@link MessageBox}
+         */
+        public int getResult() {
+            return result;
+        }
+
+    }
+
+    /**
+     * Import template job.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class ImportTemplateJob extends WorkspaceJob {
+
+        /**
+         * The container full path.
+         */
+        private IPath containerFullPath;
+
+        /**
+         * The file name.
+         */
+        private String fileName;
+
+        /**
+         * Constructor.
+         * 
+         * @param containerFullPath
+         *            the container full path
+         * @param fileName
+         *            the file name
+         */
+        private ImportTemplateJob(IPath containerFullPath, String fileName) {
+            super("Importing template " + URI.decode(importPage.getSelectedTemplateURI().toString()));
+            this.containerFullPath = containerFullPath;
+            this.fileName = fileName;
+        }
+
+        @Override
+        public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+            Status status = new Status(IStatus.OK, Activator.PLUGIN_ID, "Template imported succesfully");
+
+            final IContainer container;
+            if (containerFullPath.segmentCount() == 1) {
+                container = ResourcesPlugin.getWorkspace().getRoot().getProject(containerFullPath.lastSegment());
+            } else {
+                container = ResourcesPlugin.getWorkspace().getRoot().getFolder(containerFullPath);
+            }
+            final URI templateURI = importPage.getSelectedTemplateURI();
+            if (templateURI != null) {
+                try (InputStream is = URIConverter.INSTANCE.createInputStream(templateURI)) {
+                    final IFile file = container.getFile(new Path(fileName));
+                    if (!file.exists()) {
+                        file.create(is, true, new NullProgressMonitor());
+                    } else if (openConfirmationDialog(file)) {
+                        file.setContents(is, true, true, new NullProgressMonitor());
+                    }
+                } catch (IOException e) {
+                    status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't open input stream", e);
+                    Activator.getDefault().getLog().log(status);
+                } catch (CoreException e) {
+                    status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't save file", e);
+                    Activator.getDefault().getLog().log(status);
+                }
+            } else {
+                status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                        "Null template URI. Check your extension point.");
+            }
+
+            return status;
+        }
+
+        /**
+         * Tells if the given {@link IFile} should be overritten.
+         * 
+         * @param file
+         *            the {@link IFile} to prompt for
+         * @return <code>true</code> if the given {@link IFile} should be overritten, <code>false</code> otherwise
+         */
+        private boolean openConfirmationDialog(IFile file) {
+            final OpenMessageBoxRunnable openDialogRunnable = new OpenMessageBoxRunnable(file.getName());
+            Display.getDefault().syncExec(openDialogRunnable);
+
+            final int res = openDialogRunnable.getResult();
+            return res == SWT.OK || res == SWT.YES;
+        }
+
+    }
 
     {
         // make sure org.obeonetwork.m2doc.ide is started
@@ -81,55 +216,11 @@ public class ImportTemplateWizard extends Wizard implements IImportWizard {
 
     @Override
     public boolean performFinish() {
-        boolean res;
-        final IContainer container;
-        if (creationPage.getContainerFullPath().segmentCount() == 1) {
-            container = ResourcesPlugin.getWorkspace().getRoot()
-                    .getProject(creationPage.getContainerFullPath().lastSegment());
-        } else {
-            container = ResourcesPlugin.getWorkspace().getRoot().getFolder(creationPage.getContainerFullPath());
-        }
-        final URI templateURI = importPage.getSelectedTemplateURI();
-        if (templateURI != null) {
-            try (InputStream is = URIConverter.INSTANCE.createInputStream(templateURI)) {
-                final IFile file = container.getFile(new Path(creationPage.getFileName()));
-                if (!file.exists()) {
-                    file.create(is, true, new NullProgressMonitor());
-                } else if (openConfirmationDialog(file)) {
-                    file.setContents(is, true, true, new NullProgressMonitor());
-                }
-                res = true;
-            } catch (IOException e) {
-                Activator.getDefault().getLog()
-                        .log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't open input stream", e));
-                res = false;
-            } catch (CoreException e) {
-                Activator.getDefault().getLog()
-                        .log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't save file", e));
-                res = false;
-            }
-        } else {
-            res = false;
-        }
+        final Job job = new ImportTemplateJob(creationPage.getContainerFullPath(), creationPage.getFileName());
+        job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+        job.schedule();
 
-        return res;
-    }
-
-    /**
-     * Tells if the given {@link IFile} should be overritten.
-     * 
-     * @param file
-     *            the {@link IFile} to prompt for
-     * @return <code>true</code> if the given {@link IFile} should be overritten, <code>false</code> otherwise
-     */
-    private boolean openConfirmationDialog(IFile file) {
-        MessageBox dialog = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.OK | SWT.CANCEL);
-        dialog.setText(file.getName() + " already exists");
-        dialog.setMessage("Do you want to overrite it?");
-
-        final int res = dialog.open();
-
-        return res == SWT.OK || res == SWT.YES;
+        return true;
     }
 
 }

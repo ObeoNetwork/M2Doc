@@ -12,8 +12,16 @@
 package org.obeonetwork.m2doc.genconf.editor.command;
 
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
@@ -28,26 +36,87 @@ import org.obeonetwork.m2doc.ide.M2DocPlugin;
  */
 public class ValidateHandler extends AbstractGenerationHandler {
 
-    @Override
-    protected void execute(ExecutionEvent event, Generation generation) {
-        final Shell shell = HandlerUtil.getActiveShell(event);
-        try {
-            boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider());
-            if (!inError) {
-                MessageDialog.openInformation(shell, "M2Doc validation",
-                        "The template validation has been performed successfully.");
-            } else {
-                MessageDialog.openInformation(shell, "M2Doc validation",
-                        "Error(s) detected during validation. A log file has been generated next to the template file.");
-            }
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
-                    M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
-            MessageDialog.openError(shell, "Can't save validation file.",
-                    "Can't save validation file, see the error log for details and check if the file is not opened elsewhere.");
+    /**
+     * Validate job.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class ValidateJob extends WorkspaceJob {
+
+        /**
+         * The {@link Generation} to validate.
+         */
+        private final Generation generation;
+
+        /**
+         * The {@link Shell} for error reporting.
+         */
+        private final Shell shell;
+
+        /**
+         * Consturctor.
+         * 
+         * @param generation
+         *            the {@link Generation} to validate
+         * @param shell
+         *            the {@link Shell} for error reporting
+         */
+        private ValidateJob(Generation generation, Shell shell) {
+            super("Validating " + URI.decode(generation.eResource().getURI().toString()));
+            this.generation = generation;
+            this.shell = shell;
         }
+
+        @Override
+        public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+            Status status = new Status(IStatus.OK, M2docconfEditorPlugin.getPlugin().getSymbolicName(),
+                    "Generation configuration succesfully saved");
+
+            try {
+                boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider());
+                if (!inError) {
+                    Display.getDefault().asyncExec(new Runnable() {
+                        @Override
+                        public void run() {
+                            MessageDialog.openInformation(shell, "M2Doc validation",
+                                    "The template validation has been performed successfully.");
+                        }
+                    });
+                } else {
+                    Display.getDefault().asyncExec(new Runnable() {
+                        @Override
+                        public void run() {
+                            MessageDialog.openInformation(shell, "M2Doc validation",
+                                    "Error(s) detected during validation. A log file has been generated next to the template file.");
+                        }
+                    });
+                }
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                M2docconfEditorPlugin.getPlugin().getLog().log(new Status(Status.ERROR,
+                        M2docconfEditorPlugin.getPlugin().getSymbolicName(), Status.ERROR, e.getMessage(), e));
+                Display.getDefault().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        MessageDialog.openError(shell, "Can't save validation file.",
+                                "Can't save validation file, see the error log for details and check if the file is not opened elsewhere.");
+                    }
+                });
+            }
+
+            return status;
+        }
+    }
+
+    @Override
+    protected void execute(ExecutionEvent event, final Generation generation) {
+        final Shell shell = HandlerUtil.getActiveShell(event);
+
+        final Job job = new ValidateJob(generation, shell);
+        job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+        job.schedule();
+
     }
 
 }
