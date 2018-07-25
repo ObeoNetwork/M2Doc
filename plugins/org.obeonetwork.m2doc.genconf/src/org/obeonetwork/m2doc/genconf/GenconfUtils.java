@@ -416,10 +416,6 @@ public final class GenconfUtils {
             validationURI = null;
         }
 
-        if (!URIConverter.INSTANCE.exists(templateURI, Collections.EMPTY_MAP)) {
-            throw new DocumentGenerationException("The template file doest not exist " + templateFilePath);
-        }
-
         // generate result file and validation file.
         return generate(generation, classProvider, templateURI, generatedURI, validationURI, monitor);
     }
@@ -478,6 +474,10 @@ public final class GenconfUtils {
         final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment,
                 new ResourceSetImpl(), getOptions(generation));
         monitor.worked(1);
+
+        if (!resourceSetForModels.getURIConverter().exists(templateURI, Collections.EMPTY_MAP)) {
+            throw new DocumentGenerationException("The template doest not exist " + templateURI);
+        }
 
         // create generated file
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
