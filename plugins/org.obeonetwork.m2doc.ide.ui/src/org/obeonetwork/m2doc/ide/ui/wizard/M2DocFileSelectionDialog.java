@@ -172,7 +172,7 @@ public class M2DocFileSelectionDialog extends MessageDialog {
         containerTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
         containerTreeViewer.addSelectionChangedListener(new ContainerSelectionChangedListener());
         containerTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
-        if (defaultFileName != null) {
+        if (defaultFileName != null && !defaultFileName.isEmpty()) {
             final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(defaultFileName));
             containerTreeViewer.setSelection(new StructuredSelection(file));
         }
