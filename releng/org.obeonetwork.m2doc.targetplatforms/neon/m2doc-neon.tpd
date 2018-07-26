@@ -1,7 +1,6 @@
 target "M2Doc Neon Target Platform"
 
 include "../common/common.tpd"
-include "../common/sirius41.tpd"
 
 with source requirements
 
@@ -22,4 +21,20 @@ location Eclipse "http://download.eclipse.org/releases/neon" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
+}
+
+location "http://download.eclipse.org/sirius/updates/releases/5.0.0/neon" {
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius lazy
+	org.eclipse.sirius.diagram lazy
+	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
+	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
+}
+
+location Acceleo-3.7 "http://download.eclipse.org/acceleo/updates/releases/3.7/R201610150614" {
+	org.eclipse.acceleo.query.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
+	org.antlr.runtime [4.3.0,4.4.0)
 }
