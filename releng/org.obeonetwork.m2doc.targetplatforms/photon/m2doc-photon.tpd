@@ -5,7 +5,7 @@ include "../common/sirius60.tpd"
 
 with source requirements
 
-location Eclipse "http://download.eclipse.org/releases/oxygen" {
+location Eclipse "http://download.eclipse.org/releases/photon" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy

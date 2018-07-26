@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Oxygen Target Platform" sequenceNumber="1529415375">
+<target name="M2Doc Oxygen Target Platform" sequenceNumber="1532533070">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
@@ -28,7 +28,7 @@
       <unit id="org.eclipse.sirius.table" version="0.0.0"/>
       <unit id="org.eclipse.sirius.table.ui" version="0.0.0"/>
       <unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/sirius/updates/nightly/6.0.x/oxygen"/>
+      <repository location="http://download.eclipse.org/sirius/updates/releases/6.0.0/photon"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
@@ -51,7 +51,7 @@
       <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
-      <repository id="Eclipse" location="http://download.eclipse.org/releases/oxygen"/>
+      <repository id="Eclipse" location="http://download.eclipse.org/releases/photon"/>
     </location>
   </locations>
 </target>
