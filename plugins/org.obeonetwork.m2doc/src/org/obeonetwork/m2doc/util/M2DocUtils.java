@@ -84,7 +84,7 @@ public final class M2DocUtils {
     /**
      * M2Doc version.
      */
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1";
 
     /**
      * The {@link org.obeonetwork.m2doc.template.Query Query} tag.

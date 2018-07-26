@@ -12,7 +12,7 @@
 <feature
       id="org.obeonetwork.m2doc.sirius.feature"
       label="M2Doc Sirius Integration"
-      version="2.0.0.qualifier"
+      version="2.0.1.qualifier"
       provider-name="Obeo Network">
 
    <description url="http://www.obeonetwork.com/">

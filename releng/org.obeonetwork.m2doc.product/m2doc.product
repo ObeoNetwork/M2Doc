@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="M2Doc" uid="org.obeonetwork.m2doc.product" id="org.obeonetwork.m2doc.product" application="org.eclipse.ui.ide.workbench" version="2.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="M2Doc" uid="org.obeonetwork.m2doc.product" id="org.obeonetwork.m2doc.product" application="org.eclipse.ui.ide.workbench" version="2.0.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <text>
          M2Doc
 
-Version  2.0.0
+Version  2.0.1
 
 
 Visit https://github.com/ObeoNetwork/M2Doc
