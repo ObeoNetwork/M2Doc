@@ -28,4 +28,10 @@
             class="org.obeonetwork.m2doc.sirius.services.configurator.SiriusServiceConfigurator">
       </servicesConfigurators>
    </extension>
+   <extension
+         point="org.eclipse.sirius.resourceStrategy">
+      <resourceStrategy
+            class="org.obeonetwork.m2doc.sirius.GenconfResourceStrategy">
+      </resourceStrategy>
+   </extension>
 </plugin>
