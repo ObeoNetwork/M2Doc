@@ -26,6 +26,7 @@ import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -55,6 +56,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.TokenRegistry;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.osgi.framework.Bundle;
 
 /**
@@ -104,7 +106,6 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        setMessage("Select services and packages");
 
         final Composite container = new Composite(parent, SWT.NULL);
         setControl(container);
@@ -116,6 +117,12 @@ public class TemplateCustomPropertiesPage extends WizardPage {
         final CheckboxTableViewer tokenViewer = addTokenTabItem(tabFolder, registry, properties);
         addNSURITabItem(tabFolder, tokenViewer, properties);
         addServicesTabItem(tabFolder, tokenViewer, properties);
+        if (!M2DocUtils.VERSION.equals(properties.getM2DocVersion())) {
+            setMessage("M2Doc version mismatch: template version is " + properties.getM2DocVersion()
+                + " and current M2Doc version is " + M2DocUtils.VERSION, IMessageProvider.WARNING);
+        } else {
+            setMessage("Select services and packages");
+        }
     }
 
     /**

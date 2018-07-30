@@ -24,6 +24,7 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -509,7 +510,12 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
 
         if (res != null) {
             setPageComplete(true);
-            setErrorMessage(null);
+            if (!M2DocUtils.VERSION.equals(res.getM2DocVersion())) {
+                setMessage("M2Doc version mismatch: template version is " + res.getM2DocVersion()
+                    + " and current M2Doc version is " + M2DocUtils.VERSION, IMessageProvider.WARNING);
+            } else {
+                setErrorMessage(null);
+            }
         } else {
             setPageComplete(false);
         }

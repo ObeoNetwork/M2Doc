@@ -90,6 +90,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
             templateVariablesProperties = new TemplateVariablesPage(properties);
             templateCustomPropertiesPage = new TemplateCustomPropertiesPage(TokenRegistry.INSTANCE, properties,
                     templateVariablesProperties);
+            templateVariablesProperties.setWizardPage(templateCustomPropertiesPage);
             addPage(templateCustomPropertiesPage);
             addPage(templateVariablesProperties);
             // CHECKSTYLE:OFF

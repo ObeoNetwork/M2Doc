@@ -23,6 +23,7 @@ import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -66,6 +67,11 @@ public class TemplateVariablesPage extends WizardPage {
     private TemplateCustomProperties properties;
 
     /**
+     * An other {@link WizardPage} to change while validating.
+     */
+    private WizardPage wizardPage;
+
+    /**
      * Constructor.
      * 
      * @param properties
@@ -75,6 +81,16 @@ public class TemplateVariablesPage extends WizardPage {
     protected TemplateVariablesPage(TemplateCustomProperties properties) {
         super("Template variables");
         this.properties = properties;
+    }
+
+    /**
+     * Sets the other {@link WizardPage} to change while validating.
+     * 
+     * @param wizardPage
+     *            the other {@link WizardPage} to change while validating
+     */
+    public void setWizardPage(WizardPage wizardPage) {
+        this.wizardPage = wizardPage;
     }
 
     @Override
@@ -180,7 +196,7 @@ public class TemplateVariablesPage extends WizardPage {
      *            the {@link TemplateCustomProperties}
      * @return the created {@link Composite}
      */
-    private Composite createM2DocVersion(Composite container, TemplateCustomProperties customProperties) {
+    private Composite createM2DocVersion(Composite container, final TemplateCustomProperties customProperties) {
         final Composite res = new Composite(container, SWT.NULL);
         res.setLayout(new GridLayout(3, false));
         res.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
@@ -194,12 +210,13 @@ public class TemplateVariablesPage extends WizardPage {
 
             @Override
             public void modifyText(ModifyEvent e) {
-                properties.setM2DocVersion(versionText.getText());
+                customProperties.setM2DocVersion(versionText.getText());
+                validatePage(customProperties);
             }
         });
 
-        if (properties.getM2DocVersion() != null) {
-            versionText.setText(properties.getM2DocVersion());
+        if (customProperties.getM2DocVersion() != null) {
+            versionText.setText(customProperties.getM2DocVersion());
         } else {
             versionText.setText(M2DocUtils.VERSION);
         }
@@ -250,8 +267,24 @@ public class TemplateVariablesPage extends WizardPage {
             if (!isValidDeclaration) {
                 setErrorMessage(message);
                 valide = false;
+                break;
+            }
+        }
+
+        if (valide) {
+            setErrorMessage(null);
+            if (!M2DocUtils.VERSION.equals(customProperties.getM2DocVersion())) {
+                String mismatcvhVersionMessage = "M2Doc version mismatch: template version is "
+                    + customProperties.getM2DocVersion() + " and current M2Doc version is " + M2DocUtils.VERSION;
+                setMessage(mismatcvhVersionMessage, IMessageProvider.WARNING);
+                if (wizardPage != null) {
+                    wizardPage.setMessage(mismatcvhVersionMessage, IMessageProvider.WARNING);
+                }
             } else {
-                setErrorMessage(null);
+                setMessage("Select variable types");
+                if (wizardPage != null) {
+                    wizardPage.setMessage("Select services and packages");
+                }
             }
         }
 

@@ -44,6 +44,11 @@ public class ValidateHandler extends AbstractGenerationHandler {
     private final class ValidateJob extends WorkspaceJob {
 
         /**
+         * The validation dialog title.
+         */
+        private static final String M2_DOC_VALIDATION = "M2Doc validation";
+
+        /**
          * The {@link Generation} to validate.
          */
         private final Generation generation;
@@ -73,12 +78,13 @@ public class ValidateHandler extends AbstractGenerationHandler {
                     "Generation configuration succesfully saved");
 
             try {
+                checkM2DocVersion(shell, M2_DOC_VALIDATION, generation);
                 boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider());
                 if (!inError) {
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
-                            MessageDialog.openInformation(shell, "M2Doc validation",
+                            MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
                                     "The template validation has been performed successfully.");
                         }
                     });
@@ -86,7 +92,7 @@ public class ValidateHandler extends AbstractGenerationHandler {
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
-                            MessageDialog.openInformation(shell, "M2Doc validation",
+                            MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
                                     "Error(s) detected during validation. A log file has been generated next to the template file.");
                         }
                     });

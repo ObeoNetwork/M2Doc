@@ -45,6 +45,12 @@ public class GenerateHandler extends AbstractGenerationHandler {
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
     private final class GenerateJob extends WorkspaceJob {
+
+        /**
+         * The generation dialog title.
+         */
+        private static final String M2_DOC_GENERATION = "M2Doc generation";
+
         /**
          * The {@link Generation}.
          */
@@ -76,6 +82,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
 
             final List<URI> generatedfiles = new ArrayList<URI>();
             try {
+                checkM2DocVersion(shell, M2_DOC_GENERATION, generation);
                 generatedfiles.addAll(GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(),
                         BasicMonitor.toMonitor(monitor)));
                 // CHECKSTYLE:OFF any error should be reported back.
@@ -97,7 +104,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
                 Display.getDefault().asyncExec(new Runnable() {
                     @Override
                     public void run() {
-                        MessageDialog.openInformation(shell, "M2Doc generation",
+                        MessageDialog.openInformation(shell, M2_DOC_GENERATION,
                                 "The document '" + URI.decode(generatedfiles.get(0).toString()) + "' is generated.");
                     }
                 });
@@ -105,7 +112,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
                 Display.getDefault().asyncExec(new Runnable() {
                     @Override
                     public void run() {
-                        MessageDialog.openInformation(shell, "M2Doc generation",
+                        MessageDialog.openInformation(shell, M2_DOC_GENERATION,
                                 "The document '" + URI.decode(generatedfiles.get(0).toString())
                                     + "' is generated. \n\n The template file contains validation errors, please read '"
                                     + URI.decode(generatedfiles.get(1).toString()) + "'.");

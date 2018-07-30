@@ -11,8 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.command;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -25,10 +28,15 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Abstract {@link Generation} handler.
@@ -98,6 +106,45 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
             }
         }
         return null;
+    }
+
+    /**
+     * Checks M2Doc version and open needed dialog.
+     * 
+     * @param shell
+     *            the {@link Shell}
+     * @param dialogTitle
+     *            the dialog title
+     * @param gen
+     *            the {@link Generation}
+     * @throws DocumentGenerationException
+     *             if the template isn't a valid .docx
+     * @throws IOException
+     *             if the template can't be read
+     */
+    protected void checkM2DocVersion(final Shell shell, final String dialogTitle, Generation gen)
+            throws DocumentGenerationException, IOException {
+        final IReadOnlyQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(gen);
+        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
+                queryEnvironment, new ResourceSetImpl(), GenconfUtils.getOptions(gen));
+
+        final String templateFilePath = gen.getTemplateFileName();
+        if (templateFilePath != null && !templateFilePath.isEmpty()) {
+            final URI templateURI = GenconfUtils.getResolvedURI(gen, URI.createURI(templateFilePath, false));
+
+            final TemplateCustomProperties properties = POIServices.getInstance()
+                    .getTemplateCustomProperties(resourceSetForModel.getURIConverter(), templateURI);
+            if (!M2DocUtils.VERSION.equals(properties.getM2DocVersion())) {
+                Display.getDefault().syncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        MessageDialog.openInformation(shell, dialogTitle, "M2Doc version mismatch: template version is "
+                            + properties.getM2DocVersion() + " and current M2Doc version is " + M2DocUtils.VERSION);
+                    }
+                });
+            }
+        }
     }
 
 }
