@@ -67,8 +67,11 @@ public class ServerWithAuthentication extends AbstractTemplatesTestSuite {
         super(testFolder);
     }
 
+    /**
+     * Starts the {@link CDOServer}.
+     */
     @BeforeClass
-    public static void startCDOServer() throws IOException, CommitException {
+    public static void startCDOServer() {
         server = new CDOServer(true);
         server.start();
         IConnector connector = M2DocCDOUtils
@@ -81,8 +84,14 @@ public class ServerWithAuthentication extends AbstractTemplatesTestSuite {
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
         final Resource anyDSLResource = resourceSet.getResource(URI.createFileURI("resources/anydsl.ecore"), true);
         resource.getContents().addAll(anyDSLResource.getContents());
-        resource.save(null);
-        transaction.commit();
+        try {
+            resource.save(null);
+            transaction.commit();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } catch (CommitException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         transaction.close();
         session.close();
         connector.close();
@@ -92,6 +101,9 @@ public class ServerWithAuthentication extends AbstractTemplatesTestSuite {
         }
     }
 
+    /**
+     * Stops the {@link CDOServer}.
+     */
     @AfterClass
     public static void stopCDOServer() {
         server.stop();

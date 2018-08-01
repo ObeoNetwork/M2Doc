@@ -87,6 +87,14 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
         return TO_CDO_MAPPING.get(testFolder.getPath());
     }
 
+    /**
+     * Starts the {@link CDOServer}.
+     * 
+     * @throws IOException
+     *             if the ecore resource can't be created
+     * @throws CommitException
+     *             if the transaction can't be commited
+     */
     @BeforeClass
     public static void startCDOServer() {
         final Collection<Object[]> testFolders = retrieveTestFolders(
@@ -136,6 +144,9 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
         }
     }
 
+    /**
+     * Stops the {@link CDOServer}.
+     */
     @AfterClass
     public static void stopCDOServer() {
         server.stop();

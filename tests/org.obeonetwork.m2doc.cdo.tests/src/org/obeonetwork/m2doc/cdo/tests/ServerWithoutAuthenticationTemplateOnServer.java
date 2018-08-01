@@ -87,6 +87,9 @@ public class ServerWithoutAuthenticationTemplateOnServer extends AbstractTemplat
         return TO_CDO_MAPPING.get(testFolder.getPath());
     }
 
+    /**
+     * Starts the {@link CDOServer}.
+     */
     @BeforeClass
     public static void startCDOServer() {
         final Collection<Object[]> testFolders = retrieveTestFolders(
@@ -136,6 +139,9 @@ public class ServerWithoutAuthenticationTemplateOnServer extends AbstractTemplat
         }
     }
 
+    /**
+     * Stops the {@link CDOServer}.
+     */
     @AfterClass
     public static void stopCDOServer() {
         server.stop();

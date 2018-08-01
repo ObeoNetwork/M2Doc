@@ -43,6 +43,7 @@ import org.eclipse.net4j.util.security.UserManager;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public final class CDOServer {
 
     /**
