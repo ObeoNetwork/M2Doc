@@ -50,17 +50,13 @@ import org.obeonetwork.m2doc.template.Template;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class M2DocTemplateService extends AbstractService implements IService {
 
     /**
      * The {@link Template} to call.
      */
     private Template template;
-
-    /**
-     * The {@link URIConverter}.
-     */
-    private URIConverter uriConverter;
 
     /**
      * The {@link BookmarkManager} for evaluation.
@@ -143,7 +139,6 @@ public class M2DocTemplateService extends AbstractService implements IService {
     public M2DocTemplateService(Template template, URIConverter uriConverter, BookmarkManager bookmarkManager,
             UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
         this.template = template;
-        this.uriConverter = uriConverter;
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
         this.queryEnvironment = queryEnvironment;
