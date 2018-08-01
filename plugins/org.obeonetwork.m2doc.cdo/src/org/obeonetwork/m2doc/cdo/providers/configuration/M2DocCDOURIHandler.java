@@ -35,6 +35,7 @@ import org.eclipse.emf.spi.cdo.InternalCDOView;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class M2DocCDOURIHandler extends CDOURIHandler {
 
     /**
