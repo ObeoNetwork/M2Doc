@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _QJ_MsJDNEeid2IdGsmETwg
 Runtime-Version: 2.2.0.201706152316
-Save-Time: 7/26/18 2:28 PM
+Save-Time: 8/2/18 5:03 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -21,6 +21,15 @@ with [get-editor test | get-section Models | get-tree] {
 }
 get-view "Project Explorer" | get-tree | select "test/test-template.docx" | get-menu 
     -path "Initialize Documentation Configurations" | click
+
+with [get-window "Generation configuration"] {
+    get-button "Next >" | click
+    get-tab-folder | get-tab-item "Options (expert)" | click
+}
+with [get-window "Generation configuration" | get-table] {
+    get-item -path SiriusSession | get-property "columns[0]" | equals SiriusSession | verify-true
+    get-item -path SiriusSession | get-property "columns[1]" | equals "representations.aird" | verify-true
+}
 get-window "Generation configuration" | get-button Finish | click
 get-view "Project Explorer" | get-tree | get-item -path "test/test-template.genconf" | get-property caption 
     | equals "test-template.genconf" | verify-true

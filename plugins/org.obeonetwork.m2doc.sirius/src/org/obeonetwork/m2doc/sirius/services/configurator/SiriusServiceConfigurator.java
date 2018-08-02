@@ -115,7 +115,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
 
         if (genConfURIStr != null) {
             final URI genConfURI = URI.createURI(genConfURIStr, false);
-            if (URIConverter.INSTANCE.exists(genConfURI, Collections.emptyMap()) && genConfURI.isPlatformResource()) {
+            if (genConfURI.isPlatformResource()) {
                 res = getSessionFromPlatformResource(genConfURI);
             } else {
                 res = null;
