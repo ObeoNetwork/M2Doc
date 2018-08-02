@@ -14,6 +14,11 @@ package org.obeonetwork.m2doc.rcptt.a;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.rcptt.b.ServiceClassB;
 
+/**
+ * Test service class.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
 public class ServiceClassAWithDependency {
 
     /**

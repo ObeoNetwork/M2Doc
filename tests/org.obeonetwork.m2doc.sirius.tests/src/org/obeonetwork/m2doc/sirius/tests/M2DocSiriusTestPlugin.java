@@ -27,16 +27,19 @@ import org.osgi.framework.BundleContext;
  */
 public class M2DocSiriusTestPlugin extends Plugin {
 
-    // The plug-in ID
+    /** The plug-in ID. */
     public static final String PLUGIN_ID = "org.obeonetwork.m2doc.sirius.tests"; //$NON-NLS-1$
 
-    // The shared instance
+    /** The shared instance. */
     private static M2DocSiriusTestPlugin plugin;
 
+    /**
+     * The {@link Set} of declared {@link Viewpoint}.
+     */
     private static Set<Viewpoint> viewpoints;
 
     /**
-     * The constructor
+     * The constructor.
      */
     public M2DocSiriusTestPlugin() {
         // not used
@@ -51,7 +54,7 @@ public class M2DocSiriusTestPlugin extends Plugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        viewpoints = new HashSet<Viewpoint>();
+        viewpoints = new HashSet<>();
         viewpoints
                 .addAll(ViewpointRegistry.getInstance().registerFromPlugin(PLUGIN_ID + "/description/genconf.odesign"));
     }
@@ -75,9 +78,9 @@ public class M2DocSiriusTestPlugin extends Plugin {
     }
 
     /**
-     * Returns the shared instance;
+     * Returns the shared instance.
      *
-     * @return the shared instance;
+     * @return the shared instance
      */
     public static M2DocSiriusTestPlugin getDefault() {
         return plugin;
