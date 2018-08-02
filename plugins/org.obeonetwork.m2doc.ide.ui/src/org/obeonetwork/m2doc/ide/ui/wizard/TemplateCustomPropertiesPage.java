@@ -64,6 +64,7 @@ import org.osgi.framework.Bundle;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("restriction")
 public class TemplateCustomPropertiesPage extends WizardPage {
 
     /**
@@ -527,7 +528,6 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      * @param customProperties
      *            the {@link TemplateCustomProperties}
      */
-    @SuppressWarnings("restriction")
     private void openClassSelectionDialog(Viewer tokenViewer, Viewer servicesTable,
             final TemplateCustomProperties customProperties) {
         final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
