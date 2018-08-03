@@ -144,7 +144,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             final Session session = project.getSession();
             if (session != null) {
                 final URI sessionURI = session.getSessionResource().getURI();
-                res = sessionURI.deresolve(platformResourceURI).toString();
+                res = sessionURI.deresolve(platformResourceURI, false, true, true).toString();
             } else {
                 res = null;
             }

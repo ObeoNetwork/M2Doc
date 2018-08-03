@@ -475,16 +475,16 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
      * 
      * @param gen
      *            the {@link Generation}
-     * @param uri
+     * @param templateURI
      *            the template {@link URI}
      * @return the {@link TemplateCustomProperties} if any, <code>null</code> otherwise
      */
-    private TemplateCustomProperties validatePage(Generation gen, URI uri) {
+    private TemplateCustomProperties validatePage(Generation gen, URI templateURI) {
         TemplateCustomProperties res;
 
         final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
 
-        final URI absoluteURI = uri.resolve(gen.eResource().getURI());
+        final URI absoluteURI = templateURI.resolve(gen.eResource().getURI());
         if (URIConverter.INSTANCE.exists(absoluteURI, null)) {
             try {
                 res = POIServices.getInstance().getTemplateCustomProperties(absoluteURI);

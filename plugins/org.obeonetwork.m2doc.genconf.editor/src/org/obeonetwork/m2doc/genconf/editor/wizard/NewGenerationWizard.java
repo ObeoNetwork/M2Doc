@@ -3,6 +3,7 @@ package org.obeonetwork.m2doc.genconf.editor.wizard;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -33,6 +34,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.obeonetwork.m2doc.POIServices;
+import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
@@ -114,11 +116,11 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
         super.addPages();
 
         final Generation loadedGeneration = getGeneration(selection);
+        final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(generation);
         if (loadedGeneration == null) {
             final URI genconfURI = getGenconfURI(selection);
             if (genconfURI != null) {
                 generation.eResource().setURI(genconfURI);
-                final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(generation);
                 editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
 
                     @Override
@@ -135,7 +137,6 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
             }
         } else {
             generation.eResource().setURI(loadedGeneration.eResource().getURI());
-            final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(generation);
             editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
 
                 @Override
@@ -197,11 +198,10 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
      *            the {@link Generation}
      */
     private void initializeVariableDefinition(Generation gen) {
-        IQueryEnvironment queryEnvironment = Query.newEnvironment();
-        TemplateCustomProperties properties;
+        final IQueryEnvironment queryEnvironment = Query.newEnvironment();
         try {
-            properties = POIServices.getInstance().getTemplateCustomProperties(
-                    URI.createURI(gen.getTemplateFileName()).deresolve(gen.eResource().getURI()));
+            final TemplateCustomProperties properties = POIServices.getInstance().getTemplateCustomProperties(
+                    URI.createURI(gen.getTemplateFileName()).resolve(gen.eResource().getURI()));
             ((IQueryEnvironment) queryEnvironment).registerEPackage(EcorePackage.eINSTANCE);
             ((IQueryEnvironment) queryEnvironment).registerCustomClassMapping(
                     EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
@@ -211,9 +211,13 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
                     new XMIResourceFactoryImpl());
             final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
                     queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
+            final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, properties);
+            gen.getDefinitions().addAll(newDefinitions);
             GenconfUtils.initializeVariableDefinition(gen, queryEnvironment, properties, resourceSetForModel);
             M2DocUtils.cleanResourceSetForModels(queryEnvironment);
-        } catch (IOException e) {
+            // CHECKSTYLE:OFF
+        } catch (Exception e) {
+            // CHECKSTYLE:ON
             // no initialization if it fails no big deal
         }
     }
