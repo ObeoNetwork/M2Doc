@@ -212,6 +212,7 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
             final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
                     queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
             GenconfUtils.initializeVariableDefinition(gen, queryEnvironment, properties, resourceSetForModel);
+            M2DocUtils.cleanResourceSetForModels(queryEnvironment);
         } catch (IOException e) {
             // no initialization if it fails no big deal
         }

@@ -145,6 +145,8 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
                 });
             }
         }
+
+        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
     }
 
 }

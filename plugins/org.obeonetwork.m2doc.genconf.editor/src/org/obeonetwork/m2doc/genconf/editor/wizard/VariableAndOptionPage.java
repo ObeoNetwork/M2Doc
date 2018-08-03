@@ -81,7 +81,7 @@ public class VariableAndOptionPage extends WizardPage {
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    private final class EditeDefinitionSelectionListener implements SelectionListener {
+    private final class EditDefinitionSelectionListener implements SelectionListener {
 
         /**
          * The variable {@link Viewer}.
@@ -101,7 +101,7 @@ public class VariableAndOptionPage extends WizardPage {
          * @param gen
          *            the {@link Generation}
          */
-        private EditeDefinitionSelectionListener(Viewer variablesViewer, Generation gen) {
+        private EditDefinitionSelectionListener(Viewer variablesViewer, Generation gen) {
             this.variablesViewer = variablesViewer;
             this.gen = gen;
         }
@@ -189,6 +189,11 @@ public class VariableAndOptionPage extends WizardPage {
      * A {@link IReadOnlyQueryEnvironment} for {@link ResourceSet} initialization.
      */
     private final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
+
+    /**
+     * Tells if the {@link #editingDomain} has been created by ourself or not.
+     */
+    private boolean createdEditingDomaine;
 
     /**
      * Constructor.
@@ -321,7 +326,6 @@ public class VariableAndOptionPage extends WizardPage {
             public void widgetSelected(SelectionEvent e) {
                 LoadResourceDialog dialog = new LoadResourceDialog(getShell(), getEditingDomain(gen));
                 dialog.open();
-
                 initializeGenerationVariableDefinition(gen);
             }
 
@@ -343,7 +347,7 @@ public class VariableAndOptionPage extends WizardPage {
                         ((IStructuredSelection) event.getSelection()).getFirstElement() instanceof Definition);
             }
         });
-        editButton.addSelectionListener(new EditeDefinitionSelectionListener(variablesViewer, gen));
+        editButton.addSelectionListener(new EditDefinitionSelectionListener(variablesViewer, gen));
     }
 
     /**
@@ -360,6 +364,7 @@ public class VariableAndOptionPage extends WizardPage {
             @Override
             public void refresh() {
                 updateEditingDomain(gen);
+                initializeGenerationVariableDefinition(gen);
                 super.refresh();
             }
 
@@ -552,10 +557,12 @@ public class VariableAndOptionPage extends WizardPage {
     @Override
     public void dispose() {
         super.dispose();
-        adapterFactory.dispose();
-        if (editingDomain != null) {
+        if (createdEditingDomaine) {
             editingDomain.dispose();
+            editingDomain = null;
         }
+        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
+        adapterFactory.dispose();
     }
 
     /**
@@ -565,17 +572,26 @@ public class VariableAndOptionPage extends WizardPage {
      *            the {@link Generation}
      */
     private void updateEditingDomain(Generation gen) {
-        if (editingDomain != null) {
-            editingDomain.dispose();
-        }
         final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
         defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                 new XMIResourceFactoryImpl());
+
+        if (createdEditingDomaine) {
+            editingDomain.dispose();
+            editingDomain = null;
+        }
+        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
+
         final ResourceSet modelResourceSet = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
                 queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
-        editingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(modelResourceSet);
-
-        initializeGenerationVariableDefinition(gen);
+        final TransactionalEditingDomain modelEditingDomain = TransactionUtil.getEditingDomain(modelResourceSet);
+        if (modelEditingDomain == null) {
+            editingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(modelResourceSet);
+            createdEditingDomaine = true;
+        } else {
+            editingDomain = modelEditingDomain;
+            createdEditingDomaine = false;
+        }
     }
 
     /**
