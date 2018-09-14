@@ -20,7 +20,7 @@ title: ImageServices
 
 # ImageServices
 
-Services available for Images. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/imageServices)
+Services available for Images. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/imageServices).
 
 * TOC
 {:toc}

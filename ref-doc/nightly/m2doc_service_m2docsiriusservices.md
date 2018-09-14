@@ -20,7 +20,7 @@ title: M2DocSiriusServices
 
 # M2DocSiriusServices
 
-Services available for Sirius. You will have to set the "SiriusSession" option in the generation configuration. It must contains the .aird file URI.. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices)
+Services available for Sirius. You will have to set the "SiriusSession" option in the generation configuration. It must contains the .aird file URI. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices).
 
 * TOC
 {:toc}

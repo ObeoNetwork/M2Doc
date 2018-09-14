@@ -20,7 +20,7 @@ title: PaginationServices
 
 # PaginationServices
 
-Services available for pagination. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/paginationServices)
+Services available for pagination. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/paginationServices).
 
 * TOC
 {:toc}

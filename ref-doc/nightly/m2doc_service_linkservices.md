@@ -20,7 +20,7 @@ title: LinkServices
 
 # LinkServices
 
-Services available for links. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/linkServices)
+Services available for links. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/linkServices).
 
 * TOC
 {:toc}

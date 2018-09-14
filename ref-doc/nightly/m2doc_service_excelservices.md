@@ -20,7 +20,7 @@ title: ExcelServices
 
 # ExcelServices
 
-Services available for Excel. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/excelServices)
+Services available for Excel. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/excelServices).
 
 * TOC
 {:toc}

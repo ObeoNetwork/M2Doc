@@ -20,7 +20,7 @@ title: BooleanServices
 
 # BooleanServices
 
-Services available for Booleans. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/booleanServices)
+Services available for Booleans. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/booleanServices).
 
 * TOC
 {:toc}
