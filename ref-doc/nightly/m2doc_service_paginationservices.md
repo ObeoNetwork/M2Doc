@@ -20,7 +20,7 @@ title: PaginationServices
 
 # PaginationServices
 
-Services available for pagination
+Services available for pagination. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/paginationServices)
 
 * TOC
 {:toc}
@@ -29,21 +29,28 @@ Services available for pagination
 
 Converts a String to an hyperlink
 
+### Parameter
+
+* **paginationElement**: The name of the pagination element: 'newTableOfContent', 'newPage', 'newParagraph', 'newColumn', 'newTextWrapping'
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| 'newPage'.asPagination() | insert a page break |
+* 'newPage'.asPagination()
+  * insert a page break
 
 ## String.asStyle(String) : org.obeonetwork.m2doc.element.MParagraph
 
 Converts a String with a given style if the style exists in the template, this service will insert a new paragraph. You can add styled text in comment to make sure they are present.
 
+### Parameter
+
+* **text**: The text
+* **style**: The style name
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| 'Section 1'.asStyle('Title1') | insert 'Section 1' as style 'Titre1' in a new paragraph if the style exists in the template. |
+* 'Section 1'.asStyle('Title1')
+  * insert 'Section 1' as style 'Titre1' in a new paragraph if the style exists in the template.
 
 
 

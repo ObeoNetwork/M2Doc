@@ -20,7 +20,7 @@ title: ImageServices
 
 # ImageServices
 
-Services available for Images
+Services available for Images. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/imageServices)
 
 * TOC
 {:toc}
@@ -29,81 +29,110 @@ Services available for Images
 
 Convert a String representing an URI to an Image and serialize it in the given format.
 
+### Parameter
+
+* **uri**: The Image uri, it can be relative to the template
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| 'image.png'.asImage('jpg') | insert the image 'image.jpg' |
+* 'image.png'.asImage('jpg')
+  * insert the image 'image.jpg'
 
 ## String.asImage() : org.obeonetwork.m2doc.element.MImage
 
 Convert a String representing an URI to an Image.
 
+### Parameter
+
+* **uri**: The Image uri, it can be relative to the template
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| 'image.png'.asImage() | insert the image 'image.png' |
+* 'image.png'.asImage()
+  * insert the image 'image.png'
 
 ## org.obeonetwork.m2doc.element.MImage.fit(Integer, Integer) : org.obeonetwork.m2doc.element.MImage
 
 Fits the Image in the given the given rectangle width and height.
 
+### Parameter
+
+* **image**: The Image
+* **width**: The width to fit
+* **height**: The height to fit
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| myImage.fit(200, 300) | will fit the image in a rectangle (width=200, height=300) |
+* myImage.fit(200, 300)
+  * will fit the image in a rectangle (width=200, height=300)
 
 ## org.obeonetwork.m2doc.element.MImage.getHeight() : Integer
 
 Gets the height of the image.
 
+### Parameter
+
+* **image**: The Image
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| myImage.getHeight() | 300 |
+* myImage.getHeight()
+  * 300
 
 ## org.obeonetwork.m2doc.element.MImage.getWidth() : Integer
 
 Gets the width of the image.
 
+### Parameter
+
+* **image**: The Image
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| myImage.getWidth() | 300 |
+* myImage.getWidth()
+  * 300
 
 ## org.obeonetwork.m2doc.element.MImage.setConserveRatio(Boolean) : org.obeonetwork.m2doc.element.MImage
 
 Sets the conserve ratio of the image.
 
+### Parameter
+
+* **image**: The Image
+* **conserve**: A Boolean
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| myImage.setConserveRatio(false) | set the conserve ratio to false |
+* myImage.setConserveRatio(false)
+  * set the conserve ratio to false
 
 ## org.obeonetwork.m2doc.element.MImage.setHeight(Integer) : org.obeonetwork.m2doc.element.MImage
 
 Sets the height of the image.
 
+### Parameter
+
+* **image**: The Image
+* **height**: The height
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| myImage.setHeight(300) | set the height to 300 |
+* myImage.setHeight(300)
+  * set the height to 300
 
 ## org.obeonetwork.m2doc.element.MImage.setWidth(Integer) : org.obeonetwork.m2doc.element.MImage
 
 Sets the width of the image.
 
+### Parameter
+
+* **image**: The Image
+* **width**: The width
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| myImage.setWidth(300) | set the witdh to 300 |
+* myImage.setWidth(300)
+  * set the witdh to 300
 
 
 

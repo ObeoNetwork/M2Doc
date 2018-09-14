@@ -20,7 +20,7 @@ title: BooleanServices
 
 # BooleanServices
 
-Services available for Booleans
+Services available for Booleans. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/booleanServices)
 
 * TOC
 {:toc}
@@ -29,23 +29,31 @@ Services available for Booleans
 
 Returns "X" for boolean true.
 
+### Parameter
+
+* **value**: The boolean value
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| true.check() | X |
-| false.check() |  |
+* true.check()
+  * X
+* false.check()
+  * 
 
 ## boolean.yesNo() : String
 
 Returns "Yes" for boolean true, "No" otherwise.
 
+### Parameter
+
+* **value**: The boolean value
+
 ### Example
 
-| Expression | Result |
-| ---------- | ------ |
-| true.yesNo() | Yes |
-| false.yesNo() | No |
+* true.yesNo()
+  * Yes
+* false.yesNo()
+  * No
 
 
 
