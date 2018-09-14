@@ -248,7 +248,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                     }
                 }
             } else {
-                throw new IllegalArgumentException("The Sirius session doesn't exists: " + sessionURI);
+                throw new IllegalArgumentException("The Sirius session doesn't exist: " + sessionURI);
             }
         }
         return created;

@@ -85,7 +85,7 @@ public abstract class AbstractTemplatesTestSuite {
     /**
      * Doesn't exist message.
      */
-    private static final String DOESN_T_EXISTS = " doesn't exists.";
+    private static final String DOESN_T_EXIST = " doesn't exist.";
 
     /**
      * User content tag in file name.
@@ -270,7 +270,7 @@ public abstract class AbstractTemplatesTestSuite {
             try (OutputStream stream = resourceSetForModels.getURIConverter().createOutputStream(actualASTURI);) {
                 setContent(stream, "UTF-8", actualAst);
             }
-            fail(expectedASTURI + DOESN_T_EXISTS);
+            fail(expectedASTURI + DOESN_T_EXIST);
         }
 
         try (InputStream stream = resourceSetForModels.getURIConverter().createInputStream(expectedASTURI)) {
@@ -307,7 +307,7 @@ public abstract class AbstractTemplatesTestSuite {
             } else {
                 touch(outputURI);
             }
-            fail(expectedValidationURI + DOESN_T_EXISTS);
+            fail(expectedValidationURI + DOESN_T_EXIST);
         }
 
         if (!isEmpty(outputURI)) {
@@ -366,7 +366,7 @@ public abstract class AbstractTemplatesTestSuite {
         } else {
             outputURI = getActualGeneratedURI(new File(testFolderPath));
             prepareoutputAndGenerate(userContentURI, outputURI);
-            fail(expectedGeneratedURI + DOESN_T_EXISTS);
+            fail(expectedGeneratedURI + DOESN_T_EXIST);
         }
 
         final GenerationResult generationResult = prepareoutputAndGenerate(userContentURI, outputURI);
@@ -379,7 +379,7 @@ public abstract class AbstractTemplatesTestSuite {
                     .createURI(expectedGeneratedURI.toString() + "-" + entry.getKey() + LOST_DOCX, false);
             if (!resourceSetForModels.getURIConverter().exists(expectedLostURI, Collections.emptyMap())) {
                 copy(actualLostURI, URI.createURI(expectedLostURI.toString().replace("-expected-", "-actual-"), false));
-                fail(expectedLostURI + DOESN_T_EXISTS);
+                fail(expectedLostURI + DOESN_T_EXIST);
             }
             M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedLostURI, actualLostURI);
             expectedLostFiles.remove(expectedLostURI);

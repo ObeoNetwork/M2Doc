@@ -126,7 +126,7 @@ public class ExcelServices {
             final FormulaEvaluator evaluator = new XSSFFormulaEvaluator(workbook);
             final XSSFSheet sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
-                throw new IllegalArgumentException(String.format("The sheet %s doesn't exists in %s.", sheetName, uri));
+                throw new IllegalArgumentException(String.format("The sheet %s doesn't exist in %s.", sheetName, uri));
             } else {
                 final Locale locale;
                 if (languageTag != null) {
