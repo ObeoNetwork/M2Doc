@@ -18,7 +18,7 @@ import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 
 //@formatter:off
 @ServiceProvider(
-  value = "Services available for Booleans"
+  value = "Services available for Booleans. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/booleanServices)."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })

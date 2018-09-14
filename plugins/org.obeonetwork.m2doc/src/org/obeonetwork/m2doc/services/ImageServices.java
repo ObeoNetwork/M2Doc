@@ -23,7 +23,7 @@ import org.obeonetwork.m2doc.element.impl.MImageImpl;
 
 //@formatter:off
 @ServiceProvider(
-  value = "Services available for Images"
+  value = "Services available for Images. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/imageServices)."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })

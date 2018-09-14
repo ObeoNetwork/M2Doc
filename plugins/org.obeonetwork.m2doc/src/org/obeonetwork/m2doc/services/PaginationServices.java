@@ -40,7 +40,7 @@ import org.obeonetwork.m2doc.element.impl.MTextImpl;
  */
 //@formatter:off
 @ServiceProvider(
-value = "Services available for pagination"
+value = "Services available for pagination. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/paginationServices)."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })

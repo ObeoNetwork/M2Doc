@@ -41,7 +41,7 @@ import org.obeonetwork.m2doc.sirius.util.DTable2MTableConverter;
 
 //@formatter:off
 @ServiceProvider(
-value = "Services available for Sirius. You will have to set the \"SiriusSession\" option in the generation configuration. It must contains the .aird file URI."
+value = "Services available for Sirius. You will have to set the \"SiriusSession\" option in the generation configuration. It must contains the .aird file URI. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices)."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype"})

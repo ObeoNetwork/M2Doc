@@ -22,7 +22,7 @@ import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
 
 //@formatter:off
 @ServiceProvider(
-  value = "Services available for links"
+  value = "Services available for links. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/linkServices)."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })

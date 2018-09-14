@@ -632,17 +632,24 @@ public final class M2DocHelpContentUtils {
                 servicesSection.append(serviceDocumentation.value()).append(LS);
                 servicesSection.append(LS);
                 
+                servicesSection.append("### Parameter").append(LS);
+                servicesSection.append(LS);
+                for (Param param : serviceDocumentation.params()) {
+                    servicesSection.append("* **").append(param.name()).append("**: ").append(param.value()).append(LS);
+                }
+                servicesSection.append(LS);
+                
+                
                 if (serviceDocumentation.examples().length > 0) {                   
                     servicesSection.append("### Example").append(LS);
                     servicesSection.append(LS);
-                    servicesSection.append("| Expression | Result |").append(LS);
-                    servicesSection.append("| ---------- | ------ |").append(LS);
                     
                     List<Other> others = new ArrayList<Other>();
                     
                     Example[] examples = serviceDocumentation.examples();
                     for (Example example : examples) {                      
-                        servicesSection.append("| ").append(example.expression()).append(" | ").append(example.result()).append(" |").append(LS);
+                        servicesSection.append("* ").append(example.expression()).append(LS);
+                        servicesSection.append("  * ").append(example.result()).append(LS);
                         
                         Other[] otherExamples = example.others();
                         for (Other otherExample : otherExamples) {

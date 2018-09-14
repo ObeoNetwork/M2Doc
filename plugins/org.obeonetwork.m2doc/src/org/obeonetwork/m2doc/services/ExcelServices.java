@@ -45,7 +45,7 @@ import org.obeonetwork.m2doc.element.impl.MTextImpl;
 
 //@formatter:off
 @ServiceProvider(
-value = "Services available for Excel"
+value = "Services available for Excel. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/excelServices)."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
