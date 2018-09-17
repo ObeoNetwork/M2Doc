@@ -241,6 +241,7 @@ public class VariableAndOptionPage extends WizardPage {
         optionsTable = createOptionsTable(generation, optionContainer);
         generationListener.setOptionsViewer(optionsTable);
         createOptionsButonComposite(generation, optionContainer, optionsTable);
+        initializeGenerationVariableDefinition(generation);
     }
 
     /**
@@ -605,7 +606,9 @@ public class VariableAndOptionPage extends WizardPage {
         ((IQueryEnvironment) queryEnvironment).registerEPackage(EcorePackage.eINSTANCE);
         ((IQueryEnvironment) queryEnvironment).registerCustomClassMapping(
                 EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
-        properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+        if (properties != null) {
+            properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+        }
 
         final TransactionalEditingDomain generationDomain = TransactionUtil.getEditingDomain(gen);
         generationDomain.getCommandStack().execute(new RecordingCommand(generationDomain) {

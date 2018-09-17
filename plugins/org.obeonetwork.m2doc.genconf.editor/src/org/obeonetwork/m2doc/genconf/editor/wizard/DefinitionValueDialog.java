@@ -216,12 +216,13 @@ public class DefinitionValueDialog extends MessageDialog {
                     public boolean select(Viewer viewer, Object parentElement, Object element) {
                         final boolean res;
 
-                        if (element instanceof EObject) {
-                            final EStructuralFeature containingFeature = ((EObject) element).eContainingFeature();
-                            res = containingFeature == null || containingFeatures.contains(containingFeature);
-                        } else if (element instanceof Resource) {
+                        if (element instanceof Resource) {
                             final Resource resource = (Resource) element;
                             res = canContainsOrHas(resource, containingFeatures, eCls);
+                        } else if (element instanceof EObject) {
+                            final EStructuralFeature containingFeature = ((EObject) element).eContainingFeature();
+                            res = containingFeature == null || containingFeatures.contains(containingFeature)
+                                || ((EObject) element).eContainer() instanceof Resource; // the last one is for CDO
                         } else {
                             res = false;
                         }
