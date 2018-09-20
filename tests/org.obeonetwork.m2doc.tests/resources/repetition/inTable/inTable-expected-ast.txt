@@ -1,0 +1,42 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Basic for demonstration :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+        for v | .aqlFeatureAccess(self, 'eClassifiers') do
+          name = 
+          [query: .aqlFeatureAccess(v, 'name')]
+          ,
+        endfor
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

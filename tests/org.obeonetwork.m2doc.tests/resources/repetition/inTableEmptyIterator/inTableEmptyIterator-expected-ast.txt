@@ -1,0 +1,42 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Basic for demonstration :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+        for v | Sequence{} do
+          name = 
+          [query: v]
+          ,
+        endfor
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

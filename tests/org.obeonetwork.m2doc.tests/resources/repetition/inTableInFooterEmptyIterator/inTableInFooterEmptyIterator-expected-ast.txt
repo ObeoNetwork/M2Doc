@@ -3,6 +3,9 @@
 
 === BODY ===
 
+  
+=== FOOTER ===
+
   Basic for demonstration :
   table
     row
@@ -19,8 +22,10 @@
       
         
         for v | Sequence{} do
+          name = 
+          [query: v]
+          ,
         endfor
-        
         
       
         
@@ -35,6 +40,4 @@
       
     
   End of demonstration.
-=== FOOTER ===
-
 === TEMPLATES ===

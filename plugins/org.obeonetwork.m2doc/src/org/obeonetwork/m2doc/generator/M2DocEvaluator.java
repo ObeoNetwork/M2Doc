@@ -1433,6 +1433,15 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             currentTemplateParagraph = savedTemplateParagraph;
         }
 
+        // prevent cell with no paragraph
+        if (newCell.getParagraphs().size() == 1) {
+            final XWPFParagraph firstParagraph = newCell.getParagraphs().get(0);
+            if (firstParagraph.getRuns().isEmpty()) {
+                ctCell.addNewP();
+                newCell.getCTTc().set(ctCell);
+            }
+        }
+
         return currentGeneratedParagraph;
     }
 
