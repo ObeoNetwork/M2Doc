@@ -410,7 +410,7 @@ public final class GenconfUtils {
         final URI templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
         final URI generatedURI = getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false));
         final URI validationURI;
-        if (generation.getValidationFileName() != null) {
+        if (generation.getValidationFileName() != null && !generation.getValidationFileName().isEmpty()) {
             validationURI = getResolvedURI(generation, URI.createURI(generation.getValidationFileName(), false));
         } else {
             validationURI = null;
