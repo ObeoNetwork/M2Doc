@@ -459,10 +459,10 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             public void checkStateChanged(CheckStateChangedEvent event) {
                 if (event.getChecked()) {
                     final String tokenName = (String) event.getElement();
-                    addToken(tokenRegistry, customProperties, tokenName);
+                    selectToken(tokenRegistry, customProperties, tokenName);
                 } else {
                     final String tokenName = (String) event.getElement();
-                    removeToken(tokenRegistry, customProperties, tokenName);
+                    deselectToken(tokenRegistry, customProperties, tokenName);
                 }
             }
         });
@@ -483,23 +483,13 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      * @param tokenName
      *            the token name
      */
-    private void addToken(TokenRegistry tokenRegistry, TemplateCustomProperties customProperties, String tokenName) {
-        for (Entry<String, List<String>> entry : tokenRegistry.getServices(tokenName).entrySet()) {
-            final String bundleName = entry.getKey();
-            for (String cls : entry.getValue()) {
-                customProperties.getServiceClasses().put(cls, bundleName);
-            }
-        }
-        for (String nsURI : tokenRegistry.getPackages(tokenName)) {
-            if (!customProperties.getPackagesURIs().contains(nsURI)) {
-                customProperties.getPackagesURIs().add(nsURI);
-            }
-        }
+    private void selectToken(TokenRegistry tokenRegistry, TemplateCustomProperties customProperties, String tokenName) {
+        tokenRegistry.selectToken(customProperties, tokenName);
         templateVariablesProperties.validatePage(customProperties);
     }
 
     /**
-     * Removes the given token name from the given {@link TemplateCustomProperties}.
+     * Deselects the given token name from the given {@link TemplateCustomProperties}.
      * 
      * @param tokenRegistry
      *            the {@link TokenRegistry}
@@ -508,13 +498,9 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      * @param tokenName
      *            the token name
      */
-    private void removeToken(TokenRegistry tokenRegistry, TemplateCustomProperties customProperties, String tokenName) {
-        for (List<String> classes : tokenRegistry.getServices(tokenName).values()) {
-            for (String cls : classes) {
-                customProperties.getServiceClasses().remove(cls);
-            }
-        }
-        customProperties.getPackagesURIs().removeAll(tokenRegistry.getPackages(tokenName));
+    private void deselectToken(TokenRegistry tokenRegistry, TemplateCustomProperties customProperties,
+            String tokenName) {
+        tokenRegistry.deselectToken(customProperties, tokenName);
         templateVariablesProperties.validatePage(customProperties);
     }
 

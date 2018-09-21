@@ -21,8 +21,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {ServiceRegistryTests.class, BooleanServicesTests.class, ImageServicesTests.class,
-    LinkServicesTests.class, PaginationServicesTests.class, ExcelServicesTests.class })
+@SuiteClasses(value = {BooleanServicesTests.class, ImageServicesTests.class, LinkServicesTests.class,
+    PaginationServicesTests.class, ExcelServicesTests.class, TokenRegistryTests.class })
 public class ServicesTests {
 
 }

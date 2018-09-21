@@ -234,4 +234,49 @@ public final class TokenRegistry {
         return res;
     }
 
+    /**
+     * Adds the given token name to the given {@link TemplateCustomProperties}.
+     * 
+     * @param customProperties
+     *            the {@link TemplateCustomProperties}
+     * @param tokenName
+     *            the token name
+     */
+    public void selectToken(TemplateCustomProperties customProperties, String tokenName) {
+        for (Entry<String, List<String>> entry : getServices(tokenName).entrySet()) {
+            final String bundleName = entry.getKey();
+            for (String cls : entry.getValue()) {
+                customProperties.getServiceClasses().put(cls, bundleName);
+            }
+        }
+        for (String nsURI : getPackages(tokenName)) {
+            if (!customProperties.getPackagesURIs().contains(nsURI)) {
+                customProperties.getPackagesURIs().add(nsURI);
+            }
+        }
+    }
+
+    /**
+     * Removes the given token name from the given {@link TemplateCustomProperties}.
+     * 
+     * @param properties
+     *            the {@link TemplateCustomProperties}
+     * @param tokenName
+     *            the token name
+     */
+    public void deselectToken(TemplateCustomProperties properties, String tokenName) {
+        final List<String> selectedTokens = getSelectedToken(properties);
+        selectedTokens.remove(tokenName);
+
+        for (List<String> classes : getServices(tokenName).values()) {
+            for (String cls : classes) {
+                properties.getServiceClasses().remove(cls);
+            }
+        }
+        properties.getPackagesURIs().removeAll(getPackages(tokenName));
+        for (String token : selectedTokens) {
+            selectToken(properties, token);
+        }
+    }
+
 }
