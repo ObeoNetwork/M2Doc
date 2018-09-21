@@ -36,17 +36,17 @@ public enum TokenType {
     /**
      * A {@link Template} tag.
      */
-    TEMPLATE("m:template"),
+    TEMPLATE(M2DocUtils.M + "template"),
 
     /**
      * A {@link Template} end tag.
      */
-    ENDTEMPLATE("m:endtemplate"),
+    ENDTEMPLATE(M2DocUtils.M + "endtemplate"),
 
     /**
      * A {@link Comment} tag.
      */
-    COMMENT("m:comment"),
+    COMMENT(M2DocUtils.M + "comment"),
 
     /**
      * A {@link Query} tag.
@@ -56,77 +56,77 @@ public enum TokenType {
     /**
      * A {@link Repetition} tag.
      */
-    FOR("m:for"),
+    FOR(M2DocUtils.M + "for"),
 
     /**
      * A {@link Repetition} end tag.
      */
-    ENDFOR("m:endfor"),
+    ENDFOR(M2DocUtils.M + "endfor"),
 
     /**
      * A {@link Conditional} tag.
      */
-    IF("m:if"),
+    IF(M2DocUtils.M + "if"),
 
     /**
      * A {@link Conditional} else if tag.
      */
-    ELSEIF("m:elseif"),
+    ELSEIF(M2DocUtils.M + "elseif"),
 
     /**
      * A {@link Conditional} else tag.
      */
-    ELSE("m:else"),
+    ELSE(M2DocUtils.M + "else"),
 
     /**
      * A {@link Conditional} end tag.
      */
-    ENDIF("m:endif"),
+    ENDIF(M2DocUtils.M + "endif"),
 
     /**
      * A {@link Let} tag.
      */
-    LET("m:let"),
+    LET(M2DocUtils.M + "let"),
 
     /**
      * A {@link Let} end tag.
      */
-    ENDLET("m:endlet"),
+    ENDLET(M2DocUtils.M + "endlet"),
 
     /**
      * A {@link Bookmark} tag.
      */
-    BOOKMARK("m:bookmark"),
+    BOOKMARK(M2DocUtils.M + "bookmark"),
 
     /**
      * A {@link Bookmark} end tag.
      */
-    ENDBOOKMARK("m:endbookmark"),
+    ENDBOOKMARK(M2DocUtils.M + "endbookmark"),
 
     /**
      * A {@link Link} tag.
      */
-    LINK("m:link"),
+    LINK(M2DocUtils.M + "link"),
 
     /**
      * A {@link UserDoc} tag.
      */
-    USERDOC("m:userdoc"),
+    USERDOC(M2DocUtils.M + "userdoc"),
 
     /**
      * A {@link UserDoc} end tag.
      */
-    ENDUSERDOC("m:enduserdoc"),
+    ENDUSERDOC(M2DocUtils.M + "enduserdoc"),
 
     /**
      * A {@link UserContent} tag.
      */
-    USERCONTENT("m:usercontent"),
+    USERCONTENT(M2DocUtils.M + "usercontent"),
 
     /**
      * A {@link UserContent} end tag.
      */
-    ENDUSERCONTENT("m:endusercontent"),
+    ENDUSERCONTENT(M2DocUtils.M + "endusercontent"),
 
     /**
      * A static {@link XWPFRun}.

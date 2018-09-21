@@ -73,37 +73,27 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         super(inputDocument, queryParser, queryEnvironment);
     }
 
-    /**
-     * returns the next token type after index.
-     * 
-     * @return the next token type.
-     */
     @Override
-    protected TokenType getNextTokenType() {
-        ParsingToken token = runIterator.lookAhead(1);
-        TokenType result;
-        if (token == null) {
-            result = TokenType.EOF;
-        } else if (token.getKind() == ParsingTokenKind.TABLE) {
-            result = TokenType.WTABLE;
-        } else if (token.getKind() == ParsingTokenKind.CONTENTCONTROL) {
-            result = TokenType.CONTENTCONTROL;
-        } else {
-            XWPFRun run = token.getRun();
-            // is run a field begin run
-            if (fieldUtils.isFieldBegin(run)) {
-                String code = fieldUtils.lookAheadTag(runIterator);
-                if (code.startsWith(TokenType.ENDUSERCONTENT.getValue())) {
-                    result = TokenType.ENDUSERCONTENT;
-                } else if (code.startsWith(TokenType.USERCONTENT.getValue())) {
-                    result = TokenType.USERCONTENT;
-                } else {
-                    result = TokenType.STATIC;
-                }
+    protected TokenType getNextTokenMTag(ParsingToken token) {
+        final TokenType result;
+
+        final XWPFRun run = token.getRun();
+        // is run a field begin run
+        if (fieldUtils.isFieldBegin(run)) {
+            String type = getType(fieldUtils.lookAheadTag(runIterator));
+            if (type == null) {
+                result = TokenType.STATIC;
+            } else if (type.equals(TokenType.ENDUSERCONTENT.getValue())) {
+                result = TokenType.ENDUSERCONTENT;
+            } else if (type.equals(TokenType.USERCONTENT.getValue())) {
+                result = TokenType.USERCONTENT;
             } else {
                 result = TokenType.STATIC;
             }
+        } else {
+            result = TokenType.STATIC;
         }
+
         return result;
     }
 

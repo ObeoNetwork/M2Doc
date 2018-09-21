@@ -39,6 +39,7 @@ import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.FieldUtils;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
 import static org.obeonetwork.m2doc.util.FieldUtils.readUpInstrText;
@@ -116,7 +117,56 @@ public abstract class AbstractBodyParser {
      * 
      * @return the next token type.
      */
-    protected abstract TokenType getNextTokenType();
+    protected TokenType getNextTokenType() {
+        final ParsingToken token = runIterator.lookAhead(1);
+        final TokenType result;
+        if (token == null) {
+            result = TokenType.EOF;
+        } else if (token.getKind() == ParsingTokenKind.TABLE) {
+            result = TokenType.WTABLE;
+        } else if (token.getKind() == ParsingTokenKind.CONTENTCONTROL) {
+            result = TokenType.CONTENTCONTROL;
+        } else {
+            result = getNextTokenMTag(token);
+        }
+        return result;
+    }
+
+    /**
+     * Gets the {@link TokenType} of the given {@link ParsingToken}.
+     * 
+     * @param token
+     *            the {@link ParsingToken}
+     * @return the {@link TokenType} of the given {@link ParsingToken}
+     */
+    protected abstract TokenType getNextTokenMTag(ParsingToken token);
+
+    /**
+     * Gets the type {@link String} for the given tag if starting with {@link M2DocUtils#M}.
+     * 
+     * @param tag
+     *            the tag {@link String}
+     * @return the type {@link String} for the given tag if starting with {@link M2DocUtils#M}, <code>null</code> otherwise
+     */
+    protected String getType(String tag) {
+        final StringBuilder res = new StringBuilder();
+
+        if (tag.startsWith(M2DocUtils.M)) {
+            res.append(M2DocUtils.M);
+            for (int i = 2; i < tag.length(); i++) {
+                final char currentChar = tag.charAt(i);
+                if (Character.isAlphabetic(currentChar) || Character.isDigit(currentChar)) {
+                    res.append(currentChar);
+                } else {
+                    break;
+                }
+            }
+
+            return res.toString();
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Parses a {@link Block}.

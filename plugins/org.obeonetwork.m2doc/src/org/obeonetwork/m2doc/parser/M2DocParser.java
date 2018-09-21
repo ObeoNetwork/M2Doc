@@ -122,67 +122,55 @@ public class M2DocParser extends AbstractBodyParser {
         return res;
     }
 
-    /**
-     * returns the next token type after index.
-     * 
-     * @return the next token type.
-     */
     @Override
-    protected TokenType getNextTokenType() {
-        final ParsingToken token = runIterator.lookAhead(1);
+    protected TokenType getNextTokenMTag(final ParsingToken token) {
         final TokenType result;
-        if (token == null) {
-            result = TokenType.EOF;
-        } else if (token.getKind() == ParsingTokenKind.TABLE) {
-            result = TokenType.WTABLE;
-        } else if (token.getKind() == ParsingTokenKind.CONTENTCONTROL) {
-            result = TokenType.CONTENTCONTROL;
-        } else {
-            XWPFRun run = token.getRun();
-            // is run a field begin run
-            if (fieldUtils.isFieldBegin(run)) {
-                final String code = fieldUtils.lookAheadTag(runIterator);
-                if (code.startsWith(TokenType.FOR.getValue())) {
-                    result = TokenType.FOR;
-                } else if (code.startsWith(TokenType.ENDFOR.getValue())) {
-                    result = TokenType.ENDFOR;
-                } else if (code.startsWith(TokenType.IF.getValue())) {
-                    result = TokenType.IF;
-                } else if (code.startsWith(TokenType.ELSEIF.getValue())) {
-                    result = TokenType.ELSEIF;
-                } else if (code.startsWith(TokenType.ELSE.getValue())) {
-                    result = TokenType.ELSE;
-                } else if (code.startsWith(TokenType.ENDIF.getValue())) {
-                    result = TokenType.ENDIF;
-                } else if (code.startsWith(TokenType.USERDOC.getValue())) {
-                    result = TokenType.USERDOC;
-                } else if (code.startsWith(TokenType.ENDUSERDOC.getValue())) {
-                    result = TokenType.ENDUSERDOC;
-                } else if (code.startsWith(TokenType.LET.getValue())) {
-                    result = TokenType.LET;
-                } else if (code.startsWith(TokenType.ENDLET.getValue())) {
-                    result = TokenType.ENDLET;
-                } else if (code.startsWith(TokenType.BOOKMARK.getValue())) {
-                    result = TokenType.BOOKMARK;
-                } else if (code.startsWith(TokenType.ENDBOOKMARK.getValue())) {
-                    result = TokenType.ENDBOOKMARK;
-                } else if (code.startsWith(TokenType.LINK.getValue())) {
-                    result = TokenType.LINK;
-                } else if (code.startsWith(TokenType.COMMENT.getValue())) {
-                    result = TokenType.COMMENT;
-                } else if (code.startsWith(TokenType.TEMPLATE.getValue())) {
-                    result = TokenType.TEMPLATE;
-                } else if (code.startsWith(TokenType.ENDTEMPLATE.getValue())) {
-                    result = TokenType.ENDTEMPLATE;
-                } else if (code.startsWith(TokenType.QUERY.getValue())) {
-                    result = TokenType.QUERY;
-                } else {
-                    result = TokenType.STATIC;
-                }
-            } else {
+
+        final XWPFRun run = token.getRun();
+        // is run a field begin run
+        if (fieldUtils.isFieldBegin(run)) {
+            final String type = getType(fieldUtils.lookAheadTag(runIterator));
+            if (type == null) {
                 result = TokenType.STATIC;
+            } else if (type.equals(TokenType.FOR.getValue())) {
+                result = TokenType.FOR;
+            } else if (type.equals(TokenType.ENDFOR.getValue())) {
+                result = TokenType.ENDFOR;
+            } else if (type.equals(TokenType.IF.getValue())) {
+                result = TokenType.IF;
+            } else if (type.equals(TokenType.ELSEIF.getValue())) {
+                result = TokenType.ELSEIF;
+            } else if (type.equals(TokenType.ELSE.getValue())) {
+                result = TokenType.ELSE;
+            } else if (type.equals(TokenType.ENDIF.getValue())) {
+                result = TokenType.ENDIF;
+            } else if (type.equals(TokenType.USERDOC.getValue())) {
+                result = TokenType.USERDOC;
+            } else if (type.equals(TokenType.ENDUSERDOC.getValue())) {
+                result = TokenType.ENDUSERDOC;
+            } else if (type.equals(TokenType.LET.getValue())) {
+                result = TokenType.LET;
+            } else if (type.equals(TokenType.ENDLET.getValue())) {
+                result = TokenType.ENDLET;
+            } else if (type.equals(TokenType.BOOKMARK.getValue())) {
+                result = TokenType.BOOKMARK;
+            } else if (type.equals(TokenType.ENDBOOKMARK.getValue())) {
+                result = TokenType.ENDBOOKMARK;
+            } else if (type.equals(TokenType.LINK.getValue())) {
+                result = TokenType.LINK;
+            } else if (type.equals(TokenType.COMMENT.getValue())) {
+                result = TokenType.COMMENT;
+            } else if (type.equals(TokenType.TEMPLATE.getValue())) {
+                result = TokenType.TEMPLATE;
+            } else if (type.equals(TokenType.ENDTEMPLATE.getValue())) {
+                result = TokenType.ENDTEMPLATE;
+            } else {
+                result = TokenType.QUERY;
             }
+        } else {
+            result = TokenType.STATIC;
         }
+
         return result;
     }
 
