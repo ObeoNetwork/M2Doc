@@ -286,7 +286,7 @@ public class M2DocSiriusServices {
                 session.save(new NullProgressMonitor());
             }
         } else {
-            res = null;
+            res = MImage.EMPTY;
         }
 
         return res;
@@ -517,7 +517,7 @@ public class M2DocSiriusServices {
         if (description != null) {
             res = asImage(description.getRepresentation(), refresh, layerNames);
         } else {
-            res = null;
+            res = MImage.EMPTY;
         }
 
         return res;
@@ -543,7 +543,7 @@ public class M2DocSiriusServices {
         if (descriptor != null) {
             res = asImage(descriptor.getRepresentation());
         } else {
-            res = null;
+            res = MImage.EMPTY;
         }
 
         return res;
@@ -569,7 +569,7 @@ public class M2DocSiriusServices {
         if (description != null && description.getRepresentation() instanceof DTable) {
             res = asTable((DTable) description.getRepresentation());
         } else {
-            res = null;
+            res = MTable.EMPTY;
         }
 
         return res;

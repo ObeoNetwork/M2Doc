@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.element;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,6 +23,59 @@ import org.eclipse.emf.common.util.URI;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public interface MImage extends MElement {
+
+    /**
+     * An empty {@link MImage}.
+     */
+    // CHECKSTYLE:OFF
+    MImage EMPTY = new MImage() {
+
+        @Override
+        public void setWidth(int width) {
+            // nothing to do here
+        }
+
+        @Override
+        public void setHeight(int height) {
+            // nothing to do here
+        }
+
+        @Override
+        public void setConserveRatio(boolean conserveRatio) {
+            // nothing to do here
+        }
+
+        @Override
+        public int getWidth() {
+            return 0;
+        }
+
+        @Override
+        public URI getURI() {
+            return URI.createURI("");
+        }
+
+        @Override
+        public PictureType getType() {
+            return PictureType.JPG;
+        }
+
+        @Override
+        public InputStream getInputStream() throws IOException {
+            return new ByteArrayInputStream(new byte[] {});
+        }
+
+        @Override
+        public int getHeight() {
+            return 0;
+        }
+
+        @Override
+        public boolean conserveRatio() {
+            return false;
+        }
+    };
+    // CHECKSTYLE:ON
 
     /**
      * Gets the image width.

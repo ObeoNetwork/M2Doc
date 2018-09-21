@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+=== BODY ===
+
+  This demonstrate the simple usage of asImageByRepresentationName service :
+  [query: .setWidth(.asImageByRepresentationName('not existing diagram'), 300)]
+  End of demonstration.
+=== FOOTER ===
+
+  
+=== TEMPLATES ===

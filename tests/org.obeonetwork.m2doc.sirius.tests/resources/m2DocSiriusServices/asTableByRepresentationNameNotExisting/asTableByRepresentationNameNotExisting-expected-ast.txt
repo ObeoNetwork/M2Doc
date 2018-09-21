@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+=== BODY ===
+
+  This demonstrate the simple usage of asTableByRepresentationName service :
+  [query: .asTableByRepresentationName('not existing table')]
+  End of demonstration.
+=== FOOTER ===
+
+  
+=== TEMPLATES ===

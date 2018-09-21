@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.element;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,32 @@ import java.util.List;
  * @author ldelaigue
  */
 public interface MTable extends MElement {
+
+    /**
+     * Empty {@link MTable}.
+     */
+    MTable EMPTY = new MTable() {
+
+        @Override
+        public void setLabel(String label) {
+            // nothing to do here
+        }
+
+        @Override
+        public List<MRow> getRows() {
+            return new ArrayList<>();
+        }
+
+        @Override
+        public String getLabel() {
+            return "";
+        }
+
+        @Override
+        public int getColumnsCount() {
+            return 0;
+        }
+    };
 
     /**
      * Interface that represents a table row, whose label can be used as row header.

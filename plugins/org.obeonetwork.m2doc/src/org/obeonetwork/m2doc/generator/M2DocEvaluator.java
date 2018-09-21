@@ -593,16 +593,24 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             insertMBookmark(paragraph, run, (MBookmark) object);
             res = paragraph;
         } else if (object instanceof MImage) {
-            final XWPFRun imageRun = insertFieldRunReplacement(paragraph, run, "");
-            insertMImage((XWPFParagraph) imageRun.getParent(), imageRun, (MImage) object);
-            res = (XWPFParagraph) imageRun.getParent();
+            if (object != MImage.EMPTY) {
+                final XWPFRun imageRun = insertFieldRunReplacement(paragraph, run, "");
+                insertMImage((XWPFParagraph) imageRun.getParent(), imageRun, (MImage) object);
+                res = (XWPFParagraph) imageRun.getParent();
+            } else {
+                res = paragraph;
+            }
         } else if (object instanceof MText) {
             res = (XWPFParagraph) insertMText(paragraph, run, (MText) object).getParent();
         } else if (object instanceof MTable) {
-            XWPFRun tableRun = run;
-            tableRun.getCTR().getInstrTextList().clear();
-            insertMTable(tableRun, (MTable) object);
-            res = (XWPFParagraph) tableRun.getParent();
+            if (object != MTable.EMPTY) {
+                XWPFRun tableRun = run;
+                tableRun.getCTR().getInstrTextList().clear();
+                insertMTable(tableRun, (MTable) object);
+                res = (XWPFParagraph) tableRun.getParent();
+            } else {
+                res = paragraph;
+            }
         } else if (object instanceof MPagination) {
             res = insertMPagination(paragraph, run, (MPagination) object);
         } else if (object instanceof MParagraph) {
