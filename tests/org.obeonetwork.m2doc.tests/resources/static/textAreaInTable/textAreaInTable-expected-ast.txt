@@ -1,0 +1,36 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a static text :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
