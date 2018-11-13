@@ -603,7 +603,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         } else if (object instanceof MText) {
             res = (XWPFParagraph) insertMText(paragraph, run, (MText) object).getParent();
         } else if (object instanceof MTable) {
-            if (object != MTable.EMPTY) {
+            if (!((MTable) object).getRows().isEmpty()) {
                 XWPFRun tableRun = run;
                 tableRun.getCTR().getInstrTextList().clear();
                 insertMTable(tableRun, (MTable) object);
@@ -879,9 +879,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFTable docTable;
         if (generatedDocument instanceof XWPFDocument) {
             if (table.getLabel() != null) {
-                XWPFRun captionRun;
-                captionRun = run;
-                IRunBody runBody = captionRun.getParent();
+                final XWPFRun captionRun = run;
+                final IRunBody runBody = captionRun.getParent();
                 if (runBody instanceof XWPFParagraph) {
                     ((XWPFParagraph) runBody).setSpacingAfter(0);
                 }
@@ -889,11 +888,17 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 captionRun.setBold(true);
             }
             docTable = ((XWPFDocument) generatedDocument).createTable();
+            if (docTable.getRows().size() > 0) {
+                docTable.removeRow(0);
+            }
         } else if (generatedDocument instanceof XWPFHeaderFooter) {
             final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
             final int index = headerFooter._getHdrFtr().getTblArray().length;
             final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
             docTable = new XWPFTable(cttbl, headerFooter);
+            if (docTable.getRows().size() > 0) {
+                docTable.removeRow(0);
+            }
             headerFooter.insertTable(index, docTable);
         } else if (generatedDocument instanceof XWPFTableCell) {
             XWPFTableCell tcell = (XWPFTableCell) generatedDocument;
@@ -908,7 +913,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             }
             CTTbl ctTbl = tcell.getCTTc().addNewTbl();
             docTable = new XWPFTable(ctTbl, tcell);
-            int tableRank = tcell.getTables().size();
+            if (docTable.getRows().size() > 0) {
+                docTable.removeRow(0);
+            }
+            final int tableRank = tcell.getTables().size();
             tcell.insertTable(tableRank, docTable);
             // A paragraph is mandatory at the end of a cell, so let's always add one.
             tcell.addParagraph();
@@ -932,37 +940,19 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            The MTable that describes the data and styles to insert
      */
     private void fillTable(XWPFTable table, MTable mtable) {
-        List<MRow> rows = mtable.getRows();
         // Iterate over the rows
-        for (int rowIdx = 0; rowIdx < rows.size(); rowIdx++) {
-            MRow mRow = rows.get(rowIdx);
-
-            // Get or create XWPF row
-            XWPFTableRow xwpfRow;
-            if (table.getNumberOfRows() > rowIdx) {
-                xwpfRow = table.getRow(rowIdx);
-            } else {
-                xwpfRow = table.createRow();
-            }
+        for (MRow mRow : mtable.getRows()) {
+            final XWPFTableRow xwpfRow = table.createRow();
+            xwpfRow.getCtRow().getTcList().clear();
 
             // Iterate over the columns
-            for (int colIdx = 0; colIdx < mtable.getColumnsCount(); colIdx++) {
-                // Get or create XWPF cell
-                XWPFTableCell xwpfCell;
-                if (xwpfRow.getTableCells().size() > colIdx) {
-                    xwpfCell = xwpfRow.getCell(colIdx);
-                } else {
-                    xwpfCell = xwpfRow.createCell();
-                }
+            for (MCell mCell : mRow.getCells()) {
+                final XWPFTableCell xwpfCell = xwpfRow.createCell();
 
                 // Populate cell
                 XWPFParagraph xwpfCellParagraph = xwpfCell.getParagraphs().get(0);
                 xwpfCellParagraph.setSpacingBefore(0);
                 xwpfCellParagraph.setSpacingAfter(0);
-                MCell mCell = null;
-                if (colIdx < mRow.getCells().size()) {
-                    mCell = mRow.getCells().get(colIdx);
-                }
                 setCellContent(xwpfCell, mCell);
             }
         }

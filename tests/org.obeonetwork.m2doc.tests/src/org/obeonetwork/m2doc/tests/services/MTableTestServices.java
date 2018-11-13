@@ -46,6 +46,41 @@ public class MTableTestServices {
     }
 
     /**
+     * Gets a {@link MTable} with the given label and an empty {@link MCell}.
+     * 
+     * @param label
+     *            the {@link MTable#getLabel() label}
+     * @return {@link MTable} with the given label and an empty {@link MCell}
+     */
+    public MTable tableEmptyCell(String label) {
+        final MTable table = new MTableImpl();
+        table.setLabel(label);
+        final MRow row = new MRowImpl();
+        final MCell cell = new MCellImpl(null, Color.BLACK);
+        row.getCells().add(cell);
+        table.getRows().add(row);
+
+        return table;
+    }
+
+    /**
+     * Gets a {@link MTable} with the given label and a <code>null</code> cell.
+     * 
+     * @param label
+     *            the {@link MTable#getLabel() label}
+     * @return the {@link MTable} with the given label and a <code>null</code> cell
+     */
+    public MTable tableNullCell(String label) {
+        final MTable table = new MTableImpl();
+        table.setLabel(label);
+        final MRow row = new MRowImpl();
+        row.getCells().add(null);
+        table.getRows().add(row);
+
+        return table;
+    }
+
+    /**
      * Gets a sample {@link MTable} with the given label.
      * 
      * @param label

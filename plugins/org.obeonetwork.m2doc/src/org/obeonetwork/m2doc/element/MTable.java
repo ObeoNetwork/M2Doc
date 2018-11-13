@@ -12,7 +12,7 @@
 package org.obeonetwork.m2doc.element;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ public interface MTable extends MElement {
 
         @Override
         public List<MRow> getRows() {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 
         @Override

@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of an empty table :
+  [query: .tableNullCell('A table with null cell')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
