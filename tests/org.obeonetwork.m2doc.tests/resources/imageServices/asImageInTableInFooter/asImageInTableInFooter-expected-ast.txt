@@ -1,0 +1,37 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  
+=== FOOTER ===
+
+  Checks ImageServices registration :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        [query: .fit(.asImage('dh1.gif'), 100, 250)]
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== TEMPLATES ===
