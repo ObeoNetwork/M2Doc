@@ -12,10 +12,16 @@
 package org.obeonetwork.m2doc.tests.services;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.obeonetwork.m2doc.element.MElement;
+import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MCell.HAlignment;
+import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.element.impl.MStyleImpl;
@@ -167,6 +173,35 @@ public class MTableTestServices {
             default:
                 res = "";
                 break;
+        }
+
+        return res;
+    }
+
+    public List<MElement> alignmentTables(String label) {
+        final List<MElement> res = new ArrayList<>();
+
+        for (HAlignment hAlign : MCell.HAlignment.values()) {
+            final MTable table = new MTableImpl();
+            res.add(table);
+            res.add(MPagination.newParagraph);
+            final MRow titleRow = new MRowImpl();
+            table.getRows().add(titleRow);
+            titleRow.getCells().add(new MCellImpl(null, null));
+            titleRow.getCells().add(new MCellImpl(new MTextImpl(hAlign.name(), null), null));
+            titleRow.getCells().add(new MCellImpl(null, null));
+            for (VAlignment vAlign : MCell.VAlignment.values()) {
+                final MRow row = new MRowImpl();
+                table.getRows().add(row);
+                row.getCells().add(new MCellImpl(new MTextImpl(vAlign.name(), null), null));
+                final MCellImpl cell = new MCellImpl(new MTextImpl(
+                        "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                        null), null);
+                cell.setVAlignment(vAlign);
+                cell.setHAlignment(hAlign);
+                row.getCells().add(cell);
+                row.getCells().add(new MCellImpl(new MTextImpl("\n\n\n\n\n\n", null), null));
+            }
         }
 
         return res;

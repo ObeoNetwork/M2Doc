@@ -35,7 +35,7 @@ public class MTableImpl implements MTable {
         /**
          * The {@link List} of {@link MCell}.
          */
-        private final List<MCell> cells = new ArrayList<MTable.MCell>();
+        private final List<MCell> cells = new ArrayList<>();
 
         @Override
         public List<MCell> getCells() {
@@ -59,6 +59,16 @@ public class MTableImpl implements MTable {
          * The background {@link Color}.
          */
         private Color backgroundColor;
+
+        /**
+         * The vertical alignemnt.
+         */
+        private VAlignment vAlign;
+
+        /**
+         * The horizontal alignemnt.
+         */
+        private HAlignment hAlign;
 
         /**
          * Constructor.
@@ -93,12 +103,32 @@ public class MTableImpl implements MTable {
             this.backgroundColor = backgroundColor;
         }
 
+        @Override
+        public VAlignment getVAlignment() {
+            return vAlign;
+        }
+
+        @Override
+        public void setVAlignment(VAlignment alignement) {
+            vAlign = alignement;
+        }
+
+        @Override
+        public HAlignment getHAlignment() {
+            return hAlign;
+        }
+
+        @Override
+        public void setHAlignment(HAlignment alignement) {
+            hAlign = alignement;
+        }
+
     }
 
     /**
      * The {@link List} of {@link MRow}.
      */
-    private final List<MRow> rows = new ArrayList<MRow>();
+    private final List<MRow> rows = new ArrayList<>();
 
     /**
      * The table label.

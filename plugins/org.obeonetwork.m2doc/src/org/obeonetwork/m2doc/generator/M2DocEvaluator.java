@@ -29,6 +29,7 @@ import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IRunBody;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
@@ -42,6 +43,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell.XWPFVertAlign;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlException;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -61,6 +63,8 @@ import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MCell.HAlignment;
+import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
@@ -953,9 +957,70 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 XWPFParagraph xwpfCellParagraph = xwpfCell.getParagraphs().get(0);
                 xwpfCellParagraph.setSpacingBefore(0);
                 xwpfCellParagraph.setSpacingAfter(0);
+                if (mCell != null && mCell.getHAlignment() != null) {
+                    xwpfCellParagraph.setAlignment(getHAllignment(mCell.getHAlignment()));
+                }
                 setCellContent(xwpfCell, mCell);
             }
         }
+    }
+
+    /**
+     * Converts the horizontal alignment.
+     * 
+     * @param hAlignment
+     *            the horizontal alignment
+     * @return the horizontal alignment
+     */
+    private ParagraphAlignment getHAllignment(HAlignment hAlignment) {
+        final ParagraphAlignment res;
+
+        switch (hAlignment) {
+            case BOTH:
+                res = ParagraphAlignment.BOTH;
+                break;
+
+            case CENTER:
+                res = ParagraphAlignment.CENTER;
+                break;
+
+            case DISTRIBUTE:
+                res = ParagraphAlignment.DISTRIBUTE;
+                break;
+
+            case HIGH_KASHIDA:
+                res = ParagraphAlignment.HIGH_KASHIDA;
+                break;
+
+            case LEFT:
+                res = ParagraphAlignment.LEFT;
+                break;
+
+            case LOW_KASHIDA:
+                res = ParagraphAlignment.LOW_KASHIDA;
+                break;
+
+            case MEDIUM_KASHIDA:
+                res = ParagraphAlignment.MEDIUM_KASHIDA;
+                break;
+
+            case NUM_TAB:
+                res = ParagraphAlignment.NUM_TAB;
+                break;
+
+            case RIGHT:
+                res = ParagraphAlignment.RIGHT;
+                break;
+
+            case THAI_DISTRIBUTE:
+                res = ParagraphAlignment.THAI_DISTRIBUTE;
+                break;
+
+            default:
+                throw new IllegalStateException("can't convert " + hAlignment);
+        }
+
+        return res;
     }
 
     /**
@@ -971,6 +1036,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         XWPFRun cellRun = cellParagraph.createRun();
         if (mCell != null) {
             final MElement contents = mCell.getContents();
+            if (mCell.getVAlignment() != null) {
+                cell.setVerticalAlignment(getVAglignment(mCell.getVAlignment()));
+            }
             if (contents != null) {
                 final IBody savedGeneratedDocument = generatedDocument;
                 final XWPFParagraph savedGeneratedParagraph = currentGeneratedParagraph;
@@ -992,6 +1060,40 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 cell.setColor(hexColor(backGroundColor));
             }
         }
+    }
+
+    /**
+     * Converts the vertical alignment.
+     * 
+     * @param vAlignment
+     *            the vertical alignment
+     * @return the vertical alignment
+     */
+    private XWPFVertAlign getVAglignment(VAlignment vAlignment) {
+        final XWPFVertAlign res;
+
+        switch (vAlignment) {
+            case BOTH:
+                res = XWPFVertAlign.BOTH;
+                break;
+
+            case BOTTOM:
+                res = XWPFVertAlign.BOTTOM;
+                break;
+
+            case CENTER:
+                res = XWPFVertAlign.CENTER;
+                break;
+
+            case TOP:
+                res = XWPFVertAlign.TOP;
+                break;
+
+            default:
+                throw new IllegalStateException("can't convert " + vAlignment);
+        }
+
+        return res;
     }
 
     /**
