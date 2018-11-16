@@ -25,6 +25,7 @@ public interface MTable extends MElement {
     /**
      * Empty {@link MTable}.
      */
+    // CHECKSTYLE:OFF
     MTable EMPTY = new MTable() {
 
         @Override
@@ -46,7 +47,19 @@ public interface MTable extends MElement {
         public int getColumnsCount() {
             return 0;
         }
+
+        @Override
+        public String getStyleID() {
+            return null;
+        }
+
+        @Override
+        public void setStyleID(String styleID) {
+            // nothing to do here
+        }
+
     };
+    // CHECKSTYLE:ON
 
     /**
      * Interface that represents a table row, whose label can be used as row header.
@@ -248,4 +261,19 @@ public interface MTable extends MElement {
      *            the new table label (caption)
      */
     void setLabel(String label);
+
+    /**
+     * Gets the style ID. Note to be used the style ID should already be used in the document.
+     * 
+     * @return the style ID
+     */
+    String getStyleID();
+
+    /**
+     * Sets the style ID. Note to be used the style ID should already be used in the document.
+     * 
+     * @param styleID
+     *            the new style ID
+     */
+    void setStyleID(String styleID);
 }

@@ -135,6 +135,11 @@ public class MTableImpl implements MTable {
      */
     private String label;
 
+    /**
+     * The style ID of this table.
+     */
+    private String styleID;
+
     @Override
     public List<MRow> getRows() {
         return rows;
@@ -160,5 +165,15 @@ public class MTableImpl implements MTable {
             }
         }
         return result;
+    }
+
+    @Override
+    public String getStyleID() {
+        return styleID;
+    }
+
+    @Override
+    public void setStyleID(String styleID) {
+        this.styleID = styleID;
     }
 }

@@ -880,7 +880,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            the {@link MTable} to insert
      */
     private void insertMTable(XWPFRun run, MTable table) {
-        final XWPFTable docTable;
+        final XWPFTable xwpfTable;
         if (generatedDocument instanceof XWPFDocument) {
             if (table.getLabel() != null) {
                 final XWPFRun captionRun = run;
@@ -891,62 +891,78 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 captionRun.setText(table.getLabel());
                 captionRun.setBold(true);
             }
-            docTable = ((XWPFDocument) generatedDocument).createTable();
-            if (docTable.getRows().size() > 0) {
-                docTable.removeRow(0);
+            xwpfTable = ((XWPFDocument) generatedDocument).createTable();
+            if (xwpfTable.getRows().size() > 0) {
+                xwpfTable.removeRow(0);
             }
         } else if (generatedDocument instanceof XWPFHeaderFooter) {
             final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
             final int index = headerFooter._getHdrFtr().getTblArray().length;
-            final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
-            docTable = new XWPFTable(cttbl, headerFooter);
-            if (docTable.getRows().size() > 0) {
-                docTable.removeRow(0);
+            final CTTbl ctTbl = headerFooter._getHdrFtr().insertNewTbl(index);
+            xwpfTable = new XWPFTable(ctTbl, headerFooter);
+            if (xwpfTable.getRows().size() > 0) {
+                xwpfTable.removeRow(0);
             }
-            headerFooter.insertTable(index, docTable);
+            headerFooter.insertTable(index, xwpfTable);
         } else if (generatedDocument instanceof XWPFTableCell) {
             XWPFTableCell tcell = (XWPFTableCell) generatedDocument;
             if (table.getLabel() != null) {
                 final XWPFRun captionRun = run;
-                IRunBody runBody = captionRun.getParent();
+                final IRunBody runBody = captionRun.getParent();
                 if (runBody instanceof XWPFParagraph) {
                     ((XWPFParagraph) runBody).setSpacingAfter(0);
                 }
                 captionRun.setText(table.getLabel());
                 captionRun.setBold(true);
             }
-            CTTbl ctTbl = tcell.getCTTc().addNewTbl();
-            docTable = new XWPFTable(ctTbl, tcell);
-            if (docTable.getRows().size() > 0) {
-                docTable.removeRow(0);
+            final CTTbl ctTbl = tcell.getCTTc().addNewTbl();
+
+            xwpfTable = new XWPFTable(ctTbl, tcell);
+            if (xwpfTable.getRows().size() > 0) {
+                xwpfTable.removeRow(0);
             }
             final int tableRank = tcell.getTables().size();
-            tcell.insertTable(tableRank, docTable);
+            tcell.insertTable(tableRank, xwpfTable);
             // A paragraph is mandatory at the end of a cell, so let's always add one.
             tcell.addParagraph();
         } else {
-            docTable = null;
+            xwpfTable = null;
             insertMessage((XWPFParagraph) run.getParent(), ValidationMessageLevel.ERROR,
                     "m:table can't be inserted here.");
         }
 
-        if (docTable != null) {
-            fillTable(docTable, table);
+        if (xwpfTable != null) {
+            fillTable(xwpfTable, table);
         }
     }
 
     /**
-     * Fill a newly created word table with the data from an MTable.
+     * Fill a newly created word table with the data from an {@link MTable}.
      * 
-     * @param table
+     * @param xwpfTable
      *            The newly created word table
-     * @param mtable
-     *            The MTable that describes the data and styles to insert
+     * @param mTable
+     *            The {@link MTable} that describes the data and styles to insert
      */
-    private void fillTable(XWPFTable table, MTable mtable) {
+    private void fillTable(XWPFTable xwpfTable, MTable mTable) {
+
+        final boolean removeBorders;
+        if (mTable.getStyleID() != null) {
+            xwpfTable.setStyleID(mTable.getStyleID());
+            removeBorders = true;
+            if (xwpfTable.getCTTbl().getTblPr() != null && xwpfTable.getCTTbl().getTblPr().isSetTblBorders()) {
+                xwpfTable.getCTTbl().getTblPr().unsetTblBorders();
+            }
+        } else {
+            removeBorders = false;
+        }
+
         // Iterate over the rows
-        for (MRow mRow : mtable.getRows()) {
-            final XWPFTableRow xwpfRow = table.createRow();
+        for (MRow mRow : mTable.getRows()) {
+            final XWPFTableRow xwpfRow = xwpfTable.createRow();
+            while (!xwpfRow.getTableCells().isEmpty()) {
+                xwpfRow.removeCell(0);
+            }
             xwpfRow.getCtRow().getTcList().clear();
 
             // Iterate over the columns
@@ -961,6 +977,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     xwpfCellParagraph.setAlignment(getHAllignment(mCell.getHAlignment()));
                 }
                 setCellContent(xwpfCell, mCell);
+                if (removeBorders && xwpfCell.getCTTc().getTcPr() != null
+                    && xwpfCell.getCTTc().getTcPr().isSetTcBorders()) {
+                    xwpfCell.getCTTc().getTcPr().unsetTcBorders();
+                }
             }
         }
     }
@@ -1500,6 +1520,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             currentGeneratedRow = currentGeneratedTable.createRow();
             final CTRow ctRow = (CTRow) row.getTableRow().getCtRow().copy();
             ctRow.getTcList().clear();
+            while (!currentGeneratedRow.getTableCells().isEmpty()) {
+                currentGeneratedRow.removeCell(0);
+            }
+
             currentGeneratedRow.getCtRow().set(ctRow);
             // iterate on cells.
             for (Cell cell : row.getCells()) {
