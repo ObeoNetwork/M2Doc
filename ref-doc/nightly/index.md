@@ -212,9 +212,19 @@ Note that fields are also used by Microsoft Word page number, table of contents,
 
 #### Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))
 
-A simple comment, nothing is generated.
+A simple comment, nothing is generated. It can be used to add specific text style to your document without having the text generated. The style can then be used later in the template.
 
 `{m:comment any text}`
+
+#### Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/commentBlockNominal))
+
+A comment block, the commented block is not generated. It can be used to add specific text or table style to your document without having the text or table generated. The style can then be used later in the template.
+
+`{m:commentblock any text}`
+
+`...commented block...`
+
+`{m:endcommentblock}`
 
 #### Static statement
 
