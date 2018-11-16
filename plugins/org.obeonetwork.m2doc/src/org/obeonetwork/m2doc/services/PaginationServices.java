@@ -47,9 +47,9 @@ value = "Services available for pagination. See [document examples](https://gith
 public class PaginationServices {
 
     /**
-     * The mapping from the level to the style identifier.
+     * The mapping from the text style identifier to the style name.
      */
-    private final Map<String, String> styleIDs = new HashMap<>();
+    private final Map<String, String> textStyleIDs = new HashMap<>();
 
     /**
      * Consturtor.
@@ -63,7 +63,7 @@ public class PaginationServices {
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI);) {
             final List<XWPFStyle> styles = getStyles(document.getStyles());
             for (XWPFStyle style : styles) {
-                styleIDs.put(style.getStyleId(), style.getName());
+                textStyleIDs.put(style.getStyleId(), style.getName());
             }
         } catch (IOException e) {
             // nothing to do here
@@ -130,11 +130,11 @@ public class PaginationServices {
     )
     // @formatter:on
     public MParagraph asStyle(String text, String styleName) {
-        final String styleID = styleIDs.get(styleName);
+        final String styleID = textStyleIDs.get(styleName);
         if (styleID != null) {
             return new MParagraphImpl(new MTextImpl(text, null), styleName);
         } else {
-            throw new IllegalArgumentException("no style " + styleName);
+            throw new IllegalArgumentException("no text style " + styleName);
         }
     }
 

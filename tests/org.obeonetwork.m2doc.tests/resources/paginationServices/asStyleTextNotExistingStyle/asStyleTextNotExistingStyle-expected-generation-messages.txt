@@ -1,4 +1,4 @@
 ERROR - asStyle(java.lang.String,java.lang.String) with arguments [Section 1, NotExistingStyle] failed:
-	no style NotExistingStyle
-java.lang.IllegalArgumentException: no style NotExistingStyle
+	no text style NotExistingStyle
+java.lang.IllegalArgumentException: no text style NotExistingStyle
 ...STACK...
