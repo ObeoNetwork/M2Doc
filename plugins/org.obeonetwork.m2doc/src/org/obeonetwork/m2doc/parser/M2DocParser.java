@@ -160,6 +160,10 @@ public class M2DocParser extends AbstractBodyParser {
                 result = TokenType.LINK;
             } else if (type.equals(TokenType.COMMENT.getValue())) {
                 result = TokenType.COMMENT;
+            } else if (type.equals(TokenType.COMMENTBLOCK.getValue())) {
+                result = TokenType.COMMENTBLOCK;
+            } else if (type.equals(TokenType.ENDCOMMENTBLOCK.getValue())) {
+                result = TokenType.ENDCOMMENTBLOCK;
             } else if (type.equals(TokenType.TEMPLATE.getValue())) {
                 result = TokenType.TEMPLATE;
             } else if (type.equals(TokenType.ENDTEMPLATE.getValue())) {
@@ -196,6 +200,9 @@ public class M2DocParser extends AbstractBodyParser {
                 case COMMENT:
                     res.getStatements().add(parseComment());
                     break;
+                case COMMENTBLOCK:
+                    res.getStatements().add(parseCommentBlock());
+                    break;
                 case ELSEIF:
                 case ELSE:
                 case ENDFOR:
@@ -204,6 +211,7 @@ public class M2DocParser extends AbstractBodyParser {
                 case ENDBOOKMARK:
                 case ENDUSERDOC:
                 case ENDTEMPLATE:
+                case ENDCOMMENTBLOCK:
                     // report the error and ignore the problem so that parsing
                     // continues in other parts of the document.
                     XWPFRun run = runIterator.lookAhead(1).getRun();
@@ -376,6 +384,36 @@ public class M2DocParser extends AbstractBodyParser {
                 .substring(TokenType.COMMENT.getValue().length());
 
         comment.setText(commentText.trim());
+
+        return comment;
+    }
+
+    /**
+     * Parse a comment block construct. Comment block are of the form
+     * <code>{m:commentblock some comment} runs {m:endcommentblock}</code>
+     * 
+     * @return the created object
+     * @throws DocumentParserException
+     *             if something wrong happens during parsing.
+     */
+    private Comment parseCommentBlock() throws DocumentParserException {
+        final Comment comment = (Comment) EcoreUtil.create(TemplatePackage.Literals.COMMENT);
+        final String commentText = readTag(comment, comment.getRuns()).trim()
+                .substring(TokenType.COMMENTBLOCK.getValue().length());
+
+        comment.setText(commentText.trim());
+
+        final XWPFRun lastRun = comment.getRuns().get(comment.getRuns().size() - 1);
+        // read up the tags until the "m:endcommentblock" tag is encountered.
+        final Block body = parseBlock(null, TokenType.ENDCOMMENTBLOCK);
+        // we discard the body, only keep messages from the block.
+        for (TemplateValidationMessage message : body.getValidationMessages()) {
+            comment.getValidationMessages()
+                    .add(new TemplateValidationMessage(message.getLevel(), message.getMessage(), lastRun));
+        }
+        if (getNextTokenType() != TokenType.EOF) {
+            readTag(comment, comment.getClosingRuns());
+        }
 
         return comment;
     }

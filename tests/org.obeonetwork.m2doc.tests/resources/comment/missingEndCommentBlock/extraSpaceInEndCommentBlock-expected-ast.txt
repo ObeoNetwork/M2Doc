@@ -1,0 +1,10 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a comment :
+  comment: some important comment
+=== FOOTER ===
+
+=== TEMPLATES ===

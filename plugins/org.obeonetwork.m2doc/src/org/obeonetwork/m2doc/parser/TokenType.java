@@ -44,6 +44,16 @@ public enum TokenType {
     ENDTEMPLATE(M2DocUtils.M + "endtemplate"),
 
     /**
+     * A {@link Comment comment block} tag.
+     */
+    COMMENTBLOCK(M2DocUtils.M + "commentblock"),
+
+    /**
+     * A {@link Comment comment block} end tag.
+     */
+    ENDCOMMENTBLOCK(M2DocUtils.M + "endcommentblock"),
+
+    /**
      * A {@link Comment} tag.
      */
     COMMENT(M2DocUtils.M + "comment"),
