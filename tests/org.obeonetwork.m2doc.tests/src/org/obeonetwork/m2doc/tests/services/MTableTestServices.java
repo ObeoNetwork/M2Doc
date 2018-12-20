@@ -207,4 +207,18 @@ public class MTableTestServices {
         return res;
     }
 
+    public MTable simpleTable(String label) {
+        final MTable res = new MTableImpl();
+
+        for (int i = 0; i < 5; i++) {
+            final MRow row = new MRowImpl();
+            res.getRows().add(row);
+            for (int j = 0; j < 5; j++) {
+                row.getCells().add(new MCellImpl(new MTextImpl("Text " + i + " " + j, null), null));
+            }
+        }
+
+        return res;
+    }
+
 }

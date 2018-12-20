@@ -30,8 +30,10 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MParagraph;
+import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.impl.MParagraphImpl;
 import org.obeonetwork.m2doc.element.impl.MTextImpl;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STStyleType;
 
 /**
  * Pagination services.
@@ -52,6 +54,11 @@ public class PaginationServices {
     private final Map<String, String> textStyleIDs = new HashMap<>();
 
     /**
+     * The mapping from the table style identifier to the style name.
+     */
+    private final Map<String, String> tableStyleIDs = new HashMap<>();
+
+    /**
      * Consturtor.
      * 
      * @param uriConverter
@@ -63,7 +70,18 @@ public class PaginationServices {
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI);) {
             final List<XWPFStyle> styles = getStyles(document.getStyles());
             for (XWPFStyle style : styles) {
-                textStyleIDs.put(style.getStyleId(), style.getName());
+                switch (style.getType().intValue()) {
+                    case STStyleType.INT_PARAGRAPH:
+                        textStyleIDs.put(style.getStyleId(), style.getName());
+                        break;
+
+                    case STStyleType.INT_TABLE:
+                        tableStyleIDs.put(style.getStyleId(), style.getName());
+                        break;
+
+                    default:
+                        break;
+                }
             }
         } catch (IOException e) {
             // nothing to do here
@@ -121,20 +139,43 @@ public class PaginationServices {
         value = "Converts a String with a given style if the style exists in the template, this service will insert a new paragraph. You can add styled text in comment to make sure they are present.",
         params = {
             @Param(name = "text", value = "The text"),
-            @Param(name = "style", value = "The style name"),
+            @Param(name = "style", value = "The style ID"),
         },
-        result = "Insert the given text as a title.",
+        result = "Insert the given text as the given style.",
         examples = {
             @Example(expression = "'Section 1'.asStyle('Title1')", result = "insert 'Section 1' as style 'Titre1' in a new paragraph if the style exists in the template."),
         }
     )
     // @formatter:on
-    public MParagraph asStyle(String text, String styleName) {
-        final String styleID = textStyleIDs.get(styleName);
-        if (styleID != null) {
-            return new MParagraphImpl(new MTextImpl(text, null), styleName);
+    public MParagraph asStyle(String text, String styleID) {
+        final String styleName = textStyleIDs.get(styleID);
+        if (styleName != null) {
+            return new MParagraphImpl(new MTextImpl(text, null), styleID);
         } else {
-            throw new IllegalArgumentException("no text style " + styleName);
+            throw new IllegalArgumentException("no text style " + styleID);
+        }
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Converts a MTable with a given style if the style exists in the template. You can add styled text in blockcomment to make sure they are present.",
+        params = {
+            @Param(name = "table", value = "The MTable"),
+            @Param(name = "styleID", value = "The style ID"),
+        },
+        result = "Apply the given style to the given table.",
+        examples = {
+            @Example(expression = "myTable.asStyle('Title1')", result = "set the given style to myTable."),
+        }
+    )
+    // @formatter:on
+    public MTable asStyle(MTable table, String styleID) {
+        final String styleName = tableStyleIDs.get(styleID);
+        if (styleName != null) {
+            table.setStyleID(styleID);
+            return table;
+        } else {
+            throw new IllegalArgumentException("no table style " + styleID);
         }
     }
 

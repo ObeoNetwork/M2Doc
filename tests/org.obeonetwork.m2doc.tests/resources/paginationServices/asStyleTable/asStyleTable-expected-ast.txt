@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  comment: 
+  A simple demonstration of asStyle() :
+  [query: .asStyle(.simpleTable('Table 1'), 'TableauGrille6Couleur-Accentuation3')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
