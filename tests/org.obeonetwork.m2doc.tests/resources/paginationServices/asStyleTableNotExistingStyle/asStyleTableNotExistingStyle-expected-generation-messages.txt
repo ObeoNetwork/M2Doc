@@ -1,4 +1,4 @@
-ERROR - asStyle(org.obeonetwork.m2doc.element.MTable,java.lang.String) with arguments [org.obeonetwork.m2doc.element.impl.MTableImpl@7ac9af2a, NotExistingStyle] failed:
+ERROR - asStyle(org.obeonetwork.m2doc.element.MTable,java.lang.String) with arguments [org.obeonetwork.m2doc.element.impl.MTableImpl@00000000  NotExistingStyle] failed:
 	no table style NotExistingStyle
 java.lang.IllegalArgumentException: no table style NotExistingStyle
 ...STACK...
