@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+=== BODY ===
+
+  This demonstrate the simple usage of isRepresentationDescriptionName service :
+  [query: .setWidth(->first(.asImageByRepresentationDescriptionName(self, 'Entities')), 300)]
+  End of demonstration.
+=== FOOTER ===
+
+  
+=== TEMPLATES ===

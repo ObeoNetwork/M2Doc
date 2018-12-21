@@ -26,6 +26,11 @@ public final class M2DocSiriusUtils {
     public static final String SIRIUS_SESSION_OPTION = "SiriusSession";
 
     /**
+     * The Sirius force refresh option.
+     */
+    public static final String SIRIUS_FORCE_REFRESH = "SiriusForceRefresh";
+
+    /**
      * Constructor.
      */
     private M2DocSiriusUtils() {

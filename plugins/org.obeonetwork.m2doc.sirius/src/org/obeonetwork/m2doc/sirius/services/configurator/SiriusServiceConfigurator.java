@@ -85,6 +85,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         final List<String> res = new ArrayList<>();
 
         res.add(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        res.add(M2DocSiriusUtils.SIRIUS_FORCE_REFRESH);
 
         return res;
     }
@@ -167,7 +168,8 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             }
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
-                final M2DocSiriusServices serviceInstance = new M2DocSiriusServices(session);
+                final boolean forceRefresh = Boolean.valueOf(options.get(M2DocSiriusUtils.SIRIUS_FORCE_REFRESH));
+                final M2DocSiriusServices serviceInstance = new M2DocSiriusServices(session, forceRefresh);
                 res.addAll(ServiceUtils.getServices(queryEnvironment, serviceInstance));
                 services.put(queryEnvironment, serviceInstance);
             }
@@ -206,6 +208,17 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                 res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, diagnostics);
                 diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocSiriusUtils.PLUGIN_ID, 0,
                         "The Sirius session doesn't exist: " + sessionURI.toString(), new Object[] {sessionURI}));
+            }
+        }
+        final String forceRefreshStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        if (forceRefreshStr != null) {
+            final List<Diagnostic> diagnostics = new ArrayList<>();
+            res.put(M2DocSiriusUtils.SIRIUS_FORCE_REFRESH, diagnostics);
+            if (!Boolean.TRUE.toString().equalsIgnoreCase(forceRefreshStr)
+                && !Boolean.FALSE.toString().equalsIgnoreCase(forceRefreshStr)) {
+                diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocSiriusUtils.PLUGIN_ID, 0,
+                        "The Sirius force refresh must be a boolean true or flase: " + forceRefreshStr,
+                        new Object[] {forceRefreshStr}));
             }
         }
 

@@ -100,6 +100,11 @@ public class M2DocSiriusServices {
     private final Session session;
 
     /**
+     * Tells if we should force the refresh of the representation before exporting it.
+     */
+    private final boolean forceRefresh;
+
+    /**
      * The {@link CleaningJobRegistry}.
      */
     private final CleaningJobRegistry registry = new CleaningJobRegistry();
@@ -112,7 +117,7 @@ public class M2DocSiriusServices {
     /**
      * Tells if we should {@link Session#close(org.eclipse.core.runtime.IProgressMonitor) close} the {@link #session}.
      */
-    private boolean shouldCloseSession;
+    private final boolean shouldCloseSession;
 
     /**
      * Constructor.
@@ -120,11 +125,25 @@ public class M2DocSiriusServices {
      * @param session
      *            the Sirius {@link Session}
      */
+    @Deprecated
     public M2DocSiriusServices(Session session) {
+        this(session, false);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param session
+     *            the Sirius {@link Session}
+     */
+    public M2DocSiriusServices(Session session, boolean forceRefresh) {
         this.session = session;
+        this.forceRefresh = forceRefresh;
         if (!session.isOpen()) {
             session.open(new NullProgressMonitor());
             shouldCloseSession = true;
+        } else {
+            shouldCloseSession = false;
         }
     }
 
@@ -275,7 +294,7 @@ public class M2DocSiriusServices {
             final DDiagram diagramtoExport = SiriusRepresentationUtils.getDDiagramToExport(diagram, refresh, layers,
                     session, SiriusRepresentationUtils.getEditor(session, diagram) != null);
 
-            res = asImage(diagramtoExport);
+            res = internalAsImage(diagramtoExport);
 
             // remove representation copy if needed
             if (!diagramtoExport.equals(diagram)) {
@@ -307,6 +326,30 @@ public class M2DocSiriusServices {
     public MImage asImage(final DRepresentation representation) throws SizeTooLargeException, IOException {
         final MImage res;
 
+        if (forceRefresh && representation instanceof DDiagram) {
+            final Set<String> layerNames = new LinkedHashSet<>();
+            for (Layer layer : ((DDiagram) representation).getActivatedLayers()) {
+                layerNames.add(layer.getName());
+            }
+            res = asImage(representation, forceRefresh, layerNames);
+        } else {
+            res = internalAsImage(representation);
+        }
+
+        return res;
+    }
+
+    /**
+     * Exports the given {@link DRepresentation} as an {@link MImage}.
+     * 
+     * @param representation
+     *            the {@link DRepresentation} to export
+     * @return the exported {@link MImage}
+     * @throws IOException
+     *             if the image can't be serialized
+     */
+    protected MImage internalAsImage(final DRepresentation representation) throws IOException {
+        final MImage res;
         final File tmpFile = File.createTempFile(sanitize(representation.getName()) + "-m2doc", ".jpg");
         tmpFiles.add(tmpFile);
 
@@ -330,7 +373,6 @@ public class M2DocSiriusServices {
         }
 
         res = new MImageImpl(URI.createFileURI(tmpFile.getAbsolutePath()));
-
         return res;
     }
 
@@ -398,8 +440,9 @@ public class M2DocSiriusServices {
             Set<String> layerNames) throws SizeTooLargeException, IOException {
         final List<MImage> res = new ArrayList<>();
 
-        for (DRepresentation representation : SiriusRepresentationUtils
-                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName)) {
+        List<DRepresentation> representations = new ArrayList<>(SiriusRepresentationUtils
+                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName));
+        for (DRepresentation representation : representations) {
             res.add(asImage(representation, refresh, layerNames));
         }
 
@@ -423,8 +466,9 @@ public class M2DocSiriusServices {
             throws SizeTooLargeException, IOException {
         final List<MImage> res = new ArrayList<>();
 
-        for (DRepresentation representation : SiriusRepresentationUtils
-                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName)) {
+        List<DRepresentation> representations = new ArrayList<>(SiriusRepresentationUtils
+                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName));
+        for (DRepresentation representation : representations) {
             res.add(asImage(representation));
         }
 

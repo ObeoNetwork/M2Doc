@@ -23,7 +23,8 @@ import org.obeonetwork.m2doc.sirius.tests.tables.DMTableTest;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {M2DocSiriusServicesTests.class, DMStyleTest.class, DMTableTest.class, })
+@SuiteClasses(value = {M2DocSiriusServicesTests.class, M2DocSiriusServicesWithForceRefreshTests.class,
+    DMStyleTest.class, DMTableTest.class, })
 public class AllTests {
 
 }
