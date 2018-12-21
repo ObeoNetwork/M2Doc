@@ -15,5 +15,5 @@ location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.6/
 
 location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" {
     // for testing purpose only
-	org.eclipse.xtext.sdk.feature.group lazy
+	org.eclipse.xtext.sdk.feature.group [2.15.0,2.16.0)
 }
