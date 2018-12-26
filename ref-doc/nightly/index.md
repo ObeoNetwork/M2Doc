@@ -216,6 +216,8 @@ A simple comment, nothing is generated. It can be used to add specific text styl
 
 `{m:comment any text}`
 
+If you want to use a variable named 'comment' you can use an extra space after 'm:'.
+
 #### Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/commentBlockNominal))
 
 A comment block, the commented block is not generated. It can be used to add specific text or table style to your document without having the text or table generated. The style can then be used later in the template.
@@ -225,6 +227,8 @@ A comment block, the commented block is not generated. It can be used to add spe
 `...commented block...`
 
 `{m:endcommentblock}`
+
+If you want to use a variable named 'commentblock' or 'endcommentblock' you can use an extra space after 'm:'.
 
 #### Static statement
 
@@ -254,6 +258,7 @@ If the condition is true the &#171;then block&#187; is inserted in the generated
 
 ` {m:endif}`
 
+If you want to use a variable named 'elseif', 'else', 'endif' you can use an extra space after 'm:'. You can also use the AQL if exression if you add a space after 'm:'.
 
 #### Repetition ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
@@ -261,6 +266,7 @@ Generates the &#171;repetition block&#187; for each value of the [AQL expression
 
 `{m:for variable | AQL expression} ...repetition block... {m:endfor}`
 
+If you want to use a variable named 'for' or 'endfor' you can use an extra space after 'm:'.
 
 #### Let ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
@@ -268,11 +274,15 @@ Declares a variable named &#171;variable&#187; with the result of the [AQL expre
 
 `{m:let variable = AQL expression} ...let block... {m:endlet}`
 
+If you want to use a variable named 'endlet' you can use an extra space after 'm:'. You can also use the AQL let exression if you add a space after 'm:'.
+
 #### Bookmark ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))
 
 Generates a bookmark with the result of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) as identifier and the &#171;bookmark block&#187; as content.
 
 `{m:bookmark AQL expression} ...bookmark block... {m:endbookmark}`
+
+If you want to use a variable named 'bookmark' or 'endbookmark' you can use an extra space after 'm:'.
 
 #### Link ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))
 
@@ -281,6 +291,7 @@ Generates a link to the [bookmark](index.html#bookmark-examplehttpsgithubcomobeo
 `{m:link AQL expression AQL expression}`
 
 The first [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) id the identifier and the second one is the text to display.
+If you want to use a variable named 'link' you can use an extra space after 'm:'.
 
 #### User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))
 
@@ -289,6 +300,7 @@ Generates a user content block in the resulting document. If the generated docum
 `{m:userdoc AQL expression} ...user block... {m:enduserdoc}`
 
 If a user content exists in a previously generated document and the id is not re-generated, the user content will by removed from the generated document and saved in a &#171;lost&#187; file.
+If you want to use a variable named 'userdoc' or 'enduserdoc' you can use an extra space after 'm:'.
 
 #### Template construct ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/template/nominal))
 
@@ -301,6 +313,7 @@ This template can be called as follow using a simple [query](index.html#query-ex
 `{m:1.myTemplate(3)}`
 
 If you want more examples of M2Doc syntax you can have a look at the nominal cases in [unit tests](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources).
+If you want to use a variable named 'template' or 'endtemplate' you can use an extra space after 'm:'.
 
 ### Services
 
