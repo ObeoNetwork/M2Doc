@@ -45,12 +45,26 @@ Converts a String with a given style if the style exists in the template, this s
 ### Parameter
 
 * **text**: The text
-* **style**: The style name
+* **style**: The style ID
 
 ### Example
 
 * 'Section 1'.asStyle('Title1')
   * insert 'Section 1' as style 'Titre1' in a new paragraph if the style exists in the template.
+
+## org.obeonetwork.m2doc.element.MTable.asStyle(String) : org.obeonetwork.m2doc.element.MTable
+
+Converts a MTable with a given style if the style exists in the template. You can add styled text in blockcomment to make sure they are present.
+
+### Parameter
+
+* **table**: The MTable
+* **styleID**: The style ID
+
+### Example
+
+* myTable.asStyle('Title1')
+  * set the given style to myTable.
 
 
 
