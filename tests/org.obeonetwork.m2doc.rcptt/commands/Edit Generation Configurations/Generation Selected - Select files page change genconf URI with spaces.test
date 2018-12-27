@@ -1,0 +1,50 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_DwpogH31Eeiu8KolG1i86A
+Element-Name: Generation Selected - Select files page change genconf URI with spaces
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _fZXFYAkoEemwqKc5vpY3aQ
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/27/18 4:05 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select test | key-type F2
+with [get-window "Rename Resource"] {
+    get-editbox -after [get-label "New name:"] | set-text "test 2"
+    get-button OK | click
+}
+get-view "Project Explorer" | get-tree | select "test 2/asImageByRepresentationDescriptionName.genconf" | get-menu 
+    -path "Edit Documentation Configurations" | click
+get-window "Generation configuration" | get-editbox -after [get-label "Generation file:"] | get-property text 
+    | equals "platform:/resource/test 2/asImageByRepresentationDescriptionName.genconf" | verify-true
+with [get-window "Generation configuration" | get-editbox -after [get-label "Generation file:"]] {
+    click-text 1
+    set-text ""
+    type-text "platform:/resource/test  2/asImageByRepresentationDescriptionName.genconf"
+}
+with [get-window "Generation configuration" | get-group "Relative to generation file"] {
+    get-editbox -after [get-label "Template File:"] | get-property text 
+        | equals "/resource/test 2/asImageByRepresentationDescriptionName-template.docx" | verify-true
+    get-editbox -after [get-label "Validation file:"] | get-property text 
+        | equals "/resource/test 2/asImageByRepresentationDescriptionName-validation.docx" | verify-true
+    get-editbox -after [get-label "Result file:"] | get-property text 
+        | equals "/resource/test 2/asImageByRepresentationDescriptionName-generated.docx" | verify-true
+}
+exec-with-options {
+    get-window "Generation configuration" | get-button Finish | click
+    get-window "Problem Occurred" 
+        | get-label "'Saving generation configuration: platform:/resource/test  2/asImageByRepresentationDescriptionName.genconf' has encountered a problem." 
+        | get-property caption 
+        | equals "'Saving generation configuration: platform:/resource/test  2/asImageByRepresentationDescriptionName.genconf' has encountered a problem." 
+        | verify-true
+    get-window "Problem Occurred" | get-label "M2Doc : technical error : Resource '/test  2' does not exist." 
+        | get-property caption | equals "M2Doc : technical error : Resource '/test  2' does not exist." | verify-true
+    get-window "Problem Occurred" | get-button OK | click
+} -allowStatusDialog
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
