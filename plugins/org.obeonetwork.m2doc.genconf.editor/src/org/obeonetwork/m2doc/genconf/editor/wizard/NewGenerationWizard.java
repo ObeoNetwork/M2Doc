@@ -174,13 +174,17 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
     private Generation getGeneration(IStructuredSelection selected) {
         final Generation res;
 
-        final ResourceSet rs = new ResourceSetImpl();
-        final URI genconfURI = URI
-                .createPlatformResourceURI(((IResource) selection.getFirstElement()).getFullPath().toString(), true);
-        if (GenconfUtils.GENCONF_EXTENSION_FILE.equals(genconfURI.fileExtension())) {
-            final Resource resource = rs.getResource(genconfURI, true);
-            if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Generation) {
-                res = (Generation) resource.getContents().get(0);
+        if (selected != null && !selected.isEmpty()) {
+            final ResourceSet rs = new ResourceSetImpl();
+            final URI genconfURI = URI.createPlatformResourceURI(
+                    ((IResource) selection.getFirstElement()).getFullPath().toString(), true);
+            if (GenconfUtils.GENCONF_EXTENSION_FILE.equals(genconfURI.fileExtension())) {
+                final Resource resource = rs.getResource(genconfURI, true);
+                if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Generation) {
+                    res = (Generation) resource.getContents().get(0);
+                } else {
+                    res = null;
+                }
             } else {
                 res = null;
             }
@@ -281,24 +285,28 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
     private URI getGenconfURI(IStructuredSelection selected) {
         final URI res;
 
-        if (selected.getFirstElement() instanceof IFile) {
-            final IFile file = (IFile) selected.getFirstElement();
-            if (M2DocUtils.DOCX_EXTENSION_FILE.equals(file.getFileExtension())) {
-                final String fullPathString = file.getFullPath().toString();
-                String genconfFileString = fullPathString.substring(0,
-                        fullPathString.length() - M2DocUtils.DOCX_EXTENSION_FILE.length())
-                    + GenconfUtils.GENCONF_EXTENSION_FILE;
-                res = URI.createPlatformResourceURI(genconfFileString, true);
-            } else {
-                final String fullPathString = file.getParent().getFullPath().toString();
+        if (selected != null && !selected.isEmpty()) {
+            if (selected.getFirstElement() instanceof IFile) {
+                final IFile file = (IFile) selected.getFirstElement();
+                if (M2DocUtils.DOCX_EXTENSION_FILE.equals(file.getFileExtension())) {
+                    final String fullPathString = file.getFullPath().toString();
+                    String genconfFileString = fullPathString.substring(0,
+                            fullPathString.length() - M2DocUtils.DOCX_EXTENSION_FILE.length())
+                        + GenconfUtils.GENCONF_EXTENSION_FILE;
+                    res = URI.createPlatformResourceURI(genconfFileString, true);
+                } else {
+                    final String fullPathString = file.getParent().getFullPath().toString();
+                    res = URI.createPlatformResourceURI(fullPathString + "/" + DEFAULT_GENCONF_FILE_NAME, true);
+                }
+            } else if (selected.getFirstElement() instanceof IContainer) {
+                final IContainer container = (IContainer) selected.getFirstElement();
+                final String fullPathString = container.getFullPath().toString();
                 res = URI.createPlatformResourceURI(fullPathString + "/" + DEFAULT_GENCONF_FILE_NAME, true);
+            } else {
+                res = URI.createPlatformResourceURI("/myproject/" + DEFAULT_GENCONF_FILE_NAME, true);
             }
-        } else if (selected.getFirstElement() instanceof IContainer) {
-            final IContainer container = (IContainer) selected.getFirstElement();
-            final String fullPathString = container.getFullPath().toString();
-            res = URI.createPlatformResourceURI(fullPathString + "/" + DEFAULT_GENCONF_FILE_NAME, true);
         } else {
-            res = null;
+            res = URI.createPlatformResourceURI("/myproject/" + DEFAULT_GENCONF_FILE_NAME, true);
         }
 
         return res;

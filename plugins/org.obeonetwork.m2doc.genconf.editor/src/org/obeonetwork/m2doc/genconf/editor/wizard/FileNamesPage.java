@@ -214,6 +214,13 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
                 // nothing to do here
             }
         });
+
+        final URI templateURI = URI.createURI(getTemplateURIText().getText());
+        if (templateURI != null) {
+            validatePage(generation, templateURI);
+        } else {
+            validatePage(generation, URI.createURI(""));
+        }
     }
 
     /**
