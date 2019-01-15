@@ -8,7 +8,7 @@ relativePath: ..
 # Table of Content
 
 Following you will find the tutorial to use [M2Doc](http://m2Doc.org) document generation with [Capella](http://polarsys.org/capella/).
-This will cover installation of integration plugins and deployement of the In-Flight Entertainment System (IFE) example.
+This will cover installation of integration plugins and deployement of the In-Flight Entertainment System (IFE) example. Before you start you can have a look at the [LA template](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx) and the [SA template](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx) and the generated [LA document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-expected-generation.docx) and [SA document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-expected-generation.docx). More information about the templates [here](index.html#templates).
 
 Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer). You can test the generation by sharing the IFE example project provided in the extensions. Then edit the .genconf file to reference the shared SystemEngineering model element. You might need to open the Capella session first by double clicking the .aird file.
 
@@ -64,9 +64,9 @@ In the following you will find a description of each templates.
 
 ### LA Complete
 
-This template allows the generation of a logical specification of the content of the system. It starts by a description of the hierarchy of logical components, with, for each, its allocated functions and provided/required interfaces. Then the function decomposition is presented including functional exchanges. At the end, a reference of data structures is generated.
+This template allows the generation of a logical specification of the content of the system. It starts by a description of the hierarchy of logical components, with, for each, its allocated functions and provided/required interfaces. Then the function decomposition is presented including functional exchanges. At the end, a reference of data structures is generated. You can have a look at the [LA template](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx) and the generated [LA document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-expected-generation.docx).
 
 ### SA Complete
 
-This template allows the generation of a document concerning the whole specification of a system. Starting from mission and capabilities of the system, the template presents the context of the system, its state machines and communicating actors, and functional specifications. At the end a reference of data structures is generated.
+This template allows the generation of a document concerning the whole specification of a system. Starting from mission and capabilities of the system, the template presents the context of the system, its state machines and communicating actors, and functional specifications. At the end a reference of data structures is generated.You can have a look at the [SA template](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx) and the generated [SA document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-expected-generation.docx).
 
