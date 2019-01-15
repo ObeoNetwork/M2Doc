@@ -36,7 +36,7 @@ The M2Doc templates can be [validated](index.html#validating-a-generation-setup)
 
 * Definition of model entry points
   * Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) section)
-  * Mapping with model elements (see the [Generation configuration wizard](index.html#generation-configuration-wizard) or the [Generation configuration editor](index.html#generation-configuration-editor) section)
+  * Mapping with model elements (see the [Generation configuration wizard](index.html#generation-configuration-wizard)
 
 ![Variable definition]({{page.relativePath}}/ref-doc/nightly/images/Variable%20definition.png "Variable definition.")
 
@@ -55,7 +55,7 @@ The M2Doc templates can be [validated](index.html#validating-a-generation-setup)
 
 * Definition of content, navigation, and format (see the [Template authoring](index.html#template-authoring) section)
 * Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) section)
-* Mapping of variables with model elements, definition of input model and output file (see the [Generation configuration wizard](index.html#generation-configuration-wizard) or the [Generation configuration editor](index.html#generation-configuration-editor) section)
+* Mapping of variables with model elements, definition of input model and output file (see the [Generation configuration wizard](index.html#generation-configuration-wizard)
 * Generation of output document (see the [Generate a document](index.html#generating-a-document) section)
 
 ![Main steps]({{page.relativePath}}/ref-doc/nightly/images/Main%20steps.png "Main steps.")
@@ -123,7 +123,7 @@ Right click on the template file and select the &#171;Initialize Documentation C
 
 ![The Initialize Documentation Configuration menu.]({{page.relativePath}}/ref-doc/nightly/images/Initialize%20Documentation%20Configuration%20menu.png "The Initialize Documentation Configuration menu.")
 
-To edit the created generation model file you can use the [Generation configuration wizard](index.html#generation-configuration-wizard) or the [Generation configuration editor](index.html#generation-configuration-editor).
+To edit the created generation model file you can use the [Generation configuration wizard](index.html#generation-configuration-wizard).
 
 ### Validating a generation setup
 
@@ -158,35 +158,6 @@ The next page of the wizard is dedicated to variables and binding values to them
 To reference new values you can load new resources using the `Load resource` button. Note the `Options (expert)` tab that allow to set advanced options to find values from a Sirius session for instance.
 
 When the `Finish` button is pushed the generation configuration file is created or edited.
-
-### Generation configuration editor
-
-**Note: This editor is deprecated and will be removed in future release. Use [Generation configuration wizard](index.html#generation-configuration-wizard) instead.**
-
-The generation configuration model (.genconf file) references the template [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) and the result [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier). It also binds the variables defined using the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) to the desired value. It can also contain a set of options to configure [specific services](index.html#custom-constructor).
-
-![The generation configuration editor.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20configuration%20editor.png "The generation configuration editor.")
-
-In this example we reference the template named &#171;template.docx&#187; using a relative [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) and the result [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) is set to &#171;template-generated.docx&#187;. All relative [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) are relative to the .genconf file, note absolute [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) can be used as well.
-
-The first table of the editor is used to bind variables. The first column is the variable name and the second column is its value. The value can be a reference to an EMF model element, or be a primitive type value. Two menus are accessible using right click on the variable table.
-
-![The variable menu.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20configuration%20editor%20-%20variables%20menu.png "The variable menu.")
-
-* `Add variables` will add all variables defined in the referenced template. To define variables you can use the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor)
-* `Remove definition` will remove the selected bindings
-
-Another menu can be useful to set EMF model values. It&#8217;s the &#171;Load Resource...&#187; menu. It adds the EMF elements of the selected resources to possible values of a variable.
-
-The second table of the editor at the bottom can be used to set options for specific services. For instance if you use the [Sirius](https://eclipse.org/sirius/) integration an option should be set to define the Sirius session model. Three menus are accessible using right click on the option table.
-
-![The option menu.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20configuration%20editor%20-%20options%20menu.png "The option menu.")
-<a name="write-a-template"></a>
-* `Add option` will add an option (see [services with custom constructor](index.html#custom-constructor) for more details)
-* `Initialize option` will initialize an option (see [services with custom constructor](index.html#custom-constructor) for more details)
-* `Delete` will delete the selected options 
-
-Note that modifying option can modify the accessible variable values. For instance after referencing a Sirius session, semantic elements of the session are accessible.
 
 ## Template authoring
 
@@ -363,7 +334,7 @@ You should then see the following editor:
 
 ![The template editor.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor.png "The template editor.")
 
-The first table at the top lists variables needed by the template. Each variable has a declared [type](https://www.eclipse.org/acceleo/documentation/aql.html#Typeliterals). This type is used to [validate](index.html#validating-a-generation-setup) the template and to select a value in the [Generation configuration wizard](index.html#generation-configuration-wizard) and the [Generation configuration editor](index.html#generation-configuration-editor). Three menus are accessible using right click on the variable table.
+The first table at the top lists variables needed by the template. Each variable has a declared [type](https://www.eclipse.org/acceleo/documentation/aql.html#Typeliterals). This type is used to [validate](index.html#validating-a-generation-setup) the template and to select a value in the [Generation configuration wizard](index.html#generation-configuration-wizard). Three menus are accessible using right click on the variable table.
 
 ![The variables menu.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor%20-%20variables%20menu.png "The variables menu.")
 
