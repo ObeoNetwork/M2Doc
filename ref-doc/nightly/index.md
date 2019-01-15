@@ -35,8 +35,8 @@ The M2Doc templates can be [validated](index.html#validating-a-generation-setup)
 ### Principles
 
 * Definition of model entry points
-  * Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) section)
-  * Mapping with model elements (see the [Generation configuration wizard](index.html#generation-configuration-wizard)
+  * Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) section)
+  * Mapping with model elements (see the [Generation configuration wizard](index.html#generation-configuration-wizard) section)
 
 ![Variable definition]({{page.relativePath}}/ref-doc/nightly/images/Variable%20definition.png "Variable definition.")
 
@@ -54,8 +54,8 @@ The M2Doc templates can be [validated](index.html#validating-a-generation-setup)
 ### Main steps
 
 * Definition of content, navigation, and format (see the [Template authoring](index.html#template-authoring) section)
-* Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor) section)
-* Mapping of variables with model elements, definition of input model and output file (see the [Generation configuration wizard](index.html#generation-configuration-wizard)
+* Declaration of variables (see the [Template properties wizard](index.html#template-properties-wizard) section)
+* Mapping of variables with model elements, definition of input model and output file (see the [Generation configuration wizard](index.html#generation-configuration-wizard) section)
 * Generation of output document (see the [Generate a document](index.html#generating-a-document) section)
 
 ![Main steps]({{page.relativePath}}/ref-doc/nightly/images/Main%20steps.png "Main steps.")
@@ -296,7 +296,7 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 * [Link services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_linkservices.html)
 * [Pagination services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_paginationservices.html)
 * [Sirius services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docsiriusservices.html) (Note: M2Doc versions 1.1.0 and above are compatible with [Obeo Designer Team Edition](https://www.obeodesigner.com/en/collaborative-features).)
-  * you will have to add the following packages nsURI (see [Template properties wizard](index.html#template-properties-wizard) or [Template editor](index.html#template-editor) section): http://www.eclipse.org/sirius/1.1.0, http://www.eclipse.org/sirius/diagram/1.1.0, and/or http://www.eclipse.org/sirius/diagram/sequence/2.0.0.
+  * you will have to add the following packages nsURI (see [Template properties wizard](index.html#template-properties-wizard) section): http://www.eclipse.org/sirius/1.1.0, http://www.eclipse.org/sirius/diagram/1.1.0, and/or http://www.eclipse.org/sirius/diagram/sequence/2.0.0.
 
 ### Template properties wizard
 
@@ -316,60 +316,9 @@ The second page is dedicated to variable declarations. The list of declarations 
 
 The M2Doc version to use with this template can be changed on this page. Not having this property set will trigger a warning while [validating](index.html#validating-a-generation-setup) with M2Doc 2.0.0 or above.
 
-### Template editor
-
-**Note: This editor is deprecated and will be removed in future release. Use [Template properties wizard](index.html#template-properties-wizard) instead.**
-
-The template editor can set M2Doc-specific custom properties in your Word template. Those properties are used to define variables, EMF packages URIs, and service imports. When editing a template you need to be in a Java or a plug-in project to be able to add services. The template editor modifies template custom properties. You can also read [template custom properties](index.html#template-custom-properties) section to change them manually.
-
-To open a template with the template editor right click on the template .docx file and select open with. If the template editor is not in the list select `other ...`:
-
-![Open with menu.]({{page.relativePath}}/ref-doc/nightly/images/Open%20with%20menu.png "Open with menu.")
-
-Make sure to select `Internal editors` in the editor selection dialog:
-
-![Editor selection dialog.]({{page.relativePath}}/ref-doc/nightly/images/Editor%20selection%20dialog.png "Editor selection dialog.")
-
-You should then see the following editor:
-
-![The template editor.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor.png "The template editor.")
-
-The first table at the top lists variables needed by the template. Each variable has a declared [type](https://www.eclipse.org/acceleo/documentation/aql.html#Typeliterals). This type is used to [validate](index.html#validating-a-generation-setup) the template and to select a value in the [Generation configuration wizard](index.html#generation-configuration-wizard). Three menus are accessible using right click on the variable table.
-
-![The variables menu.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor%20-%20variables%20menu.png "The variables menu.")
-
-* `Add missing variables` will add all variables used in the template but not declared yet.
-* `Add variable` will add a variable
-* `Delete variable` will delete selected variables
-
-The second table in the middle lists packages used in the template. It reference EMF EPackages used to type expressions in the template. Two menus are accessible using right click on the package table.
-
-![The variables menu.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor%20-%20packages%20menu.png "The variables menu.")
-
-* `Add` will open the following dialog to add selected packages
-
-![The package selection dialog.]({{page.relativePath}}/ref-doc/nightly/images/Package%20selection%20dialog.png "The package selection dialog.")
-
-* `Delete` will remove the selected packages
-
-The last table at the bottom lists services used in the template. If you have created your [own services](index.html#providing-new-services) you can add them here to be able to use them in the template. Three menus are accessible using right click on the service table.
-
-![The variables menu.]({{page.relativePath}}/ref-doc/nightly/images/Template%20editor%20-%20services%20menu.png "The variables menu.")
-
-* `Add` will open a dialog where you can select a Java class
-
-![The service selection dialog.]({{page.relativePath}}/ref-doc/nightly/images/Service%20selection%20dialog.png "The service selection dialog.")
-
-If your class doesn't appear in the dialog you might want to check the Window>Preferences>Plug-in Development>Include all plug-ins from target in Java search option. This will list deployed classes.
-
-* `Delete` will remove the selection
-* `Select token` will add/remove services according to the selected [tokens](index.html#service-token) in the dialog
-
-![The service token selection dialog.]({{page.relativePath}}/ref-doc/nightly/images/Service%20token%20selection%20dialog.png "The service token selection dialog.")
-
 ### Template custom properties
 
-You can use the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor). But you can also edit them using your Microsoft Word document editor (see [this page](https://support.office.com/en-us/article/View-or-change-the-properties-for-an-Office-file-21d604c2-481e-4379-8e54-1dd4622c6b75?CorrelationId=866914c3-b0b5-42e8-aeb2-e9f7bcc216e2&ui=en-US&rs=en-US&ad=US&ocmsassetID=HA010047524)). This section will describe possible properties name and value used by M2Doc.
+You can use the [Template properties wizard](index.html#template-properties-wizard). But you can also edit them using your Microsoft Word document editor (see [this page](https://support.office.com/en-us/article/View-or-change-the-properties-for-an-Office-file-21d604c2-481e-4379-8e54-1dd4622c6b75?CorrelationId=866914c3-b0b5-42e8-aeb2-e9f7bcc216e2&ui=en-US&rs=en-US&ad=US&ocmsassetID=HA010047524)). This section will describe possible properties name and value used by M2Doc.
 
 #### M2Doc version custom properties
 
@@ -423,7 +372,7 @@ For example:
 
 ## Providing new services
 
-You can extends M2Doc by adding services to your templates using the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor). A service is a simple Java method with at least one parameter and a return value.
+You can extends M2Doc by adding services to your templates using the [Template properties wizard](index.html#template-properties-wizard). A service is a simple Java method with at least one parameter and a return value.
 
 ### Service class
 
@@ -431,7 +380,7 @@ There are two cases for the class containing the service: either it has a [defau
 
 #### Default constructor
 
-When the class has no explicit constructor or the constructor doesn&#8217;t have any parameters. In this case you don&#8217;t need any specific development except for your service method. You can have a look at [specific return types](index.html#special-return-types) if you want to insert images, table, etc... To use your services in your template simply add them through the [Template properties wizard](index.html#template-properties-wizard) or the [template editor](index.html#template-editor).
+When the class has no explicit constructor or the constructor doesn&#8217;t have any parameters. In this case you don&#8217;t need any specific development except for your service method. You can have a look at [specific return types](index.html#special-return-types) if you want to insert images, table, etc... To use your services in your template simply add them through the [Template properties wizard](index.html#template-properties-wizard).
 
 #### Custom constructor
 
@@ -456,7 +405,7 @@ Default implementations are also provided by M2Doc in [this package](https://git
 
 ### Services and packages token
 
-The services and packages token extension point org.obeonetwork.m2doc.ide.services.register can be used to reference a set of [service classes](index.html#default-constructor) and packages using a token name. This token can be selected using &#171;Select tokens&#187; menu in the [template editor](index.html#template-editor) or the [Template properties wizard](index.html#template-properties-wizard). You can find an example of this extension point [here](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.ide.tests/plugin.xml).
+The services and packages token extension point org.obeonetwork.m2doc.ide.services.register can be used to reference a set of [service classes](index.html#default-constructor) and packages using a token name. This token can be selected using &#171;Select tokens&#187; menu in the [Template properties wizard](index.html#template-properties-wizard). You can find an example of this extension point [here](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.ide.tests/plugin.xml).
 
 ### Template registry
 
