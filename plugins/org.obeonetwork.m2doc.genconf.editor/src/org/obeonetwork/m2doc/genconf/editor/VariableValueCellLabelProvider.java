@@ -31,6 +31,11 @@ import org.obeonetwork.m2doc.genconf.StringDefinition;
 public class VariableValueCellLabelProvider extends CellLabelProvider {
 
     /**
+     * Illegal state message.
+     */
+    static final String DON_T_KNOW_WHAT_TO_DO_WITH = "don't know what to do with ";
+
+    /**
      * The {@link AdapterFactory}.
      */
     private AdapterFactory adapterFactory;
@@ -73,7 +78,7 @@ public class VariableValueCellLabelProvider extends CellLabelProvider {
                 cell.setText("");
             }
         } else {
-            cell.setText(CustomGenconfEditor.DON_T_KNOW_WHAT_TO_DO_WITH + definition.getClass().getCanonicalName());
+            cell.setText(DON_T_KNOW_WHAT_TO_DO_WITH + definition.getClass().getCanonicalName());
         }
     }
 }

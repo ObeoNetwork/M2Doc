@@ -16,17 +16,6 @@
 <plugin>
 
 
-   <extension point="org.eclipse.ui.editors">
-      <!-- @generated m2docconf -->
-      <editor
-            id="org.obeonetwork.m2doc.genconf.presentation.GenconfEditorID"
-            name="%_UI_GenconfEditor_label"
-            icon="icons/full/obj16/GenconfModelFile.gif"
-            extensions="genconf"
-            class="org.obeonetwork.m2doc.genconf.editor.CustomGenconfEditor"
-            contributorClass="org.obeonetwork.m2doc.genconf.presentation.GenconfActionBarContributor">
-      </editor>
-   </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
