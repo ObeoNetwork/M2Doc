@@ -234,8 +234,16 @@ public class DefinitionValueDialog extends MessageDialog {
         }
         treeViewer.setInput(resourceSet);
         if (def.getValue() != null) {
-            treeViewer.setSelection(
-                    new StructuredSelection(resourceSet.getEObject(EcoreUtil.getURI(def.getValue()), true)), true);
+            try {
+                final EObject eObj = resourceSet.getEObject(EcoreUtil.getURI(def.getValue()), true);
+                if (eObj != null) {
+                    treeViewer.setSelection(new StructuredSelection(eObj), true);
+                }
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                // nothing to do here
+            }
         } else {
             final Button okButton = getButton(OK);
             if (okButton != null) {
