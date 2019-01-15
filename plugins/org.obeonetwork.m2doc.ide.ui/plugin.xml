@@ -25,15 +25,6 @@
       </propertyTester>
    </extension>
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="org.obeonetwork.m2doc.ide.ui.editor.M2DocTemplateEditor"
-            icon="icons/m2doc.png"
-            id="org.obeonetwork.m2doc.ide.ui.editor.M2DocTemplateEditor"
-            name="M2Doc Template Editor">
-      </editor>
-   </extension>
-   <extension
          point="org.eclipse.ui.importWizards">
       <category
             id="org.obeonetwork.m2doc.ide.ui.importCategory"
