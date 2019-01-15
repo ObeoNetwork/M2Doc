@@ -1471,37 +1471,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         copy.getTrList().clear();
         final XWPFTable saveTable = currentGeneratedTable;
         try {
-            if (generatedDocument instanceof XWPFDocument) {
-                currentGeneratedTable = ((XWPFDocument) generatedDocument).createTable();
-                if (currentGeneratedTable.getRows().size() > 0) {
-                    currentGeneratedTable.removeRow(0);
-                }
-                currentGeneratedTable.getCTTbl().set(copy);
-            } else if (generatedDocument instanceof XWPFHeaderFooter) {
-                final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
-                final int index = headerFooter._getHdrFtr().getTblArray().length;
-                final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
-                XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
-                if (newTable.getRows().size() > 0) {
-                    newTable.removeRow(0);
-                }
-                headerFooter.insertTable(index, newTable);
-                currentGeneratedTable = headerFooter.getTables().get(index);
-                currentGeneratedTable.getCTTbl().set(copy);
-            } else if (generatedDocument instanceof XWPFTableCell) {
-                XWPFTableCell tCell = (XWPFTableCell) generatedDocument;
-                int tableRank = tCell.getTables().size();
-                final CTTbl tbl = tCell.getCTTc().addNewTbl();
-                tbl.set(copy);
-                final XWPFTable newTable = new XWPFTable(tbl, tCell);
-                if (newTable.getRows().size() > 0) {
-                    newTable.removeRow(0);
-                }
-                tCell.insertTable(tableRank, newTable);
-                currentGeneratedTable = tCell.getTables().get(tableRank);
-            } else {
-                throw new UnsupportedOperationException("unknown type of IBody : " + generatedDocument.getClass());
-            }
+            final XWPFTable newTable = createTable(generatedDocument);
+            newTable.getCTTbl().set(copy);
+            currentGeneratedTable = newTable;
             // iterate on the row
             for (Row row : table.getRows()) {
                 doSwitch(row);
@@ -1513,11 +1485,52 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         return currentGeneratedParagraph;
     }
 
+    /**
+     * Creates a {@link XWPFTable} in the given {@link IBody}.
+     * 
+     * @param body
+     *            the {@link IBody} to insert to
+     * @return the created {@link XWPFTable}
+     */
+    public static XWPFTable createTable(IBody body) {
+        final XWPFTable res;
+
+        if (body instanceof XWPFDocument) {
+            final XWPFDocument document = (XWPFDocument) body;
+            final CTTbl cttbl = document.getDocument().getBody().addNewTbl();
+            res = new XWPFTable(cttbl, document);
+            if (res.getRows().size() > 0) {
+                res.removeRow(0);
+            }
+            document.insertTable(body.getBodyElements().size(), res);
+        } else if (body instanceof XWPFHeaderFooter) {
+            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) body;
+            final CTTbl cttbl = headerFooter._getHdrFtr().addNewTbl();
+            res = new XWPFTable(cttbl, headerFooter);
+            if (res.getRows().size() > 0) {
+                res.removeRow(0);
+            }
+            headerFooter.insertTable(body.getBodyElements().size(), res);
+        } else if (body instanceof XWPFTableCell) {
+            final XWPFTableCell tCell = (XWPFTableCell) body;
+            final CTTbl tbl = tCell.getCTTc().addNewTbl();
+            res = new XWPFTable(tbl, tCell);
+            if (res.getRows().size() > 0) {
+                res.removeRow(0);
+            }
+            tCell.insertTable(body.getBodyElements().size(), res);
+        } else {
+            throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
+        }
+
+        return res;
+    }
+
     @Override
     public XWPFParagraph caseRow(Row row) {
         final XWPFTableRow savedRow = currentGeneratedRow;
         try {
-            currentGeneratedRow = currentGeneratedTable.createRow();
+            currentGeneratedRow = new XWPFTableRow(currentGeneratedTable.getCTTbl().addNewTr(), currentGeneratedTable);
             final CTRow ctRow = (CTRow) row.getTableRow().getCtRow().copy();
             ctRow.getTcList().clear();
             while (!currentGeneratedRow.getTableCells().isEmpty()) {
@@ -1538,7 +1551,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseCell(Cell cell) {
-        final XWPFTableCell newCell = currentGeneratedRow.createCell();
+        final XWPFTableCell newCell = new XWPFTableCell(currentGeneratedRow.getCtRow().addNewTc(), currentGeneratedRow,
+                generatedDocument);
         final CTTc ctCell = (CTTc) cell.getTableCell().getCTTc().copy();
         ctCell.getPList().clear();
         ctCell.getTblList().clear();

@@ -36,6 +36,7 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlToken;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.Statement;
+import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
@@ -136,42 +137,57 @@ public class UserContentRawCopy {
     public XWPFParagraph copyStatements(XWPFParagraph outputParagraph, XWPFParagraph currentInputParagraph,
             XWPFParagraph previousInputParagraph, final List<Statement> statements)
             throws InvalidFormatException, IOException, XmlException {
-        XWPFParagraph localCurrentInputParagraph = currentInputParagraph;
         final XWPFDocument containerOutputDocument = outputParagraph.getDocument();
         final IBody outputBody = outputParagraph.getBody();
+        XWPFParagraph localCurrentInputParagraph;
+        XWPFParagraph currentOutputParagraph;
+        if (!statements.isEmpty()) {
+            if (statements.get(0) instanceof StaticFragment) {
+                localCurrentInputParagraph = currentInputParagraph;
+                currentOutputParagraph = outputParagraph;
+            } else {
+                localCurrentInputParagraph = null;
+                currentOutputParagraph = null;
+                if (outputParagraph.getRuns().size() == 1
+                    && outputParagraph.getRuns().get(0).getText(0).length() == 0) {
+                    removeParagraph(outputBody, outputParagraph);
+                }
+            }
+        } else {
+            localCurrentInputParagraph = currentInputParagraph;
+            currentOutputParagraph = outputParagraph;
+        }
         final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
         final List<XWPFTable> listOutputTables = new ArrayList<>();
         final List<XWPFRun> listOutputRuns = new ArrayList<>();
         final Map<String, String> inputPicuteIdToOutputmap = new HashMap<>();
-        XWPFParagraph currentOutputParagraph = outputParagraph;
         for (Statement statement : statements) {
-            for (XWPFRun inputRun : statement.getRuns()) {
-                final XWPFParagraph currentRunParagraph = (XWPFParagraph) inputRun.getParent();
-                if (currentRunParagraph != localCurrentInputParagraph) {
-                    localCurrentInputParagraph = currentRunParagraph;
-                    // currentOutputParagraph = outputDocument.createParagraph();
-                    currentOutputParagraph = createNewParagraph(outputBody);
-                    // Copy new paragraph
-                    currentOutputParagraph.getCTP().set(localCurrentInputParagraph.getCTP());
-                    listOutputParagraphs.add(currentOutputParagraph);
+            if (statement instanceof StaticFragment) {
+                for (XWPFRun inputRun : statement.getRuns()) {
+                    final XWPFParagraph currentRunParagraph = (XWPFParagraph) inputRun.getParent();
+                    if (currentRunParagraph != localCurrentInputParagraph) {
+                        localCurrentInputParagraph = currentRunParagraph;
+                        currentOutputParagraph = createNewParagraph(outputBody);
+                        // Copy new paragraph
+                        currentOutputParagraph.getCTP().set(localCurrentInputParagraph.getCTP());
+                        listOutputParagraphs.add(currentOutputParagraph);
+                    }
+                    // Test if some run exist between userContent tag and first paragraph in this tag
+                    if (currentRunParagraph == previousInputParagraph) {
+                        // Clone run directly, paragraph is already generate by normal processing
+                        final XWPFRun outputRun = currentOutputParagraph.createRun();
+                        outputRun.getCTR().set(inputRun.getCTR());
+                        // Keep run to change relation id later
+                        listOutputRuns.add(outputRun);
+                    }
+                    // Create picture embedded in run and keep relation id in map (input to output)
+                    createPictures(inputPicuteIdToOutputmap, inputRun, containerOutputDocument);
                 }
-                // Test if some run exist between userContent tag and first paragraph in this tag
-                if (currentRunParagraph == previousInputParagraph) {
-                    // Clone run directly, paragraph is already generate by normal processing
-                    final XWPFRun outputRun = currentOutputParagraph.createRun();
-                    outputRun.getCTR().set(inputRun.getCTR());
-                    // Keep run to change relation id later
-                    listOutputRuns.add(outputRun);
-                }
-                // Create picture embedded in run and keep relation id in map (input to output)
-                createPictures(inputPicuteIdToOutputmap, inputRun, containerOutputDocument);
-            }
-            // In case of table (no run in abstractConstruct)
-            if (statement instanceof Table) {
-                Table table = (Table) statement;
-                XWPFTable inputTable = table.getTable();
-                // XWPFTable outputTable = contenerOutputDocument.createTable();
-                XWPFTable outputTable = createNewTable(outputBody, inputTable);
+                // In case of table (no run in abstractConstruct)
+            } else if (statement instanceof Table) {
+                final Table table = (Table) statement;
+                final XWPFTable inputTable = table.getTable();
+                final XWPFTable outputTable = createNewTable(outputBody, inputTable);
                 outputTable.getCTTbl().set(inputTable.getCTTbl());
                 copyTableStyle(inputTable, containerOutputDocument);
                 listOutputTables.add(outputTable);
@@ -184,7 +200,41 @@ public class UserContentRawCopy {
         }
         // Change Picture Id by xml replacement
         changePictureId(inputPicuteIdToOutputmap, listOutputRuns, listOutputParagraphs, listOutputTables);
+
+        if (currentOutputParagraph == null) {
+            currentOutputParagraph = outputParagraph;
+        }
+
         return currentOutputParagraph;
+    }
+
+    /**
+     * Removes the given {@link XWPFParagraph} from the given {@link IBody}.
+     * 
+     * @param body
+     *            the {@link IBody}
+     * @param outputParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void removeParagraph(IBody body, XWPFParagraph outputParagraph) {
+        if (body instanceof XWPFDocument) {
+            final XWPFDocument document = (XWPFDocument) body;
+            final int index = document.getBodyElements().indexOf(outputParagraph);
+            if (index != -1) {
+                document.removeBodyElement(index);
+            }
+        } else if (body instanceof XWPFHeaderFooter) {
+            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) body;
+            headerFooter.removeParagraph(outputParagraph);
+        } else if (body instanceof XWPFTableCell) {
+            final XWPFTableCell cell = (XWPFTableCell) body;
+            final int index = cell.getBodyElements().indexOf(outputParagraph);
+            if (index != -1) {
+                cell.removeParagraph(index);
+            }
+        } else {
+            throw new IllegalStateException("can't delete paragraph from " + body.getClass().getCanonicalName());
+        }
     }
 
     /**
@@ -223,33 +273,43 @@ public class UserContentRawCopy {
      * @return get Table
      */
     private XWPFTable createNewTable(IBody document, XWPFTable inputTable) {
-        final XWPFTable generatedTable;
+        final XWPFTable res;
+
         final CTTbl copy = (CTTbl) inputTable.getCTTbl().copy();
         if (document instanceof XWPFDocument) {
-            generatedTable = ((XWPFDocument) document).createTable();
+            final CTTbl cttbl = ((XWPFDocument) document).getDocument().getBody().addNewTbl();
+            res = new XWPFTable(cttbl, document);
+            if (res.getRows().size() > 0) {
+                res.removeRow(0);
+            }
+            document.insertTable(0, res);
         } else if (document instanceof XWPFHeaderFooter) {
             final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) document;
             final int index = headerFooter._getHdrFtr().getTblArray().length;
             final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
-            XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
+            final XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
             if (newTable.getRows().size() > 0) {
                 newTable.removeRow(0);
             }
             headerFooter.insertTable(index, newTable);
-            generatedTable = headerFooter.getTables().get(index);
-            generatedTable.getCTTbl().set(copy);
+            res = headerFooter.getTables().get(index);
+            res.getCTTbl().set(copy);
         } else if (document instanceof XWPFTableCell) {
-            XWPFTableCell tCell = (XWPFTableCell) document;
-            int tableRank = tCell.getTables().size();
+            final XWPFTableCell tCell = (XWPFTableCell) document;
+            final int tableRank = tCell.getTables().size();
             final CTTbl tbl = tCell.getCTTc().addNewTbl();
             final XWPFTable newTable = new XWPFTable(tbl, tCell);
+            if (newTable.getRows().size() > 0) {
+                newTable.removeRow(0);
+            }
             tbl.set(copy);
             tCell.insertTable(tableRank, newTable);
-            generatedTable = tCell.getTables().get(tableRank);
+            res = tCell.getTables().get(tableRank);
         } else {
             throw new UnsupportedOperationException("unknown type of IBody : " + document.getClass());
         }
-        return generatedTable;
+
+        return res;
     }
 
     /**

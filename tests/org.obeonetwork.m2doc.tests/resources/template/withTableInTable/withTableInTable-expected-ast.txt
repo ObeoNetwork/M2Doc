@@ -1,0 +1,101 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        [query: .myTemplate(2)]
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (a : java.lang.Integer)
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        [query: .add(a, a)]
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  
