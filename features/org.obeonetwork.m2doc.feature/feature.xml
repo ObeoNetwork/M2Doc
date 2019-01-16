@@ -13,7 +13,7 @@
 <feature
       id="org.obeonetwork.m2doc.feature"
       label="M2Doc"
-      version="2.0.1.qualifier"
+      version="2.0.2.qualifier"
       provider-name="Obeo Network">
 
    <description url="http://www.obeo.fr">
