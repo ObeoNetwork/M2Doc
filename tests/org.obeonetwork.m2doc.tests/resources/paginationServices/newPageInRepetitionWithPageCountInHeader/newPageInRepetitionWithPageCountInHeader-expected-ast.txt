@@ -1,0 +1,16 @@
+
+=== HEADER ===
+
+  1/1
+=== BODY ===
+
+  A simple demonstration of a query :
+  
+  for p | Sequence{'Page1', .asPagination('newPage'), 'Page2', .asPagination('newPage'), 'Page3', .asPagination('newPage'), 'Page4'} do
+    [query: p]
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
