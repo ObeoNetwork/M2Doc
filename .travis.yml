@@ -1,4 +1,3 @@
-dist: xenial
 language: java
 env:
   global:
@@ -11,7 +10,7 @@ env:
   - PROFILE=platform-sirius-6.0,tests
   - PROFILE=platform-sirius-6.1,tests
 jdk:
-- oraclejdk9
+- oraclejdk8
 sudo: required
 install: true
 before_script:
@@ -22,20 +21,14 @@ before_script:
 - sh -e /etc/init.d/xvfb start
 # for the web site
 - sudo apt-get install ruby-full build-essential zlib1g-dev
-- sudo gem install jekyll
-- sudo gem install jekyll-paginate
-- sudo gem install jekyll-gist
-- sudo gem install pygments.rb
-- sudo gem install redcarpet
-- sudo gem install RedCloth
-- sudo gem install bundler
-- sudo gem update jekyll
-- sudo gem update jekyll-paginate
-- sudo gem update jekyll-gist
-- sudo gem update pygments.rb
-- sudo gem update redcarpet
-- sudo gem update RedCloth
-- sudo gem update bundler
+- gem install jekyll
+- gem install addressable
+- gem install jekyll-paginate
+- gem install jekyll-gist
+- gem install pygments.rb
+- gem install redcarpet
+- gem install RedCloth
+- gem install bundler
 script:
 # Build documentation web site
 - mkdir web-site
