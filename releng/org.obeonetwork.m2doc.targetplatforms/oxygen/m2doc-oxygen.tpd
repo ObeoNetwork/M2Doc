@@ -21,9 +21,8 @@ location Eclipse "http://download.eclipse.org/releases/oxygen" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
-}
 
-location "http://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen" {
+	// Sirius
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy
@@ -31,9 +30,8 @@ location "http://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen" {
 	org.eclipse.sirius.table lazy
 	org.eclipse.sirius.table.ui lazy
 	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
-}
 
-location Acceleo-3.7 "http://download.eclipse.org/acceleo/updates/releases/3.7/R201610150614" {
+	// AQL
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.source.feature.group lazy
 	org.antlr.runtime [4.3.0,4.4.0)

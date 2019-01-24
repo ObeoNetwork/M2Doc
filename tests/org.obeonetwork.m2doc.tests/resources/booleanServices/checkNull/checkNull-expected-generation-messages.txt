@@ -1,2 +1,4 @@
 ERROR - check(boolean) with arguments [null] failed:
-	
+	null
+java.lang.IllegalArgumentException
+...STACK...

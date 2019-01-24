@@ -1,4 +1,4 @@
-target "M2Doc Photon Target Platform"
+target "M2Doc Sirius 6.1 Target Platform"
 
 include "../common/common.tpd"
 
@@ -21,8 +21,9 @@ location Eclipse "http://download.eclipse.org/releases/photon" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
+}
 
-	// Sirius
+location "http://download.eclipse.org/sirius/updates/releases/6.0.0/photon" {
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy

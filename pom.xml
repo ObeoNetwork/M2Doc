@@ -22,7 +22,9 @@
   <modules>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/photon</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module>
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/neon</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.1</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.0</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-5.1</module>
 
     <module>plugins/org.obeonetwork.m2doc</module>
     <module>plugins/org.obeonetwork.m2doc.ide</module>
@@ -323,6 +325,8 @@
         <module>tests/org.xtext.example.mydsl.ui</module>
       </modules>
     </profile>
+
+    <!-- Eclipse -->
     <profile>
       <id>platform-photon</id>
       <activation>
@@ -383,13 +387,105 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- Sirius -->
     <profile>
-      <id>platform-neon</id>
+      <id>platform-sirius-6.1</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-6.1</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-6.1</artifactId>
+                  <version>2.0.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>platform-sirius-6.0</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-6.0</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/oxygen</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-6.0</artifactId>
+                  <version>2.0.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>platform-sirius-5.1</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-5.1</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-5.1</artifactId>
+                  <version>2.0.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>platform-sirius-5.0</id>
       <activation>
         <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
-          <value>neon</value>
+          <value>sirius-5.0</value>
         </property>
       </activation>
       <properties>
@@ -404,7 +500,7 @@
               <target>
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
-                  <artifactId>m2doc-neon</artifactId>
+                  <artifactId>m2doc-sirius-5.0</artifactId>
                   <version>2.0.2-SNAPSHOT</version>
                 </artifact>
               </target>
