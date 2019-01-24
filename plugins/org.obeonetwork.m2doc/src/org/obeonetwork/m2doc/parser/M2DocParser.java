@@ -789,7 +789,7 @@ public class M2DocParser extends AbstractBodyParser {
         final IQueryBuilderEngine.AstResult result;
 
         if (expression != null && expression.length() > 0) {
-            AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+            AstBuilderListener astBuilder = AQL56Compatibility.createAstBuilderListener(queryEnvironment);
             CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
             QueryLexer lexer = new QueryLexer(input);
             lexer.setTokenFactory(new CommonTokenFactory(true));
