@@ -11,7 +11,7 @@ env:
   - PROFILE=platform-sirius-6.0,tests
   - PROFILE=platform-sirius-6.1,tests
 jdk:
-- oraclejdk8
+- oraclejdk9
 sudo: required
 install: true
 before_script:
