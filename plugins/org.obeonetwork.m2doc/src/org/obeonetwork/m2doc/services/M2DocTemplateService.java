@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -104,9 +106,9 @@ public class M2DocTemplateService extends AbstractService implements IService {
     private Exception exception;
 
     /**
-     * The XWPFDocument where the template comes from.
+     * The serilized {@link XWPFDocument} where the template comes from.
      */
-    private XWPFDocument document;
+    private byte[] serialized;
 
     /**
      * Constructor. For validation only.
@@ -160,8 +162,11 @@ public class M2DocTemplateService extends AbstractService implements IService {
 
         if (uriConverter != null) {
             try (InputStream is = uriConverter.createInputStream(template.eResource().getURI());
-                    OPCPackage oPackage = OPCPackage.open(is);) {
-                document = new XWPFDocument(oPackage);
+                    OPCPackage oPackage = OPCPackage.open(is);
+                    XWPFDocument document = new XWPFDocument(oPackage);
+                    ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                document.write(output);
+                serialized = output.toByteArray();
             } catch (IOException e) {
                 exception = e;
             } catch (InvalidFormatException e1) {
@@ -239,7 +244,11 @@ public class M2DocTemplateService extends AbstractService implements IService {
         final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
                 monitor);
 
-        return evaluator.generate(template, variables, document);
+        try (InputStream is = new ByteArrayInputStream(serialized);
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument document = new XWPFDocument(oPackage);) {
+            return evaluator.generate(template, variables, document);
+        }
     }
 
 }

@@ -1,0 +1,21 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a recursive template :
+  [query: .myTemplate(2)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (a : java.lang.Integer)
+  
+  if .equals(a, 0) then
+    finished
+  else
+    [query: .add(a, a)]
+    [query: .myTemplate(.sub(a, 1))]
+  endif
+  
