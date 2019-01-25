@@ -1,0 +1,18 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  comment: Title1
+  comment: Title2
+  A simple demonstration of a user doc :
+  
+  userdoc 'zone1' do
+    
+      Some protected text.
+  enduserdoc
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
