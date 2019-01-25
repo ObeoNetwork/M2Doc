@@ -1,8 +1,8 @@
 ---
 layout: article
 title: M2DocSiriusServices
- subtitle: 2.0.0
- relativePath: ../..
+subtitle: 2.0.0
+relativePath: ../..
 ---
 
 <!--

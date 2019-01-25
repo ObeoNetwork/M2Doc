@@ -1,8 +1,8 @@
 ---
 layout: article
 title: LinkServices
- subtitle: Nightly
- relativePath: ../..
+subtitle: Nightly
+relativePath: ../..
 ---
 
 <!--

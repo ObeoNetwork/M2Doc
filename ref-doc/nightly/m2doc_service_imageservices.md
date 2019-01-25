@@ -1,8 +1,8 @@
 ---
 layout: article
 title: ImageServices
- subtitle: Nightly
- relativePath: ../..
+subtitle: Nightly
+relativePath: ../..
 ---
 
 <!--

@@ -1,8 +1,8 @@
 ---
 layout: article
 title: ExcelServices
- subtitle: Nightly
- relativePath: ../..
+subtitle: Nightly
+relativePath: ../..
 ---
 
 <!--

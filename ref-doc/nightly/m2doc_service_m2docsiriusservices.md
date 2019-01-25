@@ -1,8 +1,8 @@
 ---
 layout: article
 title: M2DocSiriusServices
- subtitle: Nightly
- relativePath: ../..
+subtitle: Nightly
+relativePath: ../..
 ---
 
 <!--

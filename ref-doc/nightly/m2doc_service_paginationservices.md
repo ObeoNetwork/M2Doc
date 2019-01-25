@@ -1,8 +1,8 @@
 ---
 layout: article
 title: PaginationServices
- subtitle: Nightly
- relativePath: ../..
+subtitle: Nightly
+relativePath: ../..
 ---
 
 <!--

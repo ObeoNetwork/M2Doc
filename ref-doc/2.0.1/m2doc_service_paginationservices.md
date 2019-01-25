@@ -1,8 +1,8 @@
 ---
 layout: article
 title: PaginationServices
- subtitle: 2.0.1
- relativePath: ../..
+subtitle: 2.0.1
+relativePath: ../..
 ---
 
 <!--
