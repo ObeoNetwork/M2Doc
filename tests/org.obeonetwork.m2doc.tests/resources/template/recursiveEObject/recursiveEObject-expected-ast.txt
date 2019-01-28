@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a recursive template :
+  [query: .myTemplate(self, 1)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (element : ENamedElement, depth : java.lang.Integer)
+  [query: .add(.add(depth, ' - '), .aqlFeatureAccess(element, 'name'))]
+  
+  for child | ->filter(.eContents(element), ENamedElement) do
+    [query: .myTemplate(child, .add(depth, 1))]
+  endfor
+  
