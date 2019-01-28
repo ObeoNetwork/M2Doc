@@ -526,7 +526,7 @@ public class M2DocParser extends AbstractBodyParser {
      *             if something wrong happens during parsing.
      */
     private Template parseTemplate() throws DocumentParserException {
-        // first read the tag that opens the repetition
+        // first read the tag that opens the template
         final Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
         String tagText = readTag(template, template.getRuns()).trim();
         // remove the prefix

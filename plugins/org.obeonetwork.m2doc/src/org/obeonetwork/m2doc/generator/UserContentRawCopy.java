@@ -476,7 +476,7 @@ public class UserContentRawCopy {
     /**
      * createPictures in document.
      * 
-     * @param inputPicuteIdToOutputmap
+     * @param inputPicureIdToOutputmap
      *            the picture ID mapping
      * @param inputRun
      *            input Run
@@ -485,7 +485,7 @@ public class UserContentRawCopy {
      * @throws InvalidFormatException
      *             InvalidFormatException
      */
-    private void createPictures(Map<String, String> inputPicuteIdToOutputmap, XWPFRun inputRun, XWPFDocument outputDoc)
+    private void createPictures(Map<String, String> inputPicureIdToOutputmap, XWPFRun inputRun, XWPFDocument outputDoc)
             throws InvalidFormatException {
         // Add picture in document and keep relation id change idRelation reference
         for (XWPFPicture inputPic : inputRun.getEmbeddedPictures()) {
@@ -493,7 +493,7 @@ public class UserContentRawCopy {
             // Put image in doc and get idRelation
             String idRelationOutput = outputDoc.addPictureData(img, inputPic.getPictureData().getPictureType());
             String idRelationInput = inputPic.getCTPicture().getBlipFill().getBlip().getEmbed();
-            inputPicuteIdToOutputmap.put(idRelationInput, idRelationOutput);
+            inputPicureIdToOutputmap.put(idRelationInput, idRelationOutput);
         }
     }
 

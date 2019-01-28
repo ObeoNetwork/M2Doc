@@ -160,7 +160,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
      *             if something wrong happens during parsing.
      */
     private UserContent parseUserContent() throws DocumentParserException {
-        // first read the tag that opens the link
+        // first read the tag that opens the user content
         final UserContent userContent = (UserContent) EcoreUtil.create(TemplatePackage.Literals.USER_CONTENT);
         String tagText = readTag(userContent, userContent.getRuns()).trim();
         // remove the prefix
