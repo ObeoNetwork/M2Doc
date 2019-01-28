@@ -465,7 +465,13 @@ public class UserContentRawCopy {
         int lastIndex = 0;
         while (matcher.find()) {
             builder.append(xmlText.subSequence(lastIndex, matcher.start(REPLACEMENT_PICTURE_ID_GROUP_ID)));
-            builder.append(inputPicuteIdToOutputmap.get(matcher.group(REPLACEMENT_PICTURE_ID_GROUP_ID)));
+            final String oldID = matcher.group(REPLACEMENT_PICTURE_ID_GROUP_ID);
+            final String newID = inputPicuteIdToOutputmap.get(oldID);
+            if (newID != null) {
+                builder.append(newID);
+            } else {
+                builder.append(oldID);
+            }
             lastIndex = matcher.end(REPLACEMENT_PICTURE_ID_GROUP_ID);
         }
         builder.append(xmlText.substring(lastIndex, xmlText.length()));
