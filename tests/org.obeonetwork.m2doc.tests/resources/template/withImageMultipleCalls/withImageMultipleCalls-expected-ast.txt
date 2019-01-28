@@ -1,0 +1,18 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  
+  for i | Sequence{1, 2, 3} do
+    [query: .myTemplate(.add(.add('dh', i), '.gif'))]
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (name : java.lang.String)
+  [query: .setWidth(.asImage(name), 100)]
