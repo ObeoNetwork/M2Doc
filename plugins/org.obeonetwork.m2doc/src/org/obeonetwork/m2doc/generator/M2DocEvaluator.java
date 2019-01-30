@@ -1482,7 +1482,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             currentGeneratedTable = saveTable;
         }
 
-        return currentGeneratedParagraph;
+        currentTemplateParagraph = null;
+
+        return null;
     }
 
     /**
