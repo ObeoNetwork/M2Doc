@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate(1)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (depth : java.lang.Integer)
+  [query: .setWidth(.asImage(.add(.add('dh', depth), '.gif')), 100)]
+  
+  if .lessThan(depth, 3) then
+    [query: .myTemplate(.add(depth, 1))]
+  endif
+  
