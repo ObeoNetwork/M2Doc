@@ -136,7 +136,8 @@ public class UserContentRawCopy {
     public XWPFParagraph copyStatements(XWPFParagraph outputParagraph, XWPFParagraph currentInputParagraph,
             XWPFParagraph previousInputParagraph, final List<Statement> statements)
             throws InvalidFormatException, IOException, XmlException {
-        final XWPFDocument containerInputDocument = currentInputParagraph.getDocument();
+        final XWPFDocument containerInputDocument = getInputDocument(currentInputParagraph, previousInputParagraph,
+                statements);
         final XWPFDocument containerOutputDocument = outputParagraph.getDocument();
         final IBody outputBody = outputParagraph.getBody();
         XWPFParagraph localCurrentInputParagraph;
@@ -211,6 +212,46 @@ public class UserContentRawCopy {
         }
 
         return currentOutputParagraph;
+    }
+
+    /**
+     * Gets the input {@link XWPFDocument} from either current input {@link XWPFParagraph}, previous input {@link XWPFParagraph}, or the
+     * {@link List} of {@link Statement}.
+     * 
+     * @param currentInputParagraph
+     *            the current input {@link XWPFParagraph}
+     * @param previousInputParagraph
+     *            the previous input {@link XWPFParagraph}
+     * @param statements
+     *            the {@link List} of {@link Statement}
+     * @return the input {@link XWPFDocument} from either current input {@link XWPFParagraph}, previous input {@link XWPFParagraph}, or the
+     *         {@link List} of {@link Statement} if any, <code>null</code> otherwise
+     */
+    @SuppressWarnings("resource")
+    private XWPFDocument getInputDocument(XWPFParagraph currentInputParagraph, XWPFParagraph previousInputParagraph,
+            List<Statement> statements) {
+        final XWPFDocument res;
+
+        if (currentInputParagraph != null) {
+            res = currentInputParagraph.getDocument();
+        } else if (previousInputParagraph != null) {
+            res = previousInputParagraph.getDocument();
+        } else if (!statements.isEmpty()) {
+            final Statement statement = statements.get(0);
+            if (statement.getStyleRun() != null) {
+                res = statement.getStyleRun().getDocument();
+            } else if (!statement.getRuns().isEmpty()) {
+                res = statement.getRuns().get(0).getDocument();
+            } else if (!statement.getClosingRuns().isEmpty()) {
+                res = statement.getClosingRuns().get(0).getDocument();
+            } else {
+                res = null;
+            }
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     /**
