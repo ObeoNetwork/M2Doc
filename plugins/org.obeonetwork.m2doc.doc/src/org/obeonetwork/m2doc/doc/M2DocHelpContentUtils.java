@@ -585,8 +585,8 @@ public final class M2DocHelpContentUtils {
         servicesSection.append("---").append(LS);
         servicesSection.append("layout: article").append(LS);
         servicesSection.append("title: ").append(serviceProviderClass.getSimpleName()).append(LS);
-        servicesSection.append(" subtitle: Nightly").append(LS);
-        servicesSection.append(" relativePath: ../..").append(LS);
+        servicesSection.append("subtitle: Nightly").append(LS);
+        servicesSection.append("relativePath: ../..").append(LS);
         servicesSection.append("---").append(LS);
         servicesSection.append(LS);
         servicesSection.append("<!--").append(LS);
