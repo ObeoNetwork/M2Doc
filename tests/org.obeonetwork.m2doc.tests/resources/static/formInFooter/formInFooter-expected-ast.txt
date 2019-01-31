@@ -1,0 +1,10 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  
+=== FOOTER ===
+
+  A simple demonstration of a static form :End of demonstration.
+=== TEMPLATES ===

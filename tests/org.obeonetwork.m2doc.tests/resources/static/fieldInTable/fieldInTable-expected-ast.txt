@@ -1,0 +1,35 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        A simple demonstration of a static field :Some text and a .End of demonstration.
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  
+=== FOOTER ===
+
+=== TEMPLATES ===

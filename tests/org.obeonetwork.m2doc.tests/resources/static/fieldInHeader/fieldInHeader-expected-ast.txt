@@ -1,0 +1,10 @@
+
+=== HEADER ===
+
+  A simple demonstration of a static field :Some text and a .End of demonstration.
+=== BODY ===
+
+  
+=== FOOTER ===
+
+=== TEMPLATES ===

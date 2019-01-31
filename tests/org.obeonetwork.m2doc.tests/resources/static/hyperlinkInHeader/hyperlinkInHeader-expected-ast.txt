@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+  
+  
+  A simple demonstration of a static hyperlink :Obeo’s websiteEnd of demonstration.
+=== BODY ===
+
+  
+=== FOOTER ===
+
+  
+  
+  
+=== TEMPLATES ===

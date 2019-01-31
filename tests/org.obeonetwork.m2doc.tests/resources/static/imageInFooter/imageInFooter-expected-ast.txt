@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+  
+  
+  
+=== BODY ===
+
+  
+=== FOOTER ===
+
+  
+  
+  A simple demonstration of a static image :End of demonstration.
+=== TEMPLATES ===
