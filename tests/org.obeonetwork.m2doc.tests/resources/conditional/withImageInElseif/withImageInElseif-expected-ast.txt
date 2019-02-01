@@ -1,0 +1,21 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Basic if demonstration :
+  
+  if .differs(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+    The THEN paragraph.
+  else
+    
+    if .equals(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+      [query: .setWidth(.asImage('dh1.gif'), 100)]
+    endif
+    
+  endif
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

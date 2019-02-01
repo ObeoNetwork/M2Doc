@@ -1,0 +1,17 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Basic for demonstration : 
+  
+  for i | Sequence{1, 2, 3} do
+    [query: .setWidth(.asImage(.add(.add('dh', i), '.gif')), 100)]
+    Some text 
+    [query: i]
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
