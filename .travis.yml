@@ -6,6 +6,7 @@ env:
   matrix:
   - PROFILE=platform-oxygen,tests
   - PROFILE=platform-photon,tests,updatesites
+  - PROFILE=platform-2018-09,tests
   - PROFILE=platform-sirius-5.1,tests
   - PROFILE=platform-sirius-6.0,tests
   - PROFILE=platform-sirius-6.1,tests

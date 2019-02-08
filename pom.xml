@@ -20,6 +20,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2018-09</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/photon</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.1</module>
@@ -334,6 +335,36 @@
     </profile>
 
     <!-- Eclipse -->
+    <profile>
+      <id>platform-2018-09</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2018-09</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2018-09</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2018-09</artifactId>
+                  <version>2.0.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-photon</id>
       <activation>
