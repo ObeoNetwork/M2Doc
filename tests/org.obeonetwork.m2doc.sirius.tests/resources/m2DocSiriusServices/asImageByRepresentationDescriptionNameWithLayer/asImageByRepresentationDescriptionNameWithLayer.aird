@@ -3,8 +3,6 @@
   <viewpoint:DAnalysis xmi:id="__mhUwLe2EeadeJgQTriozQ" selectedViews="_AS6gsLe3EeadeJgQTriozQ" version="11.1.0.201608251200">
     <semanticResources>anydsl.ecore</semanticResources>
     <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
-    <semanticResources>nominal.genconf</semanticResources>
-    <semanticResources>isRepresentationNameTrue.genconf</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_AS6gsLe3EeadeJgQTriozQ">
       <viewpoint xmi:type="description:Viewpoint" href="description/ecore.odesign#//@ownedViewpoints[name='TestEcore']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_8t6roBOaEeeLmO8hPdE7Qw" name="anydsl class diagram" representation="_CbYCALe3EeadeJgQTriozQ">
