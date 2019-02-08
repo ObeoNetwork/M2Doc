@@ -52,7 +52,7 @@ public class UserContentRawCopy {
      * The replacement picture id {@link Pattern}.
      */
     private static final Pattern PICTURE_ID_PATTERN = Pattern
-            .compile("<a:blip(( .*).)? r:embed=\\\"([^\\\"]+)\\\"( .* )?/?>");
+            .compile("<a:blip(( .*).)? r:embed=\\\"([^\\\"]+)\\\"( .* ?)?/?>");
 
     /**
      * The replacement picture id {@link Pattern}.

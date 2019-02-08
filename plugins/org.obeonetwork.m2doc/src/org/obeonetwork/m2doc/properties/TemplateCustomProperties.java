@@ -28,7 +28,7 @@ import org.antlr.v4.runtime.CommonTokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
-import org.apache.poi.POIXMLProperties.CustomProperties;
+import org.apache.poi.ooxml.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -73,7 +73,6 @@ import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProper
  * 
  * @author Romain Guider
  */
-@SuppressWarnings("restriction")
 public class TemplateCustomProperties {
 
     /**
