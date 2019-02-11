@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.genconf.edit;singleton:=true
-Bundle-Version: 2.0.2.qualifier
+Bundle-Version: 3.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.obeonetwork.m2doc.genconf.provider.M2docconfEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -10,8 +10,8 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.genconf.provider
 Require-Bundle: org.eclipse.core.runtime,
- org.obeonetwork.m2doc;bundle-version="[2.0.0,3.0.0)",
- org.obeonetwork.m2doc.genconf;bundle-version="[2.0.0,3.0.0)";visibility:=reexport,
+ org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc.genconf;bundle-version="[3.0.0,4.0.0)";visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
