@@ -476,6 +476,20 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     }
 
     /**
+     * Gets the currently generated {@link XWPFParagraph}.
+     * 
+     * @param inputParagraph
+     *            the current input {@link XWPFParagraph}
+     * @return the currently generated {@link XWPFParagraph}
+     */
+    private XWPFParagraph getCurrentGeneratedParagraph(XWPFParagraph inputParagraph) {
+        // if (currentGeneratedParagraph == null) {
+        // createNewParagraph(generatedDocument, inputParagraph);
+        // }
+        return currentGeneratedParagraph;
+    }
+
+    /**
      * Creates a new paragraph and replaces the currentParagrap variable.
      * 
      * @param body
@@ -552,7 +566,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseQuery(Query query) {
-        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph((XWPFParagraph) query.getStyleRun().getParent());
         if (hasError(query)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, query, INVALID_QUERY_STATEMENT);
         } else {
@@ -1174,7 +1188,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseRepetition(Repetition repetition) {
-        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
+                (XWPFParagraph) repetition.getStyleRun().getParent());
         if (hasError(repetition)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, repetition, INVALID_REPETITION_STATEMENT);
         } else {
@@ -1221,7 +1236,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseLet(Let let) {
-        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph((XWPFParagraph) let.getStyleRun().getParent());
         if (hasError(let)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, let, INVALID_LET_STATEMENT);
         } else {
@@ -1245,7 +1260,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseUserDoc(UserDoc userDoc) {
-        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
+                (XWPFParagraph) userDoc.getStyleRun().getParent());
         if (hasError(userDoc)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, userDoc, INVALID_USERDOC_STATEMENT);
         } else {
@@ -1431,7 +1447,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseConditional(Conditional conditional) {
-        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
+                (XWPFParagraph) conditional.getStyleRun().getParent());
         if (hasError(conditional)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, conditional, INVALID_CONDITIONAL_STATEMENT);
         } else {
@@ -1587,7 +1604,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseBookmark(Bookmark bookmark) {
-        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
+                (XWPFParagraph) bookmark.getStyleRun().getParent());
         if (hasError(bookmark)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, bookmark, INVALID_BOOKMARK_STATEMENT);
         } else {
@@ -1698,7 +1716,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseLink(Link link) {
-        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph((XWPFParagraph) link.getStyleRun().getParent());
         if (hasError(link)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, link, INVALID_LINK_STATEMENT);
         } else {
