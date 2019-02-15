@@ -31,7 +31,9 @@ import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFStyle;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlToken;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.Statement;
@@ -162,6 +164,7 @@ public class UserContentRawCopy {
         final List<XWPFTable> listOutputTables = new ArrayList<>();
         final List<XWPFRun> listOutputRuns = new ArrayList<>();
         final Map<String, String> inputPicuteIdToOutputmap = new HashMap<>();
+        boolean paragraphFragmentCopied = false;
         for (Statement statement : statements) {
             if (statement instanceof StaticFragment) {
                 for (XWPFRun inputRun : statement.getRuns()) {
@@ -175,17 +178,11 @@ public class UserContentRawCopy {
                         // Create picture embedded in run and keep relation id in map (input to output)
                         createPictures(inputPicuteIdToOutputmap, localCurrentInputParagraph.getCTP().xmlText(),
                                 containerInputDocument, containerOutputDocument);
-                    }
-                    // Test if some run exist between userContent tag and first paragraph in this tag
-                    if (currentRunParagraph == previousInputParagraph) {
-                        // Clone run directly, paragraph is already generate by normal processing
-                        final XWPFRun outputRun = currentOutputParagraph.createRun();
-                        outputRun.getCTR().set(inputRun.getCTR());
-                        // Keep run to change relation id later
-                        listOutputRuns.add(outputRun);
-                        // Create picture embedded in run and keep relation id in map (input to output)
-                        createPictures(inputPicuteIdToOutputmap, inputRun.getCTR().xmlText(), containerInputDocument,
-                                containerOutputDocument);
+                    } else if (!paragraphFragmentCopied && currentRunParagraph == previousInputParagraph) {
+                        // Test if some run exist between userContent tag and first paragraph in this tag
+                        copyParagraphFragment(inputPicuteIdToOutputmap, outputParagraph, currentInputParagraph,
+                                inputRun);
+                        paragraphFragmentCopied = true;
                     }
                 }
                 // In case of table (no run in abstractConstruct)
@@ -204,6 +201,7 @@ public class UserContentRawCopy {
                 copyCTSdtBlock(outputBody, contentControl.getBlock());
             }
         }
+
         // Change Picture Id by xml replacement
         changePictureId(inputPicuteIdToOutputmap, listOutputRuns, listOutputParagraphs, listOutputTables);
 
@@ -212,6 +210,95 @@ public class UserContentRawCopy {
         }
 
         return currentOutputParagraph;
+    }
+
+    /**
+     * Copies the fragment of the input {@link XWPFParagraph} into the output {@link XWPFParagraph} starting at the given input {@link XWPFRun}.
+     * 
+     * @param inputPicuteIdToOutputmap
+     *            the picture ID mapping
+     * @param outputParagraph
+     *            the output {@link XWPFParagraph}
+     * @param inputParagraph
+     *            the input {@link XWPFParagraph}
+     * @param inputRun
+     *            the {@link XWPFRun} to start at
+     * @throws XmlException
+     *             if xml manipulation fails
+     * @throws InvalidFormatException
+     *             if image copy fails
+     */
+    private void copyParagraphFragment(Map<String, String> inputPicuteIdToOutputmap, XWPFParagraph outputParagraph,
+            XWPFParagraph inputParagraph, XWPFRun inputRun) throws XmlException, InvalidFormatException {
+        XmlCursor inputCursor = inputParagraph.getCTP().newCursor();
+        try {
+            XmlCursor savedCursor = null; // used to keep bookmarks before the referenced run
+            if (inputCursor.toFirstChild()) {
+                do {
+                    if (inputCursor.isStart()) {
+                        if ("bookmarkStart".equals(inputCursor.getName().getLocalPart())) {
+                            savedCursor = inputCursor.getObject().newCursor();
+                        }
+                        if ("r".equals(inputCursor.getName().getLocalPart())
+                            || "bookmarkEnd".equals(inputCursor.getName().getLocalPart())) {
+                            savedCursor = null;
+                        }
+                    }
+                    if (!inputCursor.toNextSibling()) {
+                        break;
+                    }
+                } while (!inputCursor.getObject().equals(inputRun.getCTR()));
+            }
+
+            if (inputCursor.getObject().equals(inputRun.getCTR())) {
+                if (savedCursor != null) {
+                    inputCursor = savedCursor;
+                }
+
+                final XmlObject tmpXmlObject = XmlObject.Factory.parse(
+                        "<root xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" mc:Ignorable=\"w14 w15 wp14\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"></root>");
+                final XmlCursor tmpCursor = tmpXmlObject.newCursor();
+                try {
+                    tmpCursor.toEndToken();
+                    tmpCursor.toPrevToken();
+                    inputCursor.copyXml(tmpCursor);
+                    while (inputCursor.toNextSibling()) {
+                        inputCursor.copyXml(tmpCursor);
+                    }
+                } finally {
+                    tmpCursor.dispose();
+                }
+
+                // Create picture embedded in run and keep relation id in map (input to output)
+                final String tmpXmlText = tmpXmlObject.xmlText();
+                createPictures(inputPicuteIdToOutputmap, tmpXmlText, inputParagraph.getDocument(),
+                        outputParagraph.getDocument());
+                final XmlToken xmlWithOuputId = getXmlWithOuputId(inputPicuteIdToOutputmap, tmpXmlText);
+                // replace picture IDs
+                final XmlCursor withNewIDCursor = xmlWithOuputId.newCursor();
+                try {
+                    withNewIDCursor.toFirstChild();
+                    withNewIDCursor.toFirstChild();
+
+                    final XmlCursor outputCursor = outputParagraph.getCTP().newCursor();
+                    try {
+                        outputCursor.toLastChild();
+                        outputCursor.toEndToken();
+                        outputCursor.toNextToken();
+                        withNewIDCursor.copyXml(outputCursor);
+                        while (withNewIDCursor.toNextSibling()) {
+                            withNewIDCursor.copyXml(outputCursor);
+                        }
+                    } finally {
+                        outputCursor.dispose();
+                    }
+                } finally {
+                    withNewIDCursor.dispose();
+                }
+            }
+        } finally {
+            inputCursor.dispose();
+        }
     }
 
     /**

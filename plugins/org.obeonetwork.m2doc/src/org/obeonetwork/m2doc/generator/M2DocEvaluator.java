@@ -476,20 +476,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     }
 
     /**
-     * Gets the currently generated {@link XWPFParagraph}.
-     * 
-     * @param inputParagraph
-     *            the current input {@link XWPFParagraph}
-     * @return the currently generated {@link XWPFParagraph}
-     */
-    private XWPFParagraph getCurrentGeneratedParagraph(XWPFParagraph inputParagraph) {
-        // if (currentGeneratedParagraph == null) {
-        // createNewParagraph(generatedDocument, inputParagraph);
-        // }
-        return currentGeneratedParagraph;
-    }
-
-    /**
      * Creates a new paragraph and replaces the currentParagrap variable.
      * 
      * @param body
@@ -566,7 +552,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseQuery(Query query) {
-        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph((XWPFParagraph) query.getStyleRun().getParent());
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(query)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, query, INVALID_QUERY_STATEMENT);
         } else {
@@ -1188,8 +1174,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseRepetition(Repetition repetition) {
-        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
-                (XWPFParagraph) repetition.getStyleRun().getParent());
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(repetition)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, repetition, INVALID_REPETITION_STATEMENT);
         } else {
@@ -1236,7 +1221,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseLet(Let let) {
-        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph((XWPFParagraph) let.getStyleRun().getParent());
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(let)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, let, INVALID_LET_STATEMENT);
         } else {
@@ -1260,8 +1245,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseUserDoc(UserDoc userDoc) {
-        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
-                (XWPFParagraph) userDoc.getStyleRun().getParent());
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(userDoc)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, userDoc, INVALID_USERDOC_STATEMENT);
         } else {
@@ -1447,8 +1431,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseConditional(Conditional conditional) {
-        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
-                (XWPFParagraph) conditional.getStyleRun().getParent());
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(conditional)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, conditional, INVALID_CONDITIONAL_STATEMENT);
         } else {
@@ -1604,8 +1587,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseBookmark(Bookmark bookmark) {
-        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph(
-                (XWPFParagraph) bookmark.getStyleRun().getParent());
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(bookmark)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, bookmark, INVALID_BOOKMARK_STATEMENT);
         } else {
@@ -1614,6 +1596,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 currentParagraph = insertQueryEvaluationMessages(currentParagraph, bookmark,
                         evaluationResult.getDiagnostic());
             } else {
+                if (currentParagraph == null) {
+                    currentParagraph = createNewParagraph(generatedDocument,
+                            (XWPFParagraph) bookmark.getStyleRun().getParent());
+                }
                 bookmarkManager.startBookmark(result, currentParagraph, evaluationResult.getResult().toString());
                 currentParagraph = doSwitch(bookmark.getBody());
                 bookmarkManager.endBookmark(result, currentParagraph, evaluationResult.getResult().toString());
@@ -1716,7 +1702,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseLink(Link link) {
-        XWPFParagraph currentParagraph = getCurrentGeneratedParagraph((XWPFParagraph) link.getStyleRun().getParent());
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
         if (hasError(link)) {
             currentParagraph = insertQuerySyntaxMessages(currentParagraph, link, INVALID_LINK_STATEMENT);
         } else {
