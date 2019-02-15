@@ -1,0 +1,18 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate('anydsl')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (str : java.lang.String)
+  
+  if .equals(str, 'anydsl') then
+    The THEN paragraph.
+  endif
+  

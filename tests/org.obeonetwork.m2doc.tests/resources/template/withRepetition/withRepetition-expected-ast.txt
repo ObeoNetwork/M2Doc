@@ -1,0 +1,20 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate(self)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (ePkg : EPackage)
+  
+  for v | .aqlFeatureAccess(ePkg, 'eClassifiers') do
+    name = 
+    [query: .aqlFeatureAccess(v, 'name')]
+    ,
+  endfor
+  
