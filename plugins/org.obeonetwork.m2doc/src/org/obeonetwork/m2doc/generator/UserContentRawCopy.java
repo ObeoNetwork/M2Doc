@@ -40,6 +40,7 @@ import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 
@@ -230,6 +231,10 @@ public class UserContentRawCopy {
      */
     private void copyParagraphFragment(Map<String, String> inputPicuteIdToOutputmap, XWPFParagraph outputParagraph,
             XWPFParagraph inputParagraph, XWPFRun inputRun) throws XmlException, InvalidFormatException {
+        if (inputParagraph.getCTP().isSetPPr()) {
+            outputParagraph.getCTP().setPPr((CTPPr) inputParagraph.getCTP().getPPr().copy());
+        }
+
         XmlCursor inputCursor = inputParagraph.getCTP().newCursor();
         try {
             XmlCursor savedCursor = null; // used to keep bookmarks before the referenced run
