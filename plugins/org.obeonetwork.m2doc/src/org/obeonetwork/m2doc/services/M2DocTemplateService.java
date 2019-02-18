@@ -12,7 +12,6 @@
 package org.obeonetwork.m2doc.services;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.Monitor;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.GenerationResult;
@@ -54,6 +52,11 @@ import org.obeonetwork.m2doc.template.Template;
  */
 @SuppressWarnings("restriction")
 public class M2DocTemplateService extends AbstractService implements IService {
+
+    /**
+     * The maximum depth of a recursive call.
+     */
+    private static final int MAX_DEPTH = 256;
 
     /**
      * The {@link Template} to call.
@@ -108,7 +111,17 @@ public class M2DocTemplateService extends AbstractService implements IService {
     /**
      * The serilized {@link XWPFDocument} where the template comes from.
      */
-    private byte[] serialized;
+    private final byte[] serializedDocument;
+
+    /**
+     * The {@link XWPFDocument} used for generation.
+     */
+    private XWPFDocument[] documents = new XWPFDocument[MAX_DEPTH];
+
+    /**
+     * Tells if we are already in this template call (recursion).
+     */
+    private int callDepth = -1;
 
     /**
      * Constructor. For validation only.
@@ -127,8 +140,8 @@ public class M2DocTemplateService extends AbstractService implements IService {
      * 
      * @param template
      *            the {@link Template} to call
-     * @param uriConverter
-     *            the {@link URIConverter} for evaluation
+     * @param serializedDocument
+     *            the serialized output {@link XWPFDocument}
      * @param bookmarkManager
      *            the {@link BookmarkManager} for evaluation
      * @param userContentManager
@@ -138,7 +151,7 @@ public class M2DocTemplateService extends AbstractService implements IService {
      * @param monitor
      *            the {@link Monitor} for evaluation
      */
-    public M2DocTemplateService(Template template, URIConverter uriConverter, BookmarkManager bookmarkManager,
+    public M2DocTemplateService(Template template, byte[] serializedDocument, BookmarkManager bookmarkManager,
             UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
         this.template = template;
         this.bookmarkManager = bookmarkManager;
@@ -147,6 +160,7 @@ public class M2DocTemplateService extends AbstractService implements IService {
         this.monitor = monitor;
         this.shortSignature = computeShortSignature(template);
         this.numberOfParameters = template.getParameters().size();
+        this.serializedDocument = serializedDocument;
 
         this.returnTypes = new HashSet<>();
         returnTypes.add(new ClassType(queryEnvironment, GenerationResult.class));
@@ -160,20 +174,15 @@ public class M2DocTemplateService extends AbstractService implements IService {
             parameterTypes.add(possibleTypes.iterator().next());
         }
 
-        if (uriConverter != null) {
-            try (InputStream is = uriConverter.createInputStream(template.eResource().getURI());
-                    OPCPackage oPackage = OPCPackage.open(is);
-                    XWPFDocument document = new XWPFDocument(oPackage);
-                    ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-                document.write(output);
-                serialized = output.toByteArray();
+        if (serializedDocument != null) {
+            try {
+                documents[0] = deserializeDocument(serializedDocument);
             } catch (IOException e) {
                 exception = e;
-            } catch (InvalidFormatException e1) {
-                exception = e1;
+            } catch (InvalidFormatException e) {
+                exception = e;
             }
         }
-
     }
 
     /**
@@ -243,12 +252,36 @@ public class M2DocTemplateService extends AbstractService implements IService {
         }
         final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
                 monitor);
-
-        try (InputStream is = new ByteArrayInputStream(serialized);
-                OPCPackage oPackage = OPCPackage.open(is);
-                XWPFDocument document = new XWPFDocument(oPackage);) {
-            return evaluator.generate(template, variables, document);
+        callDepth++;
+        try {
+            if (documents[callDepth] == null) {
+                documents[callDepth] = deserializeDocument(serializedDocument);
+            }
+            return evaluator.generate(template, variables, documents[callDepth]);
+        } finally {
+            callDepth--;
         }
+    }
+
+    /**
+     * Deserializes the {@link XWPFDocument}.
+     * 
+     * @param document
+     *            the serialized document
+     * @return the deserialized {@link XWPFDocument}
+     * @throws IOException
+     *             if the document can't be deserialized
+     * @throws InvalidFormatException
+     *             if the serialized document is invalid.
+     */
+    private XWPFDocument deserializeDocument(byte[] document) throws IOException, InvalidFormatException {
+        final XWPFDocument res;
+
+        try (InputStream is = new ByteArrayInputStream(document); OPCPackage oPackage = OPCPackage.open(is)) {
+            res = new XWPFDocument(oPackage);
+        }
+
+        return res;
     }
 
 }

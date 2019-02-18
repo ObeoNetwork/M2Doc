@@ -686,9 +686,12 @@ public final class M2DocUtils {
                     destination);
             final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
                     monitor);
-            for (Template template : documentTemplate.getTemplates()) {
-                ((IQueryEnvironment) queryEnvironment).registerService(new M2DocTemplateService(template, uriConverter,
-                        bookmarkManager, userContentManager, queryEnvironment, monitor));
+            if (!documentTemplate.getTemplates().isEmpty()) {
+                final byte[] serializedDocument = serializeDocument(documentTemplate);
+                for (Template template : documentTemplate.getTemplates()) {
+                    ((IQueryEnvironment) queryEnvironment).registerService(new M2DocTemplateService(template,
+                            serializedDocument, bookmarkManager, userContentManager, queryEnvironment, monitor));
+                }
             }
 
             final GenerationResult result = evaluator.generate(documentTemplate, variables, destinationDocument);
@@ -713,6 +716,24 @@ public final class M2DocUtils {
         } finally {
             monitor.done();
         }
+    }
+
+    /**
+     * Serializes the given {@link DocumentTemplate}.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate} to serialize
+     * @return the byte array of the serialized {@link DocumentTemplate}
+     * @throws IOException
+     *             if the serialization fail
+     */
+    private static byte[] serializeDocument(DocumentTemplate documentTemplate) throws IOException {
+        final byte[] serializedDocument;
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            documentTemplate.getDocument().write(output);
+            serializedDocument = output.toByteArray();
+        }
+        return serializedDocument;
     }
 
     /**
