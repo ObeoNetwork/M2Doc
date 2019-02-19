@@ -1,0 +1,20 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate('anydsl')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (str : java.lang.String)
+  
+  let v = str in
+    name = 
+    [query: v]
+    ,
+  endfor
+  
