@@ -237,50 +237,21 @@ public class UserContentRawCopy {
 
         XmlCursor inputCursor = inputParagraph.getCTP().newCursor();
         try {
-            XmlCursor savedCursor = null; // used to keep bookmarks before the referenced run
+            final XmlCursor savedCursor;
             if (inputCursor.toFirstChild()) {
-                do {
-                    if (inputCursor.isStart()) {
-                        if ("bookmarkStart".equals(inputCursor.getName().getLocalPart())) {
-                            savedCursor = inputCursor.getObject().newCursor();
-                        }
-                        if ("r".equals(inputCursor.getName().getLocalPart())
-                            || "bookmarkEnd".equals(inputCursor.getName().getLocalPart())) {
-                            savedCursor = null;
-                        }
-                    }
-                    if (!inputCursor.toNextSibling()) {
-                        break;
-                    }
-                } while (!inputCursor.getObject().equals(inputRun.getCTR()));
+                savedCursor = copyFromRun(inputRun, inputCursor);
+            } else {
+                savedCursor = null;
             }
 
             if (inputCursor.getObject().equals(inputRun.getCTR())) {
                 if (savedCursor != null) {
+                    inputCursor.dispose();
                     inputCursor = savedCursor;
                 }
-
-                final XmlObject tmpXmlObject = XmlObject.Factory.parse(
-                        "<root xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" mc:Ignorable=\"w14 w15 wp14\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"></root>");
-                final XmlCursor tmpCursor = tmpXmlObject.newCursor();
-                try {
-                    tmpCursor.toEndToken();
-                    tmpCursor.toPrevToken();
-                    inputCursor.copyXml(tmpCursor);
-                    while (inputCursor.toNextSibling()) {
-                        inputCursor.copyXml(tmpCursor);
-                    }
-                } finally {
-                    tmpCursor.dispose();
-                }
-
-                // Create picture embedded in run and keep relation id in map (input to output)
-                final String tmpXmlText = tmpXmlObject.xmlText();
-                createPictures(inputPicuteIdToOutputmap, tmpXmlText, inputParagraph.getDocument(),
-                        outputParagraph.getDocument());
-                final XmlToken xmlWithOuputId = getXmlWithOuputId(inputPicuteIdToOutputmap, tmpXmlText);
-                // replace picture IDs
-                final XmlCursor withNewIDCursor = xmlWithOuputId.newCursor();
+                final XmlToken xmlWithOuputPictureId = createTemporaryParagraphFragment(inputPicuteIdToOutputmap,
+                        outputParagraph, inputParagraph, inputCursor);
+                final XmlCursor withNewIDCursor = xmlWithOuputPictureId.newCursor();
                 try {
                     withNewIDCursor.toFirstChild();
                     withNewIDCursor.toFirstChild();
@@ -304,6 +275,81 @@ public class UserContentRawCopy {
         } finally {
             inputCursor.dispose();
         }
+    }
+
+    /**
+     * Creates a temporary paragraph fragment with traslated picture IDs.
+     * 
+     * @param inputPicuteIdToOutputmap
+     *            the picture ID mapping
+     * @param outputParagraph
+     *            the output {@link XWPFParagraph}
+     * @param inputParagraph
+     *            the input {@link XWPFParagraph}
+     * @param inputCursor
+     *            the cursor of the fragmant to copy
+     * @return the {@link XmlToken} to the temporary paragraph fragment
+     * @throws XmlException
+     *             if xml manipulation fails
+     * @throws InvalidFormatException
+     *             if image copy fails
+     */
+    private XmlToken createTemporaryParagraphFragment(Map<String, String> inputPicuteIdToOutputmap,
+            XWPFParagraph outputParagraph, XWPFParagraph inputParagraph, XmlCursor inputCursor)
+            throws XmlException, InvalidFormatException {
+        final XmlObject tmpXmlObject = XmlObject.Factory.parse(
+                "<root xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" mc:Ignorable=\"w14 w15 wp14\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"></root>");
+        final XmlCursor tmpCursor = tmpXmlObject.newCursor();
+        try {
+            tmpCursor.toEndToken();
+            tmpCursor.toPrevToken();
+            inputCursor.copyXml(tmpCursor);
+            while (inputCursor.toNextSibling()) {
+                inputCursor.copyXml(tmpCursor);
+            }
+        } finally {
+            tmpCursor.dispose();
+        }
+
+        // Create picture embedded in run and keep relation id in map (input to output)
+        final String tmpXmlText = tmpXmlObject.xmlText();
+        createPictures(inputPicuteIdToOutputmap, tmpXmlText, inputParagraph.getDocument(),
+                outputParagraph.getDocument());
+        // replace picture IDs
+        final XmlToken xmlWithOuputId = getXmlWithOuputId(inputPicuteIdToOutputmap, tmpXmlText);
+        return xmlWithOuputId;
+    }
+
+    /**
+     * Creates the frargment from the input paragraph and the {@link XWPFRun} to start the fragment from.
+     * 
+     * @param inputRun
+     *            the {@link XWPFRun} marking the start of the fragment
+     * @param inputCursor
+     *            the {@link XmlCursor} that will be moved to the start of the fragment
+     * @return a {@link XmlCursor} if the fragment must start before the given {@link XWPFRun}, <code>null</code> otherwise
+     */
+    private XmlCursor copyFromRun(XWPFRun inputRun, XmlCursor inputCursor) {
+        XmlCursor savedCursor = null; // used to keep bookmarks before the referenced run
+        do {
+            if (inputCursor.isStart()) {
+                if ("bookmarkStart".equals(inputCursor.getName().getLocalPart())) {
+                    if (savedCursor != null) {
+                        savedCursor.dispose();
+                    }
+                    savedCursor = inputCursor.getObject().newCursor();
+                }
+                if ("r".equals(inputCursor.getName().getLocalPart())
+                    || "bookmarkEnd".equals(inputCursor.getName().getLocalPart())) {
+                    savedCursor = null;
+                }
+            }
+            if (inputCursor.getObject().equals(inputRun.getCTR()) || !inputCursor.toNextSibling()) {
+                break;
+            }
+        } while (!inputCursor.getObject().equals(inputRun.getCTR()));
+
+        return savedCursor;
     }
 
     /**
