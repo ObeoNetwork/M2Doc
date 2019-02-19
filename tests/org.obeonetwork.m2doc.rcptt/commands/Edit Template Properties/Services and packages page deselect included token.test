@@ -1,0 +1,54 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _pUXI8H6OEei72vRv1zbFOA,_nPYeUHgzEeeKcP-oL2U8_A
+Element-Name: Services and packages page deselect included token
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _eIYRcDQkEemLi7FxYOxtAw
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 2/19/19 10:08 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/missingVariables.docx" | get-menu 
+    -path "Edit Template properties" | click
+with [get-window "Template properties" | get-table] {
+    get-item -path "test token" | get-property checked | equals true | verify-true
+    get-item -path "test token" | get-property "getGrayed()" | equals false | verify-true
+    get-item -path "other test token" | get-property checked | equals true | verify-true
+    get-item -path "other test token" | get-property "getGrayed()" | equals true | verify-true
+}
+with [get-window "Template properties"] {
+    with [get-table] {
+        get-item -path "other test token" | uncheck
+        select "other test token"
+    }
+}
+with [get-window "Template properties" | get-table] {
+    get-item -path "test token" | get-property checked | equals true | verify-true
+    get-item -path "test token" | get-property "getGrayed()" | equals false | verify-true
+    get-item -path "other test token" | get-property checked | equals true | verify-true
+    get-item -path "other test token" | get-property "getGrayed()" | equals true | verify-true
+}
+get-window "Template properties" | get-tab-folder | get-tab-item "nsURI (expert)" | click
+get-window "Template properties" | get-table | get-item -path "http:\\/\\/www.eclipse.org\\/emf\\/2002\\/Ecore" 
+    | get-property caption | equals "http://www.eclipse.org/emf/2002/Ecore" | verify-true
+get-window "Template properties" | get-table | get-item -path "http:\\/\\/www.obeonetwork.org\\/m2doc\\/template\\/1.0" 
+    | get-property caption | equals "http://www.obeonetwork.org/m2doc/template/1.0" | verify-true
+get-window "Template properties" | get-tab-folder | get-tab-item "Services (expert)" | click
+with [get-window "Template properties" | get-table] {
+    get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1" | get-property "columns[0]" 
+        | equals "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1" | verify-true
+    get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1" | get-property "columns[1]" 
+        | equals "org.obeonetwork.m2doc.ide.tests" | verify-true
+    get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2" | get-property "columns[0]" 
+        | equals "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2" | verify-true
+    get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2" | get-property "columns[1]" 
+        | equals "org.obeonetwork.m2doc.ide.tests" | verify-true
+}
+get-window "Template properties" | get-button Cancel | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

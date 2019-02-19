@@ -201,11 +201,11 @@ public final class TokenRegistry {
     /**
      * Gets the {@link List} of selected tokens for the given {@link TemplateCustomProperties}.
      * 
-     * @param properties
+     * @param customProperties
      *            the {@link TemplateCustomProperties}
      * @return the {@link List} of selected tokens for the given {@link TemplateCustomProperties}
      */
-    public List<String> getSelectedToken(TemplateCustomProperties properties) {
+    public List<String> getSelectedToken(TemplateCustomProperties customProperties) {
         final List<String> res = new ArrayList<>();
 
         for (String tokenName : getRegisteredTokens()) {
@@ -213,13 +213,13 @@ public final class TokenRegistry {
             for (Entry<String, List<String>> entry : getServices(tokenName).entrySet()) {
                 final String bundleName = entry.getKey();
                 for (String className : entry.getValue()) {
-                    if (!bundleName.equals(properties.getServiceClasses().get(className))) {
+                    if (!bundleName.equals(customProperties.getServiceClasses().get(className))) {
                         isSelected = false;
                         break;
                     }
                 }
             }
-            final Set<String> packages = new HashSet<>(properties.getPackagesURIs());
+            final Set<String> packages = new HashSet<>(customProperties.getPackagesURIs());
             for (String pkg : getPackages(tokenName)) {
                 if (!packages.contains(pkg)) {
                     isSelected = false;
@@ -230,6 +230,25 @@ public final class TokenRegistry {
                 res.add(tokenName);
             }
         }
+
+        return res;
+    }
+
+    /**
+     * Tells if then given token name can be deslected.
+     * 
+     * @param customProperties
+     *            the {@link TemplateCustomProperties}
+     * @param tokenName
+     *            the token name
+     * @return <code>true</code> if then given token name can be deslected, <code>false</code> otherwise
+     */
+    public boolean canDeselectToken(TemplateCustomProperties customProperties, String tokenName) {
+        final boolean res;
+
+        deselectToken(customProperties, tokenName);
+        res = !getSelectedToken(customProperties).contains(tokenName);
+        selectToken(customProperties, tokenName);
 
         return res;
     }
@@ -259,23 +278,23 @@ public final class TokenRegistry {
     /**
      * Removes the given token name from the given {@link TemplateCustomProperties}.
      * 
-     * @param properties
+     * @param customProperties
      *            the {@link TemplateCustomProperties}
      * @param tokenName
      *            the token name
      */
-    public void deselectToken(TemplateCustomProperties properties, String tokenName) {
-        final List<String> selectedTokens = getSelectedToken(properties);
+    public void deselectToken(TemplateCustomProperties customProperties, String tokenName) {
+        final List<String> selectedTokens = getSelectedToken(customProperties);
         selectedTokens.remove(tokenName);
 
         for (List<String> classes : getServices(tokenName).values()) {
             for (String cls : classes) {
-                properties.getServiceClasses().remove(cls);
+                customProperties.getServiceClasses().remove(cls);
             }
         }
-        properties.getPackagesURIs().removeAll(getPackages(tokenName));
+        customProperties.getPackagesURIs().removeAll(getPackages(tokenName));
         for (String token : selectedTokens) {
-            selectToken(properties, token);
+            selectToken(customProperties, token);
         }
     }
 

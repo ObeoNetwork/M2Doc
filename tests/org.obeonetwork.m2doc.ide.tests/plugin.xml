@@ -18,6 +18,15 @@
                uri="http://www.eclipse.org/emf/2002/Ecore">
          </package>
       </token>
+      <token
+            name="other test token">
+         <service
+               class="org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2">
+         </service>
+         <package
+               uri="http://www.eclipse.org/emf/2002/Ecore">
+         </package>
+      </token>
    </extension>
    <extension
          point="org.obeonetwork.m2doc.ide.templates.register">

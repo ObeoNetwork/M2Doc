@@ -414,7 +414,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
         Table table = new Table(packagesContainer, SWT.BORDER | SWT.V_SCROLL | SWT.CHECK);
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-        CheckboxTableViewer tableViewer = new CheckboxTableViewer(table);
+        final CheckboxTableViewer tableViewer = new CheckboxTableViewer(table);
         tableViewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         tableViewer.setLabelProvider(new LabelProvider());
         tableViewer.setContentProvider(new IStructuredContentProvider() {
@@ -445,7 +445,8 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
             @Override
             public boolean isGrayed(Object element) {
-                return false;
+                return !(tokenRegistry.getSelectedToken(customProperties).contains(element)
+                    && tokenRegistry.canDeselectToken(customProperties, (String) element));
             }
 
             @Override
@@ -464,6 +465,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
                     final String tokenName = (String) event.getElement();
                     deselectToken(tokenRegistry, customProperties, tokenName);
                 }
+                tableViewer.refresh();
             }
         });
         final List<String> tokenNames = new ArrayList<>(tokenRegistry.getRegisteredTokens());
