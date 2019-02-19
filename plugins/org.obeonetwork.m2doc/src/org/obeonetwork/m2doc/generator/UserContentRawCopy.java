@@ -333,7 +333,8 @@ public class UserContentRawCopy {
         XmlCursor savedCursor = null; // used to keep bookmarks before the referenced run
         do {
             if (inputCursor.isStart()) {
-                if ("bookmarkStart".equals(inputCursor.getName().getLocalPart())) {
+                if ("bookmarkStart".equals(inputCursor.getName().getLocalPart())
+                    || "fldSimple".equals(inputCursor.getName().getLocalPart())) {
                     if (savedCursor != null) {
                         savedCursor.dispose();
                     }
