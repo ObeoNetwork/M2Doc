@@ -308,6 +308,12 @@ The first page of the wizard let you select template metamodels and services pac
 
 ![The Edit Template properties wizard.]({{page.relativePath}}/ref-doc/nightly/images/Template%20Properties%20Wizard1.png "The Edit Template properties wizard.")
 
+When a service package is included in one or more other service packages you can have the following page:
+
+![The Edit Template properties wizard.]({{page.relativePath}}/ref-doc/nightly/images/Template%20Properties%20Wizard1%20with%20included%20tokens.png "The Edit Template properties wizard.")
+
+In this example, the "other test token" is included in the "test token". "other test token" can't be deselected without deselecting "test token".
+
 Note you can also use the `nsURI (expert)` and `Services (expert)` to select metamodels and services manually.
 
 The second page is dedicated to variable declarations. The list of declarations is initialized from the variable used in the template.
