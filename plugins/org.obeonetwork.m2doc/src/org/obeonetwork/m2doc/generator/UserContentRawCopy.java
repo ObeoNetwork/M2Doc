@@ -470,7 +470,7 @@ public class UserContentRawCopy {
             document.insertTable(0, res);
         } else if (document instanceof XWPFHeaderFooter) {
             final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) document;
-            final int index = headerFooter._getHdrFtr().getTblArray().length;
+            final int index = headerFooter._getHdrFtr().getTblList().size();
             final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
             final XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
             if (newTable.getRows().size() > 0) {

@@ -897,7 +897,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             }
         } else if (generatedDocument instanceof XWPFHeaderFooter) {
             final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) generatedDocument;
-            final int index = headerFooter._getHdrFtr().getTblArray().length;
+            final int index = headerFooter._getHdrFtr().getTblList().size();
             final CTTbl ctTbl = headerFooter._getHdrFtr().insertNewTbl(index);
             xwpfTable = new XWPFTable(ctTbl, headerFooter);
             if (xwpfTable.getRows().size() > 0) {
