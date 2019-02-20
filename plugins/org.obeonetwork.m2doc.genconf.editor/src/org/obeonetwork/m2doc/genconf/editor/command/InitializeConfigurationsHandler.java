@@ -14,17 +14,13 @@ package org.obeonetwork.m2doc.genconf.editor.command;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.obeonetwork.m2doc.genconf.editor.wizard.NewGenerationWizard;
-import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.obeonetwork.m2doc.genconf.editor.GenconfEditorLauncher;
 
 /**
  * Initialize configurations for documention generation.
@@ -33,21 +29,10 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  */
 public class InitializeConfigurationsHandler extends AbstractHandler {
 
-    /**
-     * The height.
-     */
-    private static final int HEIGHT = 400;
-
-    /**
-     * The width.
-     */
-    private static final int WIDTH = 900;
-
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         final Shell shell = HandlerUtil.getActiveShell(event);
 
-        final NewGenerationWizard newWizard = new NewGenerationWizard();
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
         final IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
         final IWorkbench workbench;
@@ -56,26 +41,7 @@ public class InitializeConfigurationsHandler extends AbstractHandler {
         } else {
             workbench = null;
         }
-        final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-        newWizard.setCanChangeTemplateFile(
-                structuredSelection.getFirstElement() instanceof IFile && !M2DocUtils.DOCX_EXTENSION_FILE
-                        .equals(((IFile) structuredSelection.getFirstElement()).getFullPath().getFileExtension()));
-        newWizard.init(workbench, structuredSelection);
-        WizardDialog dialog = new WizardDialog(shell, newWizard) {
-            @Override
-            public void create() {
-                super.create();
-                getShell().setText("Generation configuration");
-                getShell().setMinimumSize(WIDTH, HEIGHT);
-            }
-
-            @Override
-            public void showPage(IWizardPage page) {
-                super.showPage(page);
-                getShell().setText("Generation configuration");
-            }
-        };
-        dialog.open();
+        GenconfEditorLauncher.openNewGenerationWizard(workbench, shell, (IStructuredSelection) selection);
 
         return null;
     }
