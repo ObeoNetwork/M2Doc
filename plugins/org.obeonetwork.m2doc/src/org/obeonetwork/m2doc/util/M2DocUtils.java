@@ -353,21 +353,6 @@ public final class M2DocUtils {
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
-     * @param templateURI
-     *            the template {@link URI}
-     * @param options
-     *            the {@link Map} of options
-     */
-    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, URI templateURI,
-            Map<String, String> options) {
-        prepareEnvironmentServices(queryEnvironment, URIConverter.INSTANCE, templateURI, options);
-    }
-
-    /**
-     * Prepares the given {@link IQueryEnvironment} for M2Doc services.
-     * 
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
      * @param templateURI
@@ -391,26 +376,6 @@ public final class M2DocUtils {
         for (IServicesConfigurator configurator : getConfigurators()) {
             ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment, options));
         }
-    }
-
-    /**
-     * Parses a template document and returns the {@link DocumentTemplate} resulting from
-     * this parsing.
-     * 
-     * @param templateURI
-     *            URI for the template, used when external links (images, includes) have to be resolved
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
-     * @param classProvider
-     *            the {@link IClassProvider} to use for service Loading
-     * @return the {@link DocumentTemplate} resulting from parsing the specified
-     *         document
-     * @throws DocumentParserException
-     *             if a problem occurs while parsing the document.
-     */
-    public static DocumentTemplate parse(URI templateURI, IQueryEnvironment queryEnvironment,
-            IClassProvider classProvider) throws DocumentParserException {
-        return parse(URIConverter.INSTANCE, templateURI, queryEnvironment, classProvider);
     }
 
     /**
@@ -513,24 +478,6 @@ public final class M2DocUtils {
      * Parses a document for {@link UserContent} and returns the {@link DocumentTemplate} resulting from
      * this parsing.
      * 
-     * @param documentURI
-     *            URI for the document
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
-     * @return the {@link DocumentTemplate} resulting from parsing the specified
-     *         document
-     * @throws DocumentParserException
-     *             if a problem occurs while parsing the document.
-     */
-    public static DocumentTemplate parseUserContent(URI documentURI, IQueryEnvironment queryEnvironment)
-            throws DocumentParserException {
-        return parseUserContent(URIConverter.INSTANCE, documentURI, queryEnvironment);
-    }
-
-    /**
-     * Parses a document for {@link UserContent} and returns the {@link DocumentTemplate} resulting from
-     * this parsing.
-     * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
      * @param documentURI
@@ -596,22 +543,6 @@ public final class M2DocUtils {
      * Serializes the given {@link M2DocUtils#validate(DocumentTemplate, IReadOnlyQueryEnvironment, Map) validated} {@link DocumentTemplate}
      * to the given destination.
      * 
-     * @param documentTemplate
-     *            the {@link M2DocUtils#validate(DocumentTemplate, IReadOnlyQueryEnvironment, Map) validated} {@link DocumentTemplate}
-     * @param destination
-     *            the destination {@link URI}
-     * @throws IOException
-     *             if the {@link DocumentTemplate} can't be serialized to the given destination
-     */
-    public static void serializeValidatedDocumentTemplate(DocumentTemplate documentTemplate, URI destination)
-            throws IOException {
-        serializeValidatedDocumentTemplate(URIConverter.INSTANCE, documentTemplate, destination);
-    }
-
-    /**
-     * Serializes the given {@link M2DocUtils#validate(DocumentTemplate, IReadOnlyQueryEnvironment, Map) validated} {@link DocumentTemplate}
-     * to the given destination.
-     * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
      * @param documentTemplate
@@ -627,29 +558,6 @@ public final class M2DocUtils {
 
         generator.doSwitch(documentTemplate);
         POIServices.getInstance().saveFile(uriConverter, documentTemplate.getDocument(), destination);
-    }
-
-    /**
-     * Generates the given template into the given destination.
-     * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate}
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param variables
-     *            variables
-     * @param destination
-     *            the destination
-     * @param monitor
-     *            used to track the progress will generating.
-     * @return the {@link GenerationResult}
-     * @throws DocumentGenerationException
-     *             if the generation fails
-     */
-    public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URI destination, Monitor monitor)
-            throws DocumentGenerationException {
-        return generate(documentTemplate, queryEnvironment, variables, URIConverter.INSTANCE, destination, monitor);
     }
 
     /**
@@ -807,23 +715,23 @@ public final class M2DocUtils {
      * 
      * @param exceptions
      *            the {@link List} of resulting exceptions (filled by this method)
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     * @param key
+     *            the {@link Object} key
      * @param defaultResourceSet
      *            the default {@link ResourceSet} to use if none is created
      * @param options
      *            the {@link Map} of existing options.
      * @return the {@link ResourceSet} suitable for loading {@link EObject} from the given options if any, the default {@link ResourceSet}
      *         otherwise
-     * @see #cleanResourceSetForModels(IReadOnlyQueryEnvironment)
+     * @see #cleanResourceSetForModels(Object)
      */
-    public static ResourceSet createResourceSetForModels(List<Exception> exceptions,
-            IReadOnlyQueryEnvironment queryEnvironment, ResourceSet defaultResourceSet, Map<String, String> options) {
+    public static ResourceSet createResourceSetForModels(List<Exception> exceptions, Object key,
+            ResourceSet defaultResourceSet, Map<String, String> options) {
         ResourceSet res = null;
 
         for (IServicesConfigurator configurator : getConfigurators()) {
             try {
-                res = configurator.createResourceSetForModels(queryEnvironment, options);
+                res = configurator.createResourceSetForModels(key, options);
                 if (res != null) {
                     break;
                 }
@@ -842,15 +750,15 @@ public final class M2DocUtils {
     }
 
     /**
-     * Cleans the {@link #createResourceSetForModels(List, IReadOnlyQueryEnvironment, ResourceSet, Map) created} {@link ResourceSet} for the
-     * given {@link IReadOnlyQueryEnvironment}.
+     * Cleans the {@link #createResourceSetForModels(List, Object, ResourceSet, Map) created} {@link ResourceSet} for the
+     * given {@link Object} key.
      * 
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     * @param key
+     *            the {@link Object} key
      */
-    public static void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment) {
+    public static void cleanResourceSetForModels(Object key) {
         for (IServicesConfigurator configurator : getConfigurators()) {
-            configurator.cleanResourceSetForModels(queryEnvironment);
+            configurator.cleanResourceSetForModels(key);
         }
     }
 

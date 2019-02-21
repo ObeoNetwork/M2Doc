@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
@@ -100,6 +101,11 @@ public class M2DocSiriusServices {
     private final Session session;
 
     /**
+     * The {@link URIConverter}.
+     */
+    private final URIConverter uriConverter;
+
+    /**
      * Tells if we should force the refresh of the representation before exporting it.
      */
     private final boolean forceRefresh;
@@ -138,6 +144,7 @@ public class M2DocSiriusServices {
      */
     public M2DocSiriusServices(Session session, boolean forceRefresh) {
         this.session = session;
+        this.uriConverter = session.getTransactionalEditingDomain().getResourceSet().getURIConverter();
         this.forceRefresh = forceRefresh;
         if (!session.isOpen()) {
             session.open(new NullProgressMonitor());
@@ -402,7 +409,7 @@ public class M2DocSiriusServices {
             exportDiagUnitOfWork.run();
         }
 
-        res = new MImageImpl(URI.createFileURI(tmpFile.getAbsolutePath()));
+        res = new MImageImpl(uriConverter, URI.createFileURI(tmpFile.getAbsolutePath()));
         return res;
     }
 

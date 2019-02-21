@@ -112,13 +112,12 @@ public class M2DocUtilsTests {
         }
 
         @Override
-        public ResourceSet createResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment,
-                Map<String, String> options) {
+        public ResourceSet createResourceSetForModels(Object context, Map<String, String> options) {
             return RESOURCE_SET;
         }
 
         @Override
-        public void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment) {
+        public void cleanResourceSetForModels(Object context) {
             // nothing to do here
         }
     }

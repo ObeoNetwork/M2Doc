@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -78,7 +79,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
                 .getSelectionService().getSelection()).getFirstElement();
         templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
         try {
-            document = POIServices.getInstance().getXWPFDocument(templateURI);
+            document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE, templateURI);
             properties = new TemplateCustomProperties(document);
             for (String missingVariable : properties.getMissingVariables()) {
                 properties.getVariables().put(missingVariable, "");
@@ -121,7 +122,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
 
                 properties.save();
                 try {
-                    POIServices.getInstance().saveFile(document, templateURI);
+                    POIServices.getInstance().saveFile(URIConverter.INSTANCE, document, templateURI);
                     document.close();
                 } catch (IOException e) {
                     status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);

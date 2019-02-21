@@ -494,7 +494,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
         final URI absoluteURI = templateURI.resolve(gen.eResource().getURI());
         if (URIConverter.INSTANCE.exists(absoluteURI, null)) {
             try {
-                res = POIServices.getInstance().getTemplateCustomProperties(absoluteURI);
+                res = POIServices.getInstance().getTemplateCustomProperties(URIConverter.INSTANCE, absoluteURI);
                 final List<Definition> oldDefinitions = GenconfUtils.getOldDefinitions(gen, res);
                 final Command removeCommand = RemoveCommand.create(editingDomain, gen,
                         GenconfPackage.GENERATION__DEFINITIONS, oldDefinitions);

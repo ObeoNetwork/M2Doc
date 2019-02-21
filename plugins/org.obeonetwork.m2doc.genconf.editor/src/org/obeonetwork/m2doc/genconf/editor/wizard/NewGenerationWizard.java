@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
@@ -205,7 +206,7 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
         final IQueryEnvironment queryEnvironment = Query.newEnvironment();
         try {
             final TemplateCustomProperties properties = POIServices.getInstance().getTemplateCustomProperties(
-                    URI.createURI(gen.getTemplateFileName()).resolve(gen.eResource().getURI()));
+                    URIConverter.INSTANCE, URI.createURI(gen.getTemplateFileName()).resolve(gen.eResource().getURI()));
             ((IQueryEnvironment) queryEnvironment).registerEPackage(EcorePackage.eINSTANCE);
             ((IQueryEnvironment) queryEnvironment).registerCustomClassMapping(
                     EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);

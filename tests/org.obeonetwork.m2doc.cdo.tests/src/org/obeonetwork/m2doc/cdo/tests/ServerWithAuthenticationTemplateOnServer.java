@@ -103,9 +103,9 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
         server = new CDOServer(true);
         server.start();
 
-        IConnector connector = M2DocCDOUtils
+        final IConnector connector = M2DocCDOUtils
                 .getConnector(CDOServer.PROTOCOL + "://" + CDOServer.IP + ":" + CDOServer.PORT);
-        CDOSession session = M2DocCDOUtils.openSession(connector, CDOServer.REPOSITORY_NAME, CDOServer.USER_NAME,
+        final CDOSession session = M2DocCDOUtils.openSession(connector, CDOServer.REPOSITORY_NAME, CDOServer.USER_NAME,
                 CDOServer.PASSWORD);
         final CDOTransaction transaction = M2DocCDOUtils.openTransaction(session);
 
@@ -121,7 +121,8 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
                 final String testFolder = ((String) parameters[0]).replaceAll("\\\\", "/");
                 final URI uri = URI.createURI(getTemplateFileInternal(new File(testFolder)).toURI().toString(), false);
                 final CDOBinaryResource templateResource = transaction.createBinaryResource(uri.lastSegment());
-                final InputStream templateInputStream = URIConverter.INSTANCE.createInputStream(uri);
+                final URIConverter uriConverter = transaction.getResourceSet().getURIConverter();
+                final InputStream templateInputStream = uriConverter.createInputStream(uri);
                 CDOBlob contents = new CDOBlob(templateInputStream);
                 templateResource.setContents(contents);
 

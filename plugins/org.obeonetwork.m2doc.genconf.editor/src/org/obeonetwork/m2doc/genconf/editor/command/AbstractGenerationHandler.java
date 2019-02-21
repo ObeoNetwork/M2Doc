@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -124,9 +123,8 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
      */
     protected void checkM2DocVersion(final Shell shell, final String dialogTitle, Generation gen)
             throws DocumentGenerationException, IOException {
-        final IReadOnlyQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(gen);
-        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
-                queryEnvironment, new ResourceSetImpl(), GenconfUtils.getOptions(gen));
+        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(), gen,
+                new ResourceSetImpl(), GenconfUtils.getOptions(gen));
 
         final String templateFilePath = gen.getTemplateFileName();
         if (templateFilePath != null && !templateFilePath.isEmpty()) {
@@ -146,7 +144,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
             }
         }
 
-        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
+        M2DocUtils.cleanResourceSetForModels(gen);
     }
 
 }

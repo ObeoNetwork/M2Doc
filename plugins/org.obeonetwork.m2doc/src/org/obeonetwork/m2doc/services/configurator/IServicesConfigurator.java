@@ -76,22 +76,22 @@ public interface IServicesConfigurator {
     /**
      * Create a new resourceSet which would need specific initialization for loading the models according to the given options.
      * 
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     * @param context
+     *            the {@link Object} context used in {@link #cleanResourceSetForModels(Object)}
      * @param options
      *            the {@link Map} of options
      * @return the created {@link ResourceSet} if any, <code>null</code> otherwise
-     * @see #cleanResourceSetForModels(IReadOnlyQueryEnvironment)
+     * @see #cleanResourceSetForModels(Object)
      */
-    ResourceSet createResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options);
+    ResourceSet createResourceSetForModels(Object context, Map<String, String> options);
 
     /**
-     * Cleans the {@link #createResourceSetForModels(IReadOnlyQueryEnvironment, Map) created} {@link ResourceSet} for the given
+     * Cleans the {@link #createResourceSetForModels(Object, Map) created} {@link ResourceSet} for the given
      * {@link IReadOnlyQueryEnvironment}.
      * 
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     * @param context
+     *            the {@link Object} context
      */
-    void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment);
+    void cleanResourceSetForModels(Object context);
 
 }

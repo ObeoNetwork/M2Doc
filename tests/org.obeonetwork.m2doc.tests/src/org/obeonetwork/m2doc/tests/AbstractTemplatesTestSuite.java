@@ -157,10 +157,10 @@ public abstract class AbstractTemplatesTestSuite {
         }
         final URI templateURI = getTemplateURI(new File(testFolderPath));
         setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
-        queryEnvironment = GenconfUtils.getQueryEnvironment(generation);
         final List<Exception> exceptions = new ArrayList<>();
-        new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
         resourceSetForModels = getResourceSetForModel(exceptions);
+        queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels.getURIConverter(), generation);
+        new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()));
         for (Exception e : exceptions) {
@@ -181,7 +181,7 @@ public abstract class AbstractTemplatesTestSuite {
                 xmiResourceFactory);
         rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("uml", xmiResourceFactory);
 
-        final ResourceSet res = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment, rs,
+        final ResourceSet res = M2DocUtils.createResourceSetForModels(exceptions, generation, rs,
                 GenconfUtils.getOptions(generation));
         res.getURIConverter().getURIHandlers().add(0, uriHandler);
 
@@ -190,7 +190,7 @@ public abstract class AbstractTemplatesTestSuite {
 
     @After
     public void after() {
-        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
+        M2DocUtils.cleanResourceSetForModels(generation);
         uriHandler.clear();
     }
 

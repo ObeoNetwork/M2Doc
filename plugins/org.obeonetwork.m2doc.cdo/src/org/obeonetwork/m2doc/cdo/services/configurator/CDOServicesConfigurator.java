@@ -43,14 +43,14 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
     public static final List<String> OPTIONS = initOptions();
 
     /**
-     * Mapping of {@link IReadOnlyQueryEnvironment} to {@link IConnector}.
+     * Mapping of {@link Object} to {@link IConnector}.
      */
-    private Map<IReadOnlyQueryEnvironment, IConnector> connectors = new HashMap<IReadOnlyQueryEnvironment, IConnector>();
+    private Map<Object, IConnector> connectors = new HashMap<Object, IConnector>();
 
     /**
-     * Mapping of {@link IReadOnlyQueryEnvironment} to {@link CDOTransaction}.
+     * Mapping of {@link Object} to {@link CDOTransaction}.
      */
-    private Map<IReadOnlyQueryEnvironment, CDOTransaction> transactions = new HashMap<IReadOnlyQueryEnvironment, CDOTransaction>();
+    private Map<Object, CDOTransaction> transactions = new HashMap<Object, CDOTransaction>();
 
     /**
      * Initializes options.
@@ -96,8 +96,7 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public ResourceSet createResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment,
-            Map<String, String> options) {
+    public ResourceSet createResourceSetForModels(Object context, Map<String, String> options) {
         final ResourceSet res;
 
         final String cdoServer = options.get(M2DocCDOUtils.CDO_SERVER_OPTION);
@@ -107,10 +106,10 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
             final String login = options.get(M2DocCDOUtils.CDO_LOGIN_OPTION);
             final String password = options.get(M2DocCDOUtils.CDO_PASSWORD_OPTION);
             final IConnector connector = M2DocCDOUtils.getConnector(cdoServer);
-            connectors.put(queryEnvironment, connector);
+            connectors.put(context, connector);
             final CDOSession session = M2DocCDOUtils.openSession(connector, repository, login, password);
             final CDOTransaction transaction = M2DocCDOUtils.openTransaction(session, branch);
-            transactions.put(queryEnvironment, transaction);
+            transactions.put(context, transaction);
             res = transaction.getResourceSet();
             res.getURIConverter().getURIHandlers().add(0, new M2DocCDOURIHandler((InternalCDOView) transaction));
         } else {
@@ -121,13 +120,13 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment) {
-        final CDOTransaction transaction = transactions.get(queryEnvironment);
+    public void cleanResourceSetForModels(Object context) {
+        final CDOTransaction transaction = transactions.get(context);
         if (transaction != null) {
             final CDOSession session = transaction.getSession();
             transaction.close();
             session.close();
-            connectors.remove(queryEnvironment).close();
+            connectors.remove(context).close();
         }
     }
 

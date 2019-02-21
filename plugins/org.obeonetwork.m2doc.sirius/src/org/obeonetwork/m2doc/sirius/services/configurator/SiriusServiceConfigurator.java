@@ -62,9 +62,9 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     private final Map<IReadOnlyQueryEnvironment, M2DocSiriusServices> services = new HashMap<>();
 
     /**
-     * Mapping of {@link IReadOnlyQueryEnvironment} to {@link Session}.
+     * Mapping of {@link Object} to {@link Session}.
      */
-    private final Map<IReadOnlyQueryEnvironment, Session> sessions = new HashMap<>();
+    private final Map<Object, Session> sessions = new HashMap<>();
 
     /**
      * {@link Set} of {@link Session} that need to be closed.
@@ -226,8 +226,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public ResourceSet createResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment,
-            Map<String, String> options) {
+    public ResourceSet createResourceSetForModels(Object context, Map<String, String> options) {
         ResourceSet created = null;
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null && !sessionURIStr.isEmpty()) {
@@ -239,7 +238,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 try {
                     final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
-                    sessions.put(queryEnvironment, session);
+                    sessions.put(context, session);
                     if (!session.isOpen()) {
                         session.open(new NullProgressMonitor());
                         sessionToClose.add(session);
@@ -268,8 +267,8 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public void cleanResourceSetForModels(IReadOnlyQueryEnvironment queryEnvironment) {
-        final Session session = sessions.remove(queryEnvironment);
+    public void cleanResourceSetForModels(Object context) {
+        final Session session = sessions.remove(context);
         if (session != null) {
             if (session.isOpen()) {
                 session.getTransactionalEditingDomain().getResourceSet().eAdapters()

@@ -116,7 +116,8 @@ public class ServerWithoutAuthenticationTemplateOnServer extends AbstractTemplat
                 final String testFolder = ((String) parameters[0]).replaceAll("\\\\", "/");
                 final URI uri = URI.createURI(getTemplateFileInternal(new File(testFolder)).toURI().toString(), false);
                 final CDOBinaryResource templateResource = transaction.createBinaryResource(uri.lastSegment());
-                final InputStream templateInputStream = URIConverter.INSTANCE.createInputStream(uri);
+                final URIConverter uriConverter = transaction.getResourceSet().getURIConverter();
+                final InputStream templateInputStream = uriConverter.createInputStream(uri);
                 CDOBlob contents = new CDOBlob(templateInputStream);
                 templateResource.setContents(contents);
 
