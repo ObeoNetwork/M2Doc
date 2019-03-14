@@ -50,7 +50,7 @@ Converts a String to a bookmark reference
 
 ### Example
 
-* 'Artifact1'.asBookmark('Art1')
+* 'Artifact1'.asBookmarkRef('Art1')
   * a bookmark reference with the ID 'Art1' the label 'Definition of Artifact1'
 
 ## String.asLink(String) : org.obeonetwork.m2doc.element.MHyperLink
