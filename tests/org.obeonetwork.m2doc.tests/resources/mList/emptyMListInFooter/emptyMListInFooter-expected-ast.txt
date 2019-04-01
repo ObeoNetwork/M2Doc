@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  
+=== FOOTER ===
+
+  A simple demonstration of a MList :
+  [query: .emptyList('')]
+  End of demonstration.
+=== TEMPLATES ===
