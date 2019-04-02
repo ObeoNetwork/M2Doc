@@ -48,12 +48,7 @@ public class MTableImpl implements MTable {
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    public static class MCellImpl implements MCell {
-
-        /**
-         * The contents.
-         */
-        private MElement contents;
+    public static class MCellImpl extends AbstractMElementContainer implements MCell {
 
         /**
          * The background {@link Color}.
@@ -66,11 +61,6 @@ public class MTableImpl implements MTable {
         private VAlignment vAlign;
 
         /**
-         * The horizontal alignemnt.
-         */
-        private HAlignment hAlign;
-
-        /**
          * Constructor.
          * 
          * @param contents
@@ -79,18 +69,8 @@ public class MTableImpl implements MTable {
          *            the background {@link Color}
          */
         public MCellImpl(MElement contents, Color backgroundColor) {
-            this.contents = contents;
+            super(contents);
             this.backgroundColor = backgroundColor;
-        }
-
-        @Override
-        public MElement getContents() {
-            return contents;
-        }
-
-        @Override
-        public void setContents(MElement contents) {
-            this.contents = contents;
         }
 
         @Override
@@ -111,16 +91,6 @@ public class MTableImpl implements MTable {
         @Override
         public void setVAlignment(VAlignment alignement) {
             vAlign = alignement;
-        }
-
-        @Override
-        public HAlignment getHAlignment() {
-            return hAlign;
-        }
-
-        @Override
-        public void setHAlignment(HAlignment alignement) {
-            hAlign = alignement;
         }
 
     }

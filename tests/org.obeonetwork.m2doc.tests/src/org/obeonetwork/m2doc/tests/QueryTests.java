@@ -18,7 +18,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
- * Tests {@link org.obeonetwork.m2doc.template.Repetition Repetition}.
+ * Tests {@link org.obeonetwork.m2doc.template.Query Query}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */

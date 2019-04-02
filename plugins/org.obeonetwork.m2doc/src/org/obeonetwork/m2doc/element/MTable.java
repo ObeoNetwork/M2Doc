@@ -81,7 +81,7 @@ public interface MTable extends MElement {
      * 
      * @author ldelaigue
      */
-    public interface MCell {
+    public interface MCell extends MElementContainer {
 
         /**
          * Vertical alignement.
@@ -113,80 +113,6 @@ public interface MTable extends MElement {
         }
 
         /**
-         * Vertical alignement.
-         * 
-         * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-         */
-        enum HAlignment {
-
-            /**
-             * Both.
-             */
-            BOTH,
-
-            /**
-             * Center.
-             */
-            CENTER,
-
-            /**
-             * Distribute.
-             */
-            DISTRIBUTE,
-
-            /**
-             * High kashida.
-             */
-            HIGH_KASHIDA,
-
-            /**
-             * Left.
-             */
-            LEFT,
-
-            /**
-             * Low kashida.
-             */
-            LOW_KASHIDA,
-
-            /**
-             * Medium kashida.
-             */
-            MEDIUM_KASHIDA,
-
-            /**
-             * Num tab.
-             */
-            NUM_TAB,
-
-            /**
-             * Right.
-             */
-            RIGHT,
-
-            /**
-             * Thai distribute.
-             */
-            THAI_DISTRIBUTE
-
-        }
-
-        /**
-         * Gets the cell contents.
-         * 
-         * @return the cell contents if any, <code>null</code> otherwise
-         */
-        MElement getContents();
-
-        /**
-         * Sets the cell contents.
-         * 
-         * @param contents
-         *            the new cell contents
-         */
-        void setContents(MElement contents);
-
-        /**
          * Gets the background {@link Color}.
          * 
          * @return the background {@link Color} if any, <code>null</code> otherwise
@@ -215,21 +141,6 @@ public interface MTable extends MElement {
          *            the new {@link VAlignment vertical alignment}
          */
         void setVAlignment(VAlignment alignement);
-
-        /**
-         * Gets the {@link HAlignment horizontal alignment}.
-         * 
-         * @return the {@link HAlignment horizontal alignment}
-         */
-        HAlignment getHAlignment();
-
-        /**
-         * Sets the {@link HAlignment horizontal alignment}.
-         * 
-         * @param alignement
-         *            the new {@link HAlignment horizontal alignment}
-         */
-        void setHAlignment(HAlignment alignement);
 
     }
 

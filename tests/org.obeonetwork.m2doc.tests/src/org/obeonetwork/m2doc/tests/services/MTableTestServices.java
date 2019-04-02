@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.obeonetwork.m2doc.element.MElement;
+import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
 import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
-import org.obeonetwork.m2doc.element.MTable.MCell.HAlignment;
 import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;

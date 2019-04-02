@@ -29,7 +29,7 @@ import org.obeonetwork.m2doc.tests.userdoc.UserdocTests;
 @SuiteClasses(value = {GeneratorTests.class, ParserTests.class, PropertiesTests.class, ServicesTests.class,
     UserdocTests.class, BookmarkTests.class, CommentTests.class, ConditionalTests.class, LetTests.class,
     QueryTests.class, RepetitionTests.class, StaticTests.class, UserDocTests.class, M2DocUtilsTests.class,
-    MTableTests.class, MListTests.class, TemplateTests.class })
+    MTableTests.class, MListTests.class, MParagraphTests.class, TemplateTests.class })
 public class AllTests {
 
 }

@@ -56,6 +56,7 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.element.MBookmark;
 import org.obeonetwork.m2doc.element.MElement;
+import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MPagination;
@@ -63,7 +64,6 @@ import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
-import org.obeonetwork.m2doc.element.MTable.MCell.HAlignment;
 import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
@@ -866,6 +866,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
         if (paragraph.getStyleName() != null) {
             newParagraph.setStyle(paragraph.getStyleName());
+        }
+        if (paragraph.getHAlignment() != null) {
+            newParagraph.setAlignment(getHAllignment(paragraph.getHAlignment()));
         }
 
         return insertObject(newParagraph, paragraph.getContents(), run);

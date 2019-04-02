@@ -12,40 +12,53 @@
 package org.obeonetwork.m2doc.element.impl;
 
 import org.obeonetwork.m2doc.element.MElement;
-import org.obeonetwork.m2doc.element.MParagraph;
+import org.obeonetwork.m2doc.element.MElementContainer;
 
 /**
- * A paragraph that can be inserted in a word document.
+ * Abstract implementation of {@link MElementContainer}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class MParagraphImpl extends AbstractMElementContainer implements MParagraph {
+public abstract class AbstractMElementContainer implements MElementContainer {
+
     /**
-     * The style name.
+     * The contents.
      */
-    private String styleName;
+    private MElement contents;
+
+    /**
+     * The horizontal alignemnt.
+     */
+    private HAlignment hAlign;
 
     /**
      * Constructor.
      * 
      * @param contents
-     *            the contents
-     * @param styleName
-     *            the style name
+     *            the contained {@link MElement}
      */
-    public MParagraphImpl(MElement contents, String styleName) {
-        super(contents);
-        this.styleName = styleName;
+    public AbstractMElementContainer(MElement contents) {
+        this.contents = contents;
     }
 
     @Override
-    public String getStyleName() {
-        return styleName;
+    public MElement getContents() {
+        return contents;
     }
 
     @Override
-    public void setStyleName(String styleName) {
-        this.styleName = styleName;
+    public void setContents(MElement contents) {
+        this.contents = contents;
+    }
+
+    @Override
+    public HAlignment getHAlignment() {
+        return hAlign;
+    }
+
+    @Override
+    public void setHAlignment(HAlignment alignement) {
+        hAlign = alignement;
     }
 
 }

@@ -18,11 +18,11 @@ import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
- * Tests static generation.
+ * Tests {@link org.obeonetwork.m2doc.element.MParagraph MParagraph}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class StaticTests extends AbstractTemplatesTestSuite {
+public class MParagraphTests extends AbstractTemplatesTestSuite {
 
     /**
      * Constructor.
@@ -34,7 +34,7 @@ public class StaticTests extends AbstractTemplatesTestSuite {
      * @throws DocumentParserException
      *             if the tested template can't be parsed
      */
-    public StaticTests(String testFolder) throws IOException, DocumentParserException {
+    public MParagraphTests(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
     }
 
@@ -45,7 +45,7 @@ public class StaticTests extends AbstractTemplatesTestSuite {
      */
     @Parameters(name = "{0}")
     public static Collection<Object[]> retrieveTestFolders() {
-        return retrieveTestFolders("resources/static");
+        return retrieveTestFolders("resources/mParagraph");
     }
 
 }

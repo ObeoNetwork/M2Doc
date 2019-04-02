@@ -16,22 +16,7 @@ package org.obeonetwork.m2doc.element;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MParagraph {
-
-    /**
-     * Gets the cell contents.
-     * 
-     * @return the cell contents if any, <code>null</code> otherwise
-     */
-    MElement getContents();
-
-    /**
-     * Sets the cell contents.
-     * 
-     * @param contents
-     *            the new cell contents
-     */
-    void setContents(MElement contents);
+public interface MParagraph extends MElementContainer, MElement {
 
     /**
      * Gets the style name of the paragraph.

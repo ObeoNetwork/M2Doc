@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a sample paragraph :
+  [query: .getAlignments('Aenean sed quam vitae diam egestas molestie a ut est. Vestibulum a diam massa. In commodo egestas mollis. Nullam commodo, tortor a varius sodales, arcu odio feugiat nisi, at hendrerit sem lorem vel erat. Etiam augue orci, eleifend vitae lectus nec, laoreet accumsan orci. Suspendisse diam ipsum, maximus in egestas ac, eleifend ac nibh. Morbi tempus consectetur vestibulum. Fusce suscipit augue at dolor tincidunt, vitae sodales velit rutrum. Mauris faucibus diam ac vehicula molestie. Nulla quis nibh vitae neque vehicula egestas. Etiam molestie vulputate velit, vel bibendum ligula sodales sed. Mauris vel rutrum diam, sit amet auctor ex. Donec pellentesque non ante vitae consectetur. Nulla feugiat massa vel finibus dictum. Donec vestibulum nulla a risus dictum volutpat.')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
