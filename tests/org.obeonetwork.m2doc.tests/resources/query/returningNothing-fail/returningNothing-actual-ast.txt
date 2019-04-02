@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .aqlFeatureAccess(.aqlFeatureAccess(.oclAsType(->at(.aqlFeatureAccess(self, 'eClassifiers'), 1), EClass), 'eIDAttribute'), 'name')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
