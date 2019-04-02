@@ -441,6 +441,7 @@ public class DefinitionValueDialog extends MessageDialog {
         final Label label = new Label(composite, SWT.NONE);
         label.setText(def.getKey() + " = ");
         final Text text = new Text(composite, SWT.NONE);
+        text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
         return text;
     }
