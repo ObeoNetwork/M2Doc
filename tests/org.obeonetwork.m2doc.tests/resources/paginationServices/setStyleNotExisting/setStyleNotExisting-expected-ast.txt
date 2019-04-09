@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of setStyle() :
+  [query: .setStyle(.asParagraph('Section 1'), 'NotExisting')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

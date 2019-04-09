@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  comment: Style Titre 1
+  A simple demonstration of availableTextStyles() :
+  [query: .availableTextStyles('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

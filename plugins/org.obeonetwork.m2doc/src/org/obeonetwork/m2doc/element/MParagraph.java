@@ -33,4 +33,34 @@ public interface MParagraph extends MElementContainer, MElement {
      */
     void setStyleName(String styleName);
 
+    /**
+     * Gets the numbering ID.
+     * 
+     * @return the numbering ID
+     */
+    Long getNumberingID();
+
+    /**
+     * Sets the numbering ID.
+     * 
+     * @param numberingID
+     *            the numbering ID to set
+     */
+    void setNumberingID(Long numberingID);
+
+    /**
+     * Gets the numbering level.
+     * 
+     * @return the numbering level
+     */
+    Long getNumberingLevel();
+
+    /**
+     * Sets the numbering level.
+     * 
+     * @param numberingLevel
+     *            the numbering level to set
+     */
+    void setNumberingLevel(Long numberingLevel);
+
 }

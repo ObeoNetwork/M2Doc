@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  comment: 
+  A simple demonstration of availableNumberingIDs() :
+  [query: .availableNumberingIDs('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

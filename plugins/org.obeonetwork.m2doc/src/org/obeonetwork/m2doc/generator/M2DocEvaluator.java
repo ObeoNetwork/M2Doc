@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.generator;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -869,6 +870,13 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
         if (paragraph.getHAlignment() != null) {
             newParagraph.setAlignment(getHAllignment(paragraph.getHAlignment()));
+        }
+        if (paragraph.getNumberingID() != null) {
+            newParagraph.setNumID(BigInteger.valueOf(paragraph.getNumberingID()));
+        }
+        if (paragraph.getNumberingLevel() != null) {
+            newParagraph.getCTP().getPPr().getNumPr().addNewIlvl()
+                    .setVal(BigInteger.valueOf(paragraph.getNumberingLevel()));
         }
 
         return insertObject(newParagraph, paragraph.getContents(), run);

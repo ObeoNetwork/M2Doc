@@ -26,6 +26,16 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
     private String styleName;
 
     /**
+     * The numbering ID.
+     */
+    private Long numberingID;
+
+    /**
+     * The numbering level.
+     */
+    private Long numberingLevel;
+
+    /**
      * Constructor.
      * 
      * @param contents
@@ -46,6 +56,44 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
     @Override
     public void setStyleName(String styleName) {
         this.styleName = styleName;
+    }
+
+    /**
+     * Gets the numbering ID.
+     * 
+     * @return the numbering ID
+     */
+    public Long getNumberingID() {
+        return numberingID;
+    }
+
+    /**
+     * Sets the numbering ID.
+     * 
+     * @param numberingID
+     *            the numbering ID to set
+     */
+    public void setNumberingID(Long numberingID) {
+        this.numberingID = numberingID;
+    }
+
+    /**
+     * Gets the numbering level.
+     * 
+     * @return the numbering level
+     */
+    public Long getNumberingLevel() {
+        return numberingLevel;
+    }
+
+    /**
+     * Sets the numbering level.
+     * 
+     * @param numberingLevel
+     *            the numbering level to set
+     */
+    public void setNumberingLevel(Long numberingLevel) {
+        this.numberingLevel = numberingLevel;
     }
 
 }

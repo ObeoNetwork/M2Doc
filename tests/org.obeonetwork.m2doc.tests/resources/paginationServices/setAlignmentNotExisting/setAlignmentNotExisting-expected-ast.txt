@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of setAlignment() :
+  [query: .setAlignment(.asParagraph('some text'), 'NOT_EXISTING')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

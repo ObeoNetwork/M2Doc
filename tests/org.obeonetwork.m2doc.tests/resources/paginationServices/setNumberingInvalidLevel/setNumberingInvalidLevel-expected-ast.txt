@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  comment: 
+  A simple demonstration of setNumbering() :
+  [query: .setNumbering(.asParagraph('some text'), 1, 9)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

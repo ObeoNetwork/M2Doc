@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  comment: Style Titre 1
+  A simple demonstration of setStyle() :
+  [query: .setStyle(.asParagraph('Section 1'), 'Titre1')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
