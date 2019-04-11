@@ -22,6 +22,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.Test;
@@ -62,7 +63,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()))) {
+                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(
@@ -103,7 +104,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()))) {
+                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(
@@ -144,7 +145,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()))) {
+                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(
@@ -185,7 +186,7 @@ public class TemplateValidationGeneratorTests {
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()))) {
+                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages()

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CancellationException;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -116,6 +117,64 @@ public final class M2DocUtils {
      * {@link IServicesConfiguratorDescriptor}.
      */
     private static final List<IServicesConfiguratorDescriptor> CONFIGURATORS = new ArrayList<>();
+
+    /**
+     * The load template monitor work.
+     */
+    private static final int LOAD_TEMPLATE_MONITOR_WORK = 20;
+
+    /**
+     * The parse template custom properties monitor work.
+     */
+    private static final int PARSE_TEMPLATE_CUSTOM_PROPERTIES_MONITOR_WORK = 5;
+
+    /**
+     * The parse template monitor work.
+     */
+    private static final int PARSE_TEMPLATE_MONITOR_WORK = 30;
+
+    /**
+     * The parse total monitor work.
+     */
+    private static final int TOTAL_PARSE_MONITOR_WORK = LOAD_TEMPLATE_MONITOR_WORK
+        + PARSE_TEMPLATE_CUSTOM_PROPERTIES_MONITOR_WORK + PARSE_TEMPLATE_MONITOR_WORK;
+
+    /**
+     * The initalize destination document monitor work.
+     */
+    private static final int INIT_DEST_DOC_MONITOR_WORK = LOAD_TEMPLATE_MONITOR_WORK;
+
+    /**
+     * The engine init monitor work.
+     */
+    private static final int ENGINE_INIT_MONITOR_WORK = 5;
+
+    /**
+     * The template services monitor work.
+     */
+    private static final int TEMPLATE_SERVICES_MONITOR_WORK = 10;
+
+    /**
+     * The lost files monitor work.
+     */
+    private static final int LOST_FILES_MONITOR_WORK = 10;
+
+    /**
+     * The document save monitor work.
+     */
+    private static final int DOCUMENT_SAVE_MONITOR_WORK = 20;
+
+    /**
+     * The document save monitor work.
+     */
+    private static final int ENGINE_CLEAN_MONITOR_WORK = 5;
+
+    /**
+     * The generate total monitor work.
+     */
+    private static final int TOTAL_GENERATE_MONITOR_WORK = INIT_DEST_DOC_MONITOR_WORK + ENGINE_INIT_MONITOR_WORK
+        + TEMPLATE_SERVICES_MONITOR_WORK + M2DocEvaluator.MONITOR_WORK + LOST_FILES_MONITOR_WORK
+        + DOCUMENT_SAVE_MONITOR_WORK;
 
     /**
      * Constructor.
@@ -390,6 +449,8 @@ public final class M2DocUtils {
      *            the {@link IQueryEnvironment}
      * @param classProvider
      *            the {@link IClassProvider} to use for service Loading
+     * @param monitor
+     *            used to track the progress will generating
      * @return the {@link DocumentTemplate} resulting from parsing the specified
      *         document
      * @throws DocumentParserException
@@ -397,18 +458,28 @@ public final class M2DocUtils {
      */
     @SuppressWarnings("resource")
     public static DocumentTemplate parse(URIConverter uriConverter, URI templateURI, IQueryEnvironment queryEnvironment,
-            IClassProvider classProvider) throws DocumentParserException {
+            IClassProvider classProvider, Monitor monitor) throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         final ResourceImpl r = new ResourceImpl(templateURI);
 
         try {
+            monitor.beginTask("Parsing " + templateURI, TOTAL_PARSE_MONITOR_WORK);
+            monitor.subTask("Loading template");
             // resources are closed in DocumentTemplate.close()
             final InputStream is = uriConverter.createInputStream(templateURI);
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
+
+            nextSubTask(monitor, LOAD_TEMPLATE_MONITOR_WORK, "Parsing template custom properties");
+
             final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment,
                     classProvider, document);
             r.getContents().add(result);
+
+            nextSubTask(monitor, PARSE_TEMPLATE_CUSTOM_PROPERTIES_MONITOR_WORK, "Parsing template body");
+            final int unitOfWork = PARSE_TEMPLATE_MONITOR_WORK
+                / (1 + document.getFooterList().size() + document.getHeaderList().size());
+
             final M2DocParser parser = new M2DocParser(document, queryEnvironment);
             final Block documentBody = parser.parseBlock(result.getTemplates(), TokenType.EOF);
             for (TemplateValidationMessage validationMessage : messages) {
@@ -418,19 +489,31 @@ public final class M2DocUtils {
             result.setInputStream(is);
             result.setOpcPackage(oPackage);
             result.setDocument(document);
+
+            nextSubTask(monitor, unitOfWork, "Parsing template footers");
+
             for (XWPFFooter footer : document.getFooterList()) {
                 final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
                 result.getFooters().add(footerParser.parseBlock(null, TokenType.EOF));
+
+                monitor.worked(unitOfWork);
             }
+
+            nextSubTask(monitor, 0, "Parsing template headers");
+
             for (XWPFHeader header : document.getHeaderList()) {
                 final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
                 result.getHeaders().add(headerParser.parseBlock(null, TokenType.EOF));
+
+                monitor.worked(unitOfWork);
             }
 
         } catch (IOException e) {
             throw new DocumentParserException("Unable to open " + templateURI, e);
         } catch (InvalidFormatException e1) {
             throw new DocumentParserException("Invalid .docx format " + templateURI, e1);
+        } finally {
+            monitor.done();
         }
 
         return result;
@@ -531,12 +614,14 @@ public final class M2DocUtils {
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
+     * @param monitor
+     *            used to track the progress will generating
      * @return the {@link ValidationMessageLevel}
      */
     public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment) {
+            IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
         final M2DocValidator validator = new M2DocValidator();
-        return validator.validate(documentTemplate, queryEnvironment);
+        return validator.validate(documentTemplate, queryEnvironment, monitor);
     }
 
     /**
@@ -570,11 +655,11 @@ public final class M2DocUtils {
      * @param variables
      *            variables
      * @param uriConverter
-     *            the {@link URIConverter uri converter} to use.
+     *            the {@link URIConverter uri converter} to use
      * @param destination
      *            the destination
      * @param monitor
-     *            used to track the progress will generating.
+     *            used to track the progress will generating
      * @return the {@link GenerationResult}
      * @throws DocumentGenerationException
      *             if the generation fails
@@ -583,17 +668,23 @@ public final class M2DocUtils {
             IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URIConverter uriConverter,
             URI destination, Monitor monitor) throws DocumentGenerationException {
 
-        monitor.beginTask("Generating " + destination.lastSegment(), 1);
+        monitor.beginTask("Generating " + destination.lastSegment(), TOTAL_GENERATE_MONITOR_WORK);
+        monitor.subTask("Initializing desination document");
 
         try (InputStream is = uriConverter.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
+
+            nextSubTask(monitor, INIT_DEST_DOC_MONITOR_WORK, "Initializing engine");
 
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(uriConverter, documentTemplate,
                     destination);
             final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
                     monitor);
+
+            nextSubTask(monitor, ENGINE_INIT_MONITOR_WORK, "Initializing template services");
+
             if (!documentTemplate.getTemplates().isEmpty()) {
                 final byte[] serializedDocument = serializeDocument(documentTemplate);
                 for (Template template : documentTemplate.getTemplates()) {
@@ -602,19 +693,31 @@ public final class M2DocUtils {
                 }
             }
 
+            nextSubTask(monitor, TEMPLATE_SERVICES_MONITOR_WORK, "Generating");
+
             final GenerationResult result = evaluator.generate(documentTemplate, variables, destinationDocument);
+
+            nextSubTask(monitor, 0, "Saving lost files");
+            // monitor.subTask("Saving lost files");
 
             bookmarkManager.markDanglingReferences(result);
             bookmarkManager.markOpenBookmarks(result);
 
             userContentManager.generateLostFiles(result);
             userContentManager.dispose();
+
+            nextSubTask(monitor, LOST_FILES_MONITOR_WORK, "Saving generated document");
+
             // At this point, the document has been generated and just needs to be written on disk.
             POIServices.getInstance().saveFile(uriConverter, destinationDocument, destination);
+
+            nextSubTask(monitor, DOCUMENT_SAVE_MONITOR_WORK, "Cleaning template services");
 
             for (IServicesConfigurator configurator : getConfigurators()) {
                 configurator.cleanServices(queryEnvironment);
             }
+
+            monitor.worked(ENGINE_CLEAN_MONITOR_WORK);
 
             return result;
         } catch (IOException e) {
@@ -624,6 +727,24 @@ public final class M2DocUtils {
         } finally {
             monitor.done();
         }
+    }
+
+    /**
+     * Starts next sub task on the given {@link Monitor}.
+     * 
+     * @param monitor
+     *            the {@link Monitor}
+     * @param previousTaskDone
+     *            the work done in the previous task
+     * @param nextSubTaskName
+     *            the next sub task name
+     */
+    private static void nextSubTask(Monitor monitor, int previousTaskDone, String nextSubTaskName) {
+        if (monitor.isCanceled()) {
+            throw new CancellationException("Canceled by user");
+        }
+        monitor.worked(previousTaskDone);
+        monitor.subTask(nextSubTaskName);
     }
 
     /**

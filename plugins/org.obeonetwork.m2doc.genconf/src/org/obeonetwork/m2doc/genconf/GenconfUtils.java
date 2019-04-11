@@ -470,13 +470,11 @@ public final class GenconfUtils {
             URI generatedURI, URI validationURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
 
-        monitor.beginTask("Loading models.", 2);
         final List<Exception> exceptions = new ArrayList<Exception>();
         final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, generation,
                 new ResourceSetImpl(), getOptions(generation));
         final URIConverter uriConverter = resourceSetForModels.getURIConverter();
         final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(uriConverter, generation);
-        monitor.worked(1);
 
         if (!uriConverter.exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template doest not exist " + templateURI);
@@ -484,17 +482,14 @@ public final class GenconfUtils {
 
         // create generated file
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, queryEnvironment,
-                classProvider)) {
+                classProvider, monitor)) {
 
             // create definitions
             Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
-            monitor.done();
 
             // validate template
-            monitor.beginTask("Validating template.", 1);
             final URI resultValidationURI = validate(uriConverter, generatedURI, validationURI, documentTemplate,
-                    queryEnvironment);
-            monitor.done();
+                    queryEnvironment, monitor);
 
             // launch generation
             M2DocUtils.generate(documentTemplate, queryEnvironment, definitions, uriConverter, generatedURI, monitor);
@@ -518,6 +513,8 @@ public final class GenconfUtils {
      *            Generation
      * @param classProvider
      *            the {@link IClassProvider}
+     * @param monitor
+     *            the {@link Monitor}
      * @return if template contains errors.
      * @throws IOException
      *             IOException
@@ -526,7 +523,7 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      */
-    public static boolean validate(Generation generation, IClassProvider classProvider)
+    public static boolean validate(Generation generation, IClassProvider classProvider, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
         final boolean res;
 
@@ -559,7 +556,7 @@ public final class GenconfUtils {
 
         // parse template
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModel.getURIConverter(), templateURI,
-                queryEnvironment, classProvider)) {
+                queryEnvironment, classProvider, monitor)) {
             final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
             for (Exception e : exceptions) {
                 documentTemplate.getBody().getValidationMessages()
@@ -568,7 +565,7 @@ public final class GenconfUtils {
 
             // validate template
             res = validate(resourceSetForModel.getURIConverter(), templateURI, validationURI, documentTemplate,
-                    queryEnvironment) != null;
+                    queryEnvironment, monitor) != null;
         }
 
         // validate output path
@@ -611,6 +608,8 @@ public final class GenconfUtils {
      *            DocumentTemplate
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
+     * @param monitor
+     *            the {@link Monitor}
      * @return the validation {@link URI} if the validation isn't OK, <code>null</code> otherwise
      * @throws DocumentGenerationException
      *             DocumentGenerationException
@@ -618,11 +617,11 @@ public final class GenconfUtils {
      *             IOException
      */
     private static URI validate(URIConverter uriConverter, URI generatedURI, URI validationURI,
-            DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment)
+            DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor)
             throws DocumentGenerationException, IOException {
         final URI res;
 
-        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment);
+        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment, monitor);
         if (validationLevel != ValidationMessageLevel.OK) {
             if (validationURI != null) {
                 res = validationURI;

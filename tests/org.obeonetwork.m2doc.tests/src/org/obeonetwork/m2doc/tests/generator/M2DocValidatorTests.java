@@ -23,6 +23,7 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
@@ -72,7 +73,7 @@ public class M2DocValidatorTests {
             selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
             selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 
-            validator.validate(documentTemplate, queryEnvironment);
+            validator.validate(documentTemplate, queryEnvironment, new BasicMonitor());
 
             assertEquals(0, conditional.getValidationMessages().size());
 
@@ -103,7 +104,7 @@ public class M2DocValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(body);
 
         final M2DocValidator validator = new M2DocValidator();
-        validator.validate(documentTemplate, queryEnvironment);
+        validator.validate(documentTemplate, queryEnvironment, new BasicMonitor());
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,

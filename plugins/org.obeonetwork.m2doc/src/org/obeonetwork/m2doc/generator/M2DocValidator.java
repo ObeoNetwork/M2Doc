@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.CancellationException;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.parser.AstValidator;
@@ -31,6 +32,7 @@ import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.Monitor;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -65,6 +67,21 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     /**
+     * The gengine initialization monitor work.
+     */
+    private static final int INIT_ENGINE_MONITOR_WORK = 5;
+
+    /**
+     * The template validation monitor work.
+     */
+    private static final int VALIDATE_TEMPLATE_MONITOR_WORK = 95;
+
+    /**
+     * The validate total monitor work.
+     */
+    private static final int TOTAL_VALIDATE_MONITOR_WORK = INIT_ENGINE_MONITOR_WORK + VALIDATE_TEMPLATE_MONITOR_WORK;
+
+    /**
      * {@link Boolean} {@link IType}.
      */
     private IType booleanObjectType;
@@ -85,16 +102,28 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     private AstValidator aqlValidator;
 
     /**
+     * The {@link Monitor}.
+     */
+    private Monitor progressMonitor;
+
+    /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
      * 
      * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
+     * @param monitor
+     *            the {@link Monitor}
      * @return the {@link ValidationMessageLevel}
      */
     public ValidationMessageLevel validate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment) {
+            IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
+
+        progressMonitor = monitor;
+        progressMonitor.beginTask("Validating " + documentTemplate.eResource().getURI(), TOTAL_VALIDATE_MONITOR_WORK);
+        progressMonitor.subTask("Initialize engine");
+
         aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
                 documentTemplate.getDocument());
@@ -107,10 +136,14 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                     new TemplateValidationMessage(ValidationMessageLevel.WARNING, "M2Doc version mismatch: template is "
                         + templateProperties.getM2DocVersion() + " and runtime is " + M2DocUtils.VERSION, run));
         }
-        for (Template template : documentTemplate.getTemplates()) {
-            ((IQueryEnvironment) queryEnvironment)
-                    .registerService(new M2DocTemplateService(template, queryEnvironment));
+
+        if (!documentTemplate.getTemplates().isEmpty()) {
+            for (Template template : documentTemplate.getTemplates()) {
+                ((IQueryEnvironment) queryEnvironment)
+                        .registerService(new M2DocTemplateService(template, queryEnvironment));
+            }
         }
+
         Map<String, Set<IType>> types = new LinkedHashMap<>();
         for (Entry<String, String> entry : templateProperties.getVariables().entrySet()) {
             final Set<IType> variableTypes = templateProperties.getVariableTypes(aqlValidator, queryEnvironment,
@@ -122,11 +155,14 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         stack.clear();
         stack.push(types);
 
+        worked(progressMonitor, INIT_ENGINE_MONITOR_WORK);
+
         final ValidationMessageLevel result;
         try {
             result = doSwitch(documentTemplate);
         } finally {
             stack.pop();
+            progressMonitor.done();
         }
 
         return result;
@@ -134,22 +170,47 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseDocumentTemplate(DocumentTemplate documentTemplate) {
+        progressMonitor.subTask("Validating document");
+        final int unitOfWork = VALIDATE_TEMPLATE_MONITOR_WORK / (documentTemplate.getHeaders().size() + 1
+            + documentTemplate.getFooters().size() + documentTemplate.getTemplates().size());
+
         ValidationMessageLevel headerLevel = ValidationMessageLevel.OK;
         for (Block header : documentTemplate.getHeaders()) {
             headerLevel = ValidationMessageLevel.updateLevel(headerLevel, doSwitch(header));
+            worked(progressMonitor, unitOfWork);
         }
+
         final ValidationMessageLevel bodyLevel = doSwitch(documentTemplate.getBody());
+        worked(progressMonitor, unitOfWork);
+
         ValidationMessageLevel footerLevel = ValidationMessageLevel.OK;
         for (Block footer : documentTemplate.getFooters()) {
             footerLevel = ValidationMessageLevel.updateLevel(footerLevel, doSwitch(footer));
+            worked(progressMonitor, unitOfWork);
         }
 
         ValidationMessageLevel templateLevel = ValidationMessageLevel.OK;
         for (Template template : documentTemplate.getTemplates()) {
             templateLevel = ValidationMessageLevel.updateLevel(templateLevel, doSwitch(template));
+            worked(progressMonitor, unitOfWork);
         }
 
         return ValidationMessageLevel.updateLevel(headerLevel, bodyLevel, footerLevel, templateLevel);
+    }
+
+    /**
+     * Progresses the given amount of work on the given {@link Monitor}.
+     * 
+     * @param monitor
+     *            the {@link Monitor}
+     * @param work
+     *            the amount of work
+     */
+    private void worked(Monitor monitor, int work) {
+        if (monitor.isCanceled()) {
+            throw new CancellationException("Canceled by user");
+        }
+        monitor.worked(work);
     }
 
     @Override

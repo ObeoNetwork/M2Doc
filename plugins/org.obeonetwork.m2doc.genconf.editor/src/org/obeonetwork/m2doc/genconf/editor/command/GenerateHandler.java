@@ -131,6 +131,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
 
         final GenerateJob job = new GenerateJob(generation, shell);
         job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+        job.setUser(true);
         job.schedule();
     }
 

@@ -46,7 +46,9 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.Block;
@@ -152,6 +154,8 @@ public final class M2DocTestUtils {
     @SuppressWarnings("resource")
     public static DocumentTemplate createDocumentTemplate(Block body) {
         final DocumentTemplate res = TemplatePackage.eINSTANCE.getTemplateFactory().createDocumentTemplate();
+        final Resource r = new XMIResourceImpl();
+        r.getContents().add(res);
 
         final XWPFDocument document = new XWPFDocument();
         res.setDocument(document);

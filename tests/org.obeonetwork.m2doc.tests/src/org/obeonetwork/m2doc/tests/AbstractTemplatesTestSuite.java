@@ -162,7 +162,7 @@ public abstract class AbstractTemplatesTestSuite {
         queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels.getURIConverter(), generation);
         new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()));
+                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor());
         for (Exception e : exceptions) {
             final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
             documentTemplate.getBody().getValidationMessages()
@@ -289,7 +289,8 @@ public abstract class AbstractTemplatesTestSuite {
      */
     @Test
     public void validation() throws IOException, DocumentGenerationException {
-        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment);
+        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment,
+                new BasicMonitor());
 
         final URI expectedValidationURI = getExpectedValidatedURI(new File(testFolderPath));
         final URI outputURI;

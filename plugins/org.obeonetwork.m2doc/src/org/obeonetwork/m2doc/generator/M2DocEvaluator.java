@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.CancellationException;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
@@ -116,6 +117,11 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
  */
 @SuppressWarnings("restriction")
 public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
+
+    /**
+     * The generation monitor work.
+     */
+    public static final int MONITOR_WORK = 30;
 
     /**
      * Error message when a {@link Bookmark} errors.
@@ -285,7 +291,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     @Override
     public XWPFParagraph caseDocumentTemplate(DocumentTemplate documentTemplate) {
         cleanBody(generatedDocument);
+
+        final int unitOfWork = MONITOR_WORK
+            / (1 + documentTemplate.getFooters().size() + documentTemplate.getHeaders().size());
+
         doSwitch(documentTemplate.getBody());
+        worked(monitor, unitOfWork);
 
         final XWPFDocument document = (XWPFDocument) generatedDocument;
         final Iterator<XWPFFooter> footers = document.getFooterList().iterator();
@@ -294,6 +305,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             cleanBody(f);
             generatedDocument = f;
             doSwitch(footer);
+            worked(monitor, unitOfWork);
         }
         final Iterator<XWPFHeader> headers = document.getHeaderList().iterator();
         for (final Block header : documentTemplate.getHeaders()) {
@@ -301,9 +313,25 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             cleanBody(h);
             generatedDocument = h;
             doSwitch(header);
+            worked(monitor, unitOfWork);
         }
 
         return currentGeneratedParagraph;
+    }
+
+    /**
+     * Progresses the given amount of work on the given {@link Monitor}.
+     * 
+     * @param progressMonitor
+     *            the {@link Monitor}
+     * @param work
+     *            the amount of work
+     */
+    private void worked(Monitor progressMonitor, int work) {
+        if (progressMonitor.isCanceled()) {
+            throw new CancellationException("Canceled by user");
+        }
+        progressMonitor.worked(work);
     }
 
     @Override

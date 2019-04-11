@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -79,7 +80,8 @@ public class ValidateHandler extends AbstractGenerationHandler {
 
             try {
                 checkM2DocVersion(shell, M2_DOC_VALIDATION, generation);
-                boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider());
+                boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider(),
+                        BasicMonitor.toMonitor(monitor));
                 if (!inError) {
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
