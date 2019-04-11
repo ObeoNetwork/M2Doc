@@ -288,11 +288,24 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
      *            the new generation URI
      */
     private void updateGenconfURI(final Generation gen, final URI newGenconfURI) {
-        final URI templateAbsolutURI = GenconfUtils.getResolvedURI(gen,
-                URI.createURI(gen.getTemplateFileName(), false));
-        final URI validationAbsolutURI = GenconfUtils.getResolvedURI(gen,
-                URI.createURI(gen.getValidationFileName(), false));
-        final URI resultAbsolutURI = GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getResultFileName()));
+        final URI templateAbsolutURI;
+        if (gen.getTemplateFileName() != null) {
+            templateAbsolutURI = GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getTemplateFileName(), false));
+        } else {
+            templateAbsolutURI = null;
+        }
+        final URI validationAbsolutURI;
+        if (gen.getValidationFileName() != null) {
+            validationAbsolutURI = GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getValidationFileName(), false));
+        } else {
+            validationAbsolutURI = null;
+        }
+        final URI resultAbsolutURI;
+        if (gen.getResultFileName() != null) {
+            resultAbsolutURI = GenconfUtils.getResolvedURI(gen, URI.createURI(gen.getResultFileName()));
+        } else {
+            resultAbsolutURI = null;
+        }
 
         gen.eResource().setURI(newGenconfURI);
 
@@ -301,9 +314,15 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
 
             @Override
             protected void doExecute() {
-                gen.setTemplateFileName(URI.decode(templateAbsolutURI.deresolve(newGenconfURI).toString()));
-                gen.setValidationFileName(URI.decode(validationAbsolutURI.deresolve(newGenconfURI).toString()));
-                gen.setResultFileName(URI.decode(resultAbsolutURI.deresolve(newGenconfURI).toString()));
+                if (templateAbsolutURI != null) {
+                    gen.setTemplateFileName(URI.decode(templateAbsolutURI.deresolve(newGenconfURI).toString()));
+                }
+                if (validationAbsolutURI != null) {
+                    gen.setValidationFileName(URI.decode(validationAbsolutURI.deresolve(newGenconfURI).toString()));
+                }
+                if (resultAbsolutURI != null) {
+                    gen.setResultFileName(URI.decode(resultAbsolutURI.deresolve(newGenconfURI).toString()));
+                }
             }
         });
     }
