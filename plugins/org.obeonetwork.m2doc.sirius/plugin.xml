@@ -13,16 +13,6 @@
 
 <plugin>
    <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="org.obeonetwork.m2doc.sirius.propertyTester.TeamGenerationPropertyTester"
-            id="org.obeonetwork.m2doc.sirius.cdoPpropertyTester"
-            namespace="org.obeonetwork.m2doc.sirius.propertyTester"
-            properties="testCDOGeneration"
-            type="java.lang.Object">
-      </propertyTester>
-   </extension>
-   <extension
          point="org.obeonetwork.m2doc.ide.servicesConfigurator">
       <servicesConfigurators
             class="org.obeonetwork.m2doc.sirius.services.configurator.SiriusServiceConfigurator">
