@@ -24,4 +24,20 @@
             class="org.obeonetwork.m2doc.sirius.GenconfResourceStrategy">
       </resourceStrategy>
    </extension>
+   <extension
+         point="org.obeonetwork.m2doc.ide.services.register">
+      <token
+            name="Sirius">
+         <package
+               uri="http://www.eclipse.org/sirius/1.1.0"></package>
+         <package
+               uri="http://www.eclipse.org/sirius/diagram/1.1.0"></package>
+         <package
+               uri="http://www.eclipse.org/sirius/diagram/sequence/2.0.0"></package>
+         <package
+               uri="http://www.eclipse.org/sirius/table/1.1.0"></package>
+         <package
+               uri="http://www.eclipse.org/sirius/tree/1.1.0"></package>
+      </token>
+   </extension>
 </plugin>
