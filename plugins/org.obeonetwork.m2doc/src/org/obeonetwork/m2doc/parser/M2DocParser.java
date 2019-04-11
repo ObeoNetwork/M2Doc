@@ -69,7 +69,6 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author Romain Guider
  */
-@SuppressWarnings("restriction")
 public class M2DocParser extends AbstractBodyParser {
 
     /**

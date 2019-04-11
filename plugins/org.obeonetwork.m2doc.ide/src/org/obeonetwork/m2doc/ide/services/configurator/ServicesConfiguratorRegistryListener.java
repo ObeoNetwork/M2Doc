@@ -27,7 +27,7 @@ import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescript
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
- * Listener that registers services that are declared through an extension.
+ * Listener that registers service configurators that are declared through an extension.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */

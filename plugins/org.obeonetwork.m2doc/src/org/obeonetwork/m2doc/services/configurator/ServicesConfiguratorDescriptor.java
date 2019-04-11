@@ -43,11 +43,6 @@ public class ServicesConfiguratorDescriptor implements IServicesConfiguratorDesc
         return configurator.hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         return obj instanceof ServicesConfiguratorDescriptor
