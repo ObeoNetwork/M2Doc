@@ -189,9 +189,9 @@ A simple comment, nothing is generated. It can be used to add specific text styl
 
 If you want to use a variable named 'comment' you can use an extra space after 'm:'.
 
-#### Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/commentBlockNominal))
+#### Comment block ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/commentBlockNominal))
 
-A comment block, the commented block is not generated. It can be used to add specific text or table style to your document without having the text or table generated. The style can then be used later in the template.
+A comment block, the commented block is not generated. It can be used to add specific text or table style, or numbering to your document without having the text or table generated. The style or numbering can then be used later in the template.
 
 `{m:commentblock any text}`
 

@@ -14,11 +14,12 @@
 			<topic href="doc/ref-doc/nightly/index.html#launching-a-generation" label="Launching a generation"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#initializing-a-generation-configuration" label="Initializing a generation configuration"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#validating-a-generation-setup" label="Validating a generation setup"></topic>
-			<topic href="doc/ref-doc/nightly/index.html#generation-configuration-editor" label="Generation configuration editor"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#generation-configuration-wizard" label="Generation configuration wizard"></topic>
 		</topic>
 		<topic href="doc/ref-doc/nightly/index.html#template-authoring" label="Template authoring">
 			<topic href="doc/ref-doc/nightly/index.html#syntax" label="Syntax">
 				<topic href="doc/ref-doc/nightly/index.html#comment-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-nominal" label="Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#comment-block-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-commentblocknominal" label="Comment block ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/commentBlockNominal))"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#static-statement" label="Static statement"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#query-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-query-nominal" label="Query ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal))"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#conditional-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-conditional-nominal" label="Conditional ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal))"></topic>
@@ -30,8 +31,9 @@
 				<topic href="doc/ref-doc/nightly/index.html#template-construct-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-template-nominal" label="Template construct ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/template/nominal))"></topic>
 			</topic>
 			<topic href="doc/ref-doc/nightly/index.html#services" label="Services"></topic>
-			<topic href="doc/ref-doc/nightly/index.html#template-editor" label="Template editor"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#template-properties-wizard" label="Template properties wizard"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#template-custom-properties" label="Template custom properties">
+				<topic href="doc/ref-doc/nightly/index.html#m2doc-version-custom-properties" label="M2Doc version custom properties"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#variable-custom-properties" label="Variable custom properties"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#package-custom-properties" label="Package custom properties"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#service-custom-properties" label="Service custom properties"></topic>
