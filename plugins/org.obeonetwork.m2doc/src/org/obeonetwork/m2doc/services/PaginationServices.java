@@ -349,7 +349,7 @@ public class PaginationServices {
         value = "Sets the style of the paragraph.",
         params = {
             @Param(name = "paragraph", value = "The paragraph"),
-            @Param(name = "stileID", value = "The style ID. see availableTextStyles()."),
+            @Param(name = "styleID", value = "The style ID. see availableTextStyles()."),
         },
         result = "Sets the style of the paragraph.",
         examples = {
