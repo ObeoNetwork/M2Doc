@@ -9,7 +9,7 @@ relativePath: ..
 
 M2Doc is a generic technology to generate MS Word(tm) documents. Generation is driven by templates that navigate through a source model and transform model elements into a well formated document.
 
-This tutorial explains how to install and launch two templates written for Capella (http://polarsys.org/capella/) models:
+This tutorial explains how to install and launch two templates written for Capella ([http://polarsys.org/capella/](http://polarsys.org/capella/)) models:
 
 * [LA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx): Logical specification of a system
 * [SA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/m2doc/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx): Whole specification of a system
