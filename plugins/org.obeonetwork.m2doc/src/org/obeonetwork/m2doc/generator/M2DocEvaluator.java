@@ -1343,6 +1343,13 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                         UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             }
         }
+
+        if (currentParagraph == null) {
+            currentParagraph = createNewParagraph(generatedDocument,
+                    (XWPFParagraph) userDoc.getRuns().get(0).getParent());
+            needNewParagraphBeforeEndTag = false;
+        }
+
         if (!currentParagraph.getCTP().xmlText()
                 .contains("<w:instrText>" + TokenType.ENDUSERCONTENT.getValue() + "</w:instrText>")) {
             // Tag m:enduserContent

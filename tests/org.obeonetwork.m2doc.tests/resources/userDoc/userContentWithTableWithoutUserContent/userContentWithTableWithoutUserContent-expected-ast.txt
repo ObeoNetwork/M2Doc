@@ -1,0 +1,57 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a user doc :
+  
+  userdoc 'zone1' do
+    
+      table
+        row
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        row
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        row
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        row
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+  enduserdoc
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
