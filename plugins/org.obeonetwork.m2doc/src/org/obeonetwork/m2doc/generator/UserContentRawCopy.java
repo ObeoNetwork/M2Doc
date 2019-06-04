@@ -317,6 +317,7 @@ public class UserContentRawCopy {
                 outputParagraph.getDocument());
         // replace picture IDs
         final XmlToken xmlWithOuputId = getXmlWithOuputId(inputPicuteIdToOutputmap, tmpXmlText);
+
         return xmlWithOuputId;
     }
 

@@ -1380,7 +1380,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     ValidationMessageLevel.ERROR, msgError, userdoc.getRuns().get(userdoc.getRuns().size() - 1));
             userdoc.getValidationMessages().add(templateValidationMessage);
         }
-
     }
 
     /**

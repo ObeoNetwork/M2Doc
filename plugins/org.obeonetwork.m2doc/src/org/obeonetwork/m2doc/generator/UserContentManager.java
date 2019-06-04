@@ -78,7 +78,7 @@ public class UserContentManager {
     private final File generatedFileCopy;
 
     /**
-     * Map for id to the {@link List} of .
+     * Map for id to the {@link List} of {@link UserContent}.
      */
     private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<>();
 

@@ -99,7 +99,7 @@ public class BookmarkManager {
             Set<CTText> pendingRefs = pendingReferences.remove(name);
             if (pendingRefs != null) {
                 for (CTText pendingRef : pendingRefs) {
-                    // we remove the created for error messages.
+                    // we remove the run created for error messages.
                     final XWPFRun run = messagePositions.get(pendingRef);
                     final IRunBody parent = run.getParent();
                     if (parent instanceof XWPFParagraph) {
@@ -177,6 +177,7 @@ public class BookmarkManager {
         } else {
             final XWPFRun messageRun = paragraph.createRun();
             final CTText ref = insertPendingReference(paragraph, name, text);
+            ref.setStringValue(String.format(REF_TAG, name));
             messagePositions.put(ref, messageRun);
             Set<CTText> pendingRefs = pendingReferences.get(name);
             if (pendingRefs == null) {
@@ -199,8 +200,8 @@ public class BookmarkManager {
      */
     private void insertReference(XWPFParagraph paragraph, CTBookmark bookmark, String text) {
         final String name = bookmark.getName();
-        final CTText pgcttext = insertPendingReference(paragraph, name, text);
-        pgcttext.setStringValue(String.format(REF_TAG, name));
+        final CTText pendingCTText = insertPendingReference(paragraph, name, text);
+        pendingCTText.setStringValue(String.format(REF_TAG, name));
     }
 
     /**
