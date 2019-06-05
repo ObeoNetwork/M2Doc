@@ -26,6 +26,7 @@ import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFPictureData;
+import org.apache.poi.xwpf.usermodel.XWPFRelation;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFStyle;
@@ -52,15 +53,20 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 public class UserContentRawCopy {
 
     /**
-     * The replacement picture id {@link Pattern}.
+     * The replacement relation id {@link Pattern}.
      */
-    private static final Pattern PICTURE_ID_PATTERN = Pattern
-            .compile("<a:blip(( .*).)? r:embed=\\\"([^\\\"]+)\\\"( .* ?)?/?>");
+    private static final Pattern RELATION_ID_PATTERN = Pattern.compile(
+            "<a:blip(( .*).)? r:embed=\\\"([^\\\"]+)\\\"( .* ?)?/?>|<w:hyperlink(( .*).)? r:id=\\\"([^\\\"]+)\\\"( .* ?)?/?>");
 
     /**
-     * The replacement picture id {@link Pattern}.
+     * The replacement picture id group index.
      */
-    private static final int PICTURE_ID_GROUP_ID = 3;
+    private static final int RELATION_ID_GROUP_PICTURE_INDEX = 3;
+
+    /**
+     * The replacement picture id group index.
+     */
+    private static final int RELATION_ID_GROUP_HYPERLINK_INDEX = 7;
 
     /**
      * Need new paragraph after copy.
@@ -164,7 +170,7 @@ public class UserContentRawCopy {
         final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
         final List<XWPFTable> listOutputTables = new ArrayList<>();
         final List<XWPFRun> listOutputRuns = new ArrayList<>();
-        final Map<String, String> inputPicuteIdToOutputmap = new HashMap<>();
+        final Map<String, String> inputRelationIdToOutputmap = new HashMap<>();
         boolean paragraphFragmentCopied = false;
         for (Statement statement : statements) {
             if (statement instanceof StaticFragment) {
@@ -176,12 +182,12 @@ public class UserContentRawCopy {
                         // Copy new paragraph
                         currentOutputParagraph.getCTP().set(localCurrentInputParagraph.getCTP());
                         listOutputParagraphs.add(currentOutputParagraph);
-                        // Create picture embedded in run and keep relation id in map (input to output)
-                        createPictures(inputPicuteIdToOutputmap, localCurrentInputParagraph.getCTP().xmlText(),
+                        // Create relation embedded in run and keep relation id in map (input to output)
+                        createRelations(inputRelationIdToOutputmap, localCurrentInputParagraph.getCTP().xmlText(),
                                 containerInputDocument, containerOutputDocument);
                     } else if (!paragraphFragmentCopied && currentRunParagraph == previousInputParagraph) {
                         // Test if some run exist between userContent tag and first paragraph in this tag
-                        copyParagraphFragment(inputPicuteIdToOutputmap, outputParagraph, currentInputParagraph,
+                        copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, currentInputParagraph,
                                 inputRun);
                         paragraphFragmentCopied = true;
                     }
@@ -194,8 +200,8 @@ public class UserContentRawCopy {
                 outputTable.getCTTbl().set(inputTable.getCTTbl());
                 copyTableStyle(inputTable, containerOutputDocument);
                 listOutputTables.add(outputTable);
-                // Create picture embedded in run and keep relation id in map (input to output)
-                createPictures(inputPicuteIdToOutputmap, inputTable.getCTTbl().xmlText(), containerInputDocument,
+                // Create relation embedded in run and keep relation id in map (input to output)
+                createRelations(inputRelationIdToOutputmap, inputTable.getCTTbl().xmlText(), containerInputDocument,
                         containerOutputDocument);
             } else if (statement instanceof ContentControl) {
                 final ContentControl contentControl = (ContentControl) statement;
@@ -203,8 +209,8 @@ public class UserContentRawCopy {
             }
         }
 
-        // Change Picture Id by xml replacement
-        changePictureId(inputPicuteIdToOutputmap, listOutputRuns, listOutputParagraphs, listOutputTables);
+        // Change relations Id by xml replacement
+        changeRelationsId(inputRelationIdToOutputmap, listOutputRuns, listOutputParagraphs, listOutputTables);
 
         if (currentOutputParagraph == null) {
             currentOutputParagraph = outputParagraph;
@@ -216,8 +222,8 @@ public class UserContentRawCopy {
     /**
      * Copies the fragment of the input {@link XWPFParagraph} into the output {@link XWPFParagraph} starting at the given input {@link XWPFRun}.
      * 
-     * @param inputPicuteIdToOutputmap
-     *            the picture ID mapping
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
      * @param outputParagraph
      *            the output {@link XWPFParagraph}
      * @param inputParagraph
@@ -229,7 +235,7 @@ public class UserContentRawCopy {
      * @throws InvalidFormatException
      *             if image copy fails
      */
-    private void copyParagraphFragment(Map<String, String> inputPicuteIdToOutputmap, XWPFParagraph outputParagraph,
+    private void copyParagraphFragment(Map<String, String> inputRelationIdToOutputmap, XWPFParagraph outputParagraph,
             XWPFParagraph inputParagraph, XWPFRun inputRun) throws XmlException, InvalidFormatException {
         if (inputParagraph.getCTP().isSetPPr()) {
             outputParagraph.getCTP().setPPr((CTPPr) inputParagraph.getCTP().getPPr().copy());
@@ -249,9 +255,9 @@ public class UserContentRawCopy {
                     inputCursor.dispose();
                     inputCursor = savedCursor;
                 }
-                final XmlToken xmlWithOuputPictureId = createTemporaryParagraphFragment(inputPicuteIdToOutputmap,
+                final XmlToken xmlWithOuputRelationId = createTemporaryParagraphFragment(inputRelationIdToOutputmap,
                         outputParagraph, inputParagraph, inputCursor);
-                final XmlCursor withNewIDCursor = xmlWithOuputPictureId.newCursor();
+                final XmlCursor withNewIDCursor = xmlWithOuputRelationId.newCursor();
                 try {
                     withNewIDCursor.toFirstChild();
                     withNewIDCursor.toFirstChild();
@@ -278,10 +284,10 @@ public class UserContentRawCopy {
     }
 
     /**
-     * Creates a temporary paragraph fragment with traslated picture IDs.
+     * Creates a temporary paragraph fragment with translated relation IDs.
      * 
-     * @param inputPicuteIdToOutputmap
-     *            the picture ID mapping
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
      * @param outputParagraph
      *            the output {@link XWPFParagraph}
      * @param inputParagraph
@@ -294,7 +300,7 @@ public class UserContentRawCopy {
      * @throws InvalidFormatException
      *             if image copy fails
      */
-    private XmlToken createTemporaryParagraphFragment(Map<String, String> inputPicuteIdToOutputmap,
+    private XmlToken createTemporaryParagraphFragment(Map<String, String> inputRelationIdToOutputmap,
             XWPFParagraph outputParagraph, XWPFParagraph inputParagraph, XmlCursor inputCursor)
             throws XmlException, InvalidFormatException {
         final XmlObject tmpXmlObject = XmlObject.Factory.parse(
@@ -311,12 +317,12 @@ public class UserContentRawCopy {
             tmpCursor.dispose();
         }
 
-        // Create picture embedded in run and keep relation id in map (input to output)
+        // Create relations embedded in run and keep relation id in map (input to output)
         final String tmpXmlText = tmpXmlObject.xmlText();
-        createPictures(inputPicuteIdToOutputmap, tmpXmlText, inputParagraph.getDocument(),
+        createRelations(inputRelationIdToOutputmap, tmpXmlText, inputParagraph.getDocument(),
                 outputParagraph.getDocument());
-        // replace picture IDs
-        final XmlToken xmlWithOuputId = getXmlWithOuputId(inputPicuteIdToOutputmap, tmpXmlText);
+        // replace relations IDs
+        final XmlToken xmlWithOuputId = getXmlWithOuputId(inputRelationIdToOutputmap, tmpXmlText);
 
         return xmlWithOuputId;
     }
@@ -549,10 +555,10 @@ public class UserContentRawCopy {
     }
 
     /**
-     * Change Picture Id.
+     * Change relations Id.
      * 
-     * @param inputPicuteIdToOutputmap
-     *            the picture ID mapping
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
      * @param listOutputRuns
      *            the {@link List} of output {@link XWPFRun}
      * @param listOutputParagraphs
@@ -562,25 +568,25 @@ public class UserContentRawCopy {
      * @throws XmlException
      *             XmlException
      */
-    private void changePictureId(Map<String, String> inputPicuteIdToOutputmap, List<XWPFRun> listOutputRuns,
+    private void changeRelationsId(Map<String, String> inputRelationIdToOutputmap, List<XWPFRun> listOutputRuns,
             List<XWPFParagraph> listOutputParagraphs, List<XWPFTable> listOutputTables) throws XmlException {
 
         for (XWPFRun run : listOutputRuns) {
-            XmlToken outputXmlObject = getXmlWithOuputId(inputPicuteIdToOutputmap, run.getCTR().xmlText());
+            XmlToken outputXmlObject = getXmlWithOuputId(inputRelationIdToOutputmap, run.getCTR().xmlText());
             if (outputXmlObject != null) {
                 run.getCTR().set(outputXmlObject);
             }
         }
 
         for (XWPFParagraph paragraph : listOutputParagraphs) {
-            XmlToken outputXmlObject = getXmlWithOuputId(inputPicuteIdToOutputmap, paragraph.getCTP().xmlText());
+            XmlToken outputXmlObject = getXmlWithOuputId(inputRelationIdToOutputmap, paragraph.getCTP().xmlText());
             if (outputXmlObject != null) {
                 paragraph.getCTP().set(outputXmlObject);
             }
         }
 
         for (XWPFTable table : listOutputTables) {
-            XmlToken outputXmlObject = getXmlWithOuputId(inputPicuteIdToOutputmap, table.getCTTbl().xmlText());
+            XmlToken outputXmlObject = getXmlWithOuputId(inputRelationIdToOutputmap, table.getCTTbl().xmlText());
             if (outputXmlObject != null) {
                 table.getCTTbl().set(outputXmlObject);
             }
@@ -589,33 +595,33 @@ public class UserContentRawCopy {
     }
 
     /**
-     * Get Xml With Ouput picture Id.
+     * Get Xml With Ouput relation Id.
      * 
-     * @param inputPicuteIdToOutputmap
-     *            the picture ID mapping
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
      * @param xmlText
      *            xmlText
-     * @return Xml With Ouput picture Id
+     * @return Xml With Ouput relation Id
      * @throws XmlException
      *             XmlException
      */
-    private XmlToken getXmlWithOuputId(Map<String, String> inputPicuteIdToOutputmap, String xmlText)
+    private XmlToken getXmlWithOuputId(Map<String, String> inputRelationIdToOutputmap, String xmlText)
             throws XmlException {
         final StringBuilder builder = new StringBuilder(xmlText.length());
 
-        final Matcher matcher = PICTURE_ID_PATTERN.matcher(xmlText);
+        final Matcher matcher = RELATION_ID_PATTERN.matcher(xmlText);
 
         int lastIndex = 0;
         while (matcher.find()) {
-            builder.append(xmlText.subSequence(lastIndex, matcher.start(PICTURE_ID_GROUP_ID)));
-            final String oldID = matcher.group(PICTURE_ID_GROUP_ID);
-            final String newID = inputPicuteIdToOutputmap.get(oldID);
-            if (newID != null) {
-                builder.append(newID);
+            final int pictureStart = matcher.start(RELATION_ID_GROUP_PICTURE_INDEX);
+            if (pictureStart != -1) {
+                lastIndex = getXmlWithOutputIdCopyFragment(inputRelationIdToOutputmap, xmlText, builder, matcher,
+                        lastIndex, RELATION_ID_GROUP_PICTURE_INDEX, pictureStart);
             } else {
-                builder.append(oldID);
+                final int hyperLinkStart = matcher.start(RELATION_ID_GROUP_HYPERLINK_INDEX);
+                lastIndex = getXmlWithOutputIdCopyFragment(inputRelationIdToOutputmap, xmlText, builder, matcher,
+                        lastIndex, RELATION_ID_GROUP_HYPERLINK_INDEX, hyperLinkStart);
             }
-            lastIndex = matcher.end(PICTURE_ID_GROUP_ID);
         }
         builder.append(xmlText.substring(lastIndex, xmlText.length()));
 
@@ -623,12 +629,45 @@ public class UserContentRawCopy {
     }
 
     /**
-     * createPictures in document.
+     * Copy a fragment of the xml with replaced relation IDs.
      * 
-     * @param inputPicureIdToOutputmap
-     *            the picture ID mapping
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
      * @param xmlText
-     *            the xml text to search for pictures
+     *            xmlText
+     * @param builder
+     *            the output {@link StringBuilder}
+     * @param matcher
+     *            the {@link Matcher} that matched the relation
+     * @param lastIndex
+     *            the end of the last matiched id
+     * @param groupIndex
+     *            the group index in the matcher
+     * @param start
+     *            the start of the matched id
+     * @return the new last index
+     */
+    private int getXmlWithOutputIdCopyFragment(Map<String, String> inputRelationIdToOutputmap, String xmlText,
+            final StringBuilder builder, final Matcher matcher, int lastIndex, final int groupIndex, final int start) {
+        builder.append(xmlText.subSequence(lastIndex, start));
+        final String oldID = matcher.group(groupIndex);
+        final String newID = inputRelationIdToOutputmap.get(oldID);
+        if (newID != null) {
+            builder.append(newID);
+        } else {
+            builder.append(oldID);
+        }
+
+        return matcher.end(groupIndex);
+    }
+
+    /**
+     * Creates relations in output {@link XWPFDocument}.
+     * 
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
+     * @param xmlText
+     *            the xml text to search for relations
      * @param inputDoc
      *            input Document
      * @param outputDoc
@@ -636,16 +675,25 @@ public class UserContentRawCopy {
      * @throws InvalidFormatException
      *             InvalidFormatException
      */
-    private void createPictures(Map<String, String> inputPicureIdToOutputmap, String xmlText, XWPFDocument inputDoc,
+    private void createRelations(Map<String, String> inputRelationIdToOutputmap, String xmlText, XWPFDocument inputDoc,
             XWPFDocument outputDoc) throws InvalidFormatException {
 
-        final Matcher matcher = PICTURE_ID_PATTERN.matcher(xmlText);
+        final Matcher matcher = RELATION_ID_PATTERN.matcher(xmlText);
         while (matcher.find()) {
-            final String idRelationInput = matcher.group(PICTURE_ID_GROUP_ID);
-            if (!inputPicureIdToOutputmap.containsKey(idRelationInput)) {
-                final XWPFPictureData inputPic = inputDoc.getPictureDataByID(idRelationInput);
-                final String idRelationOutput = outputDoc.addPictureData(inputPic.getData(), inputPic.getPictureType());
-                inputPicureIdToOutputmap.put(idRelationInput, idRelationOutput);
+            final String pictureIDInput = matcher.group(RELATION_ID_GROUP_PICTURE_INDEX);
+            if (pictureIDInput != null) {
+                if (!inputRelationIdToOutputmap.containsKey(pictureIDInput)) {
+                    final XWPFPictureData inputPic = inputDoc.getPictureDataByID(pictureIDInput);
+                    final String pictureIDOutput = outputDoc.addPictureData(inputPic.getData(),
+                            inputPic.getPictureType());
+                    inputRelationIdToOutputmap.put(pictureIDInput, pictureIDOutput);
+                }
+            } else {
+                final String hyperlinkIDInput = matcher.group(RELATION_ID_GROUP_HYPERLINK_INDEX);
+                final String hyperlinkIDOutput = outputDoc.getPackagePart().addExternalRelationship(
+                        inputDoc.getPackagePart().getRelationship(hyperlinkIDInput).getTargetURI().toASCIIString(),
+                        XWPFRelation.HYPERLINK.getRelation()).getId();
+                inputRelationIdToOutputmap.put(hyperlinkIDInput, hyperlinkIDOutput);
             }
         }
     }

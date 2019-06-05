@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate('Obeo's website')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (str : java.lang.String)
+  [query: .asLink(str, 'http://www.obeo.fr')]
