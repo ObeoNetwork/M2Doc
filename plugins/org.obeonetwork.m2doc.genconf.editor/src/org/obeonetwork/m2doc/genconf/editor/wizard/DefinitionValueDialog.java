@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -257,6 +258,41 @@ public class DefinitionValueDialog extends MessageDialog {
                 okButton.setEnabled(false);
             }
         }
+
+        final Composite filterCheckboxComposite = new Composite(container, SWT.NONE);
+        filterCheckboxComposite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+        filterCheckboxComposite.setLayout(new GridLayout(2, false));
+        final Button filterCheckBox = new Button(filterCheckboxComposite, SWT.CHECK);
+        filterCheckBox.setSelection(true);
+        filterCheckBox.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Button bouton = (Button) e.getSource();
+                if (bouton.getSelection()) {
+                    treeViewer.addFilter(filter);
+                    if (treeViewer.getTree().getItemCount() == 0) {
+                        messageLabel.setText(message
+                            + " (the tree is empty, you can either load a resource from the previous dialog or deselect the type filter)");
+                    }
+                } else {
+                    treeViewer.removeFilter(filter);
+                    if (treeViewer.getTree().getItemCount() == 0) {
+                        messageLabel.setText(
+                                message + " (the tree is empty, you can load a resource from the previous dialog)");
+                    }
+                }
+            }
+
+        });
+        if (treeViewer.getTree().getItemCount() == 0) {
+            messageLabel.setText(message
+                + " (the tree is empty, you can either load a resource from the previous dialog or deselect the type filter)");
+        }
+
+        final Label filterLabel = new Label(filterCheckboxComposite, SWT.NONE);
+        filterLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+        filterLabel.setText("Filter elements by type");
     }
 
     /**
