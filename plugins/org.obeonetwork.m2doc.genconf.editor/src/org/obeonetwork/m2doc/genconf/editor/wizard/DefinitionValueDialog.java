@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.wizard;
 
-import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.parser.AstValidator;
@@ -201,37 +201,44 @@ public class DefinitionValueDialog extends MessageDialog {
         gdTable.minimumWidth = TABLE_MINIMUM_WIDTH;
         gdTable.minimumHeight = TABLE_MINIMUM_HEIGHT;
         treeViewer.getTree().setLayoutData(gdTable);
+
         final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-        final Iterator<IType> it = properties
-                .getVariableTypes(validator, queryEnvironment, properties.getVariables().get(def.getKey())).iterator();
-        if (it.hasNext()) {
-            final IType type = it.next();
+        final Set<IType> types = properties.getVariableTypes(validator, queryEnvironment,
+                properties.getVariables().get(def.getKey()));
+        final Set<EStructuralFeature> containingFeatures = new LinkedHashSet<EStructuralFeature>();
+        final Set<EClass> eClasses = new LinkedHashSet<EClass>();
+        for (IType type : types) {
             if (type.getType() instanceof EClass) {
                 final EClass eCls = (EClass) type.getType();
-                final Set<EStructuralFeature> containingFeatures = queryEnvironment.getEPackageProvider()
+                eClasses.add(eCls);
+                Set<EStructuralFeature> features = queryEnvironment.getEPackageProvider()
                         .getAllContainingEStructuralFeatures(eCls);
-                treeViewer.addFilter(new ViewerFilter() {
-
-                    @Override
-                    public boolean select(Viewer viewer, Object parentElement, Object element) {
-                        final boolean res;
-
-                        if (element instanceof Resource) {
-                            final Resource resource = (Resource) element;
-                            res = canContainsOrHas(resource, containingFeatures, eCls);
-                        } else if (element instanceof EObject) {
-                            final EStructuralFeature containingFeature = ((EObject) element).eContainingFeature();
-                            res = containingFeature == null || containingFeatures.contains(containingFeature)
-                                || ((EObject) element).eContainer() instanceof Resource; // the last one is for CDO
-                        } else {
-                            res = false;
-                        }
-
-                        return res;
-                    }
-                });
+                containingFeatures.addAll(features);
             }
         }
+
+        final ViewerFilter filter = new ViewerFilter() {
+
+            @Override
+            public boolean select(Viewer viewer, Object parentElement, Object element) {
+                final boolean res;
+
+                if (element instanceof Resource) {
+                    final Resource resource = (Resource) element;
+                    res = canContainsOrHas(resource, containingFeatures, eClasses);
+                } else if (element instanceof EObject) {
+                    final EStructuralFeature containingFeature = ((EObject) element).eContainingFeature();
+                    res = containingFeature == null || containingFeatures.contains(containingFeature)
+                        || ((EObject) element).eContainer() instanceof Resource; // the last one is for CDO
+                } else {
+                    res = false;
+                }
+
+                return res;
+            }
+        };
+        treeViewer.addFilter(filter);
+
         treeViewer.setInput(resourceSet);
         if (def.getValue() != null) {
             try {
@@ -260,17 +267,17 @@ public class DefinitionValueDialog extends MessageDialog {
      *            the {@link Resource} to check
      * @param containingFeatures
      *            the {@link Set} of {@link EStructuralFeature}
-     * @param eCls
-     *            the {@link EClass}
+     * @param eClasses
+     *            the {@link Set} of {@link EClass}
      * @return <code>true</code> if the given {@link Resource} has {@link EObject} that have any of the given {@link EStructuralFeature} or has
      *         an instance of the given {@link EClass}, <code>false</code> otherwise
      */
     private boolean canContainsOrHas(final Resource resource, final Set<EStructuralFeature> containingFeatures,
-            EClass eCls) {
+            Set<EClass> eClasses) {
         boolean res = false;
 
         contains: for (EObject content : resource.getContents()) {
-            if (eCls.isInstance(content)) {
+            if (isInstanceOfAny(content, eClasses)) {
                 res = true;
                 break;
             } else {
@@ -280,6 +287,29 @@ public class DefinitionValueDialog extends MessageDialog {
                         break contains;
                     }
                 }
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Tells if the given {@link EObject} is instance of any {@link EClass} in the given {@link Set}.
+     * 
+     * @param eObj
+     *            the {@link EObject} to test
+     * @param eClasses
+     *            the {@link Set} of {@link EClass}
+     * @return <code>true</code> if the given {@link EObject} is instance of any {@link EClass} in the given {@link Set}, <code>false</code>
+     *         otherwise
+     */
+    private boolean isInstanceOfAny(EObject eObj, Set<EClass> eClasses) {
+        boolean res = false;
+
+        for (EClass eCls : eClasses) {
+            if (eCls.isInstance(eObj)) {
+                res = true;
+                break;
             }
         }
 
