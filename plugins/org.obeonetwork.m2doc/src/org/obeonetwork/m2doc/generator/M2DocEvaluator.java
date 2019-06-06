@@ -799,7 +799,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         ctText.setStringValue(hyperLink.getText());
 
         CTR ctr = CTR.Factory.newInstance();
-        ctr.setRPr((CTRPr) run.getCTR().getRPr().copy());
+        if (run.getCTR() != null && run.getCTR().getRPr() != null) {
+            ctr.setRPr((CTRPr) run.getCTR().getRPr().copy());
+        }
         ctr.setTArray(new CTText[] {ctText });
         cLink.setRArray(new CTR[] {ctr });
     }
