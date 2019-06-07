@@ -11,6 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
@@ -19,6 +24,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.PictureType;
+import org.obeonetwork.m2doc.element.impl.MImageAWTImpl;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
 
 //@formatter:off
@@ -192,13 +198,13 @@ public class ImageServices {
 
     // @formatter:off
     @Documentation(
-        value = "Fits the Image in the given the given rectangle width and height.",
+        value = "Fits the Image in the given rectangle width and height.",
         params = {
             @Param(name = "image", value = "The Image"),
             @Param(name = "width", value = "The width to fit"),
             @Param(name = "height", value = "The height to fit"),
         },
-        result = "sets the conserve ratio of the image",
+        result = "the image with new dimensions",
         examples = {
             @Example(expression = "myImage.fit(200, 300)", result = "will fit the image in a rectangle (width=200, height=300)"),
         }
@@ -211,6 +217,32 @@ public class ImageServices {
         }
 
         return image;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Resizes the Image by the given factor.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+            @Param(name = "factor", value = "The resize factor"),
+        },
+        result = "resize the image",
+        examples = {
+            @Example(expression = "myImage.resize(0.5)", result = "will resize the image by a factor 0.5"),
+        }
+    )
+    // @formatter:on
+    public MImage resize(MImage image, Double factor) throws IOException {
+        final BufferedImage bufferedImage = MImageAWTImpl.getBufferedImage(image);
+
+        final BufferedImage resized = new BufferedImage((int) (bufferedImage.getWidth() * factor),
+                (int) (bufferedImage.getHeight() * factor), bufferedImage.getType());
+
+        final AffineTransform zoomTransfort = AffineTransform.getScaleInstance(factor, factor);
+        final AffineTransformOp retaillerImage = new AffineTransformOp(zoomTransfort, AffineTransformOp.TYPE_BILINEAR);
+        retaillerImage.filter(bufferedImage, resized);
+
+        return new MImageAWTImpl(resized, image.getURI());
     }
 
 }

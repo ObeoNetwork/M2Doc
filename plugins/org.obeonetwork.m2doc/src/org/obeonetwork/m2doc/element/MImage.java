@@ -30,6 +30,11 @@ public interface MImage extends MElement {
     // CHECKSTYLE:OFF
     MImage EMPTY = new MImage() {
 
+        /**
+         * The empty {@link URI}.
+         */
+        private final URI uri = URI.createURI("");
+
         @Override
         public void setWidth(int width) {
             // nothing to do here
@@ -52,7 +57,7 @@ public interface MImage extends MElement {
 
         @Override
         public URI getURI() {
-            return URI.createURI("");
+            return uri;
         }
 
         @Override

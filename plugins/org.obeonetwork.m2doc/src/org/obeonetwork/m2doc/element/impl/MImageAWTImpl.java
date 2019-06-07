@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2018 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -12,22 +12,28 @@
 package org.obeonetwork.m2doc.element.impl;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.PictureType;
 
 /**
- * An image that can be returned by services.
+ * An AWT implementation for image transformation.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class MImageImpl implements MImage {
+public class MImageAWTImpl implements MImage {
+
+    /**
+     * The {@link BufferedImage}.
+     */
+    private final BufferedImage image;
 
     /**
      * The {@link URI} to retrieve the content of the image.
@@ -55,60 +61,20 @@ public class MImageImpl implements MImage {
     private double ratio;
 
     /**
-     * The type.
-     */
-    private PictureType type;
-
-    /**
-     * The URI converter to use.
-     */
-    private URIConverter uriConverter;
-
-    /**
-     * Constructor.
-     * <p>
-     * The image type is deducted from the image {@link URI} file extension. If the extension is unknown, jpeg format will be selected by
-     * default.
-     * </p>
-     * 
-     * @param uriConverter
-     *            the {@link URIConverter uri converter} to use
-     * @param uri
-     *            the {@link URI}
-     */
-    public MImageImpl(URIConverter uriConverter, URI uri) {
-        this(uriConverter, uri, PictureType.toType(uri));
-    }
-
-    /**
      * Constructor with enforced image type.
      * 
-     * @param uriConverter
-     *            the {@link URIConverter uri converter} to use
+     * @param image
+     *            the {@link BufferedImage}
      * @param uri
      *            the {@link URI}
-     * @param type
-     *            the picture {@link PictureType type}
      */
-    public MImageImpl(URIConverter uriConverter, URI uri, PictureType type) {
-        this.uriConverter = uriConverter;
+    public MImageAWTImpl(BufferedImage image, URI uri) {
+        this.image = image;
         this.uri = uri;
-        this.type = type;
-        try (InputStream input = getInputStream()) {
-            final BufferedImage image = ImageIO.read(input);
-            if (image != null) {
-                width = image.getWidth();
-                height = image.getHeight();
-                conserveRatio = true;
-                ratio = ((double) width) / ((double) height);
-            } else {
-                conserveRatio = false;
-                ratio = -1;
-            }
-        } catch (IOException e) {
-            // will continue with out ratio and width x height preset
-            ratio = -1;
-        }
+        width = image.getWidth();
+        height = image.getHeight();
+        conserveRatio = true;
+        ratio = ((double) width) / ((double) height);
     }
 
     @Override
@@ -166,17 +132,43 @@ public class MImageImpl implements MImage {
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return uriConverter.createInputStream(uri);
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream();) {
+            ImageIO.write(image, "png", output);
+            return new ByteArrayInputStream(output.toByteArray());
+        }
     }
 
     @Override
     public PictureType getType() {
-        return type;
+        return PictureType.PNG;
     }
 
     @Override
     public String toString() {
         return "Image " + uri.toString();
+    }
+
+    /**
+     * Gets the {@link BufferedImage} from the given {@link MImage}.
+     * 
+     * @param image
+     *            the {@link MImage}
+     * @return the {@link BufferedImage} from the given {@link MImage}
+     * @throws IOException
+     *             if the image can't be read
+     */
+    public static BufferedImage getBufferedImage(MImage image) throws IOException {
+        final BufferedImage res;
+
+        if (image instanceof MImageAWTImpl) {
+            res = ((MImageAWTImpl) image).image;
+        } else {
+            try (InputStream input = image.getInputStream()) {
+                res = ImageIO.read(input);
+            }
+        }
+
+        return res;
     }
 
 }

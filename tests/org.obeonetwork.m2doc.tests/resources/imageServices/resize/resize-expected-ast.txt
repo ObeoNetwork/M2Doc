@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Checks ImageServices registration :
+  [query: .resize(.asImage('dh1.gif'), 0.2)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
