@@ -53,7 +53,7 @@ Convert a String representing an URI to an Image.
 
 ## org.obeonetwork.m2doc.element.MImage.fit(Integer, Integer) : org.obeonetwork.m2doc.element.MImage
 
-Fits the Image in the given the given rectangle width and height.
+Fits the Image in the given rectangle width and height.
 
 ### Parameter
 
@@ -91,6 +91,20 @@ Gets the width of the image.
 
 * myImage.getWidth()
   * 300
+
+## org.obeonetwork.m2doc.element.MImage.resize(Double) : org.obeonetwork.m2doc.element.MImage
+
+Resizes the Image by the given factor.
+
+### Parameter
+
+* **image**: The Image
+* **factor**: The resize factor
+
+### Example
+
+* myImage.resize(0.5)
+  * will resize the image by a factor 0.5
 
 ## org.obeonetwork.m2doc.element.MImage.setConserveRatio(Boolean) : org.obeonetwork.m2doc.element.MImage
 
