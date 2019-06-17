@@ -16,14 +16,7 @@ package org.obeonetwork.m2doc.element;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MHyperLink extends MElement {
-
-    /**
-     * Gets the text.
-     * 
-     * @return the text
-     */
-    String getText();
+public interface MHyperLink extends MText {
 
     /**
      * Gets the url.
@@ -31,5 +24,13 @@ public interface MHyperLink extends MElement {
      * @return the url
      */
     String getUrl();
+
+    /**
+     * Sets the url.
+     * 
+     * @param url
+     *            the new url
+     */
+    void setUrl(String url);
 
 }

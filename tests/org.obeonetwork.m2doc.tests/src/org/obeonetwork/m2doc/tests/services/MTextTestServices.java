@@ -35,4 +35,8 @@ public class MTextTestServices {
         return new MTextImpl(text, style);
     }
 
+    public MText noStyleText(String text) {
+        return new MTextImpl(text, null);
+    }
+
 }

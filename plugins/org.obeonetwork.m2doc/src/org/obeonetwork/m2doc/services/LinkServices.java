@@ -55,7 +55,7 @@ public class LinkServices {
             localURL = "";
         }
 
-        return new MHyperLinkImpl(localText, localURL);
+        return new MHyperLinkImpl(localText, null, localURL);
     }
 
     // @formatter:off

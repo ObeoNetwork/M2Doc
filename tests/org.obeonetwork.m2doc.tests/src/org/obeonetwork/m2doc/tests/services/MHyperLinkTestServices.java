@@ -9,45 +9,30 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.element.impl;
+package org.obeonetwork.m2doc.tests.services;
+
+import java.awt.Color;
 
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
+import org.obeonetwork.m2doc.element.impl.MStyleImpl;
 
 /**
- * An hyper link that can be returned by services.
+ * Test {@link MHyperLink} insertion.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class MHyperLinkImpl extends MTextImpl implements MHyperLink {
+public class MHyperLinkTestServices {
 
-    /**
-     * The url.
-     */
-    private String url;
+    public MHyperLink sampleLink(String text, String url, Integer fontSize) {
+        final MStyle style = new MStyleImpl("French Script MT", fontSize, Color.ORANGE, Color.BLUE, MStyle.FONT_BOLD);
 
-    /**
-     * Constructor.
-     * 
-     * @param text
-     *            the text
-     * @param style
-     *            the {@link MStyle}
-     * @param url
-     *            the url
-     */
-    public MHyperLinkImpl(String text, MStyle style, String url) {
-        super(text, style);
-        this.url = url;
+        return new MHyperLinkImpl(text, style, url);
     }
 
-    @Override
-    public String getUrl() {
-        return url;
+    public MHyperLink noStyleLink(String text, String url) {
+        return new MHyperLinkImpl(text, null, url);
     }
 
-    @Override
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

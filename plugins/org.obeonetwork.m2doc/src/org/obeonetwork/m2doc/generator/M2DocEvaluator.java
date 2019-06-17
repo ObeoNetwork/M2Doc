@@ -106,7 +106,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
 
@@ -619,9 +618,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             }
             res = currentParagraph;
         } else if (object instanceof MHyperLink) {
-            final XWPFRun linkRun = insertFieldRunReplacement(paragraph, run, "");
-            insertMHyperLink((XWPFParagraph) linkRun.getParent(), linkRun, (MHyperLink) object);
-            res = (XWPFParagraph) linkRun.getParent();
+            res = insertMHyperLink(paragraph, run, (MHyperLink) object);
         } else if (object instanceof MBookmark) {
             insertMBookmark(paragraph, run, (MBookmark) object);
             res = paragraph;
@@ -789,21 +786,24 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            the {@link XWPFRun}
      * @param hyperLink
      *            the {@link MHyperLink}
+     * @return the {@link XWPFParagraph} where the hyperling was inserted
      */
-    private void insertMHyperLink(XWPFParagraph paragraph, XWPFRun run, MHyperLink hyperLink) {
-        final String id = paragraph.getDocument().getPackagePart()
-                .addExternalRelationship(hyperLink.getUrl(), XWPFRelation.HYPERLINK.getRelation()).getId();
-        final CTHyperlink cLink = paragraph.getCTP().addNewHyperlink();
-        cLink.setId(id);
-        CTText ctText = CTText.Factory.newInstance();
-        ctText.setStringValue(hyperLink.getText());
+    private XWPFParagraph insertMHyperLink(XWPFParagraph paragraph, XWPFRun run, MHyperLink hyperLink) {
+        final XWPFRun linkRun = insertMText(paragraph, run, hyperLink);
+        final XWPFParagraph res = (XWPFParagraph) linkRun.getParent();
 
-        CTR ctr = CTR.Factory.newInstance();
-        if (run.getCTR() != null && run.getCTR().getRPr() != null) {
-            ctr.setRPr((CTRPr) run.getCTR().getRPr().copy());
+        final String id = res.getDocument().getPackagePart()
+                .addExternalRelationship(hyperLink.getUrl(), XWPFRelation.HYPERLINK.getRelation()).getId();
+        final CTHyperlink cLink = res.getCTP().addNewHyperlink();
+        cLink.setId(id);
+
+        if (hyperLink.getStyle() != null) {
+            applyMStyle(linkRun, hyperLink.getStyle());
         }
-        ctr.setTArray(new CTText[] {ctText });
-        cLink.setRArray(new CTR[] {ctr });
+        cLink.setRArray(new CTR[] {linkRun.getCTR() });
+        res.removeRun(res.getRuns().indexOf(linkRun));
+
+        return res;
     }
 
     /**
