@@ -4,7 +4,7 @@
 === BODY ===
 
   Checks ImageServices registration :
-  [query: .resize(.asImage('Mona_Lisa.jpg'), 0.5)]
+  [query: .rotate(.asImage('Mona_Lisa.jpg'), 90)]
   End of demonstration.
 === FOOTER ===
 

@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -243,6 +244,45 @@ public class ImageServices {
         retaillerImage.filter(bufferedImage, resized);
 
         return new MImageAWTImpl(resized, image.getURI());
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Rotates the Image by the given angle in degres.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+            @Param(name = "angle", value = "The angle in degres"),
+        },
+        result = "rotate the image",
+        examples = {
+            @Example(expression = "myImage.rotate(90)", result = "will rotate the image by an angle of 90 degres"),
+        }
+    )
+    // @formatter:on
+    public MImage rotate(MImage image, Integer angle) throws IOException {
+        final BufferedImage bufferedImage = MImageAWTImpl.getBufferedImage(image);
+
+        final double rads = Math.toRadians(angle);
+        final double sin = Math.abs(Math.sin(rads));
+        final double cos = Math.abs(Math.cos(rads));
+        final int width = bufferedImage.getWidth();
+        final int height = bufferedImage.getHeight();
+        final int x = width / 2;
+        final int y = height / 2;
+        final int newWidth = (int) Math.floor(width * cos + height * sin);
+        final int newHeight = (int) Math.floor(height * cos + width * sin);
+
+        final BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        final AffineTransform translateTransform = new AffineTransform();
+        translateTransform.translate((newWidth - width) / 2, (newHeight - height) / 2);
+        translateTransform.rotate(rads, x, y);
+
+        final Graphics2D g2d = rotated.createGraphics();
+        g2d.setTransform(translateTransform);
+        g2d.drawImage(bufferedImage, 0, 0, null);
+        g2d.dispose();
+
+        return new MImageAWTImpl(rotated, image.getURI());
     }
 
 }
