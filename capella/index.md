@@ -33,6 +33,7 @@ Once your download is finished, extract the downloaded archive and run the eclip
 
 ### Installation Capella 1.3.x
 
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full/org.obeonetwork.capella.update.full.zip)
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full/org.obeonetwork.capella.update.full.zip)
 
 ### Installation Capella 1.2.x
