@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo. 
+ * Copyright (c) 2017, 2019 Obeo. 
  *    All rights reserved. This program and the accompanying materials
  *    are made available under the terms of the Eclipse Public License v1.0
  *    which accompanies this distribution, and is available at
@@ -23,7 +23,10 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -36,7 +39,6 @@ import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
-import org.eclipse.sirius.ext.base.Option;
 import org.eclipse.ui.PlatformUI;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
@@ -139,10 +141,11 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         final String res;
         final String filePath = platformResourceURI.toPlatformString(true);
         final IFile genconfFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
-        Option<ModelingProject> optionalModelingProject = ModelingProject.asModelingProject(genconfFile.getProject());
-        if (optionalModelingProject.some()) {
-            final ModelingProject project = optionalModelingProject.get();
-            final Session session = project.getSession();
+        final IProject project = genconfFile.getProject();
+        final ModelingProject modelingProject = getModelingProject(project);
+
+        if (modelingProject != null) {
+            final Session session = modelingProject.getSession();
             if (session != null) {
                 final URI sessionURI = session.getSessionResource().getURI();
                 res = sessionURI.deresolve(platformResourceURI, false, true, true).toString();
@@ -153,6 +156,22 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             res = null;
         }
         return res;
+    }
+
+    private ModelingProject getModelingProject(IProject project) {
+        ModelingProject modelingProject = null;
+        try {
+            for (String natureId : project.getDescription().getNatureIds()) {
+                IProjectNature nature = project.getNature(natureId);
+                if (nature instanceof ModelingProject) {
+                    modelingProject = (ModelingProject) nature;
+                    break;
+                }
+            }
+        } catch (CoreException e) {
+            /* does nothing */
+        }
+        return modelingProject;
     }
 
     @Override
