@@ -11,7 +11,7 @@
   </parent>
 
   <groupId>org.obeonetwork.m2doc</groupId>
-  <artifactId>m2doc-sirius-6.1</artifactId>
+  <artifactId>m2doc-sirius-6.1.2</artifactId>
   <version>2.0.2-SNAPSHOT</version>
   <packaging>eclipse-target-definition</packaging>
 
