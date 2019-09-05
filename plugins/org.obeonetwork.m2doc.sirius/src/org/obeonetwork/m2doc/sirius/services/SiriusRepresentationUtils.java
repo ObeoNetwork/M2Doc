@@ -1,5 +1,7 @@
 package org.obeonetwork.m2doc.sirius.services;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.ProviderException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +15,6 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
-import org.eclipse.sirius.diagram.ui.internal.refresh.SiriusDiagramSessionEventBroker;
 import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
 import org.eclipse.sirius.ui.business.api.dialect.DialectEditor;
 import org.eclipse.sirius.ui.business.api.session.IEditingSession;
@@ -121,7 +122,7 @@ public final class SiriusRepresentationUtils {
 
         // Enable GMF notation model canonical refresh in pre-commit
         // called here to be notified before the DiagramEventBroker
-        SiriusDiagramSessionEventBroker.getInstance(session);
+        siriusDiagramSessionEventBrokerGetInstance(session);
 
         // create GMFDiagramUpdater
         GMFDiagramUpdater gmfDiagramUpdater = null;
@@ -139,6 +140,36 @@ public final class SiriusRepresentationUtils {
             gmfDiagramUpdater.dispose();
         }
         return exportRepresentationCommand.getExportedDiagram();
+    }
+
+    /**
+     * Compatibility for changes between Sirius 6.1.1 and 6.1.2.
+     * 
+     * @param session
+     *            the {@link Session}
+     */
+    private static void siriusDiagramSessionEventBrokerGetInstance(Session session) {
+        Class<?> cls;
+        try {
+            cls = SiriusRepresentationUtils.class.getClassLoader()
+                    .loadClass("org.eclipse.sirius.diagram.ui.internal.refresh.SiriusDiagramSessionEventBroker");
+        } catch (ClassNotFoundException e) {
+            try {
+                cls = SiriusRepresentationUtils.class.getClassLoader().loadClass(
+                        "org.eclipse.sirius.diagram.business.internal.refresh.SiriusDiagramSessionEventBroker");
+            } catch (ClassNotFoundException e1) {
+                throw new IllegalStateException(
+                        "Sirius compatibility failed: can't find SiriusDiagramSessionEventBroker.");
+            }
+        }
+        try {
+            final Method method = cls.getMethod("getInstance", Session.class);
+            method.invoke(null, session);
+
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+            throw new IllegalStateException("Sirius compatibility failed.", e);
+        }
     }
 
     /**
@@ -172,7 +203,7 @@ public final class SiriusRepresentationUtils {
      */
     public static List<DRepresentation> getRepresentationByRepresentationDescriptionName(Session session, EObject eObj,
             String descriptionName) {
-        final List<DRepresentation> res = new ArrayList<DRepresentation>();
+        final List<DRepresentation> res = new ArrayList<>();
 
         final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
                 .getRepresentationDescriptors(eObj, session);

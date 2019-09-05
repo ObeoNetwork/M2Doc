@@ -1,0 +1,39 @@
+target "M2Doc Sirius 6.1 Target Platform"
+
+include "../common/common.tpd"
+
+with source requirements
+
+location Eclipse "http://download.eclipse.org/releases/photon" {
+	org.eclipse.platform.sdk lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
+	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
+	org.eclipse.emf.sdk.feature.group lazy
+	org.junit [4.0.0,5.0.0)
+	org.eclipse.gmf lazy
+	org.eclipse.gmf.runtime.diagram.ui lazy
+	org.eclipse.gmf.runtime.diagram.ui.render lazy
+	org.eclipse.jdt.feature.group lazy
+
+    // for testing purpose only
+	org.eclipse.uml2.feature.group lazy
+}
+
+location "http://download.eclipse.org/sirius/updates/releases/6.1.1/photon" {
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius lazy
+	org.eclipse.sirius.diagram lazy
+	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
+	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
+
+	// AQL
+	org.eclipse.acceleo.query.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
+	org.antlr.runtime [4.3.0,4.4.0)
+}
