@@ -27,7 +27,7 @@ before_script:
 - sudo add-apt-repository ppa:brightbox/ruby-ng -y
 - sudo apt-get update
 - sudo apt-get install ruby-dev
-- export REALLY_GEM_UPDATE_SYSTEM = "true"
+- export REALLY_GEM_UPDATE_SYSTEM=1
 - sudo gem update --system
 - gem install addressable --version '= 2.4.0'
 - gem install jekyll
