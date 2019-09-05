@@ -27,7 +27,7 @@ before_script:
 - sudo add-apt-repository ppa:brightbox/ruby-ng -y
 - sudo apt-get update
 - sudo apt-get install ruby-dev
-- gem install addressable --version '= 2.4.0'
+- gem install addressable --version '= 2.7.0'
 - gem install jekyll
 - gem install jekyll-paginate
 - gem install jekyll-gist
