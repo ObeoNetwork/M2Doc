@@ -12,7 +12,7 @@
 <feature
       id="org.obeonetwork.m2doc.cdo.feature"
       label="M2Doc CDO Integration"
-      version="2.0.2.qualifier"
+      version="2.0.3.qualifier"
       provider-name="Obeo Network">
 
    <description url="http://www.obeonetwork.com/">
