@@ -1,10 +1,10 @@
-target "M2Doc Sirius 6.1.2 Target Platform"
+target "M2Doc 2019-06 Target Platform"
 
 include "../common/common.tpd"
 
 with source requirements
 
-location Eclipse "http://download.eclipse.org/releases/photon" {
+location Eclipse "http://download.eclipse.org/releases/2019-06" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
@@ -19,14 +19,10 @@ location Eclipse "http://download.eclipse.org/releases/photon" {
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
 	org.eclipse.jdt.feature.group lazy
 
-	// AQL
-	org.antlr.runtime [4.3.0,4.4.0)
-
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
-}
 
-location "http://download.eclipse.org/sirius/updates/releases/6.1.2/photon" {
+	// Sirius
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy
@@ -38,4 +34,5 @@ location "http://download.eclipse.org/sirius/updates/releases/6.1.2/photon" {
 	// AQL
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.source.feature.group lazy
+	org.antlr.runtime [4.3.0,4.4.0)
 }

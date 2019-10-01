@@ -20,11 +20,15 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2019-09</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2019-06</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2019-03</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2018-12</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2018-09</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/photon</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.2.2</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.1.3</module>
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.1.2</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.1.1</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.1.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.0</module>
@@ -339,6 +343,126 @@
 
     <!-- Eclipse -->
     <profile>
+      <id>platform-2019-09</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2019-09</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2019-09</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2019-09</artifactId>
+                  <version>3.0.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>platform-2019-06</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2019-06</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2019-06</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2019-06</artifactId>
+                  <version>3.0.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>platform-2019-03</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2019-03</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2019-03</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2019-03</artifactId>
+                  <version>3.0.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>platform-2018-12</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2018-12</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2018-12</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2018-12</artifactId>
+                  <version>3.0.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>platform-2018-09</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -431,6 +555,36 @@
 
     <!-- Sirius -->
     <profile>
+      <id>platform-sirius-6.2.2</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-6.2.2</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.2.2/photon</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-6.2.2</artifactId>
+                  <version>3.0.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>platform-sirius-6.1.3</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -440,7 +594,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.1.3/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -461,36 +615,6 @@
       </build>
     </profile>
     <profile>
-      <id>platform-sirius-6.1.2</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <property>
-          <name>platform-version-name</name>
-          <value>sirius-6.1.2</value>
-        </property>
-      </activation>
-      <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.eclipse.tycho</groupId>
-            <artifactId>target-platform-configuration</artifactId>
-            <configuration>
-              <target>
-                <artifact>
-                  <groupId>org.obeonetwork.m2doc</groupId>
-                  <artifactId>m2doc-sirius-6.1.2</artifactId>
-                  <version>3.0.0-SNAPSHOT</version>
-                </artifact>
-              </target>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>platform-sirius-6.1.1</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -500,7 +624,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.1.1/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -530,7 +654,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.1.0/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -560,7 +684,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/oxygen</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.0.0/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -590,7 +714,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -602,36 +726,6 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-5.1</artifactId>
-                  <version>3.0.0-SNAPSHOT</version>
-                </artifact>
-              </target>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>platform-sirius-5.0</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-        <property>
-          <name>platform-version-name</name>
-          <value>sirius-5.0</value>
-        </property>
-      </activation>
-      <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/neon</eclipse-rcptt-inject-site>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.eclipse.tycho</groupId>
-            <artifactId>target-platform-configuration</artifactId>
-            <configuration>
-              <target>
-                <artifact>
-                  <groupId>org.obeonetwork.m2doc</groupId>
-                  <artifactId>m2doc-sirius-5.0</artifactId>
                   <version>3.0.0-SNAPSHOT</version>
                 </artifact>
               </target>
