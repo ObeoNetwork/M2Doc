@@ -13,7 +13,7 @@ location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.6/
 	org.eclipse.net4j.feature.group lazy
 }
 
-location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" {
+location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.15.0/" {
     // for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.15.0,2.16.0)
 }
