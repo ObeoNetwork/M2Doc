@@ -13,6 +13,7 @@ import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.business.internal.metamodel.helper.LayerHelper;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.diagram.ui.internal.refresh.listeners.GMFDiagramUpdater;
@@ -32,6 +33,11 @@ import org.obeonetwork.m2doc.sirius.commands.PrepareDiagramCommand;
  */
 @SuppressWarnings("restriction")
 public final class SiriusRepresentationUtils {
+
+    /**
+     * "Sirius compatibility failed" message.
+     */
+    private static final String SIRIUS_COMPATIBILITY_FAILED = "Sirius compatibility failed.";
 
     /**
      * Constructor.
@@ -168,7 +174,7 @@ public final class SiriusRepresentationUtils {
 
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException e) {
-            throw new IllegalStateException("Sirius compatibility failed.", e);
+            throw new IllegalStateException(SIRIUS_COMPATIBILITY_FAILED, e);
         }
     }
 
@@ -220,6 +226,35 @@ public final class SiriusRepresentationUtils {
                     res.add(repDesc.getRepresentation());
                 }
             }
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link List} of all {@link Layer} for the given {@link DiagramDescription}. This survive API changes in Sirius 6.2.2.
+     * 
+     * @param description
+     *            the {@link DiagramDescription}
+     * @return the {@link List} of all {@link Layer} for the given {@link DiagramDescription}
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Layer> getAllLayer(DiagramDescription description) {
+        final List<Layer> res = new ArrayList<>();
+
+        try {
+            final Method method = DiagramDescription.class.getMethod("getAllLayers");
+            res.addAll((List<Layer>) method.invoke(description));
+        } catch (NoSuchMethodException | SecurityException e) {
+            try {
+                final Method method = LayerHelper.class.getMethod("getAllLayers", DiagramDescription.class);
+                res.addAll((List<Layer>) method.invoke(null, description));
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e1) {
+                throw new IllegalStateException(SIRIUS_COMPATIBILITY_FAILED, e);
+            }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new IllegalStateException(SIRIUS_COMPATIBILITY_FAILED, e);
         }
 
         return res;

@@ -291,7 +291,7 @@ public class M2DocSiriusServices {
         if (representation instanceof DDiagram) {
             final DDiagram diagram = (DDiagram) representation;
             final List<Layer> layers = new ArrayList<>();
-            for (Layer layer : diagram.getDescription().getAllLayers()) {
+            for (Layer layer : SiriusRepresentationUtils.getAllLayer(diagram.getDescription())) {
                 if (layerNames.contains(layer.getName())) {
                     layers.add(layer);
                 }
