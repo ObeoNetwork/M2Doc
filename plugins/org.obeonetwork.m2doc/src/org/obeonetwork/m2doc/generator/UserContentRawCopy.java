@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
@@ -36,6 +37,7 @@ import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlToken;
+import org.obeonetwork.m2doc.parser.AbstractBodyParser;
 import org.obeonetwork.m2doc.template.ContentControl;
 import org.obeonetwork.m2doc.template.Statement;
 import org.obeonetwork.m2doc.template.StaticFragment;
@@ -84,7 +86,7 @@ public class UserContentRawCopy {
     }
 
     /**
-     * Copy.
+     * Copies the given {@link UserContent} to the given output {@link XWPFParagraph}.
      * 
      * @param userContent
      *            UserContent EObject
@@ -98,7 +100,7 @@ public class UserContentRawCopy {
      * @throws IOException
      *             if the copy fails
      */
-    public XWPFParagraph copy(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent)
+    public XWPFParagraph copyUserContent(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent)
             throws InvalidFormatException, XmlException, IOException {
 
         // Test if run before userContent is in same XWPFParagraph than first run of userContent
@@ -178,13 +180,9 @@ public class UserContentRawCopy {
                     final XWPFParagraph currentRunParagraph = (XWPFParagraph) inputRun.getParent();
                     if (currentRunParagraph != localCurrentInputParagraph) {
                         localCurrentInputParagraph = currentRunParagraph;
-                        currentOutputParagraph = createNewParagraph(outputBody);
-                        // Copy new paragraph
-                        currentOutputParagraph.getCTP().set(localCurrentInputParagraph.getCTP());
+                        currentOutputParagraph = copyParagraph(containerInputDocument, containerOutputDocument,
+                                outputBody, inputRelationIdToOutputmap, localCurrentInputParagraph);
                         listOutputParagraphs.add(currentOutputParagraph);
-                        // Create relation embedded in run and keep relation id in map (input to output)
-                        createRelations(inputRelationIdToOutputmap, localCurrentInputParagraph.getCTP().xmlText(),
-                                containerInputDocument, containerOutputDocument);
                     } else if (!paragraphFragmentCopied && currentRunParagraph == previousInputParagraph) {
                         // Test if some run exist between userContent tag and first paragraph in this tag
                         copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, currentInputParagraph,
@@ -196,13 +194,9 @@ public class UserContentRawCopy {
             } else if (statement instanceof Table) {
                 final Table table = (Table) statement;
                 final XWPFTable inputTable = table.getTable();
-                final XWPFTable outputTable = createNewTable(outputBody, inputTable);
-                outputTable.getCTTbl().set(inputTable.getCTTbl());
-                copyTableStyle(inputTable, containerOutputDocument);
+                final XWPFTable outputTable = copyTable(containerInputDocument, containerOutputDocument, outputBody,
+                        inputRelationIdToOutputmap, inputTable);
                 listOutputTables.add(outputTable);
-                // Create relation embedded in run and keep relation id in map (input to output)
-                createRelations(inputRelationIdToOutputmap, inputTable.getCTTbl().xmlText(), containerInputDocument,
-                        containerOutputDocument);
             } else if (statement instanceof ContentControl) {
                 final ContentControl contentControl = (ContentControl) statement;
                 copyCTSdtBlock(outputBody, contentControl.getBlock());
@@ -217,6 +211,71 @@ public class UserContentRawCopy {
         }
 
         return currentOutputParagraph;
+    }
+
+    /**
+     * Copies the given {@link XWPFParagraph} to the given {@link IBody}.
+     * 
+     * @param containerInputDocument
+     *            the input {@link XWPFDocument}
+     * @param containerOutputDocument
+     *            the output {@link XWPFDocument}
+     * @param outputBody
+     *            the output {@link IBody}
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
+     * @param inputParagraph
+     *            the input {@link XWPFParagraph}
+     * @return the output {@link XWPFParagraph}
+     * @throws InvalidFormatException
+     *             if image copy fails
+     */
+    private XWPFParagraph copyParagraph(final XWPFDocument containerInputDocument,
+            final XWPFDocument containerOutputDocument, final IBody outputBody,
+            final Map<String, String> inputRelationIdToOutputmap, XWPFParagraph inputParagraph)
+            throws InvalidFormatException {
+        final XWPFParagraph res = createNewParagraph(outputBody);
+
+        // Copy new paragraph
+        res.getCTP().set(inputParagraph.getCTP());
+        // Create relation embedded in run and keep relation id in map (input to output)
+        createRelations(inputRelationIdToOutputmap, inputParagraph.getCTP().xmlText(), containerInputDocument,
+                containerOutputDocument);
+
+        return res;
+    }
+
+    /**
+     * Copies the given {@link XWPFTable} into the given output {@link IBody}.
+     * 
+     * @param containerInputDocument
+     *            the input {@link XWPFDocument}
+     * @param containerOutputDocument
+     *            the output {@link XWPFDocument}
+     * @param outputBody
+     *            the output {@link IBody}
+     * @param inputRelationIdToOutputmap
+     *            the relation ID mapping
+     * @param inputTable
+     *            the input {@link XWPFTable}
+     * @return the output {@link XWPFTable}
+     * @throws IOException
+     *             if the copy fails
+     * @throws InvalidFormatException
+     *             InvalidFormatException
+     */
+    private XWPFTable copyTable(final XWPFDocument containerInputDocument, final XWPFDocument containerOutputDocument,
+            final IBody outputBody, final Map<String, String> inputRelationIdToOutputmap, final XWPFTable inputTable)
+            throws IOException, InvalidFormatException {
+        final XWPFTable res = createNewTable(outputBody, inputTable);
+
+        res.getCTTbl().set(inputTable.getCTTbl());
+        copyTableStyle(inputTable, containerOutputDocument);
+        // Create relation embedded in run and keep relation id in map (input to output)
+        createRelations(inputRelationIdToOutputmap, inputTable.getCTTbl().xmlText(), containerInputDocument,
+                containerOutputDocument);
+
+        return res;
     }
 
     /**
@@ -244,13 +303,13 @@ public class UserContentRawCopy {
         XmlCursor inputCursor = inputParagraph.getCTP().newCursor();
         try {
             final XmlCursor savedCursor;
-            if (inputCursor.toFirstChild()) {
+            if (inputCursor.toFirstChild() && inputRun != null) {
                 savedCursor = copyFromRun(inputRun, inputCursor);
             } else {
                 savedCursor = null;
             }
 
-            if (inputCursor.getObject().equals(inputRun.getCTR())) {
+            if (inputRun == null || inputCursor.getObject().equals(inputRun.getCTR())) {
                 if (savedCursor != null) {
                     inputCursor.dispose();
                     inputCursor = savedCursor;
@@ -673,7 +732,7 @@ public class UserContentRawCopy {
      * @param outputDoc
      *            output Document
      * @throws InvalidFormatException
-     *             InvalidFormatException
+     *             if image copy fails
      */
     private void createRelations(Map<String, String> inputRelationIdToOutputmap, String xmlText, XWPFDocument inputDoc,
             XWPFDocument outputDoc) throws InvalidFormatException {
@@ -696,6 +755,81 @@ public class UserContentRawCopy {
                 inputRelationIdToOutputmap.put(hyperlinkIDInput, hyperlinkIDOutput);
             }
         }
+    }
+
+    /**
+     * Copies the given {@link IBody} to the given {@link XWPFParagraph}.
+     * 
+     * @param outputParagraph
+     *            the output {@link XWPFParagraph}
+     * @param body
+     *            the {@link IBody}
+     * @return the new current {@link XWPFParagraph}
+     * @throws InvalidFormatException
+     *             if image copy fails
+     * @throws XmlException
+     *             if xml manipulation fails
+     * @throws IOException
+     *             if the copy fails
+     */
+    @SuppressWarnings("resource")
+    public XWPFParagraph copyBody(XWPFParagraph outputParagraph, IBody body)
+            throws InvalidFormatException, XmlException, IOException {
+        XWPFParagraph res = null;
+
+        if (body.getBodyElements().isEmpty()) {
+            res = outputParagraph;
+        } else {
+            final IBody outputBody = outputParagraph.getBody();
+            boolean inline;
+            if (!(outputBody instanceof XWPFTableCell) && outputParagraph.getRuns().size() == 1
+                && outputParagraph.getRuns().get(0).getText(0).length() == 0) {
+                removeParagraph(outputBody, outputParagraph);
+                inline = false;
+            } else {
+                inline = true;
+            }
+
+            final XWPFDocument containerInputDocument = body.getXWPFDocument();
+            final XWPFDocument containerOutputDocument = outputBody.getXWPFDocument();
+            final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
+            List<XWPFRun> listOutputRuns = new ArrayList<>();
+            final List<XWPFTable> listOutputTables = new ArrayList<>();
+            final Map<String, String> inputRelationIdToOutputmap = new HashMap<>();
+            for (IBodyElement element : body.getBodyElements()) {
+                if (element instanceof XWPFParagraph) {
+                    final XWPFParagraph inputParagraph = (XWPFParagraph) element;
+                    if (inline) {
+                        copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, inputParagraph, null);
+                        res = null;
+                    } else {
+                        res = copyParagraph(containerInputDocument, containerOutputDocument, outputBody,
+                                inputRelationIdToOutputmap, inputParagraph);
+                        listOutputParagraphs.add(res);
+                    }
+                } else if (element instanceof XWPFTable) {
+                    final XWPFTable outputTable = copyTable(containerInputDocument, containerOutputDocument, outputBody,
+                            inputRelationIdToOutputmap, (XWPFTable) element);
+                    listOutputTables.add(outputTable);
+                    res = null;
+                } else if (element instanceof XWPFSDT) {
+                    copyCTSdtBlock(outputBody, AbstractBodyParser.getCTSdtBlock(outputBody, (XWPFSDT) element));
+                    res = null;
+                } else {
+                    throw new IllegalStateException("unknown body element.");
+                }
+                inline = false;
+            }
+
+            if (res != null && outputBody instanceof XWPFTableCell && res.getRuns().isEmpty()) {
+                res.createRun();
+            }
+
+            // Change relations Id by xml replacement
+            changeRelationsId(inputRelationIdToOutputmap, listOutputRuns, listOutputParagraphs, listOutputTables);
+        }
+
+        return res;
     }
 
 }

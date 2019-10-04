@@ -347,11 +347,11 @@ public abstract class AbstractBodyParser {
      *            the {@link XWPFSDT}
      * @return the {@link CTSdtBlock} corresponding to the given {@link ContentControl}
      */
-    private CTSdtBlock getCTSdtBlock(IBody body, XWPFSDT sdt) {
+    public static CTSdtBlock getCTSdtBlock(IBody body, XWPFSDT sdt) {
         final CTSdtBlock res;
 
         int sdtIndex = -1;
-        for (IBodyElement element : document.getBodyElements()) {
+        for (IBodyElement element : body.getBodyElements()) {
             if (element instanceof XWPFSDT) {
                 sdtIndex++;
                 if (element == sdt) {
@@ -361,7 +361,7 @@ public abstract class AbstractBodyParser {
         }
 
         if (sdtIndex > -1) {
-            res = getCTSdtBlock(document, sdtIndex);
+            res = getCTSdtBlock(body, sdtIndex);
         } else {
             res = null;
         }
@@ -378,7 +378,7 @@ public abstract class AbstractBodyParser {
      *            the index in internal sdt list
      * @return the {@link CTSdtBlock} at the given sdtIndex in the given {@link IBody}
      */
-    private CTSdtBlock getCTSdtBlock(IBody body, int sdtIndex) {
+    private static CTSdtBlock getCTSdtBlock(IBody body, int sdtIndex) {
         final CTSdtBlock res;
 
         if (body instanceof XWPFDocument) {

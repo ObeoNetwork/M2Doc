@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Obeo's website
+=== FOOTER ===
+
+=== TEMPLATES ===

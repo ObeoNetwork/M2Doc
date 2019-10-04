@@ -295,7 +295,7 @@ public class UserContentManager {
                     final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
                     try {
                         currentGeneratedParagraph = destinationDocument.createParagraph();
-                        currentGeneratedParagraph = userContentRawCopy.copy(userContent, currentGeneratedParagraph);
+                        currentGeneratedParagraph = userContentRawCopy.copyUserContent(userContent, currentGeneratedParagraph);
                     } catch (InvalidFormatException e) {
                         result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
                                 ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));

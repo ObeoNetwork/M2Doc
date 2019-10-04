@@ -69,8 +69,6 @@ import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
-import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -647,11 +645,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             res = insertMParagraph(generatedDocument, (MParagraph) object, run);
         } else if (object instanceof IBody) {
             final XWPFRun bodyRun = insertFieldRunReplacement(paragraph, run, "");
-            res = insertBody((XWPFParagraph) bodyRun.getParent(), bodyRun, (IBody) object);
+            res = insertBody((XWPFParagraph) bodyRun.getParent(), (IBody) object);
         } else if (object instanceof GenerationResult) {
             final XWPFRun generationRun = insertFieldRunReplacement(paragraph, run, "");
-            res = insertGenerationResult((XWPFParagraph) generationRun.getParent(), generationRun,
-                    (GenerationResult) object);
+            res = insertGenerationResult((XWPFParagraph) generationRun.getParent(), (GenerationResult) object);
         } else if (object == null) {
             res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
         } else {
@@ -666,19 +663,16 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * 
      * @param paragraph
      *            the {@link XWPFParagraph} to modify
-     * @param run
-     *            the {@link XWPFRun}
      * @param generationResult
      *            the {@link GenerationResult}
      * @return the last inserted {@link XWPFParagraph}
      */
-    private XWPFParagraph insertGenerationResult(XWPFParagraph paragraph, XWPFRun run,
-            GenerationResult generationResult) {
+    private XWPFParagraph insertGenerationResult(XWPFParagraph paragraph, GenerationResult generationResult) {
         for (TemplateValidationMessage message : generationResult.getMessages()) {
             result.addMessage(message);
         }
 
-        return insertBody(paragraph, run, generationResult.getBody());
+        return insertBody(paragraph, generationResult.getBody());
     }
 
     /**
@@ -686,29 +680,16 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * 
      * @param paragraph
      *            the {@link XWPFParagraph} to modify
-     * @param run
-     *            the {@link XWPFRun}
      * @param body
      *            the {@link IBody}
      * @return the last inserted {@link XWPFParagraph}
      */
-    private XWPFParagraph insertBody(XWPFParagraph paragraph, XWPFRun run, IBody body) {
+    private XWPFParagraph insertBody(XWPFParagraph paragraph, IBody body) {
         XWPFParagraph res;
 
-        final BodyGeneratedParser parser = new BodyGeneratedParser(body, (IQueryEnvironment) queryEnvironment);
         try {
-            final Block block = parser.parseBlock(null, TokenType.EOF);
             final UserContentRawCopy copier = new UserContentRawCopy();
-            final XWPFParagraph inputParagraph;
-            if (!body.getParagraphs().isEmpty()) {
-                inputParagraph = body.getParagraphs().get(0);
-            } else {
-                inputParagraph = null;
-            }
-            res = copier.copyStatements(paragraph, inputParagraph, inputParagraph, block.getStatements());
-        } catch (DocumentParserException e) {
-            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
-            res = paragraph;
+            res = copier.copyBody(paragraph, body);
         } catch (InvalidFormatException e) {
             result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
             res = paragraph;
@@ -1332,7 +1313,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         } else {
             final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
             try {
-                currentParagraph = userContentRawCopy.copy(userContent, currentParagraph);
+                currentParagraph = userContentRawCopy.copyUserContent(userContent, currentParagraph);
                 needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
             } catch (InvalidFormatException e) {
                 insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
