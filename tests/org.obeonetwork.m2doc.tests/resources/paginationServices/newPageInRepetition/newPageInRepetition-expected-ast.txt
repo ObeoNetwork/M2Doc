@@ -1,0 +1,22 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Basic for demonstration : 
+  
+  for v | .aqlFeatureAccess(self, 'eClassifiers') do
+    name = 
+    [query: .aqlFeatureAccess(v, 'name')]
+    ,
+    [query: .asPagination('newPage')]
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===
+
+  
+  content control
+  
+  
+=== TEMPLATES ===

@@ -829,7 +829,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFParagraph res;
         switch (mPagination) {
             case newColumn:
-                run.addBreak(BreakType.COLUMN);
+                insertFieldRunReplacement(paragraph, run, "").addBreak(BreakType.COLUMN);
                 res = paragraph;
                 break;
 
@@ -838,7 +838,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 break;
 
             case newPage:
-                run.addBreak(BreakType.PAGE);
+                insertFieldRunReplacement(paragraph, run, "").addBreak(BreakType.PAGE);
                 res = paragraph;
                 break;
 
