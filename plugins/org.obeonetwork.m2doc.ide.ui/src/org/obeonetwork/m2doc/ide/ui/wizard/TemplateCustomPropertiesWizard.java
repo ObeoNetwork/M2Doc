@@ -14,7 +14,6 @@ package org.obeonetwork.m2doc.ide.ui.wizard;
 import java.io.IOException;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -24,12 +23,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.ide.ui.Activator;
@@ -66,18 +63,25 @@ public class TemplateCustomPropertiesWizard extends Wizard {
     /**
      * The template {@link URI}.
      */
-    private URI templateURI;
+    private final URI templateURI;
 
     /**
      * The {@link TemplateCustomProperties} to edit.
      */
     private TemplateCustomProperties properties;
 
+    /**
+     * Constructor.
+     * 
+     * @param templateURI
+     *            the template {@link URI}
+     */
+    public TemplateCustomPropertiesWizard(URI templateURI) {
+        this.templateURI = templateURI;
+    }
+
     @Override
     public void addPages() {
-        final IFile templateFile = (IFile) ((IStructuredSelection) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                .getSelectionService().getSelection()).getFirstElement();
-        templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
         try {
             document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE, templateURI);
             properties = new TemplateCustomProperties(document);

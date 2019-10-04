@@ -3,6 +3,10 @@ package org.obeonetwork.m2doc.ide.ui.command;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -19,22 +23,27 @@ public class EditTemplatePropertiesHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         final Shell shell = HandlerUtil.getActiveShell(event);
+        final ISelection selection = HandlerUtil.getCurrentSelection(event);
+        if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
+            final IFile templateFile = (IFile) ((IStructuredSelection) selection).getFirstElement();
+            final URI templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
 
-        WizardDialog dialog = new WizardDialog(shell, new TemplateCustomPropertiesWizard()) {
+            WizardDialog dialog = new WizardDialog(shell, new TemplateCustomPropertiesWizard(templateURI)) {
 
-            @Override
-            public void create() {
-                super.create();
-                getShell().setText("Template properties");
-            }
+                @Override
+                public void create() {
+                    super.create();
+                    getShell().setText("Template properties");
+                }
 
-            @Override
-            public void showPage(IWizardPage page) {
-                super.showPage(page);
-                getShell().setText("Template properties");
-            }
-        };
-        dialog.open();
+                @Override
+                public void showPage(IWizardPage page) {
+                    super.showPage(page);
+                    getShell().setText("Template properties");
+                }
+            };
+            dialog.open();
+        }
 
         return null;
     }
