@@ -13,8 +13,9 @@
 template myTemplate (str : java.lang.String)
   
   let v = str in
-    name = 
+    name = 
     [query: v]
     ,
+    
   endfor
   
