@@ -292,7 +292,7 @@ public class UserContentManager {
                 currentGeneratedParagraph = destinationDocument.createParagraph();
 
                 for (UserContent userContent : entry.getValue()) {
-                    final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
+                    final RawCopier userContentRawCopy = new RawCopier();
                     try {
                         currentGeneratedParagraph = destinationDocument.createParagraph();
                         currentGeneratedParagraph = userContentRawCopy.copyUserContent(userContent, currentGeneratedParagraph);

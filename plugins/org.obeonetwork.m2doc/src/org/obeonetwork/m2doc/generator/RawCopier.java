@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.generator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -38,21 +39,18 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlToken;
 import org.obeonetwork.m2doc.parser.AbstractBodyParser;
-import org.obeonetwork.m2doc.template.ContentControl;
-import org.obeonetwork.m2doc.template.Statement;
-import org.obeonetwork.m2doc.template.StaticFragment;
-import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
+import org.w3c.dom.NodeList;
 
 /**
- * UserContent Raw Copy.
+ * Raw Copier manipulatin xml structure.
  * 
  * @author ohaegi
  */
-public class UserContentRawCopy {
+public class RawCopier {
 
     /**
      * The replacement relation id {@link Pattern}.
@@ -90,7 +88,7 @@ public class UserContentRawCopy {
      * 
      * @param userContent
      *            UserContent EObject
-     * @param outputParagraphBeforeUserDocContent
+     * @param outputParagraph
      *            Output Paragraph Before User Doc Dest content (User Code dest is writen by {@link M2DocEvaluator} )
      * @return last paragraph created by copy
      * @throws InvalidFormatException
@@ -100,117 +98,125 @@ public class UserContentRawCopy {
      * @throws IOException
      *             if the copy fails
      */
-    public XWPFParagraph copyUserContent(UserContent userContent, XWPFParagraph outputParagraphBeforeUserDocContent)
+    @SuppressWarnings("resource")
+    public XWPFParagraph copyUserContent(UserContent userContent, XWPFParagraph outputParagraph)
             throws InvalidFormatException, XmlException, IOException {
+        XWPFParagraph res = null;
 
-        // Test if run before userContent is in same XWPFParagraph than first run of userContent
-        final XWPFParagraph previousInputParagraph = (XWPFParagraph) userContent.getRuns()
-                .get(userContent.getRuns().size() - 1).getParent();
-        XWPFParagraph currentInputParagraph = previousInputParagraph;
-        final List<Statement> statements = userContent.getBody().getStatements();
+        final XWPFRun startUserContentRun = userContent.getRuns().get(userContent.getRuns().size() - 1);
+        final XWPFParagraph startUserContentParagraph = (XWPFParagraph) startUserContentRun.getParent();
+        final XmlObject startXmlObject = startUserContentRun.getCTR();
+        final NodeList startSiblings = startXmlObject.getDomNode().getParentNode().getChildNodes();
+        final boolean inlineStartUserContent = startSiblings.item(startSiblings.getLength() - 1) != startXmlObject
+                .getDomNode();
 
-        XWPFParagraph currentOutputParagraph = copyStatements(outputParagraphBeforeUserDocContent,
-                currentInputParagraph, previousInputParagraph, statements);
+        final XWPFRun endUserContentRun;
+        final XWPFParagraph endUserContentParagraph;
+        final XmlObject endXmlObject;
+        final NodeList endSiblings;
+        final boolean inlineEndUserContent;
+        if (!userContent.getClosingRuns().isEmpty()) {
+            endUserContentRun = userContent.getClosingRuns().get(0);
+            endUserContentParagraph = (XWPFParagraph) endUserContentRun.getParent();
+            endXmlObject = endUserContentRun.getCTR();
+            endSiblings = endXmlObject.getDomNode().getParentNode().getChildNodes();
+            inlineEndUserContent = endSiblings.item(0) != endXmlObject.getDomNode();
+        } else {
+            endUserContentRun = null;
+            endUserContentParagraph = null;
+            endXmlObject = null;
+            endSiblings = null;
+            inlineEndUserContent = false;
+        }
 
-        // test if the last statement last run is different from the closing run
-        if (!userContent.getClosingRuns().isEmpty() && !statements.isEmpty()) {
-            final Statement lastStatment = statements.get(statements.size() - 1);
-            if (!lastStatment.getRuns().isEmpty()) {
-                needNewParagraph = lastStatment.getRuns().get(lastStatment.getRuns().size() - 1)
-                        .getParent() != userContent.getClosingRuns().get(0).getParent();
+        final XWPFDocument containerInputDocument = startUserContentRun.getDocument();
+        final IBody inputBody = startUserContentParagraph.getBody();
+        final XWPFDocument containerOutputDocument = outputParagraph.getDocument();
+        final IBody outputBody = outputParagraph.getBody();
+
+        final boolean inline;
+        if (!(outputBody instanceof XWPFTableCell) && outputParagraph.getRuns().size() == 1
+            && outputParagraph.getRuns().get(0).getText(0).length() == 0) {
+            removeParagraph(outputBody, outputParagraph);
+            inline = false;
+        } else {
+            inline = true;
+        }
+
+        final Iterator<IBodyElement> it = inputBody.getBodyElements().iterator();
+        // skip
+        while (it.hasNext()) {
+            if (it.next().equals(startUserContentParagraph)) {
+                break;
             }
         }
 
-        return currentOutputParagraph;
-    }
+        final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
+        final List<XWPFRun> listOutputRuns = new ArrayList<>();
+        final List<XWPFTable> listOutputTables = new ArrayList<>();
+        final Map<String, String> inputRelationIdToOutputmap = new HashMap<>();
 
-    /**
-     * Copies the given {@link List} of {@link Statement} from the given {@link XWPFParagraph} to the given output {@link XWPFParagraph}.
-     * 
-     * @param outputParagraph
-     *            the output {@link XWPFParagraph}
-     * @param currentInputParagraph
-     *            the current input {@link XWPFParagraph}
-     * @param previousInputParagraph
-     *            the previous input {@link XWPFParagraph} if any, <code>null</code> otherwise
-     * @param statements
-     *            the {@link List} of {@link Statement} to copy
-     * @return last paragraph created by copy
-     * @throws InvalidFormatException
-     *             InvalidFormatException
-     * @throws XmlException
-     *             XmlException
-     * @throws IOException
-     *             if the copy fails
-     */
-    @SuppressWarnings("resource")
-    public XWPFParagraph copyStatements(XWPFParagraph outputParagraph, XWPFParagraph currentInputParagraph,
-            XWPFParagraph previousInputParagraph, final List<Statement> statements)
-            throws InvalidFormatException, IOException, XmlException {
-        final XWPFDocument containerInputDocument = getInputDocument(currentInputParagraph, previousInputParagraph,
-                statements);
-        final XWPFDocument containerOutputDocument = outputParagraph.getDocument();
-        final IBody outputBody = outputParagraph.getBody();
-        XWPFParagraph localCurrentInputParagraph;
-        XWPFParagraph currentOutputParagraph;
-        if (!statements.isEmpty()) {
-            if (statements.get(0) instanceof StaticFragment) {
-                localCurrentInputParagraph = currentInputParagraph;
-                currentOutputParagraph = outputParagraph;
+        if (inlineStartUserContent) {
+            if (inline) {
+                if (endUserContentParagraph == startUserContentParagraph) {
+                    copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, startUserContentParagraph,
+                            startXmlObject, endXmlObject);
+                } else {
+                    copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, startUserContentParagraph,
+                            startXmlObject, null);
+                }
+                res = outputParagraph;
             } else {
-                localCurrentInputParagraph = null;
-                currentOutputParagraph = null;
-                if (outputParagraph.getRuns().size() == 1
-                    && outputParagraph.getRuns().get(0).getText(0).length() == 0) {
-                    removeParagraph(outputBody, outputParagraph);
+                if (endUserContentParagraph == startUserContentParagraph) {
+                    res = createNewParagraph(outputBody);
+                    copyParagraphFragment(inputRelationIdToOutputmap, res, endUserContentParagraph, null, endXmlObject);
                 }
             }
         } else {
-            localCurrentInputParagraph = currentInputParagraph;
-            currentOutputParagraph = outputParagraph;
+            // nothing to do here we will copy the next body element.
         }
-        final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
-        final List<XWPFTable> listOutputTables = new ArrayList<>();
-        final List<XWPFRun> listOutputRuns = new ArrayList<>();
-        final Map<String, String> inputRelationIdToOutputmap = new HashMap<>();
-        boolean paragraphFragmentCopied = false;
-        for (Statement statement : statements) {
-            if (statement instanceof StaticFragment) {
-                for (XWPFRun inputRun : statement.getRuns()) {
-                    final XWPFParagraph currentRunParagraph = (XWPFParagraph) inputRun.getParent();
-                    if (currentRunParagraph != localCurrentInputParagraph) {
-                        localCurrentInputParagraph = currentRunParagraph;
-                        currentOutputParagraph = copyParagraph(containerInputDocument, containerOutputDocument,
-                                outputBody, inputRelationIdToOutputmap, localCurrentInputParagraph);
-                        listOutputParagraphs.add(currentOutputParagraph);
-                    } else if (!paragraphFragmentCopied && currentRunParagraph == previousInputParagraph) {
-                        // Test if some run exist between userContent tag and first paragraph in this tag
-                        copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, currentInputParagraph,
-                                inputRun);
-                        paragraphFragmentCopied = true;
-                    }
+
+        if (endUserContentParagraph != startUserContentParagraph) {
+            while (it.hasNext()) {
+                final IBodyElement element = it.next();
+                if (endUserContentParagraph == element) {
+                    break;
                 }
-                // In case of table (no run in abstractConstruct)
-            } else if (statement instanceof Table) {
-                final Table table = (Table) statement;
-                final XWPFTable inputTable = table.getTable();
-                final XWPFTable outputTable = copyTable(containerInputDocument, containerOutputDocument, outputBody,
-                        inputRelationIdToOutputmap, inputTable);
-                listOutputTables.add(outputTable);
-            } else if (statement instanceof ContentControl) {
-                final ContentControl contentControl = (ContentControl) statement;
-                copyCTSdtBlock(outputBody, contentControl.getBlock());
+                if (element instanceof XWPFParagraph) {
+                    final XWPFParagraph inputParagraph = (XWPFParagraph) element;
+                    res = copyParagraph(containerInputDocument, containerOutputDocument, outputBody,
+                            inputRelationIdToOutputmap, inputParagraph);
+                    listOutputParagraphs.add(res);
+                } else if (element instanceof XWPFTable) {
+                    final XWPFTable outputTable = copyTable(containerInputDocument, containerOutputDocument, outputBody,
+                            inputRelationIdToOutputmap, (XWPFTable) element);
+                    listOutputTables.add(outputTable);
+                    res = null;
+                } else if (element instanceof XWPFSDT) {
+                    copyCTSdtBlock(outputBody, AbstractBodyParser.getCTSdtBlock(inputBody, (XWPFSDT) element));
+                    res = null;
+                } else {
+                    throw new IllegalStateException("unknown body element.");
+                }
+            }
+            if (inlineEndUserContent) {
+                if (res != null) {
+                    copyParagraphFragment(inputRelationIdToOutputmap, res, endUserContentParagraph, null, endXmlObject);
+                } else {
+                    copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, endUserContentParagraph, null,
+                            endXmlObject);
+                }
+            } else {
+                // nothing to do here the last body element has already been copied
             }
         }
 
         // Change relations Id by xml replacement
         changeRelationsId(inputRelationIdToOutputmap, listOutputRuns, listOutputParagraphs, listOutputTables);
 
-        if (currentOutputParagraph == null) {
-            currentOutputParagraph = outputParagraph;
-        }
+        needNewParagraph = !inlineEndUserContent;
 
-        return currentOutputParagraph;
+        return res;
     }
 
     /**
@@ -279,7 +285,8 @@ public class UserContentRawCopy {
     }
 
     /**
-     * Copies the fragment of the input {@link XWPFParagraph} into the output {@link XWPFParagraph} starting at the given input {@link XWPFRun}.
+     * Copies the fragment of the input {@link XWPFParagraph} into the output {@link XWPFParagraph} starting at the given start
+     * {@link XmlObject}.
      * 
      * @param inputRelationIdToOutputmap
      *            the relation ID mapping
@@ -287,15 +294,18 @@ public class UserContentRawCopy {
      *            the output {@link XWPFParagraph}
      * @param inputParagraph
      *            the input {@link XWPFParagraph}
-     * @param inputRun
-     *            the {@link XWPFRun} to start at
+     * @param startXmlObject
+     *            the {@link XmlObject} to start at
+     * @param endXmlObject
+     *            the {@link XmlObject} to end at
      * @throws XmlException
      *             if xml manipulation fails
      * @throws InvalidFormatException
      *             if image copy fails
      */
     private void copyParagraphFragment(Map<String, String> inputRelationIdToOutputmap, XWPFParagraph outputParagraph,
-            XWPFParagraph inputParagraph, XWPFRun inputRun) throws XmlException, InvalidFormatException {
+            XWPFParagraph inputParagraph, XmlObject startXmlObject, XmlObject endXmlObject)
+            throws XmlException, InvalidFormatException {
         if (inputParagraph.getCTP().isSetPPr()) {
             outputParagraph.getCTP().setPPr((CTPPr) inputParagraph.getCTP().getPPr().copy());
         }
@@ -303,19 +313,19 @@ public class UserContentRawCopy {
         XmlCursor inputCursor = inputParagraph.getCTP().newCursor();
         try {
             final XmlCursor savedCursor;
-            if (inputCursor.toFirstChild() && inputRun != null) {
-                savedCursor = copyFromRun(inputRun, inputCursor);
+            if (inputCursor.toFirstChild() && startXmlObject != null) {
+                savedCursor = copyFromRun(startXmlObject, inputCursor);
             } else {
                 savedCursor = null;
             }
 
-            if (inputRun == null || inputCursor.getObject().equals(inputRun.getCTR())) {
+            if (startXmlObject == null || inputCursor.getObject().equals(startXmlObject)) {
                 if (savedCursor != null) {
                     inputCursor.dispose();
                     inputCursor = savedCursor;
                 }
                 final XmlToken xmlWithOuputRelationId = createTemporaryParagraphFragment(inputRelationIdToOutputmap,
-                        outputParagraph, inputParagraph, inputCursor);
+                        outputParagraph, inputParagraph, inputCursor, endXmlObject);
                 final XmlCursor withNewIDCursor = xmlWithOuputRelationId.newCursor();
                 try {
                     withNewIDCursor.toFirstChild();
@@ -353,6 +363,8 @@ public class UserContentRawCopy {
      *            the input {@link XWPFParagraph}
      * @param inputCursor
      *            the cursor of the fragmant to copy
+     * @param endXmlObject
+     *            the {@link XmlObject} to end at
      * @return the {@link XmlToken} to the temporary paragraph fragment
      * @throws XmlException
      *             if xml manipulation fails
@@ -360,7 +372,7 @@ public class UserContentRawCopy {
      *             if image copy fails
      */
     private XmlToken createTemporaryParagraphFragment(Map<String, String> inputRelationIdToOutputmap,
-            XWPFParagraph outputParagraph, XWPFParagraph inputParagraph, XmlCursor inputCursor)
+            XWPFParagraph outputParagraph, XWPFParagraph inputParagraph, XmlCursor inputCursor, XmlObject endXmlObject)
             throws XmlException, InvalidFormatException {
         final XmlObject tmpXmlObject = XmlObject.Factory.parse(
                 "<root xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" mc:Ignorable=\"w14 w15 wp14\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"></root>");
@@ -368,10 +380,12 @@ public class UserContentRawCopy {
         try {
             tmpCursor.toEndToken();
             tmpCursor.toPrevToken();
-            inputCursor.copyXml(tmpCursor);
-            while (inputCursor.toNextSibling()) {
+            do {
+                if (endXmlObject != null && inputCursor.getObject().equals(endXmlObject)) {
+                    break;
+                }
                 inputCursor.copyXml(tmpCursor);
-            }
+            } while (inputCursor.toNextSibling());
         } finally {
             tmpCursor.dispose();
         }
@@ -389,13 +403,13 @@ public class UserContentRawCopy {
     /**
      * Creates the frargment from the input paragraph and the {@link XWPFRun} to start the fragment from.
      * 
-     * @param inputRun
-     *            the {@link XWPFRun} marking the start of the fragment
+     * @param startXmlObject
+     *            the {@link XmlObject} marking the start of the fragment
      * @param inputCursor
      *            the {@link XmlCursor} that will be moved to the start of the fragment
-     * @return a {@link XmlCursor} if the fragment must start before the given {@link XWPFRun}, <code>null</code> otherwise
+     * @return a {@link XmlCursor} if the fragment must start before the given {@link XmlObject}, <code>null</code> otherwise
      */
-    private XmlCursor copyFromRun(XWPFRun inputRun, XmlCursor inputCursor) {
+    private XmlCursor copyFromRun(XmlObject startXmlObject, XmlCursor inputCursor) {
         XmlCursor savedCursor = null; // used to keep bookmarks before the referenced run
         do {
             if (inputCursor.isStart()) {
@@ -411,52 +425,12 @@ public class UserContentRawCopy {
                     savedCursor = null;
                 }
             }
-            if (inputCursor.getObject().equals(inputRun.getCTR()) || !inputCursor.toNextSibling()) {
+            if (inputCursor.getObject().equals(startXmlObject) || !inputCursor.toNextSibling()) {
                 break;
             }
-        } while (!inputCursor.getObject().equals(inputRun.getCTR()));
+        } while (!inputCursor.getObject().equals(startXmlObject));
 
         return savedCursor;
-    }
-
-    /**
-     * Gets the input {@link XWPFDocument} from either current input {@link XWPFParagraph}, previous input {@link XWPFParagraph}, or the
-     * {@link List} of {@link Statement}.
-     * 
-     * @param currentInputParagraph
-     *            the current input {@link XWPFParagraph}
-     * @param previousInputParagraph
-     *            the previous input {@link XWPFParagraph}
-     * @param statements
-     *            the {@link List} of {@link Statement}
-     * @return the input {@link XWPFDocument} from either current input {@link XWPFParagraph}, previous input {@link XWPFParagraph}, or the
-     *         {@link List} of {@link Statement} if any, <code>null</code> otherwise
-     */
-    @SuppressWarnings("resource")
-    private XWPFDocument getInputDocument(XWPFParagraph currentInputParagraph, XWPFParagraph previousInputParagraph,
-            List<Statement> statements) {
-        final XWPFDocument res;
-
-        if (currentInputParagraph != null) {
-            res = currentInputParagraph.getDocument();
-        } else if (previousInputParagraph != null) {
-            res = previousInputParagraph.getDocument();
-        } else if (!statements.isEmpty()) {
-            final Statement statement = statements.get(0);
-            if (statement.getStyleRun() != null) {
-                res = statement.getStyleRun().getDocument();
-            } else if (!statement.getRuns().isEmpty()) {
-                res = statement.getRuns().get(0).getDocument();
-            } else if (!statement.getClosingRuns().isEmpty()) {
-                res = statement.getClosingRuns().get(0).getDocument();
-            } else {
-                res = null;
-            }
-        } else {
-            res = null;
-        }
-
-        return res;
     }
 
     /**
@@ -515,7 +489,6 @@ public class UserContentRawCopy {
 
     /**
      * Create new Table.
-     * TODO OHA fix bug in nested table on usercontent (else case in code)
      * 
      * @param document
      *            document
@@ -571,18 +544,20 @@ public class UserContentRawCopy {
      * @return new paragraph
      */
     private XWPFParagraph createNewParagraph(IBody document) {
-        XWPFParagraph newParagraph;
+        final XWPFParagraph res;
+
         if (document instanceof XWPFTableCell) {
             XWPFTableCell cell = (XWPFTableCell) document;
-            newParagraph = cell.addParagraph();
+            res = cell.addParagraph();
         } else if (document instanceof XWPFDocument) {
-            newParagraph = ((XWPFDocument) document).createParagraph();
+            res = ((XWPFDocument) document).createParagraph();
         } else if (document instanceof XWPFHeaderFooter) {
-            newParagraph = ((XWPFHeaderFooter) document).createParagraph();
+            res = ((XWPFHeaderFooter) document).createParagraph();
         } else {
             throw new UnsupportedOperationException("unkown IBody type :" + document.getClass());
         }
-        return newParagraph;
+
+        return res;
     }
 
     /**
@@ -793,14 +768,15 @@ public class UserContentRawCopy {
             final XWPFDocument containerInputDocument = body.getXWPFDocument();
             final XWPFDocument containerOutputDocument = outputBody.getXWPFDocument();
             final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
-            List<XWPFRun> listOutputRuns = new ArrayList<>();
+            final List<XWPFRun> listOutputRuns = new ArrayList<>();
             final List<XWPFTable> listOutputTables = new ArrayList<>();
             final Map<String, String> inputRelationIdToOutputmap = new HashMap<>();
             for (IBodyElement element : body.getBodyElements()) {
                 if (element instanceof XWPFParagraph) {
                     final XWPFParagraph inputParagraph = (XWPFParagraph) element;
                     if (inline) {
-                        copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, inputParagraph, null);
+                        // inline the all paragraph
+                        copyParagraphFragment(inputRelationIdToOutputmap, outputParagraph, inputParagraph, null, null);
                         res = null;
                     } else {
                         res = copyParagraph(containerInputDocument, containerOutputDocument, outputBody,

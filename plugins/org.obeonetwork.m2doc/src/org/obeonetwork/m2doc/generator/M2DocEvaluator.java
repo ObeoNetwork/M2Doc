@@ -688,7 +688,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         XWPFParagraph res;
 
         try {
-            final UserContentRawCopy copier = new UserContentRawCopy();
+            final RawCopier copier = new RawCopier();
             res = copier.copyBody(paragraph, body);
         } catch (InvalidFormatException e) {
             result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
@@ -1311,7 +1311,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         if (userContent == null) {
             currentParagraph = doSwitch(userDoc.getBody());
         } else {
-            final UserContentRawCopy userContentRawCopy = new UserContentRawCopy();
+            final RawCopier userContentRawCopy = new RawCopier();
             try {
                 currentParagraph = userContentRawCopy.copyUserContent(userContent, currentParagraph);
                 needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();

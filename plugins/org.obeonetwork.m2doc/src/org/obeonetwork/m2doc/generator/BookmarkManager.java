@@ -128,7 +128,7 @@ public class BookmarkManager {
         if (bookmark != null) {
             final CTMarkupRange range = paragraph.getCTP().addNewBookmarkEnd();
             range.setId(bookmarks.get(name).getId());
-            // we remove the created for error messages.
+            // we remove the run created for error messages.
             final XWPFRun run = messagePositions.get(bookmark);
             final IRunBody parent = run.getParent();
             if (parent instanceof XWPFParagraph) {
