@@ -30,7 +30,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.xmlbeans.XmlException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -95,7 +94,12 @@ public class UserContentManager {
     /**
      * The URI converter to use.
      */
-    private URIConverter uriConverter;
+    private final URIConverter uriConverter;
+
+    /**
+     * The {@link DocumentTemplate}.
+     */
+    private DocumentTemplate userDocDocument;
 
     /**
      * Constructor.
@@ -134,8 +138,9 @@ public class UserContentManager {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
 
-        try (DocumentTemplate userDocDocument = M2DocUtils.parseUserContent(uriConverter,
-                URI.createURI(generatedFileCopy.toURI().toString(), false), queryEnvironment);) {
+        try {
+            userDocDocument = M2DocUtils.parseUserContent(uriConverter,
+                    URI.createURI(generatedFileCopy.toURI().toString(), false), queryEnvironment);
             final TreeIterator<EObject> iter = userDocDocument.eAllContents();
             while (iter.hasNext()) {
                 EObject eObject = iter.next();
@@ -157,7 +162,7 @@ public class UserContentManager {
             // CHECKSTYLE:ON
             // In this case, we do nothing.
             // The old output doc is not a docx document and it will be overwrite at current generation.
-            // And we have nothing to extract to a no docx document.
+            // And we have nothing to extract from a no docx file.
         }
     }
 
@@ -208,6 +213,9 @@ public class UserContentManager {
      *             IOException
      */
     public void dispose() throws IOException {
+        if (userDocDocument != null) {
+            userDocDocument.close();
+        }
         // Delete Temp Generated File.
         if (generatedFileCopy != null && generatedFileCopy.exists() && generatedFileCopy.isFile()) {
             generatedFileCopy.delete();
@@ -257,12 +265,15 @@ public class UserContentManager {
      * 
      * @param result
      *            the {@link GenerationResult}
+     * @param copier
+     *            the {@link RawCopier}
      * @throws IOException
      *             if the lost {@link UserContent} can't be written
      * @throws InvalidFormatException
      *             if the input {@link DocumentTemplate} can't be read
      */
-    public void generateLostFiles(GenerationResult result) throws IOException, InvalidFormatException {
+    public void generateLostFiles(GenerationResult result, RawCopier copier)
+            throws IOException, InvalidFormatException {
         for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
             final URI lostUserContentURI = getLostUserContentURI(destination, entry.getKey());
             result.getLostUserContents().put(entry.getKey(), lostUserContentURI);
@@ -292,17 +303,12 @@ public class UserContentManager {
                 currentGeneratedParagraph = destinationDocument.createParagraph();
 
                 for (UserContent userContent : entry.getValue()) {
-                    final RawCopier userContentRawCopy = new RawCopier();
                     try {
                         currentGeneratedParagraph = destinationDocument.createParagraph();
-                        currentGeneratedParagraph = userContentRawCopy.copyUserContent(userContent, currentGeneratedParagraph);
-                    } catch (InvalidFormatException e) {
-                        result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
-                                ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));
-                    } catch (XmlException e) {
-                        result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
-                                ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));
-                    } catch (IOException e) {
+                        currentGeneratedParagraph = copier.copyUserContent(userContent, currentGeneratedParagraph);
+                        // CHECKSTYLE:OFF
+                    } catch (Exception e) {
+                        // CHECKSTYLE:ON
                         result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph,
                                 ValidationMessageLevel.ERROR, USERDOC_COPY_ERROR + e.getMessage()));
                     }

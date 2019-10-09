@@ -47,7 +47,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell.XWPFVertAlign;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.apache.xmlbeans.XmlException;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
@@ -174,30 +173,42 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * The {@link BookmarkManager}.
      */
     private final BookmarkManager bookmarkManager;
+
     /**
      * variable definition used during generation.
      */
     private final Stack<Map<String, Object>> variablesStack = new Stack<>();
+
     /**
      * The generated document.
      */
     private IBody generatedDocument;
+
+    /**
+     * The {@link RawCopier}.
+     */
+    private final RawCopier copier;
+
     /**
      * The currently read template paragraph used to detect paragraph changes.
      */
     private XWPFParagraph currentTemplateParagraph;
+
     /**
      * The currently generated paragraph where runs are actually inserted.
      */
     private XWPFParagraph currentGeneratedParagraph;
+
     /**
      * The currently generated {@link XWPFTable}.
      */
     private XWPFTable currentGeneratedTable;
+
     /**
      * The currently generated {@link XWPFTableRow}.
      */
     private XWPFTableRow currentGeneratedRow;
+
     /**
      * Used to force a new paragraph in gf:for body when there's a carriage
      * return before the {m:endfor} tag.
@@ -221,11 +232,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     private final IQueryEvaluationEngine evaluator;
 
     /**
-     * The {@link IReadOnlyQueryEnvironment}.
-     */
-    private final IReadOnlyQueryEnvironment queryEnvironment;
-
-    /**
      * The {@link GenerationResult}.
      */
     private GenerationResult result;
@@ -243,17 +249,19 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            the {@link BookmarkManager}
      * @param userContentManager
      *            the {@link UserContentManager}
+     * @param copier
+     *            the {@link RawCopier}
      * @param queryEnvironment
      *            the query environment used to evaluate queries in the
      * @param monitor
      *            used to track the progress will generating.
      */
-    public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager,
+    public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager, RawCopier copier,
             IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
+        this.copier = copier;
         this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
-        this.queryEnvironment = queryEnvironment;
         this.monitor = monitor;
     }
 
@@ -688,15 +696,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         XWPFParagraph res;
 
         try {
-            final RawCopier copier = new RawCopier();
             res = copier.copyBody(paragraph, body);
-        } catch (InvalidFormatException e) {
-            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
-            res = paragraph;
-        } catch (IOException e) {
-            result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
-            res = paragraph;
-        } catch (XmlException e) {
+            // CHECKSTYLE:OFF
+        } catch (Exception e) {
+            // CHECKSTYLE:ON
             result.addMessage(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, e.getMessage()));
             res = paragraph;
         }
@@ -1311,17 +1314,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         if (userContent == null) {
             currentParagraph = doSwitch(userDoc.getBody());
         } else {
-            final RawCopier userContentRawCopy = new RawCopier();
             try {
-                currentParagraph = userContentRawCopy.copyUserContent(userContent, currentParagraph);
-                needNewParagraphBeforeEndTag = userContentRawCopy.needNewParagraph();
-            } catch (InvalidFormatException e) {
-                insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
-                        UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
-            } catch (XmlException e) {
-                insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
-                        UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
-            } catch (IOException e) {
+                currentParagraph = copier.copyUserContent(userContent, currentParagraph);
+                needNewParagraphBeforeEndTag = copier.needNewParagraph();
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
                 insertMessage(currentParagraph, ValidationMessageLevel.ERROR,
                         UserContentManager.USERDOC_COPY_ERROR + e.getMessage());
             }

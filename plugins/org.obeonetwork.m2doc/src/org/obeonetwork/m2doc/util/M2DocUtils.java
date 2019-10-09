@@ -50,6 +50,7 @@ import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.generator.M2DocEvaluator;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
+import org.obeonetwork.m2doc.generator.RawCopier;
 import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
 import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
@@ -680,16 +681,18 @@ public final class M2DocUtils {
             final BookmarkManager bookmarkManager = new BookmarkManager();
             final UserContentManager userContentManager = new UserContentManager(uriConverter, documentTemplate,
                     destination);
-            final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
-                    monitor);
+            final RawCopier copier = new RawCopier();
+            final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, copier,
+                    queryEnvironment, monitor);
 
             nextSubTask(monitor, ENGINE_INIT_MONITOR_WORK, "Initializing template services");
 
             if (!documentTemplate.getTemplates().isEmpty()) {
                 final byte[] serializedDocument = serializeDocument(documentTemplate);
                 for (Template template : documentTemplate.getTemplates()) {
-                    ((IQueryEnvironment) queryEnvironment).registerService(new M2DocTemplateService(template,
-                            serializedDocument, bookmarkManager, userContentManager, queryEnvironment, monitor));
+                    ((IQueryEnvironment) queryEnvironment)
+                            .registerService(new M2DocTemplateService(template, serializedDocument, bookmarkManager,
+                                    userContentManager, copier, queryEnvironment, monitor));
                 }
             }
 
@@ -703,7 +706,7 @@ public final class M2DocUtils {
             bookmarkManager.markDanglingReferences(result);
             bookmarkManager.markOpenBookmarks(result);
 
-            userContentManager.generateLostFiles(result);
+            userContentManager.generateLostFiles(result, copier);
             userContentManager.dispose();
 
             nextSubTask(monitor, LOST_FILES_MONITOR_WORK, "Saving generated document");

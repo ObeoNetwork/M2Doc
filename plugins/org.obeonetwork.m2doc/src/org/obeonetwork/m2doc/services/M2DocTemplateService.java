@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.generator.M2DocEvaluator;
+import org.obeonetwork.m2doc.generator.RawCopier;
 import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Template;
@@ -61,32 +62,37 @@ public class M2DocTemplateService extends AbstractService implements IService {
     /**
      * The {@link Template} to call.
      */
-    private Template template;
+    private final Template template;
 
     /**
      * The {@link BookmarkManager} for evaluation.
      */
-    private BookmarkManager bookmarkManager;
+    private final BookmarkManager bookmarkManager;
 
     /**
      * The {@link UserContentManager} for evaluation.
      */
-    private UserContentManager userContentManager;
+    private final UserContentManager userContentManager;
+
+    /**
+     * The {@link RawCopier}.
+     */
+    private final RawCopier copier;
 
     /**
      * The {@link IReadOnlyQueryEnvironment} for evaluation.
      */
-    private IReadOnlyQueryEnvironment queryEnvironment;
+    private final IReadOnlyQueryEnvironment queryEnvironment;
 
     /**
      * The {@link Monitor} for evaluation.
      */
-    private Monitor monitor;
+    private final Monitor monitor;
 
     /**
      * The {@link #getShortSignature() short signature}.
      */
-    private String shortSignature;
+    private final String shortSignature;
 
     /**
      * The number of parameters.
@@ -101,7 +107,7 @@ public class M2DocTemplateService extends AbstractService implements IService {
     /**
      * The {@link List} of parameter {@link IType}.
      */
-    private List<IType> parameterTypes;
+    private final List<IType> parameterTypes;
 
     /**
      * {@link Exception} during initialization.
@@ -116,7 +122,7 @@ public class M2DocTemplateService extends AbstractService implements IService {
     /**
      * The {@link XWPFDocument} used for generation.
      */
-    private XWPFDocument[] documents = new XWPFDocument[MAX_DEPTH];
+    private final XWPFDocument[] documents = new XWPFDocument[MAX_DEPTH];
 
     /**
      * Tells if we are already in this template call (recursion).
@@ -132,7 +138,7 @@ public class M2DocTemplateService extends AbstractService implements IService {
      *            the {@link IReadOnlyQueryEnvironment} for validation
      */
     public M2DocTemplateService(Template template, IReadOnlyQueryEnvironment queryEnvironment) {
-        this(template, null, null, null, queryEnvironment, null);
+        this(template, null, null, null, null, queryEnvironment, null);
     }
 
     /**
@@ -146,16 +152,20 @@ public class M2DocTemplateService extends AbstractService implements IService {
      *            the {@link BookmarkManager} for evaluation
      * @param userContentManager
      *            the {@link UserContentManager} for evaluation
+     * @param copier
+     *            the {@link RawCopier}
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment} for evaluation
      * @param monitor
      *            the {@link Monitor} for evaluation
      */
     public M2DocTemplateService(Template template, byte[] serializedDocument, BookmarkManager bookmarkManager,
-            UserContentManager userContentManager, IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
+            UserContentManager userContentManager, RawCopier copier, IReadOnlyQueryEnvironment queryEnvironment,
+            Monitor monitor) {
         this.template = template;
         this.bookmarkManager = bookmarkManager;
         this.userContentManager = userContentManager;
+        this.copier = copier;
         this.queryEnvironment = queryEnvironment;
         this.monitor = monitor;
         this.shortSignature = computeShortSignature(template);
@@ -250,8 +260,8 @@ public class M2DocTemplateService extends AbstractService implements IService {
         for (Parameter parameter : template.getParameters()) {
             variables.put(parameter.getName(), arguments[index++]);
         }
-        final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, queryEnvironment,
-                monitor);
+        final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, copier,
+                queryEnvironment, monitor);
         callDepth++;
         try {
             if (documents[callDepth] == null) {
