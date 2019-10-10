@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.tests;
+package org.obeonetwork.m2doc.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,7 +33,7 @@ public class MemoryURIHandler implements URIHandler {
     /**
      * The protocol name.
      */
-    public static final String PROTOCOL = "m2doctests";
+    public static final String PROTOCOL = "m2docmemory";
 
     /**
      * Resources.

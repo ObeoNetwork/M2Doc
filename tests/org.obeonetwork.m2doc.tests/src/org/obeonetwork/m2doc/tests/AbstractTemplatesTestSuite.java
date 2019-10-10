@@ -95,7 +95,7 @@ public abstract class AbstractTemplatesTestSuite {
     /**
      * The {@link URIHandler} that check we don't have adherence to {@link File}.
      */
-    private final MemoryURIHandler uriHandler = new MemoryURIHandler();
+    private final TestMemoryURIHandler uriHandler = new TestMemoryURIHandler();
 
     /**
      * The {@link DocumentTemplate}.
@@ -207,7 +207,7 @@ public abstract class AbstractTemplatesTestSuite {
     }
 
     /**
-     * Closes the {@link DocumentTemplate} and unregister the {@link MemoryURIHandler}.
+     * Closes the {@link DocumentTemplate} and unregister the {@link TestMemoryURIHandler}.
      * 
      * @throws IOException
      *             if the {@link DocumentTemplate} can't be closed
@@ -330,7 +330,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the validation output {@link URI} from the given test folder path
      */
     private URI getValidationOutputURI(String testFolderPath) {
-        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-validation-test.docx", false);
+        return URI.createURI(TestMemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-validation-test.docx", false);
     }
 
     /**
@@ -414,7 +414,7 @@ public abstract class AbstractTemplatesTestSuite {
      * @return the generation output {@link URI} for the given test folder path
      */
     protected URI getGenerationOutputURI(String testFolderPath) {
-        return URI.createURI(MemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-generation-test.docx", false);
+        return URI.createURI(TestMemoryURIHandler.PROTOCOL + "://" + testFolderPath + "-generation-test.docx", false);
     }
 
     /**

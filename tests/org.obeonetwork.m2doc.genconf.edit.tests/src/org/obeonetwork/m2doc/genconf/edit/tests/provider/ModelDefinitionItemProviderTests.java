@@ -39,7 +39,7 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.provider.GenconfItemProviderAdapterFactory;
 import org.obeonetwork.m2doc.genconf.provider.ModelDefinitionItemProvider;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.tests.MemoryURIHandler;
+import org.obeonetwork.m2doc.tests.TestMemoryURIHandler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -60,7 +60,7 @@ public class ModelDefinitionItemProviderTests {
     /**
      * The {@link URIHandler} that check we don't have adherence to {@link File}.
      */
-    private static MemoryURIHandler uriHandler = new MemoryURIHandler();
+    private static TestMemoryURIHandler uriHandler = new TestMemoryURIHandler();
 
     /**
      * The provider to test.
@@ -84,7 +84,7 @@ public class ModelDefinitionItemProviderTests {
     private XWPFDocument document;
 
     /**
-     * Registers the {@link MemoryURIHandler}.
+     * Registers the {@link TestMemoryURIHandler}.
      */
     @BeforeClass
     public static void beforeClass() {
@@ -100,7 +100,7 @@ public class ModelDefinitionItemProviderTests {
         rs.getURIConverter().getURIHandlers().add(0, uriHandler);
         rs.getResourceFactoryRegistry().getContentTypeToFactoryMap().put("*", new XMIResourceFactoryImpl());
         final Resource res = rs
-                .createResource(URI.createURI(MemoryURIHandler.PROTOCOL + "://resources/test.genconf", false));
+                .createResource(URI.createURI(TestMemoryURIHandler.PROTOCOL + "://resources/test.genconf", false));
 
         final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
         generation.setTemplateFileName("test.docx");
@@ -149,7 +149,7 @@ public class ModelDefinitionItemProviderTests {
      */
     protected void saveDocument() {
         try (OutputStream stream = URIConverter.INSTANCE
-                .createOutputStream(URI.createURI(MemoryURIHandler.PROTOCOL + "://resources/test.docx", false))) {
+                .createOutputStream(URI.createURI(TestMemoryURIHandler.PROTOCOL + "://resources/test.docx", false))) {
             document.write(stream);
         } catch (IOException e) {
             e.printStackTrace();
@@ -158,7 +158,7 @@ public class ModelDefinitionItemProviderTests {
     }
 
     /**
-     * Clears the {@link MemoryURIHandler}.
+     * Clears the {@link TestMemoryURIHandler}.
      */
     @After
     public void after() {
@@ -166,7 +166,7 @@ public class ModelDefinitionItemProviderTests {
     }
 
     /**
-     * Unregisters the {@link MemoryURIHandler}.
+     * Unregisters the {@link TestMemoryURIHandler}.
      */
     @AfterClass
     public static void afterClass() {

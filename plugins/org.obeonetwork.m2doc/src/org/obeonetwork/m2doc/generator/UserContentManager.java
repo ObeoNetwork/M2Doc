@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,9 +36,9 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
-import org.obeonetwork.m2doc.template.IGenerateable;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.obeonetwork.m2doc.util.MemoryURIHandler;
 
 /**
  * This class manage UserDoc Destination tag UserContent.
@@ -57,11 +55,6 @@ public class UserContentManager {
     public static final String USERDOC_COPY_ERROR = "userdoc copy error : ";
 
     /**
-     * Temporary Generated destination file name suffix.
-     */
-    public static final String TEMP_DEST_SUFFIX = "tmpDocDest";
-
-    /**
      * Buffer size.
      */
     private static final int BUFFER_SIZE = 1024 * 8;
@@ -72,29 +65,34 @@ public class UserContentManager {
     private final DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     /**
-     * Generated file.
+     * The memory copy {@link URI}.
      */
-    private final File generatedFileCopy;
+    private URI memoryCopy;
 
     /**
      * Map for id to the {@link List} of {@link UserContent}.
      */
-    private final Map<String, List<UserContent>> mapIdUserContent = new HashMap<>();
+    private Map<String, List<UserContent>> mapIdUserContent;
 
     /**
-     * The input {@link IGenerateable}.
+     * The source {@link URI}.
      */
-    private final IGenerateable generateable;
+    private final URI sourceURI;
 
     /**
      * The destination {@link URI}.
      */
-    private final URI destination;
+    private final URI destinationURI;
 
     /**
      * The URI converter to use.
      */
     private final URIConverter uriConverter;
+
+    /**
+     * The {@link MemoryURIHandler}.
+     */
+    private final MemoryURIHandler uriHandler = new MemoryURIHandler();
 
     /**
      * The {@link DocumentTemplate}.
@@ -106,63 +104,73 @@ public class UserContentManager {
      * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
-     * @param generateable
-     *            the input {@link IGenerateable}
-     * @param destination
+     * @param sourceURI
+     *            the source {@link URI}
+     * @param destinationURI
      *            the destination {@link URI}
-     * @throws IOException
-     *             IOException if the destination can't be copied to a temporary file
      */
-    public UserContentManager(URIConverter uriConverter, IGenerateable generateable, URI destination)
-            throws IOException {
+    public UserContentManager(URIConverter uriConverter, URI sourceURI, URI destinationURI) {
         this.uriConverter = uriConverter;
-        this.generateable = generateable;
-        this.destination = destination;
-        if (uriConverter.exists(destination, Collections.EMPTY_MAP)) {
+        this.sourceURI = sourceURI;
+        this.destinationURI = destinationURI;
+        if (uriConverter != null && destinationURI != null
+            && uriConverter.exists(destinationURI, Collections.EMPTY_MAP)) {
             // Copy file
-            generatedFileCopy = tempCopyFile(destination);
-            // Launch parsing
-            launchParsing();
+            uriConverter.getURIHandlers().add(0, uriHandler);
+            memoryCopy = memoryCopy(destinationURI);
         } else {
-            generatedFileCopy = null;
+            memoryCopy = null;
         }
     }
 
     /**
      * Launch Parsing.
-     * 
-     * @throws IOException
-     *             IOException
      */
-    private void launchParsing() throws IOException {
+    private void launchParsing() {
         IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(null);
-
-        try {
-            userDocDocument = M2DocUtils.parseUserContent(uriConverter,
-                    URI.createURI(generatedFileCopy.toURI().toString(), false), queryEnvironment);
-            final TreeIterator<EObject> iter = userDocDocument.eAllContents();
-            while (iter.hasNext()) {
-                EObject eObject = iter.next();
-                if (eObject instanceof UserContent) {
-                    UserContent userContent = (UserContent) eObject;
-                    if (userContent.getId() != null) {
-                        final String id = userContent.getId();
-                        List<UserContent> userContents = mapIdUserContent.get(id);
-                        if (userContents == null) {
-                            userContents = new ArrayList<>();
-                            mapIdUserContent.put(id, userContents);
-                        }
-                        userContents.add(userContent);
+        mapIdUserContent = new HashMap<>();
+        if (memoryCopy != null) {
+            try {
+                userDocDocument = M2DocUtils.parseUserContent(uriConverter, memoryCopy, queryEnvironment);
+                final TreeIterator<EObject> iter = userDocDocument.eAllContents();
+                while (iter.hasNext()) {
+                    EObject eObject = iter.next();
+                    if (eObject instanceof UserContent) {
+                        UserContent userContent = (UserContent) eObject;
+                        storeUserContent(mapIdUserContent, userContent);
                     }
                 }
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                // In this case, we do nothing.
+                // The old output doc is not a docx document and it will be overwrite at current generation.
+                // And we have nothing to extract from a no docx file.
+            } finally {
+                uriConverter.getURIHandlers().remove(uriHandler);
+                uriHandler.clear();
             }
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            // In this case, we do nothing.
-            // The old output doc is not a docx document and it will be overwrite at current generation.
-            // And we have nothing to extract from a no docx file.
+        }
+    }
+
+    /**
+     * Stores the given {@link UserContent} in the given {@link Map}.
+     * 
+     * @param idToUserContent
+     *            the {@link Map}
+     * @param userContent
+     *            the {@link UserContent}
+     */
+    private void storeUserContent(Map<String, List<UserContent>> idToUserContent, UserContent userContent) {
+        if (userContent.getId() != null) {
+            final String id = userContent.getId();
+            List<UserContent> userContents = idToUserContent.get(id);
+            if (userContents == null) {
+                userContents = new ArrayList<>();
+                idToUserContent.put(id, userContents);
+            }
+            userContents.add(userContent);
         }
     }
 
@@ -175,6 +183,10 @@ public class UserContentManager {
      */
     public UserContent consumeUserContent(String id) {
         final UserContent res;
+
+        if (mapIdUserContent == null) {
+            launchParsing();
+        }
 
         List<UserContent> userContents = mapIdUserContent.get(id);
         if (userContents != null && !userContents.isEmpty()) {
@@ -195,15 +207,17 @@ public class UserContentManager {
      * @param source
      *            source file
      * @return source copy File
-     * @throws IOException
-     *             IOException
      */
-    private File tempCopyFile(URI source) throws IOException {
-        // Create temporary file
-        File dest = File.createTempFile(source.lastSegment() + "-m2doc", TEMP_DEST_SUFFIX);
-        // Copy generated file in temp file
-        copyFile(source, dest);
-        return dest;
+    private URI memoryCopy(URI source) {
+        final URI res;
+
+        final URI uri = URI.createURI(MemoryURIHandler.PROTOCOL + "://resources/" + source.lastSegment(), false);
+        if (copy(source, uri)) {
+            res = uri;
+        } else {
+            res = null;
+        }
+        return res;
     }
 
     /**
@@ -213,12 +227,9 @@ public class UserContentManager {
      *             IOException
      */
     public void dispose() throws IOException {
+        uriHandler.clear();
         if (userDocDocument != null) {
             userDocDocument.close();
-        }
-        // Delete Temp Generated File.
-        if (generatedFileCopy != null && generatedFileCopy.exists() && generatedFileCopy.isFile()) {
-            generatedFileCopy.delete();
         }
     }
 
@@ -226,21 +237,27 @@ public class UserContentManager {
      * Copy File.
      * 
      * @param source
-     *            source file
+     *            source {@link URI}
      * @param dest
-     *            destination file
-     * @throws IOException
-     *             IOException
+     *            destination {@link URI}
+     * @return <code>true</code> if the copy succeed, <code>false</code> otherwise
      */
-    private void copyFile(URI source, File dest) throws IOException {
-        try (InputStream is = uriConverter.createInputStream(source); //
-                OutputStream os = new FileOutputStream(dest);) {
+    private boolean copy(URI source, URI dest) {
+        boolean res = true;
+
+        try (InputStream is = uriConverter.createInputStream(source);
+                OutputStream os = uriConverter.createOutputStream(dest);) {
             byte[] buffer = new byte[BUFFER_SIZE];
             int length;
             while ((length = is.read(buffer)) > 0) {
                 os.write(buffer, 0, length);
             }
+        } catch (IOException e) {
+            // can't copy means no user contents
+            res = false;
         }
+
+        return res;
     }
 
     /**
@@ -251,9 +268,11 @@ public class UserContentManager {
     public List<String> getDuplicatedUserContentIDs() {
         List<String> res = new ArrayList<>();
 
-        for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
-            if (entry.getValue().size() > 1) {
-                res.add(entry.getKey());
+        if (mapIdUserContent != null) {
+            for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
+                if (entry.getValue().size() > 1) {
+                    res.add(entry.getKey());
+                }
             }
         }
 
@@ -274,8 +293,13 @@ public class UserContentManager {
      */
     public void generateLostFiles(GenerationResult result, RawCopier copier)
             throws IOException, InvalidFormatException {
+
+        if (mapIdUserContent == null) {
+            launchParsing();
+        }
+
         for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
-            final URI lostUserContentURI = getLostUserContentURI(destination, entry.getKey());
+            final URI lostUserContentURI = getLostUserContentURI(destinationURI, entry.getKey());
             result.getLostUserContents().put(entry.getKey(), lostUserContentURI);
             final boolean isNewUserContentLoss;
             final URI inputURI;
@@ -283,7 +307,7 @@ public class UserContentManager {
                 inputURI = lostUserContentURI;
                 isNewUserContentLoss = false;
             } else {
-                inputURI = generateable.eResource().getURI();
+                inputURI = sourceURI;
                 isNewUserContentLoss = true;
             }
 

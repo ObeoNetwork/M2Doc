@@ -45,14 +45,12 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.POIServices;
-import org.obeonetwork.m2doc.generator.BookmarkManager;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.generator.M2DocEvaluator;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
-import org.obeonetwork.m2doc.generator.RawCopier;
 import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
-import org.obeonetwork.m2doc.generator.UserContentManager;
 import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.M2DocParser;
@@ -678,12 +676,9 @@ public final class M2DocUtils {
 
             nextSubTask(monitor, INIT_DEST_DOC_MONITOR_WORK, "Initializing engine");
 
-            final BookmarkManager bookmarkManager = new BookmarkManager();
-            final UserContentManager userContentManager = new UserContentManager(uriConverter, documentTemplate,
-                    destination);
-            final RawCopier copier = new RawCopier();
-            final M2DocEvaluator evaluator = new M2DocEvaluator(bookmarkManager, userContentManager, copier,
-                    queryEnvironment, monitor);
+            final M2DocEvaluationEnvironment m2docEnv = new M2DocEvaluationEnvironment(queryEnvironment, uriConverter,
+                    documentTemplate.eResource().getURI(), destination);
+            final M2DocEvaluator evaluator = new M2DocEvaluator(m2docEnv, monitor);
 
             nextSubTask(monitor, ENGINE_INIT_MONITOR_WORK, "Initializing template services");
 
@@ -691,8 +686,7 @@ public final class M2DocUtils {
                 final byte[] serializedDocument = serializeDocument(documentTemplate);
                 for (Template template : documentTemplate.getTemplates()) {
                     ((IQueryEnvironment) queryEnvironment)
-                            .registerService(new M2DocTemplateService(template, serializedDocument, bookmarkManager,
-                                    userContentManager, copier, queryEnvironment, monitor));
+                            .registerService(new M2DocTemplateService(template, serializedDocument, m2docEnv, monitor));
                 }
             }
 
@@ -703,11 +697,11 @@ public final class M2DocUtils {
             nextSubTask(monitor, 0, "Saving lost files");
             // monitor.subTask("Saving lost files");
 
-            bookmarkManager.markDanglingReferences(result);
-            bookmarkManager.markOpenBookmarks(result);
+            m2docEnv.getBookmarkManager().markDanglingReferences(result);
+            m2docEnv.getBookmarkManager().markOpenBookmarks(result);
 
-            userContentManager.generateLostFiles(result, copier);
-            userContentManager.dispose();
+            m2docEnv.getUserContentManager().generateLostFiles(result, m2docEnv.getCopier());
+            m2docEnv.getUserContentManager().dispose();
 
             nextSubTask(monitor, LOST_FILES_MONITOR_WORK, "Saving generated document");
 

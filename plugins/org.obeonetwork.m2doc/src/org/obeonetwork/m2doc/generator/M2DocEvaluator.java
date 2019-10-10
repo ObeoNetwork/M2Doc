@@ -50,7 +50,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
@@ -245,23 +244,16 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * Create a new {@link M2DocEvaluator} instance given some definitions
      * and a query environment.
      * 
-     * @param bookmarkManager
-     *            the {@link BookmarkManager}
-     * @param userContentManager
-     *            the {@link UserContentManager}
-     * @param copier
-     *            the {@link RawCopier}
-     * @param queryEnvironment
-     *            the query environment used to evaluate queries in the
+     * @param m2docEnv
+     *            the {@link M2DocEvaluationEnvironment}.
      * @param monitor
      *            used to track the progress will generating.
      */
-    public M2DocEvaluator(BookmarkManager bookmarkManager, UserContentManager userContentManager, RawCopier copier,
-            IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
-        this.bookmarkManager = bookmarkManager;
-        this.userContentManager = userContentManager;
-        this.copier = copier;
-        this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
+    public M2DocEvaluator(M2DocEvaluationEnvironment m2docEnv, Monitor monitor) {
+        this.bookmarkManager = m2docEnv.getBookmarkManager();
+        this.userContentManager = m2docEnv.getUserContentManager();
+        this.copier = m2docEnv.getCopier();
+        this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) m2docEnv.getQueryEnvironment());
         this.monitor = monitor;
     }
 
