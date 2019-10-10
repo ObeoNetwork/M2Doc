@@ -31,6 +31,8 @@ before_script:
   --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16"
 - sh -e /etc/init.d/xvfb start
 # for the web site
+- sudo apt-get clean
+- rm -rf /var/lib/apt/lists/*
 - sudo add-apt-repository ppa:brightbox/ruby-ng -y
 - sudo apt-get update
 - sudo apt-get install ruby-dev ruby-full
