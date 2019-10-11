@@ -424,20 +424,16 @@ public class RawCopier {
             outputParagraph.getCTP().setPPr((CTPPr) inputParagraph.getCTP().getPPr().copy());
         }
 
-        XmlCursor inputCursor = inputParagraph.getCTP().newCursor();
+        final XmlCursor inputCursor;
+        if (startXmlObject != null) {
+            inputCursor = startXmlObject.newCursor();
+        } else {
+            inputCursor = inputParagraph.getCTP().newCursor();
+            inputCursor.toFirstChild();
+        }
         try {
-            final XmlCursor savedCursor;
-            if (inputCursor.toFirstChild() && startXmlObject != null) {
-                savedCursor = copyFromRun(startXmlObject, inputCursor);
-            } else {
-                savedCursor = null;
-            }
 
             if (startXmlObject == null || inputCursor.getObject().equals(startXmlObject)) {
-                if (savedCursor != null) {
-                    inputCursor.dispose();
-                    inputCursor = savedCursor;
-                }
                 final XmlToken xmlWithOuputRelationId = createTemporaryParagraphFragment(inputRelationIdToOutputmap,
                         inputPartURIToOutputPartURI, outputParagraph, inputParagraph, inputCursor, endXmlObject);
                 final XmlCursor withNewIDCursor = xmlWithOuputRelationId.newCursor();
@@ -519,39 +515,6 @@ public class RawCopier {
         final XmlToken xmlWithOuputId = getXmlWithOuputId(inputRelationIdToOutputMap, tmpXmlText);
 
         return xmlWithOuputId;
-    }
-
-    /**
-     * Creates the frargment from the input paragraph and the {@link XWPFRun} to start the fragment from.
-     * 
-     * @param startXmlObject
-     *            the {@link XmlObject} marking the start of the fragment
-     * @param inputCursor
-     *            the {@link XmlCursor} that will be moved to the start of the fragment
-     * @return a {@link XmlCursor} if the fragment must start before the given {@link XmlObject}, <code>null</code> otherwise
-     */
-    private XmlCursor copyFromRun(XmlObject startXmlObject, XmlCursor inputCursor) {
-        XmlCursor savedCursor = null; // used to keep bookmarks before the referenced run
-        do {
-            if (inputCursor.isStart()) {
-                if ("bookmarkStart".equals(inputCursor.getName().getLocalPart())
-                    || "fldSimple".equals(inputCursor.getName().getLocalPart())) {
-                    if (savedCursor != null) {
-                        savedCursor.dispose();
-                    }
-                    savedCursor = inputCursor.getObject().newCursor();
-                }
-                if ("r".equals(inputCursor.getName().getLocalPart())
-                    || "bookmarkEnd".equals(inputCursor.getName().getLocalPart())) {
-                    savedCursor = null;
-                }
-            }
-            if (inputCursor.getObject().equals(startXmlObject) || !inputCursor.toNextSibling()) {
-                break;
-            }
-        } while (!inputCursor.getObject().equals(startXmlObject));
-
-        return savedCursor;
     }
 
     /**
