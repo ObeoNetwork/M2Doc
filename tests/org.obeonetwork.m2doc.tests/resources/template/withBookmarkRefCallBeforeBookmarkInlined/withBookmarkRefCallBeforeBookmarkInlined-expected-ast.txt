@@ -1,0 +1,20 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate('testid')]
+  
+  
+  bookmark 'testid'
+    test
+  endbookmark
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (str : java.lang.String)
+  [query: .asBookmarkRef('testidref', str)]
