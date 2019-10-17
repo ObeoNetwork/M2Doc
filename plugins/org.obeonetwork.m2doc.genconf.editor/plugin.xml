@@ -181,6 +181,16 @@
             id="org.obeonetwork.m2doc.ide.ui.wizard.newGenerationWizard"
             name="New Generation">
       </wizard>
+      <wizard
+            canFinishEarly="false"
+            category="org.obeonetwork.m2doc.ide.ui.newCategory"
+            class="org.obeonetwork.m2doc.genconf.editor.wizard.M2DocNewProjectWizard"
+            hasPages="true"
+            icon="icons/m2doc.png"
+            id="org.obeonetwork.m2doc.genconf.editor.wizard.newProjectWizard"
+            name="M2Doc project"
+            project="true">
+      </wizard>
    </extension>
 
 </plugin>

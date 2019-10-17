@@ -66,6 +66,8 @@ import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.editor.GenerationListener;
 import org.obeonetwork.m2doc.genconf.editor.ITemplateCustomPropertiesProvider;
 import org.obeonetwork.m2doc.genconf.editor.VariableValueCellLabelProvider;
+import org.obeonetwork.m2doc.genconf.editor.dialog.DefinitionValueDialog;
+import org.obeonetwork.m2doc.genconf.editor.dialog.M2DocOptionDialog;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -442,7 +444,7 @@ public class VariableAndOptionPage extends WizardPage {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
-                final List<String> availableOptionNames = GenconfUtils.getAviliableOptionNames(gen);
+                final List<String> availableOptionNames = GenconfUtils.getAvailableOptionNames(gen);
                 if (!availableOptionNames.isEmpty()) {
                     option.setName(availableOptionNames.get(0));
                     genEditingDomain.getCommandStack().execute(

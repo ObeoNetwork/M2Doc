@@ -10,6 +10,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.genconf.editor,
  org.obeonetwork.m2doc.genconf.editor.command,
+ org.obeonetwork.m2doc.genconf.editor.dialog,
  org.obeonetwork.m2doc.genconf.editor.wizard,
  org.obeonetwork.m2doc.genconf.presentation,
  org.obeonetwork.m2doc.genconf.propertyTester
@@ -26,6 +27,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.core.expressions,
  org.eclipse.emf.transaction,
- org.obeonetwork.m2doc.ide.ui;bundle-version="[3.0.0,4.0.0)"
+ org.obeonetwork.m2doc.ide.ui;bundle-version="[3.0.0,4.0.0)",
+ org.apache.poi
 Bundle-ActivationPolicy: lazy
 

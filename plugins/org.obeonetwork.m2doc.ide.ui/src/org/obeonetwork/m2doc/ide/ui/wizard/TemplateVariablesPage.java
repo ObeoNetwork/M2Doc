@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.obeonetwork.m2doc.ide.ui.dialog.M2DocTypeSelectionDialog;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -160,7 +161,7 @@ public class TemplateVariablesPage extends WizardPage {
                 final String variableName = ((Entry<String, ?>) ((IStructuredSelection) variablesTable.getSelection())
                         .getFirstElement()).getKey();
                 final M2DocTypeSelectionDialog dialog = new M2DocTypeSelectionDialog(getShell(), variableName,
-                        properties);
+                        properties.getVariables().get(variableName), properties.getPackagesURIs());
                 final int dialogResult = dialog.open();
                 if (dialogResult == IDialogConstants.OK_ID) {
                     properties.getVariables().put(variableName, dialog.getSelectedType());

@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.genconf.editor.wizard;
+package org.obeonetwork.m2doc.genconf.editor.dialog;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -26,5 +26,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.ide.ui,
+ org.obeonetwork.m2doc.ide.ui.command,
+ org.obeonetwork.m2doc.ide.ui.dialog,
  org.obeonetwork.m2doc.ide.ui.propertyTester,
  org.obeonetwork.m2doc.ide.ui.wizard

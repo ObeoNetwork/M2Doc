@@ -805,13 +805,13 @@ public final class GenconfUtils {
     }
 
     /**
-     * Gets the {@link List} of availiable {@link Option#getName() option names} for the given {@link Generation}.
+     * Gets the {@link List} of available {@link Option#getName() option names} for the given {@link Generation}.
      * 
      * @param generation
      *            the {@link Generation}
-     * @return the {@link List} of availiable {@link Option#getName() option names}
+     * @return the {@link List} of available {@link Option#getName() option names}
      */
-    public static List<String> getAviliableOptionNames(Generation generation) {
+    public static List<String> getAvailableOptionNames(Generation generation) {
         List<String> availableOptions = new ArrayList<String>();
 
         for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {

@@ -67,9 +67,9 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
     private final Generation generation;
 
     /**
-     * The {@link FileNamesPage}.
+     * The {@link GenerationFileNamesPage}.
      */
-    private FileNamesPage fileNamesPage;
+    private GenerationFileNamesPage fileNamesPage;
     /**
      * The {@link VariableAndOptionPage}.
      */
@@ -159,7 +159,7 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
         generationListener = new GenerationListener();
         generationListener.installGenerationListener(generation);
 
-        fileNamesPage = new FileNamesPage(generation, generationListener, canChangeTemplateFile);
+        fileNamesPage = new GenerationFileNamesPage(generation, generationListener, canChangeTemplateFile);
         addPage(fileNamesPage);
         optionPage = new VariableAndOptionPage(generation, generationListener, fileNamesPage);
         addPage(optionPage);

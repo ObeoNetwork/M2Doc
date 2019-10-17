@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.obeonetwork.m2doc.ide.ui.dialog.SelectRegistredTemplateDialog;
 import org.obeonetwork.m2doc.ide.ui.wizard.SelectRegisteredTemplatePage.TemplateURISettable;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 

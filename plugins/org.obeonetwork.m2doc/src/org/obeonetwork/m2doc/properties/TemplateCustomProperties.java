@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -129,6 +130,11 @@ public class TemplateCustomProperties {
      * Prefix of the service import custom properties length.
      */
     public static final int SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH = SERVICE_IMPORT_PROPERTY_PREFIX.length();
+
+    /**
+     * The validation name {@link Pattern}.
+     */
+    private static final Pattern VARIABLE_NAME_PATTERN = Pattern.compile("[a-zA-Z_][a-zA-Z0-9_]*");
 
     /**
      * The M2Doc version.
@@ -500,7 +506,7 @@ public class TemplateCustomProperties {
      * @return <code>true</code> if the given name matches "[a-zA-Z_][a-zA-Z0-9_]*".
      */
     public static boolean isValidVariableName(String name) {
-        return name != null && name.matches("[a-zA-Z_][a-zA-Z0-9_]*");
+        return name != null && VARIABLE_NAME_PATTERN.matcher(name).matches();
     }
 
     /**

@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.ide.ui.wizard;
+package org.obeonetwork.m2doc.ide.ui.dialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,14 +59,14 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
     private static final int TABLE_MINIMUM_WIDTH = 200;
 
     /**
-     * The variable name.
+     * The default type of the variable.
      */
-    private String variableName;
+    private final String defaultType;
 
     /**
-     * The {@link TemplateCustomProperties}.
+     * The {@link List} of regitered {@link EPackage#getNsURI() nsURI}.
      */
-    private TemplateCustomProperties properties;
+    private List<String> nsURIs;
 
     /**
      * The selected type.
@@ -80,14 +80,16 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
      *            the parent {@link Shell}
      * @param variableName
      *            the variable name
-     * @param properties
-     *            the {@link TemplateCustomProperties}
+     * @param defaultType
+     *            the default type of the variable
+     * @param nsURIs
+     *            the {@link List} of regitered {@link EPackage#getNsURI() nsURI}
      */
-    public M2DocTypeSelectionDialog(Shell parentShell, String variableName, TemplateCustomProperties properties) {
+    public M2DocTypeSelectionDialog(Shell parentShell, String variableName, String defaultType, List<String> nsURIs) {
         super(parentShell, "Select a variable type for " + variableName, null, "Select a type.", MessageDialog.QUESTION,
                 new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0);
-        this.variableName = variableName;
-        this.properties = properties;
+        this.nsURIs = nsURIs;
+        this.defaultType = defaultType;
     }
 
     @Override
@@ -113,8 +115,7 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
                 selectedType = (String) selected;
             }
         });
-        treeViewer.setInput(getAvailableTypes(properties));
-        final String defaultType = properties.getVariables().get(variableName);
+        treeViewer.setInput(getAvailableTypes(nsURIs));
         if (defaultType != null) {
             treeViewer.setSelection(new StructuredSelection(defaultType));
         }
@@ -123,13 +124,13 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
     }
 
     /**
-     * Gets the {@link List} of available types for the given {@link TemplateCustomProperties}.
+     * Gets the {@link List} of available types for the given {@link List} of regitered {@link EPackage#getNsURI() nsURI}.
      * 
-     * @param customProperties
-     *            the {@link TemplateCustomProperties}
-     * @return the {@link List} of available types for the given {@link TemplateCustomProperties}
+     * @param uris
+     *            the {@link List} of regitered {@link EPackage#getNsURI() nsURI}
+     * @return the {@link List} of available types for the given {@link List} of regitered {@link EPackage#getNsURI() nsURI}
      */
-    List<String> getAvailableTypes(TemplateCustomProperties customProperties) {
+    List<String> getAvailableTypes(List<String> uris) {
         final Set<String> types = new HashSet<>();
 
         types.add(TemplateCustomProperties.STRING_TYPE);
@@ -138,8 +139,8 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
         types.add(TemplateCustomProperties.BOOLEAN_TYPE);
 
         types.addAll(getEClassifiers(EcorePackage.eINSTANCE));
-        if (customProperties != null) {
-            for (String nsURI : customProperties.getPackagesURIs()) {
+        if (uris != null) {
+            for (String nsURI : uris) {
                 final EPackage ePkg = EPackageRegistryImpl.INSTANCE.getEPackage(nsURI);
                 types.addAll(getEClassifiers(ePkg));
             }

@@ -39,6 +39,7 @@ import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -878,6 +879,25 @@ public final class M2DocUtils {
         for (IServicesConfigurator configurator : getConfigurators()) {
             configurator.cleanResourceSetForModels(key);
         }
+    }
+
+    /**
+     * Creates a sample template {@link XWPFDocument}.
+     * 
+     * @param variableName
+     *            the varaible name
+     * @param eCls
+     *            the variable {@link EClass}
+     * @return the created sample template {@link XWPFDocument}
+     * @throws IOException
+     *             if the sample template can't be read
+     * @throws InvalidFormatException
+     *             if the sample template can't be read
+     */
+    public static XWPFDocument createSampleTemplate(String variableName, EClass eCls)
+            throws InvalidFormatException, IOException {
+        final SampleTemplateGenerator generator = new SampleTemplateGenerator();
+        return generator.generate(variableName, eCls);
     }
 
 }

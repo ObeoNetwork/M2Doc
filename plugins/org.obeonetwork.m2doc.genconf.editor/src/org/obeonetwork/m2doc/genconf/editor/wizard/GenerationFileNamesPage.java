@@ -47,8 +47,8 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.editor.GenerationListener;
 import org.obeonetwork.m2doc.genconf.editor.ITemplateCustomPropertiesProvider;
-import org.obeonetwork.m2doc.ide.ui.wizard.M2DocFileSelectionDialog;
-import org.obeonetwork.m2doc.ide.ui.wizard.SelectRegistredTemplateDialog;
+import org.obeonetwork.m2doc.ide.ui.dialog.M2DocFileSelectionDialog;
+import org.obeonetwork.m2doc.ide.ui.dialog.SelectRegistredTemplateDialog;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -57,7 +57,7 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class FileNamesPage extends WizardPage implements ITemplateCustomPropertiesProvider {
+public class GenerationFileNamesPage extends WizardPage implements ITemplateCustomPropertiesProvider {
 
     /**
      * The {@link GenconfPackage}.
@@ -109,7 +109,7 @@ public class FileNamesPage extends WizardPage implements ITemplateCustomProperti
      * @param canChangeTemplateFile
      *            <code>true</code> if change is possible, <code>false</code> otherwise
      */
-    protected FileNamesPage(Generation generation, GenerationListener generationListener,
+    protected GenerationFileNamesPage(Generation generation, GenerationListener generationListener,
             boolean canChangeTemplateFile) {
         super("Select files");
         setTitle("Select files");
