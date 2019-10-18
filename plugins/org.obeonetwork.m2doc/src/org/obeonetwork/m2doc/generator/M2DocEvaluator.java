@@ -102,6 +102,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
 
@@ -1373,10 +1374,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             || userDoc.getRuns().size() != 0 && userDoc.getRuns().get(0).getParent() != currentTemplateParagraph) {
             final XWPFParagraph newParagraph = createNewParagraph(generatedDocument,
                     (XWPFParagraph) userDoc.getRuns().get(0).getParent());
-            newParagraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
+            insertTag(newParagraph, TokenType.USERCONTENT.getValue() + " " + id);
             res = newParagraph;
         } else {
-            paragraph.getCTP().addNewFldSimple().setInstr(TokenType.USERCONTENT.getValue() + " " + id);
+            insertTag(paragraph, TokenType.USERCONTENT.getValue() + " " + id);
             res = paragraph;
         }
 
@@ -1399,14 +1400,29 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
         if (needNewParagraph) {
             final XWPFParagraph newParagraph = createNewParagraph(generatedDocument, paragraph);
-            newParagraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
+            insertTag(newParagraph, TokenType.ENDUSERCONTENT.getValue());
             res = newParagraph;
         } else {
-            paragraph.getCTP().addNewFldSimple().setInstr(TokenType.ENDUSERCONTENT.getValue());
+            insertTag(paragraph, TokenType.ENDUSERCONTENT.getValue());
             res = paragraph;
         }
 
         return res;
+    }
+
+    /**
+     * Insets a new tag with the given text.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param instrText
+     *            the instruction text
+     */
+    private void insertTag(XWPFParagraph paragraph, String instrText) {
+        paragraph.getCTP().addNewR().addNewFldChar().setFldCharType(STFldCharType.BEGIN);
+        paragraph.getCTP().addNewR().addNewInstrText().setStringValue(instrText);
+        paragraph.getCTP().addNewR().addNewFldChar().setFldCharType(STFldCharType.SEPARATE);
+        paragraph.getCTP().addNewR().addNewFldChar().setFldCharType(STFldCharType.END);
     }
 
     /**
