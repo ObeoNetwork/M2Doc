@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
@@ -175,7 +176,8 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options) {
+    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
+            Map<String, String> options) {
         final Set<IService> res = new LinkedHashSet<>();
 
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
@@ -198,7 +200,12 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment) {
+    public void startGeneration(IReadOnlyQueryEnvironment queryEnvironment, XWPFDocument destinationDocument) {
+        // nothing to do here
+    }
+
+    @Override
+    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter) {
         final M2DocSiriusServices serviceInstance = services.remove(queryEnvironment);
         if (serviceInstance != null) {
             serviceInstance.clean();

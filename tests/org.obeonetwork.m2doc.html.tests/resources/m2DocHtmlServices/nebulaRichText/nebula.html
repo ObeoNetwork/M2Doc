@@ -1,0 +1,233 @@
+<head></head>
+<body>
+<p>
+    <strong><font size="4">Operational Analysis</font></strong>
+</p>
+<p>
+    Several stakeholders have relationships with the IFE system, they all have different goals.&nbsp;The focus is put
+    here&nbsp;on the operational needs the IFE system will somehow contribute to. <strong>What is the precise scope or
+    content of the IFE system is not&nbsp;elicited yet at this stage</strong>.
+</p>
+<p>
+    Discover the entities and their goals in his the operational capabilities diagram: <a
+    href="hlink://_pmRnML2HEeSzuJ_4_7XgLw/">[OCB] Operational Capabilities</a>.
+</p>
+<p>
+    Operational Architecture Diagrams provide a&nbsp;comprehensive view of the activities performed by the entities in
+    order to reach their goals.
+</p>
+<ul>
+    <li>
+        <a href="hlink://_xgO34LIUEeSVmfu1BIQISw/">[OAB] High-Level Expected Activities</a>&nbsp;
+    </li>
+    <li>
+        And its refined version <a href="hlink://_vQXrkLNoEeSVmfu1BIQISw/">[OAB] All Operational Activities and
+        Entities</a>
+    </li>
+</ul>
+<p>
+    The different phases of a flight&nbsp;are described in <a href="hlink://_4w44MLNrEeSVmfu1BIQISw/">[M&amp;S] Aircraft
+    Flying Phases</a> and their sequence in <a href="hlink://_VBob4LNqEeSVmfu1BIQISw/">[OES] Flight Phases</a>.
+</p>
+<p>
+    <font size="4"><strong>System Need Analysis</strong></font>
+</p>
+<p>
+    The focus here is put on the IFE system itself. <strong>The objective is to set the boundaries and provide a clear
+    vision of the need</strong>.
+</p>
+<p>
+    The <a href="hlink://_Q3xl4JTyEeSgObsjQ4XNVQ/">[MCB] All Missions and Capabilities</a> diagram&nbsp;shows on the
+    capabilities of the IFE system. Three other diagrams provide interesting entry points to the model:
+</p>
+<ul>
+    <li>
+        <a href="hlink://_LzrP8LclEd6PZMYM-Vvo5g/">[SC] System Actors</a>&nbsp;lists all the Actors (the aircraft is
+        considered as an actor)
+    </li>
+    <li>
+        <a href="hlink://_gaN78KyfEeSJ1PX7slxG4w/">[SDFB] Top Level Functional Overview</a>&nbsp;provides a first
+        functional overview of what the actors actually do and what kind of exchanges they have with the IFE system
+    </li>
+    <li>
+        <a href="hlink://_xXSwEKv6EeSTJvLsyJitsw/">[SAB] Top Level System Overview</a>&nbsp;and its&nbsp;slightly refined
+        version <a href="hlink://_TGdI0JZDEeS1n7CBuZtEDQ/">[SAB] High Level System Overview</a>&nbsp;are <strong>very good
+        entry points to further navigate in the model</strong>.
+    </li>
+</ul>
+<p>
+    Starting from these high level diagrams,&nbsp;a typical&nbsp;reading path&nbsp;is to dive into the function to
+    visualize their refinement. For example, <a href="hlink://_Z-lO8LC1EeSAOqSI-4duBg/">[SDFB] [CTX] Run Services</a>. And
+    recursively.
+</p>
+<p>
+    <strong>Using capabilities as a&nbsp;driver to browse the model is recommended</strong>. Some diagrams are specifically
+    marked for that purpose, for instance <a href="hlink://_EsbcMLKzEeSZM9DbsSoyxw/">[SDFB] [CAPABILITY] Provide Video
+    Entertainment Services</a>. From this capability covering VOD services to the passengers,&nbsp;browse the functional
+    chains and scenarios to better understand how the capability is fulfilled.
+</p>
+<ul>
+    <li>
+        Functional chains: <a href="hlink://_MOb7kJjJEeSFKIU85IonOQ/">[SFCD] Start Playing VOD Movie</a>, <a
+        href="hlink://_m1AKgJjJEeSFKIU85IonOQ/">[SFCD] Resume VOD Movie</a>
+    </li>
+    <li>
+        Scenarios: <a href="hlink://_CekP8JWHEeSAToX6gykiew/">[ES] Start VOD Service</a>, <a
+        href="hlink://_bkAKcLD-EeSk6sURco8jXw/">[ES] Start Playing VOD Movie</a>
+    </li>
+</ul>
+<p>
+    Check the global mode machine of the system with <a href="hlink://_M-eeYMIWEd6vqfXUNuD4FA/">[M&amp;S] IFE Operating
+    Modes</a>. Among others, this mode machine is intended to specify under which operational conditions the IFE system is
+    running. Another Mode machine is specifically modelled for what will become the Seat TV: <a
+    href="hlink://_fp0LsJzmEeSwVo69k5d7ZA/">[M&amp;S] Seat TV - Movie Player Modes</a>
+</p>
+<p>
+    <font size="4"><strong>Logical Architecture</strong></font>
+</p>
+<p>
+    The Logical Architecture provides an intermediate design, hiding some of the implementation-dependent complexity.
+</p>
+<p>
+    The main architectural drivers&nbsp;are explained in&nbsp;the <a href="hlink://_3blN8KK2Ed6k26nfEmjK4A/">[LCBD]
+    Architecture Drivers</a>&nbsp;diagram.&nbsp;&nbsp;Another global view of the logical components is provided by <a
+    href="hlink://_IGYnAKCeEeStTrLYjHtDEw/">[LAB] IFE System - All Components, CEs</a>
+</p>
+<p>
+    Among others, the refined functional analysis is detailed in the following dataflow diagrams (<a
+    href="hlink://_1Vd9AK5DEeS_aaAwMjKXtQ/">[LDFB] Top Level Functions</a>&nbsp;being an entry point):
+</p>
+<ul>
+    <li>
+        <a href="hlink://_DHcNsLbMEeS6m7-8Vqqevw/">[LDFB] [CTX] Provide Aircraft Interface</a>&nbsp;explains the functional
+        interfacing with the aircraft (the idea being to&nbsp;isolate these functions in an easily replaceable component to
+        ease the integration of the IFE system in different aircrafts)
+    </li>
+    <li>
+        <a href="hlink://_lekjcK8MEeSUHuFYXP_oBw/">[LDFB] [CTX] Manage Audio and Video Diffusion</a>&nbsp;refines&nbsp;how
+        audio&nbsp;and video request&nbsp;are processed. 
+        <ul>
+            <li>
+                <a href="hlink://_myvsAJvPEeSmFu1YEE0geA/">[LDFB] [CTX] Process Audio Video Requests</a>&nbsp;distinguishes
+                between VOD and imposed videos requests
+            </li>
+            <li>
+                <a href="hlink://_tMgXkJ2JEeSiIpoNkuyYwA/">[LDFB] [CTX] Broadcast Stored Audio Video
+                Streams</a>&nbsp;describes the broadcast initialization of content coming from the digital media library
+            </li>
+            <li>
+                <a href="hlink://_Lhea0J2eEeSiIpoNkuyYwA/">[LDFB] [CTX] Display Video and Play Audio</a>&nbsp;describes how
+                the different media streams are actually rendered
+            </li>
+        </ul>
+    </li>
+</ul>
+<p>
+    The allocation of functions to components is exhaustively described in <a href="hlink://_DmXfwKPQEeSgDIOKB3Rd0g/">[LAB]
+    [BUILD] Template</a>. Functional&nbsp;chains and scenarios&nbsp;are refined.&nbsp;&nbsp;
+</p>
+<ul>
+    <li>
+        Functional chains 
+        <ul>
+            <li>
+                <a href="hlink://_nKr5wLeNEeSJrshmHo2mKA/">[LAB][CTX] Broadcast Audio Announcement FC</a>&nbsp;(equivalent
+                to <a href="hlink://_7eoQ4LeJEeSJrshmHo2mKA/">[LFCD] Broadcast Audio Announcement</a>)
+            </li>
+            <li>
+                <a href="hlink://_Hq4jALMDEeSGuvnnapXBhA/">[LAB][CTX] Start Playing VOD Movie FC</a>&nbsp; (equivalent to
+                <a href="hlink://_IjNiALFqEeSsWZm7HcO6OQ/">[LFCD] Start Playing VOD Movie</a>)
+            </li>
+        </ul>
+    </li>
+    <li>
+        Scenarios 
+        <ul>
+            <li>
+                <a href="hlink://_FremALbzEeSpk5KlhVegeg/">[ES] Perform Audio Announcement</a>&nbsp;&nbsp;
+            </li>
+            <li>
+                <a href="hlink://_KwN4gLUBEeSkIeuLucFPKA/">[ES] Start Playing VOD Movie</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+<p>
+    A (partial) data model is defined&nbsp;to support the "Start Playing VOD Movie" functional chain. Data and exchanged
+    items are detailed in <a href="hlink://_nlZU8LZ-EeS6m7-8Vqqevw/">[CDB] Play Video Movie - Logical</a>.
+</p>
+<p>
+    <strong><font size="4">Physical Architecture</font></strong>
+</p>
+<p>
+    The Physical&nbsp;Architecture describes how the system will be built.
+</p>
+<p>
+    <a href="hlink://_6Rra8KQUEeSgDIOKB3Rd0g/">[PAB] Implementation and Behaviour Components</a>&nbsp;provides an
+    exhaustive view of all physical components. Separate views are available in the breakdown diagrams:
+</p>
+<ul>
+    <li>
+        <a href="hlink://_W5gMUKC6EeStTrLYjHtDEw/">[PCBD] Implementation Components</a>
+    </li>
+    <li>
+        <a href="hlink://_o27AcKO1EeSgDIOKB3Rd0g/">[PCBD] Behavioural Components</a>
+    </li>
+</ul>
+<p>
+    The allocation of functions to components is exhaustively described in <a href="hlink://_scrm8LB-EeSflp4pxI7U0A/">[PAB]
+    [BUILD] Template</a>. Streaming topics are refined and described in the following dataflow and architecture diagrams:
+</p>
+<ul>
+    <li>
+        <a href="hlink://_mMpGsLBGEeSnJaHm1OLKKw/">[PDFB] [CTX] Broadcast Stored Audio and Video Streams</a>
+    </li>
+    <li>
+        <a href="hlink://_1EA74LBMEeSnJaHm1OLKKw/">[PDFB] [CTX] Play Video Stream on Seat TV</a>
+    </li>
+    <li>
+        <a href="hlink://_VA5TELPNEeS7E-n173v5iw/">[PAB] [CTX] Start Playing VOD Movie FC</a>
+    </li>
+</ul>
+<p>
+    Network topics are only slightly covered in this model.
+</p>
+<ul>
+    <li>
+        Usage of REC-RPL mechanisms to replicate network adapters
+    </li>
+    <li style="LIST-STYLE-TYPE: none">
+        <ul>
+            <li>
+                <a href="hlink://_xyaY8KYfEeSAVrf1rjnX4A/">REC - Unit Network Adapter</a>&nbsp;describes the REC (i.e.what
+                will be replicated)
+            </li>
+            <li>
+                <a href="hlink://_BV6mQKYkEeSAVrf1rjnX4A/">RPL - Instantiations of Unit Network Adapter</a>&nbsp;describes
+                the three RPLs (replicas).
+            </li>
+            <li>
+                The connection between RPLs&nbsp;is detailed in <a href="hlink://_x1ARYKYIEeSAVrf1rjnX4A/">[PAB] Focus on
+                Network Setup, Configuration and Tests</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        The transport of data from one connected equipment to another is described in this diagram: <a
+        href="hlink://_EWMNsLkaEeSBQ7y8sEdlcw/">[PAB] Focus on Network Transport</a>
+    </li>
+</ul>
+<p>
+    The data model related to the "Start Playing VOD Movie" functional chain is refined in <a
+    href="hlink://_Snq1oLkiEeSBQ7y8sEdlcw/">[CDB] Play Video Movie - Physical</a>
+</p>
+<p>
+    <strong><font size="4">End-Product Breakdown Structure</font></strong>
+</p>
+<p>
+    The EPBS architecture is minimal in this model. The <a href="hlink://_pEpUcLtQEeS87cs0yOXuuQ/">[EAB] Configuration
+    Items and Realized Artefacts</a>&nbsp;diagram indicates how physical components, ports and links are allocated to
+    configuration items.
+</p>
+</body>
+</html>

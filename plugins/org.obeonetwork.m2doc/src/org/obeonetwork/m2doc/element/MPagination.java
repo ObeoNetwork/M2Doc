@@ -21,6 +21,6 @@ public enum MPagination implements MElement {
     /**
      * Possible paginations.
      */
-    newTableOfContent, newPage, newParagraph, newColumn, newTextWrapping;
+    newTableOfContent, newPage, newParagraph, newColumn, newTextWrapping, ligneBreak;
 
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="nominal" templateFileName="nominal-template.docx">
+  <definitions xsi:type="genconf:ModelDefinition" key="self">
+    <value href="anydsl.ecore#/"/>
+  </definitions>
+</genconf:Generation>

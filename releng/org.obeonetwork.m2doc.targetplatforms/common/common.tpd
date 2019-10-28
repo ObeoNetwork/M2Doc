@@ -1,7 +1,8 @@
 target "common" with source requirements
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/" {
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
 	org.kohsuke.args4j [2.0.21,2.1.0)
+	org.jsoup [1.8.3,1.8.4)
 }
 
 location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {

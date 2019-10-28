@@ -42,6 +42,11 @@ public final class ImageTestUtils {
     private static final int RED_SHIFT = 16;
 
     /**
+     * The red shift.
+     */
+    private static final int ALPHA_SHIFT = 24;
+
+    /**
      * The blue mask.
      */
     private static final int BLUE_MASK = 0x000000ff;
@@ -52,9 +57,14 @@ public final class ImageTestUtils {
     private static final int GREEN_MASK = 0x0000ff00;
 
     /**
-     * the red mask.
+     * The red mask.
      */
     private static final int RED_MASK = 0x00ff0000;
+
+    /**
+     * The alpha mask.
+     */
+    private static final int ALPHA_MASK = 0xff000000;
 
     /**
      * Red index.
@@ -294,9 +304,11 @@ public final class ImageTestUtils {
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 final int rgb = image.getRGB(x, y);
-                result[R] += (rgb & RED_MASK) >> RED_SHIFT;
-                result[G] += (rgb & GREEN_MASK) >> GREEN_SHIFT;
-                result[B] += +rgb & BLUE_MASK;
+                if (((rgb & ALPHA_MASK) >> ALPHA_SHIFT) != 0) {
+                    result[R] += (rgb & RED_MASK) >> RED_SHIFT;
+                    result[G] += (rgb & GREEN_MASK) >> GREEN_SHIFT;
+                    result[B] += +rgb & BLUE_MASK;
+                }
             }
         }
 

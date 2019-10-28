@@ -27,6 +27,12 @@
    <feature id="org.obeonetwork.m2doc.cdo.feature.source" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
+   <feature id="org.obeonetwork.m2doc.html.feature" version="0.0.0">
+      <category name="M2Doc"/>
+   </feature>
+   <feature id="org.obeonetwork.m2doc.html.feature.source" version="0.0.0">
+      <category name="M2Doc"/>
+   </feature>
 
    <bundle id="org.obeonetwork.m2doc.genconf.edit.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.genconf.tests" version="0.0.0"/>
@@ -34,6 +40,7 @@
    <bundle id="org.obeonetwork.m2doc.sirius.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.cdo.tests" version="0.0.0"/>
+   <bundle id="org.obeonetwork.m2doc.html.tests" version="0.0.0"/>
 
    <bundle id="org.xtext.example.mydsl" version="0.0.0"/>
    <bundle id="org.xtext.example.mydsl.ide" version="0.0.0"/>
@@ -41,6 +48,8 @@
 
    <feature id="org.eclipse.acceleo.query" version="0.0.0"/>
    <feature id="org.eclipse.acceleo.query.source" version="0.0.0"/>
+
+   <bundle id="org.jsoup" version="0.0.0"/>
 
    <category-def name="M2Doc" label="M2Doc">
       <description>

@@ -22,12 +22,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -101,13 +103,19 @@ public class M2DocUtilsTests {
         }
 
         @Override
-        public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options) {
+        public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
+                Map<String, String> options) {
             // nothing to do here
             return Collections.emptySet();
         }
 
         @Override
-        public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment) {
+        public void startGeneration(IReadOnlyQueryEnvironment queryEnvironment, XWPFDocument destinationDocument) {
+            // nothing to do here
+        }
+
+        @Override
+        public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter) {
             // nothing to do here
         }
 

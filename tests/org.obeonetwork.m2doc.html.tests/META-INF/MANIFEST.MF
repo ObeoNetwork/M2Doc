@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.obeonetwork.m2doc.html.tests;singleton:=true
+Bundle-Version: 3.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.junit,
+ org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc.genconf;bundle-version="[3.0.0,4.0.0)",
+ org.apache.poi;bundle-version="[4.1.0,4.2.0)",
+ org.eclipse.acceleo.query,
+ org.obeonetwork.m2doc.html;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc.html.ide;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc.tests;bundle-version="[3.0.0,4.0.0)"
+Bundle-ActivationPolicy: lazy

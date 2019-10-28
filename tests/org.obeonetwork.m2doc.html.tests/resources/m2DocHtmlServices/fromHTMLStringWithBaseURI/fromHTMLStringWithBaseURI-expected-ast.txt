@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .fromHTMLString(.add(.add('<html><head><title>Sample HTML for test purpose</title></head><body><img src="../images/logo_M2Doc.png" alt="" height="54"><h2 id="starting-with-m2doc">Starting with ', .aqlFeatureAccess(self, 'name')), '</h2></body></html>'), 'http://www.m2doc.org/tests/')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

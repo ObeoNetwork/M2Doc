@@ -18,12 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.spi.cdo.InternalCDOView;
 import org.eclipse.net4j.connector.IConnector;
 import org.obeonetwork.m2doc.cdo.M2DocCDOUtils;
@@ -86,12 +88,18 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options) {
+    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter converter,
+            Map<String, String> options) {
         return Collections.emptySet();
     }
 
     @Override
-    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment) {
+    public void startGeneration(IReadOnlyQueryEnvironment queryEnvironment, XWPFDocument destinationDocument) {
+        // nothing to do here
+    }
+
+    @Override
+    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter) {
         // nothing to do here
     }
 

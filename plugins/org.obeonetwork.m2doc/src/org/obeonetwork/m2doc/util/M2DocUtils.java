@@ -433,7 +433,8 @@ public final class M2DocUtils {
         services = ServiceUtils.getServices(queryEnvironment, new ExcelServices(uriConverter, templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
         for (IServicesConfigurator configurator : getConfigurators()) {
-            ServiceUtils.registerServices(queryEnvironment, configurator.getServices(queryEnvironment, options));
+            ServiceUtils.registerServices(queryEnvironment,
+                    configurator.getServices(queryEnvironment, uriConverter, options));
         }
     }
 
@@ -677,6 +678,10 @@ public final class M2DocUtils {
 
             nextSubTask(monitor, INIT_DEST_DOC_MONITOR_WORK, "Initializing engine");
 
+            for (IServicesConfigurator configurator : getConfigurators()) {
+                configurator.startGeneration(queryEnvironment, destinationDocument);
+            }
+
             final M2DocEvaluationEnvironment m2docEnv = new M2DocEvaluationEnvironment(queryEnvironment, uriConverter,
                     documentTemplate.eResource().getURI(), destination);
             final M2DocEvaluator evaluator = new M2DocEvaluator(m2docEnv, monitor);
@@ -712,7 +717,7 @@ public final class M2DocUtils {
             nextSubTask(monitor, DOCUMENT_SAVE_MONITOR_WORK, "Cleaning template services");
 
             for (IServicesConfigurator configurator : getConfigurators()) {
-                configurator.cleanServices(queryEnvironment);
+                configurator.cleanServices(queryEnvironment, uriConverter);
             }
 
             monitor.worked(ENGINE_CLEAN_MONITOR_WORK);

@@ -15,10 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
  * Configure for {@link IReadOnlyQueryEnvironment}.
@@ -59,19 +61,34 @@ public interface IServicesConfigurator {
      * 
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
+     * @param uriConverter
+     *            the {@link URIConverter}
      * @param options
      *            the {@link Map} of options
      * @return the {@link Set} of {@link IService} for the given {@link IReadOnlyQueryEnvironment}
      */
-    Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, Map<String, String> options);
+    Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
+            Map<String, String> options);
 
     /**
-     * Clears the services for the given {@link IReadOnlyQueryEnvironment} and options.
+     * Starts the generation for the given {@link IReadOnlyQueryEnvironment} and destination {@link XWPFDocument}.
      * 
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
+     * @param destinationDocument
+     *            the {@link XWPFDocument}
      */
-    void cleanServices(IReadOnlyQueryEnvironment queryEnvironment);
+    void startGeneration(IReadOnlyQueryEnvironment queryEnvironment, XWPFDocument destinationDocument);
+
+    /**
+     * Clears the services for the given {@link IReadOnlyQueryEnvironment}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param uriConverter
+     *            the {@link URIConverter}
+     */
+    void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter);
 
     /**
      * Create a new resourceSet which would need specific initialization for loading the models according to the given options.

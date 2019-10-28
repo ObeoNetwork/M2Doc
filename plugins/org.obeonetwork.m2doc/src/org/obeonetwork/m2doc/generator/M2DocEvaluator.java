@@ -851,6 +851,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 res = paragraph;
                 break;
 
+            case ligneBreak:
+                run.addBreak();
+                res = paragraph;
+                break;
+
             default:
                 throw new IllegalStateException("Not supported MPagination.");
         }

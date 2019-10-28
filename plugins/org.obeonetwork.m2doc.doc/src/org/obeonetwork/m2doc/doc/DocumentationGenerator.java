@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+import org.obeonetwork.m2doc.html.services.M2DocHTMLServices;
 import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
@@ -47,7 +48,7 @@ public final class DocumentationGenerator {
     // CHECKSTYLE:OFF
     private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] {BooleanServices.class,
         ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
-        ExcelServices.class};
+        ExcelServices.class, M2DocHTMLServices.class};
     // CHECKSTYLE:ON
 
     /**

@@ -149,7 +149,7 @@ public class PaginationServices {
      *            the {@link XWPFNumbering}
      * @return the {@link CTNumbering} of the given {@link XWPFNumbering}
      */
-    private CTNumbering getCTNumbering(XWPFNumbering numbering) {
+    public static CTNumbering getCTNumbering(XWPFNumbering numbering) {
         CTNumbering res = null;
         for (Field field : numbering.getClass().getDeclaredFields()) {
             if ("ctNumbering".equals(field.getName())) {

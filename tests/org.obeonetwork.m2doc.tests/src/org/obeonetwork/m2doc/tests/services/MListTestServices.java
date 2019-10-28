@@ -40,9 +40,6 @@ public class MListTestServices {
      */
     private final static List<MElement> SAMPLE_MELEMENTS = initSampleMElements();
 
-    private final static MStyle HEADER_STYLE = new MStyleImpl(null, 14, Color.GRAY, null,
-            MStyle.FONT_BOLD | MStyle.FONT_UNDERLINE);
-
     /**
      * @return
      */
