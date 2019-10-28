@@ -106,6 +106,20 @@ Resizes the Image by the given factor.
 * myImage.resize(0.5)
   * will resize the image by a factor 0.5
 
+## org.obeonetwork.m2doc.element.MImage.rotate(Integer) : org.obeonetwork.m2doc.element.MImage
+
+Rotates the Image by the given angle in degres.
+
+### Parameter
+
+* **image**: The Image
+* **angle**: The angle in degres
+
+### Example
+
+* myImage.rotate(90)
+  * will rotate the image by an angle of 90 degres
+
 ## org.obeonetwork.m2doc.element.MImage.setConserveRatio(Boolean) : org.obeonetwork.m2doc.element.MImage
 
 Sets the conserve ratio of the image.
