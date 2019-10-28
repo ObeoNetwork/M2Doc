@@ -292,6 +292,7 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 
 * [Boolean services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_booleanservices.html)
 * [Excel services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_excelservices.html)
+* [HTML services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2dochtmlservices.html)
 * [Image services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_imageservices.html)
 * [Link services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_linkservices.html)
 * [Pagination services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_paginationservices.html)
