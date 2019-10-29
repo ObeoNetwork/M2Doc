@@ -1,0 +1,36 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a MText :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        [query: .sampleLink('Obeo's website', 'http://www.obeo.fr', 6)]
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

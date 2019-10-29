@@ -279,12 +279,12 @@ public class RawCopier {
                 }
                 if (element instanceof XWPFParagraph) {
                     final XWPFParagraph inputParagraph = (XWPFParagraph) element;
-                    res = copyParagraph(containerInputDocument, containerOutputDocument, outputBody,
-                            inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph);
+                    res = copyParagraph(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
+                            inputParagraph);
                     listOutputParagraphs.add(res);
                 } else if (element instanceof XWPFTable) {
-                    final XWPFTable outputTable = copyTable(containerInputDocument, containerOutputDocument, outputBody,
-                            inputRelationIdToOutputMap, inputPartURIToOutputPartURI, (XWPFTable) element);
+                    final XWPFTable outputTable = copyTable(outputBody, inputRelationIdToOutputMap,
+                            inputPartURIToOutputPartURI, (XWPFTable) element);
                     listOutputTables.add(outputTable);
                     res = null;
                 } else if (element instanceof XWPFSDT) {
@@ -318,10 +318,6 @@ public class RawCopier {
     /**
      * Copies the given {@link XWPFParagraph} to the given {@link IBody}.
      * 
-     * @param containerInputDocument
-     *            the input {@link XWPFDocument}
-     * @param containerOutputDocument
-     *            the output {@link XWPFDocument}
      * @param outputBody
      *            the output {@link IBody}
      * @param inputRelationIdToOutputMap
@@ -338,17 +334,16 @@ public class RawCopier {
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be found
      */
-    private XWPFParagraph copyParagraph(final XWPFDocument containerInputDocument,
-            final XWPFDocument containerOutputDocument, final IBody outputBody,
-            final Map<String, String> inputRelationIdToOutputMap, Map<URI, URI> inputPartURIToOutputPartURI,
-            XWPFParagraph inputParagraph) throws InvalidFormatException, NoSuchAlgorithmException, IOException {
+    private XWPFParagraph copyParagraph(final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
+            Map<URI, URI> inputPartURIToOutputPartURI, XWPFParagraph inputParagraph)
+            throws InvalidFormatException, NoSuchAlgorithmException, IOException {
         final XWPFParagraph res = createNewParagraph(outputBody);
 
         // Copy new paragraph
         res.getCTP().set(inputParagraph.getCTP());
         // Create relation embedded in run and keep relation id in map (input to output)
         createRelations(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph.getCTP().xmlText(),
-                containerInputDocument, containerOutputDocument);
+                inputParagraph.getBody(), outputBody);
 
         return res;
     }
@@ -356,10 +351,6 @@ public class RawCopier {
     /**
      * Copies the given {@link XWPFTable} into the given output {@link IBody}.
      * 
-     * @param containerInputDocument
-     *            the input {@link XWPFDocument}
-     * @param containerOutputDocument
-     *            the output {@link XWPFDocument}
      * @param outputBody
      *            the output {@link IBody}
      * @param inputRelationIdToOutputMap
@@ -376,17 +367,16 @@ public class RawCopier {
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be found
      */
-    private XWPFTable copyTable(final XWPFDocument containerInputDocument, final XWPFDocument containerOutputDocument,
-            final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
+    private XWPFTable copyTable(final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
             Map<URI, URI> inputPartURIToOutputPartURI, final XWPFTable inputTable)
             throws IOException, InvalidFormatException, NoSuchAlgorithmException {
         final XWPFTable res = createNewTable(outputBody, inputTable);
 
         res.getCTTbl().set(inputTable.getCTTbl());
-        copyTableStyle(inputTable, containerOutputDocument);
+        copyTableStyle(inputTable, outputBody.getXWPFDocument());
         // Create relation embedded in run and keep relation id in map (input to output)
         createRelations(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputTable.getCTTbl().xmlText(),
-                containerInputDocument, containerOutputDocument);
+                inputTable.getBody(), outputBody);
 
         return res;
     }
@@ -788,10 +778,10 @@ public class RawCopier {
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
      * @param xmlText
      *            the xml text to search for relations
-     * @param inputDoc
-     *            input Document
-     * @param outputDoc
-     *            output Document
+     * @param inputBody
+     *            input {@link IBody}
+     * @param outputBody
+     *            output {@link IBody}
      * @throws InvalidFormatException
      *             if image copy fails
      * @throws IOException
@@ -800,24 +790,25 @@ public class RawCopier {
      *             if MD5 can't be read
      */
     private void createRelations(Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, String xmlText, XWPFDocument inputDoc, XWPFDocument outputDoc)
+            Map<URI, URI> inputPartURIToOutputPartURI, String xmlText, IBody inputBody, IBody outputBody)
             throws InvalidFormatException, NoSuchAlgorithmException, IOException {
         final Matcher matcher = RELATION_ID_PATTERN.matcher(xmlText);
         while (matcher.find()) {
             final String inputRelationID = matcher.group(RELATION_ID_INDEX);
-            final PackageRelationship inputRelationship = inputDoc.getPackagePart().getRelationship(inputRelationID);
+            final PackageRelationship inputRelationship = inputBody.getPart().getPackagePart()
+                    .getRelationship(inputRelationID);
             final PackagePart outputPart;
             if (inputRelationship.getTargetMode() == TargetMode.INTERNAL) {
-                final PackagePart source = inputDoc.getPackage()
+                final PackagePart source = inputBody.getXWPFDocument().getPackage()
                         .getPart(PackagingURIHelper.createPartName(inputRelationship.getTargetURI()));
-                outputPart = getOrCopyPart(inputPartURIToOutputPartURI, source, outputDoc);
+                outputPart = getOrCopyPart(inputPartURIToOutputPartURI, source, outputBody.getXWPFDocument());
             } else {
                 outputPart = null;
                 inputPartURIToOutputPartURI.put(inputRelationship.getTargetURI(), inputRelationship.getTargetURI());
             }
 
             final PackageRelationship outputRelationship = getOrCreateRelationship(inputPartURIToOutputPartURI,
-                    outputDoc, outputPart, inputRelationship);
+                    outputBody, outputPart, inputRelationship);
             inputRelationIdToOutputMap.put(inputRelationship.getId(), outputRelationship.getId());
         }
     }
@@ -827,8 +818,8 @@ public class RawCopier {
      * 
      * @param inputPartURIToOutputPartURI
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
-     * @param outputDoc
-     *            the ouput {@link XWPFDocument}
+     * @param outputBody
+     *            the ouput {@link IBody}
      * @param outputPart
      *            the output {@link PackagePart}
      * @param inputRelationship
@@ -837,13 +828,12 @@ public class RawCopier {
      * @throws InvalidFormatException
      *             if image copy fails
      */
-    private PackageRelationship getOrCreateRelationship(Map<URI, URI> inputPartURIToOutputPartURI,
-            XWPFDocument outputDoc, PackagePart outputPart, PackageRelationship inputRelationship)
-            throws InvalidFormatException {
+    private PackageRelationship getOrCreateRelationship(Map<URI, URI> inputPartURIToOutputPartURI, IBody outputBody,
+            PackagePart outputPart, PackageRelationship inputRelationship) throws InvalidFormatException {
         final PackageRelationship res;
 
         PackageRelationship existingRelationship = null;
-        for (PackageRelationship relationship : outputDoc.getPackagePart()
+        for (PackageRelationship relationship : outputBody.getPart().getPackagePart()
                 .getRelationshipsByType(inputRelationship.getRelationshipType())) {
             if (relationship.getTargetMode() == inputRelationship.getTargetMode() && inputPartURIToOutputPartURI
                     .get(inputRelationship.getTargetURI()).equals(relationship.getTargetURI())) {
@@ -856,11 +846,11 @@ public class RawCopier {
             res = existingRelationship;
         } else {
             if (outputPart != null) {
-                res = outputDoc.getPackagePart().addRelationship(outputPart.getPartName(),
+                res = outputBody.getPart().getPackagePart().addRelationship(outputPart.getPartName(),
                         inputRelationship.getTargetMode(), inputRelationship.getRelationshipType());
             } else {
-                res = outputDoc.getPackagePart().addExternalRelationship(inputRelationship.getTargetURI().toString(),
-                        inputRelationship.getRelationshipType());
+                res = outputBody.getPart().getPackagePart().addExternalRelationship(
+                        inputRelationship.getTargetURI().toString(), inputRelationship.getRelationshipType());
             }
         }
 
@@ -1022,13 +1012,13 @@ public class RawCopier {
                                 inputParagraph, null, null);
                         res = null;
                     } else {
-                        res = copyParagraph(containerInputDocument, containerOutputDocument, outputBody,
-                                inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph);
+                        res = copyParagraph(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
+                                inputParagraph);
                         listOutputParagraphs.add(res);
                     }
                 } else if (element instanceof XWPFTable) {
-                    final XWPFTable outputTable = copyTable(containerInputDocument, containerOutputDocument, outputBody,
-                            inputRelationIdToOutputMap, inputPartURIToOutputPartURI, (XWPFTable) element);
+                    final XWPFTable outputTable = copyTable(outputBody, inputRelationIdToOutputMap,
+                            inputPartURIToOutputPartURI, (XWPFTable) element);
                     listOutputTables.add(outputTable);
                     res = null;
                 } else if (element instanceof XWPFSDT) {

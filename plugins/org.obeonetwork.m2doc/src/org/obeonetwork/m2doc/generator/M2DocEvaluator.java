@@ -769,7 +769,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFRun linkRun = insertMText(paragraph, run, hyperLink);
         final XWPFParagraph res = (XWPFParagraph) linkRun.getParent();
 
-        final String id = res.getDocument().getPackagePart()
+        final String id = res.getBody().getPart().getPackagePart()
                 .addExternalRelationship(hyperLink.getUrl(), XWPFRelation.HYPERLINK.getRelation()).getId();
         final CTHyperlink cLink = res.getCTP().addNewHyperlink();
         cLink.setId(id);

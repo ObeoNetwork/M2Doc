@@ -1,0 +1,17 @@
+
+=== HEADER ===
+
+  
+  
+  A simple demonstration of a MText :
+  [query: .sampleLink('Obeo's website', 'http://www.obeo.fr', 6)]
+  End of demonstration.
+=== BODY ===
+
+  
+=== FOOTER ===
+
+  
+  
+  
+=== TEMPLATES ===
