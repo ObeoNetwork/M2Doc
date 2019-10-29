@@ -5,6 +5,10 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2019082715274
 	org.jsoup [1.8.3,1.8.4)
 }
 
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
+	com.google.guava [15.0.0,16.0.0)
+}
+
 location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
 }
