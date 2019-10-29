@@ -48,6 +48,8 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.ide.ui.wizard.M2DocMainVariablePage;
+import org.obeonetwork.m2doc.ide.ui.wizard.M2DocNewTemplatePage;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;

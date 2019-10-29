@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.genconf.editor.wizard;
+package org.obeonetwork.m2doc.ide.ui.wizard;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -80,7 +80,7 @@ public class M2DocMainVariablePage extends WizardPage {
     /**
      * Constructor.
      */
-    protected M2DocMainVariablePage() {
+    public M2DocMainVariablePage() {
         super("Set the main variable value and name for your template.");
         adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
         adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());

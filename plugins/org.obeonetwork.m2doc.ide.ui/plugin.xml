@@ -44,6 +44,16 @@
             id="org.obeonetwork.m2doc.ide.ui.newCategory"
             name="M2Doc">
       </category>
+      <wizard
+            canFinishEarly="true"
+            category="org.obeonetwork.m2doc.ide.ui.newCategory"
+            class="org.obeonetwork.m2doc.ide.ui.wizard.M2DocNewTemplateWizard"
+            hasPages="true"
+            icon="icons/m2doc.gif"
+            id="org.obeonetwork.m2doc.ide.ui.wizard1"
+            name="New template"
+            project="false">
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.ide.ui.dialog.M2DocFileSelectionDialog;
+import org.obeonetwork.m2doc.ide.ui.wizard.M2DocMainVariablePage;
+import org.obeonetwork.m2doc.ide.ui.wizard.M2DocNewTemplatePage;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**

@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.genconf.editor.wizard;
+package org.obeonetwork.m2doc.ide.ui.wizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -47,14 +47,32 @@ public class M2DocNewTemplatePage extends WizardPage {
     private String templateName;
 
     /**
+     * The default template name.
+     */
+    private final String defaultTempateName;
+
+    /**
      * Constructor.
      * 
      * @param newProjectPage
      *            the {@link WizardNewProjectCreationPage}
      */
-    protected M2DocNewTemplatePage(WizardNewProjectCreationPage newProjectPage) {
+    public M2DocNewTemplatePage(WizardNewProjectCreationPage newProjectPage) {
         super("Select M2Doc template name.");
         this.newProjectPage = newProjectPage;
+        this.defaultTempateName = null;
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param defaultTempateName
+     *            the default template name
+     */
+    public M2DocNewTemplatePage(String defaultTempateName) {
+        super("Select M2Doc template name.");
+        this.newProjectPage = null;
+        this.defaultTempateName = defaultTempateName;
     }
 
     /**
@@ -76,6 +94,9 @@ public class M2DocNewTemplatePage extends WizardPage {
         final Label templateNameLabel = new Label(templateNameComposite, SWT.None);
         templateNameLabel.setText("Template name:");
         templateNameText = new Text(templateNameComposite, SWT.NONE);
+        if (defaultTempateName != null) {
+            templateNameText.setText(defaultTempateName);
+        }
         templateNameText.addModifyListener(new ModifyListener() {
 
             @Override
@@ -106,7 +127,8 @@ public class M2DocNewTemplatePage extends WizardPage {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (visible && (templateNameText.getText() == null || templateNameText.getText().isEmpty())) {
+        if (newProjectPage != null && visible
+            && (templateNameText.getText() == null || templateNameText.getText().isEmpty())) {
             templateNameText.setText(newProjectPage.getProjectName() + "." + M2DocUtils.DOCX_EXTENSION_FILE);
             validatePage(templateNameText.getText());
         }
