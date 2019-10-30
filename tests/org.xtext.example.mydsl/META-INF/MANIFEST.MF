@@ -27,3 +27,4 @@ Export-Package: org.xtext.example.mydsl.myDsl.util,
  org.xtext.example.mydsl.serializer,
  org.xtext.example.mydsl.parser.antlr
 Import-Package: org.apache.log4j
+Automatic-Module-Name: org.xtext.example.mydsl

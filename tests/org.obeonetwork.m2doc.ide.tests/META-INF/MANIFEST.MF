@@ -13,3 +13,4 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.obeonetwork.m2doc.ide.tests,
  org.obeonetwork.m2doc.ide.tests.services
+Automatic-Module-Name: org.obeonetwork.m2doc.ide.tests

@@ -18,3 +18,4 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
 Export-Package: org.obeonetwork.m2doc.cdo.tests
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Automatic-Module-Name: org.obeonetwork.m2doc.cdo.tests

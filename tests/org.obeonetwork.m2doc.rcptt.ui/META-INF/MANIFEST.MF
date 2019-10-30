@@ -13,3 +13,4 @@ Require-Bundle: org.obeonetwork.m2doc.tests,
  org.eclipse.core.runtime,
  org.eclipse.ui
 Export-Package: org.obeonetwork.m2doc.rcptt.ui.command
+Automatic-Module-Name: org.obeonetwork.m2doc.rcptt.ui

@@ -248,7 +248,8 @@ public final class M2DocTestUtils {
         res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace localized message
         res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");// strip lost user doc date
         res = res.replaceAll("@[a-f0-9]{5,8}[, ]", "@00000000 "); // object address in toString()
-        res = res.replaceAll("(\\tat [a-zA-Z0-9$.]+\\((Unknown Source|Native Method|[a-zA-Z0-9$.]+java:[0-9]+)\\)\n?)+",
+        res = res.replaceAll(
+                "(\\tat [a-zA-Z0-9$./]+((<|&lt;)init(>|&gt;))?\\((Unknown Source|Native Method|[a-zA-Z0-9$./]+java:[0-9]+)\\)\n?)+",
                 "...STACK..."); // strip stack traces
         res = res.replaceAll("127.0.0.100:12.345", "127.0.0.100:12 345"); // localized port...
         res = res.replaceAll("127.0.0.100:12,345", "127.0.0.100:12 345"); // localized port...

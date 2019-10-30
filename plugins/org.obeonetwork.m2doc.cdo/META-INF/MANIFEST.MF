@@ -19,3 +19,4 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
 Export-Package: org.obeonetwork.m2doc.cdo,
  org.obeonetwork.m2doc.cdo.providers.configuration,
  org.obeonetwork.m2doc.cdo.services.configurator
+Automatic-Module-Name: org.obeonetwork.m2doc.cdo

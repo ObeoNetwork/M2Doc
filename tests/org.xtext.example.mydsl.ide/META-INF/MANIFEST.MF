@@ -12,4 +12,5 @@ Require-Bundle: org.xtext.example.mydsl,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.xtext.example.mydsl.ide.contentassist.antlr.internal,
  org.xtext.example.mydsl.ide.contentassist.antlr
+Automatic-Module-Name: org.xtext.example.mydsl.ide
 

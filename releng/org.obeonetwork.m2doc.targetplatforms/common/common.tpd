@@ -13,7 +13,7 @@ location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-
 	org.apache.poi.feature.feature.group lazy
 }
 
-location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.6/" {
+location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
 	org.eclipse.emf.cdo.sdk.feature.group lazy
 	org.eclipse.net4j.feature.group lazy
 }

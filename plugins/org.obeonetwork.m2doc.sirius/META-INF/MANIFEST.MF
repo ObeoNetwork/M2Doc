@@ -28,3 +28,4 @@ Export-Package: org.obeonetwork.m2doc.sirius,
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Import-Package: org.eclipse.core.expressions
+Automatic-Module-Name: org.obeonetwork.m2doc.sirius

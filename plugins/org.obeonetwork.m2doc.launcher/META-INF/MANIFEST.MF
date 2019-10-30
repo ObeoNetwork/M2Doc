@@ -20,3 +20,4 @@ Require-Bundle: org.kohsuke.args4j;bundle-version="2.0.21",
 Bundle-Activator: org.obeonetwork.m2doc.launcher.internal.M2DocLauncherPlugin$Implementation
 Bundle-Localization: plugin
 Bundle-Vendor: %providerName
+Automatic-Module-Name: org.obeonetwork.m2doc.launcher

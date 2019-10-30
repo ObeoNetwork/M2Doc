@@ -11,3 +11,4 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
  org.obeonetwork.m2doc.genconf,
  org.apache.poi;bundle-version="[4.1.0,4.2.0)"
 Bundle-Vendor: %providerName
+Automatic-Module-Name: org.obeonetwork.m2doc.html.ide

@@ -27,3 +27,4 @@ Export-Package: org.obeonetwork.m2doc.tests,
  org.obeonetwork.m2doc.tests.properties,
  org.obeonetwork.m2doc.tests.services,
  org.obeonetwork.m2doc.tests.userdoc
+Automatic-Module-Name: org.obeonetwork.m2doc.tests

@@ -14,3 +14,4 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
  org.obeonetwork.m2doc.tests;bundle-version="[3.0.0,4.0.0)"
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Automatic-Module-Name: org.obeonetwork.m2doc.genconf.tests

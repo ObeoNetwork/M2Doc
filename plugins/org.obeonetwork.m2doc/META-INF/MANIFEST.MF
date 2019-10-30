@@ -25,3 +25,4 @@ Export-Package: org.obeonetwork.m2doc,
  org.obeonetwork.m2doc.template.impl,
  org.obeonetwork.m2doc.template.util,
  org.obeonetwork.m2doc.util
+Automatic-Module-Name: org.obeonetwork.m2doc
