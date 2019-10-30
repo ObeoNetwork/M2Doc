@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -42,6 +43,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -54,6 +56,9 @@ import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.services.HTTPServiceConfigurator;
+import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
+import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -91,6 +96,12 @@ public abstract class AbstractTemplatesTestSuite {
      * User content tag in file name.
      */
     private static final String USER_CONTENT_TAG = "-userContent";
+
+    /**
+     * The {@link HTTPServiceConfigurator}.
+     */
+    private static final IServicesConfiguratorDescriptor SERVICES_CONFIGURATOR_DESCRIPTOR = new ServicesConfiguratorDescriptor(
+            new HTTPServiceConfigurator());
 
     /**
      * The {@link URIHandler} that check we don't have adherence to {@link File}.
@@ -207,6 +218,16 @@ public abstract class AbstractTemplatesTestSuite {
     }
 
     /**
+     * Register the {@link HTMLServicesConfigurator} if needed.
+     */
+    @BeforeClass
+    public static void beforeClass() {
+        if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+            M2DocUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+        }
+    }
+
+    /**
      * Closes the {@link DocumentTemplate} and unregister the {@link TestMemoryURIHandler}.
      * 
      * @throws IOException
@@ -215,6 +236,9 @@ public abstract class AbstractTemplatesTestSuite {
     @AfterClass
     public static void afterClass() throws IOException {
         documentTemplate.close();
+        if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+            M2DocUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+        }
     }
 
     /**

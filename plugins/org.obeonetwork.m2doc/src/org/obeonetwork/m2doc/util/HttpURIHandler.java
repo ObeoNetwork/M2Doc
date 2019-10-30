@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.html.services;
+package org.obeonetwork.m2doc.util;
 
 import java.io.IOException;
 import java.io.InputStream;

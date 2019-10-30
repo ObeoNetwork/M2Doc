@@ -32,6 +32,7 @@ import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.tests.M2DocUtilsTests;
 import org.obeonetwork.m2doc.tests.M2DocUtilsTests.TestServiceConfigurator;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -90,7 +91,7 @@ public class GenconfUtilsTests {
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         assertEquals(1, options.size());
-        assertEquals("test.docx", options.get(GenconfUtils.TEMPLATE_URI_OPTION));
+        assertEquals("test.docx", options.get(M2DocUtils.TEMPLATE_URI_OPTION));
     }
 
     @Test
@@ -101,7 +102,7 @@ public class GenconfUtilsTests {
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         assertEquals(1, options.size());
-        assertEquals("test.docx", options.get(GenconfUtils.RESULT_URI_OPTION));
+        assertEquals("test.docx", options.get(M2DocUtils.RESULT_URI_OPTION));
     }
 
     @Test
@@ -112,7 +113,7 @@ public class GenconfUtilsTests {
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         assertEquals(1, options.size());
-        assertEquals("test.docx", options.get(GenconfUtils.VALIDATION_URI_OPTION));
+        assertEquals("test.docx", options.get(M2DocUtils.VALIDATION_URI_OPTION));
     }
 
     @Test
@@ -128,9 +129,9 @@ public class GenconfUtilsTests {
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         assertEquals(4, options.size());
         assertEquals("file:/generation.xmi", options.get(GenconfUtils.GENCONF_URI_OPTION));
-        assertEquals("file:/template.docx", options.get(GenconfUtils.TEMPLATE_URI_OPTION));
-        assertEquals("file:/result.docx", options.get(GenconfUtils.RESULT_URI_OPTION));
-        assertEquals("file:/validation.docx", options.get(GenconfUtils.VALIDATION_URI_OPTION));
+        assertEquals("file:/template.docx", options.get(M2DocUtils.TEMPLATE_URI_OPTION));
+        assertEquals("file:/result.docx", options.get(M2DocUtils.RESULT_URI_OPTION));
+        assertEquals("file:/validation.docx", options.get(M2DocUtils.VALIDATION_URI_OPTION));
     }
 
     @Test
@@ -161,9 +162,9 @@ public class GenconfUtilsTests {
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         assertEquals(7, options.size());
         assertEquals("file:/generation.xmi", options.get(GenconfUtils.GENCONF_URI_OPTION));
-        assertEquals("file:/template.docx", options.get(GenconfUtils.TEMPLATE_URI_OPTION));
-        assertEquals("file:/result.docx", options.get(GenconfUtils.RESULT_URI_OPTION));
-        assertEquals("file:/validation.docx", options.get(GenconfUtils.VALIDATION_URI_OPTION));
+        assertEquals("file:/template.docx", options.get(M2DocUtils.TEMPLATE_URI_OPTION));
+        assertEquals("file:/result.docx", options.get(M2DocUtils.RESULT_URI_OPTION));
+        assertEquals("file:/validation.docx", options.get(M2DocUtils.VALIDATION_URI_OPTION));
         assertEquals("value1", options.get("option1"));
         assertEquals("value2", options.get("option2"));
         assertEquals("value3", options.get("option3"));

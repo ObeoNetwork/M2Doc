@@ -18,7 +18,7 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.html.ide.HTMLServicesConfigurator;
+import org.obeonetwork.m2doc.html.services.HTMLServicesConfigurator;
 import org.obeonetwork.m2doc.html.services.M2DocHTMLServices;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;

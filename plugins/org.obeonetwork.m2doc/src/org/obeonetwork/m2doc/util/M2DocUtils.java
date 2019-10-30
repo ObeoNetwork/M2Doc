@@ -113,6 +113,21 @@ public final class M2DocUtils {
     public static final String DOCX_EXTENSION_FILE = "docx";
 
     /**
+     * The template {@link URI} option.
+     */
+    public static final String TEMPLATE_URI_OPTION = "TemplateURI";
+
+    /**
+     * The result {@link URI} option.
+     */
+    public static final String RESULT_URI_OPTION = "ResultURI";
+
+    /**
+     * The vlidation {@link URI} option.
+     */
+    public static final String VALIDATION_URI_OPTION = "ValidationURI";
+
+    /**
      * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
      * {@link IServicesConfiguratorDescriptor}.
      */

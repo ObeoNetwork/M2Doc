@@ -84,21 +84,6 @@ public final class GenconfUtils {
     public static final String GENCONF_URI_OPTION = "GenconfURI";
 
     /**
-     * The {@link Generation#getTemplateFileName() template URI} option.
-     */
-    public static final String TEMPLATE_URI_OPTION = "TemplateURI";
-
-    /**
-     * The {@link Generation#getResultFileName() result URI} option.
-     */
-    public static final String RESULT_URI_OPTION = "ResultURI";
-
-    /**
-     * The {@link Generation#getValidationFileName() result URI} option.
-     */
-    public static final String VALIDATION_URI_OPTION = "ValidationURI";
-
-    /**
      * Constructor.
      */
     private GenconfUtils() {
@@ -119,15 +104,15 @@ public final class GenconfUtils {
             res.put(GENCONF_URI_OPTION, eResource.getURI().toString());
         }
         if (generation.getTemplateFileName() != null) {
-            res.put(TEMPLATE_URI_OPTION,
+            res.put(M2DocUtils.TEMPLATE_URI_OPTION,
                     getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false)).toString());
         }
         if (generation.getResultFileName() != null) {
-            res.put(RESULT_URI_OPTION,
+            res.put(M2DocUtils.RESULT_URI_OPTION,
                     getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false)).toString());
         }
         if (generation.getValidationFileName() != null) {
-            res.put(VALIDATION_URI_OPTION,
+            res.put(M2DocUtils.VALIDATION_URI_OPTION,
                     getResolvedURI(generation, URI.createURI(generation.getValidationFileName(), false)).toString());
         }
         for (Option option : generation.getOptions()) {
