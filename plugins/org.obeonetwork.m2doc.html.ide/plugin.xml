@@ -4,7 +4,7 @@
    <extension
          point="org.obeonetwork.m2doc.ide.servicesConfigurator">
       <servicesConfigurators
-            class="org.obeonetwork.m2doc.html.ide.HTMLServicesConfigurator">
+            class="org.obeonetwork.m2doc.html.services.HTMLServicesConfigurator">
       </servicesConfigurators>
    </extension>
 
