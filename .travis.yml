@@ -24,20 +24,33 @@ jobs:
   exclude:
   - jdk: oraclejdk11
     env: PROFILE=platform-oxygen,tests
+  - jdk: oraclejdk11
     env: PROFILE=platform-photon,tests,updatesites
+  - jdk: oraclejdk11
     env: PROFILE=platform-sirius-5.1,tests
   - jdk: oraclejdk8
     env: PROFILE=platform-2018-09,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-2018-12,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-2019-03,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-2019-06,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-2019-09,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.0,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.1.0,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.1.1,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.1.3,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.1.x,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.2.2,tests
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.2.x,tests
 
 sudo: required
