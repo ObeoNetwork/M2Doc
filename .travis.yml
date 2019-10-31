@@ -1,10 +1,6 @@
 dist: trusty
 language: java
 env:
-  global:
-  - DISPLAY=:99.0
-  - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  matrix:
   - PROFILE=platform-oxygen,tests
   - PROFILE=platform-photon,tests,updatesites
   - PROFILE=platform-2018-09,tests
@@ -52,6 +48,8 @@ before_script:
 - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile
   --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1440x900x16"
 - sh -e /etc/init.d/xvfb start
+- export DISPLAY=:99.0
+- export MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
 # for the web site
 - sudo add-apt-repository ppa:brightbox/ruby-ng -y
 - sudo apt-get update
