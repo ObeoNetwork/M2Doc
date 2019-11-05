@@ -45,7 +45,6 @@ public class DMTableTest {
 
     @Test
     public void test() {
-        assertEquals("Test Table", table.getLabel());
         assertEquals(3, table.getColumnsCount()); // Header column + 2 columns
         assertEquals(3, table.getRows().size()); // Header + 2 rows
         Iterator<? extends MRow> rowIt = table.getRows().iterator();
@@ -127,7 +126,6 @@ public class DMTableTest {
     @Before
     public void setUp() {
         dtable = TableFactory.eINSTANCE.createDTable();
-        dtable.setName("Test Table");
 
         styleRow = TableFactory.eINSTANCE.createDTableElementStyle();
         styleRow.setLabelSize(3);
