@@ -22,68 +22,94 @@ jdk:
 - oraclejdk11
 
 jobs:
-  include:
-    # Java 8
-  - if: type != cron
+  exclude:
+    # Java 8 only
+  - jdk: oraclejdk11
+    env: PROFILE=platform-oxygen,tests
+  - if: type = cron
     jdk: oraclejdk8
     env: PROFILE=platform-oxygen,tests
 
-  - if: type != cron
+  - jdk: oraclejdk11
+    env: PROFILE=platform-photon,tests,updatesites
+  - if: type = cron
     jdk: oraclejdk8
     env: PROFILE=platform-photon,tests,updatesites
 
-  - if: type != cron
+  - jdk: oraclejdk11
+    env: PROFILE=platform-sirius-5.1,tests
+  - if: type = cron
     jdk: oraclejdk8
     env: PROFILE=platform-sirius-5.1,tests
 
-    # Java 11
-  - if: type != cron
+    # Java 11 only
+  - jdk: oraclejdk8
+    env: PROFILE=platform-2018-09,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-2018-09,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-2018-12,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-2018-12,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-2019-03,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-2019-03,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-2019-06,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-2019-06,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-2019-09,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-2019-09,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.0,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-sirius-6.0,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.1.0,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-sirius-6.1.0,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.1.1,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-sirius-6.1.1,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.1.3,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-sirius-6.1.3,tests
 
-  - jdk: oraclejdk11
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.1.x,tests
 
-  - if: type != cron
+  - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.2.2,tests
+  - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-sirius-6.2.2,tests
 
-  - jdk: oraclejdk11
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.2.x,tests
 
-  - jdk: oraclejdk11
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.3.x,tests
 
 sudo: required
