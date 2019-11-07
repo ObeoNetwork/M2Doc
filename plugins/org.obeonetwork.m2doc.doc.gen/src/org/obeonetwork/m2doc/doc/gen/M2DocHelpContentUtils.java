@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.obeonetwork.m2doc.doc;
+package org.obeonetwork.m2doc.doc.gen;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;

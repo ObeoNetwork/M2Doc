@@ -8,7 +8,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.obeonetwork.m2doc.doc;
+package org.obeonetwork.m2doc.doc.gen;
+
+import static org.obeonetwork.m2doc.doc.gen.M2DocHelpContentUtils.md;
+import static org.obeonetwork.m2doc.doc.gen.M2DocHelpContentUtils.mdBody;
+import static org.obeonetwork.m2doc.doc.gen.M2DocHelpContentUtils.mdHead;
+import static org.obeonetwork.m2doc.doc.gen.M2DocHelpContentUtils.mdHeader;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +28,6 @@ import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
-
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.md;
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.mdBody;
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.mdHead;
-import static org.obeonetwork.m2doc.doc.M2DocHelpContentUtils.mdHeader;
 
 /**
  * Utility class used to generate the M2Doc documentation.
