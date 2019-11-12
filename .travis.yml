@@ -17,6 +17,7 @@ env:
   - PROFILE=platform-sirius-6.2.2,tests
   - PROFILE=platform-sirius-6.2.x,tests
   - PROFILE=platform-sirius-6.3.x,tests
+  - PROFILE=platform-capella-1.4.0,tests
 jdk:
 - oraclejdk8
 - oraclejdk11
@@ -111,6 +112,12 @@ jobs:
 
   - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.3.x,tests
+
+  - jdk: oraclejdk8
+    env: PROFILE=platform-capella-1.4.0,tests
+  - if: type = cron
+    jdk: oraclejdk11
+    env: PROFILE=platform-capella-1.4.0,tests
 
 sudo: required
 install: true
