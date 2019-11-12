@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Sirius 6.0 Target Platform" sequenceNumber="1572449417">
+<target name="M2Doc Sirius 6.0 Target Platform" sequenceNumber="1573564359">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
@@ -22,8 +22,8 @@
       <repository id="CDO" location="http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.xtext.sdk.feature.group" version="2.15.0.v20180916-1232"/>
-      <repository id="XText" location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.15.0/"/>
+      <unit id="org.eclipse.xtext.sdk.feature.group" version="2.16.0.v20181203-1555"/>
+      <repository id="XText" location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
