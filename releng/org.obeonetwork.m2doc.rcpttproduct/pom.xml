@@ -20,11 +20,11 @@ Contributors:
     <version>3.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.obeonetwork.m2doc.product</artifactId>
+  <artifactId>org.obeonetwork.m2doc.rcpttproduct</artifactId>
   <packaging>eclipse-repository</packaging>
 
   <properties>
-    <product-id>org.obeonetwork.m2doc.product</product-id>
+    <product-id>org.obeonetwork.m2doc.rcpttproduct</product-id>
   </properties>
 
   <pluginRepositories>

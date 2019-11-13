@@ -47,7 +47,7 @@
           </runner>
           <aut>
             <groupId>org.obeonetwork.m2doc</groupId>
-            <artifactId>org.obeonetwork.m2doc.product</artifactId>
+            <artifactId>org.obeonetwork.m2doc.rcpttproduct</artifactId>
             <version>3.0.0-SNAPSHOT</version>
             <injections>
               <injection>
