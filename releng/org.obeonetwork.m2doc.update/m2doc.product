@@ -12,7 +12,6 @@
    </launcherArgs>
 
    <launcher name="m2doc">
-      <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
@@ -38,6 +37,9 @@
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
       <feature id="org.eclipse.platform"/>
+      <feature id="org.obeonetwork.m2doc.feature"/>
+      <feature id="org.obeonetwork.m2doc.html.feature"/>
+      <feature id="org.obeonetwork.m2doc.cdo.feature"/>
    </features>
 
    <configurations>

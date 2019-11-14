@@ -16,36 +16,6 @@
       [Enter License Description here.]
    </license>
 
-   <includes
-         id="org.eclipse.equinox.core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.emf.common"
-         version="0.0.0"/>
-
-   <includes
-         id="org.obeonetwork.m2doc.feature"
-         version="0.0.0"/>
-
-   <requires>
-      <import plugin="org.eclipse.core.contenttype"/>
-      <import plugin="org.eclipse.core.jobs"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.equinox.app"/>
-      <import plugin="org.eclipse.equinox.common"/>
-      <import plugin="org.eclipse.equinox.ds"/>
-      <import plugin="org.eclipse.equinox.preferences"/>
-      <import plugin="org.eclipse.equinox.registry"/>
-      <import plugin="org.eclipse.equinox.simpleconfigurator"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.eclipse.osgi.services"/>
-      <import plugin="org.eclipse.acceleo.query"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="org.eclipse.emf.ecore.edit"/>
-   </requires>
-
    <plugin
          id="org.obeonetwork.m2doc.launcher"
          download-size="0"

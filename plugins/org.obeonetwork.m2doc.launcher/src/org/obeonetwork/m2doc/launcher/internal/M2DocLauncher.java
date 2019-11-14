@@ -51,6 +51,16 @@ public class M2DocLauncher implements IApplication {
     private static final Integer APPLICATION_ERROR = Integer.valueOf(-1);
 
     /**
+     * The error message while loading genconf.
+     */
+    private static final String ERROR_LOADING_GENCONF = "Error loading genconf: '%s' : %s.";
+
+    /**
+     * The error message while launching genconf.
+     */
+    private static final String ERROR_LAUNCHING_GENCONF = "Error launching genconf: '%s' : %s.";
+
+    /**
      * The input models.
      */
     @Option(name = "-genconfs",
@@ -106,79 +116,20 @@ public class M2DocLauncher implements IApplication {
 
             ResourceSet s = new ResourceSetImpl();
             for (URI uri : genconfsURIs) {
-                if (s.getURIConverter().exists(uri, Collections.EMPTY_MAP)) {
-                    try {
-                        Resource r = s.getResource(uri, true);
-                        r.load(Collections.EMPTY_MAP);
-                        for (EObject eObj : r.getContents()) {
-                            if (eObj instanceof Generation) {
-                                loadedGenConfs.add((Generation) eObj);
-                            }
-                        }
-                    } catch (IOException e) {
-                        somethingWentWrong = true;
-                        M2DocLauncherPlugin.INSTANCE
-                                .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
-                                        "Error loading genconf: '" + uri.toString() + "' : " + e.getMessage(), e));
-                        // CHECKSTYLE:OFF we want to report any error
-                    } catch (RuntimeException e) {
-                        // CHECKSTYLE:ON
-                        somethingWentWrong = true;
-                        M2DocLauncherPlugin.INSTANCE
-                                .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
-                                        "Error loading genconf: '" + uri.toString() + "' : " + e.getMessage(), e));
-                    }
-                } else {
-                    M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
-                            M2DocLauncherPlugin.INSTANCE.getSymbolicName(),
-                            "Error loading genconf: '" + uri.toString() + "' : does not exist or is not accessible."));
-                }
+                somethingWentWrong = loadGenerationConfigs(loadedGenConfs, s, uri) || somethingWentWrong;
             }
 
             final Monitor monitor = new CLIUtils.ColoredPrinting(System.out);
             monitor.beginTask("Generating .docx documents", loadedGenConfs.size());
             for (Generation generation : loadedGenConfs) {
-                try {
-
-                    System.out.println("Input: " + generation.eResource().getURI());
-                    List<URI> generated = GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(), monitor);
-                    for (URI uri : generated) {
-                        System.out.println("Output: " + uri.toString());
-                    }
-                    monitor.worked(1);
-
-                } catch (DocumentGenerationException e) {
-                    M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
-                            M2DocLauncherPlugin.INSTANCE.getSymbolicName(), "Error launching genconf: '"
-                                + generation.eResource().getURI().toString() + "' : " + e.getMessage(),
-                            e));
-                } catch (IOException e) {
-                    M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
-                            M2DocLauncherPlugin.INSTANCE.getSymbolicName(), "Error launching genconf: '"
-                                + generation.eResource().getURI().toString() + "' : " + e.getMessage(),
-                            e));
-                } catch (DocumentParserException e) {
-                    M2DocLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
-                            M2DocLauncherPlugin.INSTANCE.getSymbolicName(), "Error launching genconf: '"
-                                + generation.eResource().getURI().toString() + "' : " + e.getMessage(),
-                            e));
-                }
+                launchGenerationConfiguration(generation, monitor);
             }
-
-        } catch (
-
-        CmdLineException e) {
-
-            /*
-             * print the list of available options
-             */
+        } catch (CmdLineException e) {
+            // print the list of available options
             parser.printUsage(System.err);
             System.err.println();
             somethingWentWrong = true;
-
-            /*
-             * problem in the command line
-             */
+            // problem in the command line
             M2DocLauncherPlugin.INSTANCE
                     .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), e.getMessage(), e));
         }
@@ -191,11 +142,79 @@ public class M2DocLauncher implements IApplication {
     }
 
     /**
+     * Launches the given {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation} to launch
+     * @param monitor
+     *            the {@link Monitor}
+     */
+    private void launchGenerationConfiguration(Generation generation, final Monitor monitor) {
+        try {
+            System.out.println("Input: " + generation.eResource().getURI());
+            List<URI> generated = GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(), monitor);
+            for (URI uri : generated) {
+                System.out.println("Output: " + uri.toString());
+            }
+            monitor.worked(1);
+
+        } catch (DocumentGenerationException | IOException | DocumentParserException e) {
+            final String message = String.format(ERROR_LAUNCHING_GENCONF, generation.eResource().getURI().toString(),
+                    e.getMessage());
+            M2DocLauncherPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), message, e));
+        }
+    }
+
+    /**
+     * Loads the {@link Generation} at the given {@link URI}.
+     * 
+     * @param loadedGenConfs
+     *            the loaded {@link Generation}
+     * @param resourceSet
+     *            the {@link ResourceSet}
+     * @param uri
+     *            the {@link URI} to load from
+     * @return <code>true</code> if something went wrong, <code>false</code>
+     *         otherwise
+     */
+    private boolean loadGenerationConfigs(Collection<Generation> loadedGenConfs, ResourceSet resourceSet, URI uri) {
+        boolean somethingWentWrong;
+
+        if (resourceSet.getURIConverter().exists(uri, Collections.EMPTY_MAP)) {
+            try {
+                Resource r = resourceSet.getResource(uri, true);
+                r.load(Collections.EMPTY_MAP);
+                for (EObject eObj : r.getContents()) {
+                    if (eObj instanceof Generation) {
+                        loadedGenConfs.add((Generation) eObj);
+                    }
+                }
+                somethingWentWrong = false;
+                // CHECKSTYLE:OFF we want to report any error
+            } catch (IOException | RuntimeException e) {
+                somethingWentWrong = true;
+                // CHECKSTYLE:ON
+                final String message = String.format(ERROR_LOADING_GENCONF, uri.toString(), e.getMessage());
+                M2DocLauncherPlugin.INSTANCE
+                        .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), message, e));
+            }
+        } else {
+            final String message = String.format(ERROR_LOADING_GENCONF, uri.toString(),
+                    "does not exist or is not accessible");
+            M2DocLauncherPlugin.INSTANCE
+                    .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), message));
+            somethingWentWrong = false;
+        }
+        return somethingWentWrong;
+    }
+
+    /**
      * Validate arguments which are mandatory only in some circumstances.
      * 
      * @param parser
      *            the command line parser.
-     * @return
+     * @return the {@link Collection} of genconf {@link URI}
      * @throws CmdLineException
      *             if the arguments are not valid.
      */
