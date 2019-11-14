@@ -33,6 +33,12 @@
    <feature id="org.obeonetwork.m2doc.html.feature.source" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
+   <feature id="org.obeonetwork.m2doc.launcher.feature" version="0.0.0">
+      <category name="M2Doc"/>
+   </feature>
+   <feature id="org.obeonetwork.m2doc.launcher.feature.source" version="0.0.0">
+      <category name="M2Doc"/>
+   </feature>
 
    <bundle id="org.obeonetwork.m2doc.genconf.edit.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.genconf.tests" version="0.0.0"/>
