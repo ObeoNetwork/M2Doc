@@ -26,8 +26,10 @@ import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -46,6 +48,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.POIServices;
@@ -55,10 +58,11 @@ import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.util.ECrossReferenceAdapterCrossReferenceProvider;
 import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.obeonetwork.m2doc.util.ResourceSetRootEObjectProvider;
 
 /**
  * Utility class for {@link Generation}.
@@ -148,18 +152,41 @@ public final class GenconfUtils {
     /**
      * Gets the initialized {@link IQueryEnvironment} for the given {@link Generation}.
      * 
-     * @param uriConverter
-     *            the {@link URIConverter}
+     * @param resourceSetForModel
+     *            the {@link ResourceSet} for model elements
      * @param generation
      *            the {@link Generation}
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
-    public static IQueryEnvironment getQueryEnvironment(URIConverter uriConverter, Generation generation) {
+    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModel, Generation generation) {
+        final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+                ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModel));
+        final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(resourceSetForModel);
+
+        return getQueryEnvironment(resourceSetForModel.getURIConverter(), crossReferenceProvider, rootProvider,
+                generation);
+    }
+
+    /**
+     * Gets the initialized {@link IQueryEnvironment} for the given {@link Generation}.
+     * 
+     * @param uriConverter
+     *            the {@link URIConverter} to resolve resources like images
+     * @param crossReferenceProvider
+     *            the {@link CrossReferenceProvider} used for eInverse() service
+     * @param rootProvider
+     *            the {@link IRootEObjectProvider} used for the allInstances() service
+     * @param generation
+     *            the {@link Generation}
+     * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
+     */
+    public static IQueryEnvironment getQueryEnvironment(URIConverter uriConverter,
+            CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, Generation generation) {
         final URI templateURI;
         templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
         final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
+                .newEnvironmentWithDefaultServices(crossReferenceProvider, rootProvider);
 
         final Map<String, String> options = getOptions(generation);
         M2DocUtils.prepareEnvironmentServices(queryEnvironment, uriConverter, templateURI, options);
@@ -459,7 +486,7 @@ public final class GenconfUtils {
         final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, generation,
                 new ResourceSetImpl(), getOptions(generation));
         final URIConverter uriConverter = resourceSetForModels.getURIConverter();
-        final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(uriConverter, generation);
+        final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
 
         if (!uriConverter.exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template doest not exist " + templateURI);
@@ -485,7 +512,7 @@ public final class GenconfUtils {
                 generatedURIs.add(resultValidationURI);
             }
 
-            M2DocUtils.cleanResourceSetForModels(generation);
+            M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModels);
 
             return generatedURIs;
         }
@@ -516,8 +543,7 @@ public final class GenconfUtils {
         final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
                 new ResourceSetImpl(), getOptions(generation));
         // get AQL environment
-        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModel.getURIConverter(),
-                generation);
+        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModel, generation);
 
         // get the template path
         final String templateFilePath = generation.getTemplateFileName();
@@ -575,7 +601,7 @@ public final class GenconfUtils {
             }
         }
 
-        M2DocUtils.cleanResourceSetForModels(generation);
+        M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
 
         return res;
     }
@@ -797,11 +823,8 @@ public final class GenconfUtils {
      * @return the {@link List} of available {@link Option#getName() option names}
      */
     public static List<String> getAvailableOptionNames(Generation generation) {
-        List<String> availableOptions = new ArrayList<String>();
+        List<String> availableOptions = M2DocUtils.getPossibleOptionNames();
 
-        for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
-            availableOptions.addAll(configurator.getOptions());
-        }
         for (Option option : generation.getOptions()) {
             availableOptions.remove(option.getName());
         }

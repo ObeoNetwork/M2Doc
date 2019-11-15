@@ -219,7 +219,7 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
             final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, properties);
             gen.getDefinitions().addAll(newDefinitions);
             GenconfUtils.initializeVariableDefinition(gen, queryEnvironment, properties, resourceSetForModel);
-            M2DocUtils.cleanResourceSetForModels(queryEnvironment);
+            M2DocUtils.cleanResourceSetForModels(queryEnvironment, resourceSetForModel);
             // CHECKSTYLE:OFF
         } catch (Exception e) {
             // CHECKSTYLE:ON

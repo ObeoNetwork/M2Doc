@@ -1,0 +1,4 @@
+ERROR - eInverse(org.eclipse.emf.ecore.EObject,org.eclipse.emf.ecore.EClassifier) with arguments [org.eclipse.emf.ecore.impl.EClassImpl@00000000 (name: NamedElement) (instanceClassName: null) (abstract: true, interface: true), org.eclipse.emf.ecore.impl.EClassImpl@00000000 (name: EClassifier) (instanceClassName: null) (abstract: true, interface: false)] failed:
+	No ECrossReferenceAdapter found for :org.eclipse.emf.ecore.impl.EClassImpl@00000000 (name: NamedElement) (instanceClassName: null) (abstract: true, interface: true)
+java.lang.IllegalStateException: No ECrossReferenceAdapter found for :org.eclipse.emf.ecore.impl.EClassImpl@00000000 (name: NamedElement) (instanceClassName: null) (abstract: true, interface: true)
+...STACK...

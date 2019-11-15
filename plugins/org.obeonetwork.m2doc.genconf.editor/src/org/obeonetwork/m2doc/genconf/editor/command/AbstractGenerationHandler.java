@@ -144,7 +144,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
             }
         }
 
-        M2DocUtils.cleanResourceSetForModels(gen);
+        M2DocUtils.cleanResourceSetForModels(gen, resourceSetForModel);
     }
 
 }

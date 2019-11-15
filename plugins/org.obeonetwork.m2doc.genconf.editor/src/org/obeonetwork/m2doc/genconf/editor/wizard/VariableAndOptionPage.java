@@ -560,11 +560,13 @@ public class VariableAndOptionPage extends WizardPage {
     @Override
     public void dispose() {
         super.dispose();
+        if (editingDomain != null) {
+            M2DocUtils.cleanResourceSetForModels(queryEnvironment, editingDomain.getResourceSet());
+        }
         if (createdEditingDomaine) {
             editingDomain.dispose();
             editingDomain = null;
         }
-        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
         adapterFactory.dispose();
     }
 
@@ -579,11 +581,13 @@ public class VariableAndOptionPage extends WizardPage {
         defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                 new XMIResourceFactoryImpl());
 
+        if (editingDomain != null) {
+            M2DocUtils.cleanResourceSetForModels(queryEnvironment, editingDomain.getResourceSet());
+        }
         if (createdEditingDomaine) {
             editingDomain.dispose();
             editingDomain = null;
         }
-        M2DocUtils.cleanResourceSetForModels(queryEnvironment);
 
         final ResourceSet modelResourceSet = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
                 queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));

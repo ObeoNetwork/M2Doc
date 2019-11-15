@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
@@ -123,9 +125,14 @@ public final class M2DocUtils {
     public static final String RESULT_URI_OPTION = "ResultURI";
 
     /**
-     * The vlidation {@link URI} option.
+     * The validation {@link URI} option.
      */
     public static final String VALIDATION_URI_OPTION = "ValidationURI";
+
+    /**
+     * The install {@link ECrossReferenceAdapter} option.
+     */
+    public static final String INSTALL_CROSS_REFERENCE_ADAPTER_OPTION = "InstallCrossReferenceAdapter";
 
     /**
      * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
@@ -190,6 +197,11 @@ public final class M2DocUtils {
     private static final int TOTAL_GENERATE_MONITOR_WORK = INIT_DEST_DOC_MONITOR_WORK + ENGINE_INIT_MONITOR_WORK
         + TEMPLATE_SERVICES_MONITOR_WORK + M2DocEvaluator.MONITOR_WORK + LOST_FILES_MONITOR_WORK
         + DOCUMENT_SAVE_MONITOR_WORK;
+
+    /**
+     * The mapping from {@link Object key} to installed {@link ECrossReferenceAdapter}.
+     */
+    private static final Map<Object, ECrossReferenceAdapter> CROSS_REFERENCE_ADAPTERS = new HashMap<>();
 
     /**
      * Constructor.
@@ -850,6 +862,23 @@ public final class M2DocUtils {
     }
 
     /**
+     * Gets the {@link List} of possible option names.
+     * 
+     * @return the {@link List} of possible option names
+     */
+    public static List<String> getPossibleOptionNames() {
+        final List<String> res = new ArrayList<>();
+
+        for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
+            res.addAll(configurator.getOptions());
+        }
+
+        res.add(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION);
+
+        return res;
+    }
+
+    /**
      * Create a new {@link ResourceSet} suitable for loading {@link EObject} from the given options.
      * 
      * @param exceptions
@@ -885,6 +914,13 @@ public final class M2DocUtils {
             res = defaultResourceSet;
         }
 
+        if (Boolean.valueOf(options.get(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION))) {
+            final ECrossReferenceAdapter adapter = new ECrossReferenceAdapter();
+            adapter.setTarget(res);
+            res.eAdapters().add(adapter);
+            CROSS_REFERENCE_ADAPTERS.put(key, adapter);
+        }
+
         return res;
     }
 
@@ -894,8 +930,15 @@ public final class M2DocUtils {
      * 
      * @param key
      *            the {@link Object} key
+     * @param resourceSet
+     *            the {@link ResourceSet} created using {@link #createResourceSetForModels(List, Object, ResourceSet, Map)}
      */
-    public static void cleanResourceSetForModels(Object key) {
+    public static void cleanResourceSetForModels(Object key, ResourceSet resourceSet) {
+        final ECrossReferenceAdapter adapter = CROSS_REFERENCE_ADAPTERS.remove(key);
+        if (adapter != null) {
+            adapter.unsetTarget(resourceSet);
+            resourceSet.eAdapters().remove(adapter);
+        }
         for (IServicesConfigurator configurator : getConfigurators()) {
             configurator.cleanResourceSetForModels(key);
         }

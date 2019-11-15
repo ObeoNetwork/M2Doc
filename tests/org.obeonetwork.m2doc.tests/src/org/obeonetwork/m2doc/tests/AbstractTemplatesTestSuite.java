@@ -170,7 +170,7 @@ public abstract class AbstractTemplatesTestSuite {
         setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
         final List<Exception> exceptions = new ArrayList<>();
         resourceSetForModels = getResourceSetForModel(exceptions);
-        queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels.getURIConverter(), generation);
+        queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
         new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor());
@@ -201,7 +201,7 @@ public abstract class AbstractTemplatesTestSuite {
 
     @After
     public void after() {
-        M2DocUtils.cleanResourceSetForModels(generation);
+        M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModels);
         uriHandler.clear();
     }
 

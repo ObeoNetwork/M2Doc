@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.dialog;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +34,6 @@ import org.eclipse.swt.widgets.Text;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.ide.ui.wizard.SelectRegisteredTemplatePage.CollectionContentProvider;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -130,11 +128,8 @@ public class M2DocOptionDialog extends MessageDialog {
      * @return the sorted {@link List} of possible {@link Option} {@link Option#getName() name}
      */
     private List<String> getPossibleOptions(Generation gen, Option opt) {
-        final List<String> possibleOptions = new ArrayList<>();
+        final List<String> possibleOptions = M2DocUtils.getPossibleOptionNames();
 
-        for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
-            possibleOptions.addAll(configurator.getOptions());
-        }
         for (Option o : gen.getOptions()) {
             if (o != opt) {
                 possibleOptions.remove(o.getName());
