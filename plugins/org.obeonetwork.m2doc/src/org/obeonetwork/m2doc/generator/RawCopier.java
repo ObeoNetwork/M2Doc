@@ -193,7 +193,6 @@ public class RawCopier {
      * @throws Exception
      *             if something goes wrong
      */
-    @SuppressWarnings("resource")
     public XWPFParagraph copyUserContent(UserContent userContent, XWPFParagraph outputParagraph) throws Exception {
         XWPFParagraph res = null;
 
@@ -223,9 +222,7 @@ public class RawCopier {
             inlineEndUserContent = false;
         }
 
-        final XWPFDocument containerInputDocument = startUserContentRun.getDocument();
         final IBody inputBody = startUserContentParagraph.getBody();
-        final XWPFDocument containerOutputDocument = outputParagraph.getDocument();
         final IBody outputBody = outputParagraph.getBody();
 
         final boolean inline;
@@ -799,7 +796,7 @@ public class RawCopier {
                     .getRelationship(inputRelationID);
             final PackagePart outputPart;
             if (inputRelationship.getTargetMode() == TargetMode.INTERNAL) {
-                final PackagePart source = inputBody.getXWPFDocument().getPackage()
+                final PackagePart source = inputBody.getXWPFDocument().getPackagePart().getPackage()
                         .getPart(PackagingURIHelper.createPartName(inputRelationship.getTargetURI()));
                 outputPart = getOrCopyPart(inputPartURIToOutputPartURI, source, outputBody.getXWPFDocument());
             } else {
