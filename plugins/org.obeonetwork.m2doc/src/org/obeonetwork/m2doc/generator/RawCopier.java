@@ -976,7 +976,6 @@ public class RawCopier {
      * @throws Exception
      *             if something goes wrong
      */
-    @SuppressWarnings("resource")
     public XWPFParagraph copyBody(XWPFParagraph outputParagraph, IBody body) throws Exception {
         XWPFParagraph res = null;
 
@@ -993,8 +992,6 @@ public class RawCopier {
                 inline = true;
             }
 
-            final XWPFDocument containerInputDocument = body.getXWPFDocument();
-            final XWPFDocument containerOutputDocument = outputBody.getXWPFDocument();
             final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
             final List<XWPFRun> listOutputRuns = new ArrayList<>();
             final List<XWPFTable> listOutputTables = new ArrayList<>();
