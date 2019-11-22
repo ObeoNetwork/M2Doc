@@ -68,7 +68,7 @@ public final class DocumentationGenerator {
 
 		System.out.println("Prepare the generation of the documentation for " + pluginFolder.getAbsolutePath());
 
-		File documentationFolder = new File(pluginFolder, "doc"); //$NON-NLS-1$
+		File documentationFolder = pluginFolder;
 
 		// toc.xml
 		StringBuffer buffer = M2DocHelpContentUtils.computeToc(STANDARD_SERVICE_PROVIDERS);

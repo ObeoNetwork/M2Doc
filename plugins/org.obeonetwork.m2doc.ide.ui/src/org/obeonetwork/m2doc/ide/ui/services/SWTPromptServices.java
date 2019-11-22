@@ -47,7 +47,7 @@ import org.obeonetwork.m2doc.ide.ui.dialog.EObjectSelectionDialog;
  */
 //@formatter:off
 @ServiceProvider(
-value = "Services available for prompting user for values. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/promptServices)."
+value = "Services available for prompting user for values using SWT for graphical user interface."
 )
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype", "restriction" })
