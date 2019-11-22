@@ -163,15 +163,14 @@ public final class GenconfUtils {
                 ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModel));
         final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(resourceSetForModel);
 
-        return getQueryEnvironment(resourceSetForModel.getURIConverter(), crossReferenceProvider, rootProvider,
-                generation);
+        return getQueryEnvironment(resourceSetForModel, crossReferenceProvider, rootProvider, generation);
     }
 
     /**
      * Gets the initialized {@link IQueryEnvironment} for the given {@link Generation}.
      * 
-     * @param uriConverter
-     *            the {@link URIConverter} to resolve resources like images
+     * @param resourceSetForModel
+     *            the {@link ResourceSet} for model elements
      * @param crossReferenceProvider
      *            the {@link CrossReferenceProvider} used for eInverse() service
      * @param rootProvider
@@ -180,7 +179,7 @@ public final class GenconfUtils {
      *            the {@link Generation}
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
-    public static IQueryEnvironment getQueryEnvironment(URIConverter uriConverter,
+    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModel,
             CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, Generation generation) {
         final URI templateURI;
         templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
@@ -189,7 +188,7 @@ public final class GenconfUtils {
                 .newEnvironmentWithDefaultServices(crossReferenceProvider, rootProvider);
 
         final Map<String, String> options = getOptions(generation);
-        M2DocUtils.prepareEnvironmentServices(queryEnvironment, uriConverter, templateURI, options);
+        M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModel, templateURI, options);
 
         return queryEnvironment;
     }
@@ -348,6 +347,7 @@ public final class GenconfUtils {
 
     /**
      * Tells if the given {@link Definition} is valid for the given {@link Set} of {@link IType}.
+     * resourceSetForModels
      * 
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
@@ -504,7 +504,8 @@ public final class GenconfUtils {
                     queryEnvironment, monitor);
 
             // launch generation
-            M2DocUtils.generate(documentTemplate, queryEnvironment, definitions, uriConverter, generatedURI, monitor);
+            M2DocUtils.generate(documentTemplate, queryEnvironment, definitions, resourceSetForModels, generatedURI,
+                    monitor);
 
             List<URI> generatedURIs = new ArrayList<URI>();
             generatedURIs.add(generatedURI);

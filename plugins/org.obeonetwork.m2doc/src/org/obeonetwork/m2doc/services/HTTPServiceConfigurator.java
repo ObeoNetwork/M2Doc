@@ -21,7 +21,6 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.util.HttpURIHandler;
@@ -55,9 +54,9 @@ public class HTTPServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
+    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options) {
-        uriConverter.getURIHandlers().add(0, httpHandler);
+        resourceSetForModels.getURIConverter().getURIHandlers().add(0, httpHandler);
         return Collections.emptySet();
     }
 
@@ -67,8 +66,8 @@ public class HTTPServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter) {
-        uriConverter.getURIHandlers().remove(httpHandler);
+    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
+        resourceSetForModels.getURIConverter().getURIHandlers().remove(httpHandler);
     }
 
     @Override

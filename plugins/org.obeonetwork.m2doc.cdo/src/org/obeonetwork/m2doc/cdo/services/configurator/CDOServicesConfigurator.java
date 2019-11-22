@@ -25,7 +25,6 @@ import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.spi.cdo.InternalCDOView;
 import org.eclipse.net4j.connector.IConnector;
 import org.obeonetwork.m2doc.cdo.M2DocCDOUtils;
@@ -88,7 +87,7 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter converter,
+    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options) {
         return Collections.emptySet();
     }
@@ -99,7 +98,7 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter) {
+    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
         // nothing to do here
     }
 

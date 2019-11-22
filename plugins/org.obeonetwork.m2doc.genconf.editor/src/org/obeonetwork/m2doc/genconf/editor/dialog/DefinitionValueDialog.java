@@ -11,37 +11,17 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.dialog;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -52,14 +32,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.dialogs.PatternFilter;
 import org.obeonetwork.m2doc.genconf.BooleanDefinition;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.IntegerDefinition;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.RealDefinition;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
+import org.obeonetwork.m2doc.ide.ui.dialog.EObjectSelectionDialog;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 /**
@@ -68,17 +47,7 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @SuppressWarnings("restriction")
-public class DefinitionValueDialog extends MessageDialog {
-
-    /**
-     * The table minimum height.
-     */
-    private static final int TABLE_MINIMUM_HEIGHT = 400;
-
-    /**
-     * The table minimum width.
-     */
-    private static final int TABLE_MINIMUM_WIDTH = 200;
+public class DefinitionValueDialog extends EObjectSelectionDialog {
 
     /**
      * The selected value.
@@ -86,19 +55,9 @@ public class DefinitionValueDialog extends MessageDialog {
     private Object value;
 
     /**
-     * The {@link AdapterFactory}.
-     */
-    private AdapterFactory adapterFactory;
-
-    /**
      * The {@link Definition} to edit.
      */
     private final Definition definition;
-
-    /**
-     * The {@link ResourceSet} for model.
-     */
-    private final ResourceSet resourceSet;
 
     /**
      * The {@link IReadOnlyQueryEnvironment}.
@@ -128,12 +87,10 @@ public class DefinitionValueDialog extends MessageDialog {
      */
     public DefinitionValueDialog(Shell parentShell, AdapterFactory adapterFactory, Definition definition,
             IReadOnlyQueryEnvironment queryEnvironment, TemplateCustomProperties properties, ResourceSet resourceSet) {
-        super(parentShell, "Select value for " + definition.getKey(), null,
-                "Select a value of type " + properties.getVariables().get(definition.getKey()), MessageDialog.QUESTION,
-                new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL}, 0);
+        super(parentShell, adapterFactory, "Select value for " + definition.getKey(),
+                "Select a value of type " + properties.getVariables().get(definition.getKey()), queryEnvironment,
+                resourceSet, null);
         this.definition = definition;
-        this.resourceSet = resourceSet;
-        this.adapterFactory = adapterFactory;
         this.queryEnvironment = queryEnvironment;
         this.properties = properties;
     }
@@ -149,7 +106,10 @@ public class DefinitionValueDialog extends MessageDialog {
         } else if (definition instanceof IntegerDefinition) {
             createIntegerCustomArea((IntegerDefinition) definition, container);
         } else if (definition instanceof ModelDefinition) {
-            createModelCustomArea((ModelDefinition) definition, container);
+            final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+            final Set<IType> acceptedTypes = properties.getVariableTypes(validator, queryEnvironment,
+                    properties.getVariables().get(definition.getKey()));
+            createModelCustomArea(acceptedTypes, container);
         } else if (definition instanceof RealDefinition) {
             createRealCustomArea((RealDefinition) definition, container);
         } else if (definition instanceof StringDefinition) {
@@ -162,222 +122,6 @@ public class DefinitionValueDialog extends MessageDialog {
     }
 
     /**
-     * Creates the {@link #createCustomArea(Composite) custom area} for the given {@link ModelDefinition}.
-     * 
-     * @param def
-     *            the {@link ModelDefinition}
-     * @param container
-     *            the container {@link Composite}
-     */
-    private void createModelCustomArea(final ModelDefinition def, Composite container) {
-        final int style = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
-        final FilteredTree filteredTree = new FilteredTree(container, style, new PatternFilter(), true);
-        final TreeViewer treeViewer = filteredTree.getViewer();
-        treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                final Object selected = ((IStructuredSelection) event.getSelection()).getFirstElement();
-                final boolean enableOKButton;
-                if (selected instanceof EObject) {
-                    final EObject eObj = (EObject) selected;
-                    if (isValidValue(def, eObj)) {
-                        value = eObj;
-                        enableOKButton = true;
-                    } else {
-                        enableOKButton = false;
-                    }
-                } else {
-                    enableOKButton = false;
-                }
-                final Button okButton = getButton(OK);
-                if (okButton != null) {
-                    okButton.setEnabled(enableOKButton);
-                }
-            }
-        });
-        treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
-        treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-        final GridData gdTable = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-        gdTable.minimumWidth = TABLE_MINIMUM_WIDTH;
-        gdTable.minimumHeight = TABLE_MINIMUM_HEIGHT;
-        treeViewer.getTree().setLayoutData(gdTable);
-
-        final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-        final Set<IType> types = properties.getVariableTypes(validator, queryEnvironment,
-                properties.getVariables().get(def.getKey()));
-        final Set<EStructuralFeature> containingFeatures = new LinkedHashSet<EStructuralFeature>();
-        final Set<EClass> eClasses = new LinkedHashSet<EClass>();
-        for (IType type : types) {
-            if (type.getType() instanceof EClass) {
-                final EClass eCls = (EClass) type.getType();
-                eClasses.add(eCls);
-                Set<EStructuralFeature> features = queryEnvironment.getEPackageProvider()
-                        .getAllContainingEStructuralFeatures(eCls);
-                containingFeatures.addAll(features);
-            }
-        }
-
-        final ViewerFilter filter = new ViewerFilter() {
-
-            @Override
-            public boolean select(Viewer viewer, Object parentElement, Object element) {
-                final boolean res;
-
-                if (element instanceof Resource) {
-                    final Resource resource = (Resource) element;
-                    res = canContainsOrHas(resource, containingFeatures, eClasses);
-                } else if (element instanceof EObject) {
-                    final EStructuralFeature containingFeature = ((EObject) element).eContainingFeature();
-                    res = containingFeature == null || containingFeatures.contains(containingFeature)
-                        || ((EObject) element).eContainer() instanceof Resource; // the last one is for CDO
-                } else {
-                    res = false;
-                }
-
-                return res;
-            }
-        };
-        treeViewer.addFilter(filter);
-
-        treeViewer.setInput(resourceSet);
-        if (def.getValue() != null) {
-            try {
-                final EObject eObj = resourceSet.getEObject(EcoreUtil.getURI(def.getValue()), true);
-                if (eObj != null) {
-                    treeViewer.setSelection(new StructuredSelection(eObj), true);
-                }
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
-                // nothing to do here
-            }
-        } else {
-            final Button okButton = getButton(OK);
-            if (okButton != null) {
-                okButton.setEnabled(false);
-            }
-        }
-
-        final Composite filterCheckboxComposite = new Composite(container, SWT.NONE);
-        filterCheckboxComposite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-        filterCheckboxComposite.setLayout(new GridLayout(2, false));
-        final Button filterCheckBox = new Button(filterCheckboxComposite, SWT.CHECK);
-        filterCheckBox.setSelection(true);
-        filterCheckBox.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                Button bouton = (Button) e.getSource();
-                if (bouton.getSelection()) {
-                    treeViewer.addFilter(filter);
-                    if (treeViewer.getTree().getItemCount() == 0) {
-                        messageLabel.setText(message
-                            + " (the tree is empty, you can either load a resource from the previous dialog or deselect the type filter)");
-                    }
-                } else {
-                    treeViewer.removeFilter(filter);
-                    if (treeViewer.getTree().getItemCount() == 0) {
-                        messageLabel.setText(
-                                message + " (the tree is empty, you can load a resource from the previous dialog)");
-                    }
-                }
-            }
-
-        });
-        if (treeViewer.getTree().getItemCount() == 0) {
-            messageLabel.setText(message
-                + " (the tree is empty, you can either load a resource from the previous dialog or deselect the type filter)");
-        }
-
-        final Label filterLabel = new Label(filterCheckboxComposite, SWT.NONE);
-        filterLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-        filterLabel.setText("Filter elements by type");
-    }
-
-    /**
-     * Tells if the given {@link Resource} has {@link EObject} that have any of the given {@link EStructuralFeature} or has an instance of the
-     * given {@link EClass}.
-     * 
-     * @param resource
-     *            the {@link Resource} to check
-     * @param containingFeatures
-     *            the {@link Set} of {@link EStructuralFeature}
-     * @param eClasses
-     *            the {@link Set} of {@link EClass}
-     * @return <code>true</code> if the given {@link Resource} has {@link EObject} that have any of the given {@link EStructuralFeature} or has
-     *         an instance of the given {@link EClass}, <code>false</code> otherwise
-     */
-    private boolean canContainsOrHas(final Resource resource, final Set<EStructuralFeature> containingFeatures,
-            Set<EClass> eClasses) {
-        boolean res = false;
-
-        contains: for (EObject content : resource.getContents()) {
-            if (isInstanceOfAny(content, eClasses)) {
-                res = true;
-                break;
-            } else {
-                for (EReference reference : content.eClass().getEAllReferences()) {
-                    if (containingFeatures.contains(reference)) {
-                        res = true;
-                        break contains;
-                    }
-                }
-            }
-        }
-
-        return res;
-    }
-
-    /**
-     * Tells if the given {@link EObject} is instance of any {@link EClass} in the given {@link Set}.
-     * 
-     * @param eObj
-     *            the {@link EObject} to test
-     * @param eClasses
-     *            the {@link Set} of {@link EClass}
-     * @return <code>true</code> if the given {@link EObject} is instance of any {@link EClass} in the given {@link Set}, <code>false</code>
-     *         otherwise
-     */
-    private boolean isInstanceOfAny(EObject eObj, Set<EClass> eClasses) {
-        boolean res = false;
-
-        for (EClass eCls : eClasses) {
-            if (eCls.isInstance(eObj)) {
-                res = true;
-                break;
-            }
-        }
-
-        return res;
-    }
-
-    /**
-     * Tells if the given {@link ModelDefinition} and the given {@link EObject} are compatible.
-     * 
-     * @param def
-     *            the {@link ModelDefinition}
-     * @param eObj
-     *            the {@link EObject}
-     * @return <code>true</code> if the given {@link ModelDefinition} and the given {@link EObject} are compatible, <code>false</code> otherwise
-     */
-    private boolean isValidValue(ModelDefinition def, EObject eObj) {
-        boolean res = false;
-
-        final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-        final EClassifierType eObjType = new EClassifierType(queryEnvironment, eObj.eClass());
-        final Set<IType> definitionTypes = properties.getVariableTypes(validator, queryEnvironment,
-                properties.getVariables().get(def.getKey()));
-        for (IType definitionType : definitionTypes) {
-            if (definitionType.isAssignableFrom(eObjType)) {
-                res = true;
-            }
-        }
-
-        return res;
-    }
-
-    /**
      * Creates the {@link #createCustomArea(Composite) custom area} for the given {@link StringDefinition}.
      * 
      * @param def
@@ -385,7 +129,7 @@ public class DefinitionValueDialog extends MessageDialog {
      * @param container
      *            the container {@link Composite}
      */
-    private void createStringCustomArea(StringDefinition def, final Composite container) {
+    protected void createStringCustomArea(StringDefinition def, final Composite container) {
         final Text text = addLabelAndText(def, container);
         if (((StringDefinition) definition).getValue() != null) {
             text.setText(((StringDefinition) definition).getValue());
@@ -412,7 +156,7 @@ public class DefinitionValueDialog extends MessageDialog {
      * @param container
      *            the container {@link Composite}
      */
-    private void createRealCustomArea(RealDefinition def, final Composite container) {
+    protected void createRealCustomArea(RealDefinition def, final Composite container) {
         final Text text = addLabelAndText(def, container);
         text.setText(String.valueOf(def.getValue()));
         text.addKeyListener(new KeyListener() {
@@ -472,7 +216,7 @@ public class DefinitionValueDialog extends MessageDialog {
      * @param container
      *            the container {@link Composite}
      */
-    private void createBooleanCustomArea(BooleanDefinition def, final Composite container) {
+    protected void createBooleanCustomArea(BooleanDefinition def, final Composite container) {
         final Button button = new Button(container, SWT.TOGGLE);
         button.setText(definition.getKey());
         button.setSelection(def.isValue());
@@ -514,6 +258,11 @@ public class DefinitionValueDialog extends MessageDialog {
 
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    protected void createLoadResourceButton(Composite parent) {
+        // nothing to do here
     }
 
 }

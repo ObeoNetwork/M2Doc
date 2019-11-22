@@ -20,7 +20,6 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 
 /**
  * Configure for {@link IReadOnlyQueryEnvironment}.
@@ -61,13 +60,13 @@ public interface IServicesConfigurator {
      * 
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
-     * @param uriConverter
-     *            the {@link URIConverter}
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for model elements
      * @param options
      *            the {@link Map} of options
      * @return the {@link Set} of {@link IService} for the given {@link IReadOnlyQueryEnvironment}
      */
-    Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
+    Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options);
 
     /**
@@ -85,10 +84,10 @@ public interface IServicesConfigurator {
      * 
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
-     * @param uriConverter
-     *            the {@link URIConverter}
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for model elements
      */
-    void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter);
+    void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels);
 
     /**
      * Create a new resourceSet which would need specific initialization for loading the models according to the given options.

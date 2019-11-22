@@ -1,24 +1,28 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _Jn7EkJI6EeeSU4Wpj9iwIg,_nPYeUHgzEeeKcP-oL2U8_A
-Element-Name: Deployed bundle with dependency
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_uCdG8A0JEequ3awX4oEPcw
+Element-Name: Prompt Long
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
-Id: _PxC-8JI6EeeSU4Wpj9iwIg
+Id: _uCsXgA0JEequ3awX4oEPcw
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 11/22/19 10:15 AM
+Save-Time: 11/22/19 10:23 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-get-view "Project Explorer" | get-tree | select "test/template.genconf" | get-menu "Generate Documentation" | click
+get-view "Project Explorer" | get-tree | select "test/prompt.genconf" | get-menu -path "Generate Documentation" | click
+with [get-window M2Doc] {
+    get-editbox -after [get-label "A Long please"] | type-text "4"
+    get-button OK | click
+}
 get-window "M2Doc generation" | get-button OK | click
 with [get-view "Project Explorer" | get-tree] {
-    select "test/template-expected.docx" "test/template-generated.docx"
-    get-menu "Assert docx are equals" | click
+    select "test/prompt-template-generated.docx" "test/prompt-template-expected.docx"
+    get-menu -path "Assert docx are equals" | click
 }
 get-window "M2Doc assert equals .docx" | get-label "Same .docx files" | get-property caption 
     | equals "Same .docx files" | verify-true

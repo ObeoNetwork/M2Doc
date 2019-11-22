@@ -29,7 +29,6 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -103,7 +102,7 @@ public class M2DocUtilsTests {
         }
 
         @Override
-        public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
+        public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
                 Map<String, String> options) {
             // nothing to do here
             return Collections.emptySet();
@@ -115,7 +114,7 @@ public class M2DocUtilsTests {
         }
 
         @Override
-        public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter) {
+        public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
             // nothing to do here
         }
 

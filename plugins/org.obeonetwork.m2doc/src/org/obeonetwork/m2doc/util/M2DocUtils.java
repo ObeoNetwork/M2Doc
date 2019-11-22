@@ -439,29 +439,32 @@ public final class M2DocUtils {
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
-     * @param uriConverter
-     *            the {@link URIConverter uri converter} to use.
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for model elements
      * @param templateURI
      *            the template {@link URI}
      * @param options
      *            the {@link Map} of options
      */
-    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, URIConverter uriConverter,
+    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             URI templateURI, Map<String, String> options) {
 
         Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, LinkServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
-        services = ServiceUtils.getServices(queryEnvironment, new PaginationServices(uriConverter, templateURI));
+        services = ServiceUtils.getServices(queryEnvironment,
+                new PaginationServices(resourceSetForModels.getURIConverter(), templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
-        services = ServiceUtils.getServices(queryEnvironment, new ImageServices(uriConverter, templateURI));
+        services = ServiceUtils.getServices(queryEnvironment,
+                new ImageServices(resourceSetForModels.getURIConverter(), templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
-        services = ServiceUtils.getServices(queryEnvironment, new ExcelServices(uriConverter, templateURI));
+        services = ServiceUtils.getServices(queryEnvironment,
+                new ExcelServices(resourceSetForModels.getURIConverter(), templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
         for (IServicesConfigurator configurator : getConfigurators()) {
             ServiceUtils.registerServices(queryEnvironment,
-                    configurator.getServices(queryEnvironment, uriConverter, options));
+                    configurator.getServices(queryEnvironment, resourceSetForModels, options));
         }
     }
 
@@ -682,8 +685,8 @@ public final class M2DocUtils {
      *            the {@link IReadOnlyQueryEnvironment}
      * @param variables
      *            variables
-     * @param uriConverter
-     *            the {@link URIConverter uri converter} to use
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for model elements
      * @param destination
      *            the destination
      * @param monitor
@@ -693,12 +696,13 @@ public final class M2DocUtils {
      *             if the generation fails
      */
     public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, URIConverter uriConverter,
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, ResourceSet resourceSetForModels,
             URI destination, Monitor monitor) throws DocumentGenerationException {
 
         monitor.beginTask("Generating " + destination.lastSegment(), TOTAL_GENERATE_MONITOR_WORK);
         monitor.subTask("Initializing desination document");
 
+        final URIConverter uriConverter = resourceSetForModels.getURIConverter();
         try (InputStream is = uriConverter.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
@@ -744,7 +748,7 @@ public final class M2DocUtils {
             nextSubTask(monitor, DOCUMENT_SAVE_MONITOR_WORK, "Cleaning template services");
 
             for (IServicesConfigurator configurator : getConfigurators()) {
-                configurator.cleanServices(queryEnvironment, uriConverter);
+                configurator.cleanServices(queryEnvironment, resourceSetForModels);
             }
 
             monitor.worked(ENGINE_CLEAN_MONITOR_WORK);

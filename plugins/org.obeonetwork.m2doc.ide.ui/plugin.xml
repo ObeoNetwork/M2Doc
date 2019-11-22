@@ -96,5 +96,11 @@
          </command>
       </menuContribution>
    </extension>
+   <extension
+         point="org.obeonetwork.m2doc.ide.servicesConfigurator">
+      <servicesConfigurators
+            class="org.obeonetwork.m2doc.ide.ui.services.configurator.SWTPromptServicesConfigurator">
+      </servicesConfigurators>
+   </extension>
 
 </plugin>

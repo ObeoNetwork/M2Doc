@@ -159,6 +159,13 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         return res;
     }
 
+    /**
+     * Gets the {@link ModelingProject} for the given {@link IProject}.
+     * 
+     * @param project
+     *            the {@link IProject}
+     * @return the {@link ModelingProject} for the given {@link IProject} if any, <code>null</code> otherwise
+     */
     private ModelingProject getModelingProject(IProject project) {
         ModelingProject modelingProject = null;
         try {
@@ -176,7 +183,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
+    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options) {
         final Set<IService> res = new LinkedHashSet<>();
 
@@ -205,7 +212,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter) {
+    public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
         final M2DocSiriusServices serviceInstance = services.remove(queryEnvironment);
         if (serviceInstance != null) {
             serviceInstance.clean();

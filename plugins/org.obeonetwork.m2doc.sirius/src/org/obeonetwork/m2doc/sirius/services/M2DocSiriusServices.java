@@ -131,17 +131,6 @@ public class M2DocSiriusServices {
      * @param session
      *            the Sirius {@link Session}
      */
-    @Deprecated
-    public M2DocSiriusServices(Session session) {
-        this(session, false);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param session
-     *            the Sirius {@link Session}
-     */
     public M2DocSiriusServices(Session session, boolean forceRefresh) {
         this.session = session;
         this.uriConverter = session.getTransactionalEditingDomain().getResourceSet().getURIConverter();

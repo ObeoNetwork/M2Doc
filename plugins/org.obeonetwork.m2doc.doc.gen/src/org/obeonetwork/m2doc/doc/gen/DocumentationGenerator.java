@@ -22,11 +22,13 @@ import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.obeonetwork.m2doc.html.services.M2DocHTMLServices;
+import org.obeonetwork.m2doc.ide.ui.services.SWTPromptServices;
 import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
+import org.obeonetwork.m2doc.services.PromptServices;
 import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
 
 /**
@@ -36,82 +38,78 @@ import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
  */
 public final class DocumentationGenerator {
 
-    /**
-     * The name of the charset to use to write the documentation.
-     */
-    private static final String UTF8 = "UTF-8"; //$NON-NLS-1$
+	/**
+	 * The name of the charset to use to write the documentation.
+	 */
+	private static final String UTF8 = "UTF-8"; //$NON-NLS-1$
 
-    /**
-     * The list of the service providers to consider for the standard
-     * documentation.
-     */
-    // CHECKSTYLE:OFF
-    private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] {BooleanServices.class,
-        ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
-        ExcelServices.class, M2DocHTMLServices.class};
-    // CHECKSTYLE:ON
+	/**
+	 * The list of the service providers to consider for the standard documentation.
+	 */
+	private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] { BooleanServices.class,
+			ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
+			ExcelServices.class, M2DocHTMLServices.class, PromptServices.class, SWTPromptServices.class, };
 
-    /**
-     * The constructor.
-     */
-    private DocumentationGenerator() {
-        // Prevent instantiation
-    }
+	/**
+	 * The constructor.
+	 */
+	private DocumentationGenerator() {
+		// Prevent instantiation
+	}
 
-    /**
-     * Launches the generation of the documentation.
-     * 
-     * @param args
-     *            The arguments of the generation
-     */
-    public static void main(String[] args) {
-        File pluginFolder = new File(args[0]);
+	/**
+	 * Launches the generation of the documentation.
+	 * 
+	 * @param args
+	 *            The arguments of the generation
+	 */
+	public static void main(String[] args) {
+		File pluginFolder = new File(args[0]);
 
-        System.out.println("Prepare the generation of the documentation for " + pluginFolder.getAbsolutePath());
+		System.out.println("Prepare the generation of the documentation for " + pluginFolder.getAbsolutePath());
 
-        File documentationFolder = new File(pluginFolder, "doc"); //$NON-NLS-1$
+		File documentationFolder = new File(pluginFolder, "doc"); //$NON-NLS-1$
 
-        // toc.xml
-        StringBuffer buffer = M2DocHelpContentUtils.computeToc(STANDARD_SERVICE_PROVIDERS);
-        try {
-            File tocFile = new File(pluginFolder, "toc.xml");
-            System.out.println("Writing the content of toc.xml in " + tocFile.getAbsolutePath());
-            try (PrintWriter writer = new PrintWriter(tocFile, UTF8);) {
-                writer.print(buffer.toString());
-            }
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+		// toc.xml
+		StringBuffer buffer = M2DocHelpContentUtils.computeToc(STANDARD_SERVICE_PROVIDERS);
+		try {
+			File tocFile = new File(pluginFolder, "toc.xml");
+			System.out.println("Writing the content of toc.xml in " + tocFile.getAbsolutePath());
+			try (PrintWriter writer = new PrintWriter(tocFile, UTF8);) {
+				writer.print(buffer.toString());
+			}
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
 
-        // Services
-        StringBuffer aggregated = new StringBuffer();
-        for (Class<?> serviceProviderClass : STANDARD_SERVICE_PROVIDERS) {
-            if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
-                try {
-                    List<StringBuffer> sections = M2DocHelpContentUtils.mdServiceSections(serviceProviderClass);
-                    StringBuffer stringBuffer = md(mdHead(), mdBody(mdHeader(false), sections));
+		// Services
+		StringBuffer aggregated = new StringBuffer();
+		for (Class<?> serviceProviderClass : STANDARD_SERVICE_PROVIDERS) {
+			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
+				try {
+					List<StringBuffer> sections = M2DocHelpContentUtils.mdServiceSections(serviceProviderClass);
+					StringBuffer stringBuffer = md(mdHead(), mdBody(mdHeader(false), sections));
 
-                    File file = new File(documentationFolder, M2DocHelpContentUtils.M2DOC_HREF_PREFIX
-                        + serviceProviderClass.getSimpleName().toLowerCase() + ".md");
-                    System.out.println("Writing content of " + file.getAbsolutePath());
-                    try (PrintWriter writer = new PrintWriter(file, UTF8);) {
-                        writer.print(stringBuffer.toString());
-                    }
+					File file = new File(documentationFolder, M2DocHelpContentUtils.M2DOC_HREF_PREFIX
+							+ serviceProviderClass.getSimpleName().toLowerCase() + ".md");
+					System.out.println("Writing content of " + file.getAbsolutePath());
+					try (PrintWriter writer = new PrintWriter(file, UTF8);) {
+						writer.print(stringBuffer.toString());
+					}
 
-                    /*
-                     * generating a documentation aggregating all the services
-                     * at once.
-                     */
-                    List<StringBuffer> sectionsForAggregatedServices = M2DocHelpContentUtils.htmlServiceSections(
-                            serviceProviderClass, 3, M2DocHelpContentUtils.METHOD_SIGNATURE_GENERATOR_2016);
-                    for (StringBuffer b : sectionsForAggregatedServices) {
-                        aggregated.append(b);
-                    }
+					/*
+					 * generating a documentation aggregating all the services at once.
+					 */
+					List<StringBuffer> sectionsForAggregatedServices = M2DocHelpContentUtils.htmlServiceSections(
+							serviceProviderClass, 3, M2DocHelpContentUtils.METHOD_SIGNATURE_GENERATOR_2016);
+					for (StringBuffer b : sectionsForAggregatedServices) {
+						aggregated.append(b);
+					}
 
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
-    }
+				} catch (IOException exception) {
+					exception.printStackTrace();
+				}
+			}
+		}
+	}
 }
