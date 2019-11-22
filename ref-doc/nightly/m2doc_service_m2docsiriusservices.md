@@ -67,20 +67,6 @@ Insert the image of the given representation if it's a diagram.
 * dRepresentation.asImage(true, OrderedSet{'Layer 1', 'Layer 2'})
   * insert the image of the given representation if it's a diagram
 
-## EObject.asImageByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MImage}
-
-Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
-
-### Parameter
-
-* **eObject**: Any eObject that is in the session where to search
-* **representationDescriptionName**: the name of the searched representation description
-
-### Example
-
-* ePackage.asImageByRepresentationDescriptionName('class diagram')
-  * Sequence{image1, image2}
-
 ## EObject.asImageByRepresentationDescriptionName(String, boolean, OrderedSet{String}) : Sequence{org.obeonetwork.m2doc.element.MImage}
 
 Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
@@ -110,6 +96,20 @@ Gets the Sequence of images for the diagrams associated to the given EObject wit
 ### Example
 
 * ePackage.asImageByRepresentationDescriptionName('class diagram', true)
+  * Sequence{image1, image2}
+
+## EObject.asImageByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MImage}
+
+Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description
+
+### Example
+
+* ePackage.asImageByRepresentationDescriptionName('class diagram')
   * Sequence{image1, image2}
 
 ## String.asImageByRepresentationName(boolean, OrderedSet{String}) : org.obeonetwork.m2doc.element.MImage

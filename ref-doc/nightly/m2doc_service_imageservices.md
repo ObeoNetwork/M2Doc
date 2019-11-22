@@ -25,19 +25,6 @@ Services available for Images. See [document examples](https://github.com/ObeoNe
 * TOC
 {:toc}
 
-## String.asImage(String) : org.obeonetwork.m2doc.element.MImage
-
-Convert a String representing an URI to an Image and serialize it in the given format.
-
-### Parameter
-
-* **uri**: The Image uri, it can be relative to the template
-
-### Example
-
-* 'image.png'.asImage('jpg')
-  * insert the image 'image.jpg'
-
 ## String.asImage() : org.obeonetwork.m2doc.element.MImage
 
 Convert a String representing an URI to an Image.
@@ -50,6 +37,19 @@ Convert a String representing an URI to an Image.
 
 * 'image.png'.asImage()
   * insert the image 'image.png'
+
+## String.asImage(String) : org.obeonetwork.m2doc.element.MImage
+
+Convert a String representing an URI to an Image and serialize it in the given format.
+
+### Parameter
+
+* **uri**: The Image uri, it can be relative to the template
+
+### Example
+
+* 'image.png'.asImage('jpg')
+  * insert the image 'image.jpg'
 
 ## org.obeonetwork.m2doc.element.MImage.fit(Integer, Integer) : org.obeonetwork.m2doc.element.MImage
 
