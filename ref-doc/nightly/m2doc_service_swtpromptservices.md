@@ -20,7 +20,7 @@ relativePath: ../..
 
 # SWTPromptServices
 
-Services available for prompting user for values. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/promptServices).
+Services available for prompting user for values using SWT for graphical user interface.
 
 * TOC
 {:toc}
