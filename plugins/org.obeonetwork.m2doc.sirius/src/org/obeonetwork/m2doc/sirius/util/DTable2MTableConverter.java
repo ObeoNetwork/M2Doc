@@ -24,11 +24,13 @@ import org.eclipse.sirius.table.metamodel.table.DTable;
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
 import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.viewpoint.RGBValues;
+import org.obeonetwork.m2doc.element.MList;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
+import org.obeonetwork.m2doc.element.impl.MListImpl;
 import org.obeonetwork.m2doc.element.impl.MStyleImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
@@ -61,7 +63,7 @@ public final class DTable2MTableConverter {
      *            the Sirius table, must not be <code>null</code>
      * @return the converted table
      */
-    public static MTable convert(DTable table) {
+    public static MTable convertTable(DTable table) {
         final MTable mTable = new MTableImpl();
         mTable.setLabel(table.getName());
 
@@ -83,7 +85,7 @@ public final class DTable2MTableConverter {
 
         // Convert the rows.
         for (DLine line : table.getLines()) {
-            final List<MRow> mRows = convert(table, columnStyles, line);
+            final List<MRow> mRows = convertRow(table, columnStyles, line, 0);
             mTable.getRows().addAll(mRows);
         }
 
@@ -100,9 +102,12 @@ public final class DTable2MTableConverter {
      *            the style mapping
      * @param line
      *            the {@link DLine} to convert
+     * @param depth
+     *            the current depth of the table line
      * @return the {@link List} of converted {@link MRow}
      */
-    private static List<MRow> convert(DTable table, final Map<Integer, DTableElementStyle> columnStyles, DLine line) {
+    private static List<MRow> convertRow(DTable table, final Map<Integer, DTableElementStyle> columnStyles, DLine line,
+            int depth) {
         final List<MRow> res = new ArrayList<>();
 
         if (line.isVisible()) {
@@ -110,8 +115,14 @@ public final class DTable2MTableConverter {
             res.add(row);
 
             // A header cell is inserted
+            final MList headerCellContent = new MListImpl();
+            if (depth > 0) {
+                final MText intentation = new MTextImpl(getIntentation(depth), HEADER_STYLE);
+                headerCellContent.add(intentation);
+            }
             final MText mHeaderText = new MTextImpl(line.getLabel(), HEADER_STYLE);
-            final MCell mHeaderColumnCell = new MCellImpl(mHeaderText, HEADER_BACKGROUND_COLOR);
+            headerCellContent.add(mHeaderText);
+            final MCell mHeaderColumnCell = new MCellImpl(headerCellContent, HEADER_BACKGROUND_COLOR);
             row.getCells().add(mHeaderColumnCell);
             // Retrieve row style to apply to non styled cells
             final DTableElementStyle rowStyle = line.getCurrentStyle();
@@ -125,7 +136,7 @@ public final class DTable2MTableConverter {
                     style = columnStyles.get(colIdx);
                 }
                 if (style != null) {
-                    row.getCells().add(new MCellImpl(null, convert(style.getBackgroundColor())));
+                    row.getCells().add(new MCellImpl(null, convertColor(style.getBackgroundColor())));
                 } else {
                     row.getCells().add(new MCellImpl(null, null));
                 }
@@ -135,11 +146,28 @@ public final class DTable2MTableConverter {
                 setCellContent(table, columnStyles, row, rowStyle, dcell);
             }
             for (DLine child : line.getLines()) {
-                res.addAll(convert(table, columnStyles, child));
+                res.addAll(convertRow(table, columnStyles, child, depth + 1));
             }
         }
 
         return res;
+    }
+
+    /**
+     * Gets the intentation for the given depth.
+     * 
+     * @param depth
+     *            the depth
+     * @return the intentation for the given depth
+     */
+    private static String getIntentation(int depth) {
+        final StringBuilder res = new StringBuilder();
+
+        for (int i = 0; i < depth; i++) {
+            res.append("  ");
+        }
+
+        return res.toString();
     }
 
     /**
@@ -172,9 +200,9 @@ public final class DTable2MTableConverter {
 
         final MCell mCell = row.getCells().get(colIdx + 1);
         if (style != null) {
-            final MText mText = new MTextImpl(dcell.getLabel(), convert(style));
+            final MText mText = new MTextImpl(dcell.getLabel(), convertStyle(style));
             mCell.setContents(mText);
-            mCell.setBackgroundColor(convert(style.getBackgroundColor()));
+            mCell.setBackgroundColor(convertColor(style.getBackgroundColor()));
         } else {
             final MText mText = new MTextImpl(dcell.getLabel(), null);
             mCell.setContents(mText);
@@ -188,11 +216,11 @@ public final class DTable2MTableConverter {
      *            the Sirius style.
      * @return the converted style.
      */
-    public static MStyle convert(DTableElementStyle dStyle) {
+    public static MStyle convertStyle(DTableElementStyle dStyle) {
         MStyle mStyle = null;
         if (dStyle != null) {
-            mStyle = new MStyleImpl(null, dStyle.getLabelSize(), convert(dStyle.getForegroundColor()),
-                    convert(dStyle.getBackgroundColor()), convert(dStyle.getLabelFormat()));
+            mStyle = new MStyleImpl(null, dStyle.getLabelSize(), convertColor(dStyle.getForegroundColor()),
+                    convertColor(dStyle.getBackgroundColor()), convertFontFormat(dStyle.getLabelFormat()));
         }
         return mStyle;
     }
@@ -204,7 +232,7 @@ public final class DTable2MTableConverter {
      *            the font formats.
      * @return the converted modifiers.
      */
-    private static int convert(EList<FontFormat> fontFormats) {
+    private static int convertFontFormat(EList<FontFormat> fontFormats) {
         int result = 0;
         for (FontFormat format : fontFormats) {
             switch (format) {
@@ -234,7 +262,7 @@ public final class DTable2MTableConverter {
      *            the color to convert.
      * @return the converted color.
      */
-    public static Color convert(final RGBValues rgb) {
+    public static Color convertColor(final RGBValues rgb) {
         if (rgb != null) {
             return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
         } else {

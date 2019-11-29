@@ -426,7 +426,7 @@ public class M2DocSiriusServices {
     )
     // @formatter:on
     public MTable asTable(DTable table) {
-        return DTable2MTableConverter.convert(table);
+        return DTable2MTableConverter.convertTable(table);
     }
 
     // @formatter:off

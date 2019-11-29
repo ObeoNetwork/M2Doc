@@ -20,10 +20,10 @@ public class DMStyleTest {
 
     @Test
     public void testStyle() {
-        MStyle style = DTable2MTableConverter.convert(dstyle);
+        MStyle style = DTable2MTableConverter.convertStyle(dstyle);
         assertEquals(6, style.getFontSize());
         // CHECKSTYLE:OFF
-        assertEquals(new Color(0 << 16 | 128 << 8 | 255), DTable2MTableConverter.convert(dstyle.getBackgroundColor()));
+        assertEquals(new Color(0 << 16 | 128 << 8 | 255), DTable2MTableConverter.convertColor(dstyle.getBackgroundColor()));
         assertEquals(new Color(255 << 16 | 128 << 8 | 0), style.getForegroundColor());
         // CHECKSTYLE:ON
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
@@ -35,7 +35,7 @@ public class DMStyleTest {
     @Test
     public void testStyleFontModifiers() {
         dstyle.getLabelFormat().add(FontFormat.BOLD_LITERAL);
-        MStyle style = DTable2MTableConverter.convert(dstyle);
+        MStyle style = DTable2MTableConverter.convertStyle(dstyle);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -43,7 +43,7 @@ public class DMStyleTest {
 
         dstyle.getLabelFormat().clear();
         dstyle.getLabelFormat().add(FontFormat.ITALIC_LITERAL);
-        style = DTable2MTableConverter.convert(dstyle);
+        style = DTable2MTableConverter.convertStyle(dstyle);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -51,7 +51,7 @@ public class DMStyleTest {
 
         dstyle.getLabelFormat().clear();
         dstyle.getLabelFormat().add(FontFormat.STRIKE_THROUGH_LITERAL);
-        style = DTable2MTableConverter.convert(dstyle);
+        style = DTable2MTableConverter.convertStyle(dstyle);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -59,7 +59,7 @@ public class DMStyleTest {
 
         dstyle.getLabelFormat().clear();
         dstyle.getLabelFormat().add(FontFormat.UNDERLINE_LITERAL);
-        style = DTable2MTableConverter.convert(dstyle);
+        style = DTable2MTableConverter.convertStyle(dstyle);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -70,7 +70,7 @@ public class DMStyleTest {
         dstyle.getLabelFormat().add(FontFormat.ITALIC_LITERAL);
         dstyle.getLabelFormat().add(FontFormat.STRIKE_THROUGH_LITERAL);
         dstyle.getLabelFormat().add(FontFormat.UNDERLINE_LITERAL);
-        style = DTable2MTableConverter.convert(dstyle);
+        style = DTable2MTableConverter.convertStyle(dstyle);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);

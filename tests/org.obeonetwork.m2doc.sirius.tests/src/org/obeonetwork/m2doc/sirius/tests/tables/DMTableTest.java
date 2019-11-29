@@ -173,6 +173,6 @@ public class DMTableTest {
         cell22.setCurrentStyle(styleCell);
         line2.getCells().add(cell22);
 
-        table = DTable2MTableConverter.convert(dtable);
+        table = DTable2MTableConverter.convertTable(dtable);
     }
 }
