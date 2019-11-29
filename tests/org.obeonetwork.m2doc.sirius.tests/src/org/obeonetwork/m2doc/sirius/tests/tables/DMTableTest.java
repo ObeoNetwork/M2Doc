@@ -14,6 +14,7 @@ import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.viewpoint.RGBValues;
 import org.junit.Before;
 import org.junit.Test;
+import org.obeonetwork.m2doc.element.MList;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
@@ -69,8 +70,9 @@ public class DMTableTest {
         row = rowIt.next();
         assertEquals(3, row.getCells().size());
         MCell cell10 = row.getCells().get(0);
-        assertEquals("Row One", ((MText) cell10.getContents()).getText());
-        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, ((MText) cell10.getContents()).getStyle());
+        assertEquals("Row One", ((MText) ((MList) cell10.getContents()).get(0)).getText());
+        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE,
+                ((MText) ((MList) cell10.getContents()).get(0)).getStyle());
 
         MCell cell11 = row.getCells().get(1);
         MStyle style = ((MText) cell11.getContents()).getStyle();
@@ -91,9 +93,10 @@ public class DMTableTest {
         row = rowIt.next();
         assertEquals(3, row.getCells().size());
         MCell cell20 = row.getCells().get(0);
-        assertEquals("Row Two", ((MText) cell20.getContents()).getText());
+        assertEquals("Row Two", ((MText) ((MList) cell20.getContents()).get(0)).getText());
         assertEquals(DTable2MTableConverter.HEADER_BACKGROUND_COLOR, cell20.getBackgroundColor());
-        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE, ((MText) cell20.getContents()).getStyle());
+        assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE,
+                ((MText) ((MList) cell20.getContents()).get(0)).getStyle());
 
         MCell cell21 = row.getCells().get(1);
         assertNull(cell21.getContents());
