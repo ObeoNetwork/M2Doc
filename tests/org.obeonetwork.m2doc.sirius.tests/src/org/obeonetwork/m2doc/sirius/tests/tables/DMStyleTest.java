@@ -2,6 +2,8 @@ package org.obeonetwork.m2doc.sirius.tests.tables;
 
 import java.awt.Color;
 
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
 import org.eclipse.sirius.table.metamodel.table.TableFactory;
 import org.eclipse.sirius.viewpoint.FontFormat;
@@ -18,12 +20,29 @@ public class DMStyleTest {
 
     private DTableElementStyle dstyle;
 
+    /**
+     * The {@link ComposedAdapterFactory}.
+     */
+    private final ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+            ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+    /**
+     * The {@link AdapterFactoryLabelProvider}.
+     */
+    private final AdapterFactoryLabelProvider adapterFactoryLabelProvider = new AdapterFactoryLabelProvider(
+            adapterFactory);
+
+    /**
+     * The {@link DTable2MTableConverter}.
+     */
+    private final DTable2MTableConverter tableConverter = new DTable2MTableConverter(adapterFactoryLabelProvider);
+
     @Test
     public void testStyle() {
-        MStyle style = DTable2MTableConverter.convertStyle(dstyle);
+        MStyle style = tableConverter.convertStyle(dstyle);
         assertEquals(6, style.getFontSize());
         // CHECKSTYLE:OFF
-        assertEquals(new Color(0 << 16 | 128 << 8 | 255), DTable2MTableConverter.convertColor(dstyle.getBackgroundColor()));
+        assertEquals(new Color(0 << 16 | 128 << 8 | 255), tableConverter.convertColor(dstyle.getBackgroundColor()));
         assertEquals(new Color(255 << 16 | 128 << 8 | 0), style.getForegroundColor());
         // CHECKSTYLE:ON
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
@@ -35,7 +54,7 @@ public class DMStyleTest {
     @Test
     public void testStyleFontModifiers() {
         dstyle.getLabelFormat().add(FontFormat.BOLD_LITERAL);
-        MStyle style = DTable2MTableConverter.convertStyle(dstyle);
+        MStyle style = tableConverter.convertStyle(dstyle);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -43,7 +62,7 @@ public class DMStyleTest {
 
         dstyle.getLabelFormat().clear();
         dstyle.getLabelFormat().add(FontFormat.ITALIC_LITERAL);
-        style = DTable2MTableConverter.convertStyle(dstyle);
+        style = tableConverter.convertStyle(dstyle);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -51,7 +70,7 @@ public class DMStyleTest {
 
         dstyle.getLabelFormat().clear();
         dstyle.getLabelFormat().add(FontFormat.STRIKE_THROUGH_LITERAL);
-        style = DTable2MTableConverter.convertStyle(dstyle);
+        style = tableConverter.convertStyle(dstyle);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -59,7 +78,7 @@ public class DMStyleTest {
 
         dstyle.getLabelFormat().clear();
         dstyle.getLabelFormat().add(FontFormat.UNDERLINE_LITERAL);
-        style = DTable2MTableConverter.convertStyle(dstyle);
+        style = tableConverter.convertStyle(dstyle);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
@@ -70,7 +89,7 @@ public class DMStyleTest {
         dstyle.getLabelFormat().add(FontFormat.ITALIC_LITERAL);
         dstyle.getLabelFormat().add(FontFormat.STRIKE_THROUGH_LITERAL);
         dstyle.getLabelFormat().add(FontFormat.UNDERLINE_LITERAL);
-        style = DTable2MTableConverter.convertStyle(dstyle);
+        style = tableConverter.convertStyle(dstyle);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
         assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);

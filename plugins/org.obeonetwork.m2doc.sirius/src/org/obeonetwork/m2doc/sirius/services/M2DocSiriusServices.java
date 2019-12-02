@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
@@ -124,6 +126,23 @@ public class M2DocSiriusServices {
      * Tells if we should {@link Session#close(org.eclipse.core.runtime.IProgressMonitor) close} the {@link #session}.
      */
     private final boolean shouldCloseSession;
+
+    /**
+     * The {@link ComposedAdapterFactory}.
+     */
+    private final ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+            ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+    /**
+     * The {@link AdapterFactoryLabelProvider}.
+     */
+    private final AdapterFactoryLabelProvider adapterFactoryLabelProvider = new AdapterFactoryLabelProvider(
+            adapterFactory);
+
+    /**
+     * The {@link DTable2MTableConverter}.
+     */
+    private final DTable2MTableConverter tableConverter = new DTable2MTableConverter(adapterFactoryLabelProvider);
 
     /**
      * Constructor.
@@ -426,7 +445,7 @@ public class M2DocSiriusServices {
     )
     // @formatter:on
     public MTable asTable(DTable table) {
-        return DTable2MTableConverter.convertTable(table);
+        return tableConverter.convertTable(table);
     }
 
     // @formatter:off
@@ -694,6 +713,7 @@ public class M2DocSiriusServices {
             session.close(new NullProgressMonitor());
         }
         tmpFiles.clear();
+        adapterFactory.dispose();
     }
 
 }

@@ -3,6 +3,8 @@ package org.obeonetwork.m2doc.sirius.tests.tables;
 import java.awt.Color;
 import java.util.Iterator;
 
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.sirius.table.metamodel.table.DCell;
 import org.eclipse.sirius.table.metamodel.table.DCellStyle;
 import org.eclipse.sirius.table.metamodel.table.DColumn;
@@ -14,6 +16,7 @@ import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.viewpoint.RGBValues;
 import org.junit.Before;
 import org.junit.Test;
+import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MList;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
@@ -25,6 +28,7 @@ import org.obeonetwork.m2doc.sirius.util.DTable2MTableConverter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class DMTableTest {
 
@@ -43,6 +47,23 @@ public class DMTableTest {
     private DCellStyle styleCell;
 
     private MTable table;
+
+    /**
+     * The {@link ComposedAdapterFactory}.
+     */
+    private final ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+            ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+    /**
+     * The {@link AdapterFactoryLabelProvider}.
+     */
+    private final AdapterFactoryLabelProvider adapterFactoryLabelProvider = new AdapterFactoryLabelProvider(
+            adapterFactory);
+
+    /**
+     * The {@link DTable2MTableConverter}.
+     */
+    private final DTable2MTableConverter tableConverter = new DTable2MTableConverter(adapterFactoryLabelProvider);
 
     @Test
     public void test() {
@@ -70,9 +91,10 @@ public class DMTableTest {
         row = rowIt.next();
         assertEquals(3, row.getCells().size());
         MCell cell10 = row.getCells().get(0);
-        assertEquals("Row One", ((MText) ((MList) cell10.getContents()).get(0)).getText());
+        assertTrue(((MList) cell10.getContents()).get(0) instanceof MImage);
+        assertEquals("Row One", ((MText) ((MList) cell10.getContents()).get(1)).getText());
         assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE,
-                ((MText) ((MList) cell10.getContents()).get(0)).getStyle());
+                ((MText) ((MList) cell10.getContents()).get(1)).getStyle());
 
         MCell cell11 = row.getCells().get(1);
         MStyle style = ((MText) cell11.getContents()).getStyle();
@@ -93,10 +115,11 @@ public class DMTableTest {
         row = rowIt.next();
         assertEquals(3, row.getCells().size());
         MCell cell20 = row.getCells().get(0);
-        assertEquals("Row Two", ((MText) ((MList) cell20.getContents()).get(0)).getText());
+        assertTrue(((MList) cell20.getContents()).get(0) instanceof MImage);
+        assertEquals("Row Two", ((MText) ((MList) cell20.getContents()).get(1)).getText());
         assertEquals(DTable2MTableConverter.HEADER_BACKGROUND_COLOR, cell20.getBackgroundColor());
         assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE,
-                ((MText) ((MList) cell20.getContents()).get(0)).getStyle());
+                ((MText) ((MList) cell20.getContents()).get(1)).getStyle());
 
         MCell cell21 = row.getCells().get(1);
         assertNull(cell21.getContents());
@@ -176,6 +199,6 @@ public class DMTableTest {
         cell22.setCurrentStyle(styleCell);
         line2.getCells().add(cell22);
 
-        table = DTable2MTableConverter.convertTable(dtable);
+        table = tableConverter.convertTable(dtable);
     }
 }

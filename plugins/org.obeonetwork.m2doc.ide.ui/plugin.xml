@@ -101,6 +101,9 @@
       <servicesConfigurators
             class="org.obeonetwork.m2doc.ide.ui.services.configurator.SWTPromptServicesConfigurator">
       </servicesConfigurators>
+      <servicesConfigurators
+            class="org.obeonetwork.m2doc.ide.ui.services.configurator.M2DocEObjectServicesConfigurator">
+      </servicesConfigurators>
    </extension>
 
 </plugin>

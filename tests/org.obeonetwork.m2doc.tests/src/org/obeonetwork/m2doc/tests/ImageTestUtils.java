@@ -197,8 +197,18 @@ public final class ImageTestUtils {
             final Graphics2D outImgGraphics = diffImage.createGraphics();
             outImgGraphics.setColor(Color.RED);
 
-            final int blockWidth = expectedImage.getWidth() / 20;
-            final int blockHeight = expectedImage.getWidth() / 20;
+            final int blockWidth;
+            if (expectedImage.getWidth() > 20) {
+                blockWidth = expectedImage.getWidth() / 20;
+            } else {
+                blockWidth = expectedImage.getWidth();
+            }
+            final int blockHeight;
+            if (expectedImage.getWidth() > 20) {
+                blockHeight = expectedImage.getWidth() / 20;
+            } else {
+                blockHeight = expectedImage.getWidth();
+            }
             final int nbBlocksX = (int) Math.ceil((float) expectedImage.getWidth() / blockWidth);
             final int nbBlocksY = (int) Math.ceil((float) expectedImage.getHeight() / blockHeight);
 

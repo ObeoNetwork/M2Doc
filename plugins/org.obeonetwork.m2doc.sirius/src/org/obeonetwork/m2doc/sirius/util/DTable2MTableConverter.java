@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.sirius.table.metamodel.table.DCell;
 import org.eclipse.sirius.table.metamodel.table.DColumn;
 import org.eclipse.sirius.table.metamodel.table.DLine;
@@ -24,6 +25,8 @@ import org.eclipse.sirius.table.metamodel.table.DTable;
 import org.eclipse.sirius.table.metamodel.table.DTableElementStyle;
 import org.eclipse.sirius.viewpoint.FontFormat;
 import org.eclipse.sirius.viewpoint.RGBValues;
+import org.eclipse.swt.graphics.Image;
+import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MList;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
@@ -36,6 +39,7 @@ import org.obeonetwork.m2doc.element.impl.MTableImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MRowImpl;
 import org.obeonetwork.m2doc.element.impl.MTextImpl;
+import org.obeonetwork.m2doc.ide.ui.element.impl.MImageSWTImpl;
 
 /**
  * Implementation of {@link MTable} based on a {@link DTable}.
@@ -51,9 +55,18 @@ public final class DTable2MTableConverter {
     public static final Color HEADER_BACKGROUND_COLOR = Color.GRAY;
 
     /**
-     * Default constructor.
+     * The {@link AdapterFactoryLabelProvider}.
      */
-    private DTable2MTableConverter() {
+    private final AdapterFactoryLabelProvider adapterFactoryLabelProvider;
+
+    /**
+     * Constructor.
+     * 
+     * @param adapterFactoryLabelProvider
+     *            the {@link AdapterFactoryLabelProvider}
+     */
+    public DTable2MTableConverter(AdapterFactoryLabelProvider adapterFactoryLabelProvider) {
+        this.adapterFactoryLabelProvider = adapterFactoryLabelProvider;
     }
 
     /**
@@ -63,7 +76,7 @@ public final class DTable2MTableConverter {
      *            the Sirius table, must not be <code>null</code>
      * @return the converted table
      */
-    public static MTable convertTable(DTable table) {
+    public MTable convertTable(DTable table) {
         final MTable mTable = new MTableImpl();
         mTable.setLabel(table.getName());
 
@@ -106,7 +119,7 @@ public final class DTable2MTableConverter {
      *            the current depth of the table line
      * @return the {@link List} of converted {@link MRow}
      */
-    private static List<MRow> convertRow(DTable table, final Map<Integer, DTableElementStyle> columnStyles, DLine line,
+    private List<MRow> convertRow(DTable table, final Map<Integer, DTableElementStyle> columnStyles, DLine line,
             int depth) {
         final List<MRow> res = new ArrayList<>();
 
@@ -120,6 +133,9 @@ public final class DTable2MTableConverter {
                 final MText intentation = new MTextImpl(getIntentation(depth), HEADER_STYLE);
                 headerCellContent.add(intentation);
             }
+            final Image image = adapterFactoryLabelProvider.getImage(line.getTarget());
+            final MImage mImage = new MImageSWTImpl(image.getImageData());
+            headerCellContent.add(mImage);
             final MText mHeaderText = new MTextImpl(line.getLabel(), HEADER_STYLE);
             headerCellContent.add(mHeaderText);
             final MCell mHeaderColumnCell = new MCellImpl(headerCellContent, HEADER_BACKGROUND_COLOR);
@@ -160,7 +176,7 @@ public final class DTable2MTableConverter {
      *            the depth
      * @return the intentation for the given depth
      */
-    private static String getIntentation(int depth) {
+    private String getIntentation(int depth) {
         final StringBuilder res = new StringBuilder();
 
         for (int i = 0; i < depth; i++) {
@@ -184,8 +200,8 @@ public final class DTable2MTableConverter {
      * @param dcell
      *            the {@link DCell} to convert
      */
-    private static void setCellContent(DTable table, final Map<Integer, DTableElementStyle> columnStyles,
-            final MRow row, final DTableElementStyle rowStyle, DCell dcell) {
+    private void setCellContent(DTable table, final Map<Integer, DTableElementStyle> columnStyles, final MRow row,
+            final DTableElementStyle rowStyle, DCell dcell) {
         // The cell must be put at the right position in the index
         final int colIdx = table.getColumns().indexOf(dcell.getColumn());
 
@@ -216,7 +232,7 @@ public final class DTable2MTableConverter {
      *            the Sirius style.
      * @return the converted style.
      */
-    public static MStyle convertStyle(DTableElementStyle dStyle) {
+    public MStyle convertStyle(DTableElementStyle dStyle) {
         MStyle mStyle = null;
         if (dStyle != null) {
             mStyle = new MStyleImpl(null, dStyle.getLabelSize(), convertColor(dStyle.getForegroundColor()),
@@ -232,7 +248,7 @@ public final class DTable2MTableConverter {
      *            the font formats.
      * @return the converted modifiers.
      */
-    private static int convertFontFormat(EList<FontFormat> fontFormats) {
+    private int convertFontFormat(EList<FontFormat> fontFormats) {
         int result = 0;
         for (FontFormat format : fontFormats) {
             switch (format) {
@@ -262,7 +278,7 @@ public final class DTable2MTableConverter {
      *            the color to convert.
      * @return the converted color.
      */
-    public static Color convertColor(final RGBValues rgb) {
+    public Color convertColor(final RGBValues rgb) {
         if (rgb != null) {
             return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
         } else {
