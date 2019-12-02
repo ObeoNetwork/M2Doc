@@ -127,7 +127,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
                 documentTemplate.getDocument());
-        final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
+        final XWPFRun run = M2DocUtils.getOrCreateFirstRun(documentTemplate.getDocument());
         if (templateProperties.getM2DocVersion() == null) {
             documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(
                     ValidationMessageLevel.WARNING, "No M2Doc version set in the template.", run));

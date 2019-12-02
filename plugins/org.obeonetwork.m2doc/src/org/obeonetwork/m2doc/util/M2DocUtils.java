@@ -567,7 +567,7 @@ public final class M2DocUtils {
         final List<TemplateValidationMessage> messages = new ArrayList<>();
         final List<String> missingNsURIs = properties.configureQueryEnvironmentWithResult(queryEnvironment);
         for (String nsURI : missingNsURIs) {
-            final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
+            final XWPFRun run = getOrCreateFirstRun(document);
             final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
             messages.add(validationMessage);
@@ -578,7 +578,7 @@ public final class M2DocUtils {
                 final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
                 ServiceUtils.registerServices(queryEnvironment, s);
             } catch (ClassNotFoundException e) {
-                final XWPFRun run = document.getParagraphs().get(0).getRuns().get(0);
+                final XWPFRun run = getOrCreateFirstRun(document);
                 final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
                         ValidationMessageLevel.ERROR, "can't load service class: " + entry.getKey(), run);
                 messages.add(validationMessage);
@@ -586,6 +586,31 @@ public final class M2DocUtils {
         }
 
         return messages;
+    }
+
+    /**
+     * Gets or create the first {@link XWPFRun} of the given {@link XWPFDocument}.
+     * 
+     * @param document
+     *            the {@link XWPFDocument}
+     * @return the first {@link XWPFRun} of the given {@link XWPFDocument} or the created one if none existed
+     */
+    public static XWPFRun getOrCreateFirstRun(XWPFDocument document) {
+        final XWPFRun res;
+
+        final XWPFParagraph paragraph;
+        if (!document.getParagraphs().isEmpty()) {
+            paragraph = document.getParagraphs().get(0);
+        } else {
+            paragraph = document.createParagraph();
+        }
+        if (!paragraph.getRuns().isEmpty()) {
+            res = paragraph.getRuns().get(0);
+        } else {
+            res = paragraph.createRun();
+        }
+
+        return res;
     }
 
     /**

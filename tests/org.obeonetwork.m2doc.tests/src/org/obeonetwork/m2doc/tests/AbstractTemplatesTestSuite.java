@@ -175,7 +175,7 @@ public abstract class AbstractTemplatesTestSuite {
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor());
         for (Exception e : exceptions) {
-            final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
+            final XWPFRun run = M2DocUtils.getOrCreateFirstRun(documentTemplate.getDocument());
             documentTemplate.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, e.getMessage(), run));
         }
