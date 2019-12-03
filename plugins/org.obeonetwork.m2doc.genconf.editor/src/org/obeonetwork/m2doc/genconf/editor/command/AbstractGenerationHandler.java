@@ -100,7 +100,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
 
         @Override
         public void run() {
-            MessageDialog.openConfirm(shell, dialogTitle,
+            result = MessageDialog.openConfirm(shell, dialogTitle,
                     "M2Doc version mismatch: template version is " + properties.getM2DocVersion()
                         + " and current M2Doc version is " + M2DocUtils.VERSION + ". Do you want to continue ?");
             done = true;
