@@ -14,11 +14,16 @@ package org.obeonetwork.m2doc.genconf.editor.command;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -33,6 +38,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -43,6 +49,89 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractGenerationHandler extends AbstractHandler {
+
+    /**
+     * A confirmation runnable for the version check.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class ConfirmRunnable implements RunnableFuture<Boolean> {
+
+        /**
+         * The dialog title.
+         */
+        private final String dialogTitle;
+
+        /**
+         * The {@link TemplateCustomProperties}.
+         */
+        private final TemplateCustomProperties properties;
+
+        /**
+         * The {@link Shell}.
+         */
+        private final Shell shell;
+
+        /**
+         * Tells if we are done.
+         */
+        private boolean done;
+
+        /**
+         * The result.
+         */
+        private boolean result;
+
+        /**
+         * Constructor.
+         * 
+         * @param dialogTitle
+         *            the dialog title
+         * @param properties
+         *            the {@link TemplateCustomProperties}
+         * @param shell
+         *            the {@link Shell}
+         */
+        private ConfirmRunnable(String dialogTitle, TemplateCustomProperties properties, Shell shell) {
+            this.dialogTitle = dialogTitle;
+            this.properties = properties;
+            this.shell = shell;
+        }
+
+        @Override
+        public void run() {
+            MessageDialog.openConfirm(shell, dialogTitle,
+                    "M2Doc version mismatch: template version is " + properties.getM2DocVersion()
+                        + " and current M2Doc version is " + M2DocUtils.VERSION + ". Do you want to continue ?");
+            done = true;
+        }
+
+        @Override
+        public boolean cancel(boolean mayInterruptIfRunning) {
+            return false;
+        }
+
+        @Override
+        public boolean isCancelled() {
+            return false;
+        }
+
+        @Override
+        public boolean isDone() {
+            return done;
+        }
+
+        @Override
+        public Boolean get() throws InterruptedException, java.util.concurrent.ExecutionException {
+            return result;
+        }
+
+        @Override
+        public Boolean get(long timeout, TimeUnit unit)
+                throws InterruptedException, java.util.concurrent.ExecutionException, TimeoutException {
+            return result;
+        }
+    }
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -120,12 +209,14 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
      *             if the template isn't a valid .docx
      * @throws IOException
      *             if the template can't be read
+     * @return <code>true</code> if the generation should be launched, <code>false</code> otherwise
      */
-    protected void checkM2DocVersion(final Shell shell, final String dialogTitle, Generation gen)
+    protected boolean checkM2DocVersion(final Shell shell, final String dialogTitle, Generation gen)
             throws DocumentGenerationException, IOException {
+        boolean res = true;
+
         final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(), gen,
                 new ResourceSetImpl(), GenconfUtils.getOptions(gen));
-
         final String templateFilePath = gen.getTemplateFileName();
         if (templateFilePath != null && !templateFilePath.isEmpty()) {
             final URI templateURI = GenconfUtils.getResolvedURI(gen, URI.createURI(templateFilePath, false));
@@ -133,18 +224,23 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
             final TemplateCustomProperties properties = POIServices.getInstance()
                     .getTemplateCustomProperties(resourceSetForModel.getURIConverter(), templateURI);
             if (!M2DocUtils.VERSION.equals(properties.getM2DocVersion())) {
-                Display.getDefault().syncExec(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        MessageDialog.openInformation(shell, dialogTitle, "M2Doc version mismatch: template version is "
-                            + properties.getM2DocVersion() + " and current M2Doc version is " + M2DocUtils.VERSION);
-                    }
-                });
+                RunnableFuture<Boolean> runnable = new ConfirmRunnable(dialogTitle, properties, shell);
+                Display.getDefault().syncExec(runnable);
+                try {
+                    res = runnable.get();
+                } catch (InterruptedException e) {
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(IStatus.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getBundle().getSymbolicName(), "Couldn't generate", e));
+                } catch (java.util.concurrent.ExecutionException e) {
+                    M2docconfEditorPlugin.getPlugin().getLog().log(new Status(IStatus.ERROR,
+                            M2docconfEditorPlugin.getPlugin().getBundle().getSymbolicName(), "Couldn't generate", e));
+                }
             }
-        }
 
+        }
         M2DocUtils.cleanResourceSetForModels(gen, resourceSetForModel);
+
+        return res;
     }
 
 }

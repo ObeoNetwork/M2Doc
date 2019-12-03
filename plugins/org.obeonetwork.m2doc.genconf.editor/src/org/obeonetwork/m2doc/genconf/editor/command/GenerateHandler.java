@@ -82,9 +82,11 @@ public class GenerateHandler extends AbstractGenerationHandler {
 
             final List<URI> generatedfiles = new ArrayList<URI>();
             try {
-                checkM2DocVersion(shell, M2_DOC_GENERATION, generation);
-                generatedfiles.addAll(GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(),
-                        BasicMonitor.toMonitor(monitor)));
+                final boolean generate = checkM2DocVersion(shell, M2_DOC_GENERATION, generation);
+                if (generate) {
+                    generatedfiles.addAll(GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(),
+                            BasicMonitor.toMonitor(monitor)));
+                }
                 // CHECKSTYLE:OFF any error should be reported back.
             } catch (final Exception e) {// do not let exception leak out.
                 // CHECKSTYLE:ON

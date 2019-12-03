@@ -79,25 +79,27 @@ public class ValidateHandler extends AbstractGenerationHandler {
                     "Generation configuration succesfully saved");
 
             try {
-                checkM2DocVersion(shell, M2_DOC_VALIDATION, generation);
-                boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider(),
-                        BasicMonitor.toMonitor(monitor));
-                if (!inError) {
-                    Display.getDefault().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
-                                    "The template validation has been performed successfully.");
-                        }
-                    });
-                } else {
-                    Display.getDefault().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
-                                    "Error(s) detected during validation. A log file has been generated next to the template file.");
-                        }
-                    });
+                final boolean validate = checkM2DocVersion(shell, M2_DOC_VALIDATION, generation);
+                if (validate) {
+                    boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider(),
+                            BasicMonitor.toMonitor(monitor));
+                    if (!inError) {
+                        Display.getDefault().asyncExec(new Runnable() {
+                            @Override
+                            public void run() {
+                                MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
+                                        "The template validation has been performed successfully.");
+                            }
+                        });
+                    } else {
+                        Display.getDefault().asyncExec(new Runnable() {
+                            @Override
+                            public void run() {
+                                MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
+                                        "Error(s) detected during validation. A log file has been generated next to the template file.");
+                            }
+                        });
+                    }
                 }
                 // CHECKSTYLE:OFF
             } catch (Exception e) {
