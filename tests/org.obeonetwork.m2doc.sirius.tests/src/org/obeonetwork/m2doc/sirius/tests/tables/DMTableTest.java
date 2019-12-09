@@ -46,7 +46,9 @@ public class DMTableTest {
     private DTableElementStyle styleCol;
     private DCellStyle styleCell;
 
-    private MTable table;
+    private MTable tableWithHeader;
+
+    private MTable tableWithoutHeader;
 
     /**
      * The {@link ComposedAdapterFactory}.
@@ -66,10 +68,10 @@ public class DMTableTest {
     private final DTable2MTableConverter tableConverter = new DTable2MTableConverter(adapterFactoryLabelProvider);
 
     @Test
-    public void test() {
-        assertEquals(3, table.getColumnsCount()); // Header column + 2 columns
-        assertEquals(3, table.getRows().size()); // Header + 2 rows
-        Iterator<? extends MRow> rowIt = table.getRows().iterator();
+    public void testWithHeader() {
+        assertEquals(3, tableWithHeader.getColumnsCount()); // Header column + 2 columns
+        assertEquals(3, tableWithHeader.getRows().size()); // Header + 2 rows
+        Iterator<? extends MRow> rowIt = tableWithHeader.getRows().iterator();
 
         // Header row
         MRow row = rowIt.next();
@@ -120,6 +122,78 @@ public class DMTableTest {
         assertEquals(DTable2MTableConverter.HEADER_BACKGROUND_COLOR, cell20.getBackgroundColor());
         assertStyleEqualsTo(DTable2MTableConverter.HEADER_STYLE,
                 ((MText) ((MList) cell20.getContents()).get(1)).getStyle());
+
+        MCell cell21 = row.getCells().get(1);
+        assertNull(cell21.getContents());
+        assertEquals(new Color(WHITE), cell21.getBackgroundColor()); // no row style, but column style, so style == column style
+
+        MCell cell22 = row.getCells().get(2);
+        assertEquals("Cell Two Two", ((MText) cell22.getContents()).getText());
+        style = ((MText) cell22.getContents()).getStyle();
+        // CHECKSTYLE:OFF
+        assertEquals(9, style.getFontSize());
+        // CHECKSTYLE:ON
+        assertEquals(new Color(WHITE), cell22.getBackgroundColor());
+        assertEquals(new Color(BROWN), style.getForegroundColor());
+        assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
+        assertEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
+        assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
+        assertEquals(0, style.getFontModifiers() & MStyle.FONT_UNDERLINE);
+    }
+
+    @Test
+    public void testWithoutHeader() {
+        assertEquals(3, tableWithoutHeader.getColumnsCount()); // Header column + 2 columns
+        assertEquals(3, tableWithoutHeader.getRows().size()); // Header + 2 rows
+        Iterator<? extends MRow> rowIt = tableWithoutHeader.getRows().iterator();
+
+        // Header row
+        MRow row = rowIt.next();
+        MCell cell0 = row.getCells().get(0);
+        assertNull(cell0.getContents());
+        assertNull(cell0.getBackgroundColor());
+
+        MCell cell1 = row.getCells().get(1);
+        assertEquals("Col One", ((MText) cell1.getContents()).getText());
+        assertEquals(null, cell1.getBackgroundColor());
+        assertStyleEqualsTo(null, ((MText) cell1.getContents()).getStyle());
+
+        MCell cell2 = row.getCells().get(2);
+        assertEquals("Col Two", ((MText) cell2.getContents()).getText());
+        assertEquals(null, cell2.getBackgroundColor());
+        assertStyleEqualsTo(null, ((MText) cell2.getContents()).getStyle());
+
+        // First row
+        row = rowIt.next();
+        assertEquals(3, row.getCells().size());
+        MCell cell10 = row.getCells().get(0);
+        assertTrue(((MList) cell10.getContents()).get(0) instanceof MImage);
+        assertEquals("Row One", ((MText) ((MList) cell10.getContents()).get(1)).getText());
+        assertStyleEqualsTo(null, ((MText) ((MList) cell10.getContents()).get(1)).getStyle());
+
+        MCell cell11 = row.getCells().get(1);
+        MStyle style = ((MText) cell11.getContents()).getStyle();
+        assertEquals("Cell One One", ((MText) cell11.getContents()).getText());
+        assertEquals(6, style.getFontSize());
+        assertEquals(new Color(GRAY), cell11.getBackgroundColor());
+        assertEquals(new Color(BLACK), style.getForegroundColor());
+        assertEquals(0, style.getFontModifiers() & MStyle.FONT_BOLD);
+        assertNotEquals(0, style.getFontModifiers() & MStyle.FONT_ITALIC);
+        assertEquals(0, style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH);
+        assertEquals(0, style.getFontModifiers() & MStyle.FONT_UNDERLINE);
+
+        MCell cell12 = row.getCells().get(2);
+        assertNull(cell12.getContents()); // No content
+        assertNull(cell12.getBackgroundColor()); // No background color
+
+        // Second row
+        row = rowIt.next();
+        assertEquals(3, row.getCells().size());
+        MCell cell20 = row.getCells().get(0);
+        assertTrue(((MList) cell20.getContents()).get(0) instanceof MImage);
+        assertEquals("Row Two", ((MText) ((MList) cell20.getContents()).get(1)).getText());
+        assertEquals(null, cell20.getBackgroundColor());
+        assertStyleEqualsTo(null, ((MText) ((MList) cell20.getContents()).get(1)).getStyle());
 
         MCell cell21 = row.getCells().get(1);
         assertNull(cell21.getContents());
@@ -199,6 +273,8 @@ public class DMTableTest {
         cell22.setCurrentStyle(styleCell);
         line2.getCells().add(cell22);
 
-        table = tableConverter.convertTable(dtable);
+        tableWithHeader = tableConverter.convertTable(dtable, true);
+
+        tableWithoutHeader = tableConverter.convertTable(dtable, false);
     }
 }

@@ -434,18 +434,35 @@ public class M2DocSiriusServices {
 
     // @formatter:off
     @Documentation(
-        value = "Insert the table of the given representation table.",
+        value = "Insert the table of the given representation table (with header styles).",
         params = {
             @Param(name = "representation", value = "the DTable"),
         },
-        result = "insert the table of the given representation table.",
+        result = "insert the table of the given representation table (with header styles).",
         examples = {
-            @Example(expression = "dTable.asTable()", result = "insert the tablee of the given representation table"),
+            @Example(expression = "dTable.asTable()", result = "insert the table of the given representation table (with header styles)"),
         }
     )
     // @formatter:on
     public MTable asTable(DTable table) {
-        return tableConverter.convertTable(table);
+        return asTable(table, true);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the table of the given representation table.",
+        params = {
+            @Param(name = "representation", value = "the DTable"),
+            @Param(name = "withHeader", value = "true to add header styles, false otherwise"),
+        },
+        result = "insert the table of the given representation table.",
+        examples = {
+            @Example(expression = "dTable.asTable(false)", result = "insert the table of the given representation table"),
+        }
+    )
+    // @formatter:on
+    public MTable asTable(DTable table, boolean withHeader) {
+        return tableConverter.convertTable(table, withHeader);
     }
 
     // @formatter:off
@@ -541,18 +558,37 @@ public class M2DocSiriusServices {
 
     // @formatter:off
     @Documentation(
-        value = "Gets the Sequence of tables for the tables associated to the given EObject with the given description name.",
+        value = "Gets the Sequence of tables for the tables associated to the given EObject with the given description name (with header styles).",
         params = {
             @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
-            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description (with header styles)"),
         },
-        result = "the Sequence of tables for the tables associated to the given EObject with the given description name.",
+        result = "the Sequence of tables for the tables associated to the given EObject with the given description name (with header styles).",
         examples = {
             @Example(expression = "ePackage.asTableByRepresentationDescriptionName('dependency table')", result = "Sequence{table1, table2}"),
         }
     )
     // @formatter:on
     public List<MTable> asTableByRepresentationDescriptionName(EObject eObj, String descriptionName) {
+        return asTableByRepresentationDescriptionName(eObj, descriptionName, true);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Gets the Sequence of tables for the tables associated to the given EObject with the given description name.",
+        params = {
+            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+            @Param(name = "withHeader", value = "true to had header styles, false otherwise"),
+        },
+        result = "the Sequence of tables for the tables associated to the given EObject with the given description name.",
+        examples = {
+            @Example(expression = "ePackage.asTableByRepresentationDescriptionName('dependency table', false)", result = "Sequence{table1, table2}"),
+        }
+    )
+    // @formatter:on
+    public List<MTable> asTableByRepresentationDescriptionName(EObject eObj, String descriptionName,
+            boolean withHeader) {
         final List<MTable> res = new ArrayList<>();
 
         final Collection<DRepresentationDescriptor> repDescs = DialectManager.INSTANCE
@@ -567,7 +603,7 @@ public class M2DocSiriusServices {
                 && repDesc.getDescription().eContainer() instanceof Viewpoint) {
                 Viewpoint vp = (Viewpoint) repDesc.getDescription().eContainer();
                 if (selectedViewpoints.contains(vp)) {
-                    res.add(asTable((DTable) repDesc.getRepresentation()));
+                    res.add(asTable((DTable) repDesc.getRepresentation(), withHeader));
                 }
             }
         }
@@ -677,23 +713,40 @@ public class M2DocSiriusServices {
 
     // @formatter:off
     @Documentation(
-        value = "Insert the table of the given representation name.",
+        value = "Insert the table of the given representation name (with header styles).",
         params = {
-            @Param(name = "representationName", value = "the name of the searched representation"),
+            @Param(name = "representationName", value = "the name of the searched representation (with header styles)"),
         },
-        result = "Insert the table of the given representation name",
+        result = "Insert the table of the given representation name (with header styles)",
         examples = {
             @Example(expression = "'MyEPackage class diagram'.asTableByRepresentationName()", result = "insert the table"),
         }
     )
     // @formatter:on
     public MTable asTableByRepresentationName(String representationName) {
+        return asTableByRepresentationName(representationName, true);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the table of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+            @Param(name = "withHeader", value = "true to add header styles, false otherwise"),
+        },
+        result = "Insert the table of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asTableByRepresentationName(false)", result = "insert the table"),
+        }
+    )
+    // @formatter:on
+    public MTable asTableByRepresentationName(String representationName, boolean withHeader) {
         final MTable res;
 
         final DRepresentationDescriptor description = SiriusRepresentationUtils
                 .getAssociatedRepresentationByName(representationName, session);
         if (description != null && description.getRepresentation() instanceof DTable) {
-            res = asTable((DTable) description.getRepresentation());
+            res = asTable((DTable) description.getRepresentation(), withHeader);
         } else {
             res = MTable.EMPTY;
         }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/table/description/1.1.0" name="EcoreTools" version="11.0.0.201601261200">
+  <ownedViewpoints endUserDocumentation="&lt;html>&#xA;&lt;head>&#xA;&lt;/head>&#xA;&lt;body>&#xA;&lt;p>Provides graphical and tabular representation to design an Ecore model.&lt;/p>&#xA;&lt;br>&#xA;&lt;img src=&quot;/icons/full/wizban/entities.png&quot;/>&#xA;&lt;img src=&quot;/icons/full/wizban/classes.png&quot;/>&#xA;&lt;/body>&#xA;&lt;/html>&#xA;&#xA;&#xA;" name="TestEcore" modelFileExtension="ecore xcore ecorebin">
+    <ownedRepresentations xsi:type="description_1:EditionTableDescription" name="Names" domainClass="ecore.EPackage">
+      <metamodel href="http://www.eclipse.org/emf/2002/Ecore#/"/>
+      <ownedLineMappings name="EClassifierLine" domainClass="ecore.EClassifier" semanticCandidatesExpression="feature:eClassifiers">
+        <ownedSubLines name="EStructuralFeatureLine" domainClass="ecore.EStructuralFeature" semanticCandidatesExpression="aql:if (self.oclIsKindOf(ecore::EClass)) then self.eStructuralFeatures else Sequence{} endif"/>
+      </ownedLineMappings>
+      <ownedColumnMappings name="NameColumn" headerLabelExpression="'Name'" featureName="name" labelExpression="feature:name"/>
+    </ownedRepresentations>
+  </ownedViewpoints>
+</description:Group>

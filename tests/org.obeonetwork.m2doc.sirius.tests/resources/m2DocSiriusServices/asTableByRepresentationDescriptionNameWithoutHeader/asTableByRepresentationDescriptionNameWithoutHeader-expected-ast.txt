@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+=== BODY ===
+
+  This demonstrate the simple usage of asTableByRepresentationDescriptionName service :
+  [query: ->first(.asTableByRepresentationDescriptionName(self, 'Names', false))]
+  End of demonstration.
+=== FOOTER ===
+
+  
+=== TEMPLATES ===

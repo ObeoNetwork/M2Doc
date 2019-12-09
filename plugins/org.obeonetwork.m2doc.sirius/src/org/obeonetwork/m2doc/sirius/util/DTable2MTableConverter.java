@@ -74,9 +74,11 @@ public final class DTable2MTableConverter {
      * 
      * @param table
      *            the Sirius table, must not be <code>null</code>
+     * @param withHeader
+     *            <code>true</code> to generate header {@link MStyle}, <code>false</code> otherwise
      * @return the converted table
      */
-    public MTable convertTable(DTable table) {
+    public MTable convertTable(DTable table, boolean withHeader) {
         final MTable mTable = new MTableImpl();
         mTable.setLabel(table.getName());
 
@@ -88,8 +90,8 @@ public final class DTable2MTableConverter {
         final Map<Integer, DTableElementStyle> columnStyles = new HashMap<>();
         int colIdx = 0;
         for (DColumn column : table.getColumns()) {
-            final MText mText = new MTextImpl(column.getLabel(), HEADER_STYLE);
-            final MCell mCell = new MCellImpl(mText, HEADER_BACKGROUND_COLOR);
+            final MText mText = new MTextImpl(column.getLabel(), getHeaderStyle(withHeader));
+            final MCell mCell = new MCellImpl(mText, getHeaderBackgroundColor(withHeader));
             mHeaderRow.getCells().add(mCell);
             // Keep the column style
             columnStyles.put(colIdx, column.getCurrentStyle());
@@ -98,7 +100,7 @@ public final class DTable2MTableConverter {
 
         // Convert the rows.
         for (DLine line : table.getLines()) {
-            final List<MRow> mRows = convertRow(table, columnStyles, line, 0);
+            final List<MRow> mRows = convertRow(table, columnStyles, line, 0, withHeader);
             mTable.getRows().addAll(mRows);
         }
 
@@ -117,10 +119,12 @@ public final class DTable2MTableConverter {
      *            the {@link DLine} to convert
      * @param depth
      *            the current depth of the table line
+     * @param withHeader
+     *            <code>true</code> to generate header {@link MStyle}, <code>false</code> otherwise
      * @return the {@link List} of converted {@link MRow}
      */
     private List<MRow> convertRow(DTable table, final Map<Integer, DTableElementStyle> columnStyles, DLine line,
-            int depth) {
+            int depth, boolean withHeader) {
         final List<MRow> res = new ArrayList<>();
 
         if (line.isVisible()) {
@@ -130,15 +134,15 @@ public final class DTable2MTableConverter {
             // A header cell is inserted
             final MList headerCellContent = new MListImpl();
             if (depth > 0) {
-                final MText intentation = new MTextImpl(getIntentation(depth), HEADER_STYLE);
+                final MText intentation = new MTextImpl(getIntentation(depth), getHeaderStyle(withHeader));
                 headerCellContent.add(intentation);
             }
             final Image image = adapterFactoryLabelProvider.getImage(line.getTarget());
             final MImage mImage = new MImageSWTImpl(image.getImageData());
             headerCellContent.add(mImage);
-            final MText mHeaderText = new MTextImpl(line.getLabel(), HEADER_STYLE);
+            final MText mHeaderText = new MTextImpl(line.getLabel(), getHeaderStyle(withHeader));
             headerCellContent.add(mHeaderText);
-            final MCell mHeaderColumnCell = new MCellImpl(headerCellContent, HEADER_BACKGROUND_COLOR);
+            final MCell mHeaderColumnCell = new MCellImpl(headerCellContent, getHeaderBackgroundColor(withHeader));
             row.getCells().add(mHeaderColumnCell);
             // Retrieve row style to apply to non styled cells
             final DTableElementStyle rowStyle = line.getCurrentStyle();
@@ -162,7 +166,7 @@ public final class DTable2MTableConverter {
                 setCellContent(table, columnStyles, row, rowStyle, dcell);
             }
             for (DLine child : line.getLines()) {
-                res.addAll(convertRow(table, columnStyles, child, depth + 1));
+                res.addAll(convertRow(table, columnStyles, child, depth + 1, withHeader));
             }
         }
 
@@ -284,6 +288,44 @@ public final class DTable2MTableConverter {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Gets the header {@link MStyle}.
+     * 
+     * @param withHeader
+     *            <code>true</code> to generate header {@link MStyle}, <code>false</code> otherwise
+     * @return the header {@link MStyle} if witHeader is <code>true</code>, <code>null</code> otherwise
+     */
+    private static MStyle getHeaderStyle(boolean withHeader) {
+        final MStyle res;
+
+        if (withHeader) {
+            res = HEADER_STYLE;
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the header {@link Color}.
+     * 
+     * @param withHeader
+     *            <code>true</code> to generate header {@link Color}, <code>false</code> otherwise
+     * @return the header background {@link Color} if witHeader is <code>true</code>, <code>null</code> otherwise
+     */
+    private static Color getHeaderBackgroundColor(boolean withHeader) {
+        final Color res;
+
+        if (withHeader) {
+            res = HEADER_BACKGROUND_COLOR;
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
 }
