@@ -51,6 +51,7 @@ import org.apache.xmlbeans.XmlToken;
 import org.apache.xmlbeans.impl.common.IOUtil;
 import org.obeonetwork.m2doc.parser.AbstractBodyParser;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
@@ -269,8 +270,9 @@ public class RawCopier {
         }
 
         if (endUserContentParagraph != startUserContentParagraph) {
+            IBodyElement element = null;
             while (it.hasNext()) {
-                final IBodyElement element = it.next();
+                element = it.next();
                 if (endUserContentParagraph == element) {
                     break;
                 }
@@ -292,13 +294,14 @@ public class RawCopier {
                 }
             }
             if (inlineEndUserContent) {
-                if (res != null) {
-                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, res,
-                            endUserContentParagraph, null, endXmlObject);
-                } else {
-                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, outputParagraph,
-                            endUserContentParagraph, null, endXmlObject);
-                }
+                res = createNewParagraph(outputBody);
+                final CTP ctp = (CTP) ((XWPFParagraph) element).getCTP().copy();
+                ctp.getRList().clear();
+                ctp.getFldSimpleList().clear();
+                ctp.getHyperlinkList().clear();
+                res.getCTP().set(ctp);
+                copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, res,
+                        endUserContentParagraph, null, endXmlObject);
             } else {
                 // nothing to do here the last body element has already been copied
             }
