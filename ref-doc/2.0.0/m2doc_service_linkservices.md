@@ -53,7 +53,7 @@ Converts a String to an hyperlink
 
 | Expression | Result |
 | ---------- | ------ |
-| 'My website'.asLink('http://www.example.org') | a link to http://www.example.org with the label My website |
+| 'My website'.asLink('https://www.example.org') | a link to https://www.example.org with the label My website |
 
 
 

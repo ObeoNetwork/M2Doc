@@ -67,6 +67,20 @@ Insert the image of the given representation if it's a diagram.
 * dRepresentation.asImage(true, OrderedSet{'Layer 1', 'Layer 2'})
   * insert the image of the given representation if it's a diagram
 
+## EObject.asImageByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MImage}
+
+Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description
+
+### Example
+
+* ePackage.asImageByRepresentationDescriptionName('class diagram')
+  * Sequence{image1, image2}
+
 ## EObject.asImageByRepresentationDescriptionName(String, boolean, OrderedSet{String}) : Sequence{org.obeonetwork.m2doc.element.MImage}
 
 Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
@@ -98,20 +112,6 @@ Gets the Sequence of images for the diagrams associated to the given EObject wit
 * ePackage.asImageByRepresentationDescriptionName('class diagram', true)
   * Sequence{image1, image2}
 
-## EObject.asImageByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MImage}
-
-Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
-
-### Parameter
-
-* **eObject**: Any eObject that is in the session where to search
-* **representationDescriptionName**: the name of the searched representation description
-
-### Example
-
-* ePackage.asImageByRepresentationDescriptionName('class diagram')
-  * Sequence{image1, image2}
-
 ## String.asImageByRepresentationName(boolean, OrderedSet{String}) : org.obeonetwork.m2doc.element.MImage
 
 Insert the image of the given representation name.
@@ -125,19 +125,6 @@ Insert the image of the given representation name.
 ### Example
 
 * 'MyEPackage class diagram'.asImageByRepresentationName(true, OrderedSet{'Layer 1', 'Layer 2'})
-  * insert the image
-
-## String.asImageByRepresentationName() : org.obeonetwork.m2doc.element.MImage
-
-Insert the image of the given representation name.
-
-### Parameter
-
-* **representationName**: the name of the searched representation
-
-### Example
-
-* 'MyEPackage class diagram'.asImageByRepresentationName()
   * insert the image
 
 ## String.asImageByRepresentationName(boolean) : org.obeonetwork.m2doc.element.MImage
@@ -154,9 +141,22 @@ Insert the image of the given representation name.
 * 'MyEPackage class diagram'.asImageByRepresentationName(true)
   * insert the image after refreshing the representation
 
+## String.asImageByRepresentationName() : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation name.
+
+### Parameter
+
+* **representationName**: the name of the searched representation
+
+### Example
+
+* 'MyEPackage class diagram'.asImageByRepresentationName()
+  * insert the image
+
 ## org.eclipse.sirius.table.metamodel.table.DTable.asTable() : org.obeonetwork.m2doc.element.MTable
 
-Insert the table of the given representation table.
+Insert the table of the given representation table (with header styles).
 
 ### Parameter
 
@@ -165,9 +165,37 @@ Insert the table of the given representation table.
 ### Example
 
 * dTable.asTable()
-  * insert the tablee of the given representation table
+  * insert the table of the given representation table (with header styles)
+
+## org.eclipse.sirius.table.metamodel.table.DTable.asTable(boolean) : org.obeonetwork.m2doc.element.MTable
+
+Insert the table of the given representation table.
+
+### Parameter
+
+* **representation**: the DTable
+* **withHeader**: true to add header styles, false otherwise
+
+### Example
+
+* dTable.asTable(false)
+  * insert the table of the given representation table
 
 ## EObject.asTableByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MTable}
+
+Gets the Sequence of tables for the tables associated to the given EObject with the given description name (with header styles).
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description (with header styles)
+
+### Example
+
+* ePackage.asTableByRepresentationDescriptionName('dependency table')
+  * Sequence{table1, table2}
+
+## EObject.asTableByRepresentationDescriptionName(String, boolean) : Sequence{org.obeonetwork.m2doc.element.MTable}
 
 Gets the Sequence of tables for the tables associated to the given EObject with the given description name.
 
@@ -175,23 +203,38 @@ Gets the Sequence of tables for the tables associated to the given EObject with 
 
 * **eObject**: Any eObject that is in the session where to search
 * **representationDescriptionName**: the name of the searched representation description
+* **withHeader**: true to had header styles, false otherwise
 
 ### Example
 
-* ePackage.asTableByRepresentationDescriptionName('dependency table')
+* ePackage.asTableByRepresentationDescriptionName('dependency table', false)
   * Sequence{table1, table2}
 
 ## String.asTableByRepresentationName() : org.obeonetwork.m2doc.element.MTable
+
+Insert the table of the given representation name (with header styles).
+
+### Parameter
+
+* **representationName**: the name of the searched representation (with header styles)
+
+### Example
+
+* 'MyEPackage class diagram'.asTableByRepresentationName()
+  * insert the table
+
+## String.asTableByRepresentationName(boolean) : org.obeonetwork.m2doc.element.MTable
 
 Insert the table of the given representation name.
 
 ### Parameter
 
 * **representationName**: the name of the searched representation
+* **withHeader**: true to add header styles, false otherwise
 
 ### Example
 
-* 'MyEPackage class diagram'.asTableByRepresentationName()
+* 'MyEPackage class diagram'.asTableByRepresentationName(false)
   * insert the table
 
 ## EObject.isRepresentationDescriptionName(String) : boolean

@@ -43,7 +43,7 @@ To **search for issues**, have a look to the github help page to learn the [sear
 ### Ask questions
 
 If you get stuck trying to do something, our developers monitor and participate in #m2doc questions on Stack Overflow. For more general questions about M2Doc we've created an FAQ, which will grow over time.
-If you have any **question**, do not hesitate ask a question on [Stack Overflow](http://stackoverflow.com/questions/ask?tags=m2doc). When you ask a question do not forget to add the tag <code>m2doc</code>.
+If you have any **question**, do not hesitate ask a question on [Stack Overflow](https://stackoverflow.com/questions/ask?tags=m2doc). When you ask a question do not forget to add the tag <code>m2doc</code>.
 
 <a name="contribute"></a>
 
@@ -70,5 +70,5 @@ M2Doc's code is hosted on Github. It's easy to get the code and build M2Doc from
 ### Contribute to the documentation
 
 Found an error in this web-site or in the documentation? Please help us and contribute.
-M2Doc's documentation is hosted on Github: <https://github.com/ObeoNetwork/M2Doc/tree/gh-pages>. Just clone our repository, update the documentation and trigger a [pull request](https://help.github.com/articles/using-pull-requests). The documentation is written with the [markdown](http://en.wikipedia.org/wiki/Markdown) syntax, so it is really easy to contribute.
+M2Doc's documentation is hosted on Github: <https://github.com/ObeoNetwork/M2Doc/tree/gh-pages>. Just clone our repository, update the documentation and trigger a [pull request](https://help.github.com/articles/using-pull-requests). The documentation is written with the [markdown](https://en.wikipedia.org/wiki/Markdown) syntax, so it is really easy to contribute.
 

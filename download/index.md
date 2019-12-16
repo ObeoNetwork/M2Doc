@@ -36,7 +36,7 @@ _Pay attention that the nightly build is unstable, this build is for testing pur
 
 The update-sites provide a p2 repository for M2Doc.
 
-Don't know how to install a module from an Update Site ? Have a look to our [video](http://www.youtube.com/watch?v=qYTrO7THer0).
+Don't know how to install a module from an Update Site ? Have a look to our [video](https://www.youtube.com/watch?v=qYTrO7THer0).
 
 Releases
 --------

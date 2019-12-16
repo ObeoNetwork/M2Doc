@@ -412,7 +412,7 @@ To use new Ecore packages for typing you can add the following custom property:
 
 For example:
 
-* Name: `m:uri:http://www.eclipse.org/uml2/5.0.0/UML` 
+* Name: `m:uri:https://www.eclipse.org/uml2/5.0.0/UML` 
 * Value:
 
 #### Service custom properties
@@ -485,7 +485,7 @@ Select the template import wizard:
 
 ## Template testing
 
-To simplify unit testing while developing M2Doc, a [JUnit](http://junit.org/junit4/) test suite has been implemented. It uses a given folder as input and lists each sub directory following a naming pattern as a test case. You can use the same test suite for your own tests. An example of the test suite implementation [QueryTests](https://github.com/ObeoNetwork/M2Doc/blob/2.0.1/tests/org.obeonetwork.m2doc.tests/src/org/obeonetwork/m2doc/tests/QueryTests.java) with the folder [resources/query](https://github.com/ObeoNetwork/M2Doc/tree/2.0.1/tests/org.obeonetwork.m2doc.tests/resources/query).
+To simplify unit testing while developing M2Doc, a [JUnit](https://junit.org/junit4/) test suite has been implemented. It uses a given folder as input and lists each sub directory following a naming pattern as a test case. You can use the same test suite for your own tests. An example of the test suite implementation [QueryTests](https://github.com/ObeoNetwork/M2Doc/blob/2.0.1/tests/org.obeonetwork.m2doc.tests/src/org/obeonetwork/m2doc/tests/QueryTests.java) with the folder [resources/query](https://github.com/ObeoNetwork/M2Doc/tree/2.0.1/tests/org.obeonetwork.m2doc.tests/resources/query).
 
 ## Maven
 
