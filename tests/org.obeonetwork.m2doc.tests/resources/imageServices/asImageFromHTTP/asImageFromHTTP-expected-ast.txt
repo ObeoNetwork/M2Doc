@@ -4,7 +4,7 @@
 === BODY ===
 
   Checks ImageServices registration :
-  [query: .asImage('http://www.m2doc.org/images/logo_M2Doc.png')]
+  [query: .asImage('https://www.m2doc.org/images/logo_M2Doc.png')]
   End of demonstration.
 === FOOTER ===
 
