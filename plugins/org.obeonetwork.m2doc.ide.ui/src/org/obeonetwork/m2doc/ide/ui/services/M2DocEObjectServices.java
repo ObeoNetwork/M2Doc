@@ -32,7 +32,7 @@ import org.obeonetwork.m2doc.ide.ui.element.impl.MImageSWTImpl;
 value = "Services available for EObject."
 )
 //@formatter:on
-@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype", "restriction" })
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class M2DocEObjectServices {
 
     /**
@@ -63,6 +63,18 @@ public class M2DocEObjectServices {
         return adapterFactoryLabelProvider.getText(eObj);
     }
 
+    // @formatter:off
+    @Documentation(
+        value = "Gets the image of the ILabelProvider for the given EObject.",
+        params = {
+            @Param(name = "eObj", value = "The EObject"),
+        },
+        result = "Inserts the image from the ILabelProvider of the given EObject.",
+        examples = {
+            @Example(expression = "myEClass.getImage()", result = "the MImage for the given EObject"),
+        }
+    )
+    // @formatter:on
     public MImage getImage(EObject eObj) {
         final Image image = adapterFactoryLabelProvider.getImage(eObj);
 

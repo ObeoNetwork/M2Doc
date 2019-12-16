@@ -4,7 +4,7 @@ include "../common/common.tpd"
 
 with source requirements
 
-//include "http://download.eclipse.org/capella/core/updates/stable/1.4.0-S20191104-160005/targets/capella.target-definition.targetplatform"
+//include "https://download.eclipse.org/capella/core/updates/releases/1.4.0-R20191121-173601/targets/capella.target-definition.targetplatform"
 
 location eclipse "http://download.eclipse.org/releases/2019-06" {
 	org.eclipse.sdk.feature.group lazy
@@ -145,6 +145,6 @@ location orbit-R20130827064939 "http://download.eclipse.org/tools/orbit/download
 	org.apache.commons.net [3.2.0.v201305141515,3.2.0.v201305141515]
 }
 
-location site_Capella "https://download.eclipse.org/capella/core/updates/stable/1.4.0-S20191104-160005/org.polarsys.capella.rcp.site/" {
+location site_Capella "https://download.eclipse.org/capella/core/updates/releases/1.4.0-R20191121-173601/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.core.feature.feature.group lazy
 }
