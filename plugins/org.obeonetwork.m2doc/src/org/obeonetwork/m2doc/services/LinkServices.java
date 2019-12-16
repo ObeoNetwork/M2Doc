@@ -37,7 +37,7 @@ public class LinkServices {
         },
         result = "A link with the given label that point to the given url.",
         examples = {
-            @Example(expression = "'My website'.asLink('http://www.example.org')", result = "a link to http://www.example.org with the label My website"),
+            @Example(expression = "'My website'.asLink('https://www.example.org')", result = "a link to https://www.example.org with the label My website"),
         }
     )
     // @formatter:on

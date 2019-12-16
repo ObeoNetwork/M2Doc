@@ -277,7 +277,7 @@ public final class M2DocHelpContentUtils {
 
 		buffer.append("    <!-- IE6-8 support of HTML elements -->").append(LS);
 		buffer.append("    <!--[if lt IE 9]>").append(LS);
-		buffer.append("      <script src=\"http://html5shim.googlecode.com/svn/trunk/html5.js\"></script>").append(LS);
+		buffer.append("      <script src=\"https://html5shim.googlecode.com/svn/trunk/html5.js\"></script>").append(LS);
 		buffer.append("    <![endif]-->").append(LS);
 
 		buffer.append("    <link href=\"../assets/css/bootstrap.css\" rel=\"stylesheet\">").append(LS);
