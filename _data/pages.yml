@@ -8,11 +8,11 @@
 - category: GET STARTED
   pages:
   - title: Generate a document
-    file: ref-doc/2.0.3/index
-    anchor: generate-a-document
+    file: ref-doc/nightly/index
+    anchor: generating-a-document
   - title: Write a template
-    file: ref-doc/2.0.3/index
-    anchor: write-a-template
+    file: ref-doc/nightly/index
+    anchor: template-authoring
   - title: Use with Capella
     file: capella/index
 
