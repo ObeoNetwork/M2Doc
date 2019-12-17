@@ -33,8 +33,10 @@ import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -432,6 +434,52 @@ public final class M2DocUtils {
      */
     public static String message(ParsingErrorMessage message, Object... objects) {
         return MessageFormat.format(message.getMessage(), objects);
+    }
+
+    /**
+     * Gets the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options.
+     * 
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for model elements
+     * @param templateURI
+     *            the template {@link URI}
+     * @param options
+     *            the {@link Map} of options
+     * @return the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options
+     */
+    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels, URI templateURI,
+            Map<String, String> options) {
+        final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
+                ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
+        final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(resourceSetForModels);
+
+        return getQueryEnvironment(resourceSetForModels, crossReferenceProvider, rootProvider, templateURI, options);
+    }
+
+    /**
+     * Gets the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options.
+     * 
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for model elements
+     * @param crossReferenceProvider
+     *            the {@link CrossReferenceProvider} used for eInverse() service
+     * @param rootProvider
+     *            the {@link IRootEObjectProvider} used for the allInstances() service
+     * @param templateURI
+     *            the template {@link URI}
+     * @param options
+     *            the {@link Map} of options
+     * @return the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options
+     */
+    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels,
+            CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, URI templateURI,
+            Map<String, String> options) {
+        final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
+                .newEnvironmentWithDefaultServices(crossReferenceProvider, rootProvider);
+
+        M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModels, templateURI, options);
+
+        return queryEnvironment;
     }
 
     /**

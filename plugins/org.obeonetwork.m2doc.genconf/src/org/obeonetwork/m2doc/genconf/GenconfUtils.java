@@ -48,7 +48,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.POIServices;
@@ -59,10 +58,8 @@ import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
-import org.obeonetwork.m2doc.util.ECrossReferenceAdapterCrossReferenceProvider;
 import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
-import org.obeonetwork.m2doc.util.ResourceSetRootEObjectProvider;
 
 /**
  * Utility class for {@link Generation}.
@@ -152,24 +149,27 @@ public final class GenconfUtils {
     /**
      * Gets the initialized {@link IQueryEnvironment} for the given {@link Generation}.
      * 
-     * @param resourceSetForModel
+     * @param resourceSetForModels
      *            the {@link ResourceSet} for model elements
      * @param generation
      *            the {@link Generation}
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
-    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModel, Generation generation) {
-        final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
-                ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModel));
-        final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(resourceSetForModel);
+    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels, Generation generation) {
+        final URI templateURI;
+        templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
-        return getQueryEnvironment(resourceSetForModel, crossReferenceProvider, rootProvider, generation);
+        final Map<String, String> options = getOptions(generation);
+        final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels, templateURI,
+                options);
+
+        return queryEnvironment;
     }
 
     /**
      * Gets the initialized {@link IQueryEnvironment} for the given {@link Generation}.
      * 
-     * @param resourceSetForModel
+     * @param resourceSetForModels
      *            the {@link ResourceSet} for model elements
      * @param crossReferenceProvider
      *            the {@link CrossReferenceProvider} used for eInverse() service
@@ -179,16 +179,14 @@ public final class GenconfUtils {
      *            the {@link Generation}
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
-    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModel,
+    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels,
             CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, Generation generation) {
         final URI templateURI;
         templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
-        final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(crossReferenceProvider, rootProvider);
-
         final Map<String, String> options = getOptions(generation);
-        M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModel, templateURI, options);
+        final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels,
+                crossReferenceProvider, rootProvider, templateURI, options);
 
         return queryEnvironment;
     }
@@ -198,11 +196,11 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the {@link Generation} holding the {@link Generation#getDefinitions() definitions}
-     * @param resourceSet
+     * @param resourceSetForModels
      *            the {@link ResourceSet} used to load the model instances
      * @return the created variables {@link Map} from the given {@link Generation} and {@link ResourceSet}
      */
-    public static Map<String, Object> getVariables(Generation generation, ResourceSet resourceSet) {
+    public static Map<String, Object> getVariables(Generation generation, ResourceSet resourceSetForModels) {
         Map<String, Object> result = new HashMap<String, Object>();
         for (Definition def : generation.getDefinitions()) {
             if (def instanceof ModelDefinition) {
@@ -211,7 +209,7 @@ public final class GenconfUtils {
                 if (originalValue != null) {
                     URI uri = EcoreUtil.getURI(originalValue);
                     try {
-                        val = resourceSet.getEObject(uri, true);
+                        val = resourceSetForModels.getEObject(uri, true);
                     } catch (WrappedException e) {
                         /*
                          * The resource could not be loaded, in that case the value is reset to a proxy with the same uri.
@@ -842,11 +840,11 @@ public final class GenconfUtils {
      *            the {@link IReadOnlyQueryEnvironment}
      * @param properties
      *            the {@link TemplateCustomProperties}
-     * @param resourceSet
+     * @param resourceSetForModels
      *            the {@link ResourceSet} to get values from
      */
     public static void initializeVariableDefinition(Generation generation, IReadOnlyQueryEnvironment queryEnvironment,
-            TemplateCustomProperties properties, ResourceSet resourceSet) {
+            TemplateCustomProperties properties, ResourceSet resourceSetForModels) {
         final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
         final Map<ModelDefinition, Set<IType>> toInitialilize = new HashMap<ModelDefinition, Set<IType>>();
         for (Definition definition : generation.getDefinitions()) {
@@ -858,7 +856,7 @@ public final class GenconfUtils {
             }
         }
 
-        final Iterator<Notifier> it = resourceSet.getAllContents();
+        final Iterator<Notifier> it = resourceSetForModels.getAllContents();
         while (!toInitialilize.isEmpty() && it.hasNext()) {
             final Notifier notifier = it.next();
             if (notifier instanceof EObject) {
