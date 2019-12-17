@@ -15,8 +15,8 @@
       version="3.0.0.qualifier"
       provider-name="Obeo Network">
 
-   <description url="http://www.obeonetwork.com/">
-      This feature provides a plugin containing provider for diagram tag image retrieving handling.
+   <description url="https://www.m2doc.org">
+      This feature provides a plugin containing provider for CDO repository handling.
    </description>
 
    <copyright url="http://www.obeo.fr/legal.php?lang=en">
