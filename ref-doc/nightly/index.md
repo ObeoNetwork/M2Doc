@@ -457,16 +457,21 @@ The following sample code shows how to load a template .docx file using M2Doc:
 
 {% highlight Java %}
 final URI templateURI = ...; // the URI of the template
-final Map<String, String> options = ...; // can be empty, if you have a Generation use GenconfUtils.getOptions(generation)
+        
+// can be empty, if you are using a Generation use GenconfUtils.getOptions(generation)
+final Map<String, String> options = ...;
 List<Exception> exceptions = new ArrayList<>();
-final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null); // if you are using a Generation use GenconfUtils.getQueryEnvironment(resourceSetForModels, generation) and skip M2DocUtils.prepareEnvironmentServices() call
+        
 final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions , key, new ResourceSetImpl(), options);
-M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModels, templateURI, options); // delegate to IServicesConfigurator
+
+// if you are using a Generation use GenconfUtils.getQueryEnvironment(resourceSetForModels, generation)
+final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels, templateURI, options); // delegate to IServicesConfigurator
+        
 final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
 try (DocumentTemplate template = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment, classProvider, monitor)) {
     // use the template
 } finally {
-        M2DocUtils.cleanResourceSetForModels(key, resourceSetForModels);
+    M2DocUtils.cleanResourceSetForModels(key, resourceSetForModels);
 }
 {% endhighlight %}
 
