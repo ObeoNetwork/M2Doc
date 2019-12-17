@@ -456,12 +456,17 @@ This section is for developers wanting to integrate M2Doc in their own project. 
 The following sample code shows how to load a template .docx file using M2Doc:
 
 {% highlight Java %}
-final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null);
-final Map<String, String> options = ...; // can be empty
-M2DocUtils.prepareEnvironmentServices(queryEnvironment, templateURI, options); // delegate to IServicesConfigurator
+final URI templateURI = ...; // the URI of the template
+final Map<String, String> options = ...; // can be empty, if you have a Generation use GenconfUtils.getOptions(generation)
+List<Exception> exceptions = new ArrayList<>();
+final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query.newEnvironmentWithDefaultServices(null); // if you are using a Generation use GenconfUtils.getQueryEnvironment(resourceSetForModels, generation) and skip M2DocUtils.prepareEnvironmentServices() call
+final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions , key, new ResourceSetImpl(), options);
+M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModels, templateURI, options); // delegate to IServicesConfigurator
 final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
-try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment, classProvider)) {
-  // use the template
+try (DocumentTemplate template = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment, classProvider, monitor)) {
+    // use the template
+} finally {
+        M2DocUtils.cleanResourceSetForModels(key, resourceSetForModels);
 }
 {% endhighlight %}
 
@@ -470,10 +475,10 @@ try (DocumentTemplate template = M2DocUtils.parse(templateURI, queryEnvironment,
 The validation is optional:
 
 {% highlight Java %}
-final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment);
+final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment, monitor);
 if (validationLevel != ValidationMessageLevel.OK) {
-  final URI validationResulrURI = ...; // some place to serialize the result of the validation
-  M2DocUtils.serializeValidatedDocumentTemplate(documentTemplate, validationResulrURI);
+    final URI validationResulURI = ...; // some place to serialize the result of the validation
+    M2DocUtils.serializeValidatedDocumentTemplate(resourceSetForModels.getURIConverter(), documentTemplate, validationResulURI);
 }
 {% endhighlight %}
 
@@ -486,7 +491,7 @@ The generation will produce the final document where M2Doc template is evaluated
 {% highlight Java %}
 final Map<String, Object> variables = ...; // your variables and values
 final URI outputURI = ...; // some place to serialize the result of the generation
-M2DocUtils.generate(template, queryEnvironment, variables, outputURI, monitor);
+M2DocUtils.generate(template, queryEnvironment, variables, resourceSetForModels, outputURI, monitor);
 {% endhighlight %}
 
 #### Generation configuration API
