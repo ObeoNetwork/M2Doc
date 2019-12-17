@@ -402,11 +402,11 @@ public final class M2DocHelpContentUtils {
 	 *            The list of Java classes providing services to M2Doc.
 	 * @return The content of the toc.xml
 	 */
-	public static StringBuffer computeToc(Class<?>... serviceProviders) {
+	public static StringBuffer computeServicesToc(Class<?>... serviceProviders) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append(LS);
 		buffer.append("<?NLS TYPE=\"org.eclipse.help.toc\"?>").append(LS);
-		buffer.append("<toc label=\"M2Doc Documentation\" topic=\"doc/index.html\">").append(LS);
+		buffer.append("<toc label=\"M2Doc Services Documentation\">").append(LS);
 		for (Class<?> serviceProviderClass : serviceProviders) {
 			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
 				ServiceProvider serviceProvider = serviceProviderClass.getAnnotation(ServiceProvider.class);

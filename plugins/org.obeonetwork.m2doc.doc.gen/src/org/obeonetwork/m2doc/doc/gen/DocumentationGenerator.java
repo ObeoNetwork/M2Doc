@@ -72,10 +72,10 @@ public final class DocumentationGenerator {
 
 		File documentationFolder = pluginFolder;
 
-		// toc.xml
-		StringBuffer buffer = M2DocHelpContentUtils.computeToc(STANDARD_SERVICE_PROVIDERS);
+		// services-toc.xml
+		StringBuffer buffer = M2DocHelpContentUtils.computeServicesToc(STANDARD_SERVICE_PROVIDERS);
 		try {
-			File tocFile = new File(pluginFolder, "toc.xml");
+			File tocFile = new File(pluginFolder, "services-toc.xml");
 			System.out.println("Writing the content of toc.xml in " + tocFile.getAbsolutePath());
 			try (PrintWriter writer = new PrintWriter(tocFile, UTF8);) {
 				writer.print(buffer.toString());
