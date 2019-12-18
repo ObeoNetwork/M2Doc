@@ -31,6 +31,10 @@ First you need to download [Capella](https://polarsys.org/capella/). It can be d
 
 Once your download is finished, extract the downloaded archive and run the eclipe executable in the eclipse sub folder. You are now ready for the last step of the installation. You will need to [add a new update site](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm):
 
+### Installation Capella 1.4.x
+
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full/org.obeonetwork.capella.update.full.zip)
+
 ### Installation Capella 1.3.x
 
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full/org.obeonetwork.capella.update.full.zip)
