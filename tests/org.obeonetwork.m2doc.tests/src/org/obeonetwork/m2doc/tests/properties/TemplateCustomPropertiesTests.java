@@ -307,9 +307,87 @@ public class TemplateCustomPropertiesTests {
     }
 
     @Test
+    public void getMissingVariablesInHeader() throws IOException, InvalidFormatException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/missingVariablesInHeader.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> missingVariables = properties.getMissingVariables();
+
+            assertEquals(16, missingVariables.size());
+            assertEquals("linkNamelinkText", missingVariables.get(0));
+            assertEquals("bookmarkName", missingVariables.get(1));
+            assertEquals("queryInBookmark", missingVariables.get(2));
+            assertEquals("ifCondition", missingVariables.get(3));
+            assertEquals("queryInIf", missingVariables.get(4));
+            assertEquals("elseIfCondition", missingVariables.get(5));
+            assertEquals("queryInElseIf", missingVariables.get(6));
+            assertEquals("queryInElse", missingVariables.get(7));
+            assertEquals("letExpression", missingVariables.get(8));
+            assertEquals("queryInLet", missingVariables.get(9));
+            assertEquals("forExpression", missingVariables.get(10));
+            assertEquals("queryInFor", missingVariables.get(11));
+            assertEquals("queryExpression", missingVariables.get(12));
+            assertEquals("aqlInSelect", missingVariables.get(13));
+            assertEquals("aqlLetExpression", missingVariables.get(14));
+            assertEquals("aqlLetBody", missingVariables.get(15));
+        }
+    }
+
+    @Test
+    public void getMissingVariablesInFooter() throws IOException, InvalidFormatException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/missingVariablesInFooter.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> missingVariables = properties.getMissingVariables();
+
+            assertEquals(16, missingVariables.size());
+            assertEquals("linkNamelinkText", missingVariables.get(0));
+            assertEquals("bookmarkName", missingVariables.get(1));
+            assertEquals("queryInBookmark", missingVariables.get(2));
+            assertEquals("ifCondition", missingVariables.get(3));
+            assertEquals("queryInIf", missingVariables.get(4));
+            assertEquals("elseIfCondition", missingVariables.get(5));
+            assertEquals("queryInElseIf", missingVariables.get(6));
+            assertEquals("queryInElse", missingVariables.get(7));
+            assertEquals("letExpression", missingVariables.get(8));
+            assertEquals("queryInLet", missingVariables.get(9));
+            assertEquals("forExpression", missingVariables.get(10));
+            assertEquals("queryInFor", missingVariables.get(11));
+            assertEquals("queryExpression", missingVariables.get(12));
+            assertEquals("aqlInSelect", missingVariables.get(13));
+            assertEquals("aqlLetExpression", missingVariables.get(14));
+            assertEquals("aqlLetBody", missingVariables.get(15));
+        }
+    }
+
+    @Test
     public void getUnusedVariables() throws IOException, InvalidFormatException {
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/properties/unusedVariables.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> unusedVariables = properties.getUnusedDeclarations();
+
+            assertEquals(1, unusedVariables.size());
+            assertEquals("unusedVariable", unusedVariables.get(0));
+        }
+    }
+
+    @Test
+    public void getUnusedVariablesInHeader() throws IOException, InvalidFormatException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/unusedVariablesInHeader.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            final List<String> unusedVariables = properties.getUnusedDeclarations();
+
+            assertEquals(1, unusedVariables.size());
+            assertEquals("unusedVariable", unusedVariables.get(0));
+        }
+    }
+
+    @Test
+    public void getUnusedVariablesInFooter() throws IOException, InvalidFormatException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/unusedVariablesInFooter.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> unusedVariables = properties.getUnusedDeclarations();
 

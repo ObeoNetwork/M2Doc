@@ -31,6 +31,8 @@ import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.apache.poi.ooxml.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
@@ -59,6 +61,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.M2DocParser;
+import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Conditional;
@@ -517,13 +520,24 @@ public class TemplateCustomProperties {
     public List<String> getMissingVariables() {
         final List<String> res = new ArrayList<>();
 
-        final M2DocParser parser = new M2DocParser(document, Query.newEnvironment());
+        final IQueryEnvironment queryEnvironment = Query.newEnvironment();
+        final M2DocParser parser = new M2DocParser(document, queryEnvironment);
         try {
             final List<Template> templates = new ArrayList<>();
             final Block block = parser.parseBlock(templates);
             final Set<String> missing = new LinkedHashSet<>();
             final Set<String> used = new LinkedHashSet<>();
             walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, block);
+            for (XWPFFooter footer : document.getFooterList()) {
+                final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
+                final Block footerBlock = footerParser.parseBlock(null, TokenType.EOF);
+                walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, footerBlock);
+            }
+            for (XWPFHeader header : document.getHeaderList()) {
+                final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
+                final Block headerBlock = headerParser.parseBlock(null, TokenType.EOF);
+                walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, headerBlock);
+            }
             res.addAll(missing);
         } catch (DocumentParserException e) {
             // can't parse then nothing is missing
@@ -540,13 +554,24 @@ public class TemplateCustomProperties {
     public List<String> getUnusedDeclarations() {
         final List<String> res = new ArrayList<>(getVariables().keySet());
 
-        final M2DocParser parser = new M2DocParser(document, Query.newEnvironment());
+        final IQueryEnvironment queryEnvironment = Query.newEnvironment();
+        final M2DocParser parser = new M2DocParser(document, queryEnvironment);
         try {
             final List<Template> templates = new ArrayList<>();
             final Block block = parser.parseBlock(templates);
             final Set<String> missing = new LinkedHashSet<>();
             final Set<String> used = new LinkedHashSet<>();
             walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, block);
+            for (XWPFFooter footer : document.getFooterList()) {
+                final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
+                final Block footerBlock = footerParser.parseBlock(null, TokenType.EOF);
+                walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, footerBlock);
+            }
+            for (XWPFHeader header : document.getHeaderList()) {
+                final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
+                final Block headerBlock = headerParser.parseBlock(null, TokenType.EOF);
+                walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, headerBlock);
+            }
             res.removeAll(used);
         } catch (DocumentParserException e) {
             // can't parse then nothing is used
