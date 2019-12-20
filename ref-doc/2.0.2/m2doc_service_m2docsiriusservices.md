@@ -232,7 +232,7 @@ Gets the Sequence DRepresentation associated to the given EObject with the given
 
 ### Example
 
-* ePackage.asImageByRepresentationDescriptionName('class diagram')
+* ePackage.representationByDescriptionName('class diagram')
   * Sequence{dRepresentation1, dRepresentation2}
 
 ## String.representationByName() : org.eclipse.sirius.viewpoint.DRepresentation
@@ -245,7 +245,7 @@ Gets the DRepresentation of the given representation name.
 
 ### Example
 
-* 'MyEPackage class diagram'.asImageByRepresentationName()
+* 'MyEPackage class diagram'.representationByName()
   * dRepresentation1
 
 
