@@ -50,6 +50,15 @@
       <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
       <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
+      <unit id="org.eclipse.mylyn.wikitext" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.confluence" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.html" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.markdown" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.mediawiki" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.textile" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.19.20171117145831"/>
+      <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.19.20171117145831"/>
       <repository id="Eclipse" location="http://download.eclipse.org/releases/photon"/>
     </location>
   </locations>

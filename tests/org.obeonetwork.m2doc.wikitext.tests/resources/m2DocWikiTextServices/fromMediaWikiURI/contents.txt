@@ -1,0 +1,32 @@
+
+Some paragraph...
+
+== Level 2 ==
+
+''italic''
+
+'''bold'''
+
+'''''bold & italic'''''
+
+=== Level 3 ===
+
+* Start each line
+* with an [[Wikipedia:asterisk|asterisk]] (*).
+** More asterisks give deeper
+*** and deeper levels.
+* Line breaks <br />don't break levels.
+*** But jumping levels creates empty space.
+Any other start ends the list.
+
+==== Level 4 ====
+
+# Start each line
+# with a [[Wikipedia:Number_sign|number sign]] (#).
+## More number signs give deeper
+### and deeper
+### levels.
+# Line breaks <br />don't break levels.
+### But jumping levels creates empty space.
+# Blank lines
+

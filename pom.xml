@@ -54,6 +54,8 @@
     <module>plugins/org.obeonetwork.m2doc.cdo</module>
     <module>plugins/org.obeonetwork.m2doc.html</module>
     <module>plugins/org.obeonetwork.m2doc.html.ide</module>
+    <module>plugins/org.obeonetwork.m2doc.wikitext</module>
+    <module>plugins/org.obeonetwork.m2doc.wikitext.ide</module>
         
     <module>features/org.obeonetwork.m2doc.feature</module>
     <module>features/org.obeonetwork.m2doc.ui.feature</module>
@@ -61,6 +63,7 @@
     <module>features/org.obeonetwork.m2doc.launcher.feature</module>
     <module>features/org.obeonetwork.m2doc.cdo.feature</module>
     <module>features/org.obeonetwork.m2doc.html.feature</module>
+    <module>features/org.obeonetwork.m2doc.wikitext.feature</module>
   </modules>
 
   <properties>
@@ -345,6 +348,7 @@
         <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
         <module>tests/org.obeonetwork.m2doc.cdo.tests</module>
         <module>tests/org.obeonetwork.m2doc.html.tests</module>
+        <module>tests/org.obeonetwork.m2doc.wikitext.tests</module>
 
         <module>tests/org.xtext.example.mydsl</module>
         <module>tests/org.xtext.example.mydsl.ide</module>

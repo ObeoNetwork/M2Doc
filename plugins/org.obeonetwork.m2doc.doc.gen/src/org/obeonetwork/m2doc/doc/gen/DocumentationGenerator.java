@@ -31,6 +31,7 @@ import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.services.PromptServices;
 import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
+import org.obeonetwork.m2doc.wikitext.services.M2DocWikiTextServices;
 
 /**
  * Utility class used to generate the M2Doc documentation.
@@ -50,7 +51,7 @@ public final class DocumentationGenerator {
 	private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] { BooleanServices.class,
 			ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
 			ExcelServices.class, M2DocHTMLServices.class, PromptServices.class, SWTPromptServices.class,
-			M2DocEObjectServices.class, };
+			M2DocEObjectServices.class, M2DocWikiTextServices.class};
 
 	/**
 	 * The constructor.

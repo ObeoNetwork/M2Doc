@@ -19,6 +19,17 @@ location Eclipse "http://download.eclipse.org/releases/oxygen" {
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
 	org.eclipse.jdt.feature.group lazy
 
+	// wikitext
+	org.eclipse.mylyn.wikitext [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.asciidoc [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.confluence [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.html [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.markdown [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.mediawiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.textile [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.tracwiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.twiki [3.0.0,3.1.0)
+
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
 }

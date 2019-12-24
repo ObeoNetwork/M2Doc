@@ -1,0 +1,27 @@
+A paragraph.
+
+And a paragraph with
+a line break.
+
+h1. Header 1
+
+*Strong* or **bold** text is displayed by browsers identically as bold text. Therefore, these modifiers can be used interchangingly most times.
+
+_Emphasized_ or __italic__ text is displayed by browsers identically as italic text. Therefore, these tags can be used interchangingly most times.
+
+h2. Header 2
+
+* Item A
+** Item A1
+** Item A2
+* Item B
+* Item C
+
+h3. Header 3
+
+# Item one
+## Item one-a
+## Item one-b
+# Item two
+# Item three
+

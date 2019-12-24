@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .fromAsciiDocString(.add(.aqlFeatureAccess(self, 'name'), '\n\nimage::../images/logo_M2Doc.png[]'), 'https://www.m2doc.org/tests/')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

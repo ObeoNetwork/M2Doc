@@ -10,4 +10,5 @@ Require-Bundle: org.obeonetwork.m2doc,
  org.obeonetwork.m2doc.sirius,
  org.obeonetwork.m2doc.html,
  org.eclipse.acceleo.annotations,
- org.obeonetwork.m2doc.ide.ui
+ org.obeonetwork.m2doc.ide.ui,
+ org.obeonetwork.m2doc.wikitext

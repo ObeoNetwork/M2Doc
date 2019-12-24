@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .fromTextileString(.add('h1. ', .aqlFeatureAccess(self, 'name')))]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

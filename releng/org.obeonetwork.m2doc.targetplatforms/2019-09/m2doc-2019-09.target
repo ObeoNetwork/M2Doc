@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc 2019-09 Target Platform" sequenceNumber="1573564359">
+<target name="M2Doc 2019-09 Target Platform" sequenceNumber="1577180522">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
@@ -50,6 +50,15 @@
       <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
       <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
+      <unit id="org.eclipse.mylyn.wikitext" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.confluence" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.html" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.markdown" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.mediawiki" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.textile" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.33.20190711143914"/>
+      <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.33.20190711143914"/>
       <repository id="Eclipse" location="http://download.eclipse.org/releases/2019-09"/>
     </location>
   </locations>

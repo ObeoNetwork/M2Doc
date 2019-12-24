@@ -1,0 +1,50 @@
+= Document Title (Level 0)
+
+A normal paragraph.
+
+ A paragraph offset by at least one space becomes a literal paragraph.
+ All lines in a literal paragraph must be adjacent.
+
+ A literal paragraph is displayed as preformatted text.
+ The text is shown in a fixed-width font.
+ Spaces and newlines,
+ like the ones in this sentence,
+ are preserved.
+
+Another normal paragraph.
+
+== Level 1 Section Title
+
+bold *constrained* & **un**constrained
+
+italic _constrained_ & __un__constrained
+
+bold italic *_constrained_* & **__un__**constrained
+
+monospace `constrained` & ``un``constrained
+
+monospace bold `*constrained*` & ``**un**``constrained
+
+monospace italic `_constrained_` & ``__un__``constrained
+
+monospace bold italic `*_constrained_*` & ``**__un__**``constrained
+
+=== Level 2 Section Title
+
+. Step 1
+. Step 2
+. Step 3
+
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3
+
+. level 1
+.. level 2
+... level 3
+.... level 4
+..... level 5
+. level 1
+
