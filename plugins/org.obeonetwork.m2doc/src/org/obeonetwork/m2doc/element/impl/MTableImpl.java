@@ -129,7 +129,7 @@ public class MTableImpl implements MTable {
     public int getColumnsCount() {
         int result = 0;
         for (MRow mRow : rows) {
-            int rowWidth = mRow.getCells().size();
+            final int rowWidth = mRow.getCells().size();
             if (rowWidth > result) {
                 result = rowWidth;
             }

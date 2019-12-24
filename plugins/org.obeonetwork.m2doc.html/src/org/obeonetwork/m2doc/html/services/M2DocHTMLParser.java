@@ -36,12 +36,18 @@ import org.obeonetwork.m2doc.element.MList;
 import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.element.impl.MListImpl;
 import org.obeonetwork.m2doc.element.impl.MParagraphImpl;
 import org.obeonetwork.m2doc.element.impl.MStyleImpl;
+import org.obeonetwork.m2doc.element.impl.MTableImpl;
+import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
+import org.obeonetwork.m2doc.element.impl.MTableImpl.MRowImpl;
 import org.obeonetwork.m2doc.element.impl.MTextImpl;
 import org.obeonetwork.m2doc.services.PaginationServices;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
@@ -143,11 +149,6 @@ public class M2DocHTMLParser {
         private CTAbstractNum numbering;
 
         /**
-         * The current numbering level.
-         */
-        private long numberingLevel;
-
-        /**
          * The base URI.
          */
         private final URI baseURI;
@@ -161,6 +162,11 @@ public class M2DocHTMLParser {
          * The numbering ID.
          */
         private BigInteger numberingID;
+
+        /**
+         * The current numbering level.
+         */
+        private long numberingLevel;
 
         /**
          * Constructor.
@@ -296,13 +302,65 @@ public class M2DocHTMLParser {
     private void walkNodeTree(MList parent, Context context, Node node) {
         final Context contextCopy = context.copy();
         if (node instanceof Element) {
-            final MList element = startElement(parent, contextCopy, (Element) node);
-            for (Node child : node.childNodes()) {
-                walkNodeTree(element, contextCopy, child);
+            if ("table".equals(node.nodeName())) {
+                Node tBody = null;
+                for (Node child : node.childNodes()) {
+                    if ("tbody".equals(child.nodeName())) {
+                        tBody = child;
+                        break;
+                    }
+                }
+                if (tBody != null) {
+                    insertTable(parent, context, tBody);
+                }
+            } else {
+                final MList element = startElement(parent, contextCopy, (Element) node);
+                for (Node child : node.childNodes()) {
+                    walkNodeTree(element, contextCopy, child);
+                }
+                endElement(parent, element);
             }
-            endElement(parent, element);
         } else if (node instanceof TextNode) {
             insertText(parent, contextCopy, (TextNode) node);
+        }
+    }
+
+    /**
+     * Inserts a table.
+     * 
+     * @param parent
+     *            the parent {@link MList}
+     * @param context
+     *            the current {@link Context}
+     * @param node
+     *            the table {@link Node};
+     */
+    private void insertTable(MList parent, Context context, Node node) {
+        final MTable table = new MTableImpl();
+        parent.add(table);
+        for (Node child : node.childNodes()) {
+            if ("tr".equals(child.nodeName())) {
+                final MRow row = new MRowImpl();
+                table.getRows().add(row);
+                for (Node rowChild : child.childNodes()) {
+                    if ("th".equals(rowChild.nodeName()) || "td".equals(rowChild.nodeName())) {
+                        final MList contents = new MListImpl();
+                        final MCell cell = new MCellImpl(contents, null);
+                        final Context localContext;
+                        if ("th".equals(rowChild.nodeName())) {
+                            cell.setHAlignment(HAlignment.CENTER);
+                            localContext = context.copy();
+                            setModifiers(localContext, MStyle.FONT_BOLD);
+                        } else {
+                            localContext = context;
+                        }
+                        row.getCells().add(cell);
+                        for (Node cellChild : rowChild.childNodes()) {
+                            walkNodeTree(contents, localContext, cellChild);
+                        }
+                    }
+                }
+            }
         }
     }
 
