@@ -22,6 +22,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
+import org.eclipse.sirius.business.api.query.DRepresentationQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionStatus;
 import org.eclipse.sirius.common.tools.api.resource.ImageFileFormat;
@@ -767,6 +768,22 @@ public class M2DocSiriusServices {
         }
         tmpFiles.clear();
         adapterFactory.dispose();
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Gets the DRepresentationDescriptor of the given DRepresentation.",
+        params = {
+            @Param(name = "representation", value = "the representation"),
+        },
+        result = "Gets the DRepresentationDescriptor of the given DRepresentation",
+        examples = {
+            @Example(expression = "myDiagram.getDescriptor().name", result = "the name of the DRepresentationDescriptor"),
+        }
+    )
+    // @formatter:on
+    public DRepresentationDescriptor getDescriptor(DRepresentation representation) {
+        return new DRepresentationQuery(representation).getRepresentationDescriptor();
     }
 
 }
