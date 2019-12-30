@@ -27,6 +27,7 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionStatus;
 import org.eclipse.sirius.common.tools.api.resource.ImageFileFormat;
 import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
 import org.eclipse.sirius.table.metamodel.table.DTable;
 import org.eclipse.sirius.table.metamodel.table.description.TableDescription;
@@ -35,12 +36,16 @@ import org.eclipse.sirius.ui.business.api.dialect.ExportFormat;
 import org.eclipse.sirius.ui.tools.api.actions.export.SizeTooLargeException;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
+import org.eclipse.sirius.viewpoint.DView;
 import org.eclipse.sirius.viewpoint.description.RepresentationDescription;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MTable;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
+import org.obeonetwork.m2doc.element.impl.MTableImpl;
+import org.obeonetwork.m2doc.element.impl.MTextImpl;
 import org.obeonetwork.m2doc.sirius.util.DTable2MTableConverter;
 
 //@formatter:off
@@ -784,6 +789,53 @@ public class M2DocSiriusServices {
     // @formatter:on
     public DRepresentationDescriptor getDescriptor(DRepresentation representation) {
         return new DRepresentationQuery(representation).getRepresentationDescriptor();
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "List all available DRepresentation in a table.",
+        params = {
+            @Param(name = "obj", value = "Any object"),
+        },
+        result = "List all available DRepresentation in a table",
+        examples = {
+            @Example(expression = "''.availableRepresentations()", result = "the table listing available DRepresentation"),
+        }
+    )
+    // @formatter:on
+    public MTable availableRepresentations(Object obj) {
+        final MTable res = new MTableImpl();
+        final MRow titleRow = new MTableImpl.MRowImpl();
+        res.getRows().add(titleRow);
+
+        titleRow.getCells().add(new MTableImpl.MCellImpl(new MTextImpl("Representation Name", null), null));
+        titleRow.getCells().add(new MTableImpl.MCellImpl(new MTextImpl("Description Name", null), null));
+        titleRow.getCells().add(new MTableImpl.MCellImpl(new MTextImpl("Type", null), null));
+        titleRow.getCells().add(new MTableImpl.MCellImpl(new MTextImpl("Root EObject Type", null), null));
+
+        for (DView view : session.getOwnedViews()) {
+            for (DRepresentationDescriptor descriptor : view.getOwnedRepresentationDescriptors()) {
+                final MRow row = new MTableImpl.MRowImpl();
+                res.getRows().add(row);
+
+                final RepresentationDescription description = descriptor.getDescription();
+                row.getCells().add(new MTableImpl.MCellImpl(new MTextImpl(descriptor.getName(), null), null));
+                row.getCells().add(new MTableImpl.MCellImpl(new MTextImpl(description.getName(), null), null));
+                if (description instanceof DiagramDescription) {
+                    row.getCells().add(new MTableImpl.MCellImpl(new MTextImpl("Diagram", null), null));
+                } else if (description instanceof TableDescription) {
+                    row.getCells().add(new MTableImpl.MCellImpl(new MTextImpl("Table", null), null));
+                } else {
+                    row.getCells().add(new MTableImpl.MCellImpl(new MTextImpl("", null), null));
+                }
+                row.getCells().add(
+                        new MTableImpl.MCellImpl(new MTextImpl(descriptor.getTarget().eClass().getEPackage().getName()
+                            + "::" + descriptor.getTarget().eClass().getName(), null), null));
+
+            }
+        }
+
+        return res;
     }
 
 }
