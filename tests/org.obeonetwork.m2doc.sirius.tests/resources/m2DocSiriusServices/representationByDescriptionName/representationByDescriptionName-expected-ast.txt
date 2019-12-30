@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+=== BODY ===
+
+  This demonstrate the simple usage of representationByDescriptionName service :
+  [query: .aqlFeatureAccess(->first(.representationByDescriptionName(self, 'Entities')), 'name')]
+  End of demonstration.
+=== FOOTER ===
+
+  
+=== TEMPLATES ===

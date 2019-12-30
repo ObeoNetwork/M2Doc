@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+=== BODY ===
+
+  This demonstrate the simple usage of representationByName service :
+  [query: .aqlFeatureAccess(.representationByName('anydsl class diagram'), 'name')]
+  End of demonstration.
+=== FOOTER ===
+
+  
+=== TEMPLATES ===
