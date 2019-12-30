@@ -653,7 +653,20 @@ public final class M2DocHelpContentUtils {
 		Comparator<Method> comparator = new Comparator<Method>() {
 			@Override
 			public int compare(Method o1, Method o2) {
-				return o1.getName().compareTo(o2.getName());
+				final StringBuilder signature1 = new StringBuilder();
+				final StringBuilder signature2 = new StringBuilder();
+
+				signature1.append(o1.getName());
+				for (Parameter parameter : o1.getParameters()) {
+					signature1.append(parameter.getType().getName() + ",");
+				}
+
+				signature2.append(o2.getName());
+				for (Parameter parameter : o2.getParameters()) {
+					signature2.append(parameter.getType().getName() + ",");
+				}
+
+				return signature1.toString().compareTo(signature2.toString());
 			}
 		};
 		Arrays.sort(sortedMethods, 0, sortedMethods.length, comparator);
