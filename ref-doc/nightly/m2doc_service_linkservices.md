@@ -25,20 +25,6 @@ Services available for links. See [document examples](https://github.com/ObeoNet
 * TOC
 {:toc}
 
-## String.asBookmark(String) : org.obeonetwork.m2doc.element.MBookmark
-
-Converts a String to a bookmark declaration
-
-### Parameter
-
-* **text**: The label of the bookmark declaration
-* **id**: The ID of the bookmark declaration
-
-### Example
-
-* 'Definition of Artifact1'.asBookmark('Art1')
-  * a bookmark with the ID 'Art1' the label 'Definition of Artifact1'
-
 ## String.asBookmarkRef(String) : org.obeonetwork.m2doc.element.MBookmark
 
 Converts a String to a bookmark reference
@@ -52,6 +38,20 @@ Converts a String to a bookmark reference
 
 * 'Artifact1'.asBookmarkRef('Art1')
   * a bookmark reference with the ID 'Art1' the label 'Definition of Artifact1'
+
+## String.asBookmark(String) : org.obeonetwork.m2doc.element.MBookmark
+
+Converts a String to a bookmark declaration
+
+### Parameter
+
+* **text**: The label of the bookmark declaration
+* **id**: The ID of the bookmark declaration
+
+### Example
+
+* 'Definition of Artifact1'.asBookmark('Art1')
+  * a bookmark with the ID 'Art1' the label 'Definition of Artifact1'
 
 ## String.asLink(String) : org.obeonetwork.m2doc.element.MHyperLink
 

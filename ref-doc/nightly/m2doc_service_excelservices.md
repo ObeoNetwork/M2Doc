@@ -25,6 +25,22 @@ Services available for Excel. See [document examples](https://github.com/ObeoNet
 * TOC
 {:toc}
 
+## String.asTable(String, String, String) : org.obeonetwork.m2doc.element.MTable
+
+Insert a table from an Excel .xlsx file.
+
+### Parameter
+
+* **uri**: The Excel .xlsx file uri, it can be relative to the template
+* **sheetName**: The sheet name
+* **topLeftCellAdress**: The top left cell address
+* **bottomRightCellAdress**: The bottom right cell address
+
+### Example
+
+* 'excel.xlsx'.asTable('Feuil1', 'C3', 'F7')
+  * insert the table from 'excel.xlsx'
+
 ## String.asTable(String, String, String, String) : org.obeonetwork.m2doc.element.MTable
 
 Insert a table from an Excel .xlsx file.
@@ -40,22 +56,6 @@ Insert a table from an Excel .xlsx file.
 ### Example
 
 * 'excel.xlsx'.asTable('Feuil1', 'C3', 'F7', 'fr-FR')
-  * insert the table from 'excel.xlsx'
-
-## String.asTable(String, String, String) : org.obeonetwork.m2doc.element.MTable
-
-Insert a table from an Excel .xlsx file.
-
-### Parameter
-
-* **uri**: The Excel .xlsx file uri, it can be relative to the template
-* **sheetName**: The sheet name
-* **topLeftCellAdress**: The top left cell address
-* **bottomRightCellAdress**: The bottom right cell address
-
-### Example
-
-* 'excel.xlsx'.asTable('Feuil1', 'C3', 'F7')
   * insert the table from 'excel.xlsx'
 
 

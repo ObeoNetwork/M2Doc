@@ -25,6 +25,93 @@ Services available for Sirius. You will have to set the "SiriusSession" option i
 * TOC
 {:toc}
 
+## EObject.asImageByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MImage}
+
+Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description
+
+### Example
+
+* ePackage.asImageByRepresentationDescriptionName('class diagram')
+  * Sequence{image1, image2}
+
+## EObject.asImageByRepresentationDescriptionName(String, boolean) : Sequence{org.obeonetwork.m2doc.element.MImage}
+
+Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description
+* **refresh**: true to refresh the representation
+
+### Example
+
+* ePackage.asImageByRepresentationDescriptionName('class diagram', true)
+  * Sequence{image1, image2}
+
+## EObject.asImageByRepresentationDescriptionName(String, boolean, OrderedSet{String}) : Sequence{org.obeonetwork.m2doc.element.MImage}
+
+Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description
+* **refresh**: true to refresh the representation
+* **layerNames**: the OrderedSet of layer names to activate
+
+### Example
+
+* ePackage.asImageByRepresentationDescriptionName('class diagram', true, OrderedSet{'Layer 1', 'Layer 2'})
+  * Sequence{image1, image2}
+
+## String.asImageByRepresentationName() : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation name.
+
+### Parameter
+
+* **representationName**: the name of the searched representation
+
+### Example
+
+* 'MyEPackage class diagram'.asImageByRepresentationName()
+  * insert the image
+
+## String.asImageByRepresentationName(boolean) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation name.
+
+### Parameter
+
+* **representationName**: the name of the searched representation
+* **refresh**: true to refresh the representation
+
+### Example
+
+* 'MyEPackage class diagram'.asImageByRepresentationName(true)
+  * insert the image after refreshing the representation
+
+## String.asImageByRepresentationName(boolean, OrderedSet{String}) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation name.
+
+### Parameter
+
+* **representationName**: the name of the searched representation
+* **refresh**: true to refresh the representation
+* **layerNames**: the OrderedSet of layer names to activate
+
+### Example
+
+* 'MyEPackage class diagram'.asImageByRepresentationName(true, OrderedSet{'Layer 1', 'Layer 2'})
+  * insert the image
+
 ## org.eclipse.sirius.viewpoint.DRepresentation.asImage() : org.obeonetwork.m2doc.element.MImage
 
 Insert the image of the given representation if it's a diagram.
@@ -66,120 +153,6 @@ Insert the image of the given representation if it's a diagram.
 
 * dRepresentation.asImage(true, OrderedSet{'Layer 1', 'Layer 2'})
   * insert the image of the given representation if it's a diagram
-
-## EObject.asImageByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MImage}
-
-Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
-
-### Parameter
-
-* **eObject**: Any eObject that is in the session where to search
-* **representationDescriptionName**: the name of the searched representation description
-
-### Example
-
-* ePackage.asImageByRepresentationDescriptionName('class diagram')
-  * Sequence{image1, image2}
-
-## EObject.asImageByRepresentationDescriptionName(String, boolean, OrderedSet{String}) : Sequence{org.obeonetwork.m2doc.element.MImage}
-
-Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
-
-### Parameter
-
-* **eObject**: Any eObject that is in the session where to search
-* **representationDescriptionName**: the name of the searched representation description
-* **refresh**: true to refresh the representation
-* **layerNames**: the OrderedSet of layer names to activate
-
-### Example
-
-* ePackage.asImageByRepresentationDescriptionName('class diagram', true, OrderedSet{'Layer 1', 'Layer 2'})
-  * Sequence{image1, image2}
-
-## EObject.asImageByRepresentationDescriptionName(String, boolean) : Sequence{org.obeonetwork.m2doc.element.MImage}
-
-Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
-
-### Parameter
-
-* **eObject**: Any eObject that is in the session where to search
-* **representationDescriptionName**: the name of the searched representation description
-* **refresh**: true to refresh the representation
-
-### Example
-
-* ePackage.asImageByRepresentationDescriptionName('class diagram', true)
-  * Sequence{image1, image2}
-
-## String.asImageByRepresentationName(boolean, OrderedSet{String}) : org.obeonetwork.m2doc.element.MImage
-
-Insert the image of the given representation name.
-
-### Parameter
-
-* **representationName**: the name of the searched representation
-* **refresh**: true to refresh the representation
-* **layerNames**: the OrderedSet of layer names to activate
-
-### Example
-
-* 'MyEPackage class diagram'.asImageByRepresentationName(true, OrderedSet{'Layer 1', 'Layer 2'})
-  * insert the image
-
-## String.asImageByRepresentationName(boolean) : org.obeonetwork.m2doc.element.MImage
-
-Insert the image of the given representation name.
-
-### Parameter
-
-* **representationName**: the name of the searched representation
-* **refresh**: true to refresh the representation
-
-### Example
-
-* 'MyEPackage class diagram'.asImageByRepresentationName(true)
-  * insert the image after refreshing the representation
-
-## String.asImageByRepresentationName() : org.obeonetwork.m2doc.element.MImage
-
-Insert the image of the given representation name.
-
-### Parameter
-
-* **representationName**: the name of the searched representation
-
-### Example
-
-* 'MyEPackage class diagram'.asImageByRepresentationName()
-  * insert the image
-
-## org.eclipse.sirius.table.metamodel.table.DTable.asTable() : org.obeonetwork.m2doc.element.MTable
-
-Insert the table of the given representation table (with header styles).
-
-### Parameter
-
-* **representation**: the DTable
-
-### Example
-
-* dTable.asTable()
-  * insert the table of the given representation table (with header styles)
-
-## org.eclipse.sirius.table.metamodel.table.DTable.asTable(boolean) : org.obeonetwork.m2doc.element.MTable
-
-Insert the table of the given representation table.
-
-### Parameter
-
-* **representation**: the DTable
-* **withHeader**: true to add header styles, false otherwise
-
-### Example
-
-* dTable.asTable(false)
-  * insert the table of the given representation table
 
 ## EObject.asTableByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MTable}
 
@@ -237,6 +210,59 @@ Insert the table of the given representation name.
 * 'MyEPackage class diagram'.asTableByRepresentationName(false)
   * insert the table
 
+## org.eclipse.sirius.table.metamodel.table.DTable.asTable() : org.obeonetwork.m2doc.element.MTable
+
+Insert the table of the given representation table (with header styles).
+
+### Parameter
+
+* **representation**: the DTable
+
+### Example
+
+* dTable.asTable()
+  * insert the table of the given representation table (with header styles)
+
+## org.eclipse.sirius.table.metamodel.table.DTable.asTable(boolean) : org.obeonetwork.m2doc.element.MTable
+
+Insert the table of the given representation table.
+
+### Parameter
+
+* **representation**: the DTable
+* **withHeader**: true to add header styles, false otherwise
+
+### Example
+
+* dTable.asTable(false)
+  * insert the table of the given representation table
+
+## Object.availableRepresentations() : org.obeonetwork.m2doc.element.MTable
+
+List all available DRepresentation in a table.
+
+### Parameter
+
+* **obj**: Any object
+
+### Example
+
+* ''.availableRepresentations()
+  * the table listing available DRepresentation
+
+## org.eclipse.sirius.viewpoint.DRepresentation.getDescriptor() : org.eclipse.sirius.viewpoint.DRepresentationDescriptor
+
+Gets the DRepresentationDescriptor of the given DRepresentation.
+
+### Parameter
+
+* **representation**: the representation
+
+### Example
+
+* myDiagram.getDescriptor().name
+  * the name of the DRepresentationDescriptor
+
 ## EObject.isRepresentationDescriptionName(String) : boolean
 
 Returns <code>true</code> if the arguments are not null, the eObject is in a session and there's a representation description with the specified name in it that is associated to the specified eObject. Returns <code>false</code> otherwise.
@@ -275,7 +301,7 @@ Gets the Sequence DRepresentation associated to the given EObject with the given
 
 ### Example
 
-* ePackage.representationByDescriptionName('class diagram')
+* ePackage.asImageByRepresentationDescriptionName('class diagram')
   * Sequence{dRepresentation1, dRepresentation2}
 
 ## String.representationByName() : org.eclipse.sirius.viewpoint.DRepresentation
@@ -288,7 +314,7 @@ Gets the DRepresentation of the given representation name.
 
 ### Example
 
-* 'MyEPackage class diagram'.representationByName()
+* 'MyEPackage class diagram'.asImageByRepresentationName()
   * dRepresentation1
 
 

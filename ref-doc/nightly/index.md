@@ -301,6 +301,7 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 * [Pagination services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_paginationservices.html)
 * [Sirius services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docsiriusservices.html) (Note: M2Doc versions 1.1.0 and above are compatible with [Obeo Designer Team Edition](https://www.obeodesigner.com/en/collaborative-features).)
   * you will have to add the following packages nsURI (see [Template properties wizard](index.html#template-properties-wizard) section): http://www.eclipse.org/sirius/1.1.0, http://www.eclipse.org/sirius/diagram/1.1.0, and/or http://www.eclipse.org/sirius/diagram/sequence/2.0.0.
+* [Wikitext services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docwikitextservices.md) (exprerimental)
 
 ### Template properties wizard
 
