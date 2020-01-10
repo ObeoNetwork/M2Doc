@@ -11,8 +11,8 @@ M2Doc is a generic technology to generate MS Word(tm) documents. Generation is d
 
 This tutorial explains how to install and launch two templates written for [Capella](https://polarsys.org/capella/) models:
 
-* [LA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx): Logical specification of a system
-* [SA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx): Whole specification of a system
+* [LA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx): Logical specification of a system ([generated document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-expected-generation.docx))
+* [SA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx): Whole specification of a system ([generated document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-expected-generation.docx))
 
 For this tutorial, we use In-Flight Entertainment System (IFE) as a sample model.
 
