@@ -161,9 +161,75 @@ When the `Finish` button is pushed the generation configuration file is created 
 
 ## Template authoring
 
-The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use `ALT+F9`. To insert a new field, use `CTRL+F9`.
+You need to have a model already to be able to generate a document with M2Doc. Then you can [create a project](index.html#new-project-wizard) or if you already have a project, you can [create a template](index.html#new-template-wizard).
+
+### New project wizard
+
+This wizard allows to create all needed artifacts:
+
+- an Eclipse project
+- a default template
+- the genconf file
+
+You only need your model as input.
+
+To launch the wizard right click in the project exporer and select new project:
+
+![The New project Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Project%20Wizard1.png "The New project Wizard.")
+
+Then select M2Doc project in the M2Doc category:
+
+![The New project Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Project%20Wizard2.png "The New project Wizard.")
+
+Enter your project name and click next:
+
+![The New project Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Project%20Wizard3.png "The New project Wizard.")
+
+Enter your template name and click next:
+
+![The New project Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Project%20Wizard4.png "The New project Wizard.")
+
+Select the main variable value and name then click next:
+
+![The New project Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Project%20Wizard5.png "The New project Wizard.")
+
+![The New project Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Project%20Wizard6.png "The New project Wizard.")
+
+The last page of the wizard is dedicated to file pathes:
+
+![The New project Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Project%20Wizard7.png "The New project Wizard.")
+
+NOTE: you can also start the generation on finish.
+
+### New template wizard
+
+This wizard creates a simple template from a model.
+
+To launch the wizard right click in the project exporer and select new other:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard1.png "The New template Wizard.")
+
+Then select new template in the M2Doc category and click next:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard2.png "The New template Wizard.")
+
+Enter your template name:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard3.png "The New template Wizard.")
+
+Select the main variable value and name then click next:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard4.png "The New template Wizard.")
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard5.png "The New template Wizard.")
+
+The template is created after clicking finish:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard6.png "The New template Wizard.")
 
 ### Syntax
+
+The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use `ALT+F9`. To insert a new field, use `CTRL+F9`.
 
 All syntax elements of M2Doc should be placed into fields using `ALT+F9` to show fields and `CTRL+F9` to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
 
