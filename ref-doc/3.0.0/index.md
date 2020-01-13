@@ -203,6 +203,30 @@ NOTE: you can also start the generation on finish.
 
 ### New template wizard
 
+This wizard creates a simple template from a model.
+
+To launch the wizard right click in the project exporer and select new other:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/3.0.0/images/New%20Template%20Wizard1.png "The New template Wizard.")
+
+Then select new template in the M2Doc category and click next:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/3.0.0/images/New%20Template%20Wizard2.png "The New template Wizard.")
+
+Enter your template name:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/3.0.0/images/New%20Template%20Wizard3.png "The New template Wizard.")
+
+Select the main variable value and name then click next:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/3.0.0/images/New%20Template%20Wizard4.png "The New template Wizard.")
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/3.0.0/images/New%20Template%20Wizard5.png "The New template Wizard.")
+
+The template is created after clicking finish:
+
+![The New template Wizard.]({{page.relativePath}}/ref-doc/3.0.0/images/New%20Template%20Wizard6.png "The New template Wizard.")
+
 ### Syntax
 
 The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use `ALT+F9`. To insert a new field, use `CTRL+F9`.
