@@ -25,8 +25,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -185,15 +183,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
      * @return the Generation from the given {@link URI}
      */
     protected Generation getGeneration(URI uri) {
-        ResourceSet rs = new ResourceSetImpl();
-        Resource modelResource = rs.getResource(uri, true);
-        if (modelResource != null && !modelResource.getContents().isEmpty()) {
-            EObject root = modelResource.getContents().get(0);
-            if (root instanceof Generation) {
-                return (Generation) root;
-            }
-        }
-        return null;
+        return GenconfUtils.getGeneration(uri);
     }
 
     /**

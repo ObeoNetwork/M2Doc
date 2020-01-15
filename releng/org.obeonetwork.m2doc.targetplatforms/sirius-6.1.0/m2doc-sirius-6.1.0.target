@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Sirius 6.1.0 Target Platform" sequenceNumber="1577180521">
+<target name="M2Doc Sirius 6.1.0 Target Platform" sequenceNumber="1579086292">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
       <unit id="org.jsoup" version="1.8.3.v20181012-1713"/>
+      <unit id="javax.servlet" version="3.1.0.v201410161800"/>
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
@@ -24,6 +25,16 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="2.16.0.v20181203-1555"/>
       <repository id="XText" location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.jetty.server" version="9.4.24.v20191120"/>
+      <unit id="org.eclipse.jetty.util" version="9.4.24.v20191120"/>
+      <unit id="org.eclipse.jetty.util.ajax" version="9.4.24.v20191120"/>
+      <unit id="org.eclipse.jetty.io" version="9.4.24.v20191120"/>
+      <unit id="org.eclipse.jetty.http" version="9.4.24.v20191120"/>
+      <unit id="org.eclipse.jetty.servlet" version="9.4.24.v20191120"/>
+      <unit id="org.eclipse.jetty.security" version="9.4.24.v20191120"/>
+      <repository id="Jetty" location="https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.24.v20191120/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.platform.sdk" version="0.0.0"/>

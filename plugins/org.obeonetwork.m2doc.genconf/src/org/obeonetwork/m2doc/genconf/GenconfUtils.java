@@ -878,4 +878,23 @@ public final class GenconfUtils {
         }
     }
 
+    /**
+     * Gets the Generation from the given {@link URI}.
+     * 
+     * @param uri
+     *            the {@link URI}
+     * @return the Generation from the given {@link URI}
+     */
+    public static Generation getGeneration(URI uri) {
+        ResourceSet rs = new ResourceSetImpl();
+        Resource modelResource = rs.getResource(uri, true);
+        if (modelResource != null && !modelResource.getContents().isEmpty()) {
+            EObject root = modelResource.getContents().get(0);
+            if (root instanceof Generation) {
+                return (Generation) root;
+            }
+        }
+        return null;
+    }
+
 }
