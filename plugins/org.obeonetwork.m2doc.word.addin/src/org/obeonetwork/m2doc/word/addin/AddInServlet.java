@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,6 +32,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -38,8 +41,11 @@ import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jetty.http.MetaData.Request;
 import org.eclipse.jetty.http.MimeTypes;
@@ -48,7 +54,13 @@ import org.eclipse.jetty.util.ajax.JSON;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.Let;
+import org.obeonetwork.m2doc.template.Parameter;
+import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -184,6 +196,8 @@ public class AddInServlet extends HttpServlet {
                                         new ValidationServices(queryEnvironment));
                                 final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator,
                                         queryEnvironment);
+                                variableTypes.putAll(parseVariableTypes(queryEnvironment, validator, variableTypes,
+                                        resourceSetForModels.getURIConverter(), templateURI));
                                 getProposals(queryEnvironment, variableTypes, req, resp);
                             } catch (IOException e) {
                                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -200,6 +214,8 @@ public class AddInServlet extends HttpServlet {
                                         new ValidationServices(queryEnvironment));
                                 final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator,
                                         queryEnvironment);
+                                variableTypes.putAll(parseVariableTypes(queryEnvironment, validator, variableTypes,
+                                        resourceSetForModels.getURIConverter(), templateURI));
                                 getAppliedProposal(queryEnvironment, variableTypes, req, resp);
                             } catch (IOException e) {
                                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -216,6 +232,8 @@ public class AddInServlet extends HttpServlet {
                                         new ValidationServices(queryEnvironment));
                                 final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator,
                                         queryEnvironment);
+                                variableTypes.putAll(parseVariableTypes(queryEnvironment, validator, variableTypes,
+                                        resourceSetForModels.getURIConverter(), templateURI));
                                 getValidation(queryEnvironment, variableTypes, req, resp);
                             } catch (IOException e) {
                                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -254,7 +272,58 @@ public class AddInServlet extends HttpServlet {
     }
 
     /**
-     * Get an uptodate manifest file.
+     * Parses the template to retrieve internal variable (let, for, template, ...) types.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param validator
+     *            the {@link AstValidator}
+     * @param variableTypes
+     *            the declared variable types
+     * @param uriConverter
+     *            the {@link URIConverter}
+     * @param templateURI
+     *            the template URI
+     * @return the mapping of internal variable (let, for, template, ...) types
+     */
+    private Map<String, Set<IType>> parseVariableTypes(IReadOnlyQueryEnvironment queryEnvironment,
+            AstValidator validator, Map<String, Set<IType>> variableTypes, URIConverter uriConverter, URI templateURI) {
+        final Map<String, Set<IType>> res = new HashMap<>();
+
+        try (DocumentTemplate template = M2DocUtils.parse(uriConverter, templateURI,
+                (IQueryEnvironment) queryEnvironment, M2DocPlugin.getClassProvider(), new BasicMonitor())) {
+            final Iterator<EObject> it = template.eAllContents();
+            while (it.hasNext()) {
+                final EObject current = it.next();
+                if (current instanceof Let) {
+                    final Let let = (Let) current;
+                    final IValidationResult validationResult = validator.validate(variableTypes, let.getValue());
+                    final Set<IType> possibleTypes = validationResult.getPossibleTypes(let.getValue().getAst());
+                    res.put(let.getName(), possibleTypes);
+                } else if (current instanceof Repetition) {
+                    final Repetition repetition = (Repetition) current;
+                    final IValidationResult validationResult = validator.validate(variableTypes, repetition.getQuery());
+                    final Set<IType> possibleTypes = validationResult.getPossibleTypes(repetition.getQuery().getAst());
+                    res.put(repetition.getIterationVar(), possibleTypes);
+                } else if (current instanceof Parameter) {
+                    final Parameter parameter = (Parameter) current;
+                    final IValidationResult validationResult = validator.validate(variableTypes, parameter.getType());
+                    final Set<IType> possibleTypes = validationResult.getPossibleTypes(parameter.getType().getAst());
+                    res.put(parameter.getName(), possibleTypes);
+                }
+            }
+
+        } catch (IOException e) {
+            // nothing to do here: if we can't parse it doesn't matter
+        } catch (DocumentParserException e) {
+            // nothing to do here: if we can't parse it doesn't matter
+        }
+
+        return res;
+    }
+
+    /**
+     * Get an updated manifest file.
      * 
      * @param version
      *            the M2Doc version
