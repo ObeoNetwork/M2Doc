@@ -5,16 +5,13 @@ subtitle: In-Flight Entertainment System (IFE) example
 relativePath: ..
 ---
 
-* TOC
-{:toc}
-
 # Overview
 
 M2Doc is a generic technology to generate MS Word(tm) documents. Generation is driven by templates that navigate through a source model and transform model elements into a well formated document.
 
 ![Generated document.]({{page.relativePath}}/capella/images/m2doc-capella.png "Generated document.")
 
-This tutorial explains how to install and launch two templates written for [Capella](https://polarsys.org/capella/) models:
+This tutorial explains how to install and launch two templates written for [Capella](https://www.eclipse.org/capella/) models:
 
 * [LA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx): Logical specification of a system ([generated document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-expected-generation.docx))
 * [SA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx): Whole specification of a system ([generated document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-expected-generation.docx))
@@ -29,7 +26,7 @@ Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.o
 
 # Installation
 
-First you need to download [Capella](https://polarsys.org/capella/). It can be downloaded from this [download page](https://polarsys.org/capella/download.html).
+First you need to download [Capella](https://www.eclipse.org/capella/). It can be downloaded from this [download page](https://www.eclipse.org/capella/download.html).
 
 Once your download is finished, extract the downloaded archive and run the eclipe executable in the eclipse sub folder. You are now ready for the last step of the installation. You will need to [add a new update site](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm):
 
@@ -50,7 +47,7 @@ Once your download is finished, extract the downloaded archive and run the eclip
 
 * `https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.1.0/full/org.obeonetwork.capella.update.full.zip)
 
-This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://polarsys.org/capella/) integration. Select the following feature:
+This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://www.eclipse.org/capella/) integration. Select the following feature:
 
 ![The feature to install.]({{page.relativePath}}/capella/images/Install.png "The feature to install.")
 
