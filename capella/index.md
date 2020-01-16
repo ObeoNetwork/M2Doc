@@ -5,6 +5,7 @@ subtitle: In-Flight Entertainment System (IFE) example
 relativePath: ..
 ---
 
+* TOC
 {:toc}
 
 # Overview
@@ -12,7 +13,6 @@ relativePath: ..
 M2Doc is a generic technology to generate MS Word(tm) documents. Generation is driven by templates that navigate through a source model and transform model elements into a well formated document.
 
 ![Generated document.]({{page.relativePath}}/capella/images/m2doc-capella.png "Generated document.")
-
 
 This tutorial explains how to install and launch two templates written for [Capella](https://polarsys.org/capella/) models:
 
