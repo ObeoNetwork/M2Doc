@@ -21,9 +21,6 @@ Office.onReady(info => {
       minChars: 0, 
       autoFirst: true,
       maxItems: 20,
-      sort: function(a, b) {
-        return 0;
-      },
       filter: function(text, input) {
         return true;
       },
