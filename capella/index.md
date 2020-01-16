@@ -5,9 +5,14 @@ subtitle: In-Flight Entertainment System (IFE) example
 relativePath: ..
 ---
 
-# Table of Content
+{:toc}
+
+# Overview
 
 M2Doc is a generic technology to generate MS Word(tm) documents. Generation is driven by templates that navigate through a source model and transform model elements into a well formated document.
+
+![Generated document.]({{page.relativePath}}/capella/images/m2doc-capella.png "Generated document.")
+
 
 This tutorial explains how to install and launch two templates written for [Capella](https://polarsys.org/capella/) models:
 
@@ -22,29 +27,26 @@ Browse [M2Doc](https://www.m2doc.org/) website for a complete features overview 
 
 Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer). You can test the generation by sharing the IFE example project provided in the extensions. Then edit the .genconf file to reference the shared SystemEngineering model element. You might need to open the Capella session first by double clicking the .aird file.
 
-* TOC
-{:toc}
-
-## Installation
+# Installation
 
 First you need to download [Capella](https://polarsys.org/capella/). It can be downloaded from this [download page](https://polarsys.org/capella/download.html).
 
 Once your download is finished, extract the downloaded archive and run the eclipe executable in the eclipse sub folder. You are now ready for the last step of the installation. You will need to [add a new update site](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm):
 
-### Installation Capella 1.4.x
+## Installation for Capella 1.4.x
 
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full/org.obeonetwork.capella.update.full.zip)
 
-### Installation Capella 1.3.x
+## Installation for Capella 1.3.x
 
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full/org.obeonetwork.capella.update.full.zip)
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full/org.obeonetwork.capella.update.full.zip)
 
-### Installation Capella 1.2.x
+## Installation for Capella 1.2.x
 
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.2.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.2.1/full/org.obeonetwork.capella.update.full.zip)
 
-### Installation Capella 1.1.x
+## Installation for Capella 1.1.x
 
 * `https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.1.0/full/org.obeonetwork.capella.update.full.zip)
 
@@ -52,7 +54,7 @@ This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://p
 
 ![The feature to install.]({{page.relativePath}}/capella/images/Install.png "The feature to install.")
 
-## Deploying the In-Flight Entertainment System (IFE) example
+# Deploying the In-Flight Entertainment System (IFE) example
 
 After restarting Capella, you can deploye the In-Flight Entertainment System (IFE) example in your workspace with the following steps:
 
@@ -72,7 +74,7 @@ Click the finish button and you should see the following project in your workspa
 
 ![The IFE project content.]({{page.relativePath}}/capella/images/IFE Project.png "The IFE project content.")
 
-## Templates
+# Templates
 
 You can run templates by using the corresponding .genconf file at the root of the project, to do so use the .genconf file as shown [here](https://www.m2doc.org/ref-doc/1.0.0/index.html#launching-a-generation). Templates are located in the template sub folder of the project.
 
@@ -80,11 +82,11 @@ If you want to go further in template editing you should have a look at the [M2D
 
 In the following you will find a description of each templates.
 
-### LA Complete
+## LA Complete
 
 This template allows the generation of a logical specification of the content of the system. It starts by a description of the hierarchy of logical components, with, for each, its allocated functions and provided/required interfaces. Then the function decomposition is presented including functional exchanges. At the end, a reference of data structures is generated. You can have a look at the [LA template](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx) and the generated [LA document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-expected-generation.docx).
 
-### SA Complete
+## SA Complete
 
 This template allows the generation of a document concerning the whole specification of a system. Starting from mission and capabilities of the system, the template presents the context of the system, its state machines and communicating actors, and functional specifications. At the end a reference of data structures is generated.You can have a look at the [SA template](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx) and the generated [SA document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-expected-generation.docx).
 
