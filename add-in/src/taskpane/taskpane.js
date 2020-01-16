@@ -21,6 +21,9 @@ Office.onReady(info => {
       minChars: 0, 
       autoFirst: true,
       maxItems: 20,
+      sort: function(a, b) {
+        return 0;
+      },
       filter: function(text, input) {
         return true;
       },
@@ -32,6 +35,9 @@ Office.onReady(info => {
         // TODO validate the input that will be applied
         validationClear();
       }
+    }, false);
+    expressionInput.addEventListener('awesomplete-highlight', function (event) {
+      // TODO show documentation
     }, false);
 
     validationClear();
@@ -92,9 +98,9 @@ export function validate(expression) {
   ajax.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (this.status == 200) {
-        var validationMessages = JSON.parse(this.responseText);
-        if (validationMessages && validationMessages.length) {
-          validationError(this.responseText);
+        var messages = JSON.parse(this.responseText);
+        if (messages && messages.length) {
+          validationMessages(messages);
         } else {
           validationClear();
         }
@@ -109,19 +115,42 @@ export function validate(expression) {
   ajax.send();
 }
 
+
+export function validationMessages(messages) {
+  var html = "";
+  for (var i = 0; i < messages.length; i++) {
+    var message = messages[i];
+    var color;
+    if (message.level == "ERROR") {
+      color = "lightcoral";
+    } else if (message.level == "WARNING") {
+      color = "lightgoldenrodyellow";
+    } else if (message.level == "INFO") {
+      color = "lightblue";
+    } else {
+      color = "";
+    }
+    html += "<p style=\"background-color:" + color + "\"><img src=\"/assets/" + message.level + ".png\">" + message.message + " (" + message.start + ", " + message.end + ")</p>";
+  }
+  document.getElementById("validationDiv").innerHTML = html;
+}
+
 export function validationError(message) {
-  document.getElementById("validationDiv").style.backgroundColor = "lightcoral";
-  document.getElementById("validation").innerText = message;
+  var validationDiv = document.getElementById("validationDiv");
+  validationDiv.style.backgroundColor = "lightcoral";
+  validationDiv.innerHTML = "<p>" + message + "</p>";
 }
 
 export function validationWarning(message) {
-  document.getElementById("validationDiv").style.backgroundColor = "lightgoldenrodyellow";
-  document.getElementById("validation").innerText = message;
+  var validationDiv = document.getElementById("validationDiv");
+  validationDiv.style.backgroundColor = "lightgoldenrodyellow";
+  validationDiv.innerHTML = "<p>" + message + "</p>";
 }
 
 export function validationClear() {
-  document.getElementById("validationDiv").style.backgroundColor = "";
-  document.getElementById("validation").innerText = "";
+  var validationDiv = document.getElementById("validationDiv");
+  validationDiv.style.backgroundColor = "";
+  validationDiv.innerHTML = "";
 }
 
 export function resultError(message) {

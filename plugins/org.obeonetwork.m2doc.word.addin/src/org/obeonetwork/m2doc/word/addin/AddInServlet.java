@@ -35,6 +35,7 @@ import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.QueryCompletion;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
@@ -376,11 +377,16 @@ public class AddInServlet extends HttpServlet {
                     final List<ICompletionProposal> proposals = completionResult
                             .getProposals(QueryCompletion.createBasicFilter(completionResult));
 
-                    final String[] res = new String[proposals.size()];
+                    final Map<String, Object>[] res = new HashMap[proposals.size()];
 
                     int index = 0;
                     for (ICompletionProposal proposal : proposals) {
-                        res[index++] = proposal.getProposal();
+                        final Map<String, Object> map = new HashMap<>();
+                        map.put("label", proposal.getProposal());
+                        map.put("value", proposal.getProposal());
+                        map.put("cursorOffset", proposal.getCursorOffset());
+                        map.put("documentation", proposal.getDescription());
+                        res[index++] = map;
                     }
 
                     resp.setStatus(HttpServletResponse.SC_OK);
@@ -489,7 +495,17 @@ public class AddInServlet extends HttpServlet {
             final IValidationResult result = engine.validate(expression, variableTypes);
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setContentType(MimeTypes.Type.APPLICATION_JSON_UTF_8.toString());
-            resp.getWriter().print(JSON.toString(result.getMessages()));
+            final List<Map<String, Object>> messages = new ArrayList<>();
+            for (IValidationMessage message : result.getMessages()) {
+                final Map<String, Object> map = new HashMap<>();
+                messages.add(map);
+                map.put("level", message.getLevel());
+                map.put("start", message.getStartPosition());
+                map.put("end", message.getEndPosition());
+                map.put("message", message.getMessage());
+            }
+            resp.getWriter().print(JSON.toString(messages));
+            System.out.println(JSON.toString(messages));
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
