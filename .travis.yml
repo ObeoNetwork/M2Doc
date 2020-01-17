@@ -148,7 +148,8 @@ script:
 - if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/prepare-deploy-local-dir.sh && ./scripts/prepare-deploy-local-dir.sh
   $TRAVIS_BUILD_DIR/$TAG_OR_BRANCH; export UPDATE_SITES=true; fi
 after_script:
-- if [[ "$TAG_OR_BRANCH" != "" ]]; then chmod a+x ./scripts/travis-promote.sh && ./scripts/travis-promote.sh; fi
+- if [[ "$TAG_OR_BRANCH" != "" ]]; then chmod a+x ./scripts/travis-promote.sh && ./scripts/travis-promote.sh;
+  fi
 deploy:
 - provider: s3
   access_key_id: AKIAI7GYGSUKTIBLAI6Q
