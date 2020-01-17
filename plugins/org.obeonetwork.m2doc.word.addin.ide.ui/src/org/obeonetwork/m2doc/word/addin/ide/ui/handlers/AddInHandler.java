@@ -25,6 +25,10 @@ import org.obeonetwork.m2doc.word.addin.CompletionServer;
 public class AddInHandler extends AbstractHandler {
 
     /**
+     * The Server port.
+     */
+    private static final int PORT = 3000;
+    /**
      * The {@link CompletionServer}.
      */
     private CompletionServer server;
@@ -34,7 +38,7 @@ public class AddInHandler extends AbstractHandler {
         try {
             if (server == null) {
                 server = new CompletionServer();
-                server.start(3000);
+                server.start(PORT);
             } else {
                 server.stop();
                 server = null;
