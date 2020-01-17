@@ -12,7 +12,7 @@
     "dev-server-port": 3000
   },
   "scripts": {
-    "build": "webpack -p --output-path ../plugins/org.obeonetwork.m2doc.word.addin/resources/"
+    "build": "webpack -p --output-path ../plugins/org.obeonetwork.m2doc.word.addin/dist/"
   },
   "dependencies": {},
   "devDependencies": {

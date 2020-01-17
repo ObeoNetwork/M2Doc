@@ -74,7 +74,7 @@ public class AddInServlet extends HttpServlet {
     /**
      * The resources path.
      */
-    private static final String RESOURCE_PATH = "/resources";
+    private static final String RESOURCE_PATH = "/dist";
 
     /**
      * The manigest path.
