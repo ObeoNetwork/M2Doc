@@ -130,16 +130,16 @@ before_script:
 - export DISPLAY=:99.0
 - export MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
 # for the web site
-- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-install.sh && ./scripts/website-install.sh
+- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-install.sh && ./scripts/website-install.sh; fi
 # for the MS Word add-in
-- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-install.sh && ./scripts/word-add-in-install.sh
+- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-install.sh && ./scripts/word-add-in-install.sh; fi
 script:
 # Build documentation web site
 - mkdir plugins/org.obeonetwork.m2doc.doc/doc
-- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh
+- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh; fi
 # Build MS Word add-in
 - mkdir plugins/org.obeonetwork.m2doc.word.addin/dist/
-- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-build.sh && ./scripts/word-add-in-build.sh
+- if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-build.sh && ./scripts/word-add-in-build.sh; fi
 # Java build
 - mvn -v
 - mvn clean verify -fae -P$PROFILE
@@ -148,8 +148,7 @@ script:
 - if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/prepare-deploy-local-dir.sh && ./scripts/prepare-deploy-local-dir.sh
   $TRAVIS_BUILD_DIR/$TAG_OR_BRANCH; export UPDATE_SITES=true; fi
 after_script:
-- if [[ "$TAG_OR_BRANCH" != "" ]]; then chmod a+x ./scripts/travis-promote.sh && ./scripts/travis-promote.sh;
-  fi
+- if [[ "$TAG_OR_BRANCH" != "" ]]; then chmod a+x ./scripts/travis-promote.sh && ./scripts/travis-promote.sh; fi
 deploy:
 - provider: s3
   access_key_id: AKIAI7GYGSUKTIBLAI6Q
