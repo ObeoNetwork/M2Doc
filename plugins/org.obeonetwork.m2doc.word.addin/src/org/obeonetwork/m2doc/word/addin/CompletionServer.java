@@ -43,7 +43,7 @@ public class CompletionServer {
         server = new Server();
 
         @SuppressWarnings("resource")
-        ServerConnector connector = new ServerConnector(server);
+        final ServerConnector connector = new ServerConnector(server);
         connector.setPort(port);
         connector.setHost("0.0.0.0");
         server.setConnectors(new Connector[] {connector });

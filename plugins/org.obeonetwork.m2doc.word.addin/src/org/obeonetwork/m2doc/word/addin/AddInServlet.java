@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,15 +31,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.QueryCompletion;
+import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
+import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -78,7 +84,7 @@ public class AddInServlet extends HttpServlet {
     /**
      * The manigest path.
      */
-    private static final String MANIFEST_PATH = "/manifest.xml";
+    private static final String MANIFEST_PATH = "/assets/manifest.xml";
 
     /**
      * The rest api path.
@@ -144,6 +150,11 @@ public class AddInServlet extends HttpServlet {
      * The can't load template message.
      */
     private static final String CAN_T_LOAD_TEMPLATE = "can't load template: %s";
+
+    /**
+     * The {@link HtmlSerializer}.
+     */
+    private static final HtmlSerializer HTML_SERIALIZER = new HtmlSerializer();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -223,7 +234,8 @@ public class AddInServlet extends HttpServlet {
                         case EVALUATE_COMMAND:
                             final Map<String, Object> variables = GenconfUtils.getVariables(generation,
                                     resourceSetForModels);
-                            getEvaluation(queryEnvironment, variables, req, resp);
+                            getEvaluation(queryEnvironment, resourceSetForModels.getURIConverter(), templateURI,
+                                    variables, req, resp);
                             break;
 
                         default:
@@ -345,14 +357,14 @@ public class AddInServlet extends HttpServlet {
      */
     private void getProposals(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter, URI templateURI,
             HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
-            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
-            final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-            final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator, queryEnvironment);
-            variableTypes
-                    .putAll(parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
-            final String expression = req.getParameter(EXPRESSION_PARAMETER);
-            if (expression != null) {
+        final String expression = req.getParameter(EXPRESSION_PARAMETER);
+        if (expression != null) {
+            try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
+                final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+                final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator, queryEnvironment);
+                variableTypes.putAll(
+                        parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
                 try {
                     final Integer offset = Integer.valueOf(req.getParameter(OFFSET_PARAMETER));
                     if (offset != null) {
@@ -389,15 +401,15 @@ public class AddInServlet extends HttpServlet {
                     resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
                     resp.getWriter().println(EXPRESSION_PARAMETER + " must be an integer");
                 }
-            } else {
+            } catch (IOException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+                resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
             }
-        } catch (IOException e) {
+        } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
         }
     }
 
@@ -419,16 +431,17 @@ public class AddInServlet extends HttpServlet {
      */
     private void getAppliedProposal(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
             URI templateURI, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
-            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
-            final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-            final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator, queryEnvironment);
-            variableTypes
-                    .putAll(parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
-            final String expression = req.getParameter(EXPRESSION_PARAMETER);
-            if (expression != null) {
-                final String completion = req.getParameter(COMPLETION_PARAMETER);
-                if (completion != null) {
+        final String expression = req.getParameter(EXPRESSION_PARAMETER);
+        if (expression != null) {
+            final String completion = req.getParameter(COMPLETION_PARAMETER);
+            if (completion != null) {
+                try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
+                    final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                    final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+                    final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator,
+                            queryEnvironment);
+                    variableTypes.putAll(
+                            parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
                     try {
                         final Integer offset = Integer.valueOf(req.getParameter(OFFSET_PARAMETER));
                         if (offset != null) {
@@ -451,20 +464,20 @@ public class AddInServlet extends HttpServlet {
                         resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
                         resp.getWriter().println(EXPRESSION_PARAMETER + " must be an integer");
                     }
-                } else {
+                } catch (IOException e) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                    resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, COMPLETION_PARAMETER));
+                    resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
                 }
             } else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+                resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, COMPLETION_PARAMETER));
             }
-        } catch (IOException e) {
+        } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
         }
     }
 
@@ -520,14 +533,14 @@ public class AddInServlet extends HttpServlet {
      */
     private void getValidation(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter, URI templateURI,
             HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
-            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
-            final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
-            final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator, queryEnvironment);
-            variableTypes
-                    .putAll(parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
-            final String expression = req.getParameter(EXPRESSION_PARAMETER);
-            if (expression != null) {
+        final String expression = req.getParameter(EXPRESSION_PARAMETER);
+        if (expression != null) {
+            try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
+                final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+                final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator, queryEnvironment);
+                variableTypes.putAll(
+                        parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
                 IQueryValidationEngine engine = new QueryValidationEngine(queryEnvironment);
                 final IValidationResult result = engine.validate(expression, variableTypes);
                 resp.setStatus(HttpServletResponse.SC_OK);
@@ -542,29 +555,116 @@ public class AddInServlet extends HttpServlet {
                     map.put("message", message.getMessage());
                 }
                 resp.getWriter().print(JSON.toString(messages));
-                System.out.println(JSON.toString(messages));
-            } else {
+            } catch (IOException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+                resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
             }
-        } catch (IOException e) {
+        } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
         }
     }
 
     /**
+     * Gets the evaluation in a HTML format.
+     * 
      * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param uriConverter
+     *            the {@link URIConverter}
+     * @param templateURI
+     *            the template {@link URI}
      * @param variables
+     *            the declared variable values
      * @param req
+     *            the {@link HttpServletRequest}
      * @param resp
+     *            the {@link HttpServletResponse}
+     * @throws IOException
+     *             if the response can't be written
      */
-    private void getEvaluation(IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables,
-            HttpServletRequest req, HttpServletResponse resp) {
-        // TODO Auto-generated method stub
+    private void getEvaluation(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter, URI templateURI,
+            Map<String, Object> variables, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        final String expression = req.getParameter(EXPRESSION_PARAMETER);
+        if (expression != null) {
+            try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
+                final QueryEvaluationEngine engine = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
+                final Map<String, Object> allVariables = new HashMap<>(variables);
+                allVariables
+                        .putAll(parseVariableValues(queryEnvironment, engine, allVariables, uriConverter, templateURI));
+                final IQueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
+                final AstResult build = builder.build(expression);
+                final EvaluationResult result = engine.eval(build, allVariables);
 
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.setContentType(MimeTypes.Type.TEXT_HTML_UTF_8.toString());
+                resp.getWriter().println(HTML_SERIALIZER.serialize(result.getResult()));
+            } catch (IOException e) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
+                resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+            }
+        } else {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
+            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+        }
+    }
+
+    /**
+     * Parses the template to retrieve internal variable (let, for, template, ...) value.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param engine
+     *            the {@link QueryEvaluationEngine}
+     * @param variables
+     *            the declared variable values
+     * @param uriConverter
+     *            the {@link URIConverter}
+     * @param templateURI
+     *            the template URI
+     * @return the mapping of internal variable (let, for, template, ...) types
+     */
+    private Map<String, Object> parseVariableValues(IReadOnlyQueryEnvironment queryEnvironment,
+            QueryEvaluationEngine engine, Map<String, Object> variables, URIConverter uriConverter, URI templateURI) {
+        final Map<String, Object> res = new HashMap<>();
+
+        try (DocumentTemplate template = M2DocUtils.parse(uriConverter, templateURI,
+                (IQueryEnvironment) queryEnvironment, M2DocPlugin.getClassProvider(), new BasicMonitor())) {
+            final Iterator<EObject> it = template.eAllContents();
+            while (it.hasNext()) {
+                final EObject current = it.next();
+                if (current instanceof Let) {
+                    final Let let = (Let) current;
+                    final EvaluationResult evaluationResult = engine.eval(let.getValue(), variables);
+                    final Object value = evaluationResult.getResult();
+                    res.put(let.getName(), value);
+                } else if (current instanceof Repetition) {
+                    final Repetition repetition = (Repetition) current;
+                    final EvaluationResult evaluationResult = engine.eval(repetition.getQuery(), variables);
+                    final Object value = evaluationResult.getResult();
+                    Iterator<?> valIt = ((Collection<?>) value).iterator();
+                    if (valIt.hasNext()) {
+                        res.put(repetition.getIterationVar(), valIt.next());
+                    } else {
+                        // TODO ?
+                    }
+                } else if (current instanceof Parameter) {
+                    // final Parameter parameter = (Parameter) current;
+                    // TODO ?
+                }
+            }
+
+        } catch (IOException e) {
+            // nothing to do here: if we can't parse it doesn't matter
+        } catch (DocumentParserException e) {
+            // nothing to do here: if we can't parse it doesn't matter
+        }
+
+        return res;
     }
 
 }

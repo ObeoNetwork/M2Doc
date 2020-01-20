@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
     Copyright (c) 2020 Obeo. 
        All rights reserved. This program and the accompanying materials
@@ -8,16 +9,15 @@
         Contributors:
             Obeo - initial API and implementation
  -->
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
   <Id>08305c76-17a8-48d4-9369-2d8874a0405f</Id>
-  <Version>3.0.0</Version>
+  <Version>VERSION</Version>
   <ProviderName>Obeo Network</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="M2Doc"/>
   <Description DefaultValue="M2Doc completion add-in."/>
-  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+  <IconUrl DefaultValue="http://HOST:PORT/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="http://HOST:PORT/assets/icon-80.png"/>
   <SupportUrl DefaultValue="https://www.m2doc.org/support/"/>
   <AppDomains>
     <AppDomain>m2doc.org</AppDomain>
@@ -26,7 +26,7 @@
     <Host Name="Document"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
+    <SourceLocation DefaultValue="http://HOST:PORT/taskpane.html"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
@@ -72,14 +72,14 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="http://HOST:PORT/assets/icon-16.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="http://HOST:PORT/assets/icon-32.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="http://HOST:PORT/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
-        <bt:Url id="Commands.Url" DefaultValue="https://localhost:3000/commands.html"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
+        <bt:Url id="Commands.Url" DefaultValue="http://HOST:PORT/commands.html"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="http://HOST:PORT/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Get started with your M2Doc add-in!"/>

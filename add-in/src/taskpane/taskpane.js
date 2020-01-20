@@ -31,6 +31,8 @@ Office.onReady(info => {
       if (event.reason == "esc") {
         // TODO validate the input that will be applied
         validationClear();
+        // TODO evaluate the input that will be applied
+        resultClear();
       }
     }, false);
     expressionInput.addEventListener('awesomplete-highlight', function (event) {
@@ -50,6 +52,7 @@ export function openProposals() {
   var offset = expressionInput.selectionStart;
 
   validate(expression);
+  evaluate(expression);
   var ajax = new XMLHttpRequest();
   ajax.onreadystatechange = function() {
     if (this.readyState == 4) {
@@ -78,6 +81,7 @@ export function applyReplacement(text) {
       if (this.status == 200) {
         awesomplete.input.value = this.responseText;
         validate(this.responseText);
+        evaluate(this.responseText);
       } else if (this.status == 400) {
         validationError(this.responseText);
       }
@@ -112,6 +116,25 @@ export function validate(expression) {
   ajax.send();
 }
 
+export function evaluate(expression) {
+  var genconfURIInput = document.getElementById("genconfURI");
+  var genconfURI = genconfURIInput.value;
+
+  var ajax = new XMLHttpRequest();
+  ajax.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      if (this.status == 200) {
+        showResult(this.responseText);
+      } else {
+        resultClear();
+      }
+    } else if (this.status == 400) {
+      validationError(this.responseText);
+    }
+  };
+  ajax.open("GET", "/rest?command=evaluate&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression), true);
+  ajax.send();
+}
 
 export function validationMessages(messages) {
   var html = "";
@@ -150,21 +173,12 @@ export function validationClear() {
   validationDiv.innerHTML = "";
 }
 
-export function resultError(message) {
-  document.getElementById("resultDiv").style.backgroundColor = "lightcoral";
-  document.getElementById("result").innerText = message;
-}
-
-export function resultWarning(message) {
-  document.getElementById("resultDiv").style.backgroundColor = "lightgoldenrodyellow";
-  document.getElementById("result").innerText = message;
-}
-
 export function showResult(html) {
-  document.getElementById("resultDiv").style.backgroundColor = "lightblue";
-  document.getElementById("result").innerHTML = html;
+  var resultDiv = document.getElementById("resultDiv");
+  resultDiv.style.backgroundColor = "lightblue";
+  resultDiv.innerHTML = html;
 }
 
 export function resultClear() {
-  showResult("Result");
+  showResult("");
 }
