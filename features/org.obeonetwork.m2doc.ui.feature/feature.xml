@@ -242,6 +242,20 @@ litigation.
          unpack="false"/>
 
    <plugin
+         id="org.obeonetwork.m2doc.word.addin"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.obeonetwork.m2doc.word.addin.ide.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.obeonetwork.m2doc.doc"
          download-size="0"
          install-size="0"

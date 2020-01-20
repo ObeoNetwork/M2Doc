@@ -47,6 +47,8 @@
     <module>plugins/org.obeonetwork.m2doc.genconf</module>
     <module>plugins/org.obeonetwork.m2doc.genconf.edit</module>
     <module>plugins/org.obeonetwork.m2doc.genconf.editor</module>
+    <module>plugins/org.obeonetwork.m2doc.word.addin</module>
+    <module>plugins/org.obeonetwork.m2doc.word.addin.ide.ui</module>
     <module>plugins/org.obeonetwork.m2doc.sirius</module>
     <module>plugins/org.obeonetwork.m2doc.sirius.ui</module>
     <module>plugins/org.obeonetwork.m2doc.doc</module>
