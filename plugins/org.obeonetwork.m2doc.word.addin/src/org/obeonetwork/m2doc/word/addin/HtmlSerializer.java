@@ -16,7 +16,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
-import java.util.StringJoiner;
 
 import org.apache.poi.util.IOUtils;
 import org.obeonetwork.m2doc.element.MBookmark;
@@ -237,18 +236,16 @@ public class HtmlSerializer {
                 res = "<u>" + res + "</u>";
             }
 
-            final StringJoiner joiner = new StringJoiner(";");
+            String spawnStyle = "";
             if (style.getBackgroundColor() != null) {
                 final Color color = style.getBackgroundColor();
-                joiner.add("background-color:#" + Integer.toHexString(color.getRed())
-                    + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue()));
+                spawnStyle += String.format("background-color:#%02X%02X%02X;", color.getRed(), color.getGreen(),
+                        color.getBlue());
             }
             if (style.getForegroundColor() != null) {
                 final Color color = style.getForegroundColor();
-                joiner.add("color:#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen())
-                    + Integer.toHexString(color.getBlue()));
+                spawnStyle += String.format("color:#%02X%02X%02X;", color.getRed(), color.getGreen(), color.getBlue());
             }
-            final String spawnStyle = joiner.toString();
             if (!spawnStyle.isEmpty()) {
                 res = "<spawn style=\"" + spawnStyle + "\">" + res + "</spawn>";
             }
