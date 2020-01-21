@@ -39,6 +39,13 @@ Office.onReady(info => {
       // TODO show documentation
     }, false);
 
+    window.onresize = function(event) {
+      document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
+      document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
+    }
+    document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
+    document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
+
     validationClear();
     resultClear();
   }
