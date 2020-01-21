@@ -38,4 +38,13 @@ public class ClassProvider implements IClassProvider {
         return classLoader.loadClass(className);
     }
 
+    /**
+     * Gets the {@link ClassLoader}.
+     * 
+     * @return the classLoader the {@link ClassLoader}
+     */
+    protected ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
 }

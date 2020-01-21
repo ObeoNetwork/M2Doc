@@ -15,6 +15,12 @@
    <feature id="org.obeonetwork.m2doc.ui.feature.source" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
+   <feature id="org.obeonetwork.m2doc.ui.jdt.feature" version="0.0.0">
+      <category name="M2Doc"/>
+   </feature>
+   <feature id="org.obeonetwork.m2doc.ui.jdt.feature.source" version="0.0.0">
+      <category name="M2Doc"/>
+   </feature>
    <feature id="org.obeonetwork.m2doc.sirius.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
