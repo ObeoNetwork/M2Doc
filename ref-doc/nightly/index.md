@@ -233,7 +233,7 @@ To help you through the process of writing [AQL](https://www.eclipse.org/acceleo
 
 Once installed and a generation model (.genconf file) selected the add-in provide completion for [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions.
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in03.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in02.png "MS Word add-in.")
 
 #### MS Word add-in installation
 
@@ -241,7 +241,7 @@ You need to have an Eclipse with M2Doc installed, see the [download page]({{page
 
 To start the MS word add-in backend you nee to click on the "Start/Stop M2Doc add-in back end":
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation01.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation01.png "MS Word add-in.")
 
 Now the backend is started and you can proceed with the front end installation. For the front end installation, you need to download the manifest.xml file from the back end and place it in a network shared folder.
 
@@ -253,109 +253,109 @@ NOTE: if your back end is hosted on a different computer, you can change the lin
 
 Download the manifest.xml in a folder and share the folder to your self (and other if needed):
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation02.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation02.png "MS Word add-in.")
 
 Click in the folder and select properties:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation03.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation03.png "MS Word add-in.")
 
 Select the share tab:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation04.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation04.png "MS Word add-in.")
 
 Click on the share button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation05.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation05.png "MS Word add-in.")
 
 Select your user name or the list of user to share the folder with:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation06.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation06.png "MS Word add-in.")
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation07.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation07.png "MS Word add-in.")
 
 Click the share button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation08.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation08.png "MS Word add-in.")
 
 Click the finish button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation09.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation09.png "MS Word add-in.")
 
 Copy the shared path, we will need it later:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation10.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation10.png "MS Word add-in.")
 
 Click finish:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation11.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation11.png "MS Word add-in.")
 
 We are almost there, the last step is to load the add-in into MS Word, click file menu:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation12.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation12.png "MS Word add-in.")
 
 Click the options menu:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation13.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation13.png "MS Word add-in.")
 
 Click the privacy management center:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation14.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation14.png "MS Word add-in.")
 
 Click the privacy management center parameters button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation15.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation15.png "MS Word add-in.")
 
 Click the aprouved application catalogs:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation16.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation16.png "MS Word add-in.")
 
 Past the network share path:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation17.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation17.png "MS Word add-in.")
 
 Click the add catalog button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation18.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation18.png "MS Word add-in.")
 
 Check the checkbox so the shared folder appears in the list of applications:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation19.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation19.png "MS Word add-in.")
 
 Click the OK button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation20.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation20.png "MS Word add-in.")
 
 Click the OK button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation21.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation21.png "MS Word add-in.")
 
 Click the OK button:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation22.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation22.png "MS Word add-in.")
 
 Restart MS Word:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation23.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation23.png "MS Word add-in.")
 
 Select the insertion menu:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation24.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation24.png "MS Word add-in.")
 
 Click on the My applications menu:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation25.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation25.png "MS Word add-in.")
 
 Select the shared folder tab:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation26.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation26.png "MS Word add-in.")
 
 Select the M2Doc add-in (NOTE: the back end should be running at this point):
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation27.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation27.png "MS Word add-in.")
 
 The following panel should open:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation28.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation28.png "MS Word add-in.")
 
 #### MS Word add-in in action
 
