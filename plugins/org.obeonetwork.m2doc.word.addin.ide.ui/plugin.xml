@@ -5,7 +5,7 @@
          point="org.eclipse.ui.commands">
       <command
             id="org.obeonetwork.m2doc.word.addin.ide.ui.commands.addInHandlerCommand"
-            name="Start/Stop M2Doc add-in backend">
+            name="Start/Stop M2Doc add-in back end">
       </command>
    </extension>
    <extension
@@ -25,8 +25,9 @@
                   commandId="org.obeonetwork.m2doc.word.addin.ide.ui.commands.addInHandlerCommand"
                   icon="icons/m2doc.png"
                   id="org.obeonetwork.m2doc.word.addin.ide.ui.toolbars.addInHandlerCommand"
+                  label="Start/Stop M2Doc add-in back end"
                   style="toggle"
-                  tooltip="Start/Stop M2Doc add-in backend">
+                  tooltip="Start/Stop M2Doc add-in back end">
             </command>
          </toolbar>
       </menuContribution>
