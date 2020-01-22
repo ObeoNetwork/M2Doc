@@ -17,6 +17,12 @@
 			<topic href="doc/ref-doc/nightly/index.html#generation-configuration-wizard" label="Generation configuration wizard"></topic>
 		</topic>
 		<topic href="doc/ref-doc/nightly/index.html#template-authoring" label="Template authoring">
+			<topic href="doc/ref-doc/nightly/index.html#new-project-wizard" label="New project wizard"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#new-template-wizard" label="New template wizard"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#ms-word-add-in" label="MS Word add-in">
+				<topic href="doc/ref-doc/nightly/index.html#ms-word-add-in-installation" label="MS Word add-in installation"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#ms-word-add-in-in-action" label="MS Word add-in in action"></topic>
+			</topic>
 			<topic href="doc/ref-doc/nightly/index.html#syntax" label="Syntax">
 				<topic href="doc/ref-doc/nightly/index.html#comment-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-nominal" label="Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#comment-block-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-comment-commentblocknominal" label="Comment block ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/commentBlockNominal))"></topic>

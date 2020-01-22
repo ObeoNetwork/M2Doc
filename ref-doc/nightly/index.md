@@ -227,6 +227,154 @@ The template is created after clicking finish:
 
 ![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard6.png "The New template Wizard.")
 
+### MS Word add-in
+
+To help you through the process of writing [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions, you can use the MS Word add-in. You will need to have a template and a generation model (.genconf file). To create a generation model file you can read the [initialize generation](index.html#initializing-a-generation-configuration) section.
+
+Once installed and a generation model (.genconf file) selected the add-in provide completion for [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions.
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in03.png "MS Word add-in.")
+
+#### MS Word add-in installation
+
+You need to have an Eclipse with M2Doc installed, see the [download page]({{page.relativePath}}/download/) for more details.
+
+To start the MS word add-in backend you nee to click on the "Start/Stop M2Doc add-in back end":
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation01.png "MS Word add-in.")
+
+Now the backend is started and you can proceed with the front end installation. For the front end installation, you need to download the manifest.xml file from the back end and place it in a network shared folder.
+
+You can download the manifest.xml file using the following link by default:
+
+[http://localhost:3000/assets/manifest.xml](http://localhost:3000/assets/manifest.xml)
+
+NOTE: if your back end is hosted on a different computer, you can change the link to match you IP or domain.
+
+Download the manifest.xml in a folder and share the folder to your self (and other if needed):
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation02.png "MS Word add-in.")
+
+Click in the folder and select properties:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation03.png "MS Word add-in.")
+
+Select the share tab:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation04.png "MS Word add-in.")
+
+Click on the share button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation05.png "MS Word add-in.")
+
+Select your user name or the list of user to share the folder with:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation06.png "MS Word add-in.")
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation07.png "MS Word add-in.")
+
+Click the share button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation08.png "MS Word add-in.")
+
+Click the finish button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation09.png "MS Word add-in.")
+
+Copy the shared path, we will need it later:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation10.png "MS Word add-in.")
+
+Click finish:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation11.png "MS Word add-in.")
+
+We are almost there, the last step is to load the add-in into MS Word, click file menu:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation12.png "MS Word add-in.")
+
+Click the options menu:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation13.png "MS Word add-in.")
+
+Click the privacy management center:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation14.png "MS Word add-in.")
+
+Click the privacy management center parameters button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation15.png "MS Word add-in.")
+
+Click the aprouved application catalogs:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation16.png "MS Word add-in.")
+
+Past the network share path:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation17.png "MS Word add-in.")
+
+Click the add catalog button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation18.png "MS Word add-in.")
+
+Check the checkbox so the shared folder appears in the list of applications:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation19.png "MS Word add-in.")
+
+Click the OK button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation20.png "MS Word add-in.")
+
+Click the OK button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation21.png "MS Word add-in.")
+
+Click the OK button:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation22.png "MS Word add-in.")
+
+Restart MS Word:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation23.png "MS Word add-in.")
+
+Select the insertion menu:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation24.png "MS Word add-in.")
+
+Click on the My applications menu:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation25.png "MS Word add-in.")
+
+Select the shared folder tab:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation26.png "MS Word add-in.")
+
+Select the M2Doc add-in (NOTE: the back end should be running at this point):
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation27.png "MS Word add-in.")
+
+The following panel should open:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20§Installation28.png "MS Word add-in.")
+
+#### MS Word add-in in action
+
+To use the add in you need to reference a generation model (.genconf file) using its URI. If the template is in the generation model is in the workspace you can prefix it path with "platform:/resource/" and it path in the workspace.
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in01.png "MS Word add-in.")
+
+You can start typing your expression to get the completion:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in02.png "MS Word add-in.")
+
+The blue div contains the result of the evaluation. NOTE: in some cases it's not possible to provide a result (parameters of a template construct), or the result may be based on arbitrary value (let and for):
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in03.png "MS Word add-in.")
+
+In the red div you have the validation of the expression entered so far:
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in04.png "MS Word add-in.")
+
 ### Syntax
 
 The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use `ALT+F9`. To insert a new field, use `CTRL+F9`.
