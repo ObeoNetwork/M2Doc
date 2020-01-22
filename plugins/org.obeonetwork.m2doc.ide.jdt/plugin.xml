@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.obeonetwork.m2doc.ide.services.classprovider">
+         point="org.obeonetwork.m2doc.ide.classprovider">
       <classprovider
             class="org.obeonetwork.m2doc.ide.jdt.util.EclipseJDTClassProvider">
       </classprovider>
