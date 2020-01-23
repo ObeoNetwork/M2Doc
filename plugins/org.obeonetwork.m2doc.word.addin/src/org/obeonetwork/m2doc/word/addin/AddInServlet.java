@@ -174,7 +174,7 @@ public class AddInServlet extends HttpServlet {
                 } else {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     resp.setContentType(MimeTypes.Type.TEXT_HTML.toString());
-                    resp.getWriter().println("<h1>404<h1>");
+                    resp.getWriter().print("<h1>404<h1>");
                 }
             }
         } else {
@@ -203,7 +203,7 @@ public class AddInServlet extends HttpServlet {
                 // CHECKSTYLE:ON
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println("can't load .genconf file: " + e.getMessage());
+                resp.getWriter().print("can't load .genconf file: " + e.getMessage());
             }
             if (generation != null) {
                 final List<Exception> exceptions = new ArrayList<>();
@@ -241,23 +241,24 @@ public class AddInServlet extends HttpServlet {
                         default:
                             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                            resp.getWriter().println("command is invalid");
+                            resp.getWriter()
+                                    .print("command is invalid, valid commands: proposal, apply, validate, evaluate.");
                             break;
                     }
                 } else {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                    resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, COMMAND_PARAMETER));
+                    resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, COMMAND_PARAMETER));
                 }
             } else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(genconfURI + " can't be loaded");
+                resp.getWriter().print(genconfURI + " can't be loaded");
             }
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, GENCONF_URI_PARAMETER));
+            resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, GENCONF_URI_PARAMETER));
         }
     }
 
@@ -366,8 +367,9 @@ public class AddInServlet extends HttpServlet {
                 variableTypes.putAll(
                         parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
                 try {
-                    final Integer offset = Integer.valueOf(req.getParameter(OFFSET_PARAMETER));
-                    if (offset != null) {
+                    String offsetParameter = req.getParameter(OFFSET_PARAMETER);
+                    if (offsetParameter != null) {
+                        final int offset = Integer.valueOf(offsetParameter);
                         final QueryCompletionEngine engine = new QueryCompletionEngine(queryEnvironment);
 
                         final ICompletionResult completionResult = engine.getCompletion(expression, offset,
@@ -394,22 +396,22 @@ public class AddInServlet extends HttpServlet {
                     } else {
                         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                        resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, OFFSET_PARAMETER));
+                        resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, OFFSET_PARAMETER));
                     }
                 } catch (NumberFormatException e) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                    resp.getWriter().println(EXPRESSION_PARAMETER + " must be an integer");
+                    resp.getWriter().print(OFFSET_PARAMETER + " must be an integer");
                 }
             } catch (IOException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+                resp.getWriter().print(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
             }
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+            resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
         }
     }
 
@@ -443,8 +445,9 @@ public class AddInServlet extends HttpServlet {
                     variableTypes.putAll(
                             parseVariableTypes(queryEnvironment, validator, variableTypes, uriConverter, templateURI));
                     try {
-                        final Integer offset = Integer.valueOf(req.getParameter(OFFSET_PARAMETER));
-                        if (offset != null) {
+                        String offsetParameter = req.getParameter(OFFSET_PARAMETER);
+                        if (offsetParameter != null) {
+                            final int offset = Integer.valueOf(offsetParameter);
                             final QueryCompletionEngine engine = new QueryCompletionEngine(queryEnvironment);
                             final ICompletionResult completionResult = engine.getCompletion(expression, offset,
                                     variableTypes);
@@ -457,27 +460,27 @@ public class AddInServlet extends HttpServlet {
                         } else {
                             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, OFFSET_PARAMETER));
+                            resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, OFFSET_PARAMETER));
                         }
                     } catch (NumberFormatException e) {
                         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                        resp.getWriter().println(EXPRESSION_PARAMETER + " must be an integer");
+                        resp.getWriter().print(OFFSET_PARAMETER + " must be an integer");
                     }
                 } catch (IOException e) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                    resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+                    resp.getWriter().print(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
                 }
             } else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, COMPLETION_PARAMETER));
+                resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, COMPLETION_PARAMETER));
             }
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+            resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
         }
     }
 
@@ -558,12 +561,12 @@ public class AddInServlet extends HttpServlet {
             } catch (IOException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+                resp.getWriter().print(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
             }
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+            resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
         }
     }
 
@@ -600,16 +603,16 @@ public class AddInServlet extends HttpServlet {
 
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType(MimeTypes.Type.TEXT_HTML_UTF_8.toString());
-                resp.getWriter().println(HTML_SERIALIZER.serialize(result.getResult()));
+                resp.getWriter().print(HTML_SERIALIZER.serialize(result.getResult()));
             } catch (IOException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-                resp.getWriter().println(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
+                resp.getWriter().print(String.format(CAN_T_LOAD_TEMPLATE, e.getMessage()));
             }
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
-            resp.getWriter().println(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
+            resp.getWriter().print(String.format(PARAMETER_IS_MANDATORY, EXPRESSION_PARAMETER));
         }
     }
 

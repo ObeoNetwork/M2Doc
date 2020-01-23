@@ -347,6 +347,7 @@
       <modules>
         <module>tests/org.obeonetwork.m2doc.tests</module>
         <module>tests/org.obeonetwork.m2doc.ide.tests</module>
+        <module>tests/org.obeonetwork.m2doc.word.addin.tests</module>
         <module>tests/org.obeonetwork.m2doc.sirius.tests</module>
         <module>tests/org.obeonetwork.m2doc.genconf.tests</module>
         <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
