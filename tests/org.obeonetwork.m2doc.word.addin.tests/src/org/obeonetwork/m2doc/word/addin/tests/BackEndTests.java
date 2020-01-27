@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class AddInServletTests {
+public class BackEndTests {
 
     /**
      * The {@link CompletionServer}.

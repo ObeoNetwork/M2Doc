@@ -10,46 +10,53 @@
 */
 
 /* global document, Office, Word */
-var awesomplete;
+
+window.onload = function () {
+  document.getElementById("startButton").onclick = startApp;
+};
 
 Office.onReady(info => {
   if (info.host === Office.HostType.Word) {
-    document.getElementById("sideload-msg").style.display = "none";
-    document.getElementById("app-body").style.display = "flex";
-    var expressionInput = document.getElementById("expression");
-    awesomplete = new Awesomplete(expressionInput, {
-      minChars: 0, 
-      autoFirst: true,
-      maxItems: 20,
-      filter: function(text, input) {
-        return true;
-      },
-      replace: applyReplacement
-    });
-    expressionInput.oninput = openProposals;
-    expressionInput.addEventListener('awesomplete-close', function (event) {
-      if (event.reason == "esc") {
-        // TODO validate the input that will be applied
-        validationClear();
-        // TODO evaluate the input that will be applied
-        resultClear();
-      }
-    }, false);
-    expressionInput.addEventListener('awesomplete-highlight', function (event) {
-      // TODO show documentation
-    }, false);
-
-    window.onresize = function(event) {
-      document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
-      document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
-    }
-    document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
-    document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
-
-    validationClear();
-    resultClear();
+    startApp();
   }
 });
+
+export function startApp() {
+  document.getElementById("sideload-msg").style.display = "none";
+  document.getElementById("app-body").style.display = "flex";
+  var expressionInput = document.getElementById("expression");
+  window.awesomplete = new Awesomplete(expressionInput, {
+    minChars: 0, 
+    autoFirst: true,
+    maxItems: 20,
+    filter: function(text, input) {
+      return true;
+    },
+    replace: applyReplacement
+  });
+  expressionInput.oninput = openProposals;
+  expressionInput.addEventListener('awesomplete-close', function (event) {
+    if (event.reason == "esc") {
+      // TODO validate the input that will be applied
+      validationClear();
+      // TODO evaluate the input that will be applied
+      resultClear();
+    }
+  }, false);
+  expressionInput.addEventListener('awesomplete-highlight', function (event) {
+    // TODO show documentation
+  }, false);
+
+  window.onresize = function(event) {
+    document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
+    document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
+  }
+  document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
+  document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
+
+  validationClear();
+  resultClear();
+}
 
 export function openProposals() {
   var genconfURIInput = document.getElementById("genconfURI");
@@ -64,8 +71,8 @@ export function openProposals() {
   ajax.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (this.status == 200) {
-        awesomplete.list = JSON.parse(this.responseText);
-        awesomplete.open();
+        window.awesomplete.list = JSON.parse(this.responseText);
+        window.awesomplete.open();
       } else if (this.status == 400) {
         validationError(this.responseText);
       }
@@ -86,7 +93,7 @@ export function applyReplacement(text) {
   ajax.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (this.status == 200) {
-        awesomplete.input.value = this.responseText;
+        window.awesomplete.input.value = this.responseText;
         validate(this.responseText);
         evaluate(this.responseText);
       } else if (this.status == 400) {
