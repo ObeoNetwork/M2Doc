@@ -44,8 +44,9 @@ export function startApp() {
       resultClear();
     }
   }, false);
+  var lastIndex;
   expressionInput.addEventListener('awesomplete-highlight', function (event) {
-    if ((window.awesomplete.index != window.awesomplete.maxItems) && (window.awesomplete.index != window.awesomplete._list.length)) {
+    if ((window.awesomplete.index != window.awesomplete.maxItems) && (window.awesomplete.index != window.awesomplete._list.length) && (window.awesomplete.index >= 0)) {
       var documentation = document.getElementById("documentation");
       if (documentation == null) {
         documentation = document.createElement("li");
@@ -54,12 +55,9 @@ export function startApp() {
         document.getElementById("awesomplete_list_1_item_0").parentElement.appendChild(documentation);
       }
       documentation.innerHTML = window.awesomplete._list[window.awesomplete.index].documentation;
+      lastIndex = window.awesomplete.index;
     } else {
-      if (window.awesomplete.index != 0) {
-        window.awesomplete.goto(0);
-      } else {
-        window.awesomplete.goto(Math.min(window.awesomplete.maxItems, window.awesomplete._list.length) - 1);
-      }
+      window.awesomplete.goto(Math.min(window.awesomplete.maxItems, window.awesomplete._list.length) - lastIndex - 1);
     }
   }, false);
 
