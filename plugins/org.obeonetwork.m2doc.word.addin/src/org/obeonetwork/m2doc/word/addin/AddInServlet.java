@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +49,8 @@ import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -75,6 +79,44 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  */
 @SuppressWarnings("restriction")
 public class AddInServlet extends HttpServlet {
+
+    /**
+     * {@link Comparator} for {@link ICompletionProposal}.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class ProposalComparator implements Comparator<ICompletionProposal> {
+        @Override
+        public int compare(ICompletionProposal o1, ICompletionProposal o2) {
+            final int res;
+            final int o1Class;
+            final int o2Class;
+
+            if (o1 instanceof VariableCompletionProposal) {
+                o1Class = 1;
+            } else if (o1 instanceof EFeatureCompletionProposal) {
+                o1Class = 2;
+            } else {
+                o1Class = 3;
+            }
+            if (o2 instanceof VariableCompletionProposal) {
+                o2Class = 1;
+            } else if (o2 instanceof EFeatureCompletionProposal) {
+                o2Class = 2;
+            } else {
+                o2Class = 3;
+            }
+
+            final int order = o1Class - o2Class;
+            if (order == 0) {
+                res = o1.getProposal().compareTo(o2.getProposal());
+            } else {
+                res = order;
+            }
+
+            return res;
+        }
+    }
 
     /**
      * The resources path.
@@ -377,6 +419,8 @@ public class AddInServlet extends HttpServlet {
                         final List<ICompletionProposal> proposals = completionResult
                                 .getProposals(QueryCompletion.createBasicFilter(completionResult));
 
+                        Collections.sort(proposals, new ProposalComparator());
+
                         @SuppressWarnings("unchecked")
                         final Map<String, Object>[] res = new HashMap[proposals.size()];
 
@@ -386,7 +430,7 @@ public class AddInServlet extends HttpServlet {
                             map.put("label", proposal.getProposal());
                             map.put("value", proposal.getProposal());
                             map.put("cursorOffset", proposal.getCursorOffset());
-                            map.put("documentation", proposal.getDescription());
+                            map.put("documentation", proposal.getDescription().replace("\n", "<br>"));
                             res[index++] = map;
                         }
 

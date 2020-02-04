@@ -32,6 +32,7 @@ export function startApp() {
     filter: function(text, input) {
       return true;
     },
+    sort: false,
     replace: applyReplacement
   });
   expressionInput.oninput = openProposals;
@@ -44,7 +45,22 @@ export function startApp() {
     }
   }, false);
   expressionInput.addEventListener('awesomplete-highlight', function (event) {
-    // TODO show documentation
+    if ((window.awesomplete.index != window.awesomplete.maxItems) && (window.awesomplete.index != window.awesomplete._list.length)) {
+      var documentation = document.getElementById("documentation");
+      if (documentation == null) {
+        documentation = document.createElement("li");
+        documentation.id = "documentation";
+        documentation.style.backgroundColor = "lightblue";
+        document.getElementById("awesomplete_list_1_item_0").parentElement.appendChild(documentation);
+      }
+      documentation.innerHTML = window.awesomplete._list[window.awesomplete.index].documentation;
+    } else {
+      if (window.awesomplete.index != 0) {
+        window.awesomplete.goto(0);
+      } else {
+        window.awesomplete.goto(Math.min(window.awesomplete.maxItems, window.awesomplete._list.length) - 1);
+      }
+    }
   }, false);
 
   window.onresize = function(event) {
