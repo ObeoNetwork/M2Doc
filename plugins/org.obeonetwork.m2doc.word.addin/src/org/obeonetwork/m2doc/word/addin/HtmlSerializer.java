@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.Collection;
 
 import org.apache.poi.util.IOUtils;
 import org.obeonetwork.m2doc.element.MBookmark;
@@ -60,6 +61,12 @@ public class HtmlSerializer {
 
         if (object instanceof MElement) {
             res = serialize((MElement) object);
+        } else if (object instanceof Collection) {
+            final StringBuilder builder = new StringBuilder();
+            for (Object child : (Collection<?>) object) {
+                builder.append(serialize(child));
+            }
+            res = builder.toString();
         } else if (object != null) {
             res = "<p>" + object.toString() + "</p>";
         } else {
