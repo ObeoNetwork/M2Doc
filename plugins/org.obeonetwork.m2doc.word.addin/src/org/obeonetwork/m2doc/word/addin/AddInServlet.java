@@ -50,6 +50,8 @@ import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -431,6 +433,18 @@ public class AddInServlet extends HttpServlet {
                             map.put("value", proposal.getProposal());
                             map.put("cursorOffset", proposal.getCursorOffset());
                             map.put("documentation", proposal.getDescription().replace("\n", "<br>"));
+                            if (proposal instanceof JavaMethodServiceCompletionProposal) {
+                                map.put("type", "Service");
+                            } else if (proposal instanceof TextCompletionProposal) {
+                                map.put("type", "Text");
+                            } else if (proposal instanceof VariableCompletionProposal) {
+                                map.put("type", "Variable");
+                            } else if (proposal instanceof ICompletionProposal
+                                && proposal.getObject() instanceof EObject) {
+                                map.put("type", ((EObject) proposal.getObject()).eClass().getName());
+                            } else {
+                                map.put("type", "Text");
+                            }
                             res[index++] = map;
                         }
 

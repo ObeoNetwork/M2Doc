@@ -87,6 +87,17 @@ export function openProposals() {
       if (this.status == 200) {
         window.awesomplete.list = JSON.parse(this.responseText);
         window.awesomplete.open();
+        var list = document.getElementById("awesomplete_list_1");
+        var index = 0;
+        for(var child=list.firstChild; child!==null; child=child.nextSibling) {
+          if (child.id != "documentation") {
+            var image = document.createElement("img");
+            image.style.verticalAlign = "middle";
+            image.src = "assets/completion/" + window.awesomplete._list[index++].type + ".gif";
+            image.style.paddingRight = "5px";
+            child.insertBefore(image, child.firstChild);
+          }
+        }
       } else if (this.status == 400) {
         validationError(this.responseText);
       }

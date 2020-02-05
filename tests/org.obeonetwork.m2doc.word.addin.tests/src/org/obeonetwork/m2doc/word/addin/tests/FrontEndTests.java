@@ -81,7 +81,8 @@ public class FrontEndTests {
         driver.findElement(By.id("expression")).sendKeys("l");
         Thread.sleep(1000);
 
-        assertEquals("[{\"documentation\":\"Variable self\",\"cursorOffset\":4,\"label\":\"self\",\"value\":\"self\"}]",
+        assertEquals(
+                "[{\"documentation\":\"Variable self\",\"cursorOffset\":4,\"label\":\"self\",\"type\":\"Variable\",\"value\":\"self\"}]",
                 driver.executeScript("return JSON.stringify(window.awesomplete._list)"));
         assertEquals("Couldn't find the 'sel' variable (0, 3)", driver.findElement(By.id("validationDiv")).getText());
         assertEquals("null", driver.findElement(By.id("resultDiv")).getText());
@@ -102,7 +103,7 @@ public class FrontEndTests {
         Thread.sleep(1000);
 
         assertEquals(
-                "[{\"documentation\":\"EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)\",\"cursorOffset\":4,\"label\":\"name\",\"value\":\"name\"}]",
+                "[{\"documentation\":\"EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)\",\"cursorOffset\":4,\"label\":\"name\",\"type\":\"EAttribute\",\"value\":\"name\"}]",
                 driver.executeScript("return JSON.stringify(window.awesomplete._list)"));
         assertEquals("Feature na not found in EClass EPackage (4, 7)",
                 driver.findElement(By.id("validationDiv")).getText());
