@@ -44,7 +44,6 @@ export function startApp() {
       resultClear();
     }
   }, false);
-  var lastIndex;
   expressionInput.addEventListener('awesomplete-highlight', function (event) {
     if ((window.awesomplete.index != window.awesomplete.maxItems) && (window.awesomplete.index != window.awesomplete._list.length) && (window.awesomplete.index >= 0)) {
       var documentation = document.getElementById("documentation");
@@ -55,9 +54,9 @@ export function startApp() {
         document.getElementById("awesomplete_list_1_item_0").parentElement.appendChild(documentation);
       }
       documentation.innerHTML = window.awesomplete._list[window.awesomplete.index].documentation;
-      lastIndex = window.awesomplete.index;
+      window.lastIndex = window.awesomplete.index;
     } else {
-      window.awesomplete.goto(Math.min(window.awesomplete.maxItems, window.awesomplete._list.length) - lastIndex - 1);
+      window.awesomplete.goto(Math.min(window.awesomplete.maxItems, window.awesomplete._list.length) - window.lastIndex - 1);
     }
   }, false);
 
@@ -119,6 +118,8 @@ export function applyReplacement(text) {
     if (this.readyState == 4) {
       if (this.status == 200) {
         window.awesomplete.input.value = this.responseText;
+        var offset = window.awesomplete._list[window.lastIndex].cursorOffset;
+        window.awesomplete.input.setSelectionRange(offset, offset);
         validate(this.responseText);
         evaluate(this.responseText);
       } else if (this.status == 400) {

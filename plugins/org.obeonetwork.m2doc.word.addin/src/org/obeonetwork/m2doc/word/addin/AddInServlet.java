@@ -83,6 +83,11 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 public class AddInServlet extends HttpServlet {
 
     /**
+     * The proposal type.
+     */
+    private static final String PROPOSAL_TYPE = "type";
+
+    /**
      * {@link Comparator} for {@link ICompletionProposal}.
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -431,19 +436,20 @@ public class AddInServlet extends HttpServlet {
                             final Map<String, Object> map = new HashMap<>();
                             map.put("label", proposal.getProposal());
                             map.put("value", proposal.getProposal());
-                            map.put("cursorOffset", proposal.getCursorOffset());
+                            map.put("cursorOffset",
+                                    completionResult.getReplacementOffset() + proposal.getCursorOffset());
                             map.put("documentation", proposal.getDescription().replace("\n", "<br>"));
                             if (proposal instanceof JavaMethodServiceCompletionProposal) {
-                                map.put("type", "Service");
+                                map.put(PROPOSAL_TYPE, "Service");
                             } else if (proposal instanceof TextCompletionProposal) {
-                                map.put("type", "Text");
+                                map.put(PROPOSAL_TYPE, "Text");
                             } else if (proposal instanceof VariableCompletionProposal) {
-                                map.put("type", "Variable");
+                                map.put(PROPOSAL_TYPE, "Variable");
                             } else if (proposal instanceof ICompletionProposal
                                 && proposal.getObject() instanceof EObject) {
-                                map.put("type", ((EObject) proposal.getObject()).eClass().getName());
+                                map.put(PROPOSAL_TYPE, ((EObject) proposal.getObject()).eClass().getName());
                             } else {
-                                map.put("type", "Text");
+                                map.put(PROPOSAL_TYPE, "Text");
                             }
                             res[index++] = map;
                         }

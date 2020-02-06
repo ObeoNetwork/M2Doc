@@ -103,7 +103,7 @@ public class FrontEndTests {
         Thread.sleep(1000);
 
         assertEquals(
-                "[{\"documentation\":\"EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)\",\"cursorOffset\":4,\"label\":\"name\",\"type\":\"EAttribute\",\"value\":\"name\"}]",
+                "[{\"documentation\":\"EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)\",\"cursorOffset\":9,\"label\":\"name\",\"type\":\"EAttribute\",\"value\":\"name\"}]",
                 driver.executeScript("return JSON.stringify(window.awesomplete._list)"));
         assertEquals("Feature na not found in EClass EPackage (4, 7)",
                 driver.findElement(By.id("validationDiv")).getText());

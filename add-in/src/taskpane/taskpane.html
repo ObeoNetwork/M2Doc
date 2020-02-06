@@ -35,17 +35,18 @@
 <body class="ms-font-m ms-welcome ms-Fabric">
     <img src="../../assets/logo_M2Doc.png">
     <section id="sideload-msg" class="ms-welcome__main">
-        <h2 class="ms-font-xl">Please sideload your add-in to see app body.</h2>
+        <h2 class="ms-font-xl">Please sideload M2Doc add-in to see app body.</h2>
+        <p><a href="https://www.m2doc.org/ref-doc/nightly/index.html#ms-word-add-in">M2Doc add-in documentation</a></p>
         <button id="startButton" type="button">Start add-in</button> 
     </section>
     <main id="app-body" class="ms-welcome__main" style="display: none;">
       <div>
-        <p id="debug">debug</p">
+        <p id="debug"></p">
         <p>
-          <input type="text" name="genconfURI" id="genconfURI" placeholder="Generation URI (.genconf)">
+          <input type="text" spellcheck="false" name="genconfURI" id="genconfURI" placeholder="Generation URI (.genconf)">
         </p>
         <p>
-          <textarea class="awesomplete" name="expression" id="expression" rows="5" placeholder="AQL expression"></textarea>
+          <textarea spellcheck="false" class="awesomplete" name="expression" id="expression" rows="5" placeholder="AQL expression"></textarea>
         </p>
         <div id="validationDiv"></div>
         <div id="resultDiv"></div>

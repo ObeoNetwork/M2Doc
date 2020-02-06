@@ -163,7 +163,7 @@ public class BackEndTests {
         assertEquals(200, response.getStatus());
         assertEquals("text/json", response.getMediaType());
         assertEquals(
-                "[{\"documentation\":\"EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)\",\"cursorOffset\":4,\"label\":\"name\",\"value\":\"name\"}]",
+                "[{\"documentation\":\"EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)\",\"cursorOffset\":9,\"label\":\"name\",\"type\":\"EAttribute\",\"value\":\"name\"}]",
                 response.getContentAsString());
     }
 
