@@ -19,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.obeonetwork.m2doc.word.addin.CompletionServer;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.junit.Assert.assertEquals;
@@ -84,6 +85,11 @@ public class FrontEndTests {
         assertEquals(
                 "[{\"documentation\":\"Variable self\",\"cursorOffset\":4,\"label\":\"self\",\"type\":\"Variable\",\"value\":\"self\"}]",
                 driver.executeScript("return JSON.stringify(window.awesomplete._list)"));
+        assertEquals(
+                "<img style=\"vertical-align: middle; padding-right: 5px;\" src=\"assets/completion/Variable.gif\"><mark>sel</mark>f",
+                driver.executeScript("return document.getElementById(\"awesomplete_list_1_item_0\").innerHTML"));
+        assertEquals("Variable self",
+                driver.executeScript("return document.getElementById(\"awesomplete_list_1\").lastChild.innerHTML"));
         assertEquals("Couldn't find the 'sel' variable (0, 3)", driver.findElement(By.id("validationDiv")).getText());
         assertEquals("null", driver.findElement(By.id("resultDiv")).getText());
     }
@@ -111,8 +117,31 @@ public class FrontEndTests {
 
         driver.findElement(By.id("awesomplete_list_1_item_0")).click();
         Thread.sleep(1000);
+        assertEquals("self.name", driver.findElement(By.id("expression")).getAttribute("value"));
         assertEquals("", driver.findElement(By.id("validationDiv")).getText());
         assertEquals("anydsl", driver.findElement(By.id("resultDiv")).getText());
+    }
+
+    @Test
+    public void completionApplyCaretPosition() throws InterruptedException {
+        driver.navigate().to(url);
+
+        // Start the add-in
+        driver.findElement(By.id("startButton")).click();
+
+        driver.findElement(By.id("genconfURI")).sendKeys(genconfURI);
+        driver.findElement(By.id("expression")).click();
+        driver.findElement(By.id("expression")).sendKeys("self.ances");
+        Thread.sleep(2000);
+        driver.findElement(By.id("expression")).sendKeys("t");
+        Thread.sleep(1000);
+
+        driver.findElement(By.id("expression")).sendKeys(Keys.DOWN);
+        driver.findElement(By.id("expression")).sendKeys(Keys.ENTER);
+        Thread.sleep(1000);
+        assertEquals("self.ancestors()", driver.findElement(By.id("expression")).getAttribute("value"));
+        assertEquals("15", driver.findElement(By.id("expression")).getAttribute("selectionStart"));
+        assertEquals("15", driver.findElement(By.id("expression")).getAttribute("selectionEnd"));
     }
 
 }
