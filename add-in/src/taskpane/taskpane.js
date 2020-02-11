@@ -63,9 +63,11 @@ export function startApp() {
   window.onresize = function(event) {
     document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
     document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
+    document.getElementById("highlighter").style.width = (window.innerWidth - 20) + "px";
   }
   document.getElementById("genconfURI").style.width = (window.innerWidth - 20) + "px";
   document.getElementById("expression").style.width = (window.innerWidth - 20) + "px";
+  document.getElementById("highlighter").style.width = (window.innerWidth - 20) + "px";
 
   validationClear();
   resultClear();
@@ -199,6 +201,13 @@ export function validationMessages(messages) {
     var text = document.createTextNode(message.message + " (" + message.start + ", " + message.end + ")");
     paragraphe.appendChild(text);
     paragraphe.style.backgroundColor = color;
+    paragraphe.onmouseover = function() {
+      var expression = document.getElementById("expression").value;
+      document.getElementById("highlighter").innerHTML = expression.slice(0, message.start) + "<mark style=\"background: " + color + ";color: " + color + ";\">" + expression.slice(message.start, message.end) + "</mark>" + expression.slice(message.end, expression.length);
+    };
+    paragraphe.onmouseout = function() {
+      document.getElementById("highlighter").innerHTML = "";
+    };
     validationDiv.appendChild(paragraphe);
   }
 }
