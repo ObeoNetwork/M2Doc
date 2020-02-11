@@ -1,4 +1,4 @@
-target "M2Doc Sirius 6.2.x Target Platform"
+target "M2Doc Sirius 6.3.x Target Platform"
 
 include "../common/common.tpd"
 
