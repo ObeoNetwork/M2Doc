@@ -177,7 +177,8 @@ export function evaluate(expression) {
 }
 
 export function validationMessages(messages) {
-  var html = "";
+  var validationDiv = document.getElementById("validationDiv");
+  validationDiv.innerHTML = "";
   for (var i = 0; i < messages.length; i++) {
     var message = messages[i];
     var color;
@@ -190,9 +191,16 @@ export function validationMessages(messages) {
     } else {
       color = "";
     }
-    html += "<p style=\"background-color:" + color + "\"><img src=\"/assets/" + message.level + ".png\">" + message.message + " (" + message.start + ", " + message.end + ")</p>";
+    var paragraphe = document.createElement("p");
+    var image = document.createElement("img");
+    image.src = "/assets/" + message.level + ".png";
+    image.style.verticalAlign = "middle";
+    paragraphe.appendChild(image);
+    var text = document.createTextNode(message.message + " (" + message.start + ", " + message.end + ")");
+    paragraphe.appendChild(text);
+    paragraphe.style.backgroundColor = color;
+    validationDiv.appendChild(paragraphe);
   }
-  document.getElementById("validationDiv").innerHTML = html;
 }
 
 export function validationError(message) {
