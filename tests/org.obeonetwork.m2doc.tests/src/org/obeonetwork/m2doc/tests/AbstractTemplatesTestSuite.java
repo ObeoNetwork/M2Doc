@@ -484,7 +484,7 @@ public abstract class AbstractTemplatesTestSuite {
             copy(userContentLostURI, destURI);
         }
         final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment, variables,
-                resourceSetForModels, outputURI, new BasicMonitor());
+                resourceSetForModels, outputURI, false, new BasicMonitor());
         return generationResult;
     }
 

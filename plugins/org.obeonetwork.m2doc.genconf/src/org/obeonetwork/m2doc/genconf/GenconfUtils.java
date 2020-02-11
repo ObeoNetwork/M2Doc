@@ -481,8 +481,9 @@ public final class GenconfUtils {
             throws IOException, DocumentParserException, DocumentGenerationException {
 
         final List<Exception> exceptions = new ArrayList<Exception>();
+        final Map<String, String> options = getOptions(generation);
         final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, generation,
-                new ResourceSetImpl(), getOptions(generation));
+                new ResourceSetImpl(), options);
         final URIConverter uriConverter = resourceSetForModels.getURIConverter();
         final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
 
@@ -502,8 +503,9 @@ public final class GenconfUtils {
                     queryEnvironment, monitor);
 
             // launch generation
+            final boolean updateFields = Boolean.valueOf(options.get(M2DocUtils.UPDATE_FIELDS_OPTION));
             M2DocUtils.generate(documentTemplate, queryEnvironment, definitions, resourceSetForModels, generatedURI,
-                    monitor);
+                    updateFields, monitor);
 
             List<URI> generatedURIs = new ArrayList<URI>();
             generatedURIs.add(generatedURI);

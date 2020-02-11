@@ -17,10 +17,26 @@ import java.io.OutputStream;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.usermodel.IBody;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
+import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFldChar;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 
 /**
  * POI services.
@@ -128,6 +144,73 @@ public final class POIServices {
     public void saveFile(URIConverter uriConverter, XWPFDocument document, URI theDestinationURI) throws IOException {
         try (OutputStream os = uriConverter.createOutputStream(theDestinationURI)) {
             document.write(os);
+        }
+    }
+
+    /**
+     * Marks the {@link CTSimpleField} of the given {@link IBody} as
+     * {@link CTSimpleField#setDirty(org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff.Enum) dirty}.
+     * 
+     * @param body
+     *            the {@link IBody}
+     */
+    public void markFieldsAsDirty(IBody body) {
+        if (body instanceof XWPFDocument) {
+            final XWPFDocument document = (XWPFDocument) body;
+            for (XWPFHeader header : document.getHeaderList()) {
+                markFieldsAsDirty(header);
+            }
+            for (XWPFFooter footer : document.getFooterList()) {
+                markFieldsAsDirty(footer);
+            }
+        }
+        for (IBodyElement element : body.getBodyElements()) {
+            markFieldsAsDirty(element);
+        }
+    }
+
+    /**
+     * Marks the {@link CTSimpleField} of the given {@link IBodyElement} as
+     * {@link CTSimpleField#setDirty(org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff.Enum) dirty}.
+     * 
+     * @param element
+     *            the {@link IBodyElement}
+     */
+    public void markFieldsAsDirty(IBodyElement element) {
+        if (element instanceof XWPFParagraph) {
+            final XWPFParagraph paragraph = (XWPFParagraph) element;
+            final CTP ctp = paragraph.getCTP();
+            if (ctp != null) {
+                for (CTSimpleField field : ctp.getFldSimpleList()) {
+                    field.setDirty(STOnOff.TRUE);
+                }
+            }
+            for (XWPFRun run : paragraph.getRuns()) {
+                final CTR ctr = run.getCTR();
+                if (ctr != null) {
+                    for (CTFldChar field : ctr.getFldCharList()) {
+                        field.setDirty(STOnOff.TRUE);
+                    }
+                    if (run instanceof XWPFHyperlinkRun) {
+                        final CTHyperlink ctHyperlink = ((XWPFHyperlinkRun) run).getCTHyperlink();
+                        for (CTSimpleField field : ctHyperlink.getFldSimpleList()) {
+                            field.setDirty(STOnOff.TRUE);
+                        }
+                        for (CTR ctrHyperlink : ctHyperlink.getRList()) {
+                            for (CTFldChar field : ctrHyperlink.getFldCharList()) {
+                                field.setDirty(STOnOff.TRUE);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (element instanceof XWPFTable) {
+            final XWPFTable table = (XWPFTable) element;
+            for (XWPFTableRow row : table.getRows()) {
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    markFieldsAsDirty(cell);
+                }
+            }
         }
     }
 

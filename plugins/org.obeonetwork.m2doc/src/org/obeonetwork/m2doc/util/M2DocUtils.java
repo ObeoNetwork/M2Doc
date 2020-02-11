@@ -132,6 +132,11 @@ public final class M2DocUtils {
     public static final String VALIDATION_URI_OPTION = "ValidationURI";
 
     /**
+     * The update fields option.
+     */
+    public static final String UPDATE_FIELDS_OPTION = "UpdateFields";
+
+    /**
      * The install {@link ECrossReferenceAdapter} option.
      */
     public static final String INSTALL_CROSS_REFERENCE_ADAPTER_OPTION = "InstallCrossReferenceAdapter";
@@ -767,10 +772,40 @@ public final class M2DocUtils {
      * @return the {@link GenerationResult}
      * @throws DocumentGenerationException
      *             if the generation fails
+     * @see #generate(DocumentTemplate, IReadOnlyQueryEnvironment, Map, ResourceSet, URI, boolean, Monitor)
      */
+    @Deprecated
     public static GenerationResult generate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, ResourceSet resourceSetForModels,
             URI destination, Monitor monitor) throws DocumentGenerationException {
+        return generate(documentTemplate, queryEnvironment, variables, resourceSetForModels, destination, false,
+                monitor);
+    }
+
+    /**
+     * Generates the given template into the given destination.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param variables
+     *            variables
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for model elements
+     * @param destination
+     *            the destination
+     * @param updateFields
+     *            tells if we should update fields at the end of the generations
+     * @param monitor
+     *            used to track the progress will generating
+     * @return the {@link GenerationResult}
+     * @throws DocumentGenerationException
+     *             if the generation fails
+     */
+    public static GenerationResult generate(DocumentTemplate documentTemplate,
+            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, ResourceSet resourceSetForModels,
+            URI destination, boolean updateFields, Monitor monitor) throws DocumentGenerationException {
 
         monitor.beginTask("Generating " + destination.lastSegment(), TOTAL_GENERATE_MONITOR_WORK);
         monitor.subTask("Initializing desination document");
@@ -812,6 +847,10 @@ public final class M2DocUtils {
 
             m2docEnv.getUserContentManager().generateLostFiles(result, m2docEnv.getCopier());
             m2docEnv.getUserContentManager().dispose();
+
+            if (updateFields) {
+                POIServices.getInstance().markFieldsAsDirty(destinationDocument);
+            }
 
             nextSubTask(monitor, LOST_FILES_MONITOR_WORK, "Saving generated document");
 
@@ -931,6 +970,7 @@ public final class M2DocUtils {
     public static Map<String, String> getInitializedOptions(Map<String, String> options) {
         final Map<String, String> res = new LinkedHashMap<>();
 
+        res.put(M2DocUtils.UPDATE_FIELDS_OPTION, Boolean.FALSE.toString());
         for (IServicesConfigurator configurator : getConfigurators()) {
             res.putAll(configurator.getInitializedOptions(options));
         }

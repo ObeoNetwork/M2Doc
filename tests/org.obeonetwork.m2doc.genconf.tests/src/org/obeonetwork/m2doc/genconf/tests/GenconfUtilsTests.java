@@ -176,9 +176,11 @@ public class GenconfUtilsTests {
 
         GenconfUtils.initializeOptions(generation);
 
-        assertEquals(1, generation.getOptions().size());
-        assertEquals(TestServiceConfigurator.OPTION, generation.getOptions().get(0).getName());
-        assertEquals(TestServiceConfigurator.VALUE, generation.getOptions().get(0).getValue());
+        assertEquals(2, generation.getOptions().size());
+        assertEquals(M2DocUtils.UPDATE_FIELDS_OPTION, generation.getOptions().get(0).getName());
+        assertEquals("false", generation.getOptions().get(0).getValue());
+        assertEquals(TestServiceConfigurator.OPTION, generation.getOptions().get(1).getName());
+        assertEquals(TestServiceConfigurator.VALUE, generation.getOptions().get(1).getValue());
     }
 
     @Test
@@ -191,9 +193,11 @@ public class GenconfUtilsTests {
 
         GenconfUtils.initializeOptions(generation);
 
-        assertEquals(1, generation.getOptions().size());
+        assertEquals(2, generation.getOptions().size());
         assertEquals(TestServiceConfigurator.OPTION, generation.getOptions().get(0).getName());
         assertEquals(TestServiceConfigurator.VALUE, generation.getOptions().get(0).getValue());
+        assertEquals(M2DocUtils.UPDATE_FIELDS_OPTION, generation.getOptions().get(1).getName());
+        assertEquals("false", generation.getOptions().get(1).getValue());
     }
 
     @Test

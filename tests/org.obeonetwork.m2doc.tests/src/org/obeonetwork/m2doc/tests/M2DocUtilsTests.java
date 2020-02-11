@@ -151,7 +151,8 @@ public class M2DocUtilsTests {
 
         final Map<String, String> initializedOptions = M2DocUtils.getInitializedOptions(options);
 
-        assertEquals(1, initializedOptions.size());
+        assertEquals(2, initializedOptions.size());
+        assertEquals("false", initializedOptions.get(M2DocUtils.UPDATE_FIELDS_OPTION));
         assertEquals(TestServiceConfigurator.VALUE, initializedOptions.get(TestServiceConfigurator.OPTION));
     }
 
