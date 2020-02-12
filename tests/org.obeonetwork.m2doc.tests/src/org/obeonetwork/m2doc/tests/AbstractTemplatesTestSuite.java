@@ -483,8 +483,10 @@ public abstract class AbstractTemplatesTestSuite {
                     false);
             copy(userContentLostURI, destURI);
         }
+        final boolean updateFields = Boolean
+                .valueOf(GenconfUtils.getOptions(generation).get(M2DocUtils.UPDATE_FIELDS_OPTION));
         final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment, variables,
-                resourceSetForModels, outputURI, false, new BasicMonitor());
+                resourceSetForModels, outputURI, updateFields, new BasicMonitor());
         return generationResult;
     }
 
