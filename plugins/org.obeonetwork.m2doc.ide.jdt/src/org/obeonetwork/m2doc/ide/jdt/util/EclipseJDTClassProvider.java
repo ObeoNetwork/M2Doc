@@ -12,6 +12,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -45,11 +46,14 @@ public class EclipseJDTClassProvider extends EclipseClassProvider {
         @Override
         public void resourceChanged(IResourceChangeEvent event) {
             if (event != null) {
-                final IResource resource = event.getResource();
-                if (resource != null) {
-                    final IProject project = resource.getProject();
-                    if (project != null) {
-                        classLoaders.remove(project.getName());
+                final IResourceDelta delta = event.getDelta();
+                for (IResourceDelta child : delta.getAffectedChildren()) {
+                    final IResource resource = child.getResource();
+                    if (resource != null) {
+                        final IProject project = resource.getProject();
+                        if (project != null) {
+                            classLoaders.remove(project.getName());
+                        }
                     }
                 }
             }

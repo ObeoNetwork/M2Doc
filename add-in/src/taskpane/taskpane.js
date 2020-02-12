@@ -104,7 +104,7 @@ export function openProposals() {
       }
     }
   };
-  ajax.open("GET", "/rest?command=proposal&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression) + "&offset=" + offset, true);
+  ajax.open("GET", "/rest?command=proposal&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression) + "&offset=" + offset + "&" + Date.now(), true);
   ajax.send();
 }
 
@@ -129,7 +129,7 @@ export function applyReplacement(text) {
       }
     }
   };
-  ajax.open("GET", "/rest?command=apply&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression) + "&offset=" + offset +"&completion=" + encodeURI(text), true);
+  ajax.open("GET", "/rest?command=apply&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression) + "&offset=" + offset +"&completion=" + encodeURI(text) + "&" + Date.now(), true);
   ajax.send();
 }
 
@@ -154,7 +154,7 @@ export function validate(expression) {
       validationError(this.responseText);
     }
   };
-  ajax.open("GET", "/rest?command=validate&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression), true);
+  ajax.open("GET", "/rest?command=validate&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression) + "&" + Date.now(), true);
   ajax.send();
 }
 
@@ -174,7 +174,7 @@ export function evaluate(expression) {
       validationError(this.responseText);
     }
   };
-  ajax.open("GET", "/rest?command=evaluate&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression), true);
+  ajax.open("GET", "/rest?command=evaluate&genconfURI=" + encodeURI(genconfURI) + "&expression=" + encodeURI(expression) + "&" + Date.now(), true);
   ajax.send();
 }
 
