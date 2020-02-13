@@ -86,7 +86,11 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         public String serialize(Expression expression) {
             builder = new StringBuilder();
 
-            doSwitch(expression);
+            if (expression != null) {
+                doSwitch(expression);
+            } else {
+                builder.append("null");
+            }
 
             return builder.toString();
         }

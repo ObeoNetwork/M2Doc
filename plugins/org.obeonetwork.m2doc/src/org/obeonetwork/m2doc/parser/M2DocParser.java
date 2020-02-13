@@ -35,6 +35,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
@@ -347,24 +348,39 @@ public class M2DocParser extends AbstractBodyParser {
         final Query query = (Query) EcoreUtil.create(TemplatePackage.Literals.QUERY);
         final String tagText = readTag(query, query.getRuns()).trim();
         final String queryText = tagText.substring(TokenType.QUERY.getValue().length()).trim();
-        final AstResult result = queryParser.build(queryText);
-        query.setQuery(result);
-        if (!result.getErrors().isEmpty()) {
-            final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
-            query.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryText, lastRun));
-        }
+        try {
+            final AstResult result = queryParser.build(queryText);
+            query.setQuery(result);
+            if (!result.getErrors().isEmpty()) {
+                final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
+                query.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryText, lastRun));
+            }
 
-        final boolean checkExtraSpace = !result.getErrors().isEmpty()
-            || result.getEndPosition(result.getAst()) != queryText.length();
-        for (TokenType tokenType : TokenType.values()) {
-            final String value = tokenType.getValue();
-            if (tokenType.needExtraSpacesCheck()) {
-                final Matcher matcher = EXTRA_SPACES_PATTERNS.get(tokenType).matcher(tagText);
-                if (matcher.find(0) && (matcher.end() == tagText.length() || checkExtraSpace)) {
-                    M2DocUtils.validationInfo(query, "You might want to replace " + matcher.group() + " by " + value);
-                    break;
+            final boolean checkExtraSpace = !result.getErrors().isEmpty()
+                || result.getEndPosition(result.getAst()) != queryText.length();
+            for (TokenType tokenType : TokenType.values()) {
+                final String value = tokenType.getValue();
+                if (tokenType.needExtraSpacesCheck()) {
+                    final Matcher matcher = EXTRA_SPACES_PATTERNS.get(tokenType).matcher(tagText);
+                    if (matcher.find(0) && (matcher.end() == tagText.length() || checkExtraSpace)) {
+                        M2DocUtils.validationInfo(query,
+                                "You might want to replace " + matcher.group() + " by " + value);
+                        break;
+                    }
                 }
             }
+            // CHECKSTYLE:OFF
+            // isolate AQL parsing exceptions.
+        } catch (Exception e) {
+            // CHECKSTYLE:ON
+            final BasicDiagnostic diagnostic = new BasicDiagnostic();
+            final String message = "Unable to parse AQL Expression check the syntax.";
+            diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocUtils.PLUGIN_ID, 0, message, new Object[] {}));
+            final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
+            query.getValidationMessages().addAll(getValidationMessage(diagnostic, queryText, lastRun));
+
+            query.setQuery(new AstResult(null, new HashMap<Object, Integer>(), new HashMap<Object, Integer>(),
+                    new ArrayList<Error>(), diagnostic));
         }
 
         return query;
