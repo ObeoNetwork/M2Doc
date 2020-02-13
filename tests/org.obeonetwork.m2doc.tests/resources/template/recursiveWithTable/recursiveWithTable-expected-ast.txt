@@ -12,6 +12,7 @@
 
 template myTemplate (a : java.lang.Integer)
   
+  
   if .equals(a, 0) then
     table
       row
@@ -67,7 +68,9 @@ template myTemplate (a : java.lang.Integer)
           
         
       
+    
     [query: .add(a, a)]
+    
     [query: .myTemplate(.sub(a, 1))]
   endif
   

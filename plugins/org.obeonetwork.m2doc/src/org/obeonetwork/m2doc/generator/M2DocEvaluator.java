@@ -54,6 +54,7 @@ import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.ecore.EObject;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.element.MBookmark;
 import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
@@ -1510,7 +1511,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         copy.getTrList().clear();
         final XWPFTable saveTable = currentGeneratedTable;
         try {
-            final XWPFTable newTable = createTable(generatedDocument);
+            final XWPFTable newTable = POIServices.getInstance().createTable(generatedDocument);
             newTable.getCTTbl().set(copy);
             currentGeneratedTable = newTable;
             // iterate on the row
@@ -1532,39 +1533,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * @param body
      *            the {@link IBody} to insert to
      * @return the created {@link XWPFTable}
+     * @see POIServices#createTable(IBody)
      */
+    @Deprecated
     public static XWPFTable createTable(IBody body) {
-        final XWPFTable res;
-
-        if (body instanceof XWPFDocument) {
-            final XWPFDocument document = (XWPFDocument) body;
-            final CTTbl cttbl = document.getDocument().getBody().addNewTbl();
-            res = new XWPFTable(cttbl, document);
-            if (res.getRows().size() > 0) {
-                res.removeRow(0);
-            }
-            document.insertTable(body.getBodyElements().size(), res);
-        } else if (body instanceof XWPFHeaderFooter) {
-            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) body;
-            final CTTbl cttbl = headerFooter._getHdrFtr().addNewTbl();
-            res = new XWPFTable(cttbl, headerFooter);
-            if (res.getRows().size() > 0) {
-                res.removeRow(0);
-            }
-            headerFooter.insertTable(body.getBodyElements().size(), res);
-        } else if (body instanceof XWPFTableCell) {
-            final XWPFTableCell tCell = (XWPFTableCell) body;
-            final CTTbl tbl = tCell.getCTTc().addNewTbl();
-            res = new XWPFTable(tbl, tCell);
-            if (res.getRows().size() > 0) {
-                res.removeRow(0);
-            }
-            tCell.insertTable(body.getBodyElements().size(), res);
-        } else {
-            throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
-        }
-
-        return res;
+        return POIServices.getInstance().createTable(body);
     }
 
     @Override

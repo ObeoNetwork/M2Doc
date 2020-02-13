@@ -49,12 +49,12 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlToken;
 import org.apache.xmlbeans.impl.common.IOUtil;
+import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.parser.AbstractBodyParser;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.w3c.dom.NodeList;
 
 /**
@@ -370,7 +370,7 @@ public class RawCopier {
     private XWPFTable copyTable(final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
             Map<URI, URI> inputPartURIToOutputPartURI, final XWPFTable inputTable)
             throws IOException, InvalidFormatException, NoSuchAlgorithmException {
-        final XWPFTable res = createNewTable(outputBody, inputTable);
+        final XWPFTable res = POIServices.getInstance().createTable(outputBody);
 
         res.getCTTbl().set(inputTable.getCTTbl());
         copyTableStyle(inputTable, outputBody.getXWPFDocument());
@@ -562,55 +562,6 @@ public class RawCopier {
     }
 
     /**
-     * Create new Table.
-     * 
-     * @param document
-     *            document
-     * @param inputTable
-     *            input Table
-     * @return get Table
-     */
-    private XWPFTable createNewTable(IBody document, XWPFTable inputTable) {
-        final XWPFTable res;
-
-        final CTTbl copy = (CTTbl) inputTable.getCTTbl().copy();
-        if (document instanceof XWPFDocument) {
-            final CTTbl cttbl = ((XWPFDocument) document).getDocument().getBody().addNewTbl();
-            res = new XWPFTable(cttbl, document);
-            if (res.getRows().size() > 0) {
-                res.removeRow(0);
-            }
-            document.insertTable(0, res);
-        } else if (document instanceof XWPFHeaderFooter) {
-            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) document;
-            final int index = headerFooter._getHdrFtr().getTblList().size();
-            final CTTbl cttbl = headerFooter._getHdrFtr().insertNewTbl(index);
-            final XWPFTable newTable = new XWPFTable(cttbl, headerFooter);
-            if (newTable.getRows().size() > 0) {
-                newTable.removeRow(0);
-            }
-            headerFooter.insertTable(index, newTable);
-            res = headerFooter.getTables().get(index);
-            res.getCTTbl().set(copy);
-        } else if (document instanceof XWPFTableCell) {
-            final XWPFTableCell tCell = (XWPFTableCell) document;
-            final int tableRank = tCell.getTables().size();
-            final CTTbl tbl = tCell.getCTTc().addNewTbl();
-            final XWPFTable newTable = new XWPFTable(tbl, tCell);
-            if (newTable.getRows().size() > 0) {
-                newTable.removeRow(0);
-            }
-            tbl.set(copy);
-            tCell.insertTable(tableRank, newTable);
-            res = tCell.getTables().get(tableRank);
-        } else {
-            throw new UnsupportedOperationException("unknown type of IBody : " + document.getClass());
-        }
-
-        return res;
-    }
-
-    /**
      * Create New Paragraph.
      * 
      * @param document
@@ -645,12 +596,10 @@ public class RawCopier {
      *             if the copy fails
      */
     private static void copyTableStyle(XWPFTable inputTable, XWPFDocument outputDoc) throws IOException {
-        try (XWPFDocument inputDoc = inputTable.getBody().getXWPFDocument();) {
-            XWPFStyle style = inputDoc.getStyles().getStyle(inputTable.getStyleID());
-            if (outputDoc == null || style == null) {
-                return;
-            }
-
+        @SuppressWarnings("resource")
+        final XWPFDocument inputDoc = inputTable.getBody().getXWPFDocument();
+        final XWPFStyle style = inputDoc.getStyles().getStyle(inputTable.getStyleID());
+        if (outputDoc != null && style != null) {
             if (outputDoc.getStyles() == null) {
                 outputDoc.createStyles();
             }

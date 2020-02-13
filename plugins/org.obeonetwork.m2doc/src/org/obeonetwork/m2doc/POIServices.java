@@ -22,6 +22,7 @@ import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
+import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -36,6 +37,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 
 /**
@@ -212,6 +214,47 @@ public final class POIServices {
                 }
             }
         }
+    }
+
+    /**
+     * Creates a {@link XWPFTable} in the given {@link IBody}.
+     * 
+     * @param body
+     *            the {@link IBody} to insert to
+     * @return the created {@link XWPFTable}
+     */
+    public XWPFTable createTable(IBody body) {
+        final XWPFTable res;
+
+        if (body instanceof XWPFDocument) {
+            final XWPFDocument document = (XWPFDocument) body;
+            final CTTbl cttbl = document.getDocument().getBody().addNewTbl();
+            res = new XWPFTable(cttbl, document);
+            if (res.getRows().size() > 0) {
+                res.removeRow(0);
+            }
+            document.insertTable(body.getBodyElements().size(), res);
+        } else if (body instanceof XWPFHeaderFooter) {
+            final XWPFHeaderFooter headerFooter = (XWPFHeaderFooter) body;
+            final CTTbl cttbl = headerFooter._getHdrFtr().addNewTbl();
+            res = new XWPFTable(cttbl, headerFooter);
+            if (res.getRows().size() > 0) {
+                res.removeRow(0);
+            }
+            headerFooter.insertTable(body.getBodyElements().size(), res);
+        } else if (body instanceof XWPFTableCell) {
+            final XWPFTableCell tCell = (XWPFTableCell) body;
+            final CTTbl tbl = tCell.getCTTc().addNewTbl();
+            res = new XWPFTable(tbl, tCell);
+            if (res.getRows().size() > 0) {
+                res.removeRow(0);
+            }
+            tCell.insertTable(body.getBodyElements().size(), res);
+        } else {
+            throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
+        }
+
+        return res;
     }
 
 }
