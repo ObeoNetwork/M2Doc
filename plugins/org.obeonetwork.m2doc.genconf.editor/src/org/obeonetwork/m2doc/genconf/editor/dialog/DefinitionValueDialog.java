@@ -50,11 +50,6 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 public class DefinitionValueDialog extends EObjectSelectionDialog {
 
     /**
-     * The selected value.
-     */
-    private Object value;
-
-    /**
      * The {@link Definition} to edit.
      */
     private final Definition definition;
