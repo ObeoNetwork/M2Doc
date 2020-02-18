@@ -120,7 +120,7 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
 
     @Override
     public void createControl(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         container.setLayout(new GridLayout(1, false));
         setControl(container);
 
@@ -233,12 +233,12 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
      * @return the created {@link Text}
      */
     private Text createGenconfURIComposite(final Generation gen, final Composite composite) {
-        final Composite uriComposite = new Composite(composite, SWT.NONE);
+        final Composite uriComposite = new Composite(composite, composite.getStyle());
         uriComposite.setLayout(new GridLayout(3, false));
         uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        final Label uriLabel = new Label(uriComposite, SWT.None);
+        final Label uriLabel = new Label(uriComposite, composite.getStyle());
         uriLabel.setText("Generation file:");
-        final Text uriText = new Text(uriComposite, SWT.NONE);
+        final Text uriText = new Text(uriComposite, composite.getStyle());
         uriText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         if (gen.eResource().getURI() != null) {
             uriText.setText(URI.decode(gen.eResource().getURI().toString()));
@@ -339,13 +339,13 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
      * @return the template {@link URI} {@link Composite}
      */
     private Text createTemplateURIComposite(final Generation gen, Composite composite, boolean canChange) {
-        final Composite uriComposite = new Composite(composite, SWT.NONE);
+        final Composite uriComposite = new Composite(composite, composite.getStyle());
         uriComposite.setLayout(new GridLayout(4, false));
         uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
-        final Label uriLabel = new Label(uriComposite, SWT.None);
+        final Label uriLabel = new Label(uriComposite, composite.getStyle());
         uriLabel.setText("Template File:");
-        final Text uriText = new Text(uriComposite, SWT.NONE);
+        final Text uriText = new Text(uriComposite, composite.getStyle());
         uriText.setEnabled(canChange);
         uriText.addModifyListener(new ModifyListener() {
 
@@ -482,12 +482,12 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
      */
     private Text createURIComposite(final Generation gen, final Composite composite, String label,
             Listener buttonListener) {
-        final Composite uriComposite = new Composite(composite, SWT.NONE);
+        final Composite uriComposite = new Composite(composite, composite.getStyle());
         uriComposite.setLayout(new GridLayout(3, false));
         uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
-        final Label uriLabel = new Label(uriComposite, SWT.None);
+        final Label uriLabel = new Label(uriComposite, composite.getStyle());
         uriLabel.setText(label);
-        final Text uriText = new Text(uriComposite, SWT.NONE);
+        final Text uriText = new Text(uriComposite, composite.getStyle());
         uriText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         Button uriButton = new Button(uriComposite, SWT.BORDER);
         uriButton.setText("Browse");

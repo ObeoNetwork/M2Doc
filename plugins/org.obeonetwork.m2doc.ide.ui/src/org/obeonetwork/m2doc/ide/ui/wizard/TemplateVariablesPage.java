@@ -98,7 +98,7 @@ public class TemplateVariablesPage extends WizardPage {
     public void createControl(Composite parent) {
         setMessage("Select variable types");
 
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         setControl(container);
         container.setLayout(new GridLayout(2, false));
 
@@ -106,7 +106,7 @@ public class TemplateVariablesPage extends WizardPage {
         Table table = variablesTable.getTable();
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         variablesTable.getTable().setHeaderVisible(true);
-        TableViewerColumn nameColumn = new TableViewerColumn(variablesTable, SWT.NONE);
+        TableViewerColumn nameColumn = new TableViewerColumn(variablesTable, variablesTable.getTable().getStyle());
         nameColumn.getColumn().setText("Variable name");
         nameColumn.getColumn().setWidth(WIDTH);
         nameColumn.setLabelProvider(new CellLabelProvider() {
@@ -117,7 +117,7 @@ public class TemplateVariablesPage extends WizardPage {
                 cell.setText(((Entry<String, String>) cell.getElement()).getKey());
             }
         });
-        TableViewerColumn typeColumn = new TableViewerColumn(variablesTable, SWT.NONE);
+        TableViewerColumn typeColumn = new TableViewerColumn(variablesTable, variablesTable.getTable().getStyle());
         typeColumn.getColumn().setText("Variable type");
         typeColumn.getColumn().setWidth(WIDTH);
         typeColumn.setLabelProvider(new CellLabelProvider() {
@@ -147,11 +147,11 @@ public class TemplateVariablesPage extends WizardPage {
         });
         variablesTable.setInput(properties);
 
-        final Composite nsURIButtonComposite = new Composite(container, SWT.NONE);
+        final Composite nsURIButtonComposite = new Composite(container, container.getStyle());
         nsURIButtonComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
         nsURIButtonComposite.setLayout(new GridLayout(1, false));
 
-        final Button editButton = new Button(nsURIButtonComposite, SWT.NONE);
+        final Button editButton = new Button(nsURIButtonComposite, container.getStyle());
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         editButton.setText("Edit");
         editButton.addSelectionListener(new SelectionListener() {
@@ -198,14 +198,14 @@ public class TemplateVariablesPage extends WizardPage {
      * @return the created {@link Composite}
      */
     private Composite createM2DocVersion(Composite container, final TemplateCustomProperties customProperties) {
-        final Composite res = new Composite(container, SWT.NULL);
+        final Composite res = new Composite(container, container.getStyle());
         res.setLayout(new GridLayout(3, false));
         res.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 
-        final Label versionLabel = new Label(res, SWT.NONE);
+        final Label versionLabel = new Label(res, res.getStyle());
         versionLabel.setText("M2Doc version: ");
 
-        final Text versionText = new Text(res, SWT.NONE | SWT.SINGLE);
+        final Text versionText = new Text(res, res.getStyle() | SWT.SINGLE);
         versionText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         versionText.addModifyListener(new ModifyListener() {
 
@@ -221,7 +221,7 @@ public class TemplateVariablesPage extends WizardPage {
         } else {
             versionText.setText(M2DocUtils.VERSION);
         }
-        final Button versionButton = new Button(res, SWT.NONE);
+        final Button versionButton = new Button(res, res.getStyle());
         versionButton.setText("Current version");
         versionButton.addSelectionListener(new SelectionListener() {
 

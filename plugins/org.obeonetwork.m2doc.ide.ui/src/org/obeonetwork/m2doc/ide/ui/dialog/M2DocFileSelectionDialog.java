@@ -144,7 +144,7 @@ public class M2DocFileSelectionDialog extends MessageDialog {
 
     @Override
     protected Control createCustomArea(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         container.setLayout(new GridLayout(1, false));
         container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
@@ -190,17 +190,17 @@ public class M2DocFileSelectionDialog extends MessageDialog {
      * @return the file path {@link Text}
      */
     protected Text createFilePathComposite(final Composite container, String defaultName) {
-        final Composite fileComposite = new Composite(container, SWT.NONE);
+        final Composite fileComposite = new Composite(container, container.getStyle());
         fileComposite.setLayout(new GridLayout(2, false));
         fileComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 
-        final Label templateURILabel = new Label(fileComposite, SWT.NONE);
+        final Label templateURILabel = new Label(fileComposite, container.getStyle());
         templateURILabel.setText("File: ");
 
-        final Text res = new Text(fileComposite, SWT.NONE);
+        final Text res = new Text(fileComposite, container.getStyle());
         res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        new Label(fileComposite, SWT.NONE);
-        new Label(fileComposite, SWT.NONE);
+        new Label(fileComposite, container.getStyle());
+        new Label(fileComposite, container.getStyle());
         if (defaultName != null) {
             res.setText(defaultName);
             fileName = defaultName;

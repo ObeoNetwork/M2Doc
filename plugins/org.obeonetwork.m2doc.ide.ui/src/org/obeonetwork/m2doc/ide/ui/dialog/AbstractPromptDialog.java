@@ -78,9 +78,9 @@ public abstract class AbstractPromptDialog extends Dialog {
     protected Control createDialogArea(Composite parent) {
         final Composite container = (Composite) super.createDialogArea(parent);
 
-        final Label label = new Label(container, SWT.NONE);
+        final Label label = new Label(container, parent.getStyle());
         label.setText(message);
-        final Text text = new Text(container, SWT.NONE);
+        final Text text = new Text(container, parent.getStyle());
         text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         text.addKeyListener(new KeyListener() {
 

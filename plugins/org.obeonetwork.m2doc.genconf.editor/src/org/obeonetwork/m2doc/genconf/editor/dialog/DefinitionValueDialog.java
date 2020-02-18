@@ -92,7 +92,7 @@ public class DefinitionValueDialog extends EObjectSelectionDialog {
 
     @Override
     protected Control createCustomArea(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         container.setLayout(new GridLayout(1, false));
         container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
@@ -239,13 +239,13 @@ public class DefinitionValueDialog extends EObjectSelectionDialog {
      * @return the created {@link Text}.
      */
     private Text addLabelAndText(Definition def, Composite container) {
-        final Composite composite = new Composite(container, SWT.NONE);
+        final Composite composite = new Composite(container, container.getStyle());
         composite.setLayout(new GridLayout(2, false));
         composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-        final Label label = new Label(composite, SWT.NONE);
+        final Label label = new Label(composite, container.getStyle());
         label.setText(def.getKey() + " = ");
-        final Text text = new Text(composite, SWT.NONE);
+        final Text text = new Text(composite, container.getStyle());
         text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
         return text;

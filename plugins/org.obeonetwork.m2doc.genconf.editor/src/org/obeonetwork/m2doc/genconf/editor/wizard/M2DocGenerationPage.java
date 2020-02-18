@@ -117,7 +117,7 @@ public class M2DocGenerationPage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        final Composite pageComposite = new Composite(parent, SWT.NONE);
+        final Composite pageComposite = new Composite(parent, parent.getStyle());
         pageComposite.setLayout(new GridLayout(1, false));
 
         generationNameText = createGenerationNameComposite(pageComposite);
@@ -163,7 +163,7 @@ public class M2DocGenerationPage extends WizardPage {
      * @return the created {@link Text}
      */
     private Button createLaunchGenerationComposite(Composite composite) {
-        final Composite launchComposite = new Composite(composite, SWT.NONE);
+        final Composite launchComposite = new Composite(composite, composite.getStyle());
         launchComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         launchComposite.setLayout(new GridLayout(1, false));
         final Button launchButton = new Button(launchComposite, SWT.CHECK);
@@ -193,12 +193,12 @@ public class M2DocGenerationPage extends WizardPage {
      * @return the created {@link Text}
      */
     private Text createGenerationNameComposite(Composite composite) {
-        final Composite generationNameComposite = new Composite(composite, SWT.NONE);
+        final Composite generationNameComposite = new Composite(composite, composite.getStyle());
         generationNameComposite.setLayout(new GridLayout(3, false));
         generationNameComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        final Label generationNameLabel = new Label(generationNameComposite, SWT.None);
+        final Label generationNameLabel = new Label(generationNameComposite, composite.getStyle());
         generationNameLabel.setText("Generation file:");
-        final Text res = new Text(generationNameComposite, SWT.NONE);
+        final Text res = new Text(generationNameComposite, composite.getStyle());
         res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         res.addKeyListener(new KeyListener() {
 
@@ -240,12 +240,12 @@ public class M2DocGenerationPage extends WizardPage {
      * @return the created {@link Text}
      */
     private Text createDestinationNameComposite(Composite composite) {
-        final Composite destinationNameComposite = new Composite(composite, SWT.NONE);
+        final Composite destinationNameComposite = new Composite(composite, composite.getStyle());
         destinationNameComposite.setLayout(new GridLayout(3, false));
         destinationNameComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        final Label destinationNameLabel = new Label(destinationNameComposite, SWT.None);
+        final Label destinationNameLabel = new Label(destinationNameComposite, composite.getStyle());
         destinationNameLabel.setText("Result file:");
-        final Text res = new Text(destinationNameComposite, SWT.NONE);
+        final Text res = new Text(destinationNameComposite, composite.getStyle());
         res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         res.addKeyListener(new KeyListener() {
 
@@ -287,12 +287,12 @@ public class M2DocGenerationPage extends WizardPage {
      * @return the created {@link Text}
      */
     private Text createValidationNameComposite(Composite composite) {
-        final Composite validationNameComposite = new Composite(composite, SWT.NONE);
+        final Composite validationNameComposite = new Composite(composite, composite.getStyle());
         validationNameComposite.setLayout(new GridLayout(3, false));
         validationNameComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        final Label validationNameLabel = new Label(validationNameComposite, SWT.None);
+        final Label validationNameLabel = new Label(validationNameComposite, composite.getStyle());
         validationNameLabel.setText("Validation file:");
-        final Text res = new Text(validationNameComposite, SWT.NONE);
+        final Text res = new Text(validationNameComposite, composite.getStyle());
         res.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         res.addKeyListener(new KeyListener() {
 

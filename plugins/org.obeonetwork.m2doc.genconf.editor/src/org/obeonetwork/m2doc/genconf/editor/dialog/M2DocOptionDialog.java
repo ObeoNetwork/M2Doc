@@ -82,11 +82,11 @@ public class M2DocOptionDialog extends MessageDialog {
 
     @Override
     protected Control createCustomArea(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         container.setLayout(new GridLayout(2, false));
         container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-        final ComboViewer combo = new ComboViewer(container, SWT.NONE);
+        final ComboViewer combo = new ComboViewer(container, parent.getStyle());
         combo.getControl().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         combo.setLabelProvider(new LabelProvider());
         combo.setContentProvider(new CollectionContentProvider());

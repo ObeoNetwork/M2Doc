@@ -76,7 +76,7 @@ public class SelectRegistredTemplateDialog extends MessageDialog {
 
     @Override
     protected Control createCustomArea(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         container.setLayout(new GridLayout(1, false));
         container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 

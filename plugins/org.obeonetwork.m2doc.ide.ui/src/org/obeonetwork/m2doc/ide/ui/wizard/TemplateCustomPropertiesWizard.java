@@ -25,7 +25,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
@@ -105,7 +104,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
 
                 @Override
                 public void createControl(Composite parent) {
-                    final Composite container = new Composite(parent, SWT.NULL);
+                    final Composite container = new Composite(parent, parent.getStyle());
                     setControl(container);
                     setErrorMessage("Template invalid: " + e.getMessage());
                     setPageComplete(false);

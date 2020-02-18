@@ -88,12 +88,12 @@ public class M2DocNewTemplatePage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        final Composite templateNameComposite = new Composite(parent, SWT.NONE);
+        final Composite templateNameComposite = new Composite(parent, parent.getStyle());
         templateNameComposite.setLayout(new GridLayout(2, false));
         templateNameComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
-        final Label templateNameLabel = new Label(templateNameComposite, SWT.None);
+        final Label templateNameLabel = new Label(templateNameComposite, parent.getStyle());
         templateNameLabel.setText("Template name:");
-        templateNameText = new Text(templateNameComposite, SWT.NONE);
+        templateNameText = new Text(templateNameComposite, parent.getStyle());
         if (defaultTempateName != null) {
             templateNameText.setText(defaultTempateName);
         }

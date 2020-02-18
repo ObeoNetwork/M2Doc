@@ -219,25 +219,25 @@ public class VariableAndOptionPage extends WizardPage {
     @Override
     public void createControl(Composite parent) {
 
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         setControl(container);
         container.setLayout(new GridLayout(1, false));
 
         final TabFolder tabFolder = new TabFolder(container, SWT.BORDER);
         tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-        final TabItem variableTabItem = new TabItem(tabFolder, SWT.NULL);
+        final TabItem variableTabItem = new TabItem(tabFolder, tabFolder.getStyle());
         variableTabItem.setText("Variables");
-        final Composite variableContainer = new Composite(tabFolder, SWT.NULL);
+        final Composite variableContainer = new Composite(tabFolder, tabFolder.getStyle());
         variableTabItem.setControl(variableContainer);
         variablesTable = createVariablesTable(generation, variableContainer, adapterFactory,
                 templateCustomPropertiesProvider);
         generationListener.setVariablesViewer(variablesTable);
         createVariablesButonComposite(generation, variableContainer, variablesTable);
 
-        final TabItem optionTabItem = new TabItem(tabFolder, SWT.NULL);
+        final TabItem optionTabItem = new TabItem(tabFolder, tabFolder.getStyle());
         optionTabItem.setText("Options (expert)");
-        final Composite optionContainer = new Composite(tabFolder, SWT.NULL);
+        final Composite optionContainer = new Composite(tabFolder, tabFolder.getStyle());
         optionTabItem.setControl(optionContainer);
         optionContainer.setLayout(new GridLayout(2, false));
         optionsTable = createOptionsTable(generation, optionContainer);
@@ -266,10 +266,10 @@ public class VariableAndOptionPage extends WizardPage {
         Table table = res.getTable();
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         res.getTable().setHeaderVisible(true);
-        TableViewerColumn nameColumn = new TableViewerColumn(res, SWT.NONE);
+        TableViewerColumn nameColumn = new TableViewerColumn(res, composite.getStyle());
         nameColumn.getColumn().setText("Variable name");
         nameColumn.getColumn().setWidth(WIDTH);
-        TableViewerColumn valueColumn = new TableViewerColumn(res, SWT.NONE);
+        TableViewerColumn valueColumn = new TableViewerColumn(res, composite.getStyle());
         valueColumn.getColumn().setText("Variable value");
         valueColumn.getColumn().setWidth(WIDTH);
         res.setContentProvider(new IStructuredContentProvider() {
@@ -316,11 +316,11 @@ public class VariableAndOptionPage extends WizardPage {
      */
     private void createVariablesButonComposite(final Generation gen, Composite composite,
             final Viewer variablesViewer) {
-        final Composite container = new Composite(composite, SWT.NULL);
+        final Composite container = new Composite(composite, composite.getStyle());
         container.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, true, 1, 1));
         container.setLayout(new GridLayout(1, false));
 
-        final Button loadResourceButton = new Button(container, SWT.NONE);
+        final Button loadResourceButton = new Button(container, composite.getStyle());
         loadResourceButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         loadResourceButton.setText("Load resource");
         loadResourceButton.addSelectionListener(new SelectionListener() {
@@ -338,7 +338,7 @@ public class VariableAndOptionPage extends WizardPage {
             }
         });
 
-        final Button editButton = new Button(container, SWT.NONE);
+        final Button editButton = new Button(container, composite.getStyle());
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         editButton.setText("Edit");
         editButton.setEnabled(((IStructuredSelection) variablesViewer.getSelection()).getFirstElement() != null);
@@ -375,10 +375,10 @@ public class VariableAndOptionPage extends WizardPage {
         Table table = res.getTable();
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         res.getTable().setHeaderVisible(true);
-        TableViewerColumn nameColumn = new TableViewerColumn(res, SWT.NONE);
+        TableViewerColumn nameColumn = new TableViewerColumn(res, composite.getStyle());
         nameColumn.getColumn().setText("Option name");
         nameColumn.getColumn().setWidth(WIDTH);
-        TableViewerColumn valueColumn = new TableViewerColumn(res, SWT.NONE);
+        TableViewerColumn valueColumn = new TableViewerColumn(res, composite.getStyle());
         valueColumn.getColumn().setText("Option value");
         valueColumn.getColumn().setWidth(WIDTH);
         res.setContentProvider(new IStructuredContentProvider() {
@@ -430,13 +430,13 @@ public class VariableAndOptionPage extends WizardPage {
      *            the option {@link Viewer}
      */
     private void createOptionsButonComposite(final Generation gen, Composite composite, final Viewer optionsViewer) {
-        final Composite container = new Composite(composite, SWT.NULL);
+        final Composite container = new Composite(composite, composite.getStyle());
         container.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, true, 1, 1));
         container.setLayout(new GridLayout(1, false));
 
         final TransactionalEditingDomain genEditingDomain = TransactionUtil.getEditingDomain(gen);
 
-        final Button addButton = new Button(container, SWT.NONE);
+        final Button addButton = new Button(container, composite.getStyle());
         addButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         addButton.setText("Add");
         addButton.addSelectionListener(new SelectionListener() {
@@ -460,7 +460,7 @@ public class VariableAndOptionPage extends WizardPage {
             }
         });
 
-        final Button editButton = new Button(container, SWT.NONE);
+        final Button editButton = new Button(container, composite.getStyle());
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         editButton.setText("Edit");
         editButton.addSelectionListener(new SelectionListener() {
@@ -485,7 +485,7 @@ public class VariableAndOptionPage extends WizardPage {
             }
         });
 
-        final Button removeButton = new Button(container, SWT.NONE);
+        final Button removeButton = new Button(container, composite.getStyle());
         removeButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         removeButton.setText("Remove");
         removeButton.setEnabled(!optionsViewer.getSelection().isEmpty());

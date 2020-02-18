@@ -108,7 +108,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
     @Override
     public void createControl(Composite parent) {
 
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         setControl(container);
         container.setLayout(new GridLayout(1, false));
 
@@ -138,17 +138,17 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      */
     private void addServicesTabItem(TabFolder tabFolder, final CheckboxTableViewer tokenViewer,
             final TemplateCustomProperties customProperties) {
-        final TabItem servicesTabItem = new TabItem(tabFolder, SWT.NULL);
+        final TabItem servicesTabItem = new TabItem(tabFolder, tabFolder.getStyle());
         servicesTabItem.setText("Services (expert)");
-        final Composite servicesContainer = new Composite(tabFolder, SWT.NULL);
+        final Composite servicesContainer = new Composite(tabFolder, tabFolder.getStyle());
         servicesTabItem.setControl(servicesContainer);
         servicesContainer.setLayout(new GridLayout(2, false));
 
-        final TableViewer servicesTable = new TableViewer(servicesContainer, SWT.MULTI);
+        final TableViewer servicesTable = new TableViewer(servicesContainer, servicesContainer.getStyle() | SWT.MULTI);
         Table table = servicesTable.getTable();
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         servicesTable.getTable().setHeaderVisible(true);
-        TableViewerColumn classNameColumn = new TableViewerColumn(servicesTable, SWT.NONE);
+        TableViewerColumn classNameColumn = new TableViewerColumn(servicesTable, tabFolder.getStyle());
         classNameColumn.getColumn().setText("Service class");
         classNameColumn.getColumn().setWidth(WIDTH);
         classNameColumn.setLabelProvider(new CellLabelProvider() {
@@ -159,7 +159,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
                 cell.setText(((Entry<String, String>) cell.getElement()).getKey());
             }
         });
-        TableViewerColumn bundleNameColumn = new TableViewerColumn(servicesTable, SWT.NONE);
+        TableViewerColumn bundleNameColumn = new TableViewerColumn(servicesTable, tabFolder.getStyle());
         bundleNameColumn.getColumn().setText("Bundle");
         bundleNameColumn.getColumn().setWidth(WIDTH);
         bundleNameColumn.setLabelProvider(new CellLabelProvider() {
@@ -198,11 +198,11 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
         servicesTable.setInput(customProperties);
 
-        final Composite servicesButtonComposite = new Composite(servicesContainer, SWT.NONE);
+        final Composite servicesButtonComposite = new Composite(servicesContainer, tabFolder.getStyle());
         servicesButtonComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
         servicesButtonComposite.setLayout(new GridLayout(1, false));
 
-        final Button addButton = new Button(servicesButtonComposite, SWT.NONE);
+        final Button addButton = new Button(servicesButtonComposite, servicesButtonComposite.getStyle());
         addButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         addButton.setText("Add");
         addButton.addSelectionListener(new SelectionListener() {
@@ -218,7 +218,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             }
         });
 
-        final Button removeButton = new Button(servicesButtonComposite, SWT.NONE);
+        final Button removeButton = new Button(servicesButtonComposite, tabFolder.getStyle());
         removeButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         removeButton.setText("Remove");
         removeButton.addSelectionListener(new SelectionListener() {
@@ -284,17 +284,17 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      */
     private void addNSURITabItem(TabFolder tabFolder, final CheckboxTableViewer tokenViewer,
             final TemplateCustomProperties customProperties) {
-        final TabItem nsURITabItem = new TabItem(tabFolder, SWT.NULL);
+        final TabItem nsURITabItem = new TabItem(tabFolder, tabFolder.getStyle());
         nsURITabItem.setText("nsURI (expert)");
-        final Composite nsURIContainer = new Composite(tabFolder, SWT.NULL);
+        final Composite nsURIContainer = new Composite(tabFolder, tabFolder.getStyle());
         nsURITabItem.setControl(nsURIContainer);
         nsURIContainer.setLayout(new GridLayout(2, false));
 
-        final TableViewer nsURITable = new TableViewer(nsURIContainer, SWT.MULTI);
+        final TableViewer nsURITable = new TableViewer(nsURIContainer, nsURIContainer.getStyle() | SWT.MULTI);
         Table table = nsURITable.getTable();
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         nsURITable.getTable().setHeaderVisible(true);
-        final TableViewerColumn nsURIColumn = new TableViewerColumn(nsURITable, SWT.NONE);
+        final TableViewerColumn nsURIColumn = new TableViewerColumn(nsURITable, nsURITable.getTable().getStyle());
         nsURIColumn.getColumn().setText("Package nsURI");
         nsURIColumn.getColumn().setWidth(WIDTH);
         nsURIColumn.setLabelProvider(new CellLabelProvider() {
@@ -332,11 +332,11 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
         nsURITable.setInput(customProperties);
 
-        final Composite nsURIButtonComposite = new Composite(nsURIContainer, SWT.NONE);
+        final Composite nsURIButtonComposite = new Composite(nsURIContainer, nsURIContainer.getStyle());
         nsURIButtonComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
         nsURIButtonComposite.setLayout(new GridLayout(1, false));
 
-        final Button addButton = new Button(nsURIButtonComposite, SWT.NONE);
+        final Button addButton = new Button(nsURIButtonComposite, nsURIButtonComposite.getStyle());
         addButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         addButton.setText("Add");
         addButton.addSelectionListener(new SelectionListener() {
@@ -364,7 +364,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             }
         });
 
-        final Button removeButton = new Button(nsURIButtonComposite, SWT.NONE);
+        final Button removeButton = new Button(nsURIButtonComposite, nsURIButtonComposite.getStyle());
         removeButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         removeButton.setText("Remove");
         removeButton.addSelectionListener(new SelectionListener() {
@@ -406,13 +406,13 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      */
     private CheckboxTableViewer addTokenTabItem(TabFolder tabFolder, final TokenRegistry tokenRegistry,
             final TemplateCustomProperties customProperties) {
-        final TabItem packageTabItem = new TabItem(tabFolder, SWT.NULL);
+        final TabItem packageTabItem = new TabItem(tabFolder, tabFolder.getStyle());
         packageTabItem.setText("Packages");
-        final Composite packagesContainer = new Composite(tabFolder, SWT.NULL);
+        final Composite packagesContainer = new Composite(tabFolder, tabFolder.getStyle());
         packageTabItem.setControl(packagesContainer);
         packagesContainer.setLayout(new GridLayout(1, false));
 
-        Table table = new Table(packagesContainer, SWT.BORDER | SWT.V_SCROLL | SWT.CHECK);
+        Table table = new Table(packagesContainer, packagesContainer.getStyle() | SWT.V_SCROLL | SWT.CHECK);
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         final CheckboxTableViewer tableViewer = new CheckboxTableViewer(table);
         tableViewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

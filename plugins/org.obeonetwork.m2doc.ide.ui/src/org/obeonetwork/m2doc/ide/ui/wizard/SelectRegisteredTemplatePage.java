@@ -93,7 +93,7 @@ public class SelectRegisteredTemplatePage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         setControl(container);
         container.setLayout(new FillLayout(SWT.HORIZONTAL | SWT.VERTICAL));
 

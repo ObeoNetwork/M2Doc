@@ -122,7 +122,7 @@ public class EObjectSelectionDialog extends MessageDialog {
 
     @Override
     protected Control createCustomArea(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         container.setLayout(new GridLayout(1, false));
         container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
@@ -199,7 +199,7 @@ public class EObjectSelectionDialog extends MessageDialog {
             okButton.setEnabled(false);
         }
 
-        final Composite filterCheckboxComposite = new Composite(container, SWT.NONE);
+        final Composite filterCheckboxComposite = new Composite(container, container.getStyle());
         filterCheckboxComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         filterCheckboxComposite.setLayout(new GridLayout(3, false));
         final Button filterCheckBox = new Button(filterCheckboxComposite, SWT.CHECK);
@@ -230,7 +230,7 @@ public class EObjectSelectionDialog extends MessageDialog {
                 + " (the tree is empty, you can either load a resource from the previous dialog or deselect the type filter)");
         }
 
-        final Label filterLabel = new Label(filterCheckboxComposite, SWT.NONE);
+        final Label filterLabel = new Label(filterCheckboxComposite, container.getStyle());
         filterLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
         filterLabel.setText("Filter elements by type");
 
@@ -244,7 +244,7 @@ public class EObjectSelectionDialog extends MessageDialog {
      *            the parent {@link Composite}
      */
     protected void createLoadResourceButton(final Composite parent) {
-        final Button loadResourceButton = new Button(parent, SWT.NONE);
+        final Button loadResourceButton = new Button(parent, parent.getStyle());
         loadResourceButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1, 1));
         loadResourceButton.setText("Load resource");
         loadResourceButton.addSelectionListener(new SelectionListener() {

@@ -78,7 +78,7 @@ public class SelectTemplatePage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        final Composite container = new Composite(parent, SWT.NULL);
+        final Composite container = new Composite(parent, parent.getStyle());
         setControl(container);
         container.setLayout(new GridLayout(1, false));
 
@@ -130,16 +130,16 @@ public class SelectTemplatePage extends WizardPage {
      * @return the template {@link URI} {@link Text}
      */
     protected Text createTemplateURIComposite(final Composite container) {
-        final Composite templateURIComposite = new Composite(container, SWT.NONE);
+        final Composite templateURIComposite = new Composite(container, container.getStyle());
         templateURIComposite.setLayout(new GridLayout(2, false));
         templateURIComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-        final Label templateURILabel = new Label(templateURIComposite, SWT.NONE);
+        final Label templateURILabel = new Label(templateURIComposite, container.getStyle());
         templateURILabel.setText("Template URI: ");
 
-        final Text templateURIText = new Text(templateURIComposite, SWT.NONE);
+        final Text templateURIText = new Text(templateURIComposite, container.getStyle());
         templateURIText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        new Label(templateURIComposite, SWT.NONE);
+        new Label(templateURIComposite, container.getStyle());
         if (templateURI != null) {
             setURI(templateURIText, templateURI);
         }
@@ -156,7 +156,7 @@ public class SelectTemplatePage extends WizardPage {
             }
         });
 
-        final Button templateURIButton = new Button(templateURIComposite, SWT.NONE);
+        final Button templateURIButton = new Button(templateURIComposite, container.getStyle());
         templateURIButton.setText("Browse registry");
         templateURIButton.addSelectionListener(new SelectionListener() {
 

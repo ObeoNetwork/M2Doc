@@ -90,7 +90,7 @@ public class M2DocMainVariablePage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        final Composite pageComposite = new Composite(parent, SWT.NONE);
+        final Composite pageComposite = new Composite(parent, parent.getStyle());
         pageComposite.setLayout(new GridLayout(1, false));
 
         final TreeViewer treeViewer = createVariableValueComposite(pageComposite);
@@ -127,12 +127,12 @@ public class M2DocMainVariablePage extends WizardPage {
      * @return the variable name {@link Text}
      */
     private Text createVariableNameComposite(Composite pageComposite) {
-        final Composite variableNameComposite = new Composite(pageComposite, SWT.NONE);
+        final Composite variableNameComposite = new Composite(pageComposite, pageComposite.getStyle());
         variableNameComposite.setLayout(new GridLayout(2, false));
         variableNameComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
-        final Label variableNameLabel = new Label(variableNameComposite, SWT.None);
+        final Label variableNameLabel = new Label(variableNameComposite, pageComposite.getStyle());
         variableNameLabel.setText("Variable name:");
-        final Text variableNameText = new Text(variableNameComposite, SWT.NONE);
+        final Text variableNameText = new Text(variableNameComposite, pageComposite.getStyle());
         variableNameText.addModifyListener(new ModifyListener() {
 
             @Override
@@ -168,7 +168,7 @@ public class M2DocMainVariablePage extends WizardPage {
      * @return the created {@link TreeViewer}
      */
     private TreeViewer createVariableValueComposite(Composite pageComposite) {
-        final Composite valueComposite = new Composite(pageComposite, SWT.NONE);
+        final Composite valueComposite = new Composite(pageComposite, pageComposite.getStyle());
         valueComposite.setLayout(new GridLayout(2, false));
         valueComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         final int style = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
@@ -179,7 +179,7 @@ public class M2DocMainVariablePage extends WizardPage {
         treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
         treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
 
-        final Button loadResourceButton = new Button(valueComposite, SWT.NONE);
+        final Button loadResourceButton = new Button(valueComposite, pageComposite.getStyle());
         loadResourceButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
         loadResourceButton.setText("Load resource");
         loadResourceButton.addSelectionListener(new SelectionListener() {
