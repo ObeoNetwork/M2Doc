@@ -24,6 +24,7 @@ import java.util.UUID;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -51,27 +52,32 @@ public class BookmarkManager {
     /**
      * Known bookmarks so far.
      */
-    private final Map<String, CTBookmark> bookmarks = new LinkedHashMap<String, CTBookmark>();
+    private final Map<String, CTBookmark> bookmarks = new LinkedHashMap<>();
 
     /**
      * Open bookmarks.
      */
-    private final Map<String, CTBookmark> startedBookmarks = new LinkedHashMap<String, CTBookmark>();
+    private final Map<String, CTBookmark> startedBookmarks = new LinkedHashMap<>();
 
     /**
      * Pending references for a given bookmark name.
      */
-    private final Map<String, Set<CTText>> pendingReferences = new HashMap<String, Set<CTText>>();
+    private final Map<String, Set<CTText>> pendingReferences = new HashMap<>();
+
+    /**
+     * The mapping from {@link XmlObject} to bookmark name.
+     */
+    private final Map<XmlObject, String> xmlObjectToName = new HashMap<>();
 
     /**
      * Bookmark name to reference ID.
      */
-    private final Map<String, byte[]> referenceIDs = new HashMap<String, byte[]>();
+    private final Map<String, byte[]> referenceIDs = new HashMap<>();
 
     /**
      * Position to insert message for a given reference or bookmark.
      */
-    private final Map<Object, XWPFRun> messagePositions = new HashMap<Object, XWPFRun>();
+    private final Map<XmlObject, XWPFRun> messagePositions = new HashMap<>();
 
     /**
      * Starts a bookmark in the given {@link XWPFParagraph} with the given name.
@@ -95,10 +101,12 @@ public class BookmarkManager {
             final BigInteger id = getRandomID();
             bookmark.setId(id);
             bookmarks.put(name, bookmark);
+            xmlObjectToName.put(bookmark, name);
             startedBookmarks.put(name, bookmark);
             Set<CTText> pendingRefs = pendingReferences.remove(name);
             if (pendingRefs != null) {
                 for (CTText pendingRef : pendingRefs) {
+                    xmlObjectToName.remove(pendingRef);
                     // we remove the run created for error messages.
                     final XWPFRun run = messagePositions.get(pendingRef);
                     final IRunBody parent = run.getParent();
@@ -181,10 +189,11 @@ public class BookmarkManager {
             messagePositions.put(ref, messageRun);
             Set<CTText> pendingRefs = pendingReferences.get(name);
             if (pendingRefs == null) {
-                pendingRefs = new LinkedHashSet<CTText>();
+                pendingRefs = new LinkedHashSet<>();
                 pendingReferences.put(name, pendingRefs);
             }
             pendingRefs.add(ref);
+            xmlObjectToName.put(ref, name);
         }
     }
 
@@ -307,4 +316,40 @@ public class BookmarkManager {
 
         return res;
     }
+
+    /**
+     * Updates the old {@link XmlObject} with the new one.
+     * 
+     * @param newObject
+     *            the new {@link XmlObject}
+     * @param oldObject
+     *            the old {@link XmlObject}
+     * @param <T>
+     *            the actual type of both {@link XmlObject}
+     */
+    public <T extends XmlObject> void updateXmlObject(T newObject, T oldObject) {
+        final String name = xmlObjectToName.remove(oldObject);
+        if (name != null) {
+            xmlObjectToName.put(newObject, name);
+            if (bookmarks.get(name) == oldObject) {
+                bookmarks.put(name, (CTBookmark) newObject);
+                if (startedBookmarks.get(name) == oldObject) {
+                    startedBookmarks.put(name, (CTBookmark) newObject);
+                }
+                newObject.validate();
+            } else {
+                final Set<CTText> refs = pendingReferences.get(name);
+                if (refs != null && refs.contains(oldObject)) {
+                    refs.remove(oldObject);
+                    refs.add((CTText) newObject);
+                    newObject.validate();
+                }
+            }
+        }
+        final XWPFRun run = messagePositions.remove(oldObject);
+        if (run != null) {
+            messagePositions.put(newObject, run); // TODO find the new run
+        }
+    }
+
 }

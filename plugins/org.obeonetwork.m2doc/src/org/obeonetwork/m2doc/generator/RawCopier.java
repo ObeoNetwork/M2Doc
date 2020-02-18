@@ -18,7 +18,6 @@ import java.net.URI;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -44,17 +43,21 @@ import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFStyle;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.apache.xmlbeans.XmlToken;
 import org.apache.xmlbeans.impl.common.IOUtil;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.parser.AbstractBodyParser;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBookmark;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -63,6 +66,11 @@ import org.w3c.dom.NodeList;
  * @author ohaegi
  */
 public class RawCopier {
+
+    /**
+     * The relationships URI.
+     */
+    private static final String RELATIONSHIPS_URI = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
 
     /**
      * Mask.
@@ -83,17 +91,6 @@ public class RawCopier {
      * The buffer size.
      */
     private static final int BUFFER_SIZE = 8192;
-
-    /**
-     * The replacement relation id {@link Pattern}.
-     */
-    private static final Pattern RELATION_ID_PATTERN = Pattern
-            .compile("<([^>]*) r:(id|embed)=\\\"([^\\\"]+)\\\"( [^>]* ?)?/?>");
-
-    /**
-     * The r:id value index in {@link #RELATION_ID_PATTERN}.
-     */
-    private static final int RELATION_ID_INDEX = 3;
 
     /**
      * Integer {@link Pattern}.
@@ -243,9 +240,6 @@ public class RawCopier {
             }
         }
 
-        final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
-        final List<XWPFRun> listOutputRuns = new ArrayList<>();
-        final List<XWPFTable> listOutputTables = new ArrayList<>();
         final Map<String, String> inputRelationIdToOutputMap = new HashMap<>();
         final Map<URI, URI> inputPartURIToOutputPartURI = new HashMap<>();
         if (inlineStartUserContent) {
@@ -279,12 +273,10 @@ public class RawCopier {
                 if (element instanceof XWPFParagraph) {
                     final XWPFParagraph inputParagraph = (XWPFParagraph) element;
                     res = copyParagraph(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
-                            inputParagraph);
-                    listOutputParagraphs.add(res);
+                            inputParagraph, null);
                 } else if (element instanceof XWPFTable) {
-                    final XWPFTable outputTable = copyTable(outputBody, inputRelationIdToOutputMap,
-                            inputPartURIToOutputPartURI, (XWPFTable) element);
-                    listOutputTables.add(outputTable);
+                    copyTable(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI, (XWPFTable) element,
+                            null);
                     res = null;
                 } else if (element instanceof XWPFSDT) {
                     copyCTSdtBlock(outputBody, AbstractBodyParser.getCTSdtBlock(inputBody, (XWPFSDT) element));
@@ -307,9 +299,6 @@ public class RawCopier {
             }
         }
 
-        // Change relations Id by xml replacement
-        changeRelationsId(inputRelationIdToOutputMap, listOutputRuns, listOutputParagraphs, listOutputTables);
-
         needNewParagraph = !inlineEndUserContent;
 
         return res;
@@ -326,6 +315,9 @@ public class RawCopier {
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
      * @param inputParagraph
      *            the input {@link XWPFParagraph}
+     * @param bookmarkManager
+     *            the {@link BookmarkManager} or <code>null</code>
+
      * @return the output {@link XWPFParagraph}
      * @throws InvalidFormatException
      *             if image copy fails
@@ -333,17 +325,22 @@ public class RawCopier {
      *             if a {@link PackagePart} can't be read
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be found
+     * @throws XmlException
+     *             if relations can't be updated
      */
     private XWPFParagraph copyParagraph(final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, XWPFParagraph inputParagraph)
-            throws InvalidFormatException, NoSuchAlgorithmException, IOException {
+            Map<URI, URI> inputPartURIToOutputPartURI, XWPFParagraph inputParagraph, BookmarkManager bookmarkManager)
+            throws InvalidFormatException, NoSuchAlgorithmException, IOException, XmlException {
         final XWPFParagraph res = createNewParagraph(outputBody);
 
         // Copy new paragraph
         res.getCTP().set(inputParagraph.getCTP());
         // Create relation embedded in run and keep relation id in map (input to output)
-        createRelations(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph.getCTP().xmlText(),
-                inputParagraph.getBody(), outputBody);
+        updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph.getBody(), outputBody,
+                res.getCTP());
+        if (bookmarkManager != null) {
+            updateBookmarks(bookmarkManager, res.getCTP(), inputParagraph.getCTP());
+        }
 
         return res;
     }
@@ -359,6 +356,8 @@ public class RawCopier {
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
      * @param inputTable
      *            the input {@link XWPFTable}
+     * @param bookmarkManager
+     *            the {@link BookmarkManager} or <code>null</code>
      * @return the output {@link XWPFTable}
      * @throws IOException
      *             if the copy fails
@@ -366,17 +365,22 @@ public class RawCopier {
      *             InvalidFormatException
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be found
+     * @throws XmlException
+     *             if relations can't be updated
      */
     private XWPFTable copyTable(final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, final XWPFTable inputTable)
-            throws IOException, InvalidFormatException, NoSuchAlgorithmException {
+            Map<URI, URI> inputPartURIToOutputPartURI, final XWPFTable inputTable, BookmarkManager bookmarkManager)
+            throws IOException, InvalidFormatException, NoSuchAlgorithmException, XmlException {
         final XWPFTable res = POIServices.getInstance().createTable(outputBody);
 
         res.getCTTbl().set(inputTable.getCTTbl());
         copyTableStyle(inputTable, outputBody.getXWPFDocument());
         // Create relation embedded in run and keep relation id in map (input to output)
-        createRelations(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputTable.getCTTbl().xmlText(),
-                inputTable.getBody(), outputBody);
+        updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputTable.getBody(), res.getBody(),
+                res.getCTTbl());
+        if (bookmarkManager != null) {
+            updateBookmarks(bookmarkManager, res, inputTable);
+        }
 
         return res;
     }
@@ -385,7 +389,7 @@ public class RawCopier {
      * Copies the fragment of the input {@link XWPFParagraph} into the output {@link XWPFParagraph} starting at the given start
      * {@link XmlObject}.
      * 
-     * @param inputRelationIdToOutputmap
+     * @param inputRelationIdToOutputMap
      *            the relation ID mapping
      * @param inputPartURIToOutputPartURI
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
@@ -406,7 +410,7 @@ public class RawCopier {
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be found
      */
-    private void copyParagraphFragment(Map<String, String> inputRelationIdToOutputmap,
+    private void copyParagraphFragment(Map<String, String> inputRelationIdToOutputMap,
             Map<URI, URI> inputPartURIToOutputPartURI, XWPFParagraph outputParagraph, XWPFParagraph inputParagraph,
             XmlObject startXmlObject, XmlObject endXmlObject)
             throws XmlException, InvalidFormatException, NoSuchAlgorithmException, IOException {
@@ -422,89 +426,32 @@ public class RawCopier {
             inputCursor.toFirstChild();
         }
         try {
-
             if (startXmlObject == null || inputCursor.getObject().equals(startXmlObject)) {
-                final XmlToken xmlWithOuputRelationId = createTemporaryParagraphFragment(inputRelationIdToOutputmap,
-                        inputPartURIToOutputPartURI, outputParagraph, inputParagraph, inputCursor, endXmlObject);
-                final XmlCursor withNewIDCursor = xmlWithOuputRelationId.newCursor();
+                final XmlCursor outputCursor = outputParagraph.getCTP().newCursor();
                 try {
-                    withNewIDCursor.toFirstChild();
-                    withNewIDCursor.toFirstChild();
-
-                    final XmlCursor outputCursor = outputParagraph.getCTP().newCursor();
-                    try {
-                        outputCursor.toLastChild();
-                        outputCursor.toEndToken();
-                        outputCursor.toNextToken();
-                        withNewIDCursor.copyXml(outputCursor);
-                        while (withNewIDCursor.toNextSibling()) {
-                            withNewIDCursor.copyXml(outputCursor);
+                    outputCursor.toLastChild();
+                    outputCursor.toEndToken();
+                    outputCursor.toNextToken();
+                    do {
+                        if (endXmlObject != null && inputCursor.getObject().equals(endXmlObject)) {
+                            break;
                         }
-                    } finally {
-                        outputCursor.dispose();
-                    }
+                        inputCursor.copyXml(outputCursor);
+                        final XmlCursor tmpCursor = outputCursor.newCursor();
+                        tmpCursor.toPrevSibling();
+                        tmpCursor.getObject();
+                        updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
+                                inputParagraph.getBody(), outputParagraph.getBody(), tmpCursor.getObject());
+                        // TODO update bookmark manager
+                        tmpCursor.dispose();
+                    } while (inputCursor.toNextSibling());
                 } finally {
-                    withNewIDCursor.dispose();
+                    outputCursor.dispose();
                 }
             }
         } finally {
             inputCursor.dispose();
         }
-    }
-
-    /**
-     * Creates a temporary paragraph fragment with translated relation IDs.
-     * 
-     * @param inputRelationIdToOutputMap
-     *            the relation ID mapping
-     * @param inputPartURIToOutputPartURI
-     *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
-     * @param outputParagraph
-     *            the output {@link XWPFParagraph}
-     * @param inputParagraph
-     *            the input {@link XWPFParagraph}
-     * @param inputCursor
-     *            the cursor of the fragmant to copy
-     * @param endXmlObject
-     *            the {@link XmlObject} to end at
-     * @return the {@link XmlToken} to the temporary paragraph fragment
-     * @throws XmlException
-     *             if xml manipulation fails
-     * @throws InvalidFormatException
-     *             if image copy fails
-     * @throws IOException
-     *             if a {@link PackagePart} can't be read
-     * @throws NoSuchAlgorithmException
-     *             if MD5 can't be found
-     */
-    private XmlToken createTemporaryParagraphFragment(Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, XWPFParagraph outputParagraph, XWPFParagraph inputParagraph,
-            XmlCursor inputCursor, XmlObject endXmlObject)
-            throws XmlException, InvalidFormatException, NoSuchAlgorithmException, IOException {
-        final XmlObject tmpXmlObject = XmlObject.Factory.parse(
-                "<root xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" mc:Ignorable=\"w14 w15 wp14\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"></root>");
-        final XmlCursor tmpCursor = tmpXmlObject.newCursor();
-        try {
-            tmpCursor.toEndToken();
-            tmpCursor.toPrevToken();
-            do {
-                if (endXmlObject != null && inputCursor.getObject().equals(endXmlObject)) {
-                    break;
-                }
-                inputCursor.copyXml(tmpCursor);
-            } while (inputCursor.toNextSibling());
-        } finally {
-            tmpCursor.dispose();
-        }
-
-        // Create relations embedded in run and keep relation id in map (input to output)
-        final String tmpXmlText = tmpXmlObject.xmlText();
-        createRelations(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, tmpXmlText,
-                inputParagraph.getDocument(), outputParagraph.getDocument());
-        // replace relations IDs
-        final XmlToken xmlWithOuputId = getXmlWithOuputId(inputRelationIdToOutputMap, tmpXmlText);
-
-        return xmlWithOuputId;
     }
 
     /**
@@ -612,110 +559,85 @@ public class RawCopier {
     }
 
     /**
-     * Change relations Id.
-     * 
-     * @param inputRelationIdToOutputmap
-     *            the relation ID mapping
-     * @param listOutputRuns
-     *            the {@link List} of output {@link XWPFRun}
-     * @param listOutputParagraphs
-     *            the {@link List} of output {@link XWPFParagraph}
-     * @param listOutputTables
-     *            the {@link List} of output {@link XWPFTable}
-     * @throws XmlException
-     *             XmlException
-     */
-    private void changeRelationsId(Map<String, String> inputRelationIdToOutputmap, List<XWPFRun> listOutputRuns,
-            List<XWPFParagraph> listOutputParagraphs, List<XWPFTable> listOutputTables) throws XmlException {
-
-        for (XWPFRun run : listOutputRuns) {
-            XmlToken outputXmlObject = getXmlWithOuputId(inputRelationIdToOutputmap, run.getCTR().xmlText());
-            if (outputXmlObject != null) {
-                run.getCTR().set(outputXmlObject);
-            }
-        }
-
-        for (XWPFParagraph paragraph : listOutputParagraphs) {
-            XmlToken outputXmlObject = getXmlWithOuputId(inputRelationIdToOutputmap, paragraph.getCTP().xmlText());
-            if (outputXmlObject != null) {
-                paragraph.getCTP().set(outputXmlObject);
-            }
-        }
-
-        for (XWPFTable table : listOutputTables) {
-            XmlToken outputXmlObject = getXmlWithOuputId(inputRelationIdToOutputmap, table.getCTTbl().xmlText());
-            if (outputXmlObject != null) {
-                table.getCTTbl().set(outputXmlObject);
-            }
-        }
-
-    }
-
-    /**
      * Get Xml With Ouput relation Id.
      * 
-     * @param inputRelationIdToOutputmap
+     * @param inputRelationIdToOutputMap
      *            the relation ID mapping
-     * @param xmlText
-     *            xmlText
-     * @return Xml With Ouput relation Id
+     * @param inputPartURIToOutputPartURI
+     *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
+     * @param outputBody
+     *            the input {@link IBody}
+     * @param inputBody
+     *            the ouput {@link IBody}
+     * @param xmlObject
+     *            the {@link XmlObject} to walk
      * @throws XmlException
      *             XmlException
+     * @throws InvalidFormatException
+     *             if image copy fails
+     * @throws IOException
+     *             if a {@link PackagePart} can't be read
+     * @throws NoSuchAlgorithmException
+     *             if MD5 can't be read
      */
-    private XmlToken getXmlWithOuputId(Map<String, String> inputRelationIdToOutputmap, String xmlText)
-            throws XmlException {
-        final StringBuilder builder = new StringBuilder(xmlText.length());
-
-        final Matcher matcher = RELATION_ID_PATTERN.matcher(xmlText);
-
-        int lastIndex = 0;
-        while (matcher.find()) {
-            final int pictureStart = matcher.start(RELATION_ID_INDEX);
-            if (pictureStart != -1) {
-                lastIndex = getXmlWithOutputIdCopyFragment(inputRelationIdToOutputmap, xmlText, builder, matcher,
-                        lastIndex, RELATION_ID_INDEX, pictureStart);
-            } else {
-                final int hyperLinkStart = matcher.start(RELATION_ID_INDEX);
-                lastIndex = getXmlWithOutputIdCopyFragment(inputRelationIdToOutputmap, xmlText, builder, matcher,
-                        lastIndex, RELATION_ID_INDEX, hyperLinkStart);
+    private void updateRelationIds(Map<String, String> inputRelationIdToOutputMap,
+            Map<URI, URI> inputPartURIToOutputPartURI, IBody inputBody, IBody outputBody, XmlObject xmlObject)
+            throws XmlException, InvalidFormatException, NoSuchAlgorithmException, IOException {
+        final XmlObject idAttr = xmlObject.selectAttribute(RELATIONSHIPS_URI, "id");
+        if (idAttr != null) {
+            updateRelationAttribute(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
+                    idAttr);
+        } else {
+            final XmlObject embedAttr = xmlObject.selectAttribute(RELATIONSHIPS_URI, "embed");
+            if (embedAttr != null) {
+                updateRelationAttribute(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
+                        embedAttr);
             }
         }
-        builder.append(xmlText.substring(lastIndex, xmlText.length()));
-
-        return XmlToken.Factory.parse(builder.toString());
+        final XmlCursor cursor = xmlObject.newCursor();
+        if (cursor.toFirstChild()) {
+            updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
+                    cursor.getObject());
+            while (cursor.toNextSibling()) {
+                updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
+                        cursor.getObject());
+            }
+        }
+        cursor.dispose();
     }
 
     /**
-     * Copy a fragment of the xml with replaced relation IDs.
+     * Updates the given relation attribute with its new ID.
      * 
-     * @param inputRelationIdToOutputmap
+     * @param inputRelationIdToOutputMap
      *            the relation ID mapping
-     * @param xmlText
-     *            xmlText
-     * @param builder
-     *            the output {@link StringBuilder}
-     * @param matcher
-     *            the {@link Matcher} that matched the relation
-     * @param lastIndex
-     *            the end of the last matiched id
-     * @param groupIndex
-     *            the group index in the matcher
-     * @param start
-     *            the start of the matched id
-     * @return the new last index
+     * @param inputPartURIToOutputPartURI
+     *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
+     * @param outputBody
+     *            the input {@link IBody}
+     * @param inputBody
+     *            the ouput {@link IBody}
+     * @param attribute
+     *            the attribute {@link Node}
+     * @throws InvalidFormatException
+     *             if image copy fails
+     * @throws IOException
+     *             if a {@link PackagePart} can't be read
+     * @throws NoSuchAlgorithmException
+     *             if MD5 can't be read
      */
-    private int getXmlWithOutputIdCopyFragment(Map<String, String> inputRelationIdToOutputmap, String xmlText,
-            final StringBuilder builder, final Matcher matcher, int lastIndex, final int groupIndex, final int start) {
-        builder.append(xmlText.subSequence(lastIndex, start));
-        final String oldID = matcher.group(groupIndex);
-        final String newID = inputRelationIdToOutputmap.get(oldID);
-        if (newID != null) {
-            builder.append(newID);
-        } else {
-            builder.append(oldID);
+    private void updateRelationAttribute(Map<String, String> inputRelationIdToOutputMap,
+            Map<URI, URI> inputPartURIToOutputPartURI, IBody inputBody, IBody outputBody, final XmlObject attribute)
+            throws InvalidFormatException, NoSuchAlgorithmException, IOException {
+        final String oldID = attribute.getDomNode().getNodeValue();
+        if (oldID != null) {
+            String newID = inputRelationIdToOutputMap.get(oldID);
+            if (newID == null) {
+                newID = createRelation(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, oldID, inputBody,
+                        outputBody);
+            }
+            attribute.getDomNode().setNodeValue(newID);
         }
-
-        return matcher.end(groupIndex);
     }
 
     /**
@@ -725,12 +647,13 @@ public class RawCopier {
      *            the relation ID mapping
      * @param inputPartURIToOutputPartURI
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
-     * @param xmlText
-     *            the xml text to search for relations
+     * @param inputRelationID
+     *            the input realtion ID
      * @param inputBody
-     *            input {@link IBody}
+     *            the input {@link IBody}
      * @param outputBody
-     *            output {@link IBody}
+     *            the output {@link IBody}
+     * @return the new relation ID
      * @throws InvalidFormatException
      *             if image copy fails
      * @throws IOException
@@ -738,28 +661,26 @@ public class RawCopier {
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be read
      */
-    private void createRelations(Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, String xmlText, IBody inputBody, IBody outputBody)
+    private String createRelation(Map<String, String> inputRelationIdToOutputMap,
+            Map<URI, URI> inputPartURIToOutputPartURI, String inputRelationID, IBody inputBody, IBody outputBody)
             throws InvalidFormatException, NoSuchAlgorithmException, IOException {
-        final Matcher matcher = RELATION_ID_PATTERN.matcher(xmlText);
-        while (matcher.find()) {
-            final String inputRelationID = matcher.group(RELATION_ID_INDEX);
-            final PackageRelationship inputRelationship = inputBody.getPart().getPackagePart()
-                    .getRelationship(inputRelationID);
-            final PackagePart outputPart;
-            if (inputRelationship.getTargetMode() == TargetMode.INTERNAL) {
-                final PackagePart source = inputBody.getXWPFDocument().getPackagePart().getPackage()
-                        .getPart(PackagingURIHelper.createPartName(inputRelationship.getTargetURI()));
-                outputPart = getOrCopyPart(inputPartURIToOutputPartURI, source, outputBody.getXWPFDocument());
-            } else {
-                outputPart = null;
-                inputPartURIToOutputPartURI.put(inputRelationship.getTargetURI(), inputRelationship.getTargetURI());
-            }
-
-            final PackageRelationship outputRelationship = getOrCreateRelationship(inputPartURIToOutputPartURI,
-                    outputBody, outputPart, inputRelationship);
-            inputRelationIdToOutputMap.put(inputRelationship.getId(), outputRelationship.getId());
+        final PackageRelationship inputRelationship = inputBody.getPart().getPackagePart()
+                .getRelationship(inputRelationID);
+        final PackagePart outputPart;
+        if (inputRelationship.getTargetMode() == TargetMode.INTERNAL) {
+            final PackagePart source = inputBody.getXWPFDocument().getPackagePart().getPackage()
+                    .getPart(PackagingURIHelper.createPartName(inputRelationship.getTargetURI()));
+            outputPart = getOrCopyPart(inputPartURIToOutputPartURI, source, outputBody.getXWPFDocument());
+        } else {
+            outputPart = null;
+            inputPartURIToOutputPartURI.put(inputRelationship.getTargetURI(), inputRelationship.getTargetURI());
         }
+
+        final PackageRelationship outputRelationship = getOrCreateRelationship(inputPartURIToOutputPartURI, outputBody,
+                outputPart, inputRelationship);
+        inputRelationIdToOutputMap.put(inputRelationship.getId(), outputRelationship.getId());
+
+        return outputRelationship.getId();
     }
 
     /**
@@ -924,11 +845,14 @@ public class RawCopier {
      *            the output {@link XWPFParagraph}
      * @param body
      *            the {@link IBody}
+     * @param bookmarkManager
+     *            the {@link BookmarkManager} to update or <code>null</code>
      * @return the new current {@link XWPFParagraph}
      * @throws Exception
      *             if something goes wrong
      */
-    public XWPFParagraph copyBody(XWPFParagraph outputParagraph, IBody body) throws Exception {
+    public XWPFParagraph copyBody(XWPFParagraph outputParagraph, IBody body, BookmarkManager bookmarkManager)
+            throws Exception {
         XWPFParagraph res = null;
 
         if (body.getBodyElements().isEmpty()) {
@@ -944,9 +868,6 @@ public class RawCopier {
                 inline = true;
             }
 
-            final List<XWPFParagraph> listOutputParagraphs = new ArrayList<>();
-            final List<XWPFRun> listOutputRuns = new ArrayList<>();
-            final List<XWPFTable> listOutputTables = new ArrayList<>();
             final Map<String, String> inputRelationIdToOutputMap = new HashMap<>();
             final Map<URI, URI> inputPartURIToOutputPartURI = new HashMap<>();
             for (IBodyElement element : body.getBodyElements()) {
@@ -956,16 +877,15 @@ public class RawCopier {
                         // inline the all paragraph
                         copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, outputParagraph,
                                 inputParagraph, null, null);
-                        res = null;
+                        res = outputParagraph;
                     } else {
                         res = copyParagraph(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
-                                inputParagraph);
-                        listOutputParagraphs.add(res);
+                                inputParagraph, bookmarkManager);
                     }
                 } else if (element instanceof XWPFTable) {
-                    final XWPFTable outputTable = copyTable(outputBody, inputRelationIdToOutputMap,
-                            inputPartURIToOutputPartURI, (XWPFTable) element);
-                    listOutputTables.add(outputTable);
+                    final XWPFTable inputTable = (XWPFTable) element;
+                    copyTable(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputTable,
+                            bookmarkManager);
                     res = null;
                 } else if (element instanceof XWPFSDT) {
                     copyCTSdtBlock(outputBody, AbstractBodyParser.getCTSdtBlock(outputBody, (XWPFSDT) element));
@@ -979,12 +899,74 @@ public class RawCopier {
             if (res != null && outputBody instanceof XWPFTableCell && res.getRuns().isEmpty()) {
                 res.createRun();
             }
-
-            // Change relations Id by xml replacement
-            changeRelationsId(inputRelationIdToOutputMap, listOutputRuns, listOutputParagraphs, listOutputTables);
         }
 
         return res;
+    }
+
+    /**
+     * Updates bookmarks for the given output {@link XWPFTable} according to its input {@link XWPFTable}.
+     * 
+     * @param bookmarkManager
+     *            the {@link BookmarkManager}
+     * @param outputTable
+     *            the output {@link XWPFTable}
+     * @param inputTable
+     *            the input {@link XWPFTable}
+     */
+    private void updateBookmarks(BookmarkManager bookmarkManager, final XWPFTable outputTable,
+            final XWPFTable inputTable) {
+        final List<XWPFTableRow> inputRows = inputTable.getRows();
+        final List<XWPFTableRow> outputRows = outputTable.getRows();
+        for (int rowIndex = 0; rowIndex < inputRows.size(); rowIndex++) {
+            final XWPFTableRow inputRow = inputRows.get(rowIndex);
+            final XWPFTableRow outputRow = outputRows.get(rowIndex);
+            final List<XWPFTableCell> inputCells = inputRow.getTableCells();
+            final List<XWPFTableCell> outputCells = outputRow.getTableCells();
+            for (int cellIndex = 0; cellIndex < inputCells.size(); cellIndex++) {
+                final XWPFTableCell inputCell = inputCells.get(cellIndex);
+                final XWPFTableCell outputCell = outputCells.get(cellIndex);
+                final List<IBodyElement> inputBodyElements = inputCell.getBodyElements();
+                final List<IBodyElement> outputBodyElements = outputCell.getBodyElements();
+                for (int bodyElementIndex = 0; bodyElementIndex < inputBodyElements.size(); bodyElementIndex++) {
+                    final IBodyElement inputBodyElement = inputBodyElements.get(bodyElementIndex);
+                    if (inputBodyElement instanceof XWPFParagraph) {
+                        final IBodyElement outputBodyElement = outputBodyElements.get(bodyElementIndex);
+                        updateBookmarks(bookmarkManager, ((XWPFParagraph) outputBodyElement).getCTP(),
+                                ((XWPFParagraph) inputBodyElement).getCTP());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates bookmarks for the given output {@link CTP} according to its input {@link CTP}.
+     * 
+     * @param bookmarkManager
+     *            the {@link BookmarkManager}
+     * @param outputParagraph
+     *            the output {@link CTP}
+     * @param inputParagraph
+     *            the input {@link CTP}
+     */
+    private void updateBookmarks(BookmarkManager bookmarkManager, CTP outputParagraph, CTP inputParagraph) {
+        final List<CTBookmark> oldBookmarks = inputParagraph.getBookmarkStartList();
+        final List<CTBookmark> newBookmarks = outputParagraph.getBookmarkStartList();
+        for (int bookmarkIndex = 0; bookmarkIndex < oldBookmarks.size(); bookmarkIndex++) {
+            bookmarkManager.updateXmlObject(newBookmarks.get(bookmarkIndex), oldBookmarks.get(bookmarkIndex));
+        }
+        List<CTR> inputRuns = inputParagraph.getRList();
+        final List<CTR> outputRuns = outputParagraph.getRList();
+        for (int runIndex = 0; runIndex < inputRuns.size(); runIndex++) {
+            final CTR inputRun = inputRuns.get(runIndex);
+            final CTR outputRun = outputRuns.get(runIndex);
+            final List<CTText> inputTexts = inputRun.getInstrTextList();
+            final List<CTText> outputTexts = outputRun.getInstrTextList();
+            for (int textIndex = 0; textIndex < inputTexts.size(); textIndex++) {
+                bookmarkManager.updateXmlObject(outputTexts.get(textIndex), inputTexts.get(textIndex));
+            }
+        }
     }
 
 }

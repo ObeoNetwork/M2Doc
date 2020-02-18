@@ -674,7 +674,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             result.addMessage(message);
         }
 
-        return insertBody(paragraph, generationResult.getBody());
+        final XWPFParagraph insertBody = insertBody(paragraph, generationResult.getBody());
+        currentGeneratedParagraph = insertBody;
+        return insertBody;
     }
 
     /**
@@ -690,7 +692,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         XWPFParagraph res;
 
         try {
-            res = copier.copyBody(paragraph, body);
+            res = copier.copyBody(paragraph, body, bookmarkManager);
             // CHECKSTYLE:OFF
         } catch (Exception e) {
             // CHECKSTYLE:ON
