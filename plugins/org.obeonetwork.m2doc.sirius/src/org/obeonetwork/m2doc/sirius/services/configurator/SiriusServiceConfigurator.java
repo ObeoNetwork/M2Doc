@@ -118,7 +118,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
         final String res;
 
         if (genConfURIStr != null) {
-            final URI genConfURI = URI.createURI(genConfURIStr, false);
+            final URI genConfURI = URI.createURI(genConfURIStr, true);
             if (genConfURI.isPlatformResource()) {
                 res = getSessionFromPlatformResource(genConfURI);
             } else {
@@ -149,7 +149,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             final Session session = modelingProject.getSession();
             if (session != null) {
                 final URI sessionURI = session.getSessionResource().getURI();
-                res = sessionURI.deresolve(platformResourceURI, false, true, true).toString();
+                res = URI.decode(sessionURI.deresolve(platformResourceURI, false, true, true).toString());
             } else {
                 res = null;
             }
