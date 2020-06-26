@@ -55,7 +55,7 @@ location eclipse "http://download.eclipse.org/releases/2019-06" {
 	org.eclipse.uml2.feature.group lazy
 }
 
-location sirius "https://download.eclipse.org/sirius/updates/milestones/6.3.0rc1/2019-06/" {
+location sirius "http://download.eclipse.org/sirius/updates/releases/6.3.0/2019-06/" {
 	org.eclipse.sirius.doc.feature.feature.group lazy
 	org.eclipse.sirius.doc.feature.source.feature.group lazy
 	org.eclipse.sirius.runtime.feature.group lazy
@@ -150,10 +150,10 @@ location eclipse-shared-license "http://download.eclipse.org/cbi/updates/license
 	org.eclipse.license.feature.group lazy
 }
 
-location orbit-R20130827064939 "http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository" {
-	org.apache.log4j [1.2.15.v201012070815,1.2.15.v201012070815]
-	org.apache.commons.lang [2.4.0.v201005080502,2.4.0.v201005080502]
-	org.apache.commons.net [3.2.0.v201305141515,3.2.0.v201305141515]
+location orbit-R20130827064939 "http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository" {
+	org.apache.log4j [1.2.15,1.2.16)
+	org.apache.commons.lang [2.4.0,2.4.1)
+	org.apache.commons.net [3.2.0,3.2.1)
 }
 
 location site_Capella "https://download.eclipse.org/capella/core/updates/releases/1.4.0-R20191121-173601/org.polarsys.capella.rcp.site/" {

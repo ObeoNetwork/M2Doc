@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Capella 1.4.0 Target Platform" sequenceNumber="1579768478">
+<target name="M2Doc Capella 1.4.0 Target Platform" sequenceNumber="1593163281">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
@@ -99,7 +99,7 @@
       <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius.runtime.ide.ui.acceleo.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group" version="0.0.0"/>
-      <repository id="sirius" location="https://download.eclipse.org/sirius/updates/milestones/6.3.0rc1/2019-06/"/>
+      <repository id="sirius" location="http://download.eclipse.org/sirius/updates/releases/6.3.0/2019-06/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.polarsys.kitalpha.ad.runtime.feature.feature.group" version="0.0.0"/>
@@ -179,7 +179,7 @@
       <unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
       <unit id="org.apache.commons.lang" version="2.4.0.v201005080502"/>
       <unit id="org.apache.commons.net" version="3.2.0.v201305141515"/>
-      <repository id="orbit-R20130827064939" location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository"/>
+      <repository id="orbit-R20130827064939" location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.polarsys.capella.core.feature.feature.group" version="0.0.0"/>
