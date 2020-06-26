@@ -45,7 +45,7 @@ public class FrontEndTests {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        SERVER.start(12345);
+        SERVER.start("localhost", 12345);
         driver = new FirefoxDriver();
     }
 

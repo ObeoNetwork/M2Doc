@@ -20,58 +20,61 @@ import org.eclipse.emf.common.util.ResourceLocator;
  * @author <a href="mailto:cedric.brun@obeo.fr">Cedric Brun</a>
  */
 public final class M2DocSiriusUIPlugin extends EMFPlugin {
-	/**
-	 * Keep track of the singleton.
-	 */
-	public static final M2DocSiriusUIPlugin INSTANCE = new M2DocSiriusUIPlugin();
+    /**
+     * Keep track of the singleton.
+     */
+    public static final M2DocSiriusUIPlugin INSTANCE = new M2DocSiriusUIPlugin();
 
-	public static final String PLUGIN_ID = "org.eclipse.m2doc.sirius.ui";
+    /**
+     * The plugin ID.
+     */
+    public static final String PLUGIN_ID = "org.eclipse.m2doc.sirius.ui";
 
-	/**
-	 * Keep track of the singleton.
-	 */
-	private static Implementation plugin;
+    /**
+     * Keep track of the singleton.
+     */
+    private static Implementation plugin;
 
-	/**
-	 * Create the instance.
-	 */
-	public M2DocSiriusUIPlugin() {
-		super(new ResourceLocator[] {});
-	}
+    /**
+     * Create the instance.
+     */
+    public M2DocSiriusUIPlugin() {
+        super(new ResourceLocator[] {});
+    }
 
-	/**
-	 * Returns the singleton instance of the Eclipse plugin.
-	 * 
-	 * @return the singleton instance.
-	 */
-	@Override
-	public ResourceLocator getPluginResourceLocator() {
-		return plugin;
-	}
+    /**
+     * Returns the singleton instance of the Eclipse plugin.
+     * 
+     * @return the singleton instance.
+     */
+    @Override
+    public ResourceLocator getPluginResourceLocator() {
+        return plugin;
+    }
 
-	/**
-	 * Returns the singleton instance of the Eclipse plugin.
-	 * 
-	 * @return the singleton instance.
-	 */
-	public static Implementation getPlugin() {
-		return plugin;
-	}
+    /**
+     * Returns the singleton instance of the Eclipse plugin.
+     * 
+     * @return the singleton instance.
+     */
+    public static Implementation getPlugin() {
+        return plugin;
+    }
 
-	/**
-	 * The actual implementation of the Eclipse <b>Plugin</b>.
-	 */
-	public static class Implementation extends EclipsePlugin {
-		/**
-		 * Creates an instance.
-		 */
-		public Implementation() {
-			super();
+    /**
+     * The actual implementation of the Eclipse <b>Plugin</b>.
+     */
+    public static class Implementation extends EclipsePlugin {
+        /**
+         * Creates an instance.
+         */
+        public Implementation() {
+            super();
 
-			// Remember the static instance.
-			//
-			plugin = this;
-		}
-	}
+            // Remember the static instance.
+            //
+            plugin = this;
+        }
+    }
 
 }

@@ -34,18 +34,20 @@ public class CompletionServer {
     /**
      * Starts the server.
      * 
+     * @param host
+     *            the host to listen
      * @param port
      *            the port to listen
      * @throws Exception
      *             if the server can't be started
      */
-    public void start(int port) throws Exception {
+    public void start(String host, int port) throws Exception {
         server = new Server();
 
         @SuppressWarnings("resource")
         final ServerConnector connector = new ServerConnector(server);
         connector.setPort(port);
-        connector.setHost("0.0.0.0");
+        connector.setHost(host);
         server.setConnectors(new Connector[] {connector });
 
         final ServletHandler servletHandler = new ServletHandler();
