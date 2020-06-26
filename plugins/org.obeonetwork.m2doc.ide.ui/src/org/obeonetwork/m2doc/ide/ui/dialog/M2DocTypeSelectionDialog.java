@@ -148,7 +148,12 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
             }
         }
 
-        final List<String> res = new ArrayList<>(types);
+        final List<String> res = new ArrayList<>(types.size() * 3);
+        for (String type : types) {
+            res.add(type);
+            res.add("Sequence(" + type + ")");
+            res.add("OrderedSet(" + type + ")");
+        }
         Collections.sort(res);
 
         return res;
