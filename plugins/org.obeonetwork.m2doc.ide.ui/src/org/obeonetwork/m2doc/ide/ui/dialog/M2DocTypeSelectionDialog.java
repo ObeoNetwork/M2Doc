@@ -142,7 +142,9 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
         if (uris != null) {
             for (String nsURI : uris) {
                 final EPackage ePkg = EPackageRegistryImpl.INSTANCE.getEPackage(nsURI);
-                types.addAll(getEClassifiers(ePkg));
+                if (ePkg != null) {
+                    types.addAll(getEClassifiers(ePkg));
+                }
             }
         }
 
