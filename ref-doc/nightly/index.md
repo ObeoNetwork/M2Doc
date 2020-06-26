@@ -239,13 +239,21 @@ Once installed and a generation model (.genconf file) selected the add-in provid
 
 You need to have an Eclipse with M2Doc installed, see the [download page]({{page.relativePath}}/download/) for more details.
 
-To start the MS word add-in backend you nee to click on the "Start/Stop M2Doc add-in back end":
+To start the MS word add-in back end you need to go to the preference page Window > Preferences and select the M2Doc add-in:
 
-![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation01.png "MS Word add-in.")
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation01a.png "MS Word add-in.")
+
+You can select the host and port the add-in back end will listen to. By default it will listen to all your ip address on the port 3000.
+
+Once the setting is done, you can click the start button. It will start the add-in back end and wait for the front end to connect to it.
+
+![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation01b.png "MS Word add-in.")
+
+When started a link appears to copy the link of the MS Word add-in manifest that will be needed in the next step.
 
 Now the backend is started and you can proceed with the front end installation. For the front end installation, you need to download the manifest.xml file from the back end and place it in a network shared folder.
 
-You can download the manifest.xml file using the following link by default:
+You can download the manifest.xml file using the following link by default (or the link  copied from the preference page in previous step):
 
 [http://localhost:3000/assets/manifest.xml](http://localhost:3000/assets/manifest.xml)
 
