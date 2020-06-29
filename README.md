@@ -5,4 +5,4 @@ The M2Doc technology enables the generation of [Office Open XML](https://fr.wiki
 
 These plugins are released under the EPL Open-Source License.
 
-Visit our web site : http://obeonetwork.github.io/M2Doc/
+Visit our web site : https://www.m2doc.org/
