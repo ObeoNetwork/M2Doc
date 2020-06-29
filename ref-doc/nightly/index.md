@@ -239,7 +239,7 @@ Once installed and a generation model (.genconf file) selected the add-in provid
 
 You need to have an Eclipse with M2Doc installed, see the [download page]({{page.relativePath}}/download/) for more details.
 
-To start the MS word add-in back end you need to go to the preference page Window > Preferences and select the M2Doc add-in:
+To start the MS word add-in backend you need to go to the preference page Window > Preferences and select the M2Doc add-in:
 
 ![MS Word add-in.]({{page.relativePath}}/ref-doc/nightly/images/Add-in%20Installation01a.png "MS Word add-in.")
 
@@ -523,7 +523,7 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
 * [Pagination services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_paginationservices.html)
 * [Sirius services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docsiriusservices.html) (Note: M2Doc versions 1.1.0 and above are compatible with [Obeo Designer Team Edition](https://www.obeodesigner.com/en/collaborative-features).)
   * you will have to add the following packages nsURI (see [Template properties wizard](index.html#template-properties-wizard) section): http://www.eclipse.org/sirius/1.1.0, http://www.eclipse.org/sirius/diagram/1.1.0, and/or http://www.eclipse.org/sirius/diagram/sequence/2.0.0.
-* [Wikitext services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docwikitextservices.md) (exprerimental)
+* [Wikitext services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docwikitextservices.html) (exprerimental)
 
 ### Template properties wizard
 
