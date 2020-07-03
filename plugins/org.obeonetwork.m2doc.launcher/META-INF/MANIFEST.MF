@@ -16,3 +16,4 @@ Bundle-Activator: org.obeonetwork.m2doc.launcher.internal.M2DocLauncherPlugin$Im
 Bundle-Localization: plugin
 Bundle-Vendor: %providerName
 Automatic-Module-Name: org.obeonetwork.m2doc.launcher
+Export-Package: org.obeonetwork.m2doc.launcher.internal
