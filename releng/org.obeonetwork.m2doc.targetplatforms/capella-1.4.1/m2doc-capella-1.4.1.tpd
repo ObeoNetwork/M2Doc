@@ -4,7 +4,7 @@ include "../common/common.tpd"
 
 with source requirements
 
-//include "https://download.eclipse.org/capella/core/updates/stable/1.4.1-S20200616-161204/targets/capella.target-definition.targetplatform"
+//include "https://download.eclipse.org/capella/core/updates/releases/1.4.1-R20200630-160305//targets/capella.target-definition.targetplatform"
 
 location eclipse "http://download.eclipse.org/releases/2019-06" {
 	org.eclipse.sdk.feature.group lazy
@@ -61,7 +61,7 @@ location "http://download.eclipse.org/releases/2020-09" {
 	org.eclipse.gmf.runtime.notation lazy
 }
 
-location sirius "https://download.eclipse.org/sirius/updates/stable/6.3.1-S20200602-082939/2019-06/" {
+location sirius "https://download.eclipse.org/sirius/updates/releases/6.3.2/2019-06/" {
 	org.eclipse.sirius.doc.feature.feature.group lazy
 	org.eclipse.sirius.doc.feature.source.feature.group lazy
 	org.eclipse.sirius.runtime.feature.group lazy
@@ -82,7 +82,7 @@ location sirius "https://download.eclipse.org/sirius/updates/stable/6.3.1-S20200
 	org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group lazy
 }
 
-location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/1.4.1.IT4" {	
+location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/1.4.1.IT5-1" {	
 	org.polarsys.kitalpha.ad.runtime.feature.feature.group lazy
 	org.polarsys.kitalpha.cadence.feature.feature.group lazy
 	org.polarsys.kitalpha.common.feature.feature.group lazy
@@ -109,7 +109,7 @@ location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/upd
 	org.polarsys.kitalpha.richtext.widget.ext.feature.source.feature.group lazy
 	org.polarsys.kitalpha.transposer.feature.feature.group lazy
 }
-location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/1.4.0RC4" {
+location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/1.4.1.IT5-1" {
 	org.polarsys.kitalpha.doc.feature.feature.group lazy
 	org.polarsys.kitalpha.emde.sdk.feature.feature.group lazy
 }
@@ -164,6 +164,6 @@ location orbit-R20160221192158 "https://download.eclipse.org/tools/orbit/downloa
 //	com.google.guava [15.0.0.v201403281430,15.0.0.v201403281430]
 }
 
-location site_Capella "https://download.eclipse.org/capella/core/updates/stable/1.4.1-S20200616-161204/org.polarsys.capella.rcp.site/" {
+location site_Capella "https://download.eclipse.org/capella/core/updates/releases/1.4.1-R20200630-160305/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.core.feature.feature.group lazy
 }
