@@ -47,17 +47,17 @@ public class EclipseJDTClassProvider extends EclipseClassProvider {
         public void resourceChanged(IResourceChangeEvent event) {
             if (event != null) {
                 final IResourceDelta delta = event.getDelta();
-                for (IResourceDelta child : delta.getAffectedChildren()) {
-                    final IResource resource = child.getResource();
-                    if (resource != null) {
-                        final IProject project = resource.getProject();
-                        if (project != null) {
-                            classLoaders.remove(project.getName());
+                if (delta != null) {
+                    final IResourceDelta[] affectedChildren = delta.getAffectedChildren();
+                    if (affectedChildren != null) {
+                        for (IResourceDelta child : affectedChildren) {
+                            updateClassLoaderCache(child);
                         }
                     }
                 }
             }
         }
+
     };
 
     /**
@@ -66,6 +66,22 @@ public class EclipseJDTClassProvider extends EclipseClassProvider {
     public EclipseJDTClassProvider() {
         super(M2DocPlugin.getBundlerContext(), M2DocPlugin.getPlugin().getClass().getClassLoader());
         ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
+    }
+
+    /**
+     * Updates the {@link ClassLoader} cache for the given {@link IResourceDelta}.
+     * 
+     * @param child
+     *            the {@link IResourceDelta}
+     */
+    private void updateClassLoaderCache(IResourceDelta child) {
+        final IResource resource = child.getResource();
+        if (resource != null) {
+            final IProject project = resource.getProject();
+            if (project != null) {
+                classLoaders.remove(project.getName());
+            }
+        }
     }
 
     @Override
