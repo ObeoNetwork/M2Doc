@@ -141,9 +141,9 @@ public class M2DocNewTemplateWizard extends Wizard implements INewWizard {
     @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         if (selection.getFirstElement() instanceof IFile) {
-            defaultTempateName = ((IFile) selection.getFirstElement()).getParent().getName() + "/template.docx";
+            defaultTempateName = ((IFile) selection.getFirstElement()).getParent().getFullPath() + "/template.docx";
         } else if (selection.getFirstElement() instanceof IContainer) {
-            defaultTempateName = ((IContainer) selection.getFirstElement()).getName() + "/template.docx";
+            defaultTempateName = ((IContainer) selection.getFirstElement()).getFullPath() + "/template.docx";
         }
     }
 
