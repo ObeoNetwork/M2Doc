@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _zm0MsPpYEemkFZaxoJ7ecg
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 10/29/19 3:39 PM
+Save-Time: 8/17/20 3:09 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -18,7 +18,7 @@ get-view "Project Explorer" | get-tree | select "model.project/anydsl.ecore" | g
 get-window New | get-tree | select "M2Doc/New template" | double-click
 with [get-window -class WizardDialog] {
     get-editbox -after [get-label "Template name:"] -index 1 | get-property text | equals "" | verify-true
-    get-editbox -after [get-label "Template name:"] | get-property text | equals "model.project/template.docx" 
+    get-editbox -after [get-label "Template name:"] | get-property text | equals "/model.project/template.docx" 
         | verify-true
     get-button "Next >" | get-property enablement | equals true | verify-true
     get-button Finish | get-property enablement | equals false | verify-true
