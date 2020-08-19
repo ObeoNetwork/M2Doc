@@ -160,6 +160,50 @@
                </with>
             </visibleWhen>
          </command>
+         <menu
+               icon="icons/m2doc.gif"
+               label="M2Doc Generate Template">
+            <dynamic
+                  class="org.obeonetwork.m2doc.genconf.editor.command.GenerateTemplateContributionItem"
+                  id="org.obeonetwork.m2doc.genconf.editor.dynamicGenerateTemplate">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <test
+                           forcePluginActivation="true"
+                           property="org.obeonetwork.m2doc.genconf.editor.propertyTesterGenerateTemplate">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </menu>
+         <menu
+               icon="icons/m2doc.gif"
+               label="M2Doc Update Document">
+            <dynamic
+                  class="org.obeonetwork.m2doc.genconf.editor.command.UpdateDocumentContributionItem"
+                  id="org.obeonetwork.m2doc.genconf.editor.dynamicUpdateDocument">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <test
+                           forcePluginActivation="true"
+                           property="org.obeonetwork.m2doc.genconf.editor.propertyTesterUpdateDocument">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </menu>
       </menuContribution>
    </extension>
    <extension
@@ -170,6 +214,20 @@
             namespace="org.obeonetwork.m2doc.genconf.editor"
             properties="testGeneration"
             type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="org.obeonetwork.m2doc.genconf.propertyTester.GenerateTemplatePropertyTester"
+            id="org.obeonetwork.m2doc.genconf.editor.propertyTesterGenerateTemplate"
+            namespace="org.obeonetwork.m2doc.genconf.editor"
+            properties="propertyTesterGenerateTemplate"
+            type="org.eclipse.core.resources.IFile">
+      </propertyTester>
+      <propertyTester
+            class="org.obeonetwork.m2doc.genconf.propertyTester.UpdateDocumentPropertyTester"
+            id="org.obeonetwork.m2doc.genconf.editor.propertyTesterUpdateDocument"
+            namespace="org.obeonetwork.m2doc.genconf.editor"
+            properties="propertyTesterUpdateDocument"
+            type="org.eclipse.core.resources.IFile">
       </propertyTester>
    </extension>
    <extension

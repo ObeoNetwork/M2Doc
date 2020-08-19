@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.expressions,
  org.eclipse.emf.transaction,
  org.obeonetwork.m2doc.ide.ui;bundle-version="[3.0.0,4.0.0)",
- org.apache.poi
+ org.apache.poi,
+ org.eclipse.swt
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.obeonetwork.m2doc.genconf.editor
 

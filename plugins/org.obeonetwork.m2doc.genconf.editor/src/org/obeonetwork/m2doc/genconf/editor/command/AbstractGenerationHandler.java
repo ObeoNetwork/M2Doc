@@ -53,7 +53,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    private final class ConfirmRunnable implements RunnableFuture<Boolean> {
+    private static final class ConfirmRunnable implements RunnableFuture<Boolean> {
 
         /**
          * The dialog title.
@@ -201,7 +201,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
      *             if the template can't be read
      * @return <code>true</code> if the generation should be launched, <code>false</code> otherwise
      */
-    protected boolean checkM2DocVersion(final Shell shell, final String dialogTitle, Generation gen)
+    protected static boolean checkM2DocVersion(final Shell shell, final String dialogTitle, Generation gen)
             throws DocumentGenerationException, IOException {
         boolean res = true;
 

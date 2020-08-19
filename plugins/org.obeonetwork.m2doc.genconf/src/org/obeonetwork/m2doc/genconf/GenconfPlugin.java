@@ -12,10 +12,15 @@
 
 package org.obeonetwork.m2doc.genconf;
 
+import java.util.List;
+
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.BundleContext;
 
 /**
  * Plugin's activator class.
@@ -61,6 +66,12 @@ public class GenconfPlugin extends EMFPlugin {
      * @author cedric
      */
     public static class Implementation extends EclipsePlugin {
+
+        /**
+         * The {@link GenconfResourceListener}.
+         */
+        private GenconfResourceListener listener;
+
         /**
          * Create the Eclipse Implementation.
          */
@@ -71,6 +82,44 @@ public class GenconfPlugin extends EMFPlugin {
             //
             plugin = this;
         }
+
+        @Override
+        public void start(BundleContext context) throws Exception {
+            super.start(context);
+            listener = new GenconfResourceListener();
+            ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
+            listener.walkWorkspace(ResourcesPlugin.getWorkspace());
+        }
+
+        @Override
+        public void stop(BundleContext context) throws Exception {
+            ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
+            listener = null;
+            super.stop(context);
+        }
+
+        /**
+         * Gets the {@link Generation} {@link URI} from the given result {@link URI}.
+         * 
+         * @param resultURI
+         *            the result {@link URI}
+         * @return the {@link Generation} {@link URI} from the given result {@link URI} if any, <code>null</code> otherwise
+         */
+        public List<URI> getGenconfURIsFromResult(URI resultURI) {
+            return listener.getGenconfURIsFromResult(resultURI);
+        }
+
+        /**
+         * Gets the {@link Generation} {@link URI} from the given template {@link URI}.
+         * 
+         * @param templateURI
+         *            the template {@link URI}
+         * @return the {@link Generation} {@link URI} from the given template {@link URI} if any, <code>null</code> otherwise
+         */
+        public List<URI> getGenconfURIsFromTempate(URI templateURI) {
+            return listener.getGenconfURIsFromTempate(templateURI);
+        }
+
     }
 
     /**

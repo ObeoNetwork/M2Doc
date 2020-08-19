@@ -16,6 +16,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.emf.ecore.xmi,
  org.obeonetwork.m2doc.ide,
- org.apache.poi;bundle-version="[4.1.0,4.2.0)"
+ org.apache.poi;bundle-version="[4.1.0,4.2.0)",
+ org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.obeonetwork.m2doc.genconf
+Bundle-Activator: org.obeonetwork.m2doc.genconf.GenconfPlugin$Implementation

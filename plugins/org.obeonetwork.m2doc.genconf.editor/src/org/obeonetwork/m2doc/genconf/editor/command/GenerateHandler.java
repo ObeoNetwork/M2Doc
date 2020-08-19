@@ -33,7 +33,7 @@ import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 
 /**
- * Generate docx from docx template.
+ * Generate docx from {@link Generation}.
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
@@ -44,7 +44,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    private final class GenerateJob extends WorkspaceJob {
+    public static final class GenerateJob extends WorkspaceJob {
 
         /**
          * The generation dialog title.
@@ -69,7 +69,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
          * @param shell
          *            the {@link Shell} to display errors
          */
-        private GenerateJob(Generation generation, Shell shell) {
+        public GenerateJob(Generation generation, Shell shell) {
             super("Generating: " + URI.decode(generation.eResource().getURI().toString()));
             this.generation = generation;
             this.shell = shell;
