@@ -113,6 +113,14 @@ To launch a generation you can right click on the generation configuration model
 
 ![The Generate Documentation menu.]({{page.relativePath}}/ref-doc/nightly/images/Generate%20Documentation%20menu.png "The Generate Documentation menu.")
 
+You can also use the &#171;M2Doc Generate Template&#187; menu on the template that is referenced by one or more generation configuration models (.genconf file):
+
+![The M2Doc Generate Template menu.]({{page.relativePath}}/ref-doc/nightly/images/M2Doc%20Generate%20Template%20menu.png "The M2Doc Generate Template menu.")
+
+Or the &#171;M2Doc Update Document&#187; menu on the generated document that is referenced by one or more generation configuration models (.genconf file):
+
+![The M2Doc Update Document menu.]({{page.relativePath}}/ref-doc/nightly/images/M2Doc%20Update%20Document%20menu.png "The M2Doc Generate Document menu.")
+
 If you don&#8217;t have the the generation model configuration file you can create it using the [initialize generation](index.html#initializing-a-generation-configuration) section.
 
 ### Initializing a generation configuration
