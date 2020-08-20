@@ -216,24 +216,38 @@ public class GenconfResourceListener implements IResourceChangeListener {
     private void addResource(IResource resource) {
         final Generation generation = getGeneration(resource);
         if (generation != null) {
-            final URI resultURI = GenconfUtils.getResolvedURI(generation,
-                    URI.createURI(generation.getResultFileName(), false));
-            final URI templateURI = GenconfUtils.getResolvedURI(generation,
-                    URI.createURI(generation.getTemplateFileName(), false));
-            List<URI> generations = resultToGenerations.get(resultURI);
-            if (generations == null) {
-                generations = new ArrayList<URI>();
-                resultToGenerations.put(resultURI, generations);
+            final URI resultURI;
+            if (generation.getResultFileName() != null) {
+                resultURI = GenconfUtils.getResolvedURI(generation,
+                        URI.createURI(generation.getResultFileName(), false));
+            } else {
+                resultURI = null;
             }
-            generations.add(generation.eResource().getURI());
-            generations = templateToGenerations.get(templateURI);
-            if (generations == null) {
-                generations = new ArrayList<URI>();
-                templateToGenerations.put(templateURI, generations);
+            if (resultURI != null) {
+                List<URI> generations = resultToGenerations.get(resultURI);
+                if (generations == null) {
+                    generations = new ArrayList<URI>();
+                    resultToGenerations.put(resultURI, generations);
+                }
+                generations.add(generation.eResource().getURI());
+                generationToResult.put(generation.eResource().getURI(), resultURI);
             }
-            generations.add(generation.eResource().getURI());
-            generationToResult.put(generation.eResource().getURI(), resultURI);
-            generationToTemplate.put(generation.eResource().getURI(), templateURI);
+            final URI templateURI;
+            if (generation.getTemplateFileName() != null) {
+                templateURI = GenconfUtils.getResolvedURI(generation,
+                        URI.createURI(generation.getTemplateFileName(), false));
+            } else {
+                templateURI = null;
+            }
+            if (templateURI != null) {
+                List<URI> generations = templateToGenerations.get(templateURI);
+                if (generations == null) {
+                    generations = new ArrayList<URI>();
+                    templateToGenerations.put(templateURI, generations);
+                }
+                generations.add(generation.eResource().getURI());
+                generationToTemplate.put(generation.eResource().getURI(), templateURI);
+            }
         }
     }
 
