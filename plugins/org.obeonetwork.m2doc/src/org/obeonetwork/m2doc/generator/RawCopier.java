@@ -317,7 +317,6 @@ public class RawCopier {
      *            the input {@link XWPFParagraph}
      * @param bookmarkManager
      *            the {@link BookmarkManager} or <code>null</code>
-
      * @return the output {@link XWPFParagraph}
      * @throws InvalidFormatException
      *             if image copy fails
@@ -338,8 +337,9 @@ public class RawCopier {
         // Create relation embedded in run and keep relation id in map (input to output)
         updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph.getBody(), outputBody,
                 res.getCTP());
+        outputBody.getParagraphs().get(0).createRun();
         if (bookmarkManager != null) {
-            updateBookmarks(bookmarkManager, res.getCTP(), inputParagraph.getCTP());
+            updateBookmarks(bookmarkManager, res.getCTP(), inputParagraph.getCTP(), outputBody);
         }
 
         return res;
@@ -933,7 +933,7 @@ public class RawCopier {
                     if (inputBodyElement instanceof XWPFParagraph) {
                         final IBodyElement outputBodyElement = outputBodyElements.get(bodyElementIndex);
                         updateBookmarks(bookmarkManager, ((XWPFParagraph) outputBodyElement).getCTP(),
-                                ((XWPFParagraph) inputBodyElement).getCTP());
+                                ((XWPFParagraph) inputBodyElement).getCTP(), outputTable.getBody());
                     }
                 }
             }
@@ -949,12 +949,16 @@ public class RawCopier {
      *            the output {@link CTP}
      * @param inputParagraph
      *            the input {@link CTP}
+     * @param outputBody
+     *            the output {@link IBody}
      */
-    private void updateBookmarks(BookmarkManager bookmarkManager, CTP outputParagraph, CTP inputParagraph) {
+    private void updateBookmarks(BookmarkManager bookmarkManager, CTP outputParagraph, CTP inputParagraph,
+            IBody outputBody) {
         final List<CTBookmark> oldBookmarks = inputParagraph.getBookmarkStartList();
         final List<CTBookmark> newBookmarks = outputParagraph.getBookmarkStartList();
         for (int bookmarkIndex = 0; bookmarkIndex < oldBookmarks.size(); bookmarkIndex++) {
-            bookmarkManager.updateXmlObject(newBookmarks.get(bookmarkIndex), oldBookmarks.get(bookmarkIndex));
+            bookmarkManager.updateXmlObject(newBookmarks.get(bookmarkIndex), oldBookmarks.get(bookmarkIndex),
+                    outputBody);
         }
         List<CTR> inputRuns = inputParagraph.getRList();
         final List<CTR> outputRuns = outputParagraph.getRList();
@@ -964,7 +968,7 @@ public class RawCopier {
             final List<CTText> inputTexts = inputRun.getInstrTextList();
             final List<CTText> outputTexts = outputRun.getInstrTextList();
             for (int textIndex = 0; textIndex < inputTexts.size(); textIndex++) {
-                bookmarkManager.updateXmlObject(outputTexts.get(textIndex), inputTexts.get(textIndex));
+                bookmarkManager.updateXmlObject(outputTexts.get(textIndex), inputTexts.get(textIndex), outputBody);
             }
         }
     }

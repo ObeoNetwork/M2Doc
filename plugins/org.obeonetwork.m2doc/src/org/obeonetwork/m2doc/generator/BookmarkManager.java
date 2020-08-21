@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -39,6 +40,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class BookmarkManager {
+
     /**
      * The buffer size.
      */
@@ -324,10 +326,12 @@ public class BookmarkManager {
      *            the new {@link XmlObject}
      * @param oldObject
      *            the old {@link XmlObject}
+     * @param outputBoby
+     *            the output {@link IBody}
      * @param <T>
      *            the actual type of both {@link XmlObject}
      */
-    public <T extends XmlObject> void updateXmlObject(T newObject, T oldObject) {
+    public <T extends XmlObject> void updateXmlObject(T newObject, T oldObject, IBody outputBoby) {
         final String name = xmlObjectToName.remove(oldObject);
         if (name != null) {
             xmlObjectToName.put(newObject, name);
@@ -348,7 +352,13 @@ public class BookmarkManager {
         }
         final XWPFRun run = messagePositions.remove(oldObject);
         if (run != null) {
-            messagePositions.put(newObject, run); // TODO find the new run
+            final XWPFRun newRun;
+            if (outputBoby.getParagraphs().size() > 0) {
+                newRun = outputBoby.getParagraphs().get(0).createRun();
+            } else {
+                newRun = null;
+            }
+            messagePositions.put(newObject, newRun);
         }
     }
 
