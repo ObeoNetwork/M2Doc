@@ -337,7 +337,6 @@ public class RawCopier {
         // Create relation embedded in run and keep relation id in map (input to output)
         updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph.getBody(), outputBody,
                 res.getCTP());
-        outputBody.getParagraphs().get(0).createRun();
         if (bookmarkManager != null) {
             updateBookmarks(bookmarkManager, res.getCTP(), inputParagraph.getCTP(), outputBody);
         }

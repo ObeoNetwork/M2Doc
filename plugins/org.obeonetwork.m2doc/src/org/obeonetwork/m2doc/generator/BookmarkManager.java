@@ -352,6 +352,8 @@ public class BookmarkManager {
         }
         final XWPFRun run = messagePositions.remove(oldObject);
         if (run != null) {
+            // TODO the run should be deleted but it has already been copied to the new document
+            // find a way to delete the copy
             final XWPFRun newRun;
             if (outputBoby.getParagraphs().size() > 0) {
                 newRun = outputBoby.getParagraphs().get(0).createRun();
