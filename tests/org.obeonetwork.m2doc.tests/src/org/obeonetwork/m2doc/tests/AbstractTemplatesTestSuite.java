@@ -40,7 +40,6 @@ import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -63,7 +62,6 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.xtext.example.mydsl.MyDslStandaloneSetup;
-import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -154,8 +152,6 @@ public abstract class AbstractTemplatesTestSuite {
      *             if the tested template can't be parsed
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
-        MyDslPackage.eINSTANCE.getName();// make sure MyDsl is loaded (XText)
-        UMLPackage.eINSTANCE.getName(); // make sure UML2 is loaded
         this.testFolderPath = testFolder.replaceAll("\\\\", "/");
         final URI genconfURI = getGenconfURI(new File(testFolderPath));
         if (URIConverter.INSTANCE.exists(genconfURI, Collections.EMPTY_MAP)) {
