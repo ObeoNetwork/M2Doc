@@ -697,7 +697,7 @@ public class AddInServlet extends HttpServlet {
      */
     private Map<String, Object> parseVariableValues(IReadOnlyQueryEnvironment queryEnvironment,
             QueryEvaluationEngine engine, Map<String, Object> variables, URIConverter uriConverter, URI templateURI) {
-        final Map<String, Object> res = new HashMap<>();
+        final Map<String, Object> res = new HashMap<>(variables);
 
         try (DocumentTemplate template = M2DocUtils.parse(uriConverter, templateURI,
                 (IQueryEnvironment) queryEnvironment, M2DocPlugin.getClassProvider(), new BasicMonitor())) {
@@ -706,19 +706,21 @@ public class AddInServlet extends HttpServlet {
                 final EObject current = it.next();
                 if (current instanceof Let) {
                     final Let let = (Let) current;
-                    final EvaluationResult evaluationResult = engine.eval(let.getValue(), variables);
+                    final EvaluationResult evaluationResult = engine.eval(let.getValue(), res);
                     final Object value = evaluationResult.getResult();
                     res.put(let.getName(), value);
                 } else if (current instanceof Repetition) {
                     final Repetition repetition = (Repetition) current;
-                    final EvaluationResult evaluationResult = engine.eval(repetition.getQuery(), variables);
+                    final EvaluationResult evaluationResult = engine.eval(repetition.getQuery(), res);
                     final Object value = evaluationResult.getResult();
-                    Iterator<?> valIt = ((Collection<?>) value).iterator();
-                    if (valIt.hasNext()) {
-                        res.put(repetition.getIterationVar(), valIt.next());
-                    } else {
-                        // TODO ?
-                    }
+                    if (value != null) {
+                        Iterator<?> valIt = ((Collection<?>) value).iterator();
+                        if (valIt.hasNext()) {
+                            res.put(repetition.getIterationVar(), valIt.next());
+                        } else {
+                            // TODO ?
+                        }
+                    } // Else may happen if some variable name are reused with different type
                 } else if (current instanceof Parameter) {
                     // final Parameter parameter = (Parameter) current;
                     // TODO ?
