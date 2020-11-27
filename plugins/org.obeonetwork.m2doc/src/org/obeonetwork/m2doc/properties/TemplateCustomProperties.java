@@ -53,6 +53,8 @@ import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
@@ -438,14 +440,41 @@ public class TemplateCustomProperties {
         final AstResult astResult = parseWhileAqlTypeLiteral(queryEnvironment, type);
         final IValidationResult validationResult = validator.validate(Collections.<String, Set<IType>> emptyMap(),
                 astResult);
-        // TODO replace with AstValidator.getDeclarationTypes()
         final Set<IType> variableTypes = validationResult.getPossibleTypes(astResult.getAst());
-        for (IType iType : variableTypes) {
+        res.addAll(getDeclarationTypes(queryEnvironment, variableTypes));
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link Set} declaration types from the given {@link Set} of {@link IType}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param types
+     *            the {@link Set} of {@link IType}
+     * @return the {@link Set} declaration types from the given {@link Set} of {@link IType}
+     */
+    // TODO replace with AstValidator.getDeclarationTypes()
+    private Set<IType> getDeclarationTypes(IReadOnlyQueryEnvironment queryEnvironment, final Set<IType> types) {
+        final Set<IType> res = new LinkedHashSet<>();
+
+        for (IType iType : types) {
             if (iType instanceof EClassifierLiteralType) {
                 res.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType) iType).getType()));
             } else if (iType instanceof EClassifierSetLiteralType) {
                 for (EClassifier eClassifier : ((EClassifierSetLiteralType) iType).getEClassifiers()) {
                     res.add(new EClassifierType(queryEnvironment, eClassifier));
+                }
+            } else if (iType instanceof SequenceType) {
+                final Set<IType> collectionTypes = Collections.singleton(((SequenceType) iType).getCollectionType());
+                for (IType collectionType : getDeclarationTypes(queryEnvironment, collectionTypes)) {
+                    res.add(new SequenceType(queryEnvironment, collectionType));
+                }
+            } else if (iType instanceof SetType) {
+                final Set<IType> collectionTypes = Collections.singleton(((SetType) iType).getCollectionType());
+                for (IType collectionType : getDeclarationTypes(queryEnvironment, collectionTypes)) {
+                    res.add(new SetType(queryEnvironment, collectionType));
                 }
             } else {
                 res.add(iType);

@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.tests.properties;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,8 +25,12 @@ import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -417,6 +422,46 @@ public class TemplateCustomPropertiesTests {
             properties.setM2DocVersion("3.0.0");
 
             assertEquals("3.0.0", properties.getM2DocVersion());
+        }
+    }
+
+    @Test
+    public void getVariableTypes() throws IOException {
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
+                URI.createFileURI("resources/document/properties/properties-template-m2docVersion.docx"));) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+
+            final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+            final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
+
+            Set<IType> possibleTypes = properties.getVariableTypes(validator, queryEnvironment, "ecore::EClass");
+
+            Iterator<IType> it = possibleTypes.iterator();
+            IType possibleType = it.next();
+            assertTrue(possibleType instanceof EClassifierType);
+            assertFalse(possibleType instanceof EClassifierLiteralType);
+            assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType) possibleType).getType());
+
+            possibleTypes = properties.getVariableTypes(validator, queryEnvironment, "Sequence(ecore::EClass)");
+
+            it = possibleTypes.iterator();
+            possibleType = it.next();
+            assertTrue(possibleType instanceof SequenceType);
+            IType collectionType = ((SequenceType) possibleType).getCollectionType();
+            assertTrue(collectionType instanceof EClassifierType);
+            assertFalse(collectionType instanceof EClassifierLiteralType);
+            assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType) collectionType).getType());
+
+            possibleTypes = properties.getVariableTypes(validator, queryEnvironment, "OrderedSet(ecore::EClass)");
+
+            it = possibleTypes.iterator();
+            possibleType = it.next();
+            assertTrue(possibleType instanceof SetType);
+            collectionType = ((SetType) possibleType).getCollectionType();
+            assertTrue(collectionType instanceof EClassifierType);
+            assertFalse(collectionType instanceof EClassifierLiteralType);
+            assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType) collectionType).getType());
+
         }
     }
 }
