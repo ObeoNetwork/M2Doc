@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .fromHTMLBodyString('<p>First paragraph.<br />\nSecond paragraph.</p>\n\n<p>Third paragraph.</p>\n\n<p>Last paragraph.</p>')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
