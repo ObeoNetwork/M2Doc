@@ -440,7 +440,7 @@ public class TemplateCustomPropertiesTests {
 
             if (unusedVariables.size() == 1) {
                 // AQL before 7.0.0
-                assertEquals("unusedVariable", unusedVariables.get(1));
+                assertEquals("unusedVariable", unusedVariables.get(0));
             } else {
                 // AQL after 7.0.0
                 assertEquals(2, unusedVariables.size());
@@ -459,7 +459,7 @@ public class TemplateCustomPropertiesTests {
 
             if (unusedVariables.size() == 1) {
                 // AQL before 7.0.0
-                assertEquals("unusedVariable", unusedVariables.get(1));
+                assertEquals("unusedVariable", unusedVariables.get(0));
             } else {
                 // AQL after 7.0.0
                 assertEquals(2, unusedVariables.size());
@@ -478,7 +478,7 @@ public class TemplateCustomPropertiesTests {
 
             if (unusedVariables.size() == 1) {
                 // AQL before 7.0.0
-                assertEquals("unusedVariable", unusedVariables.get(1));
+                assertEquals("unusedVariable", unusedVariables.get(0));
             } else {
                 // AQL after 7.0.0
                 assertEquals(2, unusedVariables.size());
