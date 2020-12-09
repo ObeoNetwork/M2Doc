@@ -19,9 +19,9 @@ location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/
 	org.eclipse.net4j.feature.group lazy
 }
 
-location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/" {
+location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.22.0/" {
     // for testing purpose only
-	org.eclipse.xtext.sdk.feature.group [2.16.0,2.17.0)
+	org.eclipse.xtext.sdk.feature.group [2.22.0,2.23.0)
 }
 
 location Jetty "https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.24.v20191120/" {

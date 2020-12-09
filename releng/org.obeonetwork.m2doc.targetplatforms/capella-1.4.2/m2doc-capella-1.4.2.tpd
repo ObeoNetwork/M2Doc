@@ -1,4 +1,4 @@
-target "M2Doc Capella 1.4.0 Target Platform"
+target "M2Doc Capella 1.4.2 Target Platform"
 
 include "../common/common.tpd"
 

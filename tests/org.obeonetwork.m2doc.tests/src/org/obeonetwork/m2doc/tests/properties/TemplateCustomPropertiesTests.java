@@ -291,23 +291,45 @@ public class TemplateCustomPropertiesTests {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> missingVariables = properties.getMissingVariables();
 
-            assertEquals(16, missingVariables.size());
-            assertEquals("linkNamelinkText", missingVariables.get(0));
-            assertEquals("bookmarkName", missingVariables.get(1));
-            assertEquals("queryInBookmark", missingVariables.get(2));
-            assertEquals("ifCondition", missingVariables.get(3));
-            assertEquals("queryInIf", missingVariables.get(4));
-            assertEquals("elseIfCondition", missingVariables.get(5));
-            assertEquals("queryInElseIf", missingVariables.get(6));
-            assertEquals("queryInElse", missingVariables.get(7));
-            assertEquals("letExpression", missingVariables.get(8));
-            assertEquals("queryInLet", missingVariables.get(9));
-            assertEquals("forExpression", missingVariables.get(10));
-            assertEquals("queryInFor", missingVariables.get(11));
-            assertEquals("queryExpression", missingVariables.get(12));
-            assertEquals("aqlInSelect", missingVariables.get(13));
-            assertEquals("aqlLetExpression", missingVariables.get(14));
-            assertEquals("aqlLetBody", missingVariables.get(15));
+            if (missingVariables.size() == 16) {
+                // AQL before 7.0.0
+                assertEquals("linkNamelinkText", missingVariables.get(0));
+                assertEquals("bookmarkName", missingVariables.get(1));
+                assertEquals("queryInBookmark", missingVariables.get(2));
+                assertEquals("ifCondition", missingVariables.get(3));
+                assertEquals("queryInIf", missingVariables.get(4));
+                assertEquals("elseIfCondition", missingVariables.get(5));
+                assertEquals("queryInElseIf", missingVariables.get(6));
+                assertEquals("queryInElse", missingVariables.get(7));
+                assertEquals("letExpression", missingVariables.get(8));
+                assertEquals("queryInLet", missingVariables.get(9));
+                assertEquals("forExpression", missingVariables.get(10));
+                assertEquals("queryInFor", missingVariables.get(11));
+                assertEquals("queryExpression", missingVariables.get(12));
+                assertEquals("aqlInSelect", missingVariables.get(13));
+                assertEquals("aqlLetExpression", missingVariables.get(14));
+                assertEquals("aqlLetBody", missingVariables.get(15));
+            } else {
+                // AQL after 7.0.0
+                assertEquals(17, missingVariables.size());
+                assertEquals("linkName", missingVariables.get(0));
+                assertEquals("linkText", missingVariables.get(1));
+                assertEquals("bookmarkName", missingVariables.get(2));
+                assertEquals("queryInBookmark", missingVariables.get(3));
+                assertEquals("ifCondition", missingVariables.get(4));
+                assertEquals("queryInIf", missingVariables.get(5));
+                assertEquals("elseIfCondition", missingVariables.get(6));
+                assertEquals("queryInElseIf", missingVariables.get(7));
+                assertEquals("queryInElse", missingVariables.get(8));
+                assertEquals("letExpression", missingVariables.get(9));
+                assertEquals("queryInLet", missingVariables.get(10));
+                assertEquals("forExpression", missingVariables.get(11));
+                assertEquals("queryInFor", missingVariables.get(12));
+                assertEquals("queryExpression", missingVariables.get(13));
+                assertEquals("aqlInSelect", missingVariables.get(14));
+                assertEquals("aqlLetExpression", missingVariables.get(15));
+                assertEquals("aqlLetBody", missingVariables.get(16));
+            }
         }
     }
 
@@ -318,23 +340,45 @@ public class TemplateCustomPropertiesTests {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> missingVariables = properties.getMissingVariables();
 
-            assertEquals(16, missingVariables.size());
-            assertEquals("linkNamelinkText", missingVariables.get(0));
-            assertEquals("bookmarkName", missingVariables.get(1));
-            assertEquals("queryInBookmark", missingVariables.get(2));
-            assertEquals("ifCondition", missingVariables.get(3));
-            assertEquals("queryInIf", missingVariables.get(4));
-            assertEquals("elseIfCondition", missingVariables.get(5));
-            assertEquals("queryInElseIf", missingVariables.get(6));
-            assertEquals("queryInElse", missingVariables.get(7));
-            assertEquals("letExpression", missingVariables.get(8));
-            assertEquals("queryInLet", missingVariables.get(9));
-            assertEquals("forExpression", missingVariables.get(10));
-            assertEquals("queryInFor", missingVariables.get(11));
-            assertEquals("queryExpression", missingVariables.get(12));
-            assertEquals("aqlInSelect", missingVariables.get(13));
-            assertEquals("aqlLetExpression", missingVariables.get(14));
-            assertEquals("aqlLetBody", missingVariables.get(15));
+            if (missingVariables.size() == 16) {
+                // AQL before 7.0.0
+                assertEquals("linkNamelinkText", missingVariables.get(0));
+                assertEquals("bookmarkName", missingVariables.get(1));
+                assertEquals("queryInBookmark", missingVariables.get(2));
+                assertEquals("ifCondition", missingVariables.get(3));
+                assertEquals("queryInIf", missingVariables.get(4));
+                assertEquals("elseIfCondition", missingVariables.get(5));
+                assertEquals("queryInElseIf", missingVariables.get(6));
+                assertEquals("queryInElse", missingVariables.get(7));
+                assertEquals("letExpression", missingVariables.get(8));
+                assertEquals("queryInLet", missingVariables.get(9));
+                assertEquals("forExpression", missingVariables.get(10));
+                assertEquals("queryInFor", missingVariables.get(11));
+                assertEquals("queryExpression", missingVariables.get(12));
+                assertEquals("aqlInSelect", missingVariables.get(13));
+                assertEquals("aqlLetExpression", missingVariables.get(14));
+                assertEquals("aqlLetBody", missingVariables.get(15));
+            } else {
+                // AQL after 7.0.0
+                assertEquals(17, missingVariables.size());
+                assertEquals("linkName", missingVariables.get(0));
+                assertEquals("linkText", missingVariables.get(1));
+                assertEquals("bookmarkName", missingVariables.get(2));
+                assertEquals("queryInBookmark", missingVariables.get(3));
+                assertEquals("ifCondition", missingVariables.get(4));
+                assertEquals("queryInIf", missingVariables.get(5));
+                assertEquals("elseIfCondition", missingVariables.get(6));
+                assertEquals("queryInElseIf", missingVariables.get(7));
+                assertEquals("queryInElse", missingVariables.get(8));
+                assertEquals("letExpression", missingVariables.get(9));
+                assertEquals("queryInLet", missingVariables.get(10));
+                assertEquals("forExpression", missingVariables.get(11));
+                assertEquals("queryInFor", missingVariables.get(12));
+                assertEquals("queryExpression", missingVariables.get(13));
+                assertEquals("aqlInSelect", missingVariables.get(14));
+                assertEquals("aqlLetExpression", missingVariables.get(15));
+                assertEquals("aqlLetBody", missingVariables.get(16));
+            }
         }
     }
 
@@ -345,23 +389,45 @@ public class TemplateCustomPropertiesTests {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> missingVariables = properties.getMissingVariables();
 
-            assertEquals(16, missingVariables.size());
-            assertEquals("linkNamelinkText", missingVariables.get(0));
-            assertEquals("bookmarkName", missingVariables.get(1));
-            assertEquals("queryInBookmark", missingVariables.get(2));
-            assertEquals("ifCondition", missingVariables.get(3));
-            assertEquals("queryInIf", missingVariables.get(4));
-            assertEquals("elseIfCondition", missingVariables.get(5));
-            assertEquals("queryInElseIf", missingVariables.get(6));
-            assertEquals("queryInElse", missingVariables.get(7));
-            assertEquals("letExpression", missingVariables.get(8));
-            assertEquals("queryInLet", missingVariables.get(9));
-            assertEquals("forExpression", missingVariables.get(10));
-            assertEquals("queryInFor", missingVariables.get(11));
-            assertEquals("queryExpression", missingVariables.get(12));
-            assertEquals("aqlInSelect", missingVariables.get(13));
-            assertEquals("aqlLetExpression", missingVariables.get(14));
-            assertEquals("aqlLetBody", missingVariables.get(15));
+            if (missingVariables.size() == 16) {
+                // AQL before 7.0.0
+                assertEquals("linkNamelinkText", missingVariables.get(0));
+                assertEquals("bookmarkName", missingVariables.get(1));
+                assertEquals("queryInBookmark", missingVariables.get(2));
+                assertEquals("ifCondition", missingVariables.get(3));
+                assertEquals("queryInIf", missingVariables.get(4));
+                assertEquals("elseIfCondition", missingVariables.get(5));
+                assertEquals("queryInElseIf", missingVariables.get(6));
+                assertEquals("queryInElse", missingVariables.get(7));
+                assertEquals("letExpression", missingVariables.get(8));
+                assertEquals("queryInLet", missingVariables.get(9));
+                assertEquals("forExpression", missingVariables.get(10));
+                assertEquals("queryInFor", missingVariables.get(11));
+                assertEquals("queryExpression", missingVariables.get(12));
+                assertEquals("aqlInSelect", missingVariables.get(13));
+                assertEquals("aqlLetExpression", missingVariables.get(14));
+                assertEquals("aqlLetBody", missingVariables.get(15));
+            } else {
+                // AQL after 7.0.0
+                assertEquals(17, missingVariables.size());
+                assertEquals("linkName", missingVariables.get(0));
+                assertEquals("linkText", missingVariables.get(1));
+                assertEquals("bookmarkName", missingVariables.get(2));
+                assertEquals("queryInBookmark", missingVariables.get(3));
+                assertEquals("ifCondition", missingVariables.get(4));
+                assertEquals("queryInIf", missingVariables.get(5));
+                assertEquals("elseIfCondition", missingVariables.get(6));
+                assertEquals("queryInElseIf", missingVariables.get(7));
+                assertEquals("queryInElse", missingVariables.get(8));
+                assertEquals("letExpression", missingVariables.get(9));
+                assertEquals("queryInLet", missingVariables.get(10));
+                assertEquals("forExpression", missingVariables.get(11));
+                assertEquals("queryInFor", missingVariables.get(12));
+                assertEquals("queryExpression", missingVariables.get(13));
+                assertEquals("aqlInSelect", missingVariables.get(14));
+                assertEquals("aqlLetExpression", missingVariables.get(15));
+                assertEquals("aqlLetBody", missingVariables.get(16));
+            }
         }
     }
 
@@ -372,8 +438,15 @@ public class TemplateCustomPropertiesTests {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> unusedVariables = properties.getUnusedDeclarations();
 
-            assertEquals(1, unusedVariables.size());
-            assertEquals("unusedVariable", unusedVariables.get(0));
+            if (unusedVariables.size() == 1) {
+                // AQL before 7.0.0
+                assertEquals("unusedVariable", unusedVariables.get(1));
+            } else {
+                // AQL after 7.0.0
+                assertEquals(2, unusedVariables.size());
+                assertEquals("linkNamelinkText", unusedVariables.get(0));
+                assertEquals("unusedVariable", unusedVariables.get(1));
+            }
         }
     }
 
@@ -384,8 +457,15 @@ public class TemplateCustomPropertiesTests {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> unusedVariables = properties.getUnusedDeclarations();
 
-            assertEquals(1, unusedVariables.size());
-            assertEquals("unusedVariable", unusedVariables.get(0));
+            if (unusedVariables.size() == 1) {
+                // AQL before 7.0.0
+                assertEquals("unusedVariable", unusedVariables.get(1));
+            } else {
+                // AQL after 7.0.0
+                assertEquals(2, unusedVariables.size());
+                assertEquals("linkNamelinkText", unusedVariables.get(0));
+                assertEquals("unusedVariable", unusedVariables.get(1));
+            }
         }
     }
 
@@ -396,8 +476,15 @@ public class TemplateCustomPropertiesTests {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             final List<String> unusedVariables = properties.getUnusedDeclarations();
 
-            assertEquals(1, unusedVariables.size());
-            assertEquals("unusedVariable", unusedVariables.get(0));
+            if (unusedVariables.size() == 1) {
+                // AQL before 7.0.0
+                assertEquals("unusedVariable", unusedVariables.get(1));
+            } else {
+                // AQL after 7.0.0
+                assertEquals(2, unusedVariables.size());
+                assertEquals("linkNamelinkText", unusedVariables.get(0));
+                assertEquals("unusedVariable", unusedVariables.get(1));
+            }
         }
     }
 
