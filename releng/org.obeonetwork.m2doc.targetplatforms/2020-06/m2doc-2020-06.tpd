@@ -1,0 +1,82 @@
+target "M2Doc 2020-06 Target Platform"
+
+with source requirements
+
+location Eclipse "http://download.eclipse.org/releases/2020-06" {
+	org.eclipse.platform.sdk lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
+	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
+	org.eclipse.emf.sdk.feature.group lazy
+	org.junit [4.0.0,5.0.0)
+	org.eclipse.gmf lazy
+	org.eclipse.gmf.runtime.diagram.ui lazy
+	org.eclipse.gmf.runtime.diagram.ui.render lazy
+	org.eclipse.jdt.feature.group lazy
+
+    // for testing purpose only
+	org.eclipse.uml2.feature.group lazy
+
+	// Sirius
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius lazy
+	org.eclipse.sirius.diagram lazy
+	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
+	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
+
+	// AQL
+	org.eclipse.acceleo.query.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
+	org.antlr.runtime [4.7.2,4.7.3)
+
+	// wikitext
+	org.eclipse.mylyn.wikitext [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.asciidoc [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.confluence [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.html [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.markdown [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.mediawiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.textile [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.tracwiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.twiki [3.0.0,3.1.0)
+}
+
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+	org.kohsuke.args4j [2.0.21,2.1.0)
+	org.jsoup [1.8.3,1.8.4)
+	javax.servlet [3.1.0,3.2.0)
+}
+
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
+	com.google.guava [15.0.0,16.0.0)
+}
+
+location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
+	org.apache.poi.feature.feature.group lazy
+}
+
+location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
+	org.eclipse.emf.cdo.sdk.feature.group lazy
+	org.eclipse.net4j.feature.group lazy
+}
+
+location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0/" {
+    // for testing purpose only
+	org.eclipse.xtext.sdk.feature.group [2.21.0,2.22.0)
+}
+
+location Jetty "https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.24.v20191120/" {
+	org.eclipse.jetty.server [9.4.24,9.4.25)
+	org.eclipse.jetty.util [9.4.24,9.4.25)
+	org.eclipse.jetty.util.ajax [9.4.24,9.4.25)
+	org.eclipse.jetty.io [9.4.24,9.4.25)
+	org.eclipse.jetty.http [9.4.24,9.4.25)
+	org.eclipse.jetty.client [9.4.24,9.4.25)
+	org.eclipse.jetty.servlet [9.4.24,9.4.25)
+	org.eclipse.jetty.security [9.4.24,9.4.25)
+}

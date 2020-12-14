@@ -3,20 +3,18 @@ language: java
 env:
   - PROFILE=platform-oxygen,tests
   - PROFILE=platform-photon,tests,updatesites
-  - PROFILE=platform-2018-09,tests
   - PROFILE=platform-2018-12,tests
-  - PROFILE=platform-2019-03,tests
-  - PROFILE=platform-2019-06,tests
-  - PROFILE=platform-2019-09,tests
+  - PROFILE=platform-2019-12,tests
+  - PROFILE=platform-2020-12,tests
   - PROFILE=platform-sirius-5.1,tests
-  - PROFILE=platform-sirius-6.0,tests
-  - PROFILE=platform-sirius-6.1.0,tests
-  - PROFILE=platform-sirius-6.1.1,tests
+  - PROFILE=platform-sirius-6.0.0,tests
   - PROFILE=platform-sirius-6.1.3,tests
-  - PROFILE=platform-sirius-6.1.x,tests
   - PROFILE=platform-sirius-6.2.2,tests
   - PROFILE=platform-sirius-6.2.x,tests
+  - PROFILE=platform-sirius-6.3.5,tests
   - PROFILE=platform-sirius-6.3.x,tests
+  - PROFILE=platform-sirius-6.4.0,tests
+  - PROFILE=platform-sirius-6.4.x,tests
   - PROFILE=platform-capella-1.4.2,tests
 jdk:
 - oraclejdk8
@@ -45,61 +43,34 @@ jobs:
 
     # Java 11 only
   - jdk: oraclejdk8
-    env: PROFILE=platform-2018-09,tests
-  - if: type = cron
-    jdk: oraclejdk11
-    env: PROFILE=platform-2018-09,tests
-
-  - jdk: oraclejdk8
     env: PROFILE=platform-2018-12,tests
   - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-2018-12,tests
 
   - jdk: oraclejdk8
-    env: PROFILE=platform-2019-03,tests
+    env: PROFILE=platform-2019-12,tests
   - if: type = cron
     jdk: oraclejdk11
-    env: PROFILE=platform-2019-03,tests
+    env: PROFILE=platform-2019-12,tests
 
   - jdk: oraclejdk8
-    env: PROFILE=platform-2019-06,tests
+    env: PROFILE=platform-2020-12,tests
   - if: type = cron
     jdk: oraclejdk11
-    env: PROFILE=platform-2019-06,tests
+    env: PROFILE=platform-2020-12,tests
 
   - jdk: oraclejdk8
-    env: PROFILE=platform-2019-09,tests
+    env: PROFILE=platform-sirius-6.0.0,tests
   - if: type = cron
     jdk: oraclejdk11
-    env: PROFILE=platform-2019-09,tests
-
-  - jdk: oraclejdk8
-    env: PROFILE=platform-sirius-6.0,tests
-  - if: type = cron
-    jdk: oraclejdk11
-    env: PROFILE=platform-sirius-6.0,tests
-
-  - jdk: oraclejdk8
-    env: PROFILE=platform-sirius-6.1.0,tests
-  - if: type = cron
-    jdk: oraclejdk11
-    env: PROFILE=platform-sirius-6.1.0,tests
-
-  - jdk: oraclejdk8
-    env: PROFILE=platform-sirius-6.1.1,tests
-  - if: type = cron
-    jdk: oraclejdk11
-    env: PROFILE=platform-sirius-6.1.1,tests
+    env: PROFILE=platform-sirius-6.0.0,tests
 
   - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.1.3,tests
   - if: type = cron
     jdk: oraclejdk11
     env: PROFILE=platform-sirius-6.1.3,tests
-
-  - jdk: oraclejdk8
-    env: PROFILE=platform-sirius-6.1.x,tests
 
   - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.2.2,tests
@@ -111,7 +82,22 @@ jobs:
     env: PROFILE=platform-sirius-6.2.x,tests
 
   - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.3.5,tests
+  - if: type = cron
+    jdk: oraclejdk11
+    env: PROFILE=platform-sirius-6.3.5,tests
+
+  - jdk: oraclejdk8
     env: PROFILE=platform-sirius-6.3.x,tests
+
+  - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.4.0,tests
+  - if: type = cron
+    jdk: oraclejdk11
+    env: PROFILE=platform-sirius-6.4.0,tests
+
+  - jdk: oraclejdk8
+    env: PROFILE=platform-sirius-6.4.x,tests
 
   - jdk: oraclejdk8
     env: PROFILE=platform-capella-1.4.2,tests

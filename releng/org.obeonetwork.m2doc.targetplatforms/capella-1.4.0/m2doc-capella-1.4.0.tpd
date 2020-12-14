@@ -1,7 +1,5 @@
 target "M2Doc Capella 1.4.0 Target Platform"
 
-include "../common/common.tpd"
-
 with source requirements
 
 //include "https://download.eclipse.org/capella/core/updates/releases/1.4.0-R20191121-173601/targets/capella.target-definition.targetplatform"
@@ -76,7 +74,7 @@ location sirius "http://download.eclipse.org/sirius/updates/releases/6.3.0/2019-
 	org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group lazy
 }
 
-location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtimecore/1.4.0RC4" {	
+location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/release/runtimecore/1.4.0" {	
 	org.polarsys.kitalpha.ad.runtime.feature.feature.group lazy
 	org.polarsys.kitalpha.cadence.feature.feature.group lazy
 	org.polarsys.kitalpha.common.feature.feature.group lazy
@@ -103,7 +101,7 @@ location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/upd
 	org.polarsys.kitalpha.richtext.widget.ext.feature.source.feature.group lazy
 	org.polarsys.kitalpha.transposer.feature.feature.group lazy
 }
-location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/1.4.0RC4" {
+location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/release/sdk/1.4.0" {
 	org.polarsys.kitalpha.doc.feature.feature.group lazy
 	org.polarsys.kitalpha.emde.sdk.feature.feature.group lazy
 }
@@ -158,4 +156,39 @@ location orbit-R20130827064939 "http://download.eclipse.org/tools/orbit/download
 
 location site_Capella "https://download.eclipse.org/capella/core/updates/releases/1.4.0-R20191121-173601/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.core.feature.feature.group lazy
+}
+
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+	org.kohsuke.args4j [2.0.21,2.1.0)
+	org.jsoup [1.8.3,1.8.4)
+	javax.servlet [3.1.0,3.2.0)
+}
+
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
+	com.google.guava [15.0.0,16.0.0)
+}
+
+location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
+	org.apache.poi.feature.feature.group lazy
+}
+
+location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
+	org.eclipse.emf.cdo.sdk.feature.group lazy
+	org.eclipse.net4j.feature.group lazy
+}
+
+location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/" {
+    // for testing purpose only
+	org.eclipse.xtext.sdk.feature.group [2.16.0,2.17.0)
+}
+
+location Jetty "https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.24.v20191120/" {
+	org.eclipse.jetty.server [9.4.24,9.4.25)
+	org.eclipse.jetty.util [9.4.24,9.4.25)
+	org.eclipse.jetty.util.ajax [9.4.24,9.4.25)
+	org.eclipse.jetty.io [9.4.24,9.4.25)
+	org.eclipse.jetty.http [9.4.24,9.4.25)
+	org.eclipse.jetty.client [9.4.24,9.4.25)
+	org.eclipse.jetty.servlet [9.4.24,9.4.25)
+	org.eclipse.jetty.security [9.4.24,9.4.25)
 }
