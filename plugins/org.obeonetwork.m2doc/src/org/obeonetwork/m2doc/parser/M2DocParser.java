@@ -270,6 +270,7 @@ public class M2DocParser extends AbstractBodyParser {
                                 .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                                         M2DocUtils.message(ParsingErrorMessage.TEMPLATE_NOT_ALLOWED_IN_THIS_BLOCK),
                                         templateRun));
+                        break endBlock;
                     }
                     break;
                 default:

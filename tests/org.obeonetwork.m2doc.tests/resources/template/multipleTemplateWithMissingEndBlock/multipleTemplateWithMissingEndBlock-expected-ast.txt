@@ -1,0 +1,20 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  comment: If any of the two following templates are placed in a m2doc template (at the beginning of or in the middle) both validation and generation stall
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template test1 (level : java.lang.Integer)
+  
+  let length = 'bitLength' in
+  endfor
+  
+  
+  let length = 'bitLength' in
+    
+  endfor
+  
