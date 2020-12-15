@@ -32,7 +32,7 @@
   </pluginRepositories> 
 
   <properties>
-    <rcptt-maven-version>2.3.0</rcptt-maven-version>
+    <rcptt-maven-version>2.5.1</rcptt-maven-version>
   </properties> 
   <build>
     <plugins>

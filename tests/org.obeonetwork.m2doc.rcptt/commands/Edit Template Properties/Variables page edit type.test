@@ -6,8 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _5DhP0H6WEei72vRv1zbFOA
-Runtime-Version: 2.2.0.201706152316
-Save-Time: 7/3/18 9:59 AM
+Save-Time: 12/15/20 9:42 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -18,16 +17,16 @@ get-view "Project Explorer" | get-tree | select "test/missingVariables.docx" | g
     -path "Edit Template properties" | click
 get-window "Template properties" | get-button "Next >" | click
 with [get-window "Template properties"] {
-    get-table | select linkNamelinkText
+    get-table | select linkName
     get-button Edit | click
-    with [get-window "Select a variable type for linkNamelinkText"] {
+    with [get-window "Select a variable type for linkName"] {
         get-tree | select "ecore::EClass"
         get-button OK | click
     }
 }
 with [get-window "Template properties" | get-table] {
-    get-item -path linkNamelinkText | get-property "columns[0]" | equals linkNamelinkText | verify-true
-    get-item -path linkNamelinkText | get-property "columns[1]" | equals "ecore::EClass" | verify-true
+    get-item -path linkName | get-property "columns[0]" | equals linkName | verify-true
+    get-item -path linkName | get-property "columns[1]" | equals "ecore::EClass" | verify-true
 }
 get-window "Template properties" | get-button Cancel | click
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

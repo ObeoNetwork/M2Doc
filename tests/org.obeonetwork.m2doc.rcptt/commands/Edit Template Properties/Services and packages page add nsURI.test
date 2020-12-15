@@ -6,8 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _57frkH6UEei72vRv1zbFOA
-Runtime-Version: 2.2.0.201706152316
-Save-Time: 7/3/18 10:08 AM
+Save-Time: 12/15/20 9:40 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -31,13 +30,13 @@ get-window "Template properties" | get-table | get-item -path "http:\\/\\/www.xt
     | get-property caption | equals "http://www.xtext.org/example/mydsl/MyDsl" | verify-true
 with [get-window "Template properties"] {
     get-button "Next >" | click
-    get-table | select linkNamelinkText
+    get-table | select linkName
     get-button Edit | click
 }
-get-window "Template properties" | get-window "Select a variable type for linkNamelinkText" | get-tree | get-item 
+get-window "Template properties" | get-window "Select a variable type for linkName" | get-tree | get-item 
     -path "myDsl::Greeting" | get-property caption | equals "myDsl::Greeting" | verify-true
 with [get-window "Template properties"] {
-    get-window "Select a variable type for linkNamelinkText" | get-button Cancel | click
+    get-window "Select a variable type for linkName" | get-button Cancel | click
     get-button Cancel | click
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
