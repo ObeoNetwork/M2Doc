@@ -6,7 +6,7 @@ env:
   - PROFILE=platform-2018-12,tests
   - PROFILE=platform-2019-12,tests
   - PROFILE=platform-2020-03,tests,updatesites
-  - PROFILE=platform-2020-12,tests
+#  - PROFILE=platform-2020-12,tests
   - PROFILE=platform-sirius-5.1.1,tests
   - PROFILE=platform-sirius-6.0.0,tests
   - PROFILE=platform-sirius-6.1.3,tests
