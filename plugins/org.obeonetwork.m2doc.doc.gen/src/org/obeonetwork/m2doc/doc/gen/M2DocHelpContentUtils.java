@@ -617,7 +617,7 @@ public final class M2DocHelpContentUtils {
 		StringBuffer servicesSection = new StringBuffer();
 		// @formatter:off
 		servicesSection.append("---").append(LS);
-		servicesSection.append("layout: article").append(LS);
+		servicesSection.append("layout: article-services").append(LS);
 		servicesSection.append("title: ").append(serviceProviderClass.getSimpleName()).append(LS);
 		servicesSection.append("subtitle: Nightly").append(LS);
 		servicesSection.append("relativePath: ../..").append(LS);
