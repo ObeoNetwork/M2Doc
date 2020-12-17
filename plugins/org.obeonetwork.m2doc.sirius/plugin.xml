@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <!--
-    Copyright (c) 2016 Obeo. 
+    Copyright (c) 2016, 2020 Obeo. 
        All rights reserved. This program and the accompanying materials
        are made available under the terms of the Eclipse Public License v1.0
        which accompanies this distribution, and is available at
@@ -23,21 +23,5 @@
       <resourceStrategy
             class="org.obeonetwork.m2doc.sirius.GenconfResourceStrategy">
       </resourceStrategy>
-   </extension>
-   <extension
-         point="org.obeonetwork.m2doc.ide.services.register">
-      <token
-            name="Sirius">
-         <package
-               uri="http://www.eclipse.org/sirius/1.1.0"></package>
-         <package
-               uri="http://www.eclipse.org/sirius/diagram/1.1.0"></package>
-         <package
-               uri="http://www.eclipse.org/sirius/diagram/sequence/2.0.0"></package>
-         <package
-               uri="http://www.eclipse.org/sirius/table/1.1.0"></package>
-         <package
-               uri="http://www.eclipse.org/sirius/tree/1.1.0"></package>
-      </token>
    </extension>
 </plugin>
