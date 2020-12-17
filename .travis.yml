@@ -4,8 +4,8 @@ env:
   - PROFILE=platform-oxygen,tests
   - PROFILE=platform-photon,tests
   - PROFILE=platform-2018-12,tests
-  - PROFILE=platform-2019-12,tests
-  - PROFILE=platform-2020-03,tests,updatesites
+  - PROFILE=platform-2019-12,tests,updatesites
+  - PROFILE=platform-2020-03,tests
 #  - PROFILE=platform-2020-12,tests
   - PROFILE=platform-sirius-5.1.1,tests
   - PROFILE=platform-sirius-6.0.0,tests
@@ -50,16 +50,16 @@ jobs:
     env: PROFILE=platform-2018-12,tests
 
   - jdk: oraclejdk8
-    env: PROFILE=platform-2019-12,tests
+    env: PROFILE=platform-2019-12,tests,updatesites
   - if: type = cron
     jdk: oraclejdk11
-    env: PROFILE=platform-2019-12,tests
+    env: PROFILE=platform-2019-12,tests,updatesites
 
   - jdk: oraclejdk8
-    env: PROFILE=platform-2020-03,tests,updatesites
+    env: PROFILE=platform-2020-03,tests
   - if: type = cron
     jdk: oraclejdk11
-    env: PROFILE=platform-2020-03,tests,updatesites
+    env: PROFILE=platform-2020-03,tests
 
   - jdk: oraclejdk8
     env: PROFILE=platform-2020-12,tests
