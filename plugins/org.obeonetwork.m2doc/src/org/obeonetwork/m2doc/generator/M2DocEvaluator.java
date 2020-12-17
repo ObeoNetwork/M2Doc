@@ -391,7 +391,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     private XWPFRun insertRun(XWPFParagraph paragraph, XWPFRun srcRun) {
 
         final XWPFParagraph newParagraph;
-        if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph) {
+        if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph || paragraph == null) {
             newParagraph = createNewParagraph(generatedDocument, (XWPFParagraph) srcRun.getParent());
             forceNewParagraph = false;
         } else {
