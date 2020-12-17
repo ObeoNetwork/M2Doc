@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: article-services
 title: PaginationServices
 subtitle: Nightly
 relativePath: ../..

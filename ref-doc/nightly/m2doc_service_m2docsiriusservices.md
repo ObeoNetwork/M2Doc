@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: article-services
 title: M2DocSiriusServices
 subtitle: Nightly
 relativePath: ../..

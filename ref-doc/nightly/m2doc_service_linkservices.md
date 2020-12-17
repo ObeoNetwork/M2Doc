@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: article-services
 title: LinkServices
 subtitle: Nightly
 relativePath: ../..
