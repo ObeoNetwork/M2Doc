@@ -1591,8 +1591,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         if (newCell.getParagraphs().size() == 1) {
             final XWPFParagraph firstParagraph = newCell.getParagraphs().get(0);
             if (firstParagraph.getRuns().isEmpty()) {
-                ctCell.addNewP();
-                newCell.getCTTc().set(ctCell);
+                newCell.getCTTc().addNewP();
             }
         }
 
