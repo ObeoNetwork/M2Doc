@@ -1,0 +1,23 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  This template demonstrates the use of bookmarks. It creates two links to the same bookmark.Test link before bookmark : 
+  
+  link .toUpper(.aqlFeatureAccess(self, 'name')) .add(.aqlFeatureAccess(self, 'name'), ' reference') endlink
+  
+  Test bookmark : 
+  
+  bookmark .toUpper(.aqlFeatureAccess(self, 'name'))
+    bookmarked content
+  endbookmark
+  
+  Test link after bookmark : 
+  
+  link .toUpper(.aqlFeatureAccess(self, 'name')) .add(.aqlFeatureAccess(self, 'name'), ' reference') endlink
+  
+   End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
