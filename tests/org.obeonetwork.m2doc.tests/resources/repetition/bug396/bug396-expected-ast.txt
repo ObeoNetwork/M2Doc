@@ -1,0 +1,75 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  
+  for val | Sequence{1, 2} do
+    table
+      row
+        
+          [query: val]
+        
+          [query: val]
+        
+          
+          for v2 | Sequence{4, 5, 6} do
+            table
+              row
+                
+                  [query: v2]
+                   
+                
+                  [query: .add(.add(val, ' '), v2)]
+                   
+                
+                  [query: 'toto ']
+                    
+                
+              
+          endfor
+          
+          a
+        
+          Fonctionne
+        
+      
+  endfor
+  
+  
+  
+  for val | Sequence{1, 2} do
+    table
+      row
+        
+          [query: val]
+        
+          [query: val]
+        
+          
+          for v2 | Sequence{4, 5, 6} do
+            table
+              row
+                
+                  [query: v2]
+                   
+                
+                  [query: .add(.add(val, ' '), v2)]
+                   
+                
+                  [query: 'toto ']
+                    
+                
+              
+          endfor
+          
+        
+          Tableau imbriqué disparait
+        
+      
+  endfor
+  
+  
+=== FOOTER ===
+
+=== TEMPLATES ===
