@@ -850,12 +850,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 break;
 
             case newTextWrapping:
-                run.addBreak(BreakType.TEXT_WRAPPING);
+                insertFieldRunReplacement(paragraph, run, "").addBreak(BreakType.TEXT_WRAPPING);
                 res = paragraph;
                 break;
 
             case ligneBreak:
-                run.addBreak();
+                insertFieldRunReplacement(paragraph, run, "").addBreak();
                 res = paragraph;
                 break;
 
