@@ -2,7 +2,7 @@ target "M2Doc 2020-03 Target Platform"
 
 with source requirements
 
-location Eclipse "http://download.eclipse.org/releases/2020-03" {
+location Eclipse "https://download.eclipse.org/releases/2020-03" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
@@ -46,26 +46,26 @@ location Eclipse "http://download.eclipse.org/releases/2020-03" {
 	org.eclipse.mylyn.wikitext.twiki [3.0.0,3.1.0)
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
 	org.kohsuke.args4j [2.0.21,2.1.0)
 	org.jsoup [1.8.3,1.8.4)
 	javax.servlet [3.1.0,3.2.0)
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
 	com.google.guava [15.0.0,16.0.0)
 }
 
-location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
+location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
 }
 
-location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
+location CDO "https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
 	org.eclipse.emf.cdo.sdk.feature.group lazy
 	org.eclipse.net4j.feature.group lazy
 }
 
-location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0/" {
+location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0/" {
     // for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.21.0,2.22.0)
 }

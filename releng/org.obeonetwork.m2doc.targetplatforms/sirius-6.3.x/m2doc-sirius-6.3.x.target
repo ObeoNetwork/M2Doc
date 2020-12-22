@@ -24,7 +24,7 @@
       <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.19.20171117145831"/>
       <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.19.20171117145831"/>
       <unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
-      <repository id="Eclipse" location="http://download.eclipse.org/releases/photon"/>
+      <repository id="Eclipse" location="https://download.eclipse.org/releases/photon"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.gmf" version="0.0.0"/>
@@ -32,7 +32,7 @@
       <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
       <unit id="org.eclipse.gmf.runtime.diagram.ui.properties" version="0.0.0"/>
       <unit id="org.eclipse.gmf.runtime.notation" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/releases/2020-09"/>
+      <repository location="https://download.eclipse.org/releases/2020-09"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
@@ -50,24 +50,24 @@
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
       <unit id="org.jsoup" version="1.8.3.v20181012-1713"/>
       <unit id="javax.servlet" version="3.1.0.v201410161800"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/"/>
+      <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="com.google.guava" version="15.0.0.v201403281430"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/"/>
+      <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.apache.poi.feature.feature.group" version="0.0.0"/>
-      <repository id="ObeoNetworkBits" location="http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties"/>
+      <repository id="ObeoNetworkBits" location="https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.net4j.feature.group" version="0.0.0"/>
-      <repository id="CDO" location="http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/"/>
+      <repository id="CDO" location="https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="2.16.0.v20181203-1555"/>
-      <repository id="XText" location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/"/>
+      <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.jetty.server" version="9.4.24.v20191120"/>

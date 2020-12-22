@@ -29,7 +29,7 @@
             <repository>
               <id>Neon update site </id>
               <layout>p2</layout>
-              <url>http://download.eclipse.org/releases/neon/</url>
+              <url>https://download.eclipse.org/releases/neon/</url>
             </repository>
             <repository>
               <id>Website Generator</id>

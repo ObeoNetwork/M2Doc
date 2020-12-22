@@ -4,7 +4,7 @@ with source requirements
 
 //include "https://download.eclipse.org/capella/core/updates/releases/1.4.0-R20191121-173601/targets/capella.target-definition.targetplatform"
 
-location eclipse "http://download.eclipse.org/releases/2019-06" {
+location eclipse "https://download.eclipse.org/releases/2019-06" {
 	org.eclipse.sdk.feature.group lazy
 	org.eclipse.platform.feature.group lazy
 	org.eclipse.emf.sdk.feature.group lazy
@@ -53,7 +53,7 @@ location eclipse "http://download.eclipse.org/releases/2019-06" {
 	org.eclipse.uml2.feature.group lazy
 }
 
-location sirius "http://download.eclipse.org/sirius/updates/releases/6.3.0/2019-06/" {
+location sirius "https://download.eclipse.org/sirius/updates/releases/6.3.0/2019-06/" {
 	org.eclipse.sirius.doc.feature.feature.group lazy
 	org.eclipse.sirius.doc.feature.source.feature.group lazy
 	org.eclipse.sirius.runtime.feature.group lazy
@@ -131,24 +131,24 @@ location amalgam "https://download.eclipse.org/modeling/amalgam/updates/stable/1
 	org.eclipse.amalgam.explorer.activity.source.feature.group lazy
 }
 
-location sirius-query-legacy "http://download.eclipse.org/sirius/updates/legacy/1.1.0" {
+location sirius-query-legacy "https://download.eclipse.org/sirius/updates/legacy/1.1.0" {
 	org.eclipse.sirius.query.legacy.feature.feature.group lazy
 	org.eclipse.sirius.query.legacy.feature.source.feature.group lazy
 }
 
-location egf "http://download.eclipse.org/egf/updates/1.6.1/2019-06/" {
+location egf "https://download.eclipse.org/egf/updates/1.6.1/2019-06/" {
 	org.eclipse.egf.sdk.feature.feature.group lazy
 }
 
-location nebula "http://download.eclipse.org/nebula/releases/1.4.0/" {
+location nebula "https://download.eclipse.org/nebula/releases/1.4.0/" {
 	org.eclipse.nebula.widgets.richtext.feature.feature.group lazy
 }
 
-location eclipse-shared-license "http://download.eclipse.org/cbi/updates/license" {
+location eclipse-shared-license "https://download.eclipse.org/cbi/updates/license" {
 	org.eclipse.license.feature.group lazy
 }
 
-location orbit-R20130827064939 "http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository" {
+location orbit-R20130827064939 "https://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository" {
 	org.apache.log4j [1.2.15,1.2.16)
 	org.apache.commons.lang [2.4.0,2.4.1)
 	org.apache.commons.net [3.2.0,3.2.1)
@@ -158,26 +158,26 @@ location site_Capella "https://download.eclipse.org/capella/core/updates/release
 	org.polarsys.capella.core.feature.feature.group lazy
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
 	org.kohsuke.args4j [2.0.21,2.1.0)
 	org.jsoup [1.8.3,1.8.4)
 	javax.servlet [3.1.0,3.2.0)
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
 	com.google.guava [15.0.0,16.0.0)
 }
 
-location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
+location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
 }
 
-location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
+location CDO "https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
 	org.eclipse.emf.cdo.sdk.feature.group lazy
 	org.eclipse.net4j.feature.group lazy
 }
 
-location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/" {
+location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/" {
     // for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.16.0,2.17.0)
 }

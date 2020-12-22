@@ -445,7 +445,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2020-06</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2020-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -475,7 +475,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2020-03</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2020-03</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -505,7 +505,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2019-12</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2019-12</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -535,7 +535,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2019-09</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2019-09</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -565,7 +565,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2019-06</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2019-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -595,7 +595,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2019-03</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2019-03</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -625,7 +625,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2018-12</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2018-12</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -655,7 +655,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2018-09</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/2018-09</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -685,7 +685,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -715,7 +715,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/oxygen</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/releases/oxygen</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -747,7 +747,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.4.x/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.4.x/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -777,7 +777,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.4.0/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.4.0/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -807,7 +807,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.3.x/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.3.x/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -837,7 +837,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.3.5/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.3.5/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -867,7 +867,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.2.x/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.2.x/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -897,7 +897,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.2.2/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.2.2/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -927,7 +927,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.1.x/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.1.x/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -957,7 +957,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.1.3/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.1.3/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -987,7 +987,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.1.1/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.1.1/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -1017,7 +1017,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.1.0/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.1.0/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -1047,7 +1047,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.0.0/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.0.0/photon</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -1077,7 +1077,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>

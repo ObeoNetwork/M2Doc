@@ -4,7 +4,7 @@ with source requirements
 
 //include "https://download.eclipse.org/capella/core/updates/stable/5.0.0-S20201202-123401/targets/capella.target-definition.targetplatform"
 
-location eclipse "http://download.eclipse.org/releases/2020-06" {
+location eclipse "https://download.eclipse.org/releases/2020-06" {
 	org.eclipse.sdk.feature.group lazy
 	org.eclipse.platform.feature.group lazy
 	org.eclipse.draw2d.source.feature.group lazy
@@ -56,11 +56,11 @@ location eclipse "http://download.eclipse.org/releases/2020-06" {
 	org.eclipse.uml2.feature.group lazy
 }
 
-location GMF-Notation-1.13.0 "http://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913" {
+location GMF-Notation-1.13.0 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913" {
     org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
 }
 
-location GMF-Runtime-1.13.0 "http://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202004160913" {
+location GMF-Runtime-1.13.0 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202004160913" {
     org.eclipse.gmf.runtime.sdk.feature.group lazy
     org.eclipse.gmf.runtime.thirdparty.feature.group lazy
 }
@@ -119,15 +119,15 @@ location amalgam "https://download.eclipse.org/modeling/amalgam/updates/stable/1
 	org.eclipse.amalgam.explorer.activity.source.feature.group lazy
 }
 
-location egf "http://download.eclipse.org/egf/updates/1.6.2/2019-06/" {
+location egf "https://download.eclipse.org/egf/updates/1.6.2/2019-06/" {
 	org.eclipse.egf.sdk.feature.source.feature.group lazy
 }
 
-location nebula "http://download.eclipse.org/nebula/releases/1.4.0/" {
+location nebula "https://download.eclipse.org/nebula/releases/1.4.0/" {
 	org.eclipse.nebula.widgets.richtext.feature.feature.group lazy
 }
 
-location eclipse-shared-license "http://download.eclipse.org/cbi/updates/license" {
+location eclipse-shared-license "https://download.eclipse.org/cbi/updates/license" {
 	org.eclipse.license.feature.group lazy
 }
 
@@ -135,22 +135,22 @@ location site_Capella "https://download.eclipse.org/capella/core/updates/stable/
 	org.polarsys.capella.core.feature.feature.group lazy
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
 	org.kohsuke.args4j [2.0.21,2.1.0)
 	org.jsoup [1.8.3,1.8.4)
 	javax.servlet [3.1.0,3.2.0)
 }
 
-location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
+location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
 }
 
-location CDO "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
+location CDO "https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
 	org.eclipse.emf.cdo.sdk.feature.group lazy
 	org.eclipse.net4j.feature.group lazy
 }
 
-location XText "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.22.0/" {
+location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.22.0/" {
     // for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.22.0,2.23.0)
 }
