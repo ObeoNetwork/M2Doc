@@ -89,7 +89,7 @@ public final class M2DocUtils {
     /**
      * M2Doc version.
      */
-    public static final String VERSION = "3.1.0";
+    public static final String VERSION = "3.1.1";
 
     /**
      * The plugin ID.

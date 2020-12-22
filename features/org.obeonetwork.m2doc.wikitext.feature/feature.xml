@@ -12,7 +12,7 @@
 <feature
       id="org.obeonetwork.m2doc.wikitext.feature"
       label="M2Doc WikiText Integration (experimental)"
-      version="3.1.0.qualifier"
+      version="3.1.1.qualifier"
       provider-name="Obeo Network">
 
    <description url="http://www.obeonetwork.com/">

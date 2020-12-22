@@ -1,6 +1,6 @@
 {
   "name": "m2doc-word-add-in",
-  "version": "3.0.0",
+  "version": "3.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/ObeoNetwork/M2Doc.git"

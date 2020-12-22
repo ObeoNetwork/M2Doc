@@ -2,7 +2,7 @@
 <feature
       id="org.obeonetwork.m2doc.launcher.feature"
       label="Feature for the M2doc Launcher"
-      version="3.1.0.qualifier">
+      version="3.1.1.qualifier">
 
    <description url="https://www.m2doc.org">
       Launcher for command line or maven uses.
