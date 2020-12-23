@@ -23,10 +23,11 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
+import org.obeonetwork.m2doc.util.DataURIHandler;
 import org.obeonetwork.m2doc.util.HttpURIHandler;
 
 /**
- * Register the {@link HttpURIHandler}.
+ * Register the {@link HttpURIHandler} and {@link DataURIHandler}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
@@ -36,6 +37,11 @@ public class HTTPServiceConfigurator implements IServicesConfigurator {
      * The {@link HttpURIHandler}.
      */
     private final URIHandler httpHandler = new HttpURIHandler();
+
+    /**
+     * The {@link DataURIHandler}.
+     */
+    private final URIHandler dataHandler = new DataURIHandler();
 
     @Override
     public List<String> getOptions() {
@@ -56,6 +62,7 @@ public class HTTPServiceConfigurator implements IServicesConfigurator {
     @Override
     public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options) {
+        resourceSetForModels.getURIConverter().getURIHandlers().add(0, dataHandler);
         resourceSetForModels.getURIConverter().getURIHandlers().add(0, httpHandler);
         return Collections.emptySet();
     }
@@ -68,6 +75,7 @@ public class HTTPServiceConfigurator implements IServicesConfigurator {
     @Override
     public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
         resourceSetForModels.getURIConverter().getURIHandlers().remove(httpHandler);
+        resourceSetForModels.getURIConverter().getURIHandlers().remove(dataHandler);
     }
 
     @Override

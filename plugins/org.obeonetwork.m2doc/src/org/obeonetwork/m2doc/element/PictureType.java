@@ -58,6 +58,21 @@ public enum PictureType {
     WPG(Document.PICTURE_TYPE_WPG);
 
     /**
+     * Data scheme.
+     */
+    private static final String DATA = "data";
+
+    /**
+     * Image mime type.
+     */
+    private static final String MIME_IMAGE_TYPE = "image/";
+
+    /**
+     * A semi colon.
+     */
+    private static final String SEMI_COLON = ";";
+
+    /**
      * The picture type according to POI.
      */
     private int poiType;
@@ -91,6 +106,7 @@ public enum PictureType {
      */
     public static PictureType toType(URI pictureURI) {
         PictureType res = null;
+
         if (pictureURI.fileExtension() != null) {
             String extension = pictureURI.fileExtension();
             try {
@@ -100,11 +116,27 @@ public enum PictureType {
                 // given extension is unknown.
                 // JPG type will be returned by default.
             }
+        } else if (DATA.equalsIgnoreCase(pictureURI.scheme())) {
+            final int semiColonIndex = pictureURI.opaquePart().indexOf(SEMI_COLON);
+            if (semiColonIndex > 0) {
+                final String type = pictureURI.opaquePart().substring(0, semiColonIndex).toLowerCase();
+                if (type.startsWith(MIME_IMAGE_TYPE)) {
+                    try {
+                        res = valueOf(type.substring(MIME_IMAGE_TYPE.length()).toUpperCase());
+                    } catch (IllegalArgumentException ignored) {
+                        // Simply ignore this exception. It means that the
+                        // given extension is unknown.
+                        // JPG type will be returned by default.
+                    }
+                }
+            }
         }
+
         // By default, fallback to JPG format
         if (res == null) {
             res = JPG;
         }
+
         return res;
     }
 
