@@ -2,7 +2,7 @@ target "M2Doc Capella 5.0.0 Target Platform"
 
 with source requirements
 
-//include "https://download.eclipse.org/capella/core/updates/stable/5.0.0-S20201202-123401/targets/capella.target-definition.targetplatform"
+//include "https://download.eclipse.org/capella/core/updates/releases/5.0.0-R20201202-123401/targets/capella.target-definition.targetplatform"
 
 location eclipse "https://download.eclipse.org/releases/2020-06" {
 	org.eclipse.sdk.feature.group lazy
@@ -131,7 +131,7 @@ location eclipse-shared-license "https://download.eclipse.org/cbi/updates/licens
 	org.eclipse.license.feature.group lazy
 }
 
-location site_Capella "https://download.eclipse.org/capella/core/updates/stable/5.0.0-S20201202-123401/org.polarsys.capella.rcp.site/" {
+location site_Capella "https://download.eclipse.org/capella/core/updates/releases/5.0.0-R20201202-123401/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.core.feature.feature.group lazy
 }
 
