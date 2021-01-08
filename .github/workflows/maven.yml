@@ -12,6 +12,8 @@ jobs:
 
     steps:
     - name: Environment
+      env:
+        PROFILE: platform-2020-03,tests,updatesites
       run: |
         echo GITHUB_WORKSPACE $GITHUB_WORKSPACE
         echo GITHUB_REF $GITHUB_REF
@@ -29,9 +31,27 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
+    - name: Setup website (documentation)
+      run: if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-install.sh && ./scripts/website-install.sh; fi
+
+    - name: Setup MS Word add-in
+      run: if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-install.sh && ./scripts/word-add-in-install.sh; fi
+    
+    - name: Build website (documentation)
+      run: |
+        mkdir plugins/org.obeonetwork.m2doc.doc/doc
+        export TAG=""
+        if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
+        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh ${TAG}; fi
+
+    - name: Build MS Word add-in
+      run: |
+        mkdir plugins/org.obeonetwork.m2doc.word.addin/dist/
+        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-build.sh && ./scripts/word-add-in-build.sh; fi
+
     - name: Build with Maven
       env:
         MAVEN_OPTS: -XX:MaxPermSize=512m -Xmx2048m -Xms1024m
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: mvn clean verify -fae -Pplatform-2020-03,tests,updatesites
+        run: mvn clean verify -fae -P$PROFILE
