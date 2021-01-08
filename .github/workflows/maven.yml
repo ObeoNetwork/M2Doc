@@ -42,7 +42,8 @@ jobs:
         mkdir plugins/org.obeonetwork.m2doc.doc/doc
         export TAG=""
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
-        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh ${TAG}; fi
+        echo TAG $TAG
+        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh $TAG; fi
 
     - name: Build MS Word add-in
       run: |
@@ -54,4 +55,6 @@ jobs:
         MAVEN_OPTS: -XX:MaxPermSize=512m -Xmx2048m -Xms1024m
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: mvn clean verify -fae -P$PROFILE
+        run: |
+          echo PROFILE $PROFILE
+          mvn clean verify -fae -P$PROFILE
