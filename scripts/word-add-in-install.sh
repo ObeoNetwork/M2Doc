@@ -6,6 +6,6 @@ sudo mv geckodriver /usr/local/bin/
 sudo chmod +x /usr/local/bin/geckodriver
 
 cd add-in
-npm i npm@latest -g
-npm install
+sudo npm i npm@latest -g
+sudo npm install
 cd -
