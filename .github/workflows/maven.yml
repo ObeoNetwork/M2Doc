@@ -12,13 +12,12 @@ jobs:
 
     steps:
     - name: Environment
-      env:
-        PROFILE: platform-2020-03,tests,updatesites
       run: |
         echo GITHUB_WORKSPACE $GITHUB_WORKSPACE
         echo GITHUB_REF $GITHUB_REF
         echo GITHUB_SHA $GITHUB_SHA
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
+        export PROFILE=platform-2020-03,tests,updatesites
     - uses: actions/checkout@v2
     - name: Set up JDK 11
       uses: actions/setup-java@v1
