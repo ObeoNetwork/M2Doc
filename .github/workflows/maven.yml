@@ -55,8 +55,7 @@ jobs:
     - name: Build with Maven
       env:
         MAVEN_OPTS: -XX:MaxPermSize=512m -Xmx2048m -Xms1024m
-        PROFILE: ${PROFILE}
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: mvn clean verify -fae -Pplatform-2020-03,tests,updatesites
+        run: mvn clean verify -fae -P$PROFILE
 
