@@ -5,13 +5,28 @@ name: Java CI with Maven
 
 on: [push, pull_request]
 
-env:
-  PROFILE: platform-2020-03,tests,updatesites
-
 jobs:
-  build:
 
+  matrix_prep:
+    # Using a separate job and agent so as to be able to use tools like 'sed' and 'jq'
+    runs-on: ubuntu-latest
+    # Defining outputs of a job allows for easier consumption and use
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    # Checking out code as the set-matrix step utilizes a file named matrix_includes.json
+    - name: Check out code
+      uses: actions/checkout@v2
+    # This step is explained more in a following section
+    - id: set-matrix
+
+  build:
+    needs: matrix_prep
     runs-on: ubuntu-20.04
+    strategy:
+      # We need to convert the json string output into an object that the GitHub Workflow expects.
+      # Thankfully, the json-schema for Workflows allows 'matrix' to be set to an expression.
+      matrix: ${{fromJson(needs.matrix_prep.outputs.matrix)}}
 
     steps:
     - name: Environment
@@ -21,11 +36,10 @@ jobs:
         echo GITHUB_SHA $GITHUB_SHA
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
         echo PROFILE $PROFILE
-    - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: ${{ matrix.java }}
     - uses: actions/cache@v1
       with:
         path: ~/.m2/repository
@@ -34,12 +48,18 @@ jobs:
           ${{ runner.os }}-maven-
 
     - name: Setup website (documentation)
+      env:
+        PROFILE: ${{ matrix.profile }}
       run: if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-install.sh && ./scripts/website-install.sh; fi
 
     - name: Setup MS Word add-in
+      env:
+        PROFILE: ${{ matrix.profile }}
       run: if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-install.sh && ./scripts/word-add-in-install.sh; fi
     
     - name: Build website (documentation)
+      env:
+        PROFILE: ${{ matrix.profile }}
       run: |
         mkdir plugins/org.obeonetwork.m2doc.doc/doc
         export TAG=""
@@ -48,6 +68,8 @@ jobs:
         if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh $TAG; fi
 
     - name: Build MS Word add-in
+      env:
+        PROFILE: ${{ matrix.profile }}
       run: |
         mkdir plugins/org.obeonetwork.m2doc.word.addin/dist/
         if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-build.sh && ./scripts/word-add-in-build.sh; fi
@@ -55,6 +77,7 @@ jobs:
     - name: Build with Maven
       env:
         MAVEN_OPTS: -XX:MaxPermSize=512m -Xmx2048m -Xms1024m
+        PROFILE: ${{ matrix.profile }}
       uses: GabrielBB/xvfb-action@v1
       with:
         run: mvn clean verify -fae -P$PROFILE
