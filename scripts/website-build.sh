@@ -5,7 +5,7 @@ mkdir web-site
 cd web-site
 echo "Clone gh-pages"
 git clone https://$GH_TOKEN@github.com/ObeoNetwork/M2Doc.git -b gh-pages --quiet .
-if [[ "$TAG" != "" ]]; then chmod a+x ./promote.sh; ./promote.sh ${TAG}; fi
+if [[ "$TAG" != "" ]]; then chmod a+x ./promote.sh; ./promote.sh $TAG; fi
 echo "Build gh-pages"
 jekyll build
 ls
