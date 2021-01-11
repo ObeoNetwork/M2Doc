@@ -10,7 +10,7 @@ env:
 
 jobs:
   build:
-
+scripts/website-build.sh
     runs-on: ubuntu-20.04
 
     steps:
@@ -45,7 +45,7 @@ jobs:
         export TAG=""
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         echo TAG $TAG
-        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh ${TAG}; fi
+        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh $TAG; fi
 
     - name: Build MS Word add-in
       run: |
@@ -58,6 +58,6 @@ jobs:
       uses: GabrielBB/xvfb-action@v1
       with:
         run: |
-          echo PROFILE ${PROFILE}
-          mvn clean verify -fae -P${PROFILE}
+          echo PROFILE $PROFILE
+          mvn clean verify -fae -Pplatform-2020-03,tests,updatesites
 
