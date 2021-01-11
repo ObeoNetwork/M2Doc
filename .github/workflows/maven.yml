@@ -39,6 +39,7 @@ jobs:
         echo GITHUB_SHA $GITHUB_SHA
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
         echo PROFILE $PROFILE
+
     - name: Check out code
       uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.java }}
@@ -48,9 +49,9 @@ jobs:
     - uses: actions/cache@v1
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: ${{ runner.os }}-${{ matrix.java }}-${{ matrix.profile }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ runner.os }}-maven-
+          ${{ runner.os }}-${{ matrix.java }}-${{ matrix.profile }}-maven-
 
     - name: Setup website (documentation)
       env:
@@ -82,8 +83,7 @@ jobs:
     - name: Build with Maven
       env:
         MAVEN_OPTS: -XX:MaxPermSize=512m -Xmx2048m -Xms1024m
-        PROFILE: ${{ matrix.profile }}
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: mvn clean verify -fae -P$PROFILE
+        run: mvn clean verify -fae -P${{ matrix.profile }}
 
