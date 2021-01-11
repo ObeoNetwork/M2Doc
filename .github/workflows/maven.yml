@@ -5,13 +5,13 @@ name: Java CI with Maven
 
 on: [push, pull_request]
 
+env:
+  PROFILE: platform-2020-03,tests,updatesites
+
 jobs:
   build:
 
     runs-on: ubuntu-20.04
-    
-    env:
-      PROFILE: platform-2020-03,tests,updatesites
 
     steps:
     - name: Environment
