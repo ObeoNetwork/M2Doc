@@ -19,6 +19,8 @@ jobs:
       uses: actions/checkout@v2
     # This step is explained more in a following section
     - id: set-matrix
+      run: |
+        matrix=$(jq matrix_includes.json)
 
   build:
     needs: matrix_prep
