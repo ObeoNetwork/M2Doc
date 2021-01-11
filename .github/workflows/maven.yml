@@ -39,6 +39,8 @@ jobs:
         echo GITHUB_SHA $GITHUB_SHA
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
         echo PROFILE $PROFILE
+    - name: Check out code
+      uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v1
       with:
