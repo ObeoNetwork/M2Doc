@@ -68,7 +68,7 @@ jobs:
         PROFILE: ${{ matrix.profile }}
       run: |
         mkdir plugins/org.obeonetwork.m2doc.doc/doc
-        export TAG=""
+        export TAG="nightly"
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         echo TAG $TAG
         if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh $TAG; fi
