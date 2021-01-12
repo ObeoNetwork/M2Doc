@@ -9,6 +9,5 @@ mkdir -p $DEPLOY_LOCAL_DIR
 cp -r $UPDATE_SITE_DIR/* $DEPLOY_LOCAL_DIR
 # Copy product to deploy local dir
 cp $PRODUCT_DIR/*.zip $DEPLOY_LOCAL_DIR
-echo "ls ${DEPLOY_LOCAL_DIR}"
-ls $DEPLOY_LOCAL_DIR
-
+echo "find ${DEPLOY_LOCAL_DIR}"
+find $DEPLOY_LOCAL_DIR
