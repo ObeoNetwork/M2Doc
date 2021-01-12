@@ -88,7 +88,7 @@ jobs:
         run: mvn clean verify -fae -P${{ matrix.profile }}
 
     - name: Prepare deploy local directory
-      id: deploy
+      id: prepare_deploy
       env:
         PROFILE: ${{ matrix.profile }}
       run: |
@@ -96,9 +96,10 @@ jobs:
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/prepare-deploy-local-dir.sh && ./scripts/prepare-deploy-local-dir.sh $GITHUB_WORKSPACE/$TAG_OR_BRANCH; export UPDATE_SITES=true; fi
         echo ::set-output name=UPDATE_SITES::${UPDATE_SITES}
+        echo ::set-output name=TAG_OR_BRANCH::${TAG_OR_BRANCH}
 
     - name: Deploy to S3
-      if: ${{ steps.deploy.outputs.UPDATE_SITES }}
+      if: ${{ steps.prepare_deploy.outputs.UPDATE_SITES }}
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read
@@ -107,6 +108,6 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: "eu-west-1"
-        SOURCE_DIR: "${GITHUB_WORKSPACE}/${TAG_OR_BRANCH}"
-        DEST_DIR: "${TAG_OR_BRANCH}"
+        SOURCE_DIR: ${{ steps.prepare_deploy.outputs.TAG_OR_BRANCH }}
+        DEST_DIR: ${{ steps.prepare_deploy.outputs.TAG_OR_BRANCH }}
 
