@@ -88,15 +88,17 @@ jobs:
         run: mvn clean verify -fae -P${{ matrix.profile }}
 
     - name: Prepare deploy local directory
+      id: deploy
       env:
         PROFILE: ${{ matrix.profile }}
       run: |
         export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)/nightly"
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/prepare-deploy-local-dir.sh && ./scripts/prepare-deploy-local-dir.sh $GITHUB_WORKSPACE/$TAG_OR_BRANCH; export UPDATE_SITES=true; fi
+        echo ::set-output name=UPDATE_SITES::${UPDATE_SITES}
 
     - name: Deploy to S3
-      if: ${{env.UPDATE_SITES}}
+      if: ${{ steps.deploy.outputs.UPDATE_SITES }}
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read
