@@ -2,6 +2,10 @@ target "M2Doc Sirius 5.1 Target Platform"
 
 with source requirements
 
+location Eclipse-Shared-License "http://download.eclipse.org/cbi/updates/license" {
+	org.eclipse.license.feature.group [2.0.0,3.0.0)
+}
+
 location Eclipse "https://download.eclipse.org/releases/oxygen" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy

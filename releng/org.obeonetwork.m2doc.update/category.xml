@@ -48,9 +48,11 @@
    <feature id="org.obeonetwork.m2doc.wikitext.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
-   <feature id="org.obeonetwork.m2doc.wikitext.feature.source" version="0.0.0">
+   <feature id="org.eclipse.license" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
+
+   <feature id="org.obeonetwork.m2doc.wikitext.feature.source" version="0.0.0"/>
 
    <bundle id="org.obeonetwork.m2doc.genconf.edit.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.genconf.tests" version="0.0.0"/>
