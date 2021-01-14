@@ -30,10 +30,6 @@ echo $?
 if [ ! -z $2 ]; then
   #commit
   echo "Commit ref-doc/$1."
-  git config user.email "yvan.lussaud@obeo.fr"
-  echo $?
-  git config user.name "Yvan Lussaud"
-  echo $?
   git add _data/pages.yml
   echo $?
   git add ref-doc/$1
