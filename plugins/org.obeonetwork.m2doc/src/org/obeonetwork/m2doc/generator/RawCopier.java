@@ -550,9 +550,15 @@ public class RawCopier {
                 outputDoc.createStyles();
             }
 
-            List<XWPFStyle> usedStyleList = inputDoc.getStyles().getUsedStyleList(style);
-            for (XWPFStyle xwpfStyle : usedStyleList) {
-                outputDoc.getStyles().addStyle(xwpfStyle);
+            try {
+                List<XWPFStyle> usedStyleList = inputDoc.getStyles().getUsedStyleList(style);
+                for (XWPFStyle xwpfStyle : usedStyleList) {
+                    outputDoc.getStyles().addStyle(xwpfStyle);
+                }
+            } catch (NullPointerException e) {
+                // there is a NPE in getUsedStyleList(). This NPE can be triggered with bug 387.
+                // the code is checking if an object is not null and then pass an other object...
+                // not copying styles in that case seems fine for now.
             }
         }
     }

@@ -1,0 +1,55 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a user doc :Acronyms
+  
+  userdoc 'zone1' do
+    
+      [To be updated manually]
+      table
+        row
+          
+            Acronym
+          
+            Definition
+          
+        row
+          
+            LAB
+          
+            Logical Architecture Blank
+          
+        row
+          
+            LFBD
+          
+            Logical Function Breakdown Diagram
+          
+        row
+          
+            LCBD
+          
+            Logical Component Breakdown Diagram
+          
+        row
+          
+            LDFB
+          
+            Logical Data Flow Blank
+          
+        row
+          
+            LF
+          
+            Logical Function
+          
+        
+      
+  enduserdoc
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
