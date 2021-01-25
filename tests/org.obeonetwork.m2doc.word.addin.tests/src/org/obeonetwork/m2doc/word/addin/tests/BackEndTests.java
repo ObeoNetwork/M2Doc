@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -56,6 +57,7 @@ public class BackEndTests {
     @BeforeClass
     public static void beforeClass() throws Exception {
         SERVER.start("localhost", 12345);
+        UMLPackage.eINSTANCE.getName(); // make sure UML2 is loaded
     }
 
     @AfterClass
