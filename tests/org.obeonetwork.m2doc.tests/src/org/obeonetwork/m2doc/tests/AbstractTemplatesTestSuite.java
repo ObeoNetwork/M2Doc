@@ -61,7 +61,6 @@ import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescripto
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
-import org.xtext.example.mydsl.MyDslStandaloneSetup;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -167,7 +166,6 @@ public abstract class AbstractTemplatesTestSuite {
         final List<Exception> exceptions = new ArrayList<>();
         resourceSetForModels = getResourceSetForModel(exceptions);
         queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
-        new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor());
         for (Exception e : exceptions) {

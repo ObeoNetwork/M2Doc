@@ -13,9 +13,12 @@ package org.obeonetwork.m2doc.tests;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.xtext.example.mydsl.MyDslStandaloneSetup;
 import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
 /**
@@ -41,6 +44,12 @@ public class XTextTests extends AbstractTemplatesTestSuite {
      */
     public XTextTests(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
+    }
+
+    @Override
+    protected ResourceSet getResourceSetForModel(List<Exception> exceptions) {
+        new MyDslStandaloneSetup().createInjectorAndDoEMFRegistration();
+        return super.getResourceSetForModel(exceptions);
     }
 
     /**
