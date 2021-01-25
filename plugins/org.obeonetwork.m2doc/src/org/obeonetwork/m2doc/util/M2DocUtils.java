@@ -642,6 +642,14 @@ public final class M2DocUtils {
                 messages.add(validationMessage);
             }
         }
+        final List<String> notLoadedClasses = properties.configureQueryEnvironmentWithResult(queryEnvironment,
+                classProvider);
+        for (String notLoadedClass : notLoadedClasses) {
+            final XWPFRun run = getOrCreateFirstRun(document);
+            final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
+                    ValidationMessageLevel.ERROR, "can't load service class: " + notLoadedClass, run);
+            messages.add(validationMessage);
+        }
 
         return messages;
     }

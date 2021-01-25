@@ -50,6 +50,9 @@ public class BackEndTests {
     private final String genconfURI = URI.createFileURI(new File("resources/nominal.genconf").getAbsolutePath())
             .toString().replace("/", "%2f").replace(":", "%3a");
 
+    private final String genconfURIUML2 = URI.createFileURI(new File("resources/uml2.genconf").getAbsolutePath())
+            .toString().replace("/", "%2f").replace(":", "%3a");
+
     @BeforeClass
     public static void beforeClass() throws Exception {
         SERVER.start("localhost", 12345);
@@ -230,6 +233,38 @@ public class BackEndTests {
     }
 
     @Test
+    public void restValidateOK() throws InterruptedException, ExecutionException, TimeoutException {
+        final ContentResponse response = client.GET(
+                "http://localhost:12345/rest/?genconfURI=" + genconfURI + "&command=validate&expression=self.name");
+
+        assertEquals(200, response.getStatus());
+        assertEquals("application/json", response.getMediaType());
+        assertEquals("[]", response.getContentAsString());
+    }
+
+    @Test
+    public void restValidateUML2() throws InterruptedException, ExecutionException, TimeoutException {
+        final ContentResponse response = client.GET(
+                "http://localhost:12345/rest/?genconfURI=" + genconfURIUML2 + "&command=validate&expression=self.na");
+
+        assertEquals(200, response.getStatus());
+        assertEquals("application/json", response.getMediaType());
+        assertEquals(
+                "[{\"level\":\"ERROR\",\"start\":4,\"end\":7,\"message\":\"Feature na not found in EClass Model\"}]",
+                response.getContentAsString());
+    }
+
+    @Test
+    public void restValidateUML2OK() throws InterruptedException, ExecutionException, TimeoutException {
+        final ContentResponse response = client.GET(
+                "http://localhost:12345/rest/?genconfURI=" + genconfURIUML2 + "&command=validate&expression=self.name");
+
+        assertEquals(200, response.getStatus());
+        assertEquals("application/json", response.getMediaType());
+        assertEquals("[]", response.getContentAsString());
+    }
+
+    @Test
     public void restEvaluateNoExpression() throws InterruptedException, ExecutionException, TimeoutException {
         final ContentResponse response = client
                 .GET("http://localhost:12345/rest/?genconfURI=" + genconfURI + "&command=evaluate");
@@ -257,6 +292,16 @@ public class BackEndTests {
         assertEquals(200, response.getStatus());
         assertEquals("text/html", response.getMediaType());
         assertEquals("<p>anydsl</p>", response.getContentAsString());
+    }
+
+    @Test
+    public void restEvaluateUML2() throws InterruptedException, ExecutionException, TimeoutException {
+        final ContentResponse response = client.GET(
+                "http://localhost:12345/rest/?genconfURI=" + genconfURIUML2 + "&command=evaluate&expression=self.name");
+
+        assertEquals(200, response.getStatus());
+        assertEquals("text/html", response.getMediaType());
+        assertEquals("<p>Some UML model</p>", response.getContentAsString());
     }
 
 }

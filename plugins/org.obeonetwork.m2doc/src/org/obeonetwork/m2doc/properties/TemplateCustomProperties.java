@@ -47,8 +47,10 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -72,6 +74,7 @@ import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
+import org.obeonetwork.m2doc.util.IClassProvider;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
@@ -395,6 +398,32 @@ public class TemplateCustomProperties {
                 queryEnvironment.registerEPackage(ePackage);
             } else {
                 res.add(nsURI);
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Configures the given {@link IQueryEnvironment} with {@link #getServiceClasses() declared service Class}.
+     * 
+     * @param queryEnvironment
+     *            the {@link IQueryEnvironment} to configure
+     * @param classProvider
+     *            the {@link IClassProvider}
+     * @return the {@link List} of {@link Class#getCanonicalName() class canonical names} that can't be loaded.
+     */
+    public List<String> configureQueryEnvironmentWithResult(IQueryEnvironment queryEnvironment,
+            IClassProvider classProvider) {
+        final List<String> res = new ArrayList<>();
+
+        for (Entry<String, String> entry : getServiceClasses().entrySet()) {
+            try {
+                final Class<?> cls = classProvider.getClass(entry.getKey(), entry.getValue());
+                final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
+                ServiceUtils.registerServices(queryEnvironment, s);
+            } catch (ClassNotFoundException e) {
+                res.add(entry.getKey());
             }
         }
 

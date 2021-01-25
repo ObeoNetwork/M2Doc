@@ -411,6 +411,9 @@ public class AddInServlet extends HttpServlet {
         if (expression != null) {
             try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
                 final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment,
+                        M2DocPlugin.getClassProvider());
                 final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
                 final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator, queryEnvironment);
                 variableTypes.putAll(
@@ -503,6 +506,9 @@ public class AddInServlet extends HttpServlet {
             if (completion != null) {
                 try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
                     final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                    properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+                    properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment,
+                            M2DocPlugin.getClassProvider());
                     final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
                     final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator,
                             queryEnvironment);
@@ -604,6 +610,9 @@ public class AddInServlet extends HttpServlet {
         if (expression != null) {
             try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
                 final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment,
+                        M2DocPlugin.getClassProvider());
                 final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
                 final Map<String, Set<IType>> variableTypes = properties.getVariableTypes(validator, queryEnvironment);
                 variableTypes.putAll(
@@ -658,6 +667,10 @@ public class AddInServlet extends HttpServlet {
         if (expression != null) {
             try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
                 final QueryEvaluationEngine engine = new QueryEvaluationEngine((IQueryEnvironment) queryEnvironment);
+                final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment,
+                        M2DocPlugin.getClassProvider());
                 final Map<String, Object> allVariables = new HashMap<>(variables);
                 allVariables
                         .putAll(parseVariableValues(queryEnvironment, engine, allVariables, uriConverter, templateURI));
