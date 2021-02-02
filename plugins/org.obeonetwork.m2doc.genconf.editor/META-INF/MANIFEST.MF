@@ -11,6 +11,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.obeonetwork.m2doc.genconf.editor,
  org.obeonetwork.m2doc.genconf.editor.command,
  org.obeonetwork.m2doc.genconf.editor.dialog,
+ org.obeonetwork.m2doc.genconf.editor.view,
+ org.obeonetwork.m2doc.genconf.editor.view.aql,
  org.obeonetwork.m2doc.genconf.editor.wizard,
  org.obeonetwork.m2doc.genconf.presentation,
  org.obeonetwork.m2doc.genconf.propertyTester
@@ -29,7 +31,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.transaction,
  org.obeonetwork.m2doc.ide.ui;bundle-version="[3.0.0,4.0.0)",
  org.apache.poi,
- org.eclipse.swt
+ org.eclipse.swt,
+ org.eclipse.jface.text,
+ org.eclipse.ui.workbench.texteditor
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.obeonetwork.m2doc.genconf.editor
 

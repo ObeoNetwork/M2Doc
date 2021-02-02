@@ -72,6 +72,7 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.util.HtmlSerializer;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**

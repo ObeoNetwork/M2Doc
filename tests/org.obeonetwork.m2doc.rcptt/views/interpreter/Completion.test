@@ -1,0 +1,41 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _u5kWIGU7EeulNa84tzLh2w,_OScnEGVIEeuB7drgrhfz6A
+Element-Name: Completion
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _EHLgYGVdEeuB7drgrhfz6A
+Save-Time: 2/2/21 2:55 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+with [get-view "M2Doc interpreter" | get-text-viewer] {
+    set-text ""
+}
+get-view "M2Doc interpreter" | get-button "Load Generation" | click -metaKeys ""
+with [get-window "Select generation file."] {
+    get-tree | select "test/uml2.genconf"
+    get-button OK | click -metaKeys ""
+}
+with [get-view "M2Doc interpreter" | get-text-viewer] {
+    type-text se
+    key-type "M1+SPACE"
+    key-type Down
+    key-type Enter
+    type-text "."
+    show-content-assist
+    show-content-assist
+    show-content-assist
+    show-content-assist
+    type-text n
+    key-type Enter
+}
+with [get-view "M2Doc interpreter"] {
+    get-text-viewer | get-property text | equals "self.name" | verify-true
+    get-control Browser | get-property text | equals "<p>Some UML model</p>" | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

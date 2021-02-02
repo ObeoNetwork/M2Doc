@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.obeonetwork.m2doc.word.addin;
+package org.obeonetwork.m2doc.util;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
@@ -68,12 +68,23 @@ public class HtmlSerializer {
             }
             res = builder.toString();
         } else if (object != null) {
-            res = "<p>" + object.toString() + "</p>";
+            res = paragraph(object.toString());
         } else {
             res = "<p>null</p>";
         }
 
         return res;
+    }
+
+    /**
+     * Gets an HTML paragraph containing the given {@link String}.
+     * 
+     * @param text
+     *            the {@link String}
+     * @return an HTML paragraph containing the given {@link String}
+     */
+    private String paragraph(String text) {
+        return "<p>" + text + "</p>";
     }
 
     /**
@@ -101,7 +112,7 @@ public class HtmlSerializer {
             final MImage image = (MImage) element;
             res = serialize(image);
         } else if (element instanceof MParagraph) {
-            res = "<p>" + serialize(((MParagraph) element).getContents()) + "</p>";
+            res = paragraph(serialize(((MParagraph) element).getContents()));
         } else if (element instanceof MTable) {
             final MTable table = (MTable) element;
             res = serialize(table);
@@ -163,15 +174,14 @@ public class HtmlSerializer {
     private String serialize(final MImage image) {
         final String res;
         final StringBuilder builder = new StringBuilder();
-        builder.append("<img src=\"data:image/" + image.getType().name().toLowerCase() + ";base64, ");
         try (InputStream is = image.getInputStream(); ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             IOUtils.copy(is, os);
+            builder.append("<img src=\"data:image/" + image.getType().name().toLowerCase() + ";base64, ");
             builder.append(new String(Base64.getEncoder().encode(os.toByteArray())));
+            builder.append("\"/>");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            builder.append(paragraph(e.getMessage()));
         }
-        builder.append("\"/>");
         res = builder.toString();
         return res;
     }

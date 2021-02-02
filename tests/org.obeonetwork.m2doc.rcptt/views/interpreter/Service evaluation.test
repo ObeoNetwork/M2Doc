@@ -1,0 +1,29 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _u5kWIGU7EeulNa84tzLh2w,_OScnEGVIEeuB7drgrhfz6A
+Element-Name: Service evaluation
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _Q7ICEGVfEeuB7drgrhfz6A
+Save-Time: 2/2/21 3:44 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+with [get-view "M2Doc interpreter" | get-text-viewer] {
+    set-text ""
+}
+get-view "M2Doc interpreter" | get-button "Load Generation" | click -metaKeys ""
+with [get-window "Select generation file."] {
+    get-tree | select "test/uml2.genconf"
+    get-button OK | click -metaKeys ""
+}
+with [get-view "M2Doc interpreter" | get-text-viewer] {
+    set-text "self.getServiceString()"
+}
+get-view "M2Doc interpreter" | get-control Browser | get-property text | equals "<p>some service string.</p>" 
+    | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

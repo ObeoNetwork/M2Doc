@@ -40,6 +40,14 @@
             name="Validate Template Command"
             id="org.obeonetwork.m2doc.genconf.editor.validate">
       </command>
+      <command
+            id="org.obeonetwork.m2doc.genconf.editor.loadInterpreterGeneration"
+            name="Load Generation">
+      </command>
+      <command
+            id="org.obeonetwork.m2doc.genconf.editor.refreshInterpreter"
+            name="Refresh Generation Context">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -54,6 +62,14 @@
       <handler
             commandId="org.obeonetwork.m2doc.genconf.editor.validate"
             class="org.obeonetwork.m2doc.genconf.editor.command.ValidateHandler">
+      </handler>
+      <handler
+            class="org.obeonetwork.m2doc.genconf.editor.command.LoadInterpreterGenerationHandler"
+            commandId="org.obeonetwork.m2doc.genconf.editor.loadInterpreterGeneration">
+      </handler>
+      <handler
+            class="org.obeonetwork.m2doc.genconf.editor.command.RefreshInterpreterHandler"
+            commandId="org.obeonetwork.m2doc.genconf.editor.refreshInterpreter">
       </handler>
    </extension>
    
@@ -205,6 +221,24 @@
             </visibleWhen>
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.obeonetwork.m2doc.genconf.editor.m2docInterpreter">
+         <command
+               commandId="org.obeonetwork.m2doc.genconf.editor.loadInterpreterGeneration"
+               icon="icons/full/obj16/GenconfModelFile.gif"
+               label="Load Generation"
+               style="push"
+               tooltip="Load Generation">
+         </command>
+         <command
+               commandId="org.obeonetwork.m2doc.genconf.editor.refreshInterpreter"
+               icon="icons/refresh.png"
+               label="Refresh"
+               style="push"
+               tooltip="Refresh Generation Context">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -249,6 +283,21 @@
             name="M2Doc project"
             project="true">
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.obeonetwork.m2doc.genconf.editor.viewCategory"
+            name="M2Doc">
+      </category>
+      <view
+            category="org.obeonetwork.m2doc.genconf.editor.viewCategory"
+            class="org.obeonetwork.m2doc.genconf.editor.view.M2DocInterpreterView"
+            icon="icons/m2doc.gif"
+            id="org.obeonetwork.m2doc.genconf.editor.m2docInterpreter"
+            name="M2Doc interpreter"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>
