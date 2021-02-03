@@ -38,7 +38,7 @@ jobs:
         echo GITHUB_REF $GITHUB_REF
         echo GITHUB_SHA $GITHUB_SHA
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
-        echo PROFILE $PROFILE
+        echo PROFILE ${{ matrix.profile }}
 
     - name: Check out code
       uses: actions/checkout@v2
@@ -49,7 +49,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '**/*.product') }}
         restore-keys: |
           ${{ runner.os }}-maven-
 
