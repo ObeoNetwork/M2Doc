@@ -40,6 +40,12 @@ jobs:
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
         echo PROFILE ${{ matrix.profile }}
 
+    - name: Check if update site is needed
+      id: updatesite_check
+      run: |
+        if [[ "$PROFILE" == *"updatesites"* ]]; export UPDATE_SITES=true; fi
+        echo ::set-output name=UPDATE_SITES::${UPDATE_SITES}
+
     - name: Check out code
       uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.java }}
@@ -54,31 +60,42 @@ jobs:
           ${{ runner.os }}-maven-
 
     - name: Setup website (documentation)
-      env:
-        PROFILE: ${{ matrix.profile }}
-      run: if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-install.sh && ./scripts/website-install.sh; fi
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
+      run: |
+        chmod a+x ./scripts/website-install.sh
+        ./scripts/website-install.sh
 
     - name: Setup MS Word add-in
-      env:
-        PROFILE: ${{ matrix.profile }}
-      run: if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-install.sh && ./scripts/word-add-in-install.sh; fi
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
+      run: |
+        chmod a+x ./scripts/word-add-in-install.sh
+        ./scripts/word-add-in-install.sh
     
-    - name: Build website (documentation)
-      env:
-        PROFILE: ${{ matrix.profile }}
+    - name: Create directory for website (documentation)
       run: |
         mkdir plugins/org.obeonetwork.m2doc.doc/doc
+    - name: Build website (documentation)
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
+      run: |
         export TAG="nightly"
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         echo TAG $TAG
-        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/website-build.sh && ./scripts/website-build.sh $TAG; fi
+        ./scripts/website-build.sh
+        ./scripts/website-build.sh $TAG
 
-    - name: Build MS Word add-in
-      env:
-        PROFILE: ${{ matrix.profile }}
+    - name: Create directory for MS Word add-in
       run: |
         mkdir plugins/org.obeonetwork.m2doc.word.addin/dist/
-        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/word-add-in-build.sh && ./scripts/word-add-in-build.sh; fi
+    - name: Build MS Word add-in
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
+      run: |
+        chmod a+x ./scripts/word-add-in-build.sh
+        ./scripts/word-add-in-build.sh
+
+    - name: Install metacity
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
+      run: |
+        sudo apt install metacity
 
     - name: Build with Maven (${{ matrix.profile }})
       env:
@@ -89,17 +106,16 @@ jobs:
 
     - name: Prepare deploy local directory
       id: prepare_deploy
-      env:
-        PROFILE: ${{ matrix.profile }}
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
       run: |
         export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)/nightly"
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
-        if [[ "$PROFILE" == *"updatesites"* ]]; then chmod a+x ./scripts/prepare-deploy-local-dir.sh && ./scripts/prepare-deploy-local-dir.sh $GITHUB_WORKSPACE/$TAG_OR_BRANCH; export UPDATE_SITES=true; fi
-        echo ::set-output name=UPDATE_SITES::${UPDATE_SITES}
+        chmod a+x ./scripts/prepare-deploy-local-dir.sh
+        ./scripts/prepare-deploy-local-dir.sh $GITHUB_WORKSPACE/$TAG_OR_BRANCH
         echo ::set-output name=TAG_OR_BRANCH::${TAG_OR_BRANCH}
 
     - name: Deploy to S3
-      if: ${{ steps.prepare_deploy.outputs.UPDATE_SITES }}
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --delete
