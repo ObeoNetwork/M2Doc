@@ -82,7 +82,7 @@ jobs:
         export TAG="nightly"
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         echo TAG $TAG
-        ./scripts/website-build.sh
+        chmod a+x ./scripts/website-build.sh
         ./scripts/website-build.sh $TAG
 
     - name: Create directory for MS Word add-in
