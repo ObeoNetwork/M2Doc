@@ -240,20 +240,25 @@ public class HtmlSerializer {
         String res = "%s";
 
         if (style != null) {
-            if ((style.getFontModifiers() & MStyle.FONT_BOLD) != 0) {
-                res = "<strong>" + res + "</strong>";
-            }
-            if ((style.getFontModifiers() & MStyle.FONT_ITALIC) != 0) {
-                res = "<i>" + res + "</i>";
-            }
-            if ((style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH) != 0) {
-                res = "<del>" + res + "</del>";
-            }
-            if ((style.getFontModifiers() & MStyle.FONT_UNDERLINE) != 0) {
-                res = "<u>" + res + "</u>";
+            if (style.getFontModifiers() != -1) {
+                if ((style.getFontModifiers() & MStyle.FONT_BOLD) != 0) {
+                    res = "<strong>" + res + "</strong>";
+                }
+                if ((style.getFontModifiers() & MStyle.FONT_ITALIC) != 0) {
+                    res = "<i>" + res + "</i>";
+                }
+                if ((style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH) != 0) {
+                    res = "<del>" + res + "</del>";
+                }
+                if ((style.getFontModifiers() & MStyle.FONT_UNDERLINE) != 0) {
+                    res = "<u>" + res + "</u>";
+                }
             }
 
             String spawnStyle = "";
+            if (style.getFontSize() != -1) {
+                spawnStyle += String.format("font-size:%spx;", style.getFontSize());
+            }
             if (style.getBackgroundColor() != null) {
                 final Color color = style.getBackgroundColor();
                 spawnStyle += String.format("background-color:#%02X%02X%02X;", color.getRed(), color.getGreen(),

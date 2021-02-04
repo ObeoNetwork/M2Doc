@@ -474,27 +474,51 @@ public class M2DocHTMLParser {
         } else if ("h1".equals(nodeName)) {
             res = createMParagraph(parent, element, null, null);
             context.style.setFontSize(H1_FONT_SIZE);
-            context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            if (context.style.getFontModifiers() != -1) {
+                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            } else {
+                context.style.setModifiers(MStyle.FONT_BOLD);
+            }
         } else if ("h2".equals(nodeName)) {
             res = createMParagraph(parent, element, null, null);
             context.style.setFontSize(H2_FONT_SIZE);
-            context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            if (context.style.getFontModifiers() != -1) {
+                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            } else {
+                context.style.setModifiers(MStyle.FONT_BOLD);
+            }
         } else if ("h3".equals(nodeName)) {
             res = createMParagraph(parent, element, null, null);
             context.style.setFontSize(H3_FONT_SIZE);
-            context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            if (context.style.getFontModifiers() != -1) {
+                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            } else {
+                context.style.setModifiers(MStyle.FONT_BOLD);
+            }
         } else if ("h4".equals(nodeName)) {
             res = createMParagraph(parent, element, null, null);
             context.style.setFontSize(H4_FONT_SIZE);
-            context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            if (context.style.getFontModifiers() != -1) {
+                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            } else {
+                context.style.setModifiers(MStyle.FONT_BOLD);
+            }
         } else if ("h5".equals(nodeName)) {
             res = createMParagraph(parent, element, null, null);
             context.style.setFontSize(H5_FONT_SIZE);
-            context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            if (context.style.getFontModifiers() != -1) {
+                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            } else {
+                context.style.setModifiers(MStyle.FONT_BOLD);
+            }
         } else if ("h6".equals(nodeName)) {
             res = createMParagraph(parent, element, null, null);
             context.style.setFontSize(H6_FONT_SIZE);
-            context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            if (context.style.getFontModifiers() != -1) {
+                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+            } else {
+                context.style.setModifiers(MStyle.FONT_BOLD);
+            }
         } else {
             res = parent;
         }
