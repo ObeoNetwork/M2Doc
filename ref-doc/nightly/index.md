@@ -235,6 +235,40 @@ The template is created after clicking finish:
 
 ![The New template Wizard.]({{page.relativePath}}/ref-doc/nightly/images/New%20Template%20Wizard6.png "The New template Wizard.")
 
+### M2Doc interpreter view
+
+The M2Doc interpreter view provides completion for [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions in the context of a generation model (.genconf file). To create a generation model file you can read the [initialize generation](index.html#initializing-a-generation-configuration) section.
+
+To open the M2Doc interpreter view, select the Windows / Show View / Other... :
+
+![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view1.png "M2Doc Interpreter View.")
+
+Then select the M2Doc interpreter in the M2Doc category:
+
+![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view2.png "M2Doc Interpreter View.")
+
+To start using the view, you need to select a generation model (.genconf file):
+
+![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view3.png "M2Doc Interpreter View.")
+
+Select your generation model (.genconf file) in the following dialog:
+
+![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view4.png "M2Doc Interpreter View.")
+
+You can then start typing [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions and use CTRL+SPACE for completion:
+
+![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view5.png "M2Doc Interpreter View.")
+
+Note that you have access to variables declared in your template and also to a variable named &#171;selection&#187; that contains the current selected element.
+
+You can also use the reload command to refresh the generation context, for instance when the template is modified or the source code of your services is modified:
+
+![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view6.png "M2Doc Interpreter View.")
+
+When an error/warning/info is detected, you can over the message to highlight the corresponding part of the expression:
+
+![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view7.png "M2Doc Interpreter View.")
+
 ### MS Word add-in
 
 To help you through the process of writing [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions, you can use the MS Word add-in. You will need to have a template and a generation model (.genconf file). To create a generation model file you can read the [initialize generation](index.html#initializing-a-generation-configuration) section.
@@ -399,9 +433,7 @@ The template should be edited using your Microsoft Word document editor. M2Doc u
 
 All syntax elements of M2Doc should be placed into fields using `ALT+F9` to show fields and `CTRL+F9` to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
 
-In order to create your [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions with completion and see the result for a selected object you can use the [Sirius interpreter](https://www.eclipse.org/sirius/doc/specifier/general/Writing_Queries.html) after installing [Sirius](https://eclipse.org/sirius/). The interpreter view is as follow and you should select `Sirius interpreter` and prefix your expressions with `aql:`:
-
-![Sirius interpreter.]({{page.relativePath}}/ref-doc/nightly/images/Sirius%20interpreter.png "Sirius interpreter.")
+In order to create your [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions with completion and see the result for a selected object you can use the [M2Doc interpreter](index.html#m2doc-interpreter-view).
 
 In the following explanations `{` and `}` will denote a Word field.
 
