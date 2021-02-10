@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,8 @@ import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -53,6 +56,8 @@ import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.VerticalRuler;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
@@ -63,7 +68,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -220,6 +228,11 @@ public class M2DocInterpreterView extends ViewPart {
     private static final String EXPRESSION = "expression";
 
     /**
+     * The selection variable.
+     */
+    private static final String SELECTION_VARIABLE = "selection";
+
+    /**
      * The {@link IMemento}.
      */
     private IMemento memento;
@@ -245,6 +258,11 @@ public class M2DocInterpreterView extends ViewPart {
     private Browser browser;
 
     /**
+     * The {@link ISelectionListener} updating the selection variable.
+     */
+    private ISelectionListener selectionListener;
+
+    /**
      * The update {@link Thread}.
      */
     private Thread updateThread;
@@ -268,6 +286,12 @@ public class M2DocInterpreterView extends ViewPart {
      * The variables value.
      */
     private Map<String, Object> allVariables;
+
+    /**
+     * The selection value.
+     */
+    private Object selectionValue;
+
     /**
      * The {@link IQueryEnvironment}.
      */
@@ -354,6 +378,48 @@ public class M2DocInterpreterView extends ViewPart {
         } else {
             sourceViewer.setInput(new Document(""));
         }
+
+        final ISelectionService selectionService = getSite().getWorkbenchWindow().getSelectionService();
+        selectionListener = new ISelectionListener() {
+
+            @Override
+            public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+                if (part != M2DocInterpreterView.this && generation != null) {
+                    final LinkedHashSet<IType> selectionPossibleTypes = new LinkedHashSet<IType>();
+                    if (selection instanceof IStructuredSelection) {
+                        selectionValue = ((IStructuredSelection) selection).getFirstElement();
+                        selectionPossibleTypes.addAll(getPossibleTypesForValue(queryEnvironment, selectionValue));
+                    }
+                    variableTypes.put(SELECTION_VARIABLE, selectionPossibleTypes);
+                    if (allVariables != null) {
+                        allVariables.put(SELECTION_VARIABLE, selectionValue);
+                    }
+                    updateBrowser(sourceViewer.getTextWidget().getText());
+                }
+            }
+        };
+        selectionService.addSelectionListener(selectionListener);
+    }
+
+    /**
+     * Gets the possible {@link IType} for the given {@link Object}.
+     * 
+     * @param environment
+     *            the {@link IQueryEnvironment}
+     * @param object
+     *            the {@link Object} value
+     * @return the possible {@link IType} for the given {@link Object}
+     */
+    private Set<IType> getPossibleTypesForValue(IQueryEnvironment environment, Object object) {
+        final LinkedHashSet<IType> res = new LinkedHashSet<IType>();
+
+        if (object instanceof EObject) {
+            res.add(new EClassifierType(environment, ((EObject) object).eClass()));
+        } else if (object != null) {
+            res.add(new ClassType(environment, object.getClass()));
+        }
+
+        return res;
     }
 
     /**
@@ -386,6 +452,7 @@ public class M2DocInterpreterView extends ViewPart {
                 properties.configureQueryEnvironmentWithResult(queryEnvironment, M2DocPlugin.getClassProvider());
                 final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
                 variableTypes.clear();
+                variableTypes.put(SELECTION_VARIABLE, getPossibleTypesForValue(queryEnvironment, selectionValue));
                 variableTypes.putAll(properties.getVariableTypes(validator, queryEnvironment));
                 variableTypes.putAll(parseVariableTypes(queryEnvironment, validator, variableTypes,
                         resourceSetForModels.getURIConverter(), templateURI));
@@ -396,6 +463,7 @@ public class M2DocInterpreterView extends ViewPart {
                 evaluationEngine = new QueryEvaluationEngine(queryEnvironment);
                 final Map<String, Object> variables = GenconfUtils.getVariables(generation, resourceSetForModels);
                 allVariables = new HashMap<>(variables);
+                allVariables.put(SELECTION_VARIABLE, selectionValue);
                 allVariables.putAll(parseVariableValues(queryEnvironment, evaluationEngine, allVariables, uriConverter,
                         templateURI));
                 queryBuilder = new QueryBuilderEngine(queryEnvironment);
@@ -468,6 +536,7 @@ public class M2DocInterpreterView extends ViewPart {
         IHandlerService service = getSite().getService(IHandlerService.class);
         service.deactivateHandler(contentAssistHandlerActivation);
         browser.dispose();
+        getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(selectionListener);
     }
 
     @Override

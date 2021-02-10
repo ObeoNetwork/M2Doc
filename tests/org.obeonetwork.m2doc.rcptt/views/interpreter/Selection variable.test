@@ -1,12 +1,12 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Contexts: _u5kWIGU7EeulNa84tzLh2w,_OScnEGVIEeuB7drgrhfz6A
-Element-Name: Completion
+Element-Name: Selection variable
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
-Id: _EHLgYGVdEeuB7drgrhfz6A
-Save-Time: 2/10/21 2:55 PM
+Id: _CvjXEGuoEeukTZWa0wOQPA
+Save-Time: 2/10/21 3:00 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -22,21 +22,20 @@ with [get-window "Select generation file."] {
     get-button OK | click -metaKeys ""
 }
 with [get-view "M2Doc interpreter" | get-text-viewer] {
-    type-text se
+    type-text sel
     key-type "M1+SPACE"
-    key-type Down
-    key-type Down
     key-type Enter
     type-text "."
     show-content-assist
     show-content-assist
     show-content-assist
-    show-content-assist
-    type-text n
-    key-type Enter
+    type-text name
 }
+get-view "Project Explorer" | get-tree | select "test/model.uml" | double-click
+get-editor "model.uml" | get-tree | get-item -path "platform:\\/resource\\/test\\/model.uml/Model Some UML model" 
+    | click
 with [get-view "M2Doc interpreter"] {
-    get-text-viewer | get-property text | equals "self.name" | verify-true
+    get-text-viewer | get-property text | equals "selection.name" | verify-true
     get-control Browser | get-property text | equals "<p>Some UML model</p>" | verify-true
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
