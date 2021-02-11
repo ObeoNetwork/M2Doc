@@ -263,11 +263,6 @@ public class M2DocInterpreterView extends ViewPart {
     private ISelectionListener selectionListener;
 
     /**
-     * The update {@link Thread}.
-     */
-    private Thread updateThread;
-
-    /**
      * The {@link HtmlSerializer}.
      */
     private final HtmlSerializer htmlSerializer = new HtmlSerializer();
@@ -399,6 +394,7 @@ public class M2DocInterpreterView extends ViewPart {
             }
         };
         selectionService.addSelectionListener(selectionListener);
+        updateBrowser(sourceViewer.getTextWidget().getText());
     }
 
     /**
@@ -536,7 +532,9 @@ public class M2DocInterpreterView extends ViewPart {
         IHandlerService service = getSite().getService(IHandlerService.class);
         service.deactivateHandler(contentAssistHandlerActivation);
         browser.dispose();
-        getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(selectionListener);
+        if (selectionListener != null) {
+            getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(selectionListener);
+        }
     }
 
     @Override
@@ -553,35 +551,17 @@ public class M2DocInterpreterView extends ViewPart {
      *            the AQL expression
      */
     private void updateBrowser(final String expression) {
-
-        if (updateThread != null) {
-            updateThread.interrupt();
-        }
         if (generation != null) {
-            updateThread = new Thread(new Runnable() {
+            final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
+            final String validationContent = getValidationHTMLContent(validationResult);
 
-                @Override
-                public void run() {
-                    final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
-                    final String validationContent = getValidationHTMLContent(validationResult);
-
-                    final AstResult astBuilder = queryBuilder.build(expression);
-                    final EvaluationResult evaluationResult = evaluationEngine.eval(astBuilder, allVariables);
-                    final String evaluationContent = htmlSerializer.serialize(evaluationResult.getResult());
-
-                    updateThread = null;
-                    Display.getDefault().asyncExec(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            browser.setText(validationContent + evaluationContent);
-                        }
-                    });
-                }
-            });
-            updateThread.start();
+            final AstResult astBuilder = queryBuilder.build(expression);
+            final EvaluationResult evaluationResult = evaluationEngine.eval(astBuilder, allVariables);
+            final String evaluationContent = htmlSerializer.serialize(evaluationResult.getResult());
+            browser.setText(validationContent + evaluationContent);
+        } else {
+            browser.setText("You need to select a generation model (.genconf file).");
         }
-
     }
 
     /**
