@@ -40,6 +40,8 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -382,7 +384,7 @@ public class M2DocInterpreterView extends ViewPart {
                 if (part != M2DocInterpreterView.this && generation != null) {
                     final LinkedHashSet<IType> selectionPossibleTypes = new LinkedHashSet<IType>();
                     if (selection instanceof IStructuredSelection) {
-                        selectionValue = ((IStructuredSelection) selection).getFirstElement();
+                        selectionValue = tryToAdaptToEObject(((IStructuredSelection) selection).getFirstElement());
                         selectionPossibleTypes.addAll(getPossibleTypesForValue(queryEnvironment, selectionValue));
                     }
                     variableTypes.put(SELECTION_VARIABLE, selectionPossibleTypes);
@@ -395,6 +397,38 @@ public class M2DocInterpreterView extends ViewPart {
         };
         selectionService.addSelectionListener(selectionListener);
         updateBrowser(sourceViewer.getTextWidget().getText());
+    }
+
+    /**
+     * Tries to adapt the given element to an {@link EObject}.
+     * 
+     * @param element
+     *            the element to adapt
+     * @return the adapted {@link EObject} if any, the element otherwise
+     */
+    private Object tryToAdaptToEObject(Object element) {
+        final Object res;
+
+        if (element instanceof EObject) {
+            res = element;
+        } else if (element instanceof IAdaptable) {
+            final Object adaptedElement = ((IAdaptable) element).getAdapter(EObject.class);
+            if (adaptedElement != null) {
+                res = adaptedElement;
+            } else {
+                res = Platform.getAdapterManager().getAdapter(element, EObject.class);
+            }
+        } else if (element != null) {
+            res = Platform.getAdapterManager().getAdapter(element, EObject.class);
+        } else {
+            res = null;
+        }
+
+        if (res != null) {
+            return res;
+        } else {
+            return element;
+        }
     }
 
     /**
