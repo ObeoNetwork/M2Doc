@@ -61,6 +61,16 @@ public class MTableImpl implements MTable {
         private VAlignment vAlign;
 
         /**
+         * The vertical {@link Merge}.
+         */
+        private Merge verticallyMerge;
+
+        /**
+         * The horizontal {@link Merge}.
+         */
+        private Merge horizontallyMerge;
+
+        /**
          * Constructor.
          * 
          * @param contents
@@ -93,6 +103,25 @@ public class MTableImpl implements MTable {
             vAlign = alignement;
         }
 
+        @Override
+        public Merge getVMerge() {
+            return verticallyMerge;
+        }
+
+        @Override
+        public void setVMerge(Merge merge) {
+            verticallyMerge = merge;
+        }
+
+        @Override
+        public Merge getHMerge() {
+            return horizontallyMerge;
+        }
+
+        @Override
+        public void setHMerge(Merge merge) {
+            horizontallyMerge = merge;
+        }
     }
 
     /**

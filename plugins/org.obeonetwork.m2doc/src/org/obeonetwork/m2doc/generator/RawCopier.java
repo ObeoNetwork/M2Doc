@@ -372,7 +372,7 @@ public class RawCopier {
             throws IOException, InvalidFormatException, NoSuchAlgorithmException, XmlException {
         final XWPFTable res = POIServices.getInstance().createTable(outputBody);
 
-        res.getCTTbl().set(inputTable.getCTTbl());
+        res.getCTTbl().set(inputTable.getCTTbl().copy());
         copyTableStyle(inputTable, outputBody.getXWPFDocument());
         // Create relation embedded in run and keep relation id in map (input to output)
         updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputTable.getBody(), res.getBody(),

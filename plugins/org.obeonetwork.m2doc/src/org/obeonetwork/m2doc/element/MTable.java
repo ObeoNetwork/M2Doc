@@ -113,6 +113,25 @@ public interface MTable extends MElement {
         }
 
         /**
+         * Vertical and Horizontal cell merge.
+         * 
+         * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+         */
+        enum Merge {
+
+            /**
+             * (Re)starts a merge.
+             */
+            RESTART,
+
+            /**
+             * Continue a merge.
+             */
+            CONTINUE
+
+        }
+
+        /**
          * Gets the background {@link Color}.
          * 
          * @return the background {@link Color} if any, <code>null</code> otherwise
@@ -142,6 +161,35 @@ public interface MTable extends MElement {
          */
         void setVAlignment(VAlignment alignement);
 
+        /**
+         * Gets the vertical {@link Merge}.
+         * 
+         * @return the vertical {@link Merge}
+         */
+        Merge getVMerge();
+
+        /**
+         * Sets the vertical {@link Merge}.
+         * 
+         * @param merge
+         *            the vertical {@link Merge}
+         */
+        void setVMerge(Merge merge);
+
+        /**
+         * Gets the horizontal {@link Merge}.
+         * 
+         * @return the horizontal {@link Merge}.
+         */
+        Merge getHMerge();
+
+        /**
+         * Sets the horizontal {@link Merge}.
+         * 
+         * @param merge
+         *            the horizontal {@link Merge}
+         */
+        void setHMerge(Merge merge);
     }
 
     /**

@@ -92,6 +92,7 @@ import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
@@ -103,7 +104,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
 
@@ -984,7 +988,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
 
         // Iterate over the rows
-        for (MRow mRow : mTable.getRows()) {
+        for (int row = 0; row < mTable.getRows().size(); row++) {
+            final MRow mRow = mTable.getRows().get(row);
             final XWPFTableRow xwpfRow = xwpfTable.createRow();
             while (!xwpfRow.getTableCells().isEmpty()) {
                 xwpfRow.removeCell(0);
@@ -992,7 +997,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             xwpfRow.getCtRow().getTcList().clear();
 
             // Iterate over the columns
-            for (MCell mCell : mRow.getCells()) {
+            for (int column = 0; column < mRow.getCells().size(); column++) {
+                final MCell mCell = mRow.getCells().get(column);
                 final XWPFTableCell xwpfCell = xwpfRow.createCell();
 
                 // Populate cell
@@ -1003,11 +1009,94 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     xwpfCellParagraph.setAlignment(getHAllignment(mCell.getHAlignment()));
                 }
                 setCellContent(xwpfCell, mCell);
+                setVMerge(xwpfCell, mTable, mCell, row, column);
+                setHMerge(xwpfCell, mTable, mCell, row, column);
                 if (removeBorders && xwpfCell.getCTTc().getTcPr() != null
                     && xwpfCell.getCTTc().getTcPr().isSetTcBorders()) {
                     xwpfCell.getCTTc().getTcPr().unsetTcBorders();
                 }
             }
+        }
+    }
+
+    /**
+     * Sets the vertical merge for the given cell.
+     * 
+     * @param xwpfCell
+     *            the {@link XWPFTableCell}
+     * @param mTable
+     *            the {@link MTable}
+     * @param mCell
+     *            the {@link MCell}
+     * @param row
+     *            the current row number
+     * @param column
+     *            the current column number
+     */
+    private void setVMerge(XWPFTableCell xwpfCell, MTable mTable, MCell mCell, int row, int column) {
+        if (mCell != null && mCell.getVMerge() != null) {
+            final CTVMerge hmerge = CTVMerge.Factory.newInstance();
+            switch (mCell.getVMerge()) {
+                case RESTART:
+                    hmerge.setVal(STMerge.RESTART);
+                    break;
+
+                case CONTINUE:
+                    hmerge.setVal(STMerge.CONTINUE);
+                    break;
+
+                default:
+                    throw new IllegalStateException();
+            }
+            getTcPr(xwpfCell).setVMerge(hmerge);
+        }
+    }
+
+    /**
+     * Gets the {@link CTTcPr} of the given {@link XWPFTableCell}.
+     * 
+     * @param xwpfCell
+     *            the {@link XWPFTableCell}
+     * @return the {@link CTTcPr} of the given {@link XWPFTableCell}
+     */
+    private CTTcPr getTcPr(XWPFTableCell xwpfCell) {
+        if (!xwpfCell.getCTTc().isSetTcPr()) {
+            xwpfCell.getCTTc().addNewTcPr();
+        }
+
+        return xwpfCell.getCTTc().getTcPr();
+    }
+
+    /**
+     * Sets the horizontal merge for the given cell.
+     * 
+     * @param xwpfCell
+     *            the {@link XWPFTableCell}
+     * @param mTable
+     *            the {@link MTable}
+     * @param mCell
+     *            the {@link MCell}
+     * @param row
+     *            the current row number
+     * @param column
+     *            the current column number
+     */
+    private void setHMerge(XWPFTableCell xwpfCell, MTable mTable, MCell mCell, int row, int column) {
+        if (mCell != null && mCell.getHMerge() != null) {
+            final CTHMerge hmerge = CTHMerge.Factory.newInstance();
+            switch (mCell.getHMerge()) {
+                case RESTART:
+                    hmerge.setVal(STMerge.RESTART);
+                    break;
+
+                case CONTINUE:
+                    hmerge.setVal(STMerge.CONTINUE);
+                    break;
+
+                default:
+                    throw new IllegalStateException();
+            }
+            getTcPr(xwpfCell).setHMerge(hmerge);
         }
     }
 

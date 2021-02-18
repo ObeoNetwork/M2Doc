@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a sample table :
+  [query: .horizontalMergeAll('A sample table')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
