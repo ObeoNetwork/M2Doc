@@ -21,6 +21,7 @@ import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MCell.Merge;
 import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
@@ -216,6 +217,173 @@ public class MTableTestServices {
             for (int j = 0; j < 5; j++) {
                 row.getCells().add(new MCellImpl(new MTextImpl("Text " + i + " " + j, null), null));
             }
+        }
+
+        return res;
+    }
+
+    /**
+     * Merge all the sample table vertically.
+     * 
+     * @param label
+     *            the table label.
+     * @return the merged table
+     */
+    public MTable verticalMergeAll(String label) {
+        final MTable res = sampleTable(label);
+
+        Merge merge = Merge.RESTART;
+        for (MRow row : res.getRows()) {
+            for (MCell cell : row.getCells()) {
+                cell.setVMerge(merge);
+            }
+            merge = Merge.CONTINUE;
+        }
+
+        return res;
+    }
+
+    /**
+     * Merge the center of the sample table vertically.
+     * 
+     * @param label
+     *            the table label.
+     * @return the merged table
+     */
+    public MTable verticalMerge(String label) {
+        final MTable res = sampleTable(label);
+
+        MCell cell = getCell(res, 2, 2);
+        cell.setVMerge(Merge.RESTART);
+        cell = getCell(res, 2, 3);
+        cell.setVMerge(Merge.RESTART);
+
+        cell = getCell(res, 3, 2);
+        cell.setVMerge(Merge.CONTINUE);
+        cell = getCell(res, 3, 3);
+        cell.setVMerge(Merge.CONTINUE);
+
+        return res;
+    }
+
+    /**
+     * Merge all the sample table horizontally.
+     * 
+     * @param label
+     *            the table label.
+     * @return the merged table
+     */
+    public MTable horizontalMergeAll(String label) {
+        final MTable res = sampleTable(label);
+
+        for (MRow row : res.getRows()) {
+            Merge merge = Merge.RESTART;
+            for (MCell cell : row.getCells()) {
+                cell.setHMerge(merge);
+                merge = Merge.CONTINUE;
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Merge all the sample table both horizontally and vertically.
+     * 
+     * @param label
+     *            the table label.
+     * @return the merged table
+     */
+    public MTable bothMergeAll(String label) {
+        final MTable res = sampleTable(label);
+
+        Merge vMerge = Merge.RESTART;
+        for (MRow row : res.getRows()) {
+            Merge hMerge = Merge.RESTART;
+            for (MCell cell : row.getCells()) {
+                cell.setVMerge(vMerge);
+                cell.setHMerge(hMerge);
+                hMerge = Merge.CONTINUE;
+            }
+            vMerge = Merge.CONTINUE;
+        }
+
+        return res;
+    }
+
+    /**
+     * Merge the center of the sample table horizontally.
+     * 
+     * @param label
+     *            the table label.
+     * @return the merged table
+     */
+    public MTable horizontalMerge(String label) {
+        final MTable res = sampleTable(label);
+
+        MCell cell = getCell(res, 2, 2);
+        cell.setHMerge(Merge.RESTART);
+        cell = getCell(res, 2, 3);
+        cell.setHMerge(Merge.CONTINUE);
+
+        cell = getCell(res, 3, 2);
+        cell.setHMerge(Merge.RESTART);
+        cell = getCell(res, 3, 3);
+        cell.setHMerge(Merge.CONTINUE);
+
+        return res;
+    }
+
+    /**
+     * Merge the center of the sample table both horizontally and vertically.
+     * 
+     * @param label
+     *            the table label.
+     * @return the merged table
+     */
+    public MTable bothMerge(String label) {
+        final MTable res = sampleTable(label);
+
+        MCell cell = getCell(res, 2, 2);
+        cell.setVMerge(Merge.RESTART);
+        cell.setHMerge(Merge.RESTART);
+        cell = getCell(res, 2, 3);
+        cell.setVMerge(Merge.RESTART);
+        cell.setHMerge(Merge.CONTINUE);
+
+        cell = getCell(res, 3, 2);
+        cell.setVMerge(Merge.CONTINUE);
+        cell.setHMerge(Merge.RESTART);
+        cell = getCell(res, 3, 3);
+        cell.setVMerge(Merge.CONTINUE);
+        cell.setHMerge(Merge.CONTINUE);
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link MCell} at the given row and column in the given {@link MTable}.
+     * 
+     * @param mTable
+     *            the {@link MTable}
+     * @param row
+     *            the row number
+     * @param column
+     *            the column number
+     * @return the {@link MCell} at the given row and column in the given {@link MTable} if nay, <code>null</code> otherwise
+     */
+    private MCell getCell(MTable mTable, int row, int column) {
+        final MCell res;
+
+        if (row > -1 && row < mTable.getRows().size()) {
+            final MRow mRow = mTable.getRows().get(row);
+            if (column > -1 && column < mRow.getCells().size()) {
+                res = mRow.getCells().get(column);
+            } else {
+                res = null;
+            }
+        } else {
+            res = null;
         }
 
         return res;
