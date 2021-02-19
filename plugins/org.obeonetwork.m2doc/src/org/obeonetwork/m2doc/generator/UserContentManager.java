@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,8 +35,10 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.POIServices;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;
@@ -100,6 +103,11 @@ public class UserContentManager {
     private DocumentTemplate userDocDocument;
 
     /**
+     * Tells if we should copy the source document to a lost document.
+     */
+    private boolean copyToLostDocument;
+
+    /**
      * Constructor.
      * 
      * @param uriConverter
@@ -133,6 +141,7 @@ public class UserContentManager {
         if (memoryCopy != null) {
             try {
                 userDocDocument = M2DocUtils.parseUserContent(uriConverter, memoryCopy, queryEnvironment);
+                copyToLostDocument = hasError(userDocDocument);
                 final TreeIterator<EObject> iter = userDocDocument.eAllContents();
                 while (iter.hasNext()) {
                     EObject eObject = iter.next();
@@ -152,6 +161,33 @@ public class UserContentManager {
                 uriHandler.clear();
             }
         }
+    }
+
+    /**
+     * Tells if the given {@link DocumentTemplate} has {@link ValidationMessageLevel#ERROR errors}.
+     * 
+     * @param document
+     *            the {@link DocumentTemplate}.
+     * @return <code>true</code> if the given {@link DocumentTemplate} has {@link ValidationMessageLevel#ERROR errors}, <code>false</code>
+     *         oterhwise
+     */
+    private boolean hasError(DocumentTemplate document) {
+        boolean res = false;
+
+        final Iterator<EObject> it = document.eAllContents();
+        end: while (it.hasNext()) {
+            final EObject eObj = it.next();
+            if (eObj instanceof IConstruct) {
+                for (TemplateValidationMessage message : ((IConstruct) eObj).getValidationMessages()) {
+                    if (message.getLevel() == ValidationMessageLevel.ERROR) {
+                        res = true;
+                        break end;
+                    }
+                }
+            }
+        }
+
+        return res;
     }
 
     /**
@@ -298,6 +334,19 @@ public class UserContentManager {
             launchParsing();
         }
 
+        try (InputStream is = uriConverter.createInputStream(sourceURI);
+                OPCPackage oPackage = OPCPackage.open(is);
+                XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
+            if (copyToLostDocument) {
+                final URI lostDocumentURI = getLostDocumentURI(destinationURI);
+                result.setLostDocumentURI(lostDocumentURI);
+                copy(destinationURI, lostDocumentURI);
+                XWPFParagraph currentGeneratedParagraph = destinationDocument.createParagraph();
+                result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.WARNING,
+                        "backup document created"));
+            }
+        }
+
         for (Entry<String, List<UserContent>> entry : mapIdUserContent.entrySet()) {
             final URI lostUserContentURI = getLostUserContentURI(destinationURI, entry.getKey());
             result.getLostUserContents().put(entry.getKey(), lostUserContentURI);
@@ -355,6 +404,20 @@ public class UserContentManager {
      */
     protected URI getLostUserContentURI(URI dest, String id) {
         final URI res = URI.createURI("./" + dest.lastSegment() + "-" + id + "-lost.docx", false);
+
+        return res.resolve(dest);
+    }
+
+    /**
+     * Gets the lost document {@link URI} for the given destination {@link URI}.
+     * 
+     * @param dest
+     *            the destination {@link URI}
+     * @return the lost document {@link URI} for the given destination {@link URI}
+     */
+    protected URI getLostDocumentURI(URI dest) {
+        final String date = format.format(new Date()).replace("/", "_").replace(" ", "_");
+        final URI res = URI.createURI("./" + dest.lastSegment() + "-" + date + "-backup.docx", false);
 
         return res.resolve(dest);
     }

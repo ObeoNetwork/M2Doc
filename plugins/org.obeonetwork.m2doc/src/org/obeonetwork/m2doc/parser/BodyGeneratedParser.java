@@ -169,8 +169,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         if (tagText == null || "".equals(tagText)) {
             final XWPFRun lastRun = userContent.getRuns().get(userContent.getRuns().size() - 1);
             TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
-                    ValidationMessageLevel.WARNING, ParsingErrorMessage.INVALID_USERCONTENT_VALUE.getMessage(),
-                    lastRun);
+                    ValidationMessageLevel.ERROR, ParsingErrorMessage.INVALID_USERCONTENT_VALUE.getMessage(), lastRun);
             userContent.getValidationMessages().add(templateValidationMessage);
         } else {
             userContent.setId(tagText);

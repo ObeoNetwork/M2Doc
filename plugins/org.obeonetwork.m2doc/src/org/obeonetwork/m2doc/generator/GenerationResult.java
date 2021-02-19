@@ -39,6 +39,11 @@ public class GenerationResult {
     private ValidationMessageLevel level = ValidationMessageLevel.OK;
 
     /**
+     * The lost document {@link URI} if the target document has parsing errors (user content).
+     */
+    private URI lostDocumentURI;
+
+    /**
      * Mapping of lost fragments from {@link UserDoc#getId() user doc ID} to fragment {@link URI}.
      */
     private final Map<String, URI> lostUserContents = new HashMap<>();
@@ -79,6 +84,25 @@ public class GenerationResult {
         level = ValidationMessageLevel.updateLevel(level, levels);
 
         return level;
+    }
+
+    /**
+     * Gets the lost document URI.
+     * 
+     * @return the lost document URI if the target document has parsing errors (user content), <code>null</code> otherwise
+     */
+    public URI getLostDocumentURI() {
+        return lostDocumentURI;
+    }
+
+    /**
+     * Sets the lost document {@link URI}.
+     * 
+     * @param lostDocumentURI
+     *            the lost document {@link URI}
+     */
+    public void setLostDocumentURI(URI lostDocumentURI) {
+        this.lostDocumentURI = lostDocumentURI;
     }
 
     /**

@@ -391,6 +391,17 @@ public abstract class AbstractTemplatesTestSuite {
         final GenerationResult generationResult = prepareoutputAndGenerate(userContentURI, outputURI);
         M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedGeneratedURI, outputURI);
 
+        if (generationResult.getLostDocumentURI() != null) {
+            final URI expectedLostDocumentURI = getExpectedLostDocumentURI(new File(testFolderPath));
+            if (!resourceSetForModels.getURIConverter().exists(expectedLostDocumentURI, Collections.EMPTY_MAP)) {
+                final URI actualLostDocumentURI = getActualLostDocumentURI(new File(testFolderPath));
+                copy(generationResult.getLostDocumentURI(), actualLostDocumentURI);
+                fail(expectedLostDocumentURI + DOESN_T_EXIST);
+            }
+            M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedLostDocumentURI,
+                    generationResult.getLostDocumentURI());
+        }
+
         List<URI> expectedLostFiles = getExpectedLostURIs(testFolderPath);
         for (Entry<String, URI> entry : generationResult.getLostUserContents().entrySet()) {
             final URI actualLostURI = entry.getValue();
@@ -511,6 +522,28 @@ public abstract class AbstractTemplatesTestSuite {
         }
 
         return result;
+    }
+
+    /**
+     * Gets the expected lost document file from the test folder path.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @return the expected lost document file from the test folder path
+     */
+    protected URI getExpectedLostDocumentURI(File testFolder) {
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-expected-backup.docx", false);
+    }
+
+    /**
+     * Gets the actual lost document file from the test folder path.
+     * 
+     * @param testFolder
+     *            the test folder path
+     * @return the actual lost document file from the test folder path
+     */
+    protected URI getActualLostDocumentURI(File testFolder) {
+        return URI.createURI(testFolder.toURI().toString() + testFolder.getName() + "-actual-backup.docx", false);
     }
 
     /**

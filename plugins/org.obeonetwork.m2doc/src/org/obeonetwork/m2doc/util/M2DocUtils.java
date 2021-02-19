@@ -707,17 +707,17 @@ public final class M2DocUtils {
             final XWPFDocument document = new XWPFDocument(oPackage);
             r.getContents().add(result);
             final BodyGeneratedParser parser = new BodyGeneratedParser(document, queryEnvironment);
-            result.setBody(parser.parseBlock(null));
+            result.setBody(parser.parseBlock(null, TokenType.EOF));
             result.setInputStream(is);
             result.setOpcPackage(oPackage);
             result.setDocument(document);
             for (XWPFFooter footer : document.getFooterList()) {
                 final BodyGeneratedParser footerParser = new BodyGeneratedParser(footer, queryEnvironment);
-                result.getFooters().add(footerParser.parseBlock(null));
+                result.getFooters().add(footerParser.parseBlock(null, TokenType.EOF));
             }
             for (XWPFHeader header : document.getHeaderList()) {
                 final BodyGeneratedParser headerParser = new BodyGeneratedParser(header, queryEnvironment);
-                result.getHeaders().add(headerParser.parseBlock(null));
+                result.getHeaders().add(headerParser.parseBlock(null, TokenType.EOF));
             }
 
         } catch (IOException e) {
