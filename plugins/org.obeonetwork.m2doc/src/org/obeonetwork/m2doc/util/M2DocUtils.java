@@ -1003,6 +1003,7 @@ public final class M2DocUtils {
             res.addAll(configurator.getOptions());
         }
 
+        res.add(UPDATE_FIELDS_OPTION);
         res.add(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION);
 
         return res;
