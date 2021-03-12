@@ -50,7 +50,7 @@ public final class POIServices {
     /**
      * Instance.
      */
-    private static POIServices eINSTANCE = new POIServices();
+    private static final POIServices INSTANCE = new POIServices();
 
     /**
      * Constructor.
@@ -65,7 +65,7 @@ public final class POIServices {
      * @return the instance
      */
     public static POIServices getInstance() {
-        return eINSTANCE;
+        return INSTANCE;
     }
 
     /**

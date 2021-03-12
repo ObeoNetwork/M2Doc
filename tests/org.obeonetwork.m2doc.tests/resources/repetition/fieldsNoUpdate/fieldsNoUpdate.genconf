@@ -3,5 +3,5 @@
   <definitions xsi:type="genconf:ModelDefinition" key="self">
     <value href="anydsl.ecore#/"/>
   </definitions>
-  <options name="UpdateFields" value="true"/>
+  <options name="UpdateFields" value="false"/>
 </genconf:Generation>
