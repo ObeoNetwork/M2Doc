@@ -11,11 +11,19 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.wizard;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -505,24 +513,45 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
      *            the template {@link URI}
      * @return the {@link TemplateCustomProperties} if any, <code>null</code> otherwise
      */
-    private TemplateCustomProperties validatePage(Generation gen, URI templateURI) {
+    private TemplateCustomProperties validatePage(final Generation gen, URI templateURI) {
         TemplateCustomProperties res;
 
-        final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
+        final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
 
         final URI absoluteURI = templateURI.resolve(gen.eResource().getURI());
         if (URIConverter.INSTANCE.exists(absoluteURI, null)) {
+            final IQueryEnvironment queryEnvironment = Query.newEnvironment();
             try {
-                res = POIServices.getInstance().getTemplateCustomProperties(URIConverter.INSTANCE, absoluteURI);
-                final List<Definition> oldDefinitions = GenconfUtils.getOldDefinitions(gen, res);
+                final TemplateCustomProperties properties = POIServices.getInstance()
+                        .getTemplateCustomProperties(URIConverter.INSTANCE, absoluteURI);
+                res = properties;
+                final List<Definition> oldDefinitions = GenconfUtils.getOldDefinitions(gen, properties);
                 final Command removeCommand = RemoveCommand.create(editingDomain, gen,
                         GenconfPackage.GENERATION__DEFINITIONS, oldDefinitions);
                 editingDomain.getCommandStack().execute(removeCommand);
+                ((IQueryEnvironment) queryEnvironment).registerEPackage(EcorePackage.eINSTANCE);
+                ((IQueryEnvironment) queryEnvironment).registerCustomClassMapping(
+                        EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+                final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
+                defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
+                        new XMIResourceFactoryImpl());
+                final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(
+                        new ArrayList<Exception>(), queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
 
-                final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, res);
+                final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, properties);
                 final Command addCommand = AddCommand.create(editingDomain, gen, GenconfPackage.GENERATION__DEFINITIONS,
                         newDefinitions);
                 editingDomain.getCommandStack().execute(addCommand);
+
+                editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+
+                    @Override
+                    protected void doExecute() {
+                        GenconfUtils.initializeVariableDefinition(gen, queryEnvironment, properties,
+                                resourceSetForModel);
+                    }
+                });
                 // CHECKSTYLE:OFF
             } catch (Exception e) {
                 // CHECKSTYLE:ON

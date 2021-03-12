@@ -23,9 +23,11 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -36,6 +38,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.sirius.business.api.helper.SiriusUtil;
 import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
@@ -134,13 +137,13 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     /**
      * Gets the {@link Session} path form the given platform resource {@link URI}.
      * 
-     * @param platformResourceURI
+     * @param genconfPlatformResourceURI
      *            the platform resource {@link URI}
      * @return the {@link Session} path form the given platform resource {@link URI} if any, <code>null</code> otherwise
      */
-    private String getSessionFromPlatformResource(final URI platformResourceURI) {
+    private String getSessionFromPlatformResource(final URI genconfPlatformResourceURI) {
         final String res;
-        final String filePath = platformResourceURI.toPlatformString(true);
+        final String filePath = genconfPlatformResourceURI.toPlatformString(true);
         final IFile genconfFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
         final IProject project = genconfFile.getProject();
         final ModelingProject modelingProject = getModelingProject(project);
@@ -149,13 +152,52 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             final Session session = modelingProject.getSession();
             if (session != null) {
                 final URI sessionURI = session.getSessionResource().getURI();
-                res = URI.decode(sessionURI.deresolve(platformResourceURI, false, true, true).toString());
+                res = URI.decode(sessionURI.deresolve(genconfPlatformResourceURI, false, true, true).toString());
             } else {
-                res = null;
+                res = getSessionFile(genconfPlatformResourceURI, project);
             }
         } else {
             res = null;
         }
+        return res;
+    }
+
+    /**
+     * Gets the Sirius Session file in the given {@link IContainer}.
+     * 
+     * @param genconfPlatformResourceURI
+     *            the platform resource {@link URI}
+     * @param container
+     *            the {@link IProject}
+     * @return the Sirius Session file in the given {@link IContainer} if any, <code>null</code> otherwise
+     */
+    private String getSessionFile(URI genconfPlatformResourceURI, IContainer container) {
+        String res = null;
+
+        try {
+            for (IResource member : container.members()) {
+                if (member instanceof IContainer) {
+                    res = getSessionFile(genconfPlatformResourceURI, (IContainer) member);
+                    if (res != null) {
+                        break;
+                    }
+                } else if (member instanceof IFile
+                    && SiriusUtil.SESSION_RESOURCE_EXTENSION.equals(member.getFileExtension())) {
+                        final Session session = SessionManager.INSTANCE.getSession(
+                                URI.createPlatformResourceURI(member.getFullPath().toString(), true),
+                                new NullProgressMonitor());
+                        if (session != null) {
+                            final URI sessionURI = session.getSessionResource().getURI();
+                            res = URI.decode(
+                                    sessionURI.deresolve(genconfPlatformResourceURI, false, true, true).toString());
+                            break;
+                        }
+                    }
+            }
+        } catch (CoreException e) {
+            // we ignore this since the option can be set manually afterward
+        }
+
         return res;
     }
 
