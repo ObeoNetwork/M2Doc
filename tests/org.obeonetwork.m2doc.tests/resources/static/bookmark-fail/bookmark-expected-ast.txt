@@ -1,0 +1,9 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a static text :A bookmarkSome text.Some text.Some text.A reference to A bookmarkEnd of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
