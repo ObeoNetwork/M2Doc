@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.view;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,15 +86,19 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.editor.view.aql.AQLConfiguration;
 import org.obeonetwork.m2doc.genconf.editor.view.aql.ColorManager;
 import org.obeonetwork.m2doc.genconf.editor.view.aql.ProposalLabelProvider;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Repetition;
+import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.util.HtmlSerializer;
+import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -319,6 +324,11 @@ public class M2DocInterpreterView extends ViewPart {
      */
     private Generation generation;
 
+    /**
+     * The {@link M2DocEvaluationEnvironment}.
+     */
+    private M2DocEvaluationEnvironment m2docEnv;
+
     @Override
     public void init(IViewSite site, IMemento memo) throws PartInitException {
         super.init(site, memo);
@@ -465,6 +475,11 @@ public class M2DocInterpreterView extends ViewPart {
             for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
                 configurator.cleanServices(queryEnvironment, resourceSetForModels);
             }
+            try {
+                m2docEnv.getUserContentManager().dispose();
+            } catch (IOException e) {
+                // not a big deal
+            }
         }
 
         try {
@@ -475,11 +490,24 @@ public class M2DocInterpreterView extends ViewPart {
             queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
             final URI templateURI = GenconfUtils.getResolvedURI(generation,
                     URI.createURI(generation.getTemplateFileName(), false));
+            final IClassProvider classProvider = M2DocPlugin.getClassProvider();
+            final URIConverter uriConverter = resourceSetForModels.getURIConverter();
             try (XWPFDocument document = POIServices.getInstance()
-                    .getXWPFDocument(resourceSetForModels.getURIConverter(), templateURI)) {
+                    .getXWPFDocument(resourceSetForModels.getURIConverter(), templateURI);) {
+                final DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, queryEnvironment,
+                        classProvider, new BasicMonitor());
                 final TemplateCustomProperties properties = new TemplateCustomProperties(document);
                 properties.configureQueryEnvironmentWithResult(queryEnvironment);
-                properties.configureQueryEnvironmentWithResult(queryEnvironment, M2DocPlugin.getClassProvider());
+                properties.configureQueryEnvironmentWithResult(queryEnvironment, classProvider);
+                if (!documentTemplate.getTemplates().isEmpty()) {
+                    final byte[] serializedDocument = serializeDocument(documentTemplate);
+                    m2docEnv = new M2DocEvaluationEnvironment(queryEnvironment, uriConverter,
+                            documentTemplate.eResource().getURI(), null);
+                    for (Template template : documentTemplate.getTemplates()) {
+                        queryEnvironment.registerService(
+                                new M2DocTemplateService(template, serializedDocument, m2docEnv, new BasicMonitor()));
+                    }
+                }
                 final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
                 variableTypes.clear();
                 variableTypes.put(SELECTION_VARIABLE, getPossibleTypesForValue(queryEnvironment, selectionValue));
@@ -489,7 +517,6 @@ public class M2DocInterpreterView extends ViewPart {
 
                 validationEngine = new QueryValidationEngine(queryEnvironment);
 
-                final URIConverter uriConverter = resourceSetForModels.getURIConverter();
                 evaluationEngine = new QueryEvaluationEngine(queryEnvironment);
                 final Map<String, Object> variables = GenconfUtils.getVariables(generation, resourceSetForModels);
                 allVariables = new HashMap<>(variables);
@@ -515,6 +542,24 @@ public class M2DocInterpreterView extends ViewPart {
             browser.setText(htmlSerializer.serialize("can't load .genconf file: " + e.getMessage()));
             generation = null;
         }
+    }
+
+    /**
+     * Serializes the given {@link DocumentTemplate}.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate} to serialize
+     * @return the byte array of the serialized {@link DocumentTemplate}
+     * @throws IOException
+     *             if the serialization fail
+     */
+    private static byte[] serializeDocument(DocumentTemplate documentTemplate) throws IOException {
+        final byte[] serializedDocument;
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            documentTemplate.getDocument().write(output);
+            serializedDocument = output.toByteArray();
+        }
+        return serializedDocument;
     }
 
     /**
@@ -586,6 +631,8 @@ public class M2DocInterpreterView extends ViewPart {
      */
     private void updateBrowser(final String expression) {
         if (generation != null) {
+            m2docEnv.getBookmarkManager().reset();
+            m2docEnv.getUserContentManager().reset();
             final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
             final String validationContent = getValidationHTMLContent(validationResult);
 

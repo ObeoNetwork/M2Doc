@@ -422,4 +422,12 @@ public class UserContentManager {
         return res.resolve(dest);
     }
 
+    /**
+     * Resets the user content manager.
+     */
+    public void reset() {
+        mapIdUserContent = null;
+        uriHandler.clear();
+    }
+
 }

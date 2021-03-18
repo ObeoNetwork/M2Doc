@@ -71,9 +71,15 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
  */
 public class M2DocHTMLParser {
 
-    private static final String HEIGHT = "height";
+    /**
+     * The height attribute.
+     */
+    private static final String HEIGHT_ATTR = "height";
 
-    private static final String WIDTH = "width";
+    /**
+     * The width attribute.
+     */
+    private static final String WIDTH_ATTR = "width";
 
     /**
      * The indentation left.
@@ -546,16 +552,16 @@ public class M2DocHTMLParser {
         final URI imageURI = URI.createURI(element.attr("src")).resolve(context.baseURI);
         final MImage mImage = new MImageImpl(uriConverter, imageURI);
 
-        if (element.hasAttr(WIDTH)) {
-            if (element.hasAttr(HEIGHT)) {
+        if (element.hasAttr(WIDTH_ATTR)) {
+            if (element.hasAttr(HEIGHT_ATTR)) {
                 mImage.setConserveRatio(false);
-                mImage.setWidth(Integer.valueOf(element.attr(WIDTH)));
-                mImage.setHeight(Integer.valueOf(element.attr(HEIGHT)));
+                mImage.setWidth(Integer.valueOf(element.attr(WIDTH_ATTR)));
+                mImage.setHeight(Integer.valueOf(element.attr(HEIGHT_ATTR)));
             } else {
-                mImage.setWidth(Integer.valueOf(element.attr(WIDTH)));
+                mImage.setWidth(Integer.valueOf(element.attr(WIDTH_ATTR)));
             }
-        } else if (element.hasAttr(HEIGHT)) {
-            mImage.setHeight(Integer.valueOf(element.attr(HEIGHT)));
+        } else if (element.hasAttr(HEIGHT_ATTR)) {
+            mImage.setHeight(Integer.valueOf(element.attr(HEIGHT_ATTR)));
         }
 
         return mImage;

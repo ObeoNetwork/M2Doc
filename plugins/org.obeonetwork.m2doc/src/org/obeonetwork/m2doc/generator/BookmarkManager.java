@@ -364,4 +364,16 @@ public class BookmarkManager {
         }
     }
 
+    /**
+     * Resets the bookmark manager.
+     */
+    public void reset() {
+        bookmarks.clear();
+        startedBookmarks.clear();
+        pendingReferences.clear();
+        xmlObjectToName.clear();
+        referenceIDs.clear();
+        messagePositions.clear();
+    }
+
 }
