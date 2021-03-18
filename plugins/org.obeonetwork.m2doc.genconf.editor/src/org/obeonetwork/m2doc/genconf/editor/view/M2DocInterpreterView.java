@@ -631,8 +631,11 @@ public class M2DocInterpreterView extends ViewPart {
      */
     private void updateBrowser(final String expression) {
         if (generation != null) {
-            m2docEnv.getBookmarkManager().reset();
-            m2docEnv.getUserContentManager().reset();
+            if (m2docEnv != null) {
+                m2docEnv.getBookmarkManager().reset();
+                m2docEnv.getUserContentManager().reset();
+                m2docEnv = null;
+            }
             final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
             final String validationContent = getValidationHTMLContent(validationResult);
 
