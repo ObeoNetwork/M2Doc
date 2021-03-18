@@ -15,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -264,6 +266,21 @@ public class M2DocTemplateService extends AbstractService implements IService {
         }
 
         return res;
+    }
+
+    @Override
+    public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+            Set<IType> receiverTypes) {
+        return Collections.<ICompletionProposal> singletonList(new M2DocTemplateServiceCompletionProposal(this));
+    }
+
+    /**
+     * Gets the {@link Template}.
+     * 
+     * @return the {@link Template}
+     */
+    public Template getTemplate() {
+        return template;
     }
 
 }
