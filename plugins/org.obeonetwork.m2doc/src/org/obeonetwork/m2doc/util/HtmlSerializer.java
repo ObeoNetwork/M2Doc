@@ -221,7 +221,15 @@ public class HtmlSerializer {
         for (MRow row : table.getRows()) {
             builder.append("<tr>");
             for (MCell cell : row.getCells()) {
-                builder.append("<td>");
+                // TODO merge cell
+                if (cell.getBackgroundColor() != null) {
+                    final Color color = cell.getBackgroundColor();
+                    builder.append("<td style=\"" + String.format("background-color:#%02X%02X%02X;", color.getRed(),
+                            color.getGreen(), color.getBlue())
+                        + "\">");
+                } else {
+                    builder.append("<td>");
+                }
                 builder.append(serialize(cell.getContents()));
                 builder.append("<td>");
             }
@@ -461,22 +469,24 @@ public class HtmlSerializer {
     public static String escapeHTML(String str) {
         final StringBuilder res = new StringBuilder();
 
-        for (int i = 0; i < str.length(); i++) {
-            final char c = str.charAt(i);
-            switch (c) {
-                case '"':
-                case '\'':
-                case '<':
-                case '>':
-                case '&':
-                    res.append("&#");
-                    res.append((int) c);
-                    res.append(';');
-                    break;
+        if (str != null) {
+            for (int i = 0; i < str.length(); i++) {
+                final char c = str.charAt(i);
+                switch (c) {
+                    case '"':
+                    case '\'':
+                    case '<':
+                    case '>':
+                    case '&':
+                        res.append("&#");
+                        res.append((int) c);
+                        res.append(';');
+                        break;
 
-                default:
-                    res.append(c);
-                    break;
+                    default:
+                        res.append(c);
+                        break;
+                }
             }
         }
 
@@ -539,12 +549,14 @@ public class HtmlSerializer {
 
             for (XWPFTableCell cell : row.getTableCells()) {
                 // TODO merge cell
-                if (cell.getVerticalAlignment() != null) {
-                    res.append("<td style=\"border: 1px solid black;vertical-align:"
-                        + getHTMLAlignment(cell.getVerticalAlignment()) + ";\">");
-                } else {
-                    res.append("<td style=\"border: 1px solid black;\">");
+                String style = "border: 1px solid black;";
+                if (cell.getColor() != null) {
+                    style += String.format("background-color:#%s;", cell.getColor());
                 }
+                if (cell.getVerticalAlignment() != null) {
+                    style += "vertical-align:" + getHTMLAlignment(cell.getVerticalAlignment()) + ";";
+                }
+                res.append("<td style=\"" + style + "\">");
                 res.append(serialize(cell));
                 res.append("</td>");
             }
