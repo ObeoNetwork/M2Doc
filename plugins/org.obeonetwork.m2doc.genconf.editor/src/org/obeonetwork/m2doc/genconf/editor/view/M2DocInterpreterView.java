@@ -476,7 +476,9 @@ public class M2DocInterpreterView extends ViewPart {
                 configurator.cleanServices(queryEnvironment, resourceSetForModels);
             }
             try {
-                m2docEnv.getUserContentManager().dispose();
+                if (m2docEnv != null) {
+                    m2docEnv.getUserContentManager().dispose();
+                }
             } catch (IOException e) {
                 // not a big deal
             }
@@ -541,6 +543,7 @@ public class M2DocInterpreterView extends ViewPart {
             // CHECKSTYLE:ON
             browser.setText(htmlSerializer.serialize("can't load .genconf file: " + e.getMessage()));
             generation = null;
+            m2docEnv = null;
         }
     }
 
@@ -634,7 +637,6 @@ public class M2DocInterpreterView extends ViewPart {
             if (m2docEnv != null) {
                 m2docEnv.getBookmarkManager().reset();
                 m2docEnv.getUserContentManager().reset();
-                m2docEnv = null;
             }
             final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
             final String validationContent = getValidationHTMLContent(validationResult);
