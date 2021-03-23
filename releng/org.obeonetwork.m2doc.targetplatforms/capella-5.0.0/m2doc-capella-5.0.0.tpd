@@ -54,6 +54,7 @@ location eclipse "https://download.eclipse.org/releases/2020-06" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
+	org.eclipse.pde.feature.group lazy
 }
 
 location GMF-Notation-1.13.0 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913" {

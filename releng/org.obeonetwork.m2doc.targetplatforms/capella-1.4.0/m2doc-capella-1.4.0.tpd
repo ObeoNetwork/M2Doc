@@ -51,6 +51,7 @@ location eclipse "https://download.eclipse.org/releases/2019-06" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
+	org.eclipse.pde.feature.group lazy
 }
 
 location sirius "https://download.eclipse.org/sirius/updates/releases/6.3.0/2019-06/" {

@@ -37,6 +37,7 @@ location Eclipse "https://download.eclipse.org/releases/2020-09" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
+	org.eclipse.pde.feature.group lazy
 }
 
 location "https://download.eclipse.org/sirius/updates/releases/6.4.0/2020-09" {

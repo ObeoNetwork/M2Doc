@@ -35,6 +35,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell.XWPFVertAlign;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.obeonetwork.m2doc.element.MBookmark;
 import org.obeonetwork.m2doc.element.MElement;
+import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MList;
@@ -43,6 +44,7 @@ import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.generator.GenerationResult;
@@ -57,6 +59,91 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTStyle;
 public class HtmlSerializer {
 
     /**
+     * Baseline.
+     */
+    private static final String BASELINE = "baseline";
+
+    /**
+     * Top.
+     */
+    private static final String TOP = "top";
+
+    /**
+     * Bottom.
+     */
+    private static final String BOTTOM = "bottom";
+
+    /**
+     * Left.
+     */
+    private static final String LEFT = "left";
+
+    /**
+     * Right.
+     */
+    private static final String RIGHT = "right";
+
+    /**
+     * Center.
+     */
+    private static final String CENTER = "center";
+
+    /**
+     * Justify.
+     */
+    private static final String JUSTIFY = "justify";
+
+    /**
+     * The background color CSS format.
+     */
+    private static final String BACKGROUND_COLOR_FORMAT = "background-color:#%s;";
+
+    /**
+     * The color CSS format.
+     */
+    private static final String COLOR_FORMAT = "color:#%s;";
+
+    /**
+     * The color CSS format.
+     */
+    private static final String COLOR_RGB_FOMRAT = "color:#%02X%02X%02X;";
+
+    /**
+     * The vertical align CSS format.
+     */
+    private static final String VERTICAL_ALIGN_FORMAT = "vertical-align:%s;";
+
+    /**
+     * The text align CSS format.
+     */
+    private static final String TEXT_ALIGN_FORMAT = "text-align:%s;";
+
+    /**
+     * The table border collapse CSS.
+     */
+    private static final String BORDER_COLLAPSE_COLLAPSE = "border-collapse: collapse;";
+
+    /**
+     * The font size CSS format.
+     */
+    private static final String FONT_SIZE_FORMAT = "font-size:%spx;";
+
+    /**
+     * The background color CSS format.
+     */
+    private static final String BACKGROUND_COLOR_RGB_FORMAT = "background-color:#%02X%02X%02X;";
+
+    /**
+     * The table of content marker.
+     */
+    private static final String TABLE_OF_CONTENT = "[TABLE OF CONTENT]";
+
+    /**
+     * The table border CSS.
+     */
+    private static final String BORDER_1PX_SOLID_BLACK = "border: 1px solid black;";
+
+    /**
      * HTML br.
      */
     private static final String BR = "<br>";
@@ -65,6 +152,61 @@ public class HtmlSerializer {
      * HTML link format string.
      */
     private static final String LINK_FORMAT = "<a href=\"%s\">%s</a>";
+
+    /**
+     * HTML paragraph format string.
+     */
+    private static final String PARAGRAPH_FORMAT = "<p>%s</p>";
+
+    /**
+     * HTML paragraph format string.
+     */
+    private static final String PARAGRAPH_STYLED_FORMAT = "<p style=\"%s\">%s</p>";
+
+    /**
+     * HTML image format string.
+     */
+    private static final String IMAGE_FORMAT = "<img src=\"data:%s;base64, %s\">";
+
+    /**
+     * HTML strong format string.
+     */
+    private static final String STRONG_FORMAT = "<strong>%s</strong>";
+
+    /**
+     * HTML italic format string.
+     */
+    private static final String ITALIC_FORMAT = "<i>%s</i>";
+
+    /**
+     * HTML strikethrough format string.
+     */
+    private static final String STRIKETHROUGH_FORMAT = "<del>%s</del>";
+
+    /**
+     * HTML underline format string.
+     */
+    private static final String UNDERLINE_FORMAT = "<u>%s</u>";
+
+    /**
+     * HTML table format string.
+     */
+    private static final String TABLE_STYLED_FORMAT = "<table style=\"%s\">%s</table>";
+
+    /**
+     * HTML td format string.
+     */
+    private static final String TD_STYLED_FORMAT = "<td style=\"%s\">%s</td>";
+
+    /**
+     * HTML tr format string.
+     */
+    private static final String TR_STYLED_FORMAT = "<tr style=\"%s\">%s</tr>";
+
+    /**
+     * HTML spawn format string.
+     */
+    private static final String SPAWN_STYLED_FORMAT = "<spawn style=\"%s\">%s</spawn>";
 
     /**
      * Serialize the given {@link Object} into HTML.
@@ -81,7 +223,7 @@ public class HtmlSerializer {
         } else if (object instanceof GenerationResult) {
             res = serialize((GenerationResult) object);
         } else if (object instanceof IBody) {
-            res = serialize((IBody) object);
+            res = serialize(object);
         } else if (object instanceof Collection) {
             final StringBuilder builder = new StringBuilder();
             for (Object child : (Collection<?>) object) {
@@ -89,23 +231,12 @@ public class HtmlSerializer {
             }
             res = builder.toString();
         } else if (object != null) {
-            res = paragraph(object.toString());
+            res = String.format(PARAGRAPH_FORMAT, object.toString());
         } else {
-            res = "<p>null</p>";
+            res = String.format(PARAGRAPH_FORMAT, "null");
         }
 
         return res;
-    }
-
-    /**
-     * Gets an HTML paragraph containing the given {@link String}.
-     * 
-     * @param text
-     *            the {@link String}
-     * @return an HTML paragraph containing the given {@link String}
-     */
-    private String paragraph(String text) {
-        return "<p>" + text + "</p>";
     }
 
     /**
@@ -133,7 +264,7 @@ public class HtmlSerializer {
             final MImage image = (MImage) element;
             res = serialize(image);
         } else if (element instanceof MParagraph) {
-            res = paragraph(serialize(((MParagraph) element).getContents()));
+            res = serialize((MParagraph) element);
         } else if (element instanceof MTable) {
             final MTable table = (MTable) element;
             res = serialize(table);
@@ -146,6 +277,25 @@ public class HtmlSerializer {
             res = "";
         }
 
+        return res;
+    }
+
+    /**
+     * Serialize the given {@link MParagraph} into HTML.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @return the given {@link MParagraph} into HTML
+     */
+    private String serialize(MParagraph paragraph) {
+        final String res;
+        final String content = serialize(paragraph.getContents());
+        if (paragraph.getHAlignment() != null) {
+            final String style = String.format(TEXT_ALIGN_FORMAT, getHTMLAlignment(paragraph.getHAlignment()));
+            res = String.format(PARAGRAPH_STYLED_FORMAT, style, content);
+        } else {
+            res = String.format(PARAGRAPH_FORMAT, content);
+        }
         return res;
     }
 
@@ -172,7 +322,7 @@ public class HtmlSerializer {
                 res = BR;
                 break;
             case newTableOfContent:
-                res = "[TABLE OF CONTENT]";
+                res = TABLE_OF_CONTENT;
                 break;
             case newTextWrapping:
                 res = BR;
@@ -197,11 +347,10 @@ public class HtmlSerializer {
         final StringBuilder builder = new StringBuilder();
         try (InputStream is = image.getInputStream(); ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             IOUtils.copy(is, os);
-            builder.append("<img src=\"data:image/" + image.getType().name().toLowerCase() + ";base64, ");
-            builder.append(new String(Base64.getEncoder().encode(os.toByteArray())));
-            builder.append("\"/>");
+            builder.append(String.format(IMAGE_FORMAT, "image/" + image.getType().name().toLowerCase(),
+                    new String(Base64.getEncoder().encode(os.toByteArray()))));
         } catch (IOException e) {
-            builder.append(paragraph(e.getMessage()));
+            builder.append(String.format(PARAGRAPH_FORMAT, e.getMessage()));
         }
         res = builder.toString();
         return res;
@@ -215,28 +364,90 @@ public class HtmlSerializer {
      * @return the given {@link MTable} into HTML
      */
     private String serialize(final MTable table) {
-        final String res;
-        final StringBuilder builder = new StringBuilder();
-        builder.append("<table>");
+        final StringBuilder res = new StringBuilder();
         for (MRow row : table.getRows()) {
-            builder.append("<tr>");
+            final StringBuilder rowBuilder = new StringBuilder();
             for (MCell cell : row.getCells()) {
                 // TODO merge cell
+                String style = BORDER_1PX_SOLID_BLACK;
                 if (cell.getBackgroundColor() != null) {
                     final Color color = cell.getBackgroundColor();
-                    builder.append("<td style=\"" + String.format("background-color:#%02X%02X%02X;", color.getRed(),
-                            color.getGreen(), color.getBlue())
-                        + "\">");
-                } else {
-                    builder.append("<td>");
+                    style += String.format(BACKGROUND_COLOR_RGB_FORMAT, color.getRed(), color.getGreen(),
+                            color.getBlue());
                 }
-                builder.append(serialize(cell.getContents()));
-                builder.append("<td>");
+                if (cell.getHAlignment() != null) {
+                    style += String.format(TEXT_ALIGN_FORMAT, getHTMLAlignment(cell.getHAlignment()));
+                }
+                if (cell.getVAlignment() != null) {
+                    style += String.format(VERTICAL_ALIGN_FORMAT, getHTMLAlignment(cell.getVAlignment()));
+                }
+                rowBuilder.append(String.format(TD_STYLED_FORMAT, style, serialize(cell.getContents())));
             }
-            builder.append("</tr>");
+            res.append(String.format(TR_STYLED_FORMAT, BORDER_1PX_SOLID_BLACK, rowBuilder.toString()));
         }
-        builder.append("</table>");
-        res = builder.toString();
+
+        return String.format(TABLE_STYLED_FORMAT, BORDER_1PX_SOLID_BLACK + BORDER_COLLAPSE_COLLAPSE, res.toString());
+    }
+
+    /**
+     * Gets the HTML alignment for the given {@link HAlignment}.
+     * 
+     * @param alignment
+     *            the {@link HAlignment}
+     * @return the HTML alignment for the given {@link HAlignment}
+     */
+    private String getHTMLAlignment(HAlignment alignment) {
+        final String res;
+
+        switch (alignment) {
+            case CENTER:
+                res = CENTER;
+                break;
+
+            case BOTH:
+            case DISTRIBUTE:
+                res = JUSTIFY;
+                break;
+
+            case RIGHT:
+                res = RIGHT;
+                break;
+
+            case LEFT:
+            default:
+                res = LEFT;
+                break;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the HTML alignment for the given {@link VAlignment}.
+     * 
+     * @param alignment
+     *            the {@link VAlignment}
+     * @return the HTML alignment for the given {@link VAlignment}
+     */
+    private String getHTMLAlignment(VAlignment alignment) {
+        final String res;
+
+        switch (alignment) {
+            case BOTTOM:
+                res = BOTTOM;
+                break;
+
+            case TOP:
+                res = TOP;
+                break;
+
+            case CENTER:
+            case BOTH:
+            default:
+                res = BASELINE;
+                break;
+        }
+
         return res;
     }
 
@@ -249,11 +460,11 @@ public class HtmlSerializer {
      */
     private String serialize(final MText text) {
         final String res;
+        final String formatedText = String.format(getStyleFormat(text.getStyle()), escapeHTML(text.getText()));
         if (text instanceof MHyperLink) {
-            res = "<a href=\"" + ((MHyperLink) text).getUrl() + "\">"
-                + String.format(getStyleFormat(text.getStyle()), text.getText()) + "</a>";
+            res = String.format(LINK_FORMAT, ((MHyperLink) text).getUrl(), formatedText);
         } else {
-            res = String.format(getStyleFormat(text.getStyle()), text.getText());
+            res = formatedText;
         }
         return res;
     }
@@ -271,34 +482,34 @@ public class HtmlSerializer {
         if (style != null) {
             if (style.getFontModifiers() != -1) {
                 if ((style.getFontModifiers() & MStyle.FONT_BOLD) != 0) {
-                    res = "<strong>" + res + "</strong>";
+                    res = String.format(STRONG_FORMAT, res);
                 }
                 if ((style.getFontModifiers() & MStyle.FONT_ITALIC) != 0) {
-                    res = "<i>" + res + "</i>";
+                    res = String.format(ITALIC_FORMAT, res);
                 }
                 if ((style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH) != 0) {
-                    res = "<del>" + res + "</del>";
+                    res = String.format(STRIKETHROUGH_FORMAT, res);
                 }
                 if ((style.getFontModifiers() & MStyle.FONT_UNDERLINE) != 0) {
-                    res = "<u>" + res + "</u>";
+                    res = String.format(UNDERLINE_FORMAT, res);
                 }
             }
 
             String spawnStyle = "";
             if (style.getFontSize() != -1) {
-                spawnStyle += String.format("font-size:%spx;", style.getFontSize());
+                spawnStyle += String.format(FONT_SIZE_FORMAT, style.getFontSize());
             }
             if (style.getBackgroundColor() != null) {
                 final Color color = style.getBackgroundColor();
-                spawnStyle += String.format("background-color:#%02X%02X%02X;", color.getRed(), color.getGreen(),
+                spawnStyle += String.format(BACKGROUND_COLOR_RGB_FORMAT, color.getRed(), color.getGreen(),
                         color.getBlue());
             }
             if (style.getForegroundColor() != null) {
                 final Color color = style.getForegroundColor();
-                spawnStyle += String.format("color:#%02X%02X%02X;", color.getRed(), color.getGreen(), color.getBlue());
+                spawnStyle += String.format(COLOR_RGB_FOMRAT, color.getRed(), color.getGreen(), color.getBlue());
             }
             if (!spawnStyle.isEmpty()) {
-                res = "<spawn style=\"" + spawnStyle + "\">" + res + "</spawn>";
+                res = String.format(SPAWN_STYLED_FORMAT, spawnStyle, res);
             }
         }
 
@@ -363,7 +574,7 @@ public class HtmlSerializer {
      * @return the given {@link XWPFParagraph} into HTML
      */
     private String serialize(XWPFParagraph paragraph) {
-        final StringBuilder res = new StringBuilder();
+        final String res;
 
         // TODO numbering
         String paragraphStyle = "";
@@ -376,44 +587,43 @@ public class HtmlSerializer {
                 final CTRPr rPr = ctStyle.getRPr();
                 if (rPr.isSetSz()) {
                     double size = rPr.getSz().getVal().doubleValue();
-                    paragraphStyle += String.format("font-size:%spx;", size);
+                    paragraphStyle += String.format(FONT_SIZE_FORMAT, size);
                 }
                 if (rPr.isSetColor()) {
                     final String color = rPr.getColor().xgetVal().getStringValue();
-                    paragraphStyle += String.format("color:#%s;", color);
+                    paragraphStyle += String.format(COLOR_FORMAT, color);
                 }
             }
         }
         if (localParagraph.getAlignment() != null) {
-            paragraphStyle += String.format("text-align:#%s;", getHTMLAlignment(localParagraph.getAlignment()));
+            paragraphStyle += String.format(TEXT_ALIGN_FORMAT, getHTMLAlignment(localParagraph.getAlignment()));
         }
-        if (!paragraphStyle.isEmpty()) {
-            res.append("<p style=\"" + paragraphStyle + "\">");
-        } else {
-            res.append("<p>");
-        }
+        final StringBuilder contentBuilder = new StringBuilder();
         for (XWPFRun run : localParagraph.getRuns()) {
             final String escapedText = escapeHTML(run.getText(0));
             final String formatedText = String.format(getStyleFormat(run), escapedText);
             for (XWPFPicture picture : run.getEmbeddedPictures()) {
-                res.append(
-                        "<img src=\"data:" + picture.getPictureData().getPackagePart().getContentType() + ";base64, ");
-                res.append(new String(Base64.getEncoder().encode(picture.getPictureData().getData())));
-                res.append("\"/>");
+                contentBuilder
+                        .append(String.format(IMAGE_FORMAT, picture.getPictureData().getPackagePart().getContentType(),
+                                new String(Base64.getEncoder().encode(picture.getPictureData().getData()))));
             }
             if (run instanceof XWPFHyperlinkRun) {
                 final String id = ((XWPFHyperlinkRun) run).getCTHyperlink().getId();
                 final PackageRelationship relation = localParagraph.getBody().getPart().getPackagePart()
                         .getRelationship(id);
                 final String url = relation.getSourceURI().toString();
-                res.append("<a href=\"" + escapeHTML(url) + "\">" + formatedText + "</a>");
+                contentBuilder.append(String.format(LINK_FORMAT, escapeHTML(url), formatedText));
             } else {
-                res.append(formatedText);
+                contentBuilder.append(formatedText);
             }
         }
-        res.append("</p>");
+        if (!paragraphStyle.isEmpty()) {
+            res = String.format(PARAGRAPH_STYLED_FORMAT, paragraphStyle, contentBuilder.toString());
+        } else {
+            res = String.format(PARAGRAPH_FORMAT, contentBuilder.toString());
+        }
 
-        return res.toString();
+        return res;
     }
 
     /**
@@ -427,33 +637,33 @@ public class HtmlSerializer {
         String res = "%s";
 
         if (run.isBold()) {
-            res = "<strong>" + res + "</strong>";
+            res = String.format(STRONG_FORMAT, res);
         }
         if (run.isItalic()) {
-            res = "<i>" + res + "</i>";
+            res = String.format(ITALIC_FORMAT, res);
         }
         if (run.isStrikeThrough()) {
-            res = "<del>" + res + "</del>";
+            res = String.format(STRIKETHROUGH_FORMAT, res);
         }
         if (run.getUnderline() != null && run.getUnderline() != UnderlinePatterns.NONE) {
-            res = "<u>" + res + "</u>";
+            res = String.format(UNDERLINE_FORMAT, res);
         }
 
         String spawnStyle = "";
         if (run.getFontSize() != -1) {
-            spawnStyle += String.format("font-size:%spx;", run.getFontSize());
+            spawnStyle += String.format(FONT_SIZE_FORMAT, run.getFontSize());
         }
         if (run.getCTR().getRPr() != null && run.getCTR().getRPr().getShd() != null
             && run.getCTR().getRPr().getShd().getFill() != null) {
             // TODO double check this.
-            spawnStyle += String.format("background-color:#%s;", run.getCTR().getRPr().getShd().getFill());
+            spawnStyle += String.format(BACKGROUND_COLOR_FORMAT, run.getCTR().getRPr().getShd().getFill());
         }
         if (run.getColor() != null) {
             // TODO double check this.
-            spawnStyle += String.format("color:#%s;", run.getColor());
+            spawnStyle += String.format(COLOR_FORMAT, run.getColor());
         }
         if (!spawnStyle.isEmpty()) {
-            res = "<spawn style=\"" + spawnStyle + "\">" + res + "</spawn>";
+            res = String.format(SPAWN_STYLED_FORMAT, spawnStyle, res);
         }
 
         return res;
@@ -504,28 +714,22 @@ public class HtmlSerializer {
         final String res;
 
         switch (alignment) {
-            case BOTH:
-                res = "justify";
-                break;
-
             case CENTER:
-                res = "center";
+                res = CENTER;
                 break;
 
+            case BOTH:
             case DISTRIBUTE:
-                res = "justify";
-                break;
-
-            case LEFT:
-                res = "left";
+                res = JUSTIFY;
                 break;
 
             case RIGHT:
-                res = "right";
+                res = RIGHT;
                 break;
 
+            case LEFT:
             default:
-                res = "left";
+                res = LEFT;
                 break;
         }
 
@@ -542,30 +746,24 @@ public class HtmlSerializer {
     private String serialize(XWPFTable table) {
         final StringBuilder res = new StringBuilder();
 
-        res.append("<table style=\"border: 1px solid black;border-collapse: collapse;\">");
         final XWPFTable localTable = new XWPFTable(table.getCTTbl(), table.getBody());
         for (XWPFTableRow row : localTable.getRows()) {
-            res.append("<trstyle=\"border: 1px solid black;\">");
-
+            final StringBuilder rowBuilder = new StringBuilder();
             for (XWPFTableCell cell : row.getTableCells()) {
                 // TODO merge cell
-                String style = "border: 1px solid black;";
+                String style = BORDER_1PX_SOLID_BLACK;
                 if (cell.getColor() != null) {
-                    style += String.format("background-color:#%s;", cell.getColor());
+                    style += String.format(BACKGROUND_COLOR_FORMAT, cell.getColor());
                 }
                 if (cell.getVerticalAlignment() != null) {
-                    style += "vertical-align:" + getHTMLAlignment(cell.getVerticalAlignment()) + ";";
+                    style += String.format(VERTICAL_ALIGN_FORMAT, getHTMLAlignment(cell.getVerticalAlignment()));
                 }
-                res.append("<td style=\"" + style + "\">");
-                res.append(serialize(cell));
-                res.append("</td>");
+                rowBuilder.append(String.format(TD_STYLED_FORMAT, style, serialize(cell)));
             }
-            res.append("</tr>");
-
+            res.append(String.format(TR_STYLED_FORMAT, BORDER_1PX_SOLID_BLACK, rowBuilder.toString()));
         }
-        res.append("</table>");
 
-        return res.toString();
+        return String.format(TABLE_STYLED_FORMAT, BORDER_1PX_SOLID_BLACK + BORDER_COLLAPSE_COLLAPSE, res.toString());
     }
 
     /**
@@ -580,17 +778,17 @@ public class HtmlSerializer {
 
         switch (verticalAlignment) {
             case BOTTOM:
-                res = "bottom";
+                res = BOTTOM;
                 break;
 
             case TOP:
-                res = "top";
+                res = TOP;
                 break;
 
             case CENTER:
             case BOTH:
             default:
-                res = "baseline";
+                res = BASELINE;
                 break;
         }
 

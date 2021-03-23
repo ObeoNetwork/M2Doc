@@ -132,6 +132,7 @@ Exhibit A – Form of Secondary Licenses Notice
       <feature id="org.obeonetwork.m2doc.sirius.feature"/>
       <feature id="org.obeonetwork.m2doc.ui.feature"/>
       <feature id="org.obeonetwork.m2doc.ui.jdt.feature"/>
+      <feature id="org.eclipse.pde"/>
       <feature id="org.obeonetwork.m2doc.rcptt.feature"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.epp.mpc"/>

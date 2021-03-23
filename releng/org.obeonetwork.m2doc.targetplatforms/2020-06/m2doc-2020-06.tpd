@@ -23,6 +23,7 @@ location Eclipse "https://download.eclipse.org/releases/2020-06" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
+	org.eclipse.pde.feature.group lazy
 
 	// Sirius
 	org.eclipse.sirius.runtime.feature.group lazy

@@ -37,6 +37,7 @@ location Eclipse "https://download.eclipse.org/releases/photon" {
 
     // for testing purpose only
 	org.eclipse.uml2.feature.group lazy
+	org.eclipse.pde.feature.group lazy
 }
 
 location "https://download.eclipse.org/sirius/updates/releases/6.2.2/photon" {
