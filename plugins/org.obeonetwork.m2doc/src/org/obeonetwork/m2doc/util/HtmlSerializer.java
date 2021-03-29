@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import org.apache.poi.openxml4j.opc.PackageRelationship;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
@@ -166,7 +167,7 @@ public class HtmlSerializer {
     /**
      * HTML image format string.
      */
-    private static final String IMAGE_FORMAT = "<img src=\"data:%s;base64, %s\">";
+    private static final String IMAGE_FORMAT = "<img width=%s height=%s src=\"data:%s;base64, %s\">";
 
     /**
      * HTML strong format string.
@@ -347,7 +348,8 @@ public class HtmlSerializer {
         final StringBuilder builder = new StringBuilder();
         try (InputStream is = image.getInputStream(); ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             IOUtils.copy(is, os);
-            builder.append(String.format(IMAGE_FORMAT, "image/" + image.getType().name().toLowerCase(),
+            builder.append(String.format(IMAGE_FORMAT, image.getWidth(), image.getHeight(),
+                    "image/" + image.getType().name().toLowerCase(),
                     new String(Base64.getEncoder().encode(os.toByteArray()))));
         } catch (IOException e) {
             builder.append(String.format(PARAGRAPH_FORMAT, e.getMessage()));
@@ -603,9 +605,13 @@ public class HtmlSerializer {
             final String escapedText = escapeHTML(run.getText(0));
             final String formatedText = String.format(getStyleFormat(run), escapedText);
             for (XWPFPicture picture : run.getEmbeddedPictures()) {
-                contentBuilder
-                        .append(String.format(IMAGE_FORMAT, picture.getPictureData().getPackagePart().getContentType(),
-                                new String(Base64.getEncoder().encode(picture.getPictureData().getData()))));
+                final int width = Units
+                        .pointsToPixel(Units.toPoints(picture.getCTPicture().getSpPr().getXfrm().getExt().getCx()));
+                final int height = Units
+                        .pointsToPixel(Units.toPoints(picture.getCTPicture().getSpPr().getXfrm().getExt().getCy()));
+                contentBuilder.append(String.format(IMAGE_FORMAT, width, height,
+                        picture.getPictureData().getPackagePart().getContentType(),
+                        new String(Base64.getEncoder().encode(picture.getPictureData().getData()))));
             }
             if (run instanceof XWPFHyperlinkRun) {
                 final String id = ((XWPFHyperlinkRun) run).getCTHyperlink().getId();
