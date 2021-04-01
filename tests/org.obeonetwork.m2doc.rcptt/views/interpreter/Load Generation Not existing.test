@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _H3-RcGVdEeuB7drgrhfz6A
-Save-Time: 2/2/21 2:56 PM
+Save-Time: 4/1/21 10:19 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -21,10 +21,15 @@ with [get-window "Select generation file."] {
     get-tree | select "test/uml2.genconf"
     get-button OK | click -metaKeys ""
 }
+get-view "M2Doc interpreter" | get-label "platform:/resource/test/uml2.genconf" | get-property caption 
+    | equals "platform:/resource/test/uml2.genconf" | verify-true
 get-view "Project Explorer" | get-tree | select "test/uml2.genconf" | key-type Del
 get-window Delete | get-button OK | click -metaKeys ""
 get-view "M2Doc interpreter" | get-button "Refresh Generation Context" | click -metaKeys ""
 get-view "M2Doc interpreter" | get-control Browser | get-property text 
     | equals "<p>can't load .genconf file: org.eclipse.core.internal.resources.ResourceException: Resource '/test/uml2.genconf' does not exist.</p>" 
     | verify-true
+get-view "M2Doc interpreter" | get-label "can't load .genconf file" | get-property caption 
+    | equals "can't load .genconf file" | verify-true
+    
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

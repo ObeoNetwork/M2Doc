@@ -70,6 +70,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
@@ -255,6 +256,11 @@ public class M2DocInterpreterView extends ViewPart {
     private final ILabelProvider labelProvider = new ProposalLabelProvider();
 
     /**
+     * The {@link Generation} path label.
+     */
+    private Label genconfLabel;
+
+    /**
      * The {@link SourceViewer}.
      */
     private SourceViewer sourceViewer;
@@ -352,6 +358,9 @@ public class M2DocInterpreterView extends ViewPart {
         sashComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         final GridLayout sashLayout = new GridLayout(1, false);
         sashComposite.setLayout(sashLayout);
+
+        genconfLabel = new Label(sashComposite, SWT.BORDER);
+        genconfLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 
         SashForm sashForm = new SashForm(sashComposite, SWT.VERTICAL);
         sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -537,11 +546,17 @@ public class M2DocInterpreterView extends ViewPart {
                 configurator.startGeneration(queryEnvironment, new XWPFDocument());
             }
 
+            if (generation != null) {
+                genconfLabel.setText(URI.decode(genconfURI.toString()));
+            } else {
+                genconfLabel.setText("");
+            }
             updateBrowser(sourceViewer.getTextWidget().getText());
             // CHECKSTYLE:OFF
         } catch (Exception e) {
             // CHECKSTYLE:ON
             browser.setText(htmlSerializer.serialize("can't load .genconf file: " + e.getMessage()));
+            genconfLabel.setText("can't load .genconf file");
             generation = null;
             m2docEnv = null;
         }
@@ -614,6 +629,12 @@ public class M2DocInterpreterView extends ViewPart {
         IHandlerService service = getSite().getService(IHandlerService.class);
         service.deactivateHandler(contentAssistHandlerActivation);
         browser.dispose();
+        if (genconfLabel != null) {
+            genconfLabel.dispose();
+        }
+        if (sourceViewer != null && sourceViewer.getTextWidget() != null) {
+            sourceViewer.getTextWidget().dispose();
+        }
         if (selectionListener != null) {
             getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(selectionListener);
         }
