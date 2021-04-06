@@ -13,7 +13,9 @@ package org.obeonetwork.m2doc.genconf.editor.view;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,7 +24,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -108,6 +114,70 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class M2DocInterpreterView extends ViewPart {
+
+    /**
+     * Updates the browser with a given expression.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class UpdateBrowserRunnable implements Runnable {
+
+        /**
+         * The new expression.
+         */
+        private final String expression;
+
+        /**
+         * Constructor.
+         * 
+         * @param expression
+         *            the new expression
+         */
+        private UpdateBrowserRunnable(String expression) {
+            this.expression = expression;
+        }
+
+        @Override
+        public void run() {
+            if (!Thread.interrupted()) {
+                Display.getDefault().syncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        browser.setText(IN_PROGRESS_HTML);
+                    }
+                });
+            }
+
+            final String html;
+            if (generation != null) {
+
+                if (m2docEnv != null) {
+                    m2docEnv.getBookmarkManager().reset();
+                    m2docEnv.getUserContentManager().reset();
+                }
+                final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
+                final String validationContent = getValidationHTMLContent(validationResult);
+
+                final AstResult astBuilder = queryBuilder.build(expression);
+                final EvaluationResult evaluationResult = evaluationEngine.eval(astBuilder, allVariables);
+                final String evaluationContent = htmlSerializer.serialize(evaluationResult.getResult());
+                html = validationContent + evaluationContent;
+            } else {
+                html = "You need to select a generation model (.genconf file).";
+            }
+            if (!Thread.interrupted()) {
+                Display.getDefault().syncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        browser.setText(html);
+                    }
+                });
+            }
+
+        }
+    }
 
     /**
      * Highlights info, warning, and error in the {@link SourceViewer}.
@@ -219,6 +289,11 @@ public class M2DocInterpreterView extends ViewPart {
     }
 
     /**
+     * The in progress HTML.
+     */
+    private static final String IN_PROGRESS_HTML = initInProgressHTML();
+
+    /**
      * The HTML validation message {@link String#format(String, Object...) format}.
      */
     private static final String VALIDATION_HTML_FORMAT = "<p onmouseover=\"" + HighlightFunction.NAME
@@ -273,7 +348,7 @@ public class M2DocInterpreterView extends ViewPart {
     /**
      * The {@link ISelectionListener} updating the selection variable.
      */
-    private ISelectionListener selectionListener;
+    private ISelectionListener updateSelectionListener;
 
     /**
      * The {@link HtmlSerializer}.
@@ -335,10 +410,41 @@ public class M2DocInterpreterView extends ViewPart {
      */
     private M2DocEvaluationEnvironment m2docEnv;
 
+    /**
+     * The single thread executor.
+     */
+    private ExecutorService executorService = Executors.newFixedThreadPool(1);
+
+    /**
+     * The updating {@link Future}.
+     */
+    private Future<?> updatingFuture;
+
     @Override
     public void init(IViewSite site, IMemento memo) throws PartInitException {
         super.init(site, memo);
         this.memento = memo;
+    }
+
+    /**
+     * Initializes the in progress HTML.
+     * 
+     * @return the inprogress HTML
+     */
+    private static String initInProgressHTML() {
+        final StringBuilder res = new StringBuilder();
+
+        try (InputStream stream = M2DocInterpreterView.class.getResourceAsStream("/icons/loader.gif")) {
+            res.append("<img style=\"display: block;margin-left: auto;margin-right: auto;width: 10%;\" src=\"");
+            res.append("data:image/gif;base64, ");
+            final byte[] imageData = IOUtils.toByteArray(stream);
+            res.append(new String(Base64.getEncoder().encode(imageData)));
+            res.append("\"/>");
+        } catch (IOException e) {
+            return "";
+        }
+
+        return res.toString();
     }
 
     @Override
@@ -396,7 +502,7 @@ public class M2DocInterpreterView extends ViewPart {
         }
 
         final ISelectionService selectionService = getSite().getWorkbenchWindow().getSelectionService();
-        selectionListener = new ISelectionListener() {
+        updateSelectionListener = new ISelectionListener() {
 
             @Override
             public void selectionChanged(IWorkbenchPart part, ISelection selection) {
@@ -414,7 +520,7 @@ public class M2DocInterpreterView extends ViewPart {
                 }
             }
         };
-        selectionService.addSelectionListener(selectionListener);
+        selectionService.addSelectionListener(updateSelectionListener);
         updateBrowser(sourceViewer.getTextWidget().getText());
     }
 
@@ -478,6 +584,7 @@ public class M2DocInterpreterView extends ViewPart {
      *            the new {@link Generation} {@link URI}
      */
     public void setGenconfURI(URI genconfURI) {
+        browser.setText(IN_PROGRESS_HTML);
         sourceViewer.unconfigure();
 
         if (generation != null) {
@@ -635,8 +742,8 @@ public class M2DocInterpreterView extends ViewPart {
         if (sourceViewer != null && sourceViewer.getTextWidget() != null) {
             sourceViewer.getTextWidget().dispose();
         }
-        if (selectionListener != null) {
-            getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(selectionListener);
+        if (updateSelectionListener != null) {
+            getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(updateSelectionListener);
         }
     }
 
@@ -654,21 +761,12 @@ public class M2DocInterpreterView extends ViewPart {
      *            the AQL expression
      */
     private void updateBrowser(final String expression) {
-        if (generation != null) {
-            if (m2docEnv != null) {
-                m2docEnv.getBookmarkManager().reset();
-                m2docEnv.getUserContentManager().reset();
-            }
-            final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
-            final String validationContent = getValidationHTMLContent(validationResult);
-
-            final AstResult astBuilder = queryBuilder.build(expression);
-            final EvaluationResult evaluationResult = evaluationEngine.eval(astBuilder, allVariables);
-            final String evaluationContent = htmlSerializer.serialize(evaluationResult.getResult());
-            browser.setText(validationContent + evaluationContent);
-        } else {
-            browser.setText("You need to select a generation model (.genconf file).");
+        executorService.shutdownNow();
+        if (updatingFuture != null && !updatingFuture.isDone()) {
+            updatingFuture.cancel(true);
         }
+        executorService = Executors.newFixedThreadPool(1);
+        updatingFuture = executorService.submit(new UpdateBrowserRunnable(expression));
     }
 
     /**
