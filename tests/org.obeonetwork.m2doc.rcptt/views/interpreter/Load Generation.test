@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _HM0lAGVEEeuB7drgrhfz6A
-Save-Time: 4/1/21 10:14 AM
+Save-Time: 4/6/21 12:58 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -24,6 +24,6 @@ with [get-window "Select generation file."] {
 get-view "M2Doc interpreter" | get-label "platform:/resource/test/uml2.genconf" | get-property caption 
     | equals "platform:/resource/test/uml2.genconf" | verify-true
 get-view "M2Doc interpreter" | get-control Browser | get-property text 
-    | equals "<p onmouseover=\"highlight('ERROR',0,0);\" onmouseout=\"clearHighlight('ERROR',0,0);\" style=\"background-color: red;\">ERROR: null or empty string. (0, 0)</p><hr><p>null</p>" 
+    | equals "<p onmouseover=\"highlight('ERROR',0,0);\" onmouseout=\"clearHighlight('ERROR',0,0);\" style=\"background-color: red;\">ERROR: null or empty string. (0, 0)</p><hr>" 
     | verify-true
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

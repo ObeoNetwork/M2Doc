@@ -39,6 +39,7 @@ import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
@@ -159,9 +160,14 @@ public class M2DocInterpreterView extends ViewPart {
                 final IValidationResult validationResult = validationEngine.validate(expression, variableTypes);
                 final String validationContent = getValidationHTMLContent(validationResult);
 
-                final AstResult astBuilder = queryBuilder.build(expression);
-                final EvaluationResult evaluationResult = evaluationEngine.eval(astBuilder, allVariables);
-                final String evaluationContent = htmlSerializer.serialize(evaluationResult.getResult());
+                final String evaluationContent;
+                if (!hasError(validationResult)) {
+                    final AstResult astBuilder = queryBuilder.build(expression);
+                    final EvaluationResult evaluationResult = evaluationEngine.eval(astBuilder, allVariables);
+                    evaluationContent = htmlSerializer.serialize(evaluationResult.getResult());
+                } else {
+                    evaluationContent = "";
+                }
                 html = validationContent + evaluationContent;
             } else {
                 html = "You need to select a generation model (.genconf file).";
@@ -176,6 +182,24 @@ public class M2DocInterpreterView extends ViewPart {
                 });
             }
 
+        }
+
+        /**
+         * Tells if the given {@link IValidationResult} has at least one {@link ValidationMessageLevel#ERROR}.
+         * 
+         * @param validationResult
+         *            the {@link IValidationResult}
+         * @return <code>true</code> if the given {@link IValidationResult} has at least one {@link ValidationMessageLevel#ERROR},
+         *         <code>false</code> otherwise
+         */
+        private boolean hasError(IValidationResult validationResult) {
+            for (IValidationMessage message : validationResult.getMessages()) {
+                if (message.getLevel() == ValidationMessageLevel.ERROR) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
