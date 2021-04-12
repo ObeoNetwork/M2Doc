@@ -21,6 +21,8 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+import org.obeonetwork.capella.m2doc.aql.queries.M2DocGenServices;
+import org.obeonetwork.capella.m2doc.aql.queries.SemanticBrowserServices;
 import org.obeonetwork.m2doc.html.services.M2DocHTMLServices;
 import org.obeonetwork.m2doc.ide.ui.services.M2DocEObjectServices;
 import org.obeonetwork.m2doc.ide.ui.services.SWTPromptServices;
@@ -51,7 +53,8 @@ public final class DocumentationGenerator {
 	private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] { BooleanServices.class,
 			ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
 			ExcelServices.class, M2DocHTMLServices.class, PromptServices.class, SWTPromptServices.class,
-			M2DocEObjectServices.class, M2DocWikiTextServices.class};
+			M2DocEObjectServices.class, M2DocWikiTextServices.class, M2DocGenServices.class,
+			SemanticBrowserServices.class, };
 
 	/**
 	 * The constructor.
