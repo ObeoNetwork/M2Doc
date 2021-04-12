@@ -567,7 +567,19 @@ All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#Langua
   * you will have to add the following packages nsURI (see [Template properties wizard](index.html#template-properties-wizard) section): http://www.eclipse.org/sirius/1.1.0, http://www.eclipse.org/sirius/diagram/1.1.0, and/or http://www.eclipse.org/sirius/diagram/sequence/2.0.0.
 * [Wikitext services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docwikitextservices.html) (exprerimental)
 
+Services specific to the [M2Doc Capella extensions](../../capella/):
+
+* [Capella extensions]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docgenservices.html)
+* [Capella semantic browser]({{page.relativePath}}/ref-doc/nightly/m2doc_service_semanticbrowserservices.html)
+
+NOTE: you will have to manually import the two services classes or select the "Capella" package in the [Template properties wizard](index.html#template-properties-wizard):
+
+* org.obeonetwork.capella.m2doc.aql.queries.M2DocGenServices
+* org.obeonetwork.capella.m2doc.aql.queries.SemanticBrowserServices
+
 ### Template properties wizard
+
+The template propeties wizard allows to configure the template. You will be able to add or remove used metamodels (nsURI), service classes, you will also be able to specify the type of the variable used as input of your template.
 
 To open the template properties wizard, you can select a template .docx file and right click on it:
 
@@ -623,7 +635,7 @@ For example:
 
 #### Package custom properties
 
-To use new Ecore packages for typing you can add the following custom property:
+To use new EMF packages for typing you can add the following custom property:
 
 * Name: `m:uri:`**EPackage nsURI**
 * Value:

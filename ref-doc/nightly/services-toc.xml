@@ -12,4 +12,6 @@
 <topic href="doc/m2doc_service_swtpromptservices.html" label="Services available for prompting user for values using SWT for graphical user interface."></topic>
 <topic href="doc/m2doc_service_m2doceobjectservices.html" label="Services available for EObject."></topic>
 <topic href="doc/m2doc_service_m2docwikitextservices.html" label="Services available for WikiText insertion."></topic>
+<topic href="doc/m2doc_service_m2docgenservices.html" label="Services available for Capella extensions."></topic>
+<topic href="doc/m2doc_service_semanticbrowserservices.html" label="Services available for the Capella semantic browser."></topic>
 </toc>
