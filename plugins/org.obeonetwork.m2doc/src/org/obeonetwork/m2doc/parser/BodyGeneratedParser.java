@@ -98,7 +98,8 @@ public class BodyGeneratedParser extends AbstractBodyParser {
     }
 
     @Override
-    public Block parseBlock(List<Template> templates, TokenType... endTypes) throws DocumentParserException {
+    public Block parseBlock(List<Template> templates, String header, TokenType... endTypes)
+            throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
 
         TokenType type = getNextTokenType();
@@ -116,18 +117,30 @@ public class BodyGeneratedParser extends AbstractBodyParser {
                         throw new IllegalStateException(
                                 "Token of type " + type + " detected. Run shouldn't be null at this place.");
                     }
-                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                    if (header == null) {
+                        res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                    } else {
+                        res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                message(ParsingErrorMessage.UNEXPECTEDTAGWITHHEADER, type.getValue(), header), run));
+                    }
                     readTag(res, res.getRuns());
                     break;
                 case EOF:
                     final XWPFParagraph lastParagraph = document.getParagraphs()
                             .get(document.getParagraphs().size() - 1);
                     final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-                    res.getValidationMessages()
-                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                    message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type, Arrays.toString(endTypes)),
-                                    lastRun));
+                    if (header == null) {
+                        res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type, Arrays.toString(endTypes)),
+                                lastRun));
+                    } else {
+                        res.getValidationMessages()
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                        message(ParsingErrorMessage.UNEXPECTEDTAGMISSINGWITHHEADER, type,
+                                                Arrays.toString(endTypes), header),
+                                        lastRun));
+                    }
                     break endBlock;
                 case STATIC:
                     res.getStatements().add(parseStaticFragment());
@@ -162,30 +175,30 @@ public class BodyGeneratedParser extends AbstractBodyParser {
     private UserContent parseUserContent() throws DocumentParserException {
         // first read the tag that opens the user content
         final UserContent userContent = (UserContent) EcoreUtil.create(TemplatePackage.Literals.USER_CONTENT);
-        String tagText = readTag(userContent, userContent.getRuns()).trim();
+        final String header = readTag(userContent, userContent.getRuns()).trim();
         // remove the prefix
-        tagText = tagText.substring(TokenType.USERCONTENT.getValue().length()).trim();
+        final String id = header.substring(TokenType.USERCONTENT.getValue().length()).trim();
 
-        if (tagText == null || "".equals(tagText)) {
+        if (id == null || "".equals(id)) {
             final XWPFRun lastRun = userContent.getRuns().get(userContent.getRuns().size() - 1);
             TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, ParsingErrorMessage.INVALID_USERCONTENT_VALUE.getMessage(), lastRun);
             userContent.getValidationMessages().add(templateValidationMessage);
         } else {
-            userContent.setId(tagText);
-            if (userContentIds.contains(tagText)) {
+            userContent.setId(id);
+            if (userContentIds.contains(id)) {
                 final XWPFRun lastRun = userContent.getRuns().get(userContent.getRuns().size() - 1);
                 TemplateValidationMessage templateValidationMessage = new TemplateValidationMessage(
-                        ValidationMessageLevel.WARNING,
-                        message(ParsingErrorMessage.INVALID_USERDOC_ID_NOT_UNIQUE, tagText), lastRun);
+                        ValidationMessageLevel.WARNING, message(ParsingErrorMessage.INVALID_USERDOC_ID_NOT_UNIQUE, id),
+                        lastRun);
                 userContent.getValidationMessages().add(templateValidationMessage);
             } else {
-                userContentIds.add(tagText);
+                userContentIds.add(id);
             }
         }
 
         // read up the tags until the "m:enduserdoc" tag is encountered.
-        final Block body = parseBlock(null, TokenType.ENDUSERCONTENT);
+        final Block body = parseBlock(null, header, TokenType.ENDUSERCONTENT);
         userContent.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(userContent, userContent.getClosingRuns());

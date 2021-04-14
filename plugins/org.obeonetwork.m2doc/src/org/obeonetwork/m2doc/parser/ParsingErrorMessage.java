@@ -20,11 +20,15 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when a conditional end tag is expected.
      */
-    CONDTAGEXPEXTED("m:elseif, m:else or m:endif expected here."),
+    CONDTAGEXPEXTED("m:elseif, m:else or m:endif expected here while parsing {0}"),
     /**
      * Error message issued when unexpected tag is encountered.
      */
     UNEXPECTEDTAG("Unexpected tag {0} at this location"),
+    /**
+     * Error message issued when unexpected tag is encountered with header.
+     */
+    UNEXPECTEDTAGWITHHEADER("Unexpected tag {0} at this location while parsing: {1}"),
     /**
      * Error message issued when a tag is malformed.
      */
@@ -33,6 +37,10 @@ public enum ParsingErrorMessage {
      * Error message issued when unexpected tag is encountered.
      */
     UNEXPECTEDTAGMISSING("Unexpected tag {0} missing {1}"),
+    /**
+     * Error message issued when unexpected tag is encountered with header.
+     */
+    UNEXPECTEDTAGMISSINGWITHHEADER("Unexpected tag {0} missing {1} while parsing {2}"),
     /**
      * Error message issued when a invalid AQL expression is encountered.
      */

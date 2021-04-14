@@ -1,1 +1,1 @@
-ERROR - Invalid block: Unexpected tag EOF missing [ENDLET]
+ERROR - Invalid block: Unexpected tag EOF missing [ENDLET] while parsing m:let v = self.name

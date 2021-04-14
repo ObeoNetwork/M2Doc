@@ -179,7 +179,8 @@ public class M2DocParser extends AbstractBodyParser {
     }
 
     @Override
-    public Block parseBlock(List<Template> templates, TokenType... endTypes) throws DocumentParserException {
+    public Block parseBlock(List<Template> templates, String header, TokenType... endTypes)
+            throws DocumentParserException {
         final Block res = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
         TokenType type = getNextTokenType();
         Set<TokenType> endTypeSet = new HashSet<>(Arrays.asList(endTypes));
@@ -219,8 +220,14 @@ public class M2DocParser extends AbstractBodyParser {
                         throw new IllegalStateException(
                                 "Token of type " + type + " detected. Run shouldn't be null at this place.");
                     }
-                    res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                            M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                    if (header == null) {
+                        res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                    } else {
+                        res.getValidationMessages()
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, M2DocUtils.message(
+                                        ParsingErrorMessage.UNEXPECTEDTAGWITHHEADER, type.getValue(), header), run));
+                    }
                     if (!endTypeSet.contains(TokenType.EOF)) {
                         res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.INFO,
                                 M2DocUtils.message(ParsingErrorMessage.DIDYOUFORGETENDBLOCK, Arrays.toString(endTypes)),
@@ -232,10 +239,19 @@ public class M2DocParser extends AbstractBodyParser {
                     final XWPFParagraph lastParagraph = document.getParagraphs()
                             .get(document.getParagraphs().size() - 1);
                     final XWPFRun lastRun = lastParagraph.getRuns().get(lastParagraph.getRuns().size() - 1);
-                    res.getValidationMessages()
-                            .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, M2DocUtils
-                                    .message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type, Arrays.toString(endTypes)),
-                                    lastRun));
+                    if (header == null) {
+                        res.getValidationMessages()
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                        M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAGMISSING, type,
+                                                Arrays.toString(endTypes)),
+                                        lastRun));
+                    } else {
+                        res.getValidationMessages()
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                                        M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAGMISSINGWITHHEADER, type,
+                                                Arrays.toString(endTypes), header),
+                                        lastRun));
+                    }
                     break endBlock;
                 case LET:
                     res.getStatements().add(parseLet());
@@ -293,35 +309,35 @@ public class M2DocParser extends AbstractBodyParser {
     private Let parseLet() throws DocumentParserException {
         Let let = (Let) EcoreUtil.create(TemplatePackage.Literals.LET);
 
-        String letText = readTag(let, let.getRuns()).trim().substring(TokenType.LET.getValue().length());
-        letText = letText.trim();
+        final String header = readTag(let, let.getRuns()).trim();
+        final String tagText = header.substring(TokenType.LET.getValue().length()).trim();
 
         int currentIndex = 0;
-        if (currentIndex < letText.length() && Character.isJavaIdentifierStart(letText.charAt(currentIndex))) {
+        if (currentIndex < tagText.length() && Character.isJavaIdentifierStart(tagText.charAt(currentIndex))) {
             currentIndex++;
-            while (currentIndex < letText.length() && Character.isJavaIdentifierPart(letText.charAt(currentIndex))) {
+            while (currentIndex < tagText.length() && Character.isJavaIdentifierPart(tagText.charAt(currentIndex))) {
                 currentIndex++;
             }
-            let.setName(letText.substring(0, currentIndex));
+            let.setName(tagText.substring(0, currentIndex));
         } else {
             M2DocUtils.validationError(let, "Missing identifier");
         }
 
-        while (currentIndex < letText.length() && Character.isWhitespace(letText.charAt(currentIndex))) {
+        while (currentIndex < tagText.length() && Character.isWhitespace(tagText.charAt(currentIndex))) {
             currentIndex++;
         }
 
-        if (currentIndex < letText.length() && letText.charAt(currentIndex) == '=') {
+        if (currentIndex < tagText.length() && tagText.charAt(currentIndex) == '=') {
             currentIndex++;
         } else {
             M2DocUtils.validationError(let, "Missing =");
         }
 
-        while (currentIndex < letText.length() && Character.isWhitespace(letText.charAt(currentIndex))) {
+        while (currentIndex < tagText.length() && Character.isWhitespace(tagText.charAt(currentIndex))) {
             currentIndex++;
         }
 
-        final String queryString = letText.substring(currentIndex);
+        final String queryString = tagText.substring(currentIndex);
         final AstResult result = queryParser.build(queryString);
         let.setValue(result);
         if (!result.getErrors().isEmpty()) {
@@ -329,7 +345,7 @@ public class M2DocParser extends AbstractBodyParser {
             let.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), queryString, lastRun));
         }
 
-        final Block body = parseBlock(null, TokenType.ENDLET);
+        final Block body = parseBlock(null, header, TokenType.ENDLET);
         let.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(let, let.getClosingRuns());
@@ -414,14 +430,14 @@ public class M2DocParser extends AbstractBodyParser {
      */
     private Comment parseCommentBlock() throws DocumentParserException {
         final Comment comment = (Comment) EcoreUtil.create(TemplatePackage.Literals.COMMENT);
-        final String commentText = readTag(comment, comment.getRuns()).trim()
-                .substring(TokenType.COMMENTBLOCK.getValue().length());
+        final String header = readTag(comment, comment.getRuns()).trim();
+        final String commentText = header.substring(TokenType.COMMENTBLOCK.getValue().length());
 
         comment.setText(commentText.trim());
 
         final XWPFRun lastRun = comment.getRuns().get(comment.getRuns().size() - 1);
         // read up the tags until the "m:endcommentblock" tag is encountered.
-        final Block body = parseBlock(null, TokenType.ENDCOMMENTBLOCK);
+        final Block body = parseBlock(null, header, TokenType.ENDCOMMENTBLOCK);
         // we discard the body, only keep messages from the block.
         for (TemplateValidationMessage message : body.getValidationMessages()) {
             comment.getValidationMessages()
@@ -444,18 +460,19 @@ public class M2DocParser extends AbstractBodyParser {
      *             if something wrong happens during parsing.
      */
     private Conditional parseConditional() throws DocumentParserException {
-        Conditional conditional = (Conditional) EcoreUtil.create(TemplatePackage.Literals.CONDITIONAL);
-        String tag = readTag(conditional, conditional.getRuns()).trim();
-        boolean headConditionnal = tag.startsWith(TokenType.IF.getValue());
-        int tagLength = headConditionnal ? TokenType.IF.getValue().length() : TokenType.ELSEIF.getValue().length();
-        String query = tag.substring(tagLength).trim();
+        final Conditional conditional = (Conditional) EcoreUtil.create(TemplatePackage.Literals.CONDITIONAL);
+        final String header = readTag(conditional, conditional.getRuns()).trim();
+        final boolean headConditionnal = header.startsWith(TokenType.IF.getValue());
+        final int tagLength = headConditionnal ? TokenType.IF.getValue().length()
+                : TokenType.ELSEIF.getValue().length();
+        final String query = header.substring(tagLength).trim();
         final AstResult result = queryParser.build(query);
         conditional.setCondition(result);
         if (!result.getErrors().isEmpty()) {
             final XWPFRun lastRun = conditional.getRuns().get(conditional.getRuns().size() - 1);
             conditional.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), query, lastRun));
         }
-        final Block thenCompound = parseBlock(null, TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
+        final Block thenCompound = parseBlock(null, header, TokenType.ELSEIF, TokenType.ELSE, TokenType.ENDIF);
         conditional.setThen(thenCompound);
         TokenType nextRunType = getNextTokenType();
         switch (nextRunType) {
@@ -467,7 +484,8 @@ public class M2DocParser extends AbstractBodyParser {
             case ELSE:
                 final Block block = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
                 readTag(block, block.getRuns());
-                final Block elseCompound = parseBlock(null, TokenType.ENDIF);
+                final Block elseCompound = parseBlock(null, header + " ... " + TokenType.ELSE.getValue(),
+                        TokenType.ENDIF);
                 conditional.setElse(elseCompound);
 
                 // read up the m:endif tag if it exists
@@ -479,7 +497,8 @@ public class M2DocParser extends AbstractBodyParser {
                 readTag(conditional, conditional.getClosingRuns());
                 break; // we just finish the current conditional.
             default:
-                M2DocUtils.validationError(conditional, M2DocUtils.message(ParsingErrorMessage.CONDTAGEXPEXTED));
+                M2DocUtils.validationError(conditional,
+                        M2DocUtils.message(ParsingErrorMessage.CONDTAGEXPEXTED, header));
         }
         return conditional;
     }
@@ -495,9 +514,9 @@ public class M2DocParser extends AbstractBodyParser {
     private Repetition parseRepetition() throws DocumentParserException {
         // first read the tag that opens the repetition
         Repetition repetition = (Repetition) EcoreUtil.create(TemplatePackage.Literals.REPETITION);
-        String tagText = readTag(repetition, repetition.getRuns()).trim();
+        final String header = readTag(repetition, repetition.getRuns()).trim();
         // remove the prefix
-        tagText = tagText.substring(TokenType.FOR.getValue().length());
+        final String tagText = header.substring(TokenType.FOR.getValue().length());
         // extract the variable;
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
@@ -525,7 +544,7 @@ public class M2DocParser extends AbstractBodyParser {
             }
         }
         // read up the tags until the "m:endfor" tag is encountered.
-        final Block body = parseBlock(null, TokenType.ENDFOR);
+        final Block body = parseBlock(null, header, TokenType.ENDFOR);
         repetition.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(repetition, repetition.getClosingRuns());
@@ -544,9 +563,9 @@ public class M2DocParser extends AbstractBodyParser {
     private Template parseTemplate() throws DocumentParserException {
         // first read the tag that opens the template
         final Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
-        String tagText = readTag(template, template.getRuns()).trim();
+        final String header = readTag(template, template.getRuns()).trim();
         // remove the prefix
-        tagText = tagText.substring(TokenType.TEMPLATE.getValue().length());
+        final String tagText = header.substring(TokenType.TEMPLATE.getValue().length());
         // extract the name
         final int indexOfOpenParenthesis = tagText.indexOf('(');
         if (indexOfOpenParenthesis < 0) {
@@ -580,7 +599,7 @@ public class M2DocParser extends AbstractBodyParser {
             }
         }
         // read up the tags until the "m:endtemplate" tag is encountered.
-        final Block body = parseBlock(null, TokenType.ENDTEMPLATE);
+        final Block body = parseBlock(null, header, TokenType.ENDTEMPLATE);
         template.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(template, template.getClosingRuns());
@@ -665,9 +684,9 @@ public class M2DocParser extends AbstractBodyParser {
         // first read the tag that opens the bookmark
         final Bookmark bookmark = (Bookmark) EcoreUtil.create(TemplatePackage.Literals.BOOKMARK);
 
-        String tagText = readTag(bookmark, bookmark.getRuns()).trim();
+        final String header = readTag(bookmark, bookmark.getRuns()).trim();
         // remove the prefix
-        tagText = tagText.substring(TokenType.BOOKMARK.getValue().length()).trim();
+        final String tagText = header.substring(TokenType.BOOKMARK.getValue().length()).trim();
         final AstResult result = queryParser.build(tagText);
         bookmark.setName(result);
         if (!result.getErrors().isEmpty()) {
@@ -675,7 +694,7 @@ public class M2DocParser extends AbstractBodyParser {
             bookmark.getValidationMessages().addAll(getValidationMessage(result.getDiagnostic(), tagText, lastRun));
         }
         // read up the tags until the "m:endbookmark" tag is encountered.
-        final Block body = parseBlock(null, TokenType.ENDBOOKMARK);
+        final Block body = parseBlock(null, header, TokenType.ENDBOOKMARK);
         bookmark.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(bookmark, bookmark.getClosingRuns());
@@ -731,9 +750,9 @@ public class M2DocParser extends AbstractBodyParser {
     private UserDoc parseUserDoc() throws DocumentParserException {
         // first read the tag that opens the link
         final UserDoc userDoc = (UserDoc) EcoreUtil.create(TemplatePackage.Literals.USER_DOC);
-        String tagText = readTag(userDoc, userDoc.getRuns()).trim();
+        final String header = readTag(userDoc, userDoc.getRuns()).trim();
         // remove the prefix
-        tagText = tagText.substring(TokenType.USERDOC.getValue().length()).trim();
+        final String tagText = header.substring(TokenType.USERDOC.getValue().length()).trim();
 
         final AstResult id = queryParser.build(tagText);
         userDoc.setId(id);
@@ -743,7 +762,7 @@ public class M2DocParser extends AbstractBodyParser {
         }
 
         // read up the tags until the "m:enduserdoc" tag is encountered.
-        final Block body = parseBlock(null, TokenType.ENDUSERDOC);
+        final Block body = parseBlock(null, header, TokenType.ENDUSERDOC);
         userDoc.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
             readTag(userDoc, userDoc.getClosingRuns());

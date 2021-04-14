@@ -172,14 +172,32 @@ public abstract class AbstractBodyParser {
      * Parses a {@link Block}.
      * 
      * @param templates
-     *            <code>true</code> if {@link Template} are allowed in this {@link Block}, <code>false</code> otherwise
+     *            an empty {@link List} if {@link Template} are allowed in this {@link Block}, <code>null</code> otherwise
      * @param endTypes
      *            the token types that mark the end of the parsed compound
      * @return the parsed {@link Block}
      * @throws DocumentParserException
      *             if a problem occurs while parsing
      */
-    public abstract Block parseBlock(List<Template> templates, TokenType... endTypes) throws DocumentParserException;
+    public Block parseBlock(List<Template> templates, TokenType... endTypes) throws DocumentParserException {
+        return parseBlock(templates, null, endTypes);
+    }
+
+    /**
+     * Parses a {@link Block}.
+     * 
+     * @param templates
+     *            an empty {@link List} if {@link Template} are allowed in this {@link Block}, <code>null</code> otherwise
+     * @param header
+     *            the header of the current {@link Block}
+     * @param endTypes
+     *            the token types that mark the end of the parsed compound
+     * @return the parsed {@link Block}
+     * @throws DocumentParserException
+     *             if a problem occurs while parsing
+     */
+    public abstract Block parseBlock(List<Template> templates, String header, TokenType... endTypes)
+            throws DocumentParserException;
 
     /**
      * Reads up a tag so that it can be parsed as a simple string.

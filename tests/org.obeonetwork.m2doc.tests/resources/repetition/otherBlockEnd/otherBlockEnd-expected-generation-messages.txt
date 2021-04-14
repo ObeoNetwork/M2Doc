@@ -1,46 +1,46 @@
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?
-ERROR - Invalid block: Unexpected tag m:endif at this location
+ERROR - Invalid block: Unexpected tag m:endif at this location while parsing: m:for v | self.eClassifiers
 INFO - Invalid block: Did you forget the [ENDFOR]?

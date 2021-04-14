@@ -1,1 +1,1 @@
-ERROR - Invalid block: Unexpected tag EOF missing [ENDBOOKMARK]
+ERROR - Invalid block: Unexpected tag EOF missing [ENDBOOKMARK] while parsing m:bookmark 'bookmark1'

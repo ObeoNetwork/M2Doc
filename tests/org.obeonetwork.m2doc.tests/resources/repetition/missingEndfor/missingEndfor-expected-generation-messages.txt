@@ -1,23 +1,23 @@
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
-ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR]
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers
+ERROR - Invalid block: Unexpected tag EOF missing [ENDFOR] while parsing m:for v| self.eClassifiers

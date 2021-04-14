@@ -1,1 +1,1 @@
-ERROR - Invalid block: Unexpected tag EOF missing [ENDTEMPLATE]
+ERROR - Invalid block: Unexpected tag EOF missing [ENDTEMPLATE] while parsing m:template myTemplate(str:String)
