@@ -320,7 +320,7 @@ public class M2DocParser extends AbstractBodyParser {
             }
             let.setName(tagText.substring(0, currentIndex));
         } else {
-            M2DocUtils.validationError(let, "Missing identifier");
+            M2DocUtils.validationError(let, M2DocUtils.message(ParsingErrorMessage.MISSINGIDENTIFIER));
         }
 
         while (currentIndex < tagText.length() && Character.isWhitespace(tagText.charAt(currentIndex))) {
@@ -330,7 +330,7 @@ public class M2DocParser extends AbstractBodyParser {
         if (currentIndex < tagText.length() && tagText.charAt(currentIndex) == '=') {
             currentIndex++;
         } else {
-            M2DocUtils.validationError(let, "Missing =");
+            M2DocUtils.validationError(let, M2DocUtils.message(ParsingErrorMessage.MISSINGEQUALS));
         }
 
         while (currentIndex < tagText.length() && Character.isWhitespace(tagText.charAt(currentIndex))) {
@@ -381,7 +381,7 @@ public class M2DocParser extends AbstractBodyParser {
                     final Matcher matcher = EXTRA_SPACES_PATTERNS.get(tokenType).matcher(tagText);
                     if (matcher.find(0) && (matcher.end() == tagText.length() || checkExtraSpace)) {
                         M2DocUtils.validationInfo(query,
-                                "You might want to replace " + matcher.group() + " by " + value);
+                                M2DocUtils.message(ParsingErrorMessage.YOUMIGHTWANTTOREPLACE, matcher.group(), value));
                         break;
                     }
                 }
@@ -391,7 +391,7 @@ public class M2DocParser extends AbstractBodyParser {
         } catch (Exception e) {
             // CHECKSTYLE:ON
             final BasicDiagnostic diagnostic = new BasicDiagnostic();
-            final String message = "Unable to parse AQL Expression check the syntax.";
+            final String message = M2DocUtils.message(ParsingErrorMessage.UNABLETOPARSEAQLEXPRESSION);
             diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocUtils.PLUGIN_ID, 0, message, new Object[] {}));
             final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
             query.getValidationMessages().addAll(getValidationMessage(diagnostic, queryText, lastRun));
@@ -484,8 +484,8 @@ public class M2DocParser extends AbstractBodyParser {
             case ELSE:
                 final Block block = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
                 readTag(block, block.getRuns());
-                final Block elseCompound = parseBlock(null, header + " ... " + TokenType.ELSE.getValue(),
-                        TokenType.ENDIF);
+                final Block elseCompound = parseBlock(null,
+                        M2DocUtils.message(ParsingErrorMessage.MISSINGENDIFAFTREELSE, header), TokenType.ENDIF);
                 conditional.setElse(elseCompound);
 
                 // read up the m:endif tag if it exists
@@ -520,7 +520,7 @@ public class M2DocParser extends AbstractBodyParser {
         // extract the variable;
         int indexOfPipe = tagText.indexOf('|');
         if (indexOfPipe < 0) {
-            M2DocUtils.validationError(repetition, "Malformed tag m:for, no '|' found.");
+            M2DocUtils.validationError(repetition, M2DocUtils.message(ParsingErrorMessage.MALFORMEDFORMISSINGPIPE));
             final AstResult result = queryParser.build(null);
             repetition.setQuery(result);
             final Block body = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
@@ -528,12 +528,13 @@ public class M2DocParser extends AbstractBodyParser {
         } else {
             String iterationVariable = tagText.substring(0, indexOfPipe).trim();
             if ("".equals(iterationVariable)) {
-                M2DocUtils.validationError(repetition, "Malformed tag m:for : no iteration variable specified.");
+                M2DocUtils.validationError(repetition,
+                        M2DocUtils.message(ParsingErrorMessage.MALFORMEDFORMISSINGVARIABLE));
             }
             repetition.setIterationVar(iterationVariable);
             if (tagText.length() == indexOfPipe + 1) {
                 M2DocUtils.validationError(repetition,
-                        "Malformed tag m:for : no query expression specified." + tagText);
+                        M2DocUtils.message(ParsingErrorMessage.MALFORMEDFORMISSINGEXPRESSION, tagText));
             }
             String query = tagText.substring(indexOfPipe + 1, tagText.length()).trim();
             final AstResult result = queryParser.build(query);
@@ -569,31 +570,36 @@ public class M2DocParser extends AbstractBodyParser {
         // extract the name
         final int indexOfOpenParenthesis = tagText.indexOf('(');
         if (indexOfOpenParenthesis < 0) {
-            M2DocUtils.validationError(template, "Malformed tag m:template, no '(' found.");
+            M2DocUtils.validationError(template,
+                    M2DocUtils.message(ParsingErrorMessage.MALFORMEDTEMPLATEMISSINGOPENINGPARENTH));
             template.setName(tagText);
             final Block body = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
             template.setBody(body);
         } else {
             final String name = tagText.substring(0, indexOfOpenParenthesis).trim();
             if ("".equals(name)) {
-                M2DocUtils.validationError(template, "Malformed tag m:template : no name specified.");
+                M2DocUtils.validationError(template,
+                        M2DocUtils.message(ParsingErrorMessage.MALFORMEDTEMPLATENONAMESPECIFIED));
             }
             template.setName(name);
             final int parametersStart = indexOfOpenParenthesis + 1;
             if (tagText.length() == parametersStart) {
-                M2DocUtils.validationError(template, "Malformed tag m:template : parameted specified." + tagText);
+                M2DocUtils.validationError(template,
+                        M2DocUtils.message(ParsingErrorMessage.MALFORMEDTEMPLATENOPARAMETERSPECIFIED, tagText));
             }
             final int indexOfCloseParenthesis = tagText.indexOf(')');
             final List<Parameter> parameters;
             if (indexOfCloseParenthesis < 0) {
                 parameters = parseParameters(template, tagText.substring(indexOfOpenParenthesis));
-                M2DocUtils.validationError(template, "Malformed tag m:template, no ')' found.");
+                M2DocUtils.validationError(template,
+                        M2DocUtils.message(ParsingErrorMessage.MALFORMEDTEMPLATEMISSINGCLOSINGPARENTH));
             } else {
                 parameters = parseParameters(template,
                         tagText.substring(indexOfOpenParenthesis + 1, indexOfCloseParenthesis));
             }
             if (parameters.isEmpty()) {
-                M2DocUtils.validationError(template, "At least one parameter is needed.");
+                M2DocUtils.validationError(template,
+                        M2DocUtils.message(ParsingErrorMessage.ATLEASTONEPARAMETERISNEEDED));
             } else {
                 template.getParameters().addAll(parameters);
             }
@@ -626,7 +632,7 @@ public class M2DocParser extends AbstractBodyParser {
             }
         }
         if (paramStr.endsWith(",")) {
-            M2DocUtils.validationError(template, "Malformed prameter, no ':' found.");
+            M2DocUtils.validationError(template, M2DocUtils.message(ParsingErrorMessage.MALFORMEDPARAMETERNOCOLON));
         }
 
         return parameters;
@@ -647,7 +653,7 @@ public class M2DocParser extends AbstractBodyParser {
         // extract the name
         int indexOfColon = paramStr.indexOf(':');
         if (indexOfColon < 0) {
-            M2DocUtils.validationError(template, "Malformed prameter, no ':' found.");
+            M2DocUtils.validationError(template, M2DocUtils.message(ParsingErrorMessage.MALFORMEDPARAMETERNOCOLON));
             parameter.setName(paramStr);
             final AstResult type = parseWhileAqlTypeLiteral("");
             parameter.setType(type);
@@ -658,7 +664,8 @@ public class M2DocParser extends AbstractBodyParser {
         } else {
             final String name = paramStr.substring(0, indexOfColon).trim();
             if ("".equals(name)) {
-                M2DocUtils.validationError(template, "Malformed parameter no name specified.");
+                M2DocUtils.validationError(template,
+                        M2DocUtils.message(ParsingErrorMessage.MALFORMEDPARAMETERNONAMESPECIFIED));
             }
             parameter.setName(name);
             final AstResult type = parseWhileAqlTypeLiteral(paramStr.substring(indexOfColon + 1));
@@ -806,7 +813,7 @@ public class M2DocParser extends AbstractBodyParser {
             }
             final BasicDiagnostic diagnostic = new BasicDiagnostic();
             diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
-                    "null or empty string.", new Object[] {errorExpression }));
+                    M2DocUtils.message(ParsingErrorMessage.NULLOREMPTYSTRING), new Object[] {errorExpression }));
             result = new AstResult(errorExpression, positions, positions, errors, diagnostic);
         }
 
@@ -849,7 +856,7 @@ public class M2DocParser extends AbstractBodyParser {
             }
             final BasicDiagnostic diagnostic = new BasicDiagnostic();
             diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
-                    "missing type literal", new Object[] {errorTypeLiteral }));
+                    M2DocUtils.message(ParsingErrorMessage.MISSINGTYPELITERAL), new Object[] {errorTypeLiteral }));
             result = new AstResult(errorTypeLiteral, positions, positions, errs, diagnostic);
         }
 
