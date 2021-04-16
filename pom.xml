@@ -141,12 +141,24 @@
           </archive>
           <excludes>
             <plugin id="org.obeonetwork.m2doc.doc"/>
+            <plugin id="org.obeonetwork.m2doc.html.ide"/>
+            <plugin id="org.obeonetwork.m2doc.wikitext.ide"/>
             <plugin id="org.kohsuke.args4j"/>
             <plugin id="org.apache.poi"/>
             <plugin id="com.google.guava"/>
             <plugin id="org.antlr.runtime"/>
             <feature id="org.eclipse.equinox.core.feature"/>
             <feature id="org.eclipse.emf.common"/>
+            <plugin id="org.jsoup"/>
+            <plugin id="org.eclipse.mylyn.wikitext"/>
+            <plugin id="org.eclipse.mylyn.wikitext.asciidoc"/>
+            <plugin id="org.eclipse.mylyn.wikitext.confluence"/>
+            <plugin id="org.eclipse.mylyn.wikitext.html"/>
+            <plugin id="org.eclipse.mylyn.wikitext.markdown"/>
+            <plugin id="org.eclipse.mylyn.wikitext.mediawiki"/>
+            <plugin id="org.eclipse.mylyn.wikitext.textile"/>
+            <plugin id="org.eclipse.mylyn.wikitext.tracwiki"/>
+            <plugin id="org.eclipse.mylyn.wikitext.twiki"/>
           </excludes>
         </configuration>
         <executions>
