@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="ASCII"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="sameUserContentIDInTextArea" templateFileName="sameUserContentIDInTextArea-template.docx"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="sameUserContentIDInTextArea" templateFileName="sameUserContentIDInTextArea-template.docx" resultFileName="sameUserContentIDInTextArea-actual-generation.docx" validationFileName="sameUserContentIDInTextArea-actual-validation.docx"/>

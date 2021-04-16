@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="ASCII"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="sampleMTextInHeader" templateFileName="sampleMTextInHeader-template.docx"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="sampleMTextInHeader" templateFileName="sampleMTextInHeader-template.docx" resultFileName="sampleMTextInHeader-actual-generation.docx" validationFileName="sampleMTextInHeader-actual-validation.docx"/>

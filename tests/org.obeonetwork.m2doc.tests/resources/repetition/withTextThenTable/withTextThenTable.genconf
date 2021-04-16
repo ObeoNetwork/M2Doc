@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="ASCII"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" templateFileName="withTextThenTable-template.docx"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="withTextThenTable" templateFileName="withTextThenTable-template.docx" resultFileName="withTextThenTable-actual-generation.docx" validationFileName="withTextThenTable-actual-validation.docx"/>

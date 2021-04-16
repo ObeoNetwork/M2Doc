@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="nsURIProperty" templateFileName="nsURIProperty-template.docx">
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="nsURIProperty" templateFileName="nsURIProperty-template.docx" resultFileName="nsURIProperty-actual-generation.docx" validationFileName="nsURIProperty-actual-validation.docx">
   <definitions xsi:type="genconf:ModelDefinition" key="self" value="/"/>
 </genconf:Generation>

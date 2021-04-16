@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="ASCII"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" templateFileName="userContentWithTableOfContent-template.docx"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="userContentWithTableOfContent" templateFileName="userContentWithTableOfContent-template.docx" resultFileName="userContentWithTableOfContent-actual-generation.docx" validationFileName="userContentWithTableOfContent-actual-validation.docx"/>

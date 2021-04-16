@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="asTableByRepresentationName" templateFileName="asTableByRepresentationName-template.docx">
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="asTableByRepresentationName" templateFileName="asTableByRepresentationName-template.docx" resultFileName="asTableByRepresentationName-actual-generation.docx" validationFileName="asTableByRepresentationName-actual-validation.docx">
   <options name="SiriusSession" value="asTableByRepresentationName.aird"/>
 </genconf:Generation>

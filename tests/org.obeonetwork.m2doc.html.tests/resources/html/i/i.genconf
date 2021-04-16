@@ -1,3 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="nominal" templateFileName="nominal-template.docx">
-</genconf:Generation>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="i" templateFileName="i-template.docx" resultFileName="i-actual-generation.docx" validationFileName="i-actual-validation.docx"/>

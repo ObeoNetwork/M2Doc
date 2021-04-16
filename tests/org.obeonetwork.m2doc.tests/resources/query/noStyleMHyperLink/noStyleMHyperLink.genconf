@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="ASCII"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="sampleMText" templateFileName="sampleMText-template.docx"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="noStyleMHyperLink" templateFileName="noStyleMHyperLink-template.docx" resultFileName="noStyleMHyperLink-actual-generation.docx" validationFileName="noStyleMHyperLink-actual-validation.docx"/>
