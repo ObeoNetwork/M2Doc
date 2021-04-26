@@ -16,9 +16,6 @@ location Eclipse "https://download.eclipse.org/releases/2020-09" {
 	org.eclipse.epp.mpc.feature.group lazy
 	org.eclipse.emf.sdk.feature.group lazy
 	org.junit [4.0.0,5.0.0)
-	org.eclipse.gmf lazy
-	org.eclipse.gmf.runtime.diagram.ui lazy
-	org.eclipse.gmf.runtime.diagram.ui.render lazy
 	org.eclipse.jdt.feature.group lazy
 
 	// AQL
@@ -40,6 +37,15 @@ location Eclipse "https://download.eclipse.org/releases/2020-09" {
 	org.eclipse.pde.feature.group lazy
 }
 
+location GMF-Notation-1.13.0 "http://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913" {
+    org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
+}
+
+location GMF-Runtime-1.14.0-M2 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/milestones/S202104161416/" {
+    org.eclipse.gmf.runtime.sdk.feature.group lazy
+    org.eclipse.gmf.runtime.thirdparty.feature.group lazy
+}
+
 location "https://download.eclipse.org/sirius/updates/nightly/6.4.x/2020-09" {
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
@@ -54,10 +60,12 @@ location "https://download.eclipse.org/sirius/updates/nightly/6.4.x/2020-09" {
 	org.eclipse.acceleo.query.source.feature.group lazy
 }
 
-location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/S20210406213021/repository/" {
 	org.kohsuke.args4j [2.0.21,2.1.0)
 	org.jsoup [1.8.3,1.8.4)
 	javax.servlet [3.1.0,3.2.0)
+	org.apache.batik.ext [1.14.0,1.14.1)
+	org.apache.batik.codec [1.14.0,1.14.1)
 }
 
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
