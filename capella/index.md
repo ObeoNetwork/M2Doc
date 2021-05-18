@@ -34,26 +34,26 @@ Once your download is finished, extract the downloaded archive and run the eclip
 
 ## Installation for Capella 5.0.x
 
-* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/5.0.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/5.0.0/full/org.obeonetwork.capella.update.full.zip)
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/5.0.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/5.0.0/full/org.obeonetwork.capella.update.full.zip) (M2Doc 3.1.1)
 
 ## Installation for Capella 1.4.x
 
-* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.2/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.2/full/org.obeonetwork.capella.update.full.zip)
-* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.1/full/org.obeonetwork.capella.update.full.zip)
-* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full/org.obeonetwork.capella.update.full.zip)
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.2/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.2/full/org.obeonetwork.capella.update.full.zip) (M2Doc 3.1.0)
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.1/full/org.obeonetwork.capella.update.full.zip) (M2Doc 3.1.0)
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.4.0/full/org.obeonetwork.capella.update.full.zip) (M2Doc 3.0.0)
 
 ## Installation for Capella 1.3.x
 
-* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full/org.obeonetwork.capella.update.full.zip)
-* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full/org.obeonetwork.capella.update.full.zip)
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.1/full/org.obeonetwork.capella.update.full.zip) (M2Doc 2.0.3)
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.3.0/full/org.obeonetwork.capella.update.full.zip) (M2Doc 2.0.2)
 
 ## Installation for Capella 1.2.x
 
-* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.2.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.2.1/full/org.obeonetwork.capella.update.full.zip)
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.2.1/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.2.1/full/org.obeonetwork.capella.update.full.zip) (M2Doc 2.0.0)
 
 ## Installation for Capella 1.1.x
 
-* `https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.1.0/full/org.obeonetwork.capella.update.full.zip)
+* `https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.1.0/full/org.obeonetwork.capella.update.full.zip) (M2Doc 1.0.0)
 
 This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://www.eclipse.org/capella/) integration. Select the following feature:
 
