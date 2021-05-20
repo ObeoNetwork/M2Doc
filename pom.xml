@@ -1152,7 +1152,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/capella/core/updates/releases/5.0.0-R20201202-123401/org.polarsys.capella.rcp.site/</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/sirius/updates/releases/6.4.0/2020-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -1182,7 +1182,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/capella/core/updates/releases/1.4.2-R20201014-090868/org.polarsys.capella.rcp.site/</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.3.3/2019-06/</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -1212,7 +1212,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/capella/core/updates/stable/1.4.1-S20200616-161204/org.polarsys.capella.rcp.site/</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.3.2/2019-06/</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -1242,7 +1242,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/capella/core/updates/releases/1.4.0-R20191121-173601/org.polarsys.capella.rcp.site/</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.3.0/2019-06/</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
