@@ -59,6 +59,8 @@ This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://w
 
 ![The feature to install.]({{page.relativePath}}/capella/images/Install.png "The feature to install.")
 
+Note: if your are installing other Capella extensions such as capella-requirements-vp or filtering using dropins, you shall not select the jsoup feature.
+
 # Deploying the In-Flight Entertainment System (IFE) example
 
 After restarting Capella, you can deploye the In-Flight Entertainment System (IFE) example in your workspace with the following steps:
