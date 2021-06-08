@@ -84,7 +84,7 @@ public class LinkServices {
       },
       result = "A bookmark reference with the given label and ID.",
       examples = {
-          @Example(expression = "'Artifact1'.asBookmarkRef('Art1')", result = "a bookmark reference with the ID 'Art1' the label 'Definition of Artifact1'"),
+          @Example(expression = "'Artifact1'.asBookmarkRef('Art1')", result = "a bookmark reference with the ID 'Art1' the label 'Artifact1'"),
       }
     )
     // @formatter:on
