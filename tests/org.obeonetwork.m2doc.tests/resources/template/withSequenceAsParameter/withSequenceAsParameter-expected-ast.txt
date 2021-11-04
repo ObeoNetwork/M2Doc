@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: ->myTemplate(Sequence{1, 2, 3, 4, 5})]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (a : Sequence(java.lang.Integerjava.util.List)
+  [query: ->sep(a, '[', '|', ']')]

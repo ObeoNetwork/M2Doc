@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a union type template :
+  [query: .myTemplate(self)]
+  [query: .myTemplate(->at(.aqlFeatureAccess(self, 'eClassifiers'), 1))]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (element : EPackage | EClassifier | })
+  [query: .add(' - ', .aqlFeatureAccess(element, 'name'))]
