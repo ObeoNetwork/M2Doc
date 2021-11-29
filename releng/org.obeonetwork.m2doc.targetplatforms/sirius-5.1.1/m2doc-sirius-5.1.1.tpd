@@ -37,7 +37,7 @@ location Eclipse "https://download.eclipse.org/releases/oxygen" {
 	org.eclipse.pde.feature.group lazy
 }
 
-location "https://download.eclipse.org/sirius/updates/releases/5.1.1/oxygen" {
+location "https://archive.eclipse.org/sirius/updates/releases/5.1.1/oxygen" {
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy

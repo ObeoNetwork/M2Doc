@@ -45,7 +45,7 @@ location "https://download.eclipse.org/releases/2020-09" {
 	org.eclipse.gmf.runtime.notation lazy
 }
 
-location "https://download.eclipse.org/sirius/updates/releases/6.3.5/photon" {
+location "https://archive.eclipse.org/sirius/updates/releases/6.3.5/photon" {
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy

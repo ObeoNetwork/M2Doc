@@ -37,7 +37,7 @@ location Eclipse "https://download.eclipse.org/releases/photon" {
 	org.eclipse.pde.feature.group lazy
 }
 
-location "https://download.eclipse.org/sirius/updates/releases/6.1.0/photon" {
+location "https://archive.eclipse.org/sirius/updates/releases/6.1.0/photon" {
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy

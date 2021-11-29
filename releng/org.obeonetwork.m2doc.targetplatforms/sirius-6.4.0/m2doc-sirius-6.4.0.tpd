@@ -40,7 +40,7 @@ location Eclipse "https://download.eclipse.org/releases/2020-09" {
 	org.eclipse.pde.feature.group lazy
 }
 
-location "https://download.eclipse.org/sirius/updates/releases/6.4.0/2020-09" {
+location "https://archive.eclipse.org/sirius/updates/releases/6.4.0/2020-09" {
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius lazy
 	org.eclipse.sirius.diagram lazy
