@@ -37,10 +37,6 @@
   },
   {
     "java":"11",
-    "profile":"platform-sirius-6.2.x,tests"
-  },
-  {
-    "java":"11",
     "profile":"platform-sirius-6.3.5,tests"
   },
   {
