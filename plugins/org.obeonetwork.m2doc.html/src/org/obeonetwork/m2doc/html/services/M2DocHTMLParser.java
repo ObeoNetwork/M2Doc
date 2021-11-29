@@ -467,6 +467,7 @@ public class M2DocHTMLParser {
             res = parent;
         } else if ("li".equals(nodeName)) {
             res = createMParagraph(parent, element, context.numberingID.longValue(), context.numberingLevel - 1);
+            isNumbering = true;
         } else if ("ol".equals(nodeName)) {
             setOrderedListNumbering(context, element);
             isNumbering = true;
