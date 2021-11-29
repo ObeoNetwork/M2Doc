@@ -148,7 +148,7 @@
       <unit id="org.eclipse.jetty.client" version="9.4.24.v20191120"/>
       <unit id="org.eclipse.jetty.servlet" version="9.4.24.v20191120"/>
       <unit id="org.eclipse.jetty.security" version="9.4.24.v20191120"/>
-      <repository id="Jetty" location="https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.24.v20191120/"/>
+      <repository id="Jetty" location="https://archive.eclipse.org/jetty/updates/jetty-bundles-9.x/jetty-bundles-9.x/9.4.24.v20191120/"/>
     </location>
   </locations>
 </target>
