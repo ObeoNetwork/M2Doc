@@ -35,6 +35,7 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module>
     <!-- Sirius -->
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.4.x</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.4.1</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.4.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.3.5</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.2.2</module>
@@ -757,7 +758,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.4.x/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.4.x/2020-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -778,6 +779,36 @@
       </build>
     </profile>
     <profile>
+      <id>platform-sirius-6.4.1</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-6.4.1</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.4.1/2020-06</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-6.4.1</artifactId>
+                  <version>3.2.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>platform-sirius-6.4.0</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -787,7 +818,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.4.0/photon</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/6.4.0/2020-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>
@@ -1029,7 +1060,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/stable/6.5.0-S20210225-102754/2020-06</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://archive.eclipse.org/sirius/updates/releases/6.5.0/2020-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>

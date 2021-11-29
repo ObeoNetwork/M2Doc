@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Sirius 6.4.0 Target Platform" sequenceNumber="1638188494">
+<target name="M2Doc Sirius 6.4.0 Target Platform" sequenceNumber="1638198778">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
-      <repository id="Eclipse-Shared-License" location="http://download.eclipse.org/cbi/updates/license"/>
+      <repository id="Eclipse-Shared-License" location="https://download.eclipse.org/cbi/updates/license"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.platform.sdk" version="0.0.0"/>

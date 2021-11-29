@@ -2,7 +2,7 @@ target "M2Doc 2019-03 Target Platform"
 
 with source requirements
 
-location Eclipse-Shared-License "http://download.eclipse.org/cbi/updates/license" {
+location Eclipse-Shared-License "https://download.eclipse.org/cbi/updates/license" {
 	org.eclipse.license.feature.group [2.0.0,3.0.0)
 }
 

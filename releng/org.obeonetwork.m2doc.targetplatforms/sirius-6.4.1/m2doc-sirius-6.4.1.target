@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc 2018-12 Target Platform" sequenceNumber="1616160631">
+<target name="M2Doc Sirius 6.4.1 Target Platform" sequenceNumber="1638198778">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
@@ -16,13 +16,26 @@
       <unit id="org.eclipse.ui.views.log" version="0.0.0"/>
       <unit id="org.eclipse.epp.mpc.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
-      <unit id="org.junit" version="4.12.0.v201504281640"/>
+      <unit id="org.junit" version="4.13.0.v20200204-1500"/>
       <unit id="org.eclipse.gmf" version="0.0.0"/>
       <unit id="org.eclipse.gmf.runtime.diagram.ui" version="0.0.0"/>
       <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
+      <unit id="org.antlr.runtime" version="4.7.2.v20200218-0804"/>
+      <unit id="org.eclipse.mylyn.wikitext" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.confluence" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.html" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.markdown" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.mediawiki" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.textile" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.38.20200817211131"/>
+      <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.38.20200817211131"/>
       <unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
+      <repository id="Eclipse" location="https://download.eclipse.org/releases/2020-09"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius" version="0.0.0"/>
       <unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
@@ -32,17 +45,7 @@
       <unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
-      <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
-      <unit id="org.eclipse.mylyn.wikitext" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.confluence" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.html" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.markdown" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.mediawiki" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.textile" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.25.20180620133858"/>
-      <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.25.20180620133858"/>
-      <repository id="Eclipse" location="https://download.eclipse.org/releases/2019-03"/>
+      <repository location="https://archive.eclipse.org/sirius/updates/releases/6.4.1/2020-09"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
@@ -64,8 +67,8 @@
       <repository id="CDO" location="https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.xtext.sdk.feature.group" version="2.16.0.v20181203-1555"/>
-      <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/"/>
+      <unit id="org.eclipse.xtext.sdk.feature.group" version="2.21.0.v20200302-1509"/>
+      <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.jetty.server" version="9.4.24.v20191120"/>
