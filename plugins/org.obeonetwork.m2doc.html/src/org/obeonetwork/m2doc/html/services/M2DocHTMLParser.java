@@ -294,7 +294,7 @@ public class M2DocHTMLParser {
 
         final Context context = new Context(baseURI, null, defaultStyle, null, null, 0);
 
-        walkNodeTree(res, context, document.body());
+        walkNodeTree(res, context, document.body(), null);
 
         return res;
     }
@@ -307,9 +307,11 @@ public class M2DocHTMLParser {
      * @param context
      *            the current {@link Context}
      * @param node
-     *            the {@link Node} to walk.
+     *            the {@link Node} to walk
+     * @param lastElement
+     *            the last {@link Element} if any, <code>null</code> otherwise
      */
-    private void walkNodeTree(MList parent, Context context, Node node) {
+    private void walkNodeTree(MList parent, Context context, Node node, Element lastElement) {
         final Context contextCopy = context.copy();
         if (node instanceof Element) {
             if ("table".equals(node.nodeName())) {
@@ -325,13 +327,35 @@ public class M2DocHTMLParser {
                 }
             } else {
                 final MList element = startElement(parent, contextCopy, (Element) node);
-                for (Node child : node.childNodes()) {
-                    walkNodeTree(element, contextCopy, child);
-                }
+                walkChildren(node, contextCopy, element);
                 endElement(parent, element);
             }
         } else if (node instanceof TextNode) {
-            insertText(parent, contextCopy, (TextNode) node);
+            final boolean needNewParagraph = lastElement != null
+                && ("ul".equals(lastElement.nodeName()) || "ol".equals(lastElement.nodeName()));
+            insertText(parent, contextCopy, (TextNode) node, needNewParagraph);
+        }
+    }
+
+    /**
+     * Walks all the children {@link Node} of the given {@link Node}.
+     * 
+     * @param node
+     *            the {@link Node}
+     * @param context
+     *            the current {@link Context}
+     * @param parent
+     *            the parent {@link MList}
+     */
+    private void walkChildren(Node node, Context context, MList parent) {
+        Element lastElement = null;
+        for (Node child : node.childNodes()) {
+            walkNodeTree(parent, context, child, lastElement);
+            if (child instanceof Element) {
+                lastElement = (Element) child;
+            } else {
+                lastElement = null;
+            }
         }
     }
 
@@ -365,9 +389,7 @@ public class M2DocHTMLParser {
                             localContext = context;
                         }
                         row.getCells().add(cell);
-                        for (Node cellChild : rowChild.childNodes()) {
-                            walkNodeTree(contents, localContext, cellChild);
-                        }
+                        walkChildren(rowChild, localContext, contents);
                     }
                 }
             }
@@ -402,16 +424,26 @@ public class M2DocHTMLParser {
      *            the {@link Context}
      * @param node
      *            the {@link TextNode}
+     * @param needNewParagraph
+     *            tells if a new paragraph is needed
      */
-    private void insertText(MList parent, final Context context, TextNode node) {
+    private void insertText(MList parent, final Context context, TextNode node, boolean needNewParagraph) {
         final String text = node.text();
         if (!text.trim().isEmpty()) {
+            final String textToInsert;
+            if (needNewParagraph) {
+                createMParagraph(parent, null, null, null);
+                textToInsert = text.replaceFirst("\\s", "");
+            } else {
+                textToInsert = text;
+            }
             if (context.linkTargetURI == null) {
-                final MText mText = new MTextImpl(text, context.style);
+                final MText mText = new MTextImpl(textToInsert, context.style);
                 parent.add(mText);
             } else {
                 context.style.setForegroundColor(LINK_COLOR);
-                final MHyperLink mLink = new MHyperLinkImpl(text, context.style, context.linkTargetURI.toString());
+                final MHyperLink mLink = new MHyperLinkImpl(textToInsert, context.style,
+                        context.linkTargetURI.toString());
                 parent.add(mLink);
             }
         }
@@ -769,7 +801,7 @@ public class M2DocHTMLParser {
         parent.add(paragraph);
         paragraph.setNumberingID(numberingID);
         paragraph.setNumberingLevel(numberingLevel);
-        if (element.hasAttr("align")) {
+        if (element != null && element.hasAttr("align")) {
             final String align = element.attr("align");
             if ("left".equals(align)) {
                 paragraph.setHAlignment(HAlignment.LEFT);
