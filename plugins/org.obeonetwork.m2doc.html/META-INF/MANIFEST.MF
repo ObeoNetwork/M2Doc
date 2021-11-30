@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.obeonetwork.m2doc.html
 Bundle-Version: 3.2.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %providerName
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.acceleo.annotations;bundle-version="[5.0.0,8.0.0)",
