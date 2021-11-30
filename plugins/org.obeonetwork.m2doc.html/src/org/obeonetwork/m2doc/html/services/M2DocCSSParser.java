@@ -36,34 +36,39 @@ public class M2DocCSSParser extends Parser {
     protected static final String CSS_BACKGROUND_COLOR = "background-color";
 
     /**
-     * The list-style-type color property.
+     * The list-style-type property.
      */
     protected static final String CSS_LIST_STYLE_TYPE = "list-style-type";
 
     /**
-     * The text-align color property.
+     * The text-align property.
      */
     protected static final String CSS_TEXT_ALIGN = "text-align";
 
     /**
-     * The text-transform color property.
+     * The text-transform property.
      */
     protected static final String CSS_TEXT_TRANSFORM = "text-transform";
 
     /**
-     * The vertical-align color property.
+     * The vertical-align property.
      */
     protected static final String CSS_VERTICAL_ALIGN = "vertical-align";
 
     /**
-     * The text-decoration color property.
+     * The text-decoration property.
      */
     protected static final String CSS_TEXT_DECORATION = "text-decoration";
 
     /**
-     * The font-style color property.
+     * The font-style property.
      */
     protected static final String CSS_FONT_STYLE = "font-style";
+
+    /**
+     * The font-weight property.
+     */
+    protected static final String CSS_FONT_WEIGHT = "font-weight";
 
     /**
      * The field separator.
@@ -149,6 +154,17 @@ public class M2DocCSSParser extends Parser {
                     modifiers = modifiers | MStyle.FONT_ITALIC;
                 } else if ("normal".equals(cssFontStyle)) {
                     modifiers = modifiers & (ALL_FONT_MODIFIERS_MASK ^ MStyle.FONT_ITALIC);
+                }
+            }
+        }
+
+        final List<String> cssFontWeights = cssProperties.get(CSS_FONT_WEIGHT);
+        if (cssFontWeights != null) {
+            for (String cssFontWeight : cssFontWeights) {
+                if ("bold".equals(cssFontWeight)) {
+                    modifiers = modifiers | MStyle.FONT_BOLD;
+                } else if ("normal".equals(cssFontWeight) || "lighter".equals(cssFontWeight)) {
+                    modifiers = modifiers & (ALL_FONT_MODIFIERS_MASK ^ MStyle.FONT_BOLD);
                 }
             }
         }
