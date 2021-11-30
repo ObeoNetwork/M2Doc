@@ -479,6 +479,12 @@ public class M2DocHTMLParser {
         } else if ("u".equals(nodeName)) {
             setModifiers(context, MStyle.FONT_UNDERLINE);
             res = parent;
+        } else if ("sub".equals(nodeName)) {
+            setModifiers(context, MStyle.SUBSCRIPT);
+            res = parent;
+        } else if ("sup".equals(nodeName)) {
+            setModifiers(context, MStyle.SUPERSCRIPT);
+            res = parent;
         } else if ("font".equals(nodeName)) {
             if (element.hasAttr("color")) {
                 context.style.setForegroundColor(htmlToColor(element.attr("color").toLowerCase()));
@@ -513,53 +519,17 @@ public class M2DocHTMLParser {
             parent.add(mImage);
             res = parent;
         } else if ("h1".equals(nodeName)) {
-            res = createMParagraph(parent, element, null, null);
-            context.style.setFontSize(H1_FONT_SIZE);
-            if (context.style.getFontModifiers() != -1) {
-                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
-            } else {
-                context.style.setModifiers(MStyle.FONT_BOLD);
-            }
+            res = createHeading(parent, context, element, H1_FONT_SIZE);
         } else if ("h2".equals(nodeName)) {
-            res = createMParagraph(parent, element, null, null);
-            context.style.setFontSize(H2_FONT_SIZE);
-            if (context.style.getFontModifiers() != -1) {
-                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
-            } else {
-                context.style.setModifiers(MStyle.FONT_BOLD);
-            }
+            res = createHeading(parent, context, element, H2_FONT_SIZE);
         } else if ("h3".equals(nodeName)) {
-            res = createMParagraph(parent, element, null, null);
-            context.style.setFontSize(H3_FONT_SIZE);
-            if (context.style.getFontModifiers() != -1) {
-                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
-            } else {
-                context.style.setModifiers(MStyle.FONT_BOLD);
-            }
+            res = createHeading(parent, context, element, H3_FONT_SIZE);
         } else if ("h4".equals(nodeName)) {
-            res = createMParagraph(parent, element, null, null);
-            context.style.setFontSize(H4_FONT_SIZE);
-            if (context.style.getFontModifiers() != -1) {
-                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
-            } else {
-                context.style.setModifiers(MStyle.FONT_BOLD);
-            }
+            res = createHeading(parent, context, element, H4_FONT_SIZE);
         } else if ("h5".equals(nodeName)) {
-            res = createMParagraph(parent, element, null, null);
-            context.style.setFontSize(H5_FONT_SIZE);
-            if (context.style.getFontModifiers() != -1) {
-                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
-            } else {
-                context.style.setModifiers(MStyle.FONT_BOLD);
-            }
+            res = createHeading(parent, context, element, H5_FONT_SIZE);
         } else if ("h6".equals(nodeName)) {
-            res = createMParagraph(parent, element, null, null);
-            context.style.setFontSize(H6_FONT_SIZE);
-            if (context.style.getFontModifiers() != -1) {
-                context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
-            } else {
-                context.style.setModifiers(MStyle.FONT_BOLD);
-            }
+            res = createHeading(parent, context, element, H6_FONT_SIZE);
         } else {
             res = parent;
         }
@@ -567,6 +537,33 @@ public class M2DocHTMLParser {
         if (!isNumbering) {
             context.numbering = null;
             context.numberingLevel = 0;
+        }
+
+        return res;
+    }
+
+    /**
+     * Creates the heading with the given font size.
+     * 
+     * @param parent
+     *            the parent {@link MList}
+     * @param context
+     *            the current {@link Context}
+     * @param element
+     *            the {@link Element}
+     * @param fontSize
+     *            the font size
+     * @return the new parent {@link MList} for {@link Element#children() children}
+     */
+    private MList createHeading(MList parent, Context context, Element element, int fontSize) {
+        final MList res;
+
+        res = createMParagraph(parent, element, null, null);
+        context.style.setFontSize(fontSize);
+        if (context.style.getFontModifiers() != -1) {
+            context.style.setModifiers(context.style.getFontModifiers() | MStyle.FONT_BOLD);
+        } else {
+            context.style.setModifiers(MStyle.FONT_BOLD);
         }
 
         return res;

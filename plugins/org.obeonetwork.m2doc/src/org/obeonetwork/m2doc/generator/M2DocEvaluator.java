@@ -33,6 +33,7 @@ import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
+import org.apache.poi.xwpf.usermodel.VerticalAlign;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFFootnote;
@@ -1253,6 +1254,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 run.setUnderline(UnderlinePatterns.SINGLE);
             }
             run.setStrikeThrough((style.getFontModifiers() & MStyle.FONT_STRIKE_THROUGH) != 0);
+            if ((style.getFontModifiers() & MStyle.SUBSCRIPT) != 0) {
+                run.setSubscript(VerticalAlign.SUBSCRIPT);
+            }
+            if ((style.getFontModifiers() & MStyle.SUPERSCRIPT) != 0) {
+                run.setSubscript(VerticalAlign.SUPERSCRIPT);
+            }
         }
         if (style.getForegroundColor() != null) {
             run.setColor(hexColor(style.getForegroundColor()));

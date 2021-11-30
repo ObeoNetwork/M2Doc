@@ -27,6 +27,10 @@ public interface MStyle {
     int FONT_UNDERLINE = 1 << 2;
     /** Modifier flag for STRIKE-THROUGH font, to be checked by and-ing it with the value returned by getFontModidiers(). */
     int FONT_STRIKE_THROUGH = 1 << 3;
+    /** Modifier flag for SUBSCRIPT, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#getSubscript() getSubscript()}. */
+    int SUBSCRIPT = 1 << 4;
+    /** Modifier flag for SUPERSCRIPT, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#getSubscript() getSubscript()}. */
+    int SUPERSCRIPT = 1 << 5;
 
     /**
      * Gets the font size in points.
