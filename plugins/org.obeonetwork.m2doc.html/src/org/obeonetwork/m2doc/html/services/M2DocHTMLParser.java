@@ -60,6 +60,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumbering;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMultiLevelType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat.Enum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 
 /**
@@ -513,6 +514,10 @@ public class M2DocHTMLParser extends Parser {
     private MList startElement(MList parent, Context context, Element element) {
         final MList res;
 
+        if ("ul".equals(element.nodeName()) || "ol".equals(element.nodeName())) {
+            // remove inherited list-style-type
+            context.cssProperties.remove(M2DocCSSParser.CSS_LIST_STYLE_TYPE);
+        }
         applyGlobalAttibutes(context, element);
 
         final String nodeName = element.nodeName();
@@ -760,26 +765,39 @@ public class M2DocHTMLParser extends Parser {
      */
     private void setUnorderedListNumbering(Context context, Element element) {
         final String symbol;
+        final Enum type;
+        final String typeStr;
         if (element.hasAttr(TYPE_ATTR)) {
-            final String type = element.attr(TYPE_ATTR);
-            if ("disc".equals(type)) {
-                symbol = DISC_SYMBOL;
-            } else if ("square".equals(type)) {
-                symbol = SQUARE_SYMBOL;
-            } else if ("circle".equals(type)) {
-                symbol = CIRCLE_SYMBOL;
-            } else {
-                symbol = DISC_SYMBOL;
-            }
+            typeStr = element.attr(TYPE_ATTR);
         } else {
+            typeStr = null;
+        }
+        final String typeAttr = element.attr(TYPE_ATTR);
+        if ("disc".equals(typeAttr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "disc")) {
             symbol = DISC_SYMBOL;
+            type = STNumberFormat.BULLET;
+        } else if ("square".equals(typeAttr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "square")) {
+            symbol = SQUARE_SYMBOL;
+            type = STNumberFormat.BULLET;
+        } else if ("circle".equals(typeAttr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "circle")) {
+            symbol = CIRCLE_SYMBOL;
+            type = STNumberFormat.BULLET;
+        } else if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
+            symbol = DISC_SYMBOL;
+            type = STNumberFormat.BULLET;
+        } else {
+            symbol = "";
+            type = STNumberFormat.NONE;
         }
 
         if (context.numbering == null) {
             createNumbering(context);
         }
-        context.numberingLevel = incrementNumberingLevel(context.numbering, context.numberingLevel,
-                STNumberFormat.BULLET, 1, symbol, false);
+        context.numberingLevel = incrementNumberingLevel(context.numbering, context.numberingLevel, type, 1, symbol,
+                false);
     }
 
     /**
@@ -792,24 +810,33 @@ public class M2DocHTMLParser extends Parser {
      */
     private void setOrderedListNumbering(Context context, Element element) {
         final STNumberFormat.Enum type;
+        final String typeStr;
         if (element.hasAttr(TYPE_ATTR)) {
-            final String typeStr = element.attr(TYPE_ATTR);
-            if ("1".equals(typeStr)) {
-                type = STNumberFormat.DECIMAL;
-            } else if ("A".equals(typeStr)) {
-                type = STNumberFormat.UPPER_LETTER;
-            } else if ("a".equals(typeStr)) {
-                type = STNumberFormat.LOWER_LETTER;
-            } else if ("I".equals(typeStr)) {
-                type = STNumberFormat.UPPER_ROMAN;
-            } else if ("i".equals(typeStr)) {
-                type = STNumberFormat.LOWER_ROMAN;
-            } else {
-                type = STNumberFormat.DECIMAL;
-            }
+            typeStr = element.attr(TYPE_ATTR);
         } else {
-            type = STNumberFormat.DECIMAL;
+            typeStr = null;
         }
+        if ("1".equals(typeStr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "decimal")) {
+            type = STNumberFormat.DECIMAL;
+        } else if ("A".equals(typeStr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "upper-alpha")) {
+            type = STNumberFormat.UPPER_LETTER;
+        } else if ("a".equals(typeStr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-alpha")) {
+            type = STNumberFormat.LOWER_LETTER;
+        } else if ("I".equals(typeStr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "upper-roman")) {
+            type = STNumberFormat.UPPER_ROMAN;
+        } else if ("i".equals(typeStr)
+            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-roman")) {
+            type = STNumberFormat.LOWER_ROMAN;
+        } else if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
+            type = STNumberFormat.DECIMAL;
+        } else {
+            type = STNumberFormat.NONE;
+        }
+
         final long start;
         if (element.hasAttr("start")) {
             start = Long.valueOf(element.attr("start"));
@@ -885,7 +912,6 @@ public class M2DocHTMLParser extends Parser {
                 } else if (symbol == DISC_SYMBOL) {
                     font.setAscii(COURIER_NEW_FONT);
                     font.setHAnsi(COURIER_NEW_FONT);
-
                 }
                 level.addNewLvlJc().setVal(STJc.LEFT);
                 final CTInd indentation = level.addNewPPr().addNewInd();
@@ -893,7 +919,11 @@ public class M2DocHTMLParser extends Parser {
                 indentation.setLeft(BigInteger.valueOf(INDENT_LEFT * (currentLevel + 1)));
             } else {
                 final CTInd indentation = level.addNewPPr().addNewInd();
-                text.setVal("%" + (currentLevel + 1) + ".");
+                if (type == STNumberFormat.NONE) {
+                    text.setVal("%" + (currentLevel + 1));
+                } else {
+                    text.setVal("%" + (currentLevel + 1) + ".");
+                }
                 if (currentLevel > 0) {
                     level.setTentative(STOnOff.X_1);
                 }
