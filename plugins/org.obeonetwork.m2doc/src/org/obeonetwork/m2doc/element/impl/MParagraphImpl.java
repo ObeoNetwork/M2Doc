@@ -20,6 +20,7 @@ import org.obeonetwork.m2doc.element.MParagraph;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class MParagraphImpl extends AbstractMElementContainer implements MParagraph {
+
     /**
      * The style name.
      */
@@ -34,6 +35,16 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
      * The numbering level.
      */
     private Long numberingLevel;
+
+    /**
+     * The text direction, <code>null</code> if not defined.
+     */
+    private Dir textDirection;
+
+    /**
+     * The left margin in pixels.
+     */
+    private int marginLeft = -1;
 
     /**
      * Constructor.
@@ -63,6 +74,7 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
      * 
      * @return the numbering ID
      */
+    @Override
     public Long getNumberingID() {
         return numberingID;
     }
@@ -73,6 +85,7 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
      * @param numberingID
      *            the numbering ID to set
      */
+    @Override
     public void setNumberingID(Long numberingID) {
         this.numberingID = numberingID;
     }
@@ -82,6 +95,7 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
      * 
      * @return the numbering level
      */
+    @Override
     public Long getNumberingLevel() {
         return numberingLevel;
     }
@@ -92,8 +106,29 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
      * @param numberingLevel
      *            the numbering level to set
      */
+    @Override
     public void setNumberingLevel(Long numberingLevel) {
         this.numberingLevel = numberingLevel;
+    }
+
+    @Override
+    public Dir getTextDirection() {
+        return textDirection;
+    }
+
+    @Override
+    public void setTextDirection(Dir direction) {
+        this.textDirection = direction;
+    }
+
+    @Override
+    public int getMarginLeft() {
+        return marginLeft;
+    }
+
+    @Override
+    public void setMarginLeft(int value) {
+        marginLeft = value;
     }
 
 }

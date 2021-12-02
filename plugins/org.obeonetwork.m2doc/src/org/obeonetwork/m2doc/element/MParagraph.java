@@ -19,6 +19,18 @@ package org.obeonetwork.m2doc.element;
 public interface MParagraph extends MElementContainer, MElement {
 
     /**
+     * The text direction.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    enum Dir {
+        /** Left to right. */
+        LTR,
+        /** Right to left. */
+        RTL;
+    }
+
+    /**
      * Gets the style name of the paragraph.
      * 
      * @return the style name of the paragraph if any, <code>null</code> otherwise
@@ -62,5 +74,35 @@ public interface MParagraph extends MElementContainer, MElement {
      *            the numbering level to set
      */
     void setNumberingLevel(Long numberingLevel);
+
+    /**
+     * Gets the ext direction.
+     * 
+     * @return the ext direction if nay, <code>null</code> if not specified
+     */
+    Dir getTextDirection();
+
+    /**
+     * Sets the paragraph text direction.
+     * 
+     * @param direction
+     *            the text direction, <code>null</code> if not defined
+     */
+    void setTextDirection(Dir direction);
+
+    /**
+     * Gets the margin left in pixel.
+     * 
+     * @return the margin left in pixel
+     */
+    int getMarginLeft();
+
+    /**
+     * Sets the margin left in pixel.
+     * 
+     * @param value
+     *            the margin left in pixel
+     */
+    void setMarginLeft(int value);
 
 }

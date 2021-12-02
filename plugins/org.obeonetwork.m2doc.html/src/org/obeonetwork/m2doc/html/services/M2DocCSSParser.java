@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 
 /**
@@ -69,6 +70,11 @@ public class M2DocCSSParser extends Parser {
      * The font-weight property.
      */
     protected static final String CSS_FONT_WEIGHT = "font-weight";
+
+    /**
+     * The margin-left property.
+     */
+    protected static final String CSS_MARGIN_LEFT = "margin-left";
 
     /**
      * The field separator.
@@ -208,6 +214,26 @@ public class M2DocCSSParser extends Parser {
         }
 
         return res;
+    }
+
+    /**
+     * Sets the CSS styles for the given {@link MParagraph}.
+     * 
+     * @param cssProperties
+     *            the CSS style properties
+     * @param paragraph
+     *            the {@link MParagraph}
+     */
+    public void setStyle(Map<String, List<String>> cssProperties, MParagraph paragraph) {
+        final List<String> cssMarginLefts = cssProperties.get(CSS_MARGIN_LEFT);
+        if (cssMarginLefts != null) {
+            for (String cssMarginLeft : cssMarginLefts) {
+                final int value = getPixels(cssMarginLeft);
+                if (value != -1) {
+                    paragraph.setMarginLeft(value);
+                }
+            }
+        }
     }
 
 }

@@ -53,6 +53,21 @@ public abstract class Parser {
     private static final int B_GROUP_INDEX = 3;
 
     /**
+     * The fixed size regex.
+     */
+    private static final Pattern FIXED_SIZE_PATTERN = Pattern.compile("([0-9]+(\\.[0-9]+)?)(cm|mm|px|in|pt|pc)");
+
+    /**
+     * The value group for {@link #FIXED_SIZE_PATTERN}.
+     */
+    private static final int FIXED_SIZE_PATTERN_VALUE_GROUP = 1;
+
+    /**
+     * The unit group for {@link #FIXED_SIZE_PATTERN}.
+     */
+    private static final int FIXED_SIZE_PATTERN_UNIT_GROUP = 3;
+
+    /**
      * Initializes the {@link Color} mapping.
      * 
      * @return the HTML name to {@link Color} mapping
@@ -300,6 +315,54 @@ public abstract class Parser {
                 break;
         }
         // CHECKSTYLE:ON
+
+        return res;
+    }
+
+    /**
+     * Gets the size in pixels for the given CSS property value.
+     * 
+     * @param propertyValue
+     *            the property value
+     * @return the size in pixels if any, <code>-1</code> otherwise
+     */
+    protected int getPixels(String propertyValue) {
+        final int res;
+        final Matcher matcher = FIXED_SIZE_PATTERN.matcher(propertyValue.trim().toLowerCase());
+
+        if (matcher.find()) {
+            final double value = Double.valueOf(matcher.group(FIXED_SIZE_PATTERN_VALUE_GROUP));
+            final String unit = matcher.group(FIXED_SIZE_PATTERN_UNIT_GROUP);
+
+            // CHECKSTYLE:OFF unit conversion
+            switch (unit) {
+                case "cm":
+                    res = (int) ((value * 96d) / 2.54d);
+                    break;
+                case "mm":
+                    res = (int) (((value / 100d) * 96d) / 2.54d);
+                    break;
+                case "px":
+                    res = (int) value;
+                    break;
+                case "in":
+                    res = (int) (value * 96d);
+                    break;
+                case "pt":
+                    res = (int) ((value / 72d) * 96d);
+                    break;
+                case "pc":
+                    res = (int) (((value * 12d) / 72d) * 96d);
+                    break;
+
+                default:
+                    res = -1;
+                    break;
+                // CHECKSTYLE:ON
+            }
+        } else {
+            res = -1;
+        }
 
         return res;
     }

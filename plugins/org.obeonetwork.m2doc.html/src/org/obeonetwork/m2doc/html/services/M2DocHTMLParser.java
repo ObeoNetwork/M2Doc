@@ -13,7 +13,7 @@ package org.obeonetwork.m2doc.html.services;
 
 import java.awt.Color;
 import java.math.BigInteger;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +70,36 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 public class M2DocHTMLParser extends Parser {
 
     /**
+     * Courier New font.
+     */
+    private static final String COURIER_NEW_FONT = "Courier New";
+
+    /**
+     * Wingdings font.
+     */
+    private static final String WINGDINGS_FONT = "Wingdings";
+
+    /**
+     * Symbol font.
+     */
+    private static final String SYMBOL_FONT = "Symbol";
+
+    /**
+     * The default font size.
+     */
+    private static final int DEFAULT_FONT_SIZE = 11;
+
+    /**
+     * The big tag ratio.
+     */
+    private static final double BIG_RATIO = 1.33;
+
+    /**
+     * The small tag ratio.
+     */
+    private static final double SMALL_RATIO = 0.8;
+
+    /**
      * The height attribute.
      */
     private static final String HEIGHT_ATTR = "height";
@@ -83,6 +113,16 @@ public class M2DocHTMLParser extends Parser {
      * The style attribute.
      */
     private static final String STYLE_ATTR = "style";
+
+    /**
+     * The class attribute.
+     */
+    private static final String CLASS_ATTR = "class";
+
+    /**
+     * The dir attribute.
+     */
+    private static final String DIR_ATTR = "dir";
 
     /**
      * The indentation left.
@@ -152,6 +192,18 @@ public class M2DocHTMLParser extends Parser {
     private static final class Context {
 
         /**
+         * The text direction (dir) attribute.
+         * 
+         * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+         */
+        private enum Dir {
+            /** Left to right. */
+            LTR,
+            /** Right to left. */
+            RTL;
+        }
+
+        /**
          * The current {@link MStyle}.
          */
         private final MStyle style;
@@ -182,29 +234,26 @@ public class M2DocHTMLParser extends Parser {
         private long numberingLevel;
 
         /**
+         * The current direction of the text.
+         */
+        private Dir dir;
+
+        /**
+         * CSS properties.
+         */
+        private final Map<String, List<String>> cssProperties = new HashMap<String, List<String>>();
+
+        /**
          * Constructor.
          * 
          * @param baseURI
          *            the base {@link URI}
-         * @param linkTargetURI
-         *            the link target {@link URI} if any, <code>null</code> otherwise
          * @param style
          *            the current {@link MStyle}.
-         * @param numbering
-         *            the numbering
-         * @param numberingID
-         *            the numbering ID
-         * @param numberingLevel
-         *            the numbering level
          */
-        private Context(URI baseURI, URI linkTargetURI, MStyle style, CTAbstractNum numbering, BigInteger numberingID,
-                long numberingLevel) {
+        private Context(URI baseURI, MStyle style) {
             this.baseURI = baseURI;
-            this.linkTargetURI = linkTargetURI;
             this.style = style;
-            this.numbering = numbering;
-            this.numberingID = numberingID;
-            this.numberingLevel = numberingLevel;
         }
 
         /**
@@ -215,7 +264,16 @@ public class M2DocHTMLParser extends Parser {
         private Context copy() {
             final MStyleImpl mStyle = new MStyleImpl(style.getFontName(), style.getFontSize(),
                     style.getForegroundColor(), style.getBackgroundColor(), style.getFontModifiers());
-            return new Context(baseURI, linkTargetURI, mStyle, numbering, numberingID, numberingLevel);
+            Context res = new Context(baseURI, mStyle);
+
+            res.linkTargetURI = linkTargetURI;
+            res.numbering = numbering;
+            res.numberingID = numberingID;
+            res.numberingLevel = numberingLevel;
+            res.dir = dir;
+            res.cssProperties.putAll(cssProperties);
+
+            return res;
         }
 
     }
@@ -274,7 +332,8 @@ public class M2DocHTMLParser extends Parser {
             defaultStyle.setBackgroundColor(htmlToColor(document.body().attr("bgcolor").toLowerCase()));
         }
 
-        final Context context = new Context(baseURI, null, defaultStyle, null, null, 0);
+        final Context context = new Context(baseURI, defaultStyle);
+        applyGlobalAttibutes(context, document.body());
 
         walkNodeTree(res, context, document.body(), null);
 
@@ -332,7 +391,16 @@ public class M2DocHTMLParser extends Parser {
     private void walkChildren(Node node, Context context, MList parent) {
         Element lastElement = null;
         for (Node child : node.childNodes()) {
+            final boolean needQuotes = "q".equals(child.nodeName());
+            if (needQuotes) {
+                final MText mText = new MTextImpl("«", null);
+                parent.add(mText);
+            }
             walkNodeTree(parent, context, child, lastElement);
+            if (needQuotes) {
+                final MText mText = new MTextImpl("»", null);
+                parent.add(mText);
+            }
             if (child instanceof Element) {
                 lastElement = (Element) child;
             } else {
@@ -414,7 +482,7 @@ public class M2DocHTMLParser extends Parser {
         if (!text.trim().isEmpty()) {
             final String textToInsert;
             if (needNewParagraph) {
-                createMParagraph(parent, null, null, null);
+                createMParagraph(context, parent, null, null, null);
                 textToInsert = text.replaceFirst("\\s", "");
             } else {
                 textToInsert = text;
@@ -445,21 +513,22 @@ public class M2DocHTMLParser extends Parser {
     private MList startElement(MList parent, Context context, Element element) {
         final MList res;
 
-        final Map<String, List<String>> cssProperties = applyCSSStyle(element, context.style);
+        applyGlobalAttibutes(context, element);
+
         final String nodeName = element.nodeName();
         boolean isNumbering = false;
         if ("p".equals(nodeName)) {
-            res = createMParagraph(parent, element, null, null);
+            res = createMParagraph(context, parent, element, null, null);
         } else if ("strong".equals(nodeName) || "b".equals(nodeName)) {
             setModifiers(context.style, MStyle.FONT_BOLD);
             res = parent;
-        } else if ("em".equals(nodeName) || "i".equals(nodeName)) {
+        } else if ("em".equals(nodeName) || "i".equals(nodeName) || "var".equals(nodeName) || "cite".equals(nodeName)) {
             setModifiers(context.style, MStyle.FONT_ITALIC);
             res = parent;
-        } else if ("s".equals(nodeName) || "strike".equals(nodeName)) {
+        } else if ("s".equals(nodeName) || "strike".equals(nodeName) || "del".equals(nodeName)) {
             setModifiers(context.style, MStyle.FONT_STRIKE_THROUGH);
             res = parent;
-        } else if ("u".equals(nodeName)) {
+        } else if ("u".equals(nodeName) || "ins".equals(nodeName)) {
             setModifiers(context.style, MStyle.FONT_UNDERLINE);
             res = parent;
         } else if ("sub".equals(nodeName)) {
@@ -487,7 +556,8 @@ public class M2DocHTMLParser extends Parser {
             parent.add(MPagination.ligneBreak);
             res = parent;
         } else if ("li".equals(nodeName)) {
-            res = createMParagraph(parent, element, context.numberingID.longValue(), context.numberingLevel - 1);
+            res = createMParagraph(context, parent, element, context.numberingID.longValue(),
+                    context.numberingLevel - 1);
             isNumbering = true;
         } else if ("ol".equals(nodeName)) {
             setOrderedListNumbering(context, element);
@@ -500,6 +570,16 @@ public class M2DocHTMLParser extends Parser {
         } else if ("img".equals(nodeName)) {
             final MImage mImage = createMImage(context, element);
             parent.add(mImage);
+            res = parent;
+        } else if ("big".equals(nodeName)) {
+            setBigFont(context);
+            res = parent;
+        } else if ("small".equals(nodeName)) {
+            setSmallFont(context);
+            res = parent;
+        } else if ("tt".equals(nodeName) || "code".equals(nodeName) || "samp".equals(nodeName)
+            || "kbd".equals(nodeName)) {
+            context.style.setFontName(COURIER_NEW_FONT);
             res = parent;
         } else if ("h1".equals(nodeName)) {
             res = createHeading(parent, context, element, H1_FONT_SIZE);
@@ -526,25 +606,97 @@ public class M2DocHTMLParser extends Parser {
     }
 
     /**
-     * Applies the CSS from the style attribute of the given {@link Element} to the given {@link MStyle}.
+     * Applies the global attributes from the given {@link Element} to the given {@link Context}.
+     * 
+     * @param context
+     *            the {@link Context}
+     * @param element
+     *            the {@link Element}
+     */
+    private void applyGlobalAttibutes(Context context, Element element) {
+        applyCSSStyle(element, context);
+        applyMarkerClass(context, element);
+        applyDir(context, element);
+    }
+
+    /**
+     * Applies the marker class. This is specific to the nebula rich text editor used in Capella.
+     * 
+     * @param context
+     *            the {@link Context}
+     * @param element
+     *            the {@link Element}
+     */
+    private void applyMarkerClass(Context context, Element element) {
+        if (element.hasAttr(CLASS_ATTR) && "marker".equals(element.attr(CLASS_ATTR))) {
+            context.style.setBackgroundColor(Color.YELLOW);
+        }
+    }
+
+    /**
+     * Applies the direction attribute of the given {@link Element} to the given {@link Context}.
+     * 
+     * @param context
+     *            the {@link Context}
+     * @param element
+     *            the {@link Element}
+     */
+    private void applyDir(Context context, Element element) {
+        if (element.hasAttr(DIR_ATTR)) {
+            if ("ltr".equals(element.attr(DIR_ATTR))) {
+                context.dir = Context.Dir.LTR;
+            } else if ("rtl".equals(element.attr(DIR_ATTR))) {
+                context.dir = Context.Dir.RTL;
+            }
+        }
+    }
+
+    /**
+     * Sets the size of the font to big in the given {@link Context}.
+     * 
+     * @param context
+     *            the {@link Context}
+     */
+    private void setBigFont(Context context) {
+        final int fontSize;
+        if (context.style.getFontSize() == -1) {
+            fontSize = (int) (DEFAULT_FONT_SIZE * BIG_RATIO);
+        } else {
+            fontSize = (int) (context.style.getFontSize() * BIG_RATIO);
+        }
+        context.style.setFontSize(fontSize);
+    }
+
+    /**
+     * Sets the size of the font to small in the given {@link Context}.
+     * 
+     * @param context
+     *            the {@link Context}
+     */
+    private void setSmallFont(Context context) {
+        final int fontSize;
+        if (context.style.getFontSize() == -1) {
+            fontSize = (int) (DEFAULT_FONT_SIZE * SMALL_RATIO);
+        } else {
+            fontSize = (int) (context.style.getFontSize() * SMALL_RATIO);
+        }
+        context.style.setFontSize(fontSize);
+    }
+
+    /**
+     * Applies the CSS from the style attribute of the given {@link Element} to the given {@link Context}.
      * 
      * @param element
      *            the {@link Element}
-     * @param style
-     *            the current {@link MStyle}
-     * @return the parsed CSS styles
+     * @param context
+     *            the current {@link Context}
      */
-    private Map<String, List<String>> applyCSSStyle(Element element, MStyle style) {
-        final Map<String, List<String>> res;
-
+    private void applyCSSStyle(Element element, Context context) {
         if (element.hasAttr(STYLE_ATTR)) {
-            res = CSS_PARSER.parse(element.attr(STYLE_ATTR));
-            CSS_PARSER.setStyle(res, style);
-        } else {
-            res = Collections.emptyMap();
+            final Map<String, List<String>> cssProperties = CSS_PARSER.parse(element.attr(STYLE_ATTR));
+            CSS_PARSER.setStyle(cssProperties, context.style);
+            context.cssProperties.putAll(cssProperties);
         }
-
-        return res;
     }
 
     /**
@@ -563,7 +715,7 @@ public class M2DocHTMLParser extends Parser {
     private MList createHeading(MList parent, Context context, Element element, int fontSize) {
         final MList res;
 
-        res = createMParagraph(parent, element, null, null);
+        res = createMParagraph(context, parent, element, null, null);
         context.style.setFontSize(fontSize);
         setModifiers(context.style, MStyle.FONT_BOLD);
 
@@ -725,14 +877,14 @@ public class M2DocHTMLParser extends Parser {
                 text.setVal(symbol);
                 CTFonts font = level.addNewRPr().addNewRFonts();
                 if (symbol == DISC_SYMBOL) {
-                    font.setAscii("Symbol");
-                    font.setHAnsi("Symbol");
+                    font.setAscii(SYMBOL_FONT);
+                    font.setHAnsi(SYMBOL_FONT);
                 } else if (symbol == SQUARE_SYMBOL) {
-                    font.setAscii("Wingdings");
-                    font.setHAnsi("Wingdings");
+                    font.setAscii(WINGDINGS_FONT);
+                    font.setHAnsi(WINGDINGS_FONT);
                 } else if (symbol == DISC_SYMBOL) {
-                    font.setAscii("Courier New");
-                    font.setHAnsi("Courier New");
+                    font.setAscii(COURIER_NEW_FONT);
+                    font.setHAnsi(COURIER_NEW_FONT);
 
                 }
                 level.addNewLvlJc().setVal(STJc.LEFT);
@@ -766,6 +918,8 @@ public class M2DocHTMLParser extends Parser {
     /**
      * Creates a {@link MParagraph}.
      * 
+     * @param context
+     *            the current {@link Context}
      * @param parent
      *            the parent {@link MList}
      * @param element
@@ -776,7 +930,8 @@ public class M2DocHTMLParser extends Parser {
      *            the numbering level
      * @return the created {@link MParagraph}
      */
-    private MList createMParagraph(MList parent, Element element, Long numberingID, Long numberingLevel) {
+    private MList createMParagraph(Context context, MList parent, Element element, Long numberingID,
+            Long numberingLevel) {
         final MList res = new MListImpl();
 
         final MParagraph paragraph = new MParagraphImpl(res, null);
@@ -795,6 +950,15 @@ public class M2DocHTMLParser extends Parser {
                 paragraph.setHAlignment(HAlignment.DISTRIBUTE);
             }
         }
+        if (context.dir == Context.Dir.LTR) {
+            paragraph.setTextDirection(MParagraph.Dir.LTR);
+        } else if (context.dir == Context.Dir.RTL) {
+            paragraph.setTextDirection(MParagraph.Dir.RTL);
+        } else {
+            paragraph.setTextDirection(null);
+        }
+
+        CSS_PARSER.setStyle(context.cssProperties, paragraph);
 
         return res;
     }

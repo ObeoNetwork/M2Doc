@@ -63,6 +63,7 @@ import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MParagraph;
+import org.obeonetwork.m2doc.element.MParagraph.Dir;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
@@ -96,6 +97,7 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
@@ -897,6 +899,32 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         if (paragraph.getNumberingLevel() != null) {
             newParagraph.getCTP().getPPr().getNumPr().addNewIlvl()
                     .setVal(BigInteger.valueOf(paragraph.getNumberingLevel()));
+        }
+        if (paragraph.getTextDirection() == Dir.LTR) {
+            if (newParagraph.getCTP().getPPr() == null) {
+                newParagraph.getCTP().addNewPPr();
+            }
+            if (newParagraph.getCTP().getPPr().getBidi() == null) {
+                newParagraph.getCTP().getPPr().addNewBidi();
+            }
+            final CTOnOff value = CTOnOff.Factory.newInstance();
+            value.setVal(STOnOff.Enum.forInt(4));
+            newParagraph.getCTP().getPPr().setBidi(value);
+        } else if (paragraph.getTextDirection() == Dir.RTL) {
+            if (newParagraph.getCTP().getPPr() == null) {
+                newParagraph.getCTP().addNewPPr();
+            }
+            if (newParagraph.getCTP().getPPr().getBidi() == null) {
+                newParagraph.getCTP().getPPr().addNewBidi();
+            }
+            final CTOnOff value = CTOnOff.Factory.newInstance();
+            value.setVal(STOnOff.Enum.forInt(3));
+            newParagraph.getCTP().getPPr().setBidi(value);
+        }
+        if (paragraph.getMarginLeft() != -1) {
+            // CHECKSTYLE:OFF empiric constant
+            newParagraph.setIndentationLeft(paragraph.getMarginLeft() * 14);
+            // CHECKSTYLE:ON
         }
 
         return insertObject(newParagraph, paragraph.getContents(), run);
