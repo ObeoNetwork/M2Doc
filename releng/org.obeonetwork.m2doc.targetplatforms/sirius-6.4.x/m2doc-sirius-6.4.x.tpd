@@ -37,7 +37,7 @@ location Eclipse "https://download.eclipse.org/releases/2020-09" {
 	org.eclipse.pde.feature.group lazy
 }
 
-location GMF-Notation-1.13.0 "http://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913" {
+location GMF-Notation-1.13.0 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913" {
     org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
 }
 

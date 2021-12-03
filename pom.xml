@@ -45,11 +45,12 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-5.1.1</module>
     <!-- Capella -->
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-1.4.0</module>
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-1.4.1</module>
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-1.4.2</module>
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.0.0</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.2.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.1.0</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.0.0</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-1.4.2</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-1.4.1</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-1.4.0</module>
 
     <module>plugins/org.obeonetwork.m2doc</module>
     <module>plugins/org.obeonetwork.m2doc.ide</module>
@@ -1050,6 +1051,36 @@
     </profile>
 
     <!-- Capella -->
+    <profile>
+      <id>platform-capella-5.2.0</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>capella-5.2.0</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://archive.eclipse.org/sirius/updates/releases/6.5.0/2020-06</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-capella-5.2.0</artifactId>
+                  <version>3.2.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-capella-5.1.0</id>
       <activation>
