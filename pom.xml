@@ -86,8 +86,8 @@
   </modules>
 
   <properties>
-    <tycho-version>2.5.0</tycho-version>
-    <tycho-extras-version>2.5.0</tycho-extras-version>
+    <tycho-version>${tycho}</tycho-version>
+    <tycho-extras-version>${tycho}</tycho-extras-version>
     <resource-encoding>UTF-8</resource-encoding>
     <maven-resources-version>2.6</maven-resources-version>
     <tycho.scmUrl>scm:git:git://github.com/ObeoNetwork/M2Doc.git</tycho.scmUrl>

@@ -39,6 +39,7 @@ jobs:
         echo GITHUB_SHA $GITHUB_SHA
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
         echo PROFILE ${{ matrix.profile }}
+        echo TYCHO ${{ matrix.tycho }}
 
     - name: Check if update site is needed
       id: updatesite_check
@@ -104,7 +105,7 @@ jobs:
         MAVEN_OPTS: -XX:MaxPermSize=512m -Xmx2048m -Xms1024m
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: mvn clean verify -fae -P${{ matrix.profile }}
+        run: mvn clean verify -fae -P${{ matrix.profile }} "-Dtycho=${{ matrix.tycho }}"
 
     - name: Prepare deploy local directory
       id: prepare_deploy
