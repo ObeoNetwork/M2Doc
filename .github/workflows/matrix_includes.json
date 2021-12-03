@@ -49,6 +49,10 @@
   },
   {
     "java":"11",
+    "profile":"platform-sirius-6.5.0,tests"
+  },
+  {
+    "java":"11",
     "profile":"platform-capella-5.1.0,tests"
   }
 ]
