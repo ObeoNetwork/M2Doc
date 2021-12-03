@@ -38,6 +38,7 @@ jobs:
         echo GITHUB_REF $GITHUB_REF
         echo GITHUB_SHA $GITHUB_SHA
         echo GITHUB_EVENT_NAME $GITHUB_EVENT_NAME
+        echo JAVA ${{ matrix.java }}
         echo PROFILE ${{ matrix.profile }}
         echo TYCHO ${{ matrix.tycho }}
 

@@ -30,11 +30,6 @@
     "tycho":"1.7.0"
   },
   {
-    "java":"17",
-    "profile":"platform-2020-06,tests",
-    "tycho":"2.5.0"
-  },
-  {
     "java":"11",
     "profile":"platform-sirius-6.0.0,tests",
     "tycho":"1.7.0"
