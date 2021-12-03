@@ -1,4 +1,4 @@
-target "M2Doc 2021-09 Target Platform"
+target "M2Doc 2021-12 Target Platform"
 
 with source requirements
 
@@ -6,7 +6,7 @@ location Eclipse-Shared-License "https://download.eclipse.org/cbi/updates/licens
 	org.eclipse.license.feature.group [2.0.0,3.0.0)
 }
 
-location Eclipse "https://download.eclipse.org/releases/2021-09" {
+location Eclipse "https://download.eclipse.org/releases/2021-12" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.equinox.executable.feature.group lazy
