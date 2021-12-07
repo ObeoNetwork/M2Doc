@@ -12,7 +12,7 @@
 <feature
       id="org.obeonetwork.m2doc.cdo.feature"
       label="M2Doc CDO Integration"
-      version="3.2.0.qualifier"
+      version="3.2.1.qualifier"
       provider-name="Obeo Network"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2">

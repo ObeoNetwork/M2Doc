@@ -17,7 +17,7 @@ Contributors:
     <groupId>org.obeonetwork.m2doc</groupId>
     <artifactId>org.obeonetwork.m2doc.parent</artifactId>
     <relativePath>../..</relativePath>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.obeonetwork.m2doc.rcpttproduct</artifactId>

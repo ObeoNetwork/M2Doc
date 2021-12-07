@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _PpL8wJPuEei_a6q1mG9iYw
-Save-Time: 3/31/21 9:53 AM
+Save-Time: 12/8/21, 3:53 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -26,7 +26,7 @@ with [get-window "Generation configuration"] {
     get-label "" -after [get-label "Select files"] | get-property "image.path" 
         | equals "org.eclipse.jface/icons/full/message_warning.png" | verify-true
     get-editbox -after [get-label "Select files"] | get-property text 
-        | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.2.0" | verify-true
+        | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.2.1" | verify-true
 }
 get-window "Generation configuration" | get-button Cancel | click
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

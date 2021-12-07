@@ -13,7 +13,7 @@
 <feature
       id="org.obeonetwork.m2doc.launcher.feature"
       label="Feature for the M2doc Launcher"
-      version="3.2.0.qualifier"
+      version="3.2.1.qualifier"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2">
 
