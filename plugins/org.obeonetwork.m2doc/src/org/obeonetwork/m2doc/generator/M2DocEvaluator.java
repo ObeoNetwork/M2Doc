@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.CancellationException;
 
+import org.apache.poi.ooxml.POIXMLDocumentPart.RelationPart;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.BreakType;
@@ -40,6 +41,7 @@ import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHyperlinkRun;
+import org.apache.poi.xwpf.usermodel.XWPFNumbering;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRelation;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -73,6 +75,7 @@ import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -94,9 +97,15 @@ import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTInd;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTLvl;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNum;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumbering;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
@@ -110,6 +119,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
@@ -899,7 +909,25 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         if (paragraph.getNumberingLevel() != null) {
             newParagraph.getCTP().getPPr().getNumPr().addNewIlvl()
                     .setVal(BigInteger.valueOf(paragraph.getNumberingLevel()));
+            if (paragraph.getMarginLeft() != -1) {
+                if (newParagraph.getCTP().getPPr() == null) {
+                    newParagraph.getCTP().addNewPPr();
+                }
+                final CTInd indentation = newParagraph.getCTP().getPPr().addNewInd();
+                final CTJc ctjc = CTJc.Factory.newInstance();
+                ctjc.setVal(STJc.LEFT);
+                newParagraph.getCTP().getPPr().setJc(ctjc);
+                // CHECKSTYLE:OFF empiric constant
+                indentation.setLeft(BigInteger.valueOf(paragraph.getMarginLeft() * 14
+                    + getNumberingIndentLeft(paragraph.getNumberingID(), paragraph.getNumberingLevel())));
+                // CHECKSTYLE:ON
+            }
+        } else if (paragraph.getMarginLeft() != -1) {
+            // CHECKSTYLE:OFF empiric constant
+            newParagraph.setIndentationLeft(paragraph.getMarginLeft() * 14);
+            // CHECKSTYLE:ON
         }
+
         if (paragraph.getTextDirection() == Dir.LTR) {
             if (newParagraph.getCTP().getPPr() == null) {
                 newParagraph.getCTP().addNewPPr();
@@ -921,13 +949,69 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             value.setVal(STOnOff.Enum.forInt(3));
             newParagraph.getCTP().getPPr().setBidi(value);
         }
-        if (paragraph.getMarginLeft() != -1) {
-            // CHECKSTYLE:OFF empiric constant
-            newParagraph.setIndentationLeft(paragraph.getMarginLeft() * 14);
-            // CHECKSTYLE:ON
-        }
 
         return insertObject(newParagraph, paragraph.getContents(), run);
+    }
+
+    /**
+     * Gets the left indentation for the given numbering ID and level.
+     * 
+     * @param numberingID
+     *            the numbering ID
+     * @param numberingLevel
+     *            the numbering level
+     * @return the left indentation for the given numbering ID and level
+     */
+    private int getNumberingIndentLeft(Long numberingID, Long numberingLevel) {
+        int res = 0;
+
+        if (numberingID != null) {
+            CTAbstractNum absNum = null;
+            for (RelationPart relationPart : generatedDocument.getXWPFDocument().getRelationParts()) {
+                if (XWPFRelation.NUMBERING.getRelation().equals(relationPart.getRelationship().getRelationshipType())) {
+                    final XWPFNumbering numbering = relationPart.getDocumentPart();
+                    final CTNumbering ctNumbering = PaginationServices.getCTNumbering(numbering);
+                    absNum = getAbstractNumbering(ctNumbering, numberingID);
+                }
+                if (absNum != null) {
+                    for (CTLvl lvl : absNum.getLvlList()) {
+                        if (lvl.getIlvl().longValue() == numberingLevel.longValue()) {
+                            res = lvl.getPPr().getInd().getLeft().intValue();
+                        }
+                    }
+                }
+            }
+        } else {
+            res = 0;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link CTAbstractNum} with the given numbering ID from the given {@link CTNumbering}.
+     * 
+     * @param ctNumbering
+     *            the {@link CTNumbering}
+     * @param numberingID
+     *            the numbering ID
+     * @return the {@link CTAbstractNum} with the given numbering ID from the given {@link CTNumbering} if nay, <code>null</code> otherwise
+     */
+    private CTAbstractNum getAbstractNumbering(final CTNumbering ctNumbering, Long numberingID) {
+        CTAbstractNum res = null;
+
+        for (CTNum ctNum : ctNumbering.getNumList()) {
+            if (ctNum.getNumId().longValue() == numberingID.longValue()) {
+                for (CTAbstractNum ctAbsNumering : ctNumbering.getAbstractNumList()) {
+                    if (ctAbsNumering.getAbstractNumId().equals(ctNum.getAbstractNumId().getVal())) {
+                        res = ctAbsNumering;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return res;
     }
 
     /**

@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.html.services.M2DocHTMLParser.Context;
 
 /**
  * A simple naive CSS parser for "style" attribute.
@@ -221,18 +222,25 @@ public class M2DocCSSParser extends Parser {
      * 
      * @param cssProperties
      *            the CSS style properties
+     * @param context
+     *            the current {@link Context}
      * @param paragraph
      *            the {@link MParagraph}
      */
-    public void setStyle(Map<String, List<String>> cssProperties, MParagraph paragraph) {
+    public void setStyle(Map<String, List<String>> cssProperties, Context context, MParagraph paragraph) {
         final List<String> cssMarginLefts = cssProperties.get(CSS_MARGIN_LEFT);
         if (cssMarginLefts != null) {
+            int value = -1;
             for (String cssMarginLeft : cssMarginLefts) {
-                final int value = getPixels(cssMarginLeft);
-                if (value != -1) {
-                    paragraph.setMarginLeft(value);
-                }
+                value = getPixels(cssMarginLeft);
             }
+            if (value != -1) {
+                context.replaceLastDefaultMarginLeft(value);
+            }
+        }
+        final Integer marginLeft = context.getMarginLeft();
+        if (marginLeft != null) {
+            paragraph.setMarginLeft(marginLeft);
         }
     }
 

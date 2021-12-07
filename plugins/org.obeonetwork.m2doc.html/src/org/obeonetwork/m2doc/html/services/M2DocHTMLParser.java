@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFNumbering;
@@ -186,11 +187,16 @@ public class M2DocHTMLParser extends Parser {
     private static final int H1_FONT_SIZE = 24;
 
     /**
+     * Block quote {@link MParagraph#getMarginLeft() margin left}.
+     */
+    private static final int BLOCKQUOTE_DEFAULT_MARGING_LEFT = 40;
+
+    /**
      * The {@link Context} for {@link M2DocHTMLParser#walkNodeTree(MElement, MStyle, Node) tree walking}.
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    private static final class Context {
+    protected static final class Context {
 
         /**
          * The text direction (dir) attribute.
@@ -245,6 +251,11 @@ public class M2DocHTMLParser extends Parser {
         private final Map<String, List<String>> cssProperties = new HashMap<String, List<String>>();
 
         /**
+         * The stack of margin left.
+         */
+        private Stack<Integer> marginLefts = new Stack<Integer>();
+
+        /**
          * Constructor.
          * 
          * @param baseURI
@@ -273,10 +284,68 @@ public class M2DocHTMLParser extends Parser {
             res.numberingLevel = numberingLevel;
             res.dir = dir;
             res.cssProperties.putAll(cssProperties);
+            res.marginLefts = marginLefts;
 
             return res;
         }
 
+        /**
+         * Pushes the given margin left value.
+         * 
+         * @param value
+         *            the margin left value
+         */
+        public void pushMarginLeft(Integer value) {
+            marginLefts.push(value);
+        }
+
+        /**
+         * Pops the last {@link #pushMarginLeft(int) pushed} margin left value.
+         * 
+         * @return the last {@link #pushMarginLeft(int) pushed} margin left value
+         */
+        public Integer popMarginLeft() {
+            return marginLefts.pop();
+        }
+
+        /**
+         * Replaces the last {@link #pushMarginLeft(int) pushed} margin left value if it's <code>null</code>.
+         * 
+         * @param value
+         *            the new margin left value
+         */
+        public void replaceLastDefaultMarginLeft(Integer value) {
+            if (marginLefts.peek() == null) {
+                popMarginLeft();
+                pushMarginLeft(value);
+            }
+        }
+
+        /**
+         * Gets the current margin left.
+         * 
+         * @return the current margin left if any, <code>null</code> otherwise
+         */
+        public Integer getMarginLeft() {
+            int sum = 0;
+
+            boolean hasValue = false;
+            for (Integer currentMarginLeft : marginLefts) {
+                if (currentMarginLeft != null) {
+                    hasValue = true;
+                    sum += currentMarginLeft;
+                }
+            }
+
+            final Integer res;
+            if (hasValue) {
+                res = Integer.valueOf(sum);
+            } else {
+                res = null;
+            }
+
+            return res;
+        }
     }
 
     /**
@@ -334,7 +403,12 @@ public class M2DocHTMLParser extends Parser {
         }
 
         final Context context = new Context(baseURI, defaultStyle);
-        applyGlobalAttibutes(context, document.body());
+        context.pushMarginLeft(null);
+        try {
+            applyGlobalAttibutes(context, document.body());
+        } finally {
+            context.popMarginLeft();
+        }
 
         walkNodeTree(res, context, document.body(), null);
 
@@ -368,13 +442,26 @@ public class M2DocHTMLParser extends Parser {
                     insertTable(parent, context, tBody);
                 }
             } else {
+                if ("ul".equals(node.nodeName()) || "ol".equals(node.nodeName())) {
+                    // remove inherited list-style-type
+                    contextCopy.cssProperties.remove(M2DocCSSParser.CSS_LIST_STYLE_TYPE);
+                }
+                contextCopy.pushMarginLeft(null);
+                applyGlobalAttibutes(contextCopy, node);
+                if ("blockquote".equals(node.nodeName())) {
+                    contextCopy.replaceLastDefaultMarginLeft(BLOCKQUOTE_DEFAULT_MARGING_LEFT);
+                }
                 final MList element = startElement(parent, contextCopy, (Element) node);
-                walkChildren(node, contextCopy, element);
+                try {
+                    walkChildren(node, contextCopy, element);
+                } finally {
+                    contextCopy.popMarginLeft();
+                }
                 endElement(parent, element);
             }
         } else if (node instanceof TextNode) {
-            final boolean needNewParagraph = lastElement != null
-                && ("ul".equals(lastElement.nodeName()) || "ol".equals(lastElement.nodeName()));
+            final boolean needNewParagraph = lastElement != null && ("ul".equals(lastElement.nodeName())
+                || "ol".equals(lastElement.nodeName()) || "blockquote".equals(lastElement.nodeName()));
             insertText(parent, contextCopy, (TextNode) node, needNewParagraph);
         }
     }
@@ -514,16 +601,16 @@ public class M2DocHTMLParser extends Parser {
     private MList startElement(MList parent, Context context, Element element) {
         final MList res;
 
-        if ("ul".equals(element.nodeName()) || "ol".equals(element.nodeName())) {
-            // remove inherited list-style-type
-            context.cssProperties.remove(M2DocCSSParser.CSS_LIST_STYLE_TYPE);
-        }
-        applyGlobalAttibutes(context, element);
-
         final String nodeName = element.nodeName();
         boolean isNumbering = false;
         if ("p".equals(nodeName)) {
             res = createMParagraph(context, parent, element, null, null);
+        } else if ("blockquote".equals(nodeName)) {
+            res = createMParagraph(context, parent, element, null, null);
+            if (element.childNodeSize() > 0 && element.childNode(0) instanceof TextNode) {
+                TextNode textNode = (TextNode) element.childNode(0);
+                textNode.text(textNode.text().replaceFirst("\\s", ""));
+            }
         } else if ("strong".equals(nodeName) || "b".equals(nodeName)) {
             setModifiers(context.style, MStyle.FONT_BOLD);
             res = parent;
@@ -611,17 +698,17 @@ public class M2DocHTMLParser extends Parser {
     }
 
     /**
-     * Applies the global attributes from the given {@link Element} to the given {@link Context}.
+     * Applies the global attributes from the given {@link Node} to the given {@link Context}.
      * 
      * @param context
      *            the {@link Context}
-     * @param element
-     *            the {@link Element}
+     * @param node
+     *            the {@link Node}
      */
-    private void applyGlobalAttibutes(Context context, Element element) {
-        applyCSSStyle(element, context);
-        applyMarkerClass(context, element);
-        applyDir(context, element);
+    private void applyGlobalAttibutes(Context context, Node node) {
+        applyCSSStyle(node, context);
+        applyMarkerClass(context, node);
+        applyDir(context, node);
     }
 
     /**
@@ -629,28 +716,28 @@ public class M2DocHTMLParser extends Parser {
      * 
      * @param context
      *            the {@link Context}
-     * @param element
-     *            the {@link Element}
+     * @param node
+     *            the {@link Node}
      */
-    private void applyMarkerClass(Context context, Element element) {
-        if (element.hasAttr(CLASS_ATTR) && "marker".equals(element.attr(CLASS_ATTR))) {
+    private void applyMarkerClass(Context context, Node node) {
+        if (node.hasAttr(CLASS_ATTR) && "marker".equals(node.attr(CLASS_ATTR))) {
             context.style.setBackgroundColor(Color.YELLOW);
         }
     }
 
     /**
-     * Applies the direction attribute of the given {@link Element} to the given {@link Context}.
+     * Applies the direction attribute of the given {@link Node} to the given {@link Context}.
      * 
      * @param context
      *            the {@link Context}
-     * @param element
-     *            the {@link Element}
+     * @param node
+     *            the {@link Node}
      */
-    private void applyDir(Context context, Element element) {
-        if (element.hasAttr(DIR_ATTR)) {
-            if ("ltr".equals(element.attr(DIR_ATTR))) {
+    private void applyDir(Context context, Node node) {
+        if (node.hasAttr(DIR_ATTR)) {
+            if ("ltr".equals(node.attr(DIR_ATTR))) {
                 context.dir = Context.Dir.LTR;
-            } else if ("rtl".equals(element.attr(DIR_ATTR))) {
+            } else if ("rtl".equals(node.attr(DIR_ATTR))) {
                 context.dir = Context.Dir.RTL;
             }
         }
@@ -691,14 +778,14 @@ public class M2DocHTMLParser extends Parser {
     /**
      * Applies the CSS from the style attribute of the given {@link Element} to the given {@link Context}.
      * 
-     * @param element
-     *            the {@link Element}
+     * @param node
+     *            the {@link Node}
      * @param context
      *            the current {@link Context}
      */
-    private void applyCSSStyle(Element element, Context context) {
-        if (element.hasAttr(STYLE_ATTR)) {
-            final Map<String, List<String>> cssProperties = CSS_PARSER.parse(element.attr(STYLE_ATTR));
+    private void applyCSSStyle(Node node, Context context) {
+        if (node.hasAttr(STYLE_ATTR)) {
+            final Map<String, List<String>> cssProperties = CSS_PARSER.parse(node.attr(STYLE_ATTR));
             CSS_PARSER.setStyle(cssProperties, context.style);
             context.cssProperties.putAll(cssProperties);
         }
@@ -796,8 +883,7 @@ public class M2DocHTMLParser extends Parser {
         if (context.numbering == null) {
             createNumbering(context);
         }
-        context.numberingLevel = incrementNumberingLevel(context.numbering, context.numberingLevel, type, 1, symbol,
-                false);
+        incrementNumberingLevel(context, type, 1, symbol, false);
     }
 
     /**
@@ -847,8 +933,7 @@ public class M2DocHTMLParser extends Parser {
         if (context.numbering == null) {
             createNumbering(context);
         }
-        context.numberingLevel = incrementNumberingLevel(context.numbering, context.numberingLevel, type, start, "",
-                reversed);
+        incrementNumberingLevel(context, type, start, "", reversed);
     }
 
     /**
@@ -876,10 +961,8 @@ public class M2DocHTMLParser extends Parser {
     /**
      * Increments the level for the given {@link CTAbstractNum}.
      * 
-     * @param numbering
-     *            the {@link CTAbstractNum}
-     * @param currentLevel
-     *            the current level
+     * @param context
+     *            the current {@link Context}
      * @param type
      *            the {@link STNumberFormat#enumValue()}
      * @param start
@@ -888,13 +971,12 @@ public class M2DocHTMLParser extends Parser {
      *            the symbol
      * @param reversed
      *            tell if the numbering is reversed
-     * @return the new level
      */
-    private long incrementNumberingLevel(CTAbstractNum numbering, long currentLevel, STNumberFormat.Enum type,
-            long start, String symbol, boolean reversed) {
-        if (numbering.getLvlList().size() <= currentLevel) {
-            final CTLvl level = numbering.addNewLvl();
-            level.setIlvl(BigInteger.valueOf(currentLevel));
+    private void incrementNumberingLevel(Context context, STNumberFormat.Enum type, long start, String symbol,
+            boolean reversed) {
+        if (context.numbering.getLvlList().size() <= context.numberingLevel) {
+            final CTLvl level = context.numbering.addNewLvl();
+            level.setIlvl(BigInteger.valueOf(context.numberingLevel));
             final CTDecimalNumber strt = level.addNewStart();
             strt.setVal(BigInteger.valueOf(start));
             final CTNumFmt fmt = level.addNewNumFmt();
@@ -916,15 +998,15 @@ public class M2DocHTMLParser extends Parser {
                 level.addNewLvlJc().setVal(STJc.LEFT);
                 final CTInd indentation = level.addNewPPr().addNewInd();
                 indentation.setHanging(BigInteger.valueOf(INDENT_HANGING * 2));
-                indentation.setLeft(BigInteger.valueOf(INDENT_LEFT * (currentLevel + 1)));
+                indentation.setLeft(BigInteger.valueOf(INDENT_LEFT * (context.numberingLevel + 1)));
             } else {
                 final CTInd indentation = level.addNewPPr().addNewInd();
                 if (type == STNumberFormat.NONE) {
-                    text.setVal("%" + (currentLevel + 1));
+                    text.setVal("%" + (context.numberingLevel + 1));
                 } else {
-                    text.setVal("%" + (currentLevel + 1) + ".");
+                    text.setVal("%" + (context.numberingLevel + 1) + ".");
                 }
-                if (currentLevel > 0) {
+                if (context.numberingLevel > 0) {
                     level.setTentative(STOnOff.X_1);
                 }
                 if (type == STNumberFormat.UPPER_ROMAN) {
@@ -937,12 +1019,12 @@ public class M2DocHTMLParser extends Parser {
                     level.addNewLvlJc().setVal(STJc.LEFT);
                     indentation.setHanging(BigInteger.valueOf(INDENT_HANGING * 2));
                 }
-                indentation.setLeft(BigInteger.valueOf(INDENT_LEFT * (currentLevel + 1)));
+                indentation.setLeft(BigInteger.valueOf(INDENT_LEFT * (context.numberingLevel + 1)));
                 // TODO reversed
             }
         }
 
-        return currentLevel + 1;
+        context.numberingLevel = context.numberingLevel + 1;
     }
 
     /**
@@ -988,7 +1070,7 @@ public class M2DocHTMLParser extends Parser {
             paragraph.setTextDirection(null);
         }
 
-        CSS_PARSER.setStyle(context.cssProperties, paragraph);
+        CSS_PARSER.setStyle(context.cssProperties, context, paragraph);
 
         return res;
     }
