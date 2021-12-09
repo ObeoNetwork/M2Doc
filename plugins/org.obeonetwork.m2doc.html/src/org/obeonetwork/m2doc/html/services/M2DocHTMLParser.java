@@ -72,6 +72,21 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 public class M2DocHTMLParser extends Parser {
 
     /**
+     * The ol HTML tag.
+     */
+    private static final String OL_TAG = "ol";
+
+    /**
+     * The ul HTML tag.
+     */
+    private static final String UL_TAG = "ul";
+
+    /**
+     * The blockquote HTML tag.
+     */
+    private static final String BLOCKQUOTE_TAG = "blockquote";
+
+    /**
      * Courier New font.
      */
     private static final String COURIER_NEW_FONT = "Courier New";
@@ -442,13 +457,13 @@ public class M2DocHTMLParser extends Parser {
                     insertTable(parent, context, tBody);
                 }
             } else {
-                if ("ul".equals(node.nodeName()) || "ol".equals(node.nodeName())) {
+                if (UL_TAG.equals(node.nodeName()) || OL_TAG.equals(node.nodeName())) {
                     // remove inherited list-style-type
                     contextCopy.cssProperties.remove(M2DocCSSParser.CSS_LIST_STYLE_TYPE);
                 }
                 contextCopy.pushMarginLeft(null);
                 applyGlobalAttibutes(contextCopy, node);
-                if ("blockquote".equals(node.nodeName())) {
+                if (BLOCKQUOTE_TAG.equals(node.nodeName())) {
                     contextCopy.replaceLastDefaultMarginLeft(BLOCKQUOTE_DEFAULT_MARGING_LEFT);
                 }
                 final MList element = startElement(parent, contextCopy, (Element) node);
@@ -460,8 +475,8 @@ public class M2DocHTMLParser extends Parser {
                 endElement(parent, element);
             }
         } else if (node instanceof TextNode) {
-            final boolean needNewParagraph = lastElement != null && ("ul".equals(lastElement.nodeName())
-                || "ol".equals(lastElement.nodeName()) || "blockquote".equals(lastElement.nodeName()));
+            final boolean needNewParagraph = lastElement != null && (UL_TAG.equals(lastElement.nodeName())
+                || OL_TAG.equals(lastElement.nodeName()) || BLOCKQUOTE_TAG.equals(lastElement.nodeName()));
             insertText(parent, contextCopy, (TextNode) node, needNewParagraph);
         }
     }
@@ -489,10 +504,12 @@ public class M2DocHTMLParser extends Parser {
                 final MText mText = new MTextImpl("»", null);
                 parent.add(mText);
             }
-            if (child instanceof Element) {
-                lastElement = (Element) child;
-            } else {
-                lastElement = null;
+            if (!"div".equals(child.nodeName())) {
+                if (child instanceof Element) {
+                    lastElement = (Element) child;
+                } else {
+                    lastElement = null;
+                }
             }
         }
     }
@@ -605,11 +622,18 @@ public class M2DocHTMLParser extends Parser {
         boolean isNumbering = false;
         if ("p".equals(nodeName)) {
             res = createMParagraph(context, parent, element, null, null);
-        } else if ("blockquote".equals(nodeName)) {
-            res = createMParagraph(context, parent, element, null, null);
+        } else if (BLOCKQUOTE_TAG.equals(nodeName)) {
             if (element.childNodeSize() > 0 && element.childNode(0) instanceof TextNode) {
                 TextNode textNode = (TextNode) element.childNode(0);
-                textNode.text(textNode.text().replaceFirst("\\s", ""));
+                String newText = textNode.text().replaceFirst("\\s", "");
+                textNode.text(newText);
+                if (!newText.isEmpty()) {
+                    res = createMParagraph(context, parent, element, null, null);
+                } else {
+                    res = parent;
+                }
+            } else {
+                res = parent;
             }
         } else if ("strong".equals(nodeName) || "b".equals(nodeName)) {
             setModifiers(context.style, MStyle.FONT_BOLD);
@@ -651,11 +675,11 @@ public class M2DocHTMLParser extends Parser {
             res = createMParagraph(context, parent, element, context.numberingID.longValue(),
                     context.numberingLevel - 1);
             isNumbering = true;
-        } else if ("ol".equals(nodeName)) {
+        } else if (OL_TAG.equals(nodeName)) {
             setOrderedListNumbering(context, element);
             isNumbering = true;
             res = parent;
-        } else if ("ul".equals(nodeName)) {
+        } else if (UL_TAG.equals(nodeName)) {
             setUnorderedListNumbering(context, element);
             isNumbering = true;
             res = parent;
@@ -853,12 +877,6 @@ public class M2DocHTMLParser extends Parser {
     private void setUnorderedListNumbering(Context context, Element element) {
         final String symbol;
         final Enum type;
-        final String typeStr;
-        if (element.hasAttr(TYPE_ATTR)) {
-            typeStr = element.attr(TYPE_ATTR);
-        } else {
-            typeStr = null;
-        }
         final String typeAttr = element.attr(TYPE_ATTR);
         if ("disc".equals(typeAttr)
             || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "disc")) {
