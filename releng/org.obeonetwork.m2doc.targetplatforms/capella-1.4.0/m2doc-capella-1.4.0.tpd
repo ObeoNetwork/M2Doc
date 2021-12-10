@@ -182,14 +182,3 @@ location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases
     // for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.16.0,2.17.0)
 }
-
-location Jetty "https://archive.eclipse.org/jetty/updates/jetty-bundles-9.x/jetty-bundles-9.x/9.4.24.v20191120/" {
-	org.eclipse.jetty.server [9.4.24,9.4.25)
-	org.eclipse.jetty.util [9.4.24,9.4.25)
-	org.eclipse.jetty.util.ajax [9.4.24,9.4.25)
-	org.eclipse.jetty.io [9.4.24,9.4.25)
-	org.eclipse.jetty.http [9.4.24,9.4.25)
-	org.eclipse.jetty.client [9.4.24,9.4.25)
-	org.eclipse.jetty.servlet [9.4.24,9.4.25)
-	org.eclipse.jetty.security [9.4.24,9.4.25)
-}

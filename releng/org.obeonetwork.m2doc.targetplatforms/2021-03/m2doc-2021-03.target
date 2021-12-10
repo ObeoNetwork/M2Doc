@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc 2021-03 Target Platform" sequenceNumber="1638530333">
+<target name="M2Doc 2021-03 Target Platform" sequenceNumber="1639127623">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
@@ -66,17 +66,6 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="2.25.0.v20210301-1429"/>
       <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.25.0/"/>
-    </location>
-    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.jetty.server" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.util" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.util.ajax" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.io" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.http" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.client" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.servlet" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.security" version="9.4.24.v20191120"/>
-      <repository id="Jetty" location="https://archive.eclipse.org/jetty/updates/jetty-bundles-9.x/jetty-bundles-9.x/9.4.24.v20191120/"/>
     </location>
   </locations>
 </target>

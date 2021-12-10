@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Sirius 6.4.x Target Platform" sequenceNumber="1619451151">
+<target name="M2Doc Sirius 6.4.x Target Platform" sequenceNumber="1639128103">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
@@ -34,7 +34,7 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="0.0.0"/>
-      <repository id="GMF-Notation-1.13.0" location="http://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913"/>
+      <repository id="GMF-Notation-1.13.0" location="https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="0.0.0"/>
@@ -59,7 +59,7 @@
       <unit id="javax.servlet" version="3.1.0.v201410161800"/>
       <unit id="org.apache.batik.ext" version="1.14.0.v20210324-0332"/>
       <unit id="org.apache.batik.codec" version="1.14.0.v20210324-0332"/>
-      <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20210406213021/repository/"/>
+      <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20210602031627/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="com.google.guava" version="15.0.0.v201403281430"/>
@@ -77,17 +77,6 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="2.21.0.v20200302-1509"/>
       <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.21.0/"/>
-    </location>
-    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.jetty.server" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.util" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.util.ajax" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.io" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.http" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.client" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.servlet" version="9.4.24.v20191120"/>
-      <unit id="org.eclipse.jetty.security" version="9.4.24.v20191120"/>
-      <repository id="Jetty" location="https://archive.eclipse.org/jetty/updates/jetty-bundles-9.x/jetty-bundles-9.x/9.4.24.v20191120/"/>
     </location>
   </locations>
 </target>

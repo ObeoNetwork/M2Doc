@@ -68,12 +68,6 @@ jobs:
       run: |
         chmod a+x ./scripts/website-install.sh
         ./scripts/website-install.sh
-
-    - name: Setup MS Word add-in
-      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
-      run: |
-        chmod a+x ./scripts/word-add-in-install.sh
-        ./scripts/word-add-in-install.sh
     
     - name: Create directory for website (documentation)
       run: |
@@ -86,15 +80,6 @@ jobs:
         echo TAG $TAG
         chmod a+x ./scripts/website-build.sh
         ./scripts/website-build.sh $TAG
-
-    - name: Create directory for MS Word add-in
-      run: |
-        mkdir plugins/org.obeonetwork.m2doc.word.addin/dist/
-    - name: Build MS Word add-in
-      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
-      run: |
-        chmod a+x ./scripts/word-add-in-build.sh
-        ./scripts/word-add-in-build.sh
 
     - name: Install metacity
       if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}

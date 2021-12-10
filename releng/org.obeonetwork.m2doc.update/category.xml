@@ -81,15 +81,6 @@
    <bundle id="org.eclipse.mylyn.wikitext.tracwiki" version="0.0.0"/>
    <bundle id="org.eclipse.mylyn.wikitext.twiki" version="0.0.0"/>
 
-    <bundle id="org.eclipse.jetty.server" version="0.0.0"/>
-    <bundle id="org.eclipse.jetty.util" version="0.0.0"/>
-    <bundle id="org.eclipse.jetty.io" version="0.0.0"/>
-    <bundle id="org.eclipse.jetty.http" version="0.0.0"/>
-    <bundle id="javax.servlet" version="0.0.0"/>
-    <bundle id="org.eclipse.jetty.servlet" version="0.0.0"/>
-    <bundle id="org.eclipse.jetty.security" version="0.0.0"/>
-    <bundle id="org.eclipse.jetty.util.ajax" version="0.0.0"/>
-
    <category-def name="M2Doc" label="M2Doc">
       <description>
          plug-ins for the M2Doc technology
