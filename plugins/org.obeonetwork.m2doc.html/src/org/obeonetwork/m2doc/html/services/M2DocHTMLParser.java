@@ -588,7 +588,7 @@ public class M2DocHTMLParser extends Parser {
             final String textToInsert;
             if (needNewParagraph) {
                 createMParagraph(context, parent, null, null, null);
-                textToInsert = text.replaceFirst("\\s", "");
+                textToInsert = trimFirst(text);
             } else {
                 textToInsert = text;
             }
@@ -602,6 +602,30 @@ public class M2DocHTMLParser extends Parser {
                 parent.add(mLink);
             }
         }
+    }
+
+    /**
+     * Trims the begining of the given {@link String}.
+     * 
+     * @param text
+     *            the {@link String}
+     * @return the trimed {@link String}
+     */
+    private String trimFirst(String text) {
+        final String res;
+
+        if (text != null && !text.isEmpty()) {
+            int subStringStart = 0;
+            final int textLength = text.length();
+            while (subStringStart < textLength && Character.isWhitespace(text.charAt(subStringStart))) {
+                subStringStart++;
+            }
+            res = text.substring(subStringStart);
+        } else {
+            res = text;
+        }
+
+        return res;
     }
 
     /**
@@ -625,7 +649,7 @@ public class M2DocHTMLParser extends Parser {
         } else if (BLOCKQUOTE_TAG.equals(nodeName)) {
             if (element.childNodeSize() > 0 && element.childNode(0) instanceof TextNode) {
                 TextNode textNode = (TextNode) element.childNode(0);
-                String newText = textNode.text().replaceFirst("\\s", "");
+                String newText = trimFirst(textNode.text());
                 textNode.text(newText);
                 if (!newText.isEmpty()) {
                     res = createMParagraph(context, parent, element, null, null);
