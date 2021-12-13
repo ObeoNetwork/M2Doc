@@ -11,6 +11,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
+import org.eclipse.sirius.business.api.query.EObjectQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.business.internal.metamodel.helper.LayerHelper;
@@ -34,6 +35,10 @@ import org.obeonetwork.m2doc.sirius.commands.PrepareDiagramCommand;
 @SuppressWarnings("restriction")
 public final class SiriusRepresentationUtils {
 
+    /**
+     * The getAllLayer() method name.
+     */
+    private static final String GET_ALL_LAYERS = "getAllLayers";
     /**
      * "Sirius compatibility failed" message.
      */
@@ -243,15 +248,30 @@ public final class SiriusRepresentationUtils {
         final List<Layer> res = new ArrayList<>();
 
         try {
-            final Method method = DiagramDescription.class.getMethod("getAllLayers");
+            final Method method = DiagramDescription.class.getMethod(GET_ALL_LAYERS);
             res.addAll((List<Layer>) method.invoke(description));
         } catch (NoSuchMethodException | SecurityException e) {
             try {
-                final Method method = LayerHelper.class.getMethod("getAllLayers", DiagramDescription.class);
+                final Method method = LayerHelper.class.getMethod(GET_ALL_LAYERS, DiagramDescription.class);
                 res.addAll((List<Layer>) method.invoke(null, description));
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e1) {
-                throw new IllegalStateException(SIRIUS_COMPATIBILITY_FAILED, e);
+            } catch (NoSuchMethodException | SecurityException e1) {
+                // For Sirius 7.x.x
+                try {
+                    final Class<?> cls = SiriusRepresentationUtils.class.getClassLoader().loadClass(
+                            "org.eclipse.sirius.diagram.business.api.componentization.DiagramComponentizationManager");
+                    final Object diagramComponentizationManager = cls.getConstructor(new Class<?>[] {}).newInstance();
+                    final Method method = cls.getMethod(GET_ALL_LAYERS, Collection.class, DiagramDescription.class);
+                    final Collection<Viewpoint> selectedViewpoints = new EObjectQuery(description).getSession()
+                            .getSelectedViewpoints(false);
+                    res.addAll((List<Layer>) method.invoke(diagramComponentizationManager, selectedViewpoints,
+                            description));
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                        | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                        | SecurityException e2) {
+                    throw new IllegalStateException(SIRIUS_COMPATIBILITY_FAILED, e2);
+                }
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+                throw new IllegalStateException(SIRIUS_COMPATIBILITY_FAILED, e1);
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new IllegalStateException(SIRIUS_COMPATIBILITY_FAILED, e);
