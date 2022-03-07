@@ -24,6 +24,11 @@ The way these documents are generated can be adapted by changing the templates. 
 
 Browse [M2Doc](https://www.m2doc.org/) website for a complete features overview or the [support](https://www.m2doc.org/support/) page to get help in creating M2Doc templates.
 
+You can also replay this webinar which explains how to launch M2Doc from Capella:
+
+<iframe height="350" width="600" src="https://www.youtube.com/embed/tnLDinb0jkg?start=970"></iframe>
+
+
 Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer). You can test the generation by sharing the IFE example project provided in the extensions. Then edit the .genconf file to reference the shared SystemEngineering model element. You might need to open the Capella session first by double clicking the .aird file.
 
 # Installation
