@@ -38,6 +38,7 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/photon</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module>
     <!-- Sirius -->
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.6.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.5.1</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.5.0</module>
@@ -875,6 +876,36 @@
 
     <!-- Sirius -->
     <profile>
+      <id>platform-sirius-7.0.0</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-7.0.0</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/7.0.0/2021-06/</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-7.0.0</artifactId>
+                  <version>3.2.1-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>platform-sirius-6.6.0</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -1276,7 +1307,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/stable/7.0.0-S20210908-102403/2021-06</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/stable/7.0.1-S20220314-093652/2021-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>

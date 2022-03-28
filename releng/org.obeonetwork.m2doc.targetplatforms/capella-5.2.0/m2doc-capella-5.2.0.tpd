@@ -2,7 +2,7 @@ target "M2Doc Capella 5.2.0 Target Platform"
 
 with source requirements
 
-//include "https://download.eclipse.org/capella/core/updates/stable/5.2.0-S20211130-125709/targets/capella.target-definition.targetplatform"
+//include "https://download.eclipse.org/capella/core/updates/releases/5.2.0-R20211130-125709/targets/capella.target-definition.targetplatform"
 
 location eclipse "https://download.eclipse.org/releases/2020-06" {
 	org.eclipse.sdk.feature.group lazy
@@ -71,7 +71,7 @@ location sirius "https://download.eclipse.org/sirius/updates/releases/6.6.0/2020
 	org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group lazy
 }
 
-location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/5.2.0.S202111291638" {	
+location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/release/runtime/5.2.0/" {	
 	org.polarsys.kitalpha.ad.runtime.feature.source.feature.group lazy
 	org.polarsys.kitalpha.cadence.feature.source.feature.group lazy
 	org.polarsys.kitalpha.common.feature.source.feature.group lazy
@@ -94,7 +94,7 @@ location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/upd
 	org.polarsys.kitalpha.richtext.widget.ext.feature.source.feature.group lazy
 	org.polarsys.kitalpha.transposer.feature.source.feature.group lazy
 }
-location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/5.2.0.S202111291638" {
+location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/release/sdk/5.2.0/" {
 	org.polarsys.kitalpha.doc.feature.feature.group lazy
 	org.polarsys.kitalpha.emde.sdk.feature.source.feature.group lazy
 }
@@ -124,7 +124,7 @@ location eclipse-shared-license "https://download.eclipse.org/cbi/updates/licens
 }
 
 
-location site_Capella "https://download.eclipse.org/capella/core/updates/stable/5.2.0-S20211130-125709/org.polarsys.capella.rcp.site/" {
+location site_Capella "https://download.eclipse.org/capella/core/updates/releases/5.2.0-R20211130-125709/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.core.feature.feature.group lazy
 }
 

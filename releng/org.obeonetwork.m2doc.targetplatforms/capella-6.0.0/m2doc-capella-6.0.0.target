@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Capella 6.0.0 Target Platform" sequenceNumber="1639404312">
+<target name="M2Doc Capella 6.0.0 Target Platform" sequenceNumber="1648453480">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.sdk.feature.group" version="0.0.0"/>
@@ -60,7 +60,7 @@
       <unit id="org.eclipse.sirius.aql.source.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group" version="0.0.0"/>
-      <repository id="sirius" location="https://download.eclipse.org/sirius/updates/stable/7.0.0-S20210908-102403/2021-06"/>
+      <repository id="sirius" location="https://download.eclipse.org/sirius/updates/stable/7.0.1-S20220314-093652/2021-06"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.apache.batik.bridge.source" version="0.0.0"/>
@@ -74,7 +74,7 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.gmf.runtime.thirdparty.feature.group" version="0.0.0"/>
-      <repository id="GMF-Runtime-1.14.0" location="https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202107090702/"/>
+      <repository id="GMF-Runtime-1.14.1" location="https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202202190902/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.polarsys.kitalpha.ad.runtime.feature.source.feature.group" version="0.0.0"/>
@@ -98,12 +98,12 @@
       <unit id="org.polarsys.kitalpha.richtext.widget.feature.source.feature.group" version="0.0.0"/>
       <unit id="org.polarsys.kitalpha.richtext.widget.ext.feature.source.feature.group" version="0.0.0"/>
       <unit id="org.polarsys.kitalpha.transposer.feature.source.feature.group" version="0.0.0"/>
-      <repository id="kitalpha-runtime-core-master" location="https://download.eclipse.org/kitalpha/updates/stable/runtime/6.0.0-S202109200942"/>
+      <repository id="kitalpha-runtime-core-master" location="https://download.eclipse.org/kitalpha/updates/stable/runtime/6.0.0.S202203161338/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.polarsys.kitalpha.doc.feature.feature.group" version="0.0.0"/>
       <unit id="org.polarsys.kitalpha.emde.sdk.feature.source.feature.group" version="0.0.0"/>
-      <repository id="kitalpha-sdk-master" location="https://download.eclipse.org/kitalpha/updates/stable/sdk/6.0.0-S202109200942/"/>
+      <repository id="kitalpha-sdk-master" location="https://download.eclipse.org/kitalpha/updates/stable/sdk/6.0.0.S202203161338/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.emf.diffmerge.feature.source.feature.group" version="0.0.0"/>
@@ -119,7 +119,7 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.egf.sdk.feature.source.feature.group" version="0.0.0"/>
-      <repository id="egf" location="https://download.eclipse.org/egf/updates/1.6.2/2019-06/"/>
+      <repository id="egf" location="https://download.eclipse.org/egf/updates/stable/1.6.3/2021-06/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.nebula.widgets.nattable.core.feature.feature.group" version="0.0.0"/>

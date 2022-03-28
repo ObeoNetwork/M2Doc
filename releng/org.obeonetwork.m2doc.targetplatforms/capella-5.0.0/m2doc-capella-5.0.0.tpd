@@ -108,7 +108,7 @@ location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/rele
 	org.polarsys.kitalpha.emde.sdk.feature.source.feature.group lazy
 }
 
-location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.13.0-M4/emf-diffmerge-site" {
+location diffmerge-core "https://download.eclipse.org/diffmerge/releases/0.13.0/emf-diffmerge-site/" {
 	org.eclipse.emf.diffmerge.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.sirius.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.gmf.feature.source.feature.group lazy
@@ -116,7 +116,7 @@ location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.13.0-M4
 	org.eclipse.emf.diffmerge.egit.feature.source.feature.group lazy
 }
 
-location amalgam "https://download.eclipse.org/modeling/amalgam/updates/stable/1.12.0-S20201020/capella" {
+location amalgam "https://download.eclipse.org/modeling/amalgam/updates/releases/1.12.0/capella/" {
 	org.eclipse.amalgam.explorer.activity.source.feature.group lazy
 }
 

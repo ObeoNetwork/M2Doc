@@ -52,12 +52,6 @@
   },
   {
     "java":"11",
-    "profile":"platform-sirius-6.0.0,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
     "profile":"platform-sirius-6.1.3,tests",
     "tycho":"1.7.0",
     "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
@@ -99,9 +93,15 @@
     "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
   },
   {
-    "java":"11",
-    "profile":"platform-capella-5.1.0,tests",
-    "tycho":"1.7.0",
+    "java":"17",
+    "profile":"platform-sirius-7.0.0,tests",
+    "tycho":"2.5.0",
+    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
+  },
+  {
+    "java":"17",
+    "profile":"platform-capella-6.0.0,tests",
+    "tycho":"2.5.0",
     "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
   }
 ]
