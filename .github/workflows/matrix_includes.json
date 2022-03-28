@@ -95,11 +95,11 @@
   {
     "java":"17",
     "profile":"platform-sirius-7.0.0,tests",
-    "tycho":"2.5.0",
+    "tycho":"2.5.0"
   },
   {
     "java":"17",
     "profile":"platform-capella-6.0.0,tests",
-    "tycho":"2.5.0",
+    "tycho":"2.5.0"
   }
 ]
