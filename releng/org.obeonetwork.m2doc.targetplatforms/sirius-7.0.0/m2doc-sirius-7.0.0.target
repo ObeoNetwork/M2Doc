@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
-<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="M2Doc Sirius 7.0.0 Target Platform" sequenceNumber="1648463817">
+<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
+<target name="M2Doc Sirius 7.0.0 Target Platform" sequenceNumber="1650620583">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
@@ -66,7 +66,7 @@
       <unit id="org.apache.batik.codec" version="1.14.0.v20210324-0332"/>
       <unit id="org.apache.batik.bridge" version="1.14.0.v20210324-0332"/>
       <unit id="org.apache.batik.script" version="1.14.0.v20210324-0332"/>
-      <repository id="Orbit-202203" location="https://download.eclipse.org/tools/orbit/downloads/drops/S20220215213605/repository/"/>
+      <repository id="Orbit-202203" location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220302172233/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
