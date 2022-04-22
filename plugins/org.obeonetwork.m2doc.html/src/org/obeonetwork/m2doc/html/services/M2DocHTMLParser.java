@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2021 Obeo. 
+ *  Copyright (c) 2019, 2022 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.html.services;
 
 import java.awt.Color;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MCell.Merge;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
@@ -527,10 +529,13 @@ public class M2DocHTMLParser extends Parser {
     private void insertTable(MList parent, Context context, Node node) {
         final MTable table = new MTableImpl();
         parent.add(table);
+        final Map<Integer, Integer> rowSpans = new HashMap<>();
+        final Map<Integer, List<MCell>> vMergeCopies = new HashMap<>();
         for (Node child : node.childNodes()) {
             if ("tr".equals(child.nodeName())) {
                 final MRow row = new MRowImpl();
                 table.getRows().add(row);
+                int currentColumn = 0;
                 for (Node rowChild : child.childNodes()) {
                     if ("th".equals(rowChild.nodeName()) || "td".equals(rowChild.nodeName())) {
                         final MList contents = new MListImpl();
@@ -543,12 +548,162 @@ public class M2DocHTMLParser extends Parser {
                         } else {
                             localContext = context;
                         }
-                        row.getCells().add(cell);
                         walkChildren(rowChild, localContext, contents);
+                        currentColumn = insertMergedCells(row, rowChild, cell, rowSpans, vMergeCopies, currentColumn);
                     }
+                }
+                currentColumn = row.getCells().size();
+                Integer remainingRowSpan = rowSpans.remove(currentColumn);
+                while (remainingRowSpan != null) {
+                    final List<MCell> toCopy = vMergeCopies.get(currentColumn);
+                    row.getCells().addAll(toCopy);
+                    final int newRemainingRowSpan = remainingRowSpan - 1;
+                    if (newRemainingRowSpan > 0) {
+                        rowSpans.put(currentColumn, newRemainingRowSpan);
+                    } else {
+                        vMergeCopies.remove(currentColumn);
+                    }
+                    currentColumn = row.getCells().size();
+                    remainingRowSpan = rowSpans.remove(currentColumn);
                 }
             }
         }
+    }
+
+    /**
+     * Inserts merged {@link MCell}.
+     * 
+     * @param row
+     *            the current {@link MRow}
+     * @param rowChild
+     *            the current row child (th or td)
+     * @param cell
+     *            the current {@link MCell}
+     * @param rowSpans
+     *            the {@link Map} from the starting column to the number of remaining cells to merge
+     * @param vMergeCopies
+     *            the {@link Map} from the starting column to the {@link List} of {@link MCell} to copy
+     * @param currentColumn
+     *            the current column
+     * @return the new current column
+     */
+    private int insertMergedCells(final MRow row, Node rowChild, final MCell cell, Map<Integer, Integer> rowSpans,
+            Map<Integer, List<MCell>> vMergeCopies, int currentColumn) {
+        int res = currentColumn;
+
+        final int rowSpan = getRowSpan(rowChild);
+        final boolean restartVMerge;
+        if (rowSpan > -1) {
+            cell.setVMerge(Merge.RESTART);
+            restartVMerge = true;
+            if (rowSpan == 0) {
+                rowSpans.put(currentColumn, Integer.MAX_VALUE);
+            } else {
+                rowSpans.put(currentColumn, rowSpan - 1);
+            }
+        } else {
+            restartVMerge = false;
+            final Integer remainingRowSpan = rowSpans.remove(currentColumn);
+            if (remainingRowSpan != null) {
+                final List<MCell> toCopy = vMergeCopies.get(currentColumn);
+                row.getCells().addAll(toCopy);
+                res += toCopy.size();
+                final int newRemainingRowSpan = remainingRowSpan - 1;
+                if (newRemainingRowSpan > 0) {
+                    rowSpans.put(currentColumn, newRemainingRowSpan);
+                } else {
+                    vMergeCopies.remove(currentColumn);
+                }
+            }
+        }
+
+        row.getCells().add(cell);
+        res++;
+
+        final int colSpan = getColSpan(rowChild);
+        final boolean restartHMerge;
+        if (colSpan > 1) {
+            cell.setHMerge(Merge.RESTART);
+            restartHMerge = true;
+            for (int i = 1; i < colSpan; i++) {
+                final MList hMergedContents = new MListImpl();
+                final MCell hMergedCell = new MCellImpl(hMergedContents, null);
+                hMergedCell.setHMerge(Merge.CONTINUE);
+                hMergedCell.setVMerge(cell.getVMerge());
+                row.getCells().add(hMergedCell);
+                res++;
+            }
+        } else {
+            restartHMerge = false;
+        }
+
+        if (restartVMerge) {
+            final List<MCell> vMergeCopy = new ArrayList<>();
+            final MList vMergedContents = new MListImpl();
+            final MCell vMergedCell = new MCellImpl(vMergedContents, null);
+            vMergedCell.setVMerge(Merge.CONTINUE);
+            if (restartHMerge) {
+                vMergedCell.setHMerge(Merge.RESTART);
+            }
+            vMergeCopy.add(vMergedCell);
+
+            for (int i = 0; i < res - currentColumn - 1; i++) {
+                final MList hMergedContents = new MListImpl();
+                final MCell hMergedCell = new MCellImpl(hMergedContents, null);
+                hMergedCell.setVMerge(Merge.CONTINUE);
+                hMergedCell.setHMerge(Merge.CONTINUE);
+                vMergeCopy.add(hMergedCell);
+            }
+            vMergeCopies.put(currentColumn, vMergeCopy);
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the colspan attribute of the given {@link Node}.
+     * 
+     * @param node
+     *            the {@link Node}
+     * @return the colspan attribute of the given {@link Node} if any, <code>-1</code> otherwise
+     */
+    private int getColSpan(Node node) {
+        int res;
+
+        if (node.hasAttr("colspan")) {
+            try {
+                res = Integer.valueOf(node.attr("colspan"));
+            } catch (NumberFormatException e) {
+                res = -1;
+            }
+        } else {
+            res = -1;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the rowspan attribute of the given {@link Node}.
+     * 
+     * @param node
+     *            the {@link Node}
+     * @return the rowspan attribute of the given {@link Node} if any, <code>-1</code> otherwise
+     */
+    private int getRowSpan(Node node) {
+        int res;
+
+        if (node.hasAttr("rowspan")) {
+            try {
+                res = Integer.valueOf(node.attr("rowspan"));
+            } catch (NumberFormatException e) {
+                res = -1;
+            }
+        } else {
+            res = -1;
+        }
+
+        return res;
     }
 
     /**
