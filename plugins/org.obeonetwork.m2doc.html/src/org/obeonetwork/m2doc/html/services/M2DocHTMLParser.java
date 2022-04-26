@@ -552,21 +552,37 @@ public class M2DocHTMLParser extends Parser {
                         currentColumn = insertMergedCells(row, rowChild, cell, rowSpans, vMergeCopies, currentColumn);
                     }
                 }
-                currentColumn = row.getCells().size();
-                Integer remainingRowSpan = rowSpans.remove(currentColumn);
-                while (remainingRowSpan != null) {
-                    final List<MCell> toCopy = vMergeCopies.get(currentColumn);
-                    row.getCells().addAll(toCopy);
-                    final int newRemainingRowSpan = remainingRowSpan - 1;
-                    if (newRemainingRowSpan > 0) {
-                        rowSpans.put(currentColumn, newRemainingRowSpan);
-                    } else {
-                        vMergeCopies.remove(currentColumn);
-                    }
-                    currentColumn = row.getCells().size();
-                    remainingRowSpan = rowSpans.remove(currentColumn);
-                }
+                insertRowspans(row, rowSpans, vMergeCopies);
             }
+        }
+    }
+
+    /**
+     * Inserts the {@link MCell} corresponding to rowspans in the given {@link MRow}.
+     * 
+     * @param row
+     *            the {@link MRow}
+     * @param rowSpans
+     *            the {@link Map} from the starting column to the number of remaining cells to merge
+     * @param vMergeCopies
+     *            the {@link Map} from the starting column to the {@link List} of {@link MCell} to copy
+     */
+    private void insertRowspans(final MRow row, final Map<Integer, Integer> rowSpans,
+            final Map<Integer, List<MCell>> vMergeCopies) {
+        int currentColumn;
+        currentColumn = row.getCells().size();
+        Integer remainingRowSpan = rowSpans.remove(currentColumn);
+        while (remainingRowSpan != null) {
+            final List<MCell> toCopy = vMergeCopies.get(currentColumn);
+            row.getCells().addAll(toCopy);
+            final int newRemainingRowSpan = remainingRowSpan - 1;
+            if (newRemainingRowSpan > 0) {
+                rowSpans.put(currentColumn, newRemainingRowSpan);
+            } else {
+                vMergeCopies.remove(currentColumn);
+            }
+            currentColumn = row.getCells().size();
+            remainingRowSpan = rowSpans.remove(currentColumn);
         }
     }
 
@@ -603,18 +619,7 @@ public class M2DocHTMLParser extends Parser {
             }
         } else {
             restartVMerge = false;
-            final Integer remainingRowSpan = rowSpans.remove(currentColumn);
-            if (remainingRowSpan != null) {
-                final List<MCell> toCopy = vMergeCopies.get(currentColumn);
-                row.getCells().addAll(toCopy);
-                res += toCopy.size();
-                final int newRemainingRowSpan = remainingRowSpan - 1;
-                if (newRemainingRowSpan > 0) {
-                    rowSpans.put(currentColumn, newRemainingRowSpan);
-                } else {
-                    vMergeCopies.remove(currentColumn);
-                }
-            }
+            insertRowspans(row, rowSpans, vMergeCopies);
         }
 
         row.getCells().add(cell);
@@ -872,25 +877,25 @@ public class M2DocHTMLParser extends Parser {
         } else if ("small".equals(nodeName)) {
             setSmallFont(context);
             res = parent;
-        } else if ("tt".equals(nodeName) || "code".equals(nodeName) || "samp".equals(nodeName)
-            || "kbd".equals(nodeName)) {
-            context.style.setFontName(COURIER_NEW_FONT);
-            res = parent;
-        } else if ("h1".equals(nodeName)) {
-            res = createHeading(parent, context, element, H1_FONT_SIZE);
-        } else if ("h2".equals(nodeName)) {
-            res = createHeading(parent, context, element, H2_FONT_SIZE);
-        } else if ("h3".equals(nodeName)) {
-            res = createHeading(parent, context, element, H3_FONT_SIZE);
-        } else if ("h4".equals(nodeName)) {
-            res = createHeading(parent, context, element, H4_FONT_SIZE);
-        } else if ("h5".equals(nodeName)) {
-            res = createHeading(parent, context, element, H5_FONT_SIZE);
-        } else if ("h6".equals(nodeName)) {
-            res = createHeading(parent, context, element, H6_FONT_SIZE);
-        } else {
-            res = parent;
-        }
+        } else
+            if ("tt".equals(nodeName) || "code".equals(nodeName) || "samp".equals(nodeName) || "kbd".equals(nodeName)) {
+                context.style.setFontName(COURIER_NEW_FONT);
+                res = parent;
+            } else if ("h1".equals(nodeName)) {
+                res = createHeading(parent, context, element, H1_FONT_SIZE);
+            } else if ("h2".equals(nodeName)) {
+                res = createHeading(parent, context, element, H2_FONT_SIZE);
+            } else if ("h3".equals(nodeName)) {
+                res = createHeading(parent, context, element, H3_FONT_SIZE);
+            } else if ("h4".equals(nodeName)) {
+                res = createHeading(parent, context, element, H4_FONT_SIZE);
+            } else if ("h5".equals(nodeName)) {
+                res = createHeading(parent, context, element, H5_FONT_SIZE);
+            } else if ("h6".equals(nodeName)) {
+                res = createHeading(parent, context, element, H6_FONT_SIZE);
+            } else {
+                res = parent;
+            }
 
         if (!isNumbering) {
             context.numbering = null;
@@ -1063,19 +1068,19 @@ public class M2DocHTMLParser extends Parser {
             type = STNumberFormat.BULLET;
         } else if ("square".equals(typeAttr)
             || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "square")) {
-            symbol = SQUARE_SYMBOL;
-            type = STNumberFormat.BULLET;
-        } else if ("circle".equals(typeAttr)
-            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "circle")) {
-            symbol = CIRCLE_SYMBOL;
-            type = STNumberFormat.BULLET;
-        } else if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
-            symbol = DISC_SYMBOL;
-            type = STNumberFormat.BULLET;
-        } else {
-            symbol = "";
-            type = STNumberFormat.NONE;
-        }
+                symbol = SQUARE_SYMBOL;
+                type = STNumberFormat.BULLET;
+            } else if ("circle".equals(typeAttr)
+                || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "circle")) {
+                    symbol = CIRCLE_SYMBOL;
+                    type = STNumberFormat.BULLET;
+                } else if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
+                    symbol = DISC_SYMBOL;
+                    type = STNumberFormat.BULLET;
+                } else {
+                    symbol = "";
+                    type = STNumberFormat.NONE;
+                }
 
         if (context.numbering == null) {
             createNumbering(context);
@@ -1104,21 +1109,22 @@ public class M2DocHTMLParser extends Parser {
             type = STNumberFormat.DECIMAL;
         } else if ("A".equals(typeStr)
             || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "upper-alpha")) {
-            type = STNumberFormat.UPPER_LETTER;
-        } else if ("a".equals(typeStr)
-            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-alpha")) {
-            type = STNumberFormat.LOWER_LETTER;
-        } else if ("I".equals(typeStr)
-            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "upper-roman")) {
-            type = STNumberFormat.UPPER_ROMAN;
-        } else if ("i".equals(typeStr)
-            || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-roman")) {
-            type = STNumberFormat.LOWER_ROMAN;
-        } else if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
-            type = STNumberFormat.DECIMAL;
-        } else {
-            type = STNumberFormat.NONE;
-        }
+                type = STNumberFormat.UPPER_LETTER;
+            } else if ("a".equals(typeStr)
+                || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-alpha")) {
+                    type = STNumberFormat.LOWER_LETTER;
+                } else if ("I".equals(typeStr)
+                    || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "upper-roman")) {
+                        type = STNumberFormat.UPPER_ROMAN;
+                    } else if ("i".equals(typeStr) || CSS_PARSER.hasCSS(context.cssProperties,
+                            M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-roman")) {
+                                type = STNumberFormat.LOWER_ROMAN;
+                            } else
+                        if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
+                            type = STNumberFormat.DECIMAL;
+                        } else {
+                            type = STNumberFormat.NONE;
+                        }
 
         final long start;
         if (element.hasAttr("start")) {
