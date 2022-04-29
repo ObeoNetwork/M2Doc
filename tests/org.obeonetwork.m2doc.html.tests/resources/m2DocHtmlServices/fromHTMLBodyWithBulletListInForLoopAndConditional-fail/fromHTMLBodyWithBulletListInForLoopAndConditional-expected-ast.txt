@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  
+  for i | Sequence{1, 2, 3} do
+    
+    if true then
+      [query: .fromHTMLBodyString('<p>Some paragraph</p>')]
+    endif
+    
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

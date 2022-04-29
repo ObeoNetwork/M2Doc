@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  
+  for i | Sequence{1, 2, 3} do
+    [query: .fromHTMLBodyString('<p>Some paragraph</p>')]
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
