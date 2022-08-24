@@ -2,7 +2,7 @@ target "M2Doc Capella 6.0.0 Target Platform"
 
 with source requirements
 
-//include "https://download.eclipse.org/capella/core/updates/stable/6.0.0-S20220321-094015/targets/capella.target-definition.targetplatform"
+//include "https://download.eclipse.org/capella/core/updates/stable/6.0.0-S20220817-190901/targets/capella.target-definition.targetplatform"
 
 location eclipse "https://download.eclipse.org/releases/2021-06" {
 	org.eclipse.sdk.feature.group lazy
@@ -57,7 +57,7 @@ location eclipse "https://download.eclipse.org/releases/2021-06" {
 	org.eclipse.pde.feature.group lazy
 }
 
-location sirius "https://download.eclipse.org/sirius/updates/stable/7.0.1-S20220314-093652/2021-06" {
+location sirius "https://download.eclipse.org/sirius/updates/milestones/7.0.2rc3/2021-06" {
 	org.eclipse.sirius.doc.feature.feature.group lazy
 	org.eclipse.sirius.doc.feature.source.feature.group lazy
 	org.eclipse.sirius.runtime.source.feature.group lazy
@@ -73,18 +73,19 @@ location sirius "https://download.eclipse.org/sirius/updates/stable/7.0.1-S20220
 location Orbit "https://download.eclipse.org/tools/orbit/downloads/drops/R20210602031627/repository" {
 	org.apache.batik.bridge.source lazy
 	org.apache.batik.script.source lazy
+	ch.qos.logback.slf4j lazy
 }
 
 location GMF-Notation-1.13.0 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202004160913" {
     org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
 }
 
-location GMF-Runtime-1.14.1 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202202190902/" {
+location GMF-Runtime-1.14.2 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202204130739" {
     org.eclipse.gmf.runtime.sdk.feature.group lazy
     org.eclipse.gmf.runtime.thirdparty.feature.group lazy
 }
 
-location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/6.0.0.S202203161338/" {
+location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/6.0.0.S202208171220/" {
 	org.polarsys.kitalpha.ad.runtime.feature.source.feature.group lazy
 	org.polarsys.kitalpha.cadence.feature.source.feature.group lazy
 	org.polarsys.kitalpha.common.feature.source.feature.group lazy
@@ -108,12 +109,12 @@ location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/upd
 	org.polarsys.kitalpha.transposer.feature.source.feature.group lazy
 }
 
-location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/6.0.0.S202203161338/" {
+location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/6.0.0.S202208171220/" {
 	org.polarsys.kitalpha.doc.feature.feature.group lazy
 	org.polarsys.kitalpha.emde.sdk.feature.source.feature.group lazy
 }
 
-location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.14.0-S20210917/emf-diffmerge-site/" {
+location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.14.0-S20220817/emf-diffmerge-site/" {
 	org.eclipse.emf.diffmerge.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.sirius.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.gmf.feature.source.feature.group lazy
@@ -121,7 +122,7 @@ location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.14.0-S2
 	org.eclipse.emf.diffmerge.egit.feature.source.feature.group lazy
 }
 
-location amalgam "https://download.eclipse.org/modeling/amalgam/updates/stable/1.13.0-S20210909/capella/" {
+location amalgam "https://download.eclipse.org/modeling/amalgam/updates/stable/1.13.0-S20220629/capella/" {
 	org.eclipse.amalgam.explorer.activity.source.feature.group lazy
 }
 
@@ -134,15 +135,15 @@ location Nattable "https://download.eclipse.org/nattable/releases/2.0.1/reposito
 	org.eclipse.nebula.widgets.nattable.extension.glazedlists.feature.feature.group lazy
 }
 
-location nebula "https://download.eclipse.org/nebula/releases/2.3.0/" {
+location nebula "http://download.eclipse.org/nebula/releases/2.3.0/" {
 	org.eclipse.nebula.widgets.richtext.feature.feature.group lazy
 }
 
-location eclipse-shared-license "https://download.eclipse.org/cbi/updates/license" {
+location eclipse-shared-license "http://download.eclipse.org/cbi/updates/license" {
 	org.eclipse.license.feature.group lazy
 }
 
-location site_Capella "https://download.eclipse.org/capella/core/updates/stable/6.0.0-S20220321-094015/org.polarsys.capella.rcp.site/" {
+location site_Capella "https://download.eclipse.org/capella/core/updates/stable/6.0.0-S20220817-190901/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.core.feature.feature.group lazy
 }
 
