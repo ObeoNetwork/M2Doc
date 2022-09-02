@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate(self)]
+  End of demonstration.
+  
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (pkg : EPackage)
+  [query: .someCustomService(pkg)]

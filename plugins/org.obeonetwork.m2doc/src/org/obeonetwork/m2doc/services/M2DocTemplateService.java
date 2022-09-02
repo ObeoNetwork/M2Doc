@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2022 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -31,7 +31,6 @@ import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
@@ -52,7 +51,7 @@ import org.obeonetwork.m2doc.template.Template;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @SuppressWarnings("restriction")
-public class M2DocTemplateService extends AbstractService implements IService {
+public class M2DocTemplateService extends AbstractService {
 
     /**
      * The maximum depth of a recursive call.
@@ -155,7 +154,8 @@ public class M2DocTemplateService extends AbstractService implements IService {
         for (Parameter parameter : template.getParameters()) {
             final AstResult type = parameter.getType();
             final IValidationResult validatationResult = aqlValidator.validate(null, type);
-            Set<IType> possibleTypes = validatationResult.getPossibleTypes(type.getAst());
+            Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(m2docEnv.getQueryEnvironment(),
+                    validatationResult.getPossibleTypes(type.getAst()));
             parameterTypes.add(possibleTypes.iterator().next());
         }
 

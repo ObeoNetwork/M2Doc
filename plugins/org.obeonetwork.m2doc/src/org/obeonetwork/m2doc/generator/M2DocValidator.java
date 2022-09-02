@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2022 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -107,23 +107,29 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     private Monitor progressMonitor;
 
     /**
+     * The {@link IReadOnlyQueryEnvironment}.
+     */
+    private IReadOnlyQueryEnvironment queryEnvironment;
+
+    /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
      * 
      * @param documentTemplate
      *            the {@link DocumentTemplate}
-     * @param queryEnvironment
+     * @param queryEnv
      *            the {@link IQueryEnvironment}
      * @param monitor
      *            the {@link Monitor}
      * @return the {@link ValidationMessageLevel}
      */
-    public ValidationMessageLevel validate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
+    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnv,
+            Monitor monitor) {
 
         progressMonitor = monitor;
         progressMonitor.beginTask("Validating " + documentTemplate.eResource().getURI(), TOTAL_VALIDATE_MONITOR_WORK);
         progressMonitor.subTask("Initialize engine");
 
+        this.queryEnvironment = queryEnv;
         aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
                 documentTemplate.getDocument());
@@ -228,7 +234,8 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                 template.getValidationMessages().add(new TemplateValidationMessage(parameterLevel,
                         String.format("duplicated parameter (%s).", parameter.getName()), run));
             }
-            Set<IType> possibleTypes = validationResult.getPossibleTypes(parameter.getType().getAst());
+            Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(queryEnvironment,
+                    validationResult.getPossibleTypes(parameter.getType().getAst()));
             parameters.put(parameter.getName(), possibleTypes);
         }
         stack.push(parameters);
