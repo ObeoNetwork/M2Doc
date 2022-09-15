@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ASCII"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" name="EcoreTools" version="11.0.0.201601261200">
+  <ownedViewpoints endUserDocumentation="&lt;html>&#xA;&lt;head>&#xA;&lt;/head>&#xA;&lt;body>&#xA;&lt;p>Provides graphical and tabular representation to design an Ecore model.&lt;/p>&#xA;&lt;br>&#xA;&lt;img src=&quot;/icons/full/wizban/entities.png&quot;/>&#xA;&lt;img src=&quot;/icons/full/wizban/classes.png&quot;/>&#xA;&lt;/body>&#xA;&lt;/html>&#xA;&#xA;&#xA;" name="TestEcore" modelFileExtension="ecore xcore ecorebin">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" documentation="&lt;html>&#xA;&lt;head>&#xA;&lt;/head>&#xA;&lt;body>&#xA;&lt;p>Provides a class diagram to represent EClasses, EDatatypes, EAttributes and their relationships.&lt;/p>&#xA;&lt;br>&#xA;&lt;img src=&quot;/icons/full/wizban/entities.png&quot;/>&#xA;&lt;/body>&#xA;&lt;/html>&#xA;&#xA;&#xA;" endUserDocumentation="A class diagram to represent EClasses, EDatatypes, EAttributes and their relationships." name="Entities" label="Entities in a Class Diagram" titleExpression="aql:self.name + ' class diagram'" domainClass="ecore.EPackage" enablePopupBars="true">
+      <metamodel href="http://www.eclipse.org/emf/2002/Ecore#/"/>
+      <metamodel href="http://www.eclipse.org/emf/2002/GenModel#/"/>
+      <defaultLayer name="Default">
+        <edgeMappings name="EReference" sourceMapping="//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EClass']/@subNodeMappings[name='EStructuralFeature']" targetMapping="//@ownedViewpoints[name='TestEcore']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EClass']" targetFinderExpression="feature:eType">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="SubEPAckage" semanticCandidatesExpression="feature:eSubpackages" domainClass="ecore.EPackage">
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="EClass" semanticCandidatesExpression="feature:eClassifiers" domainClass="ecore.EClass">
+          <subNodeMappings name="EStructuralFeature" semanticCandidatesExpression="feature:eStructuralFeatures" domainClass="ecore.EStructuralFeature">
+            <style xsi:type="style:BundledImageDescription" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+          </style>
+        </containerMappings>
+      </defaultLayer>
+    </ownedRepresentations>
+  </ownedViewpoints>
+</description:Group>

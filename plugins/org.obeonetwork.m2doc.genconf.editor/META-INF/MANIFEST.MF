@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.genconf.editor;singleton:=true
-Bundle-Version: 3.2.1.qualifier
+Bundle-Version: 3.2.2.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin$Implementation
 Bundle-Vendor: %providerName
