@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<toc label="M2Doc Services Documentation">
+<topic href="doc/m2doc_service_booleanservices.html" label="Services available for Booleans. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/booleanServices)."></topic>
+<topic href="doc/m2doc_service_imageservices.html" label="Services available for Images. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/imageServices)."></topic>
+<topic href="doc/m2doc_service_linkservices.html" label="Services available for links. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/linkServices)."></topic>
+<topic href="doc/m2doc_service_paginationservices.html" label="Services available for pagination. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/paginationServices)."></topic>
+<topic href="doc/m2doc_service_m2docsiriusservices.html" label="Services available for Sirius. You will have to set the "SiriusSession" option in the generation configuration. It must contains the .aird file URI. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices). In addition, you can force the refresh of all representation with option "SiriusForceRefresh" set to "true". Note this option might have an impact on memory usage, calls to services with the refresh parameter should be prefered."></topic>
+<topic href="doc/m2doc_service_excelservices.html" label="Services available for Excel. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/excelServices)."></topic>
+<topic href="doc/m2doc_service_m2dochtmlservices.html" label="Services available for HTML insertion."></topic>
+<topic href="doc/m2doc_service_promptservices.html" label="Services available for prompting user for values using the console."></topic>
+<topic href="doc/m2doc_service_swtpromptservices.html" label="Services available for prompting user for values using SWT for graphical user interface."></topic>
+<topic href="doc/m2doc_service_m2doceobjectservices.html" label="Services available for EObject."></topic>
+<topic href="doc/m2doc_service_m2docwikitextservices.html" label="Services available for WikiText insertion."></topic>
+<topic href="doc/m2doc_service_m2docgenservices.html" label="Services available for Capella extensions."></topic>
+<topic href="doc/m2doc_service_semanticbrowserservices.html" label="Services available for the Capella semantic browser."></topic>
+</toc>
