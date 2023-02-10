@@ -562,7 +562,7 @@ To simplify unit testing while developing M2Doc, a [JUnit](https://junit.org/jun
 
 ## Maven
 
-You can launch your generation using [Maven](https://maven.apache.org/) and [Tycho](https://eclipse.org/tycho/). An example is available [here](https://github.com/ObeoNetwork/M2Doc/tree/master/docs/generate-with-maven). You may probably need to have a look at the [pom.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/docs/generate-with-maven/myModelToDocx/pom.xml) file. To launch the build and the generation you can simply use the following command:
+You can launch your generation using [Maven](https://maven.apache.org/) and [Tycho](https://eclipse.org/tycho/). An example is available [here](https://github.com/ObeoNetwork/M2Doc/tree/master/releng/generate-with-maven). You may probably need to have a look at the [pom.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/releng/generate-with-maven/myModelToDocx/pom.xml) file. To launch the build and the generation you can simply use the following command:
 
 `mvn clean verify`
 
