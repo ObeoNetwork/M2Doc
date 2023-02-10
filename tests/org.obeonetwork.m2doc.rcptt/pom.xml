@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (C) 2017, 2021 Obeo
+   Copyright (C) 2017, 2023 Obeo
 
    All rights reserved. This program and the accompanying materials
    are made available under the terms of the Eclipse Public License v2.0
@@ -32,7 +32,7 @@
   </pluginRepositories> 
 
   <properties>
-    <rcptt-maven-version>2.5.1</rcptt-maven-version>
+    <rcptt-maven-version>2.5.4</rcptt-maven-version>
   </properties> 
   <build>
     <plugins>
@@ -46,9 +46,7 @@
             <version>${rcptt-maven-version}</version>
           </runner>
           <aut>
-            <groupId>org.obeonetwork.m2doc</groupId>
-            <artifactId>org.obeonetwork.m2doc.rcpttproduct</artifactId>
-            <version>3.2.2-SNAPSHOT</version>
+            <explicit>${project.basedir}/../../releng/org.obeonetwork.m2doc.rcpttproduct/target/products/M2Doc-linux.gtk.x86_64.tar.gz</explicit>
             <injections>
               <injection>
                 <site>${eclipse-rcptt-inject-site}</site>

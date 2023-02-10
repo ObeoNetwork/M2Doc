@@ -21,9 +21,10 @@ Visit https://github.com/ObeoNetwork/M2Doc
       <programArgs>--launcher.XXMaxPermSize
 256m
       </programArgs>
-      <vmArgs>-Xms256m
--Xmx1024m
--XX:MaxPermSize=256m
+      <vmArgs>--illegal-access=permit
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-modules=ALL-SYSTEM
+-Djava.security.manager=allow
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
@@ -127,25 +128,24 @@ Exhibit A – Form of Secondary Licenses Notice
     <features>
       <feature id="org.obeonetwork.m2doc.feature"/>
       <feature id="org.obeonetwork.m2doc.cdo.feature"/>
-      <feature id="org.eclipse.equinox.core.feature"/>
-      <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.obeonetwork.m2doc.sirius.feature"/>
       <feature id="org.obeonetwork.m2doc.ui.feature"/>
       <feature id="org.obeonetwork.m2doc.ui.jdt.feature"/>
-      <feature id="org.eclipse.pde"/>
       <feature id="org.obeonetwork.m2doc.rcptt.feature"/>
+      <feature id="org.eclipse.equinox.core.feature"/>
+      <feature id="org.eclipse.equinox.executable"/>
+      <feature id="org.eclipse.pde"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.epp.mpc"/>
+      <feature id="org.eclipse.rcptt.platform"/>
    </features>
-   
+
    <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
       <property name="osgi.instance.area.default" value="@user.home/m2docws" os="macosx" />
    </configurations>
 

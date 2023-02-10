@@ -1,23 +1,5 @@
 [
   {
-    "java":"8",
-    "profile":"platform-oxygen,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"8",
-    "profile":"platform-photon,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"8",
-    "profile":"platform-sirius-5.1.1,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
     "java":"11",
     "profile":"platform-2018-12,tests",
     "tycho":"1.7.0",
@@ -30,25 +12,19 @@
     "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
   },
   {
-    "java":"11",
-    "profile":"platform-2020-03,tests,updatesites",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"17",
-    "profile":"platform-2020-06,tests",
-    "tycho":"2.5.0"
-  },
-  {
-    "java":"17",
-    "profile":"platform-2020-09,tests",
-    "tycho":"2.5.0"
-  },
-  {
     "java":"17",
     "profile":"platform-2020-12,tests",
     "tycho":"2.5.0"
+  },
+  {
+    "java":"17",
+    "profile":"platform-2021-12,tests",
+    "tycho":"2.5.0"
+  },
+  {
+    "java":"17",
+    "profile":"platform-2022-12,tests,updatesites",
+    "tycho":"3.0.1"
   },
   {
     "java":"11",
@@ -70,19 +46,7 @@
   },
   {
     "java":"11",
-    "profile":"platform-sirius-6.4.0,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
     "profile":"platform-sirius-6.4.1,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
-    "profile":"platform-sirius-6.5.0,tests",
     "tycho":"1.7.0",
     "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
   },

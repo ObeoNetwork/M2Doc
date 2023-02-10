@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2016, 2021 Obeo. 
+    Copyright (c) 2016, 2023 Obeo. 
        All rights reserved. This program and the accompanying materials
        are made available under the terms of the Eclipse Public License v2.0
        which accompanies this distribution, and is a  vailable at
@@ -21,6 +21,7 @@
 
   <modules>
     <!-- Eclipse -->
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2022-12</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2021-12</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2021-09</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2021-06</module>
@@ -93,6 +94,7 @@
     <tycho-extras-version>${tycho}</tycho-extras-version>
     <resource-encoding>UTF-8</resource-encoding>
     <maven-resources-version>2.6</maven-resources-version>
+    <maven-enforcer-version>3.0.0-M3</maven-enforcer-version>
     <tycho.scmUrl>scm:git:git://github.com/ObeoNetwork/M2Doc.git</tycho.scmUrl>
   </properties>
   <scm>
@@ -100,9 +102,11 @@
   </scm>
 
   <build>
+    <!-- This is for checkstyle and PMD -->
+    <sourceDirectory>src</sourceDirectory>
+
     <plugins>
       <plugin>
-        <!-- enable tycho build extension -->
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho-version}</version>
@@ -110,12 +114,28 @@
       </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-compiler-plugin</artifactId>
+        <artifactId>target-platform-configuration</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <encoding>UTF-8</encoding>
-          <source>1.8</source>
-          <target>1.8</target>
+          <includePackedArtifacts>true</includePackedArtifacts>
+          <resolver>p2</resolver>
+          <environments>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
         </configuration>
       </plugin>
       <!-- enable source bundle generation -->
@@ -123,24 +143,6 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
         <version>${tycho-version}</version>
-        <configuration>
-          <archive>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>plugin-source</id>
-            <goals>
-              <goal>plugin-source</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
-        <version>${tycho-extras-version}</version>
         <configuration>
           <archive>
             <addMavenDescriptor>false</addMavenDescriptor>
@@ -169,10 +171,15 @@
         </configuration>
         <executions>
           <execution>
-            <id>source-feature</id>
-            <phase>package</phase>
+            <id>plugin-source</id>
             <goals>
-              <goal>source-feature</goal>
+              <goal>plugin-source</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>feature-source</id>
+            <goals>
+              <goal>feature-source</goal>
             </goals>
           </execution>
         </executions>
@@ -197,7 +204,46 @@
           </dependency>
         </dependencies>
       </plugin>
-    <plugin>
+      <!-- Make sure the p2 metadata isn't attached before the source-feature execution -->
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-p2-metadata-default</id>
+            <configuration>
+              <attachP2Metadata>false</attachP2Metadata>
+            </configuration>
+          </execution>
+          <execution>
+            <id>attach-p2-metadata</id>
+            <phase>package</phase>
+            <goals>
+              <goal>p2-metadata</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- fail the build if specified profile does not exist -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven-enforcer-version}</version>
+        <executions>
+          <execution>
+            <id>enforce</id>
+            <configuration>
+              <rules>
+                <requireProfileIdsExist/>
+              </rules>
+            </configuration>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
@@ -205,66 +251,41 @@
           <includes>
             <include>**/*Test*.java</include>
           </includes>
-       </configuration>
-    </plugin>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-checkstyle-plugin</artifactId>
-      <version>3.0.0</version>
-      <executions>
-        <execution>
-          <id>validate</id>
-          <phase>validate</phase>
-          <configuration>
-          <configLocation>./features/org.obeonetwork.m2doc.feature/codestyle/m2docCheckstyleConfiguration.xml</configLocation>
-          <suppressionsLocation>./features/org.obeonetwork.m2doc.feature/codestyle/m2docCheckstyleSuppressions.xml</suppressionsLocation>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <failsOnError>true</failsOnError>
-          <linkXRef>false</linkXRef>
-          <excludes>**/tests/**/*,**/example/mydsl/**/*</excludes>
-          </configuration>
-          <goals>
-            <goal>check</goal>
-          </goals>
-        </execution>
-      </executions>
-      <dependencies>
-        <dependency>
-          <groupId>com.puppycrawl.tools</groupId>
-          <artifactId>checkstyle</artifactId>
-          <version>8.0</version>
-        </dependency>
-      </dependencies>
-    </plugin>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.0.0</version>
+          <executions>
+            <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <configuration>
+            <configLocation>./features/org.obeonetwork.m2doc.feature/codestyle/m2docCheckstyleConfiguration.xml</configLocation>
+            <suppressionsLocation>./features/org.obeonetwork.m2doc.feature/codestyle/m2docCheckstyleSuppressions.xml</suppressionsLocation>
+            <encoding>UTF-8</encoding>
+            <consoleOutput>true</consoleOutput>
+            <failsOnError>true</failsOnError>
+            <linkXRef>false</linkXRef>
+            <excludes>**/tests/**/*,**/example/mydsl/**/*</excludes>
+            </configuration>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>target-platform-configuration</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <resolver>p2</resolver>
-            <environments>
-              <environment>
-                <os>win32</os>
-                <ws>win32</ws>
-                <arch>x86_64</arch>
-              </environment>
-              <environment>
-                <os>linux</os>
-                <ws>gtk</ws>
-                <arch>x86_64</arch>
-              </environment>
-              <environment>
-                <os>macosx</os>
-                <ws>cocoa</ws>
-                <arch>x86_64</arch>
-              </environment>
-            </environments>
-          </configuration>
-        </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-compiler-plugin</artifactId>
@@ -274,6 +295,11 @@
             <source>1.8</source>
             <target>1.8</target>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-p2-plugin</artifactId>
+          <version>${tycho-version}</version>
         </plugin>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -335,23 +361,6 @@
             </execution>
           </executions>
         </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-p2-plugin</artifactId>
-          <version>${tycho-extras-version}</version>
-          <executions>
-            <execution>
-              <id>p2-metadata</id>
-              <goals>
-                <goal>p2-metadata</goal>
-              </goals>
-              <phase>package</phase>
-            </execution>
-          </executions>
-          <configuration>
-            <defaultP2Metadata>false</defaultP2Metadata>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -393,6 +402,36 @@
     </profile>
 
     <!-- Eclipse -->
+    <profile>
+      <id>platform-2022-12</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2022-12</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2022-12</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2022-12</artifactId>
+                  <version>3.2.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-2021-12</id>
       <activation>
