@@ -35,7 +35,7 @@
 		<link>
 			<name>doc</name>
 			<type>2</type>
-			<location>/home/development/git/M2Doc/docs/doc</location>
+			<locationURI>PARENT-3-PARENT_LOC/M2Doc-gh-pages/ref-doc/nightly</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
