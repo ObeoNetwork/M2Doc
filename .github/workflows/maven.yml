@@ -21,7 +21,7 @@ jobs:
     - id: set-matrix
       run: |
         matrix=$(jq . .github/workflows/matrix_includes.json)
-        echo name=matrix::{\"include\":$(echo $matrix)} >> $GITHUB_OUTPUT
+        echo name=matrix::{\"include\":$(echo $matrix)}\" >> $GITHUB_OUTPUT
 
   build:
     needs: matrix_prep
