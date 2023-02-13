@@ -9,7 +9,7 @@ jobs:
 
   matrix_prep:
     # Using a separate job and agent so as to be able to use tools like 'sed' and 'jq'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # Defining outputs of a job allows for easier consumption and use
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -21,7 +21,7 @@ jobs:
     - id: set-matrix
       run: |
         matrix=$(jq . .github/workflows/matrix_includes.json)
-        echo ::set-output name=matrix::{\"include\":$(echo $matrix)}\"
+        echo "matrix={\"include\":$(echo $matrix)}\"" >> $GITHUB_OUTPUT
 
   build:
     needs: matrix_prep
@@ -48,15 +48,16 @@ jobs:
         PROFILE: ${{ matrix.profile }}
       run: |
         if [[ "$PROFILE" == *"updatesites"* ]]; then export UPDATE_SITES=true; fi
-        echo ::set-output name=UPDATE_SITES::${UPDATE_SITES}
+        echo "UPDATE_SITES=${UPDATE_SITES}" >> $GITHUB_OUTPUT
 
     - name: Check out code
       uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v3
       with:
+        distribution: 'adopt'
         java-version: ${{ matrix.java }}
-    - uses: actions/cache@v1
+    - uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '**/*.product') }}
@@ -72,6 +73,7 @@ jobs:
     - name: Create directory for website (documentation)
       run: |
         mkdir plugins/org.obeonetwork.m2doc.doc/doc
+
     - name: Build website (documentation)
       if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
       run: |
@@ -101,7 +103,7 @@ jobs:
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         chmod a+x ./scripts/prepare-deploy-local-dir.sh
         ./scripts/prepare-deploy-local-dir.sh $GITHUB_WORKSPACE/$TAG_OR_BRANCH
-        echo ::set-output name=TAG_OR_BRANCH::${TAG_OR_BRANCH}
+        echo "TAG_OR_BRANCH=${TAG_OR_BRANCH}" >> $GITHUB_OUTPUT
 
     - name: Deploy to S3
       if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && github.ref == 'refs/heads/master' }}
