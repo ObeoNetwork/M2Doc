@@ -21,7 +21,7 @@ jobs:
     - id: set-matrix
       run: |
         matrix=$(jq . .github/workflows/matrix_includes.json)
-        echo name=matrix::{\"include\":$(echo $matrix)}\" >> $GITHUB_OUTPUT
+        echo ::set-output name=matrix::{\"include\":$(echo $matrix)}\"
 
   build:
     needs: matrix_prep
@@ -48,7 +48,7 @@ jobs:
         PROFILE: ${{ matrix.profile }}
       run: |
         if [[ "$PROFILE" == *"updatesites"* ]]; then export UPDATE_SITES=true; fi
-        echo name=UPDATE_SITES::${UPDATE_SITES} >> $GITHUB_OUTPUT
+        echo ::set-output name=UPDATE_SITES::${UPDATE_SITES}
 
     - name: Check out code
       uses: actions/checkout@v3
@@ -101,7 +101,7 @@ jobs:
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         chmod a+x ./scripts/prepare-deploy-local-dir.sh
         ./scripts/prepare-deploy-local-dir.sh $GITHUB_WORKSPACE/$TAG_OR_BRANCH
-        echo name=TAG_OR_BRANCH::${TAG_OR_BRANCH} >> $GITHUB_OUTPUT
+        echo ::set-output name=TAG_OR_BRANCH::${TAG_OR_BRANCH}
 
     - name: Deploy to S3
       if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && github.ref == 'refs/heads/master' }}
