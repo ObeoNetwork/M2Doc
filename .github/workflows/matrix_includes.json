@@ -1,69 +1,22 @@
 [
   {
-    "java":"11",
-    "profile":"platform-2018-12,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
-    "profile":"platform-2019-12,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"17",
-    "profile":"platform-2020-12,tests",
-    "tycho":"2.5.0"
-  },
-  {
-    "java":"17",
-    "profile":"platform-2021-12,tests",
-    "tycho":"2.5.0"
-  },
-  {
     "java":"17",
     "profile":"platform-2022-12,tests,updatesites",
     "tycho":"3.0.1"
   },
   {
-    "java":"11",
-    "profile":"platform-sirius-6.1.3,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
-    "profile":"platform-sirius-6.2.2,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
-    "profile":"platform-sirius-6.3.5,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
-    "profile":"platform-sirius-6.4.1,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
-  },
-  {
-    "java":"11",
-    "profile":"platform-sirius-6.5.1,tests",
-    "tycho":"1.7.0",
-    "mavenOpt":"-XX:MaxPermSize=512m -Xmx2048m -Xms1024m"
+    "java":"17",
+    "profile":"platform-2021-12,tests",
+    "tycho":"3.0.1"
   },
   {
     "java":"17",
     "profile":"platform-sirius-7.0.0,tests",
-    "tycho":"2.5.0"
+    "tycho":"3.0.1"
   },
   {
     "java":"17",
     "profile":"platform-capella-6.0.0,tests",
-    "tycho":"2.5.0"
+    "tycho":"3.0.1"
   }
 ]
