@@ -185,11 +185,11 @@ becomes:
 
 * In-Flight Entertainment System.team.aird
 
-Secondly you will need to set the value of your model variables since the model has been moved to the Team for Capella server. By default the first element matching the declared type of the variable will be selected, but you can edit the value by selecting the variable and using the edit button:
+Secondly you will need to set the value of your model variables since the model has been moved to the Team server. By default the first element matching the declared type of the variable will be selected, but you can edit the value by selecting the variable and using the edit button:
 
 ![Edit Variable.]({{page.relativePath}}/capella/images/Edit%20Variable.png "Edit Variable.")
 
-You will see your Capella model to select the value from:
+You will see your model to select the value from:
 
 ![Select Variable Value.]({{page.relativePath}}/capella/images/Select%20Variable%20Value.png "Select Variable Value.")
 
