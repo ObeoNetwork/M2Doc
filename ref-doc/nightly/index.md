@@ -165,7 +165,34 @@ The next page of the wizard is dedicated to variables and binding values to them
 
 To reference new values you can load new resources using the `Load resource` button. Note the `Options (expert)` tab that allow to set advanced options to find values from a Sirius session for instance.
 
+If you are using M2Doc with [Sirius](https://www.eclipse.org/sirius/), [Obeo Designer](https://www.obeodesigner.com/en/), [Obeo Designer Team](https://www.obeodesigner.com/en/collaborative-features), [Capella](https://www.eclipse.org/capella/), or [Team for Capella](https://www.obeo.fr/en/capella-professional-offer), you need to set the SiriusSession option. This will allow you to use [Sirius services](index.html#services) like exporting diagrams as images:
+
+![SiriusSession Option.]({{page.relativePath}}/capella/images/SiriusSession%20Option.png "SiriusSession Option.")
+
+Setting this option should allow you to select model elements for each model variable you have in your template. By default the first element matching the declared type of the variable will be selected, but you can edit the value by selecting the variable and using the edit button:
+
+![Edit Variable.]({{page.relativePath}}/capella/images/Edit%20Variable.png "Edit Variable.")
+
 When the `Finish` button is pushed the generation configuration file is created or edited.
+
+You can also use M2Doc with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer) or [Obeo Designer Team](https://www.obeodesigner.com/en/collaborative-features). If you had existing .genconf files before you shared your project to Team for Capella or Obeo Designer Team, you will need to edit them.
+
+First you need to change the SiriusSession since the .aird file has been renamed. You should need to add "team" like this:
+
+* In-Flight Entertainment System.aird
+
+becomes:
+
+* In-Flight Entertainment System.team.aird
+
+Secondly you will need to set the value of your model variables since the model has been moved to the Team for Capella server. By default the first element matching the declared type of the variable will be selected, but you can edit the value by selecting the variable and using the edit button:
+
+![Edit Variable.]({{page.relativePath}}/capella/images/Edit%20Variable.png "Edit Variable.")
+
+You will see your Capella model to select the value from:
+
+![Select Variable Value.]({{page.relativePath}}/capella/images/Select%20Variable%20Value.png "Select Variable Value.")
+
 
 ## Template authoring
 

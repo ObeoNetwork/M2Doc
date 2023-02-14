@@ -99,15 +99,55 @@ Click the next button.
 
 Click the finish button and you should see the following project in your workspace.
 
-![The IFE project content.]({{page.relativePath}}/capella/images/IFE Project.png "The IFE project content.")
+![The IFE project content.]({{page.relativePath}}/capella/images/IFE%20Project.png "The IFE project content.")
+
+# Creating a generation configuration
+
+After experimenting with the provided [IFE example](index.html#deploying-the-in-flight-entertainment-system-ife-example) you can create your own templates for you project. One way can be to start from the provided template an edit them. You can check the main documentation on [template authoring]({{page.relativePath}}/ref-doc/nightly/index.html#template-authoring).
+
+Once you have your template you will need to initialize the document genereation. You can check the [Initializing a generation configuration]({{page.relativePath}}/ref-doc/nightly/index.html#initializing-a-generation-configuration).
+
+You need to make sure the SiriusSession option is defined and is referencing your .aird file. This is needed to use [Sirius services]({{page.relativePath}}/ref-doc/nightly/index.html#services) like exporting diagrams as images:
+
+![SiriusSession Option.]({{page.relativePath}}/capella/images/SiriusSession%20Option.png "SiriusSession Option.")
+
+Setting this option should allow you to select model elements for each model variable you have in your template. By default the first element matching the declared type of the variable will be selected, but you can edit the value by selecting the variable and using the edit button:
+
+![Edit Variable.]({{page.relativePath}}/capella/images/Edit%20Variable.png "Edit Variable.")
+
+You will see your Capella model to select the value from:
+
+![Select Variable Value.]({{page.relativePath}}/capella/images/Select%20Variable%20Value.png "Select Variable Value.")
+
+The validation button will only be enable if the selected value is compatible with the variable declared type.
+
+# Team for Capella
+
+You can also use M2Doc with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer). If you had existing .genconf files before you shared your project to Team for Capella, you will need to edit them.
+
+First you need to change the SiriusSession since the .aird file has been renamed. You should need to add "team" like this:
+
+* In-Flight Entertainment System.aird
+
+becomes:
+
+* In-Flight Entertainment System.team.aird
+
+Secondly you will need to set the value of your model variables since the model has been moved to the Team for Capella server. By default the first element matching the declared type of the variable will be selected, but you can edit the value by selecting the variable and using the edit button:
+
+![Edit Variable.]({{page.relativePath}}/capella/images/Edit%20Variable.png "Edit Variable.")
+
+You will see your Capella model to select the value from:
+
+![Select Variable Value.]({{page.relativePath}}/capella/images/Select%20Variable%20Value.png "Select Variable Value.")
 
 # Templates
 
-You can run templates by using the corresponding .genconf file at the root of the project, to do so use the .genconf file as shown [here](https://www.m2doc.org/ref-doc/1.0.0/index.html#launching-a-generation). Templates are located in the template sub folder of the project.
+You can run templates by using the corresponding .genconf file at the root of the project, to do so use the .genconf file as shown [here]({{page.relativePath}}/ref-doc/nightly/index.html#launching-a-generation). Templates are located in the template sub folder of the project.
 
-If you want to go further in template editing you should have a look at the [M2Doc documentation](https://www.m2doc.org/ref-doc/1.0.0/index.html).
+If you want to go further in template editing you should have a look at the [M2Doc documentation]({{page.relativePath}}/ref-doc/nightly/index.html).
 
-In the following you will find a description of each templates.
+In the following section you will find a description of each templates.
 
 ## LA Complete
 
