@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019 Obeo. 
+ *  Copyright (c) 2019, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.obeonetwork.m2doc.element.impl.MParagraphImpl;
 import org.obeonetwork.m2doc.element.impl.MStyleImpl;
 import org.obeonetwork.m2doc.element.impl.MTextImpl;
 import org.obeonetwork.m2doc.services.PaginationServices;
+import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDecimalNumber;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFonts;
@@ -49,7 +50,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumbering;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMultiLevelType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 
 /**
  * The {@link DocumentBuilder} that produce the {@link List} of {@link MElement}.
@@ -546,7 +546,9 @@ public class M2DocMElementBuilder extends DocumentBuilder {
                 final CTInd indentation = level.addNewPPr().addNewInd();
                 text.setVal("%" + (currentLevel + 1) + ".");
                 if (currentLevel > 0) {
-                    level.setTentative(STOnOff.X_1);
+                    final STOnOff onOff = STOnOff.Factory.newInstance();
+                    onOff.setStringValue("1");
+                    level.xsetTentative(onOff);
                 }
                 if (type == STNumberFormat.UPPER_ROMAN) {
                     level.addNewLvlJc().setVal(STJc.RIGHT);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2022 Obeo. 
+ *  Copyright (c) 2019, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -38,7 +38,6 @@ import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
-import org.obeonetwork.m2doc.element.MTable.MCell.Merge;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
@@ -51,6 +50,7 @@ import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MRowImpl;
 import org.obeonetwork.m2doc.element.impl.MTextImpl;
 import org.obeonetwork.m2doc.services.PaginationServices;
+import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDecimalNumber;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFonts;
@@ -64,7 +64,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMultiLevelType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat.Enum;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 
 /**
  * Parse HTML to {@link MElement}.
@@ -610,7 +609,7 @@ public class M2DocHTMLParser extends Parser {
         final int rowSpan = getRowSpan(rowChild);
         final boolean restartVMerge;
         if (rowSpan > -1) {
-            cell.setVMerge(Merge.RESTART);
+            cell.setVMerge(MCell.Merge.RESTART);
             restartVMerge = true;
             if (rowSpan == 0) {
                 rowSpans.put(currentColumn, Integer.MAX_VALUE);
@@ -628,12 +627,12 @@ public class M2DocHTMLParser extends Parser {
         final int colSpan = getColSpan(rowChild);
         final boolean restartHMerge;
         if (colSpan > 1) {
-            cell.setHMerge(Merge.RESTART);
+            cell.setHMerge(MCell.Merge.RESTART);
             restartHMerge = true;
             for (int i = 1; i < colSpan; i++) {
                 final MList hMergedContents = new MListImpl();
                 final MCell hMergedCell = new MCellImpl(hMergedContents, null);
-                hMergedCell.setHMerge(Merge.CONTINUE);
+                hMergedCell.setHMerge(MCell.Merge.CONTINUE);
                 hMergedCell.setVMerge(cell.getVMerge());
                 row.getCells().add(hMergedCell);
                 res++;
@@ -646,17 +645,17 @@ public class M2DocHTMLParser extends Parser {
             final List<MCell> vMergeCopy = new ArrayList<>();
             final MList vMergedContents = new MListImpl();
             final MCell vMergedCell = new MCellImpl(vMergedContents, null);
-            vMergedCell.setVMerge(Merge.CONTINUE);
+            vMergedCell.setVMerge(MCell.Merge.CONTINUE);
             if (restartHMerge) {
-                vMergedCell.setHMerge(Merge.RESTART);
+                vMergedCell.setHMerge(MCell.Merge.RESTART);
             }
             vMergeCopy.add(vMergedCell);
 
             for (int i = 0; i < res - currentColumn - 1; i++) {
                 final MList hMergedContents = new MListImpl();
                 final MCell hMergedCell = new MCellImpl(hMergedContents, null);
-                hMergedCell.setVMerge(Merge.CONTINUE);
-                hMergedCell.setHMerge(Merge.CONTINUE);
+                hMergedCell.setVMerge(MCell.Merge.CONTINUE);
+                hMergedCell.setHMerge(MCell.Merge.CONTINUE);
                 vMergeCopy.add(hMergedCell);
             }
             vMergeCopies.put(currentColumn, vMergeCopy);
@@ -1210,7 +1209,9 @@ public class M2DocHTMLParser extends Parser {
                     text.setVal("%" + (context.numberingLevel + 1) + ".");
                 }
                 if (context.numberingLevel > 0) {
-                    level.setTentative(STOnOff.X_1);
+                    final STOnOff onOff = STOnOff.Factory.newInstance();
+                    onOff.setStringValue("1");
+                    level.xsetTentative(onOff);
                 }
                 if (type == STNumberFormat.UPPER_ROMAN) {
                     level.addNewLvlJc().setVal(STJc.RIGHT);

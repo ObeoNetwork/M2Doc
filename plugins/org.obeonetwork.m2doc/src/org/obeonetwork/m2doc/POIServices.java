@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -38,7 +38,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 
 /**
  * POI services.
@@ -184,23 +183,35 @@ public final class POIServices {
             final CTP ctp = paragraph.getCTP();
             if (ctp != null) {
                 for (CTSimpleField field : ctp.getFldSimpleList()) {
-                    field.setDirty(STOnOff.TRUE);
+                    final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
+                            .newInstance();
+                    onOff.setStringValue("true");
+                    field.setDirty(onOff);
                 }
             }
             for (XWPFRun run : paragraph.getRuns()) {
                 final CTR ctr = run.getCTR();
                 if (ctr != null) {
                     for (CTFldChar field : ctr.getFldCharList()) {
-                        field.setDirty(STOnOff.TRUE);
+                        final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
+                                .newInstance();
+                        onOff.setStringValue("true");
+                        field.setDirty(onOff);
                     }
                     if (run instanceof XWPFHyperlinkRun) {
                         final CTHyperlink ctHyperlink = ((XWPFHyperlinkRun) run).getCTHyperlink();
                         for (CTSimpleField field : ctHyperlink.getFldSimpleList()) {
-                            field.setDirty(STOnOff.TRUE);
+                            final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
+                                    .newInstance();
+                            onOff.setStringValue("true");
+                            field.setDirty(onOff);
                         }
                         for (CTR ctrHyperlink : ctHyperlink.getRList()) {
                             for (CTFldChar field : ctrHyperlink.getFldCharList()) {
-                                field.setDirty(STOnOff.TRUE);
+                                final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
+                                        .newInstance();
+                                onOff.setStringValue("true");
+                                field.setDirty(onOff);
                             }
                         }
                     }

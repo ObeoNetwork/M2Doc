@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -97,6 +97,7 @@ import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
@@ -121,7 +122,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
 
 /**
@@ -862,7 +862,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 CTP ctP = paragraph.getCTP();
                 CTSimpleField toc = ctP.addNewFldSimple();
                 toc.setInstr("TOC \\h");
-                toc.setDirty(STOnOff.TRUE);
+                final STOnOff onOff = STOnOff.Factory.newInstance();
+                onOff.setStringValue("true");
+                toc.xsetDirty(onOff);
                 res = paragraph;
                 break;
 
@@ -936,7 +938,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 newParagraph.getCTP().getPPr().addNewBidi();
             }
             final CTOnOff value = CTOnOff.Factory.newInstance();
-            value.setVal(STOnOff.Enum.forInt(4));
+            final STOnOff onOff = STOnOff.Factory.newInstance();
+            onOff.setStringValue("off");
+            value.xsetVal(onOff);
             newParagraph.getCTP().getPPr().setBidi(value);
         } else if (paragraph.getTextDirection() == Dir.RTL) {
             if (newParagraph.getCTP().getPPr() == null) {
@@ -946,7 +950,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 newParagraph.getCTP().getPPr().addNewBidi();
             }
             final CTOnOff value = CTOnOff.Factory.newInstance();
-            value.setVal(STOnOff.Enum.forInt(3));
+            final STOnOff onOff = STOnOff.Factory.newInstance();
+            onOff.setStringValue("on");
+            value.xsetVal(onOff);
             newParagraph.getCTP().getPPr().setBidi(value);
         }
 
@@ -976,7 +982,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 if (absNum != null) {
                     for (CTLvl lvl : absNum.getLvlList()) {
                         if (lvl.getIlvl().longValue() == numberingLevel.longValue()) {
-                            res = lvl.getPPr().getInd().getLeft().intValue();
+                            res = ((BigInteger) lvl.getPPr().getInd().getLeft()).intValue();
                         }
                     }
                 }
@@ -1383,15 +1389,18 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             } else {
                 ctrpr = run.getCTR().addNewRPr();
             }
-            final CTShd ctshd;
-            if (ctrpr.getShd() != null) {
-                ctshd = ctrpr.getShd();
+            final CTShd[] ctshd;
+            if (ctrpr.getShdArray() != null && ctrpr.getShdArray().length != 0) {
+                ctshd = ctrpr.getShdArray();
             } else {
-                ctshd = ctrpr.addNewShd();
+                ctrpr.addNewShd();
+                ctshd = ctrpr.getShdArray();
             }
-            ctshd.setVal(STShd.CLEAR);
-            ctshd.setColor("auto");
-            ctshd.setFill(hexColor(style.getBackgroundColor()));
+            for (int i = 0; i < ctshd.length; i++) {
+                ctshd[i].setVal(STShd.CLEAR);
+                ctshd[i].setColor("auto");
+                ctshd[i].setFill(hexColor(style.getBackgroundColor()));
+            }
         }
     }
 
@@ -1781,6 +1790,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         ctCell.getPList().clear();
         ctCell.getTblList().clear();
         ctCell.getSdtList().clear();
+        ctCell.getPList().clear();
         newCell.getCTTc().set(ctCell);
 
         final IBody savedGeneratedDocument = generatedDocument;
@@ -1796,7 +1806,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
 
         // prevent cell with no paragraph
-        if (newCell.getParagraphs().size() == 1) {
+        if (newCell.getParagraphs().size() == 0) {
+            final XWPFParagraph newParagraph = newCell.addParagraph();
+            newParagraph.createRun();
+        } else if (newCell.getParagraphs().size() == 1) {
             final XWPFParagraph firstParagraph = newCell.getParagraphs().get(0);
             if (firstParagraph.getRuns().isEmpty()) {
                 newCell.getCTTc().addNewP();

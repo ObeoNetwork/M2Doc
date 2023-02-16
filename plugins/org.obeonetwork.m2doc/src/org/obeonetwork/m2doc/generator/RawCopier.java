@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -550,15 +550,9 @@ public class RawCopier {
                 outputDoc.createStyles();
             }
 
-            try {
-                List<XWPFStyle> usedStyleList = inputDoc.getStyles().getUsedStyleList(style);
-                for (XWPFStyle xwpfStyle : usedStyleList) {
-                    outputDoc.getStyles().addStyle(xwpfStyle);
-                }
-            } catch (NullPointerException e) {
-                // there is a NPE in getUsedStyleList(). This NPE can be triggered with bug 387.
-                // the code is checking if an object is not null and then pass an other object...
-                // not copying styles in that case seems fine for now.
+            List<XWPFStyle> usedStyleList = inputDoc.getStyles().getUsedStyleList(style);
+            for (XWPFStyle xwpfStyle : usedStyleList) {
+                outputDoc.getStyles().addStyle(xwpfStyle);
             }
         }
     }

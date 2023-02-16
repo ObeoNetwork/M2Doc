@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2022 Obeo. 
+ *  Copyright (c) 2018, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -261,9 +261,9 @@ public class M2DocTemplateService extends AbstractService {
     private XWPFDocument deserializeDocument(byte[] document) throws IOException, InvalidFormatException {
         final XWPFDocument res;
 
-        try (InputStream is = new ByteArrayInputStream(document); OPCPackage oPackage = OPCPackage.open(is)) {
-            res = new XWPFDocument(oPackage);
-        }
+        final InputStream is = new ByteArrayInputStream(document);
+        final OPCPackage oPackage = OPCPackage.open(is);
+        res = new XWPFDocument(oPackage);
 
         return res;
     }

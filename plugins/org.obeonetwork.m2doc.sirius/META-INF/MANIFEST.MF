@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.query;bundle-version="[6.0.1,8.0.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.acceleo.annotations;bundle-version="[5.0.0,8.0.0)",
- org.apache.poi;bundle-version="[4.1.0,4.2.0)",
+ org.apache.poi;bundle-version="[5.2.3,5.2.4)",
  org.eclipse.emf.edit.ui,
  org.obeonetwork.m2doc.ide.ui;bundle-version="[3.0.0,4.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020 Obeo. 
+ *  Copyright (c) 2020, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.Base64;
 import java.util.Collection;
 
@@ -49,7 +50,10 @@ import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.generator.GenerationResult;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTColor;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHpsMeasure;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTStyle;
 
 /**
@@ -587,12 +591,12 @@ public class HtmlSerializer {
             final CTStyle ctStyle = style.getCTStyle();
             if (ctStyle.isSetRPr()) {
                 final CTRPr rPr = ctStyle.getRPr();
-                if (rPr.isSetSz()) {
-                    double size = rPr.getSz().getVal().doubleValue();
+                for (CTHpsMeasure mesure : rPr.getSzCsList()) {
+                    double size = ((BigInteger) mesure.getVal()).doubleValue();
                     paragraphStyle += String.format(FONT_SIZE_FORMAT, size);
                 }
-                if (rPr.isSetColor()) {
-                    final String color = rPr.getColor().xgetVal().getStringValue();
+                for (CTColor ctColor : rPr.getColorList()) {
+                    final String color = ctColor.xgetVal().getStringValue();
                     paragraphStyle += String.format(COLOR_FORMAT, color);
                 }
             }
@@ -659,10 +663,13 @@ public class HtmlSerializer {
         if (run.getFontSize() != -1) {
             spawnStyle += String.format(FONT_SIZE_FORMAT, run.getFontSize());
         }
-        if (run.getCTR().getRPr() != null && run.getCTR().getRPr().getShd() != null
-            && run.getCTR().getRPr().getShd().getFill() != null) {
+        if (run.getCTR().getRPr() != null) {
             // TODO double check this.
-            spawnStyle += String.format(BACKGROUND_COLOR_FORMAT, run.getCTR().getRPr().getShd().getFill());
+            for (CTShd ctShd : run.getCTR().getRPr().getShdList()) {
+                if (ctShd.getFill() != null) {
+                    spawnStyle += String.format(BACKGROUND_COLOR_FORMAT, ctShd.getFill());
+                }
+            }
         }
         if (run.getColor() != null) {
             // TODO double check this.
