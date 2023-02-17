@@ -89,6 +89,9 @@ jobs:
         with:
           packages: xvfb fluxbox libgtk-3-0
           version: 1.0
+
+    - name: Start xvfb
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
       run: |
         /usr/bin/Xvfb :99 -ac -screen 0 1440x900x16&
         ps auxwww | grep Xvfb
