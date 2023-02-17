@@ -93,7 +93,7 @@ jobs:
       env:
         MAVEN_OPTS: ${{ matrix.mavenOpt }}
       run: |
-        xvfb-run -d -s '-terminate' mvn clean verify -fae -P${{ matrix.profile }} "-Dtycho=${{ matrix.tycho }}" -Dmaven.wagon.provider.http=httpclient -Dmaven.artifact.threads=12 -Dhttp.tcp.nodelay=false
+        xvfb-run -a -s '-terminate' mvn clean verify -fae -P${{ matrix.profile }} "-Dtycho=${{ matrix.tycho }}" -Dmaven.wagon.provider.http=httpclient -Dmaven.artifact.threads=12 -Dhttp.tcp.nodelay=false
 
     - name: Prepare deploy local directory
       id: prepare_deploy
