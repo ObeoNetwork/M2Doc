@@ -85,14 +85,8 @@ jobs:
 
     - name: Install metacity and xvfb
       if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
-      - uses: awalsh128/cache-apt-pkgs-action@v1.2.4
-        with:
-          packages: xvfb fluxbox libgtk-3-0
-          version: 1.0
-
-    - name: Start xvfb
-      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
       run: |
+        sudo apt install xvfb fluxbox libgtk-3-0
         /usr/bin/Xvfb :99 -ac -screen 0 1440x900x16&
         ps auxwww | grep Xvfb
         export DISPLAY=:99
