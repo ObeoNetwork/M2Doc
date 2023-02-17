@@ -85,7 +85,8 @@ jobs:
 
     - name: Install metacity and xvfb
       run: |
-        sudo apt install metacity xvfb
+        sudo apt install metacity
+        sudo apt install xvfb
 
     - name: Build with Maven (${{ matrix.profile }})
       env:
