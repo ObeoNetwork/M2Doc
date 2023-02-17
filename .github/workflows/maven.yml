@@ -84,7 +84,6 @@ jobs:
         ./scripts/website-build.sh $TAG
 
     - name: Install metacity and xvfb
-      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
       run: |
         sudo apt install metacity xvfb
 
