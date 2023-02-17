@@ -85,6 +85,7 @@ jobs:
 
     - name: Install metacity and xvfb
       run: |
+        sudo apt update
         sudo apt install metacity
         sudo apt install xvfb
 
