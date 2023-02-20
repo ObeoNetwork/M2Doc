@@ -85,7 +85,7 @@ jobs:
 
     - name: Install metacity and xvfb
       run: |
-        sudo apt install xvfb fluxbox libgtk-3-0
+        sudo apt install xvfb metacity
 
     - name: Build with Maven (${{ matrix.profile }})
       env:
