@@ -54,6 +54,7 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-5.1.1</module>
     <!-- Capella -->
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.1.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.2.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.1.0</module>
@@ -1336,6 +1337,36 @@
     </profile>
 
     <!-- Capella -->
+    <profile>
+      <id>platform-capella-6.1.0</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>capella-6.1.0</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/stable/7.1.0-S20230210-122000/2021-06</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-capella-6.1.0</artifactId>
+                  <version>3.3.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-capella-6.0.0</id>
       <activation>
