@@ -66,7 +66,7 @@ public final class TemplateVersionMigration {
                             uri)) {
                         TemplateCustomProperties properties = new TemplateCustomProperties(xwpfDocument);
                         // TODO update version number
-                        if ("3.2.1".equals(properties.getM2DocVersion())) {
+                        if ("3.2.2".equals(properties.getM2DocVersion())) {
                             properties.setM2DocVersion(M2DocUtils.VERSION);
                             properties.save();
                             POIServices.getInstance().saveFile(URIConverter.INSTANCE, xwpfDocument, uri);
