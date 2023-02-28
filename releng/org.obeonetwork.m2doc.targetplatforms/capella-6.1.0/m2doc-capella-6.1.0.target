@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc Capella 6.1.0 Target Platform" sequenceNumber="1677511954">
+<target name="M2Doc Capella 6.1.0 Target Platform" sequenceNumber="1677579088">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="0.0.0"/>
@@ -143,7 +143,7 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.polarsys.capella.core.feature.feature.group" version="0.0.0"/>
-      <repository id="site_Capella" location="https://download.eclipse.org/capella/core/updates/releases/6.0.0/org.polarsys.capella.rcp.site/"/>
+      <repository id="site_Capella" location="https://download.eclipse.org/capella/core/updates/stable/6.1.0-S20230214/org.polarsys.capella.rcp.site/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
