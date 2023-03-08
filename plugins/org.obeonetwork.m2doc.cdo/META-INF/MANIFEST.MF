@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.obeonetwork.m2doc.cdo;singleton:=true
 Bundle-Version: 3.3.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Localization: plugin
 Require-Bundle: org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.0)",
  org.obeonetwork.m2doc.genconf;bundle-version="[3.0.0,4.0.0)",
