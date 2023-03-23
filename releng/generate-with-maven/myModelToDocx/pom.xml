@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>0.24.0</tycho-version>
+    <tycho-version>3.0.3</tycho-version>
   </properties>
 
 
@@ -27,14 +27,14 @@
         <configuration>
           <repositories>
             <repository>
-              <id>Neon update site </id>
+              <id>Eclipse update site </id>
               <layout>p2</layout>
-              <url>https://download.eclipse.org/releases/neon/</url>
+              <url>https://download.eclipse.org/releases/2022-12/</url>
             </repository>
             <repository>
-              <id>Website Generator</id>
+              <id>M2Doc update site</id>
               <layout>p2</layout>
-              <url>https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/M2Doc_0.10.0_beta/repository</url>
+              <url>https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/3.2.2/repository/</url>
             </repository>
           </repositories>
           <applicationsArgs>
@@ -44,14 +44,22 @@
             <args>-data</args>
             <args>${project.build.directory}/wks</args>
             <args>-genconfs</args>
-            <args>.//model2docx.genconf</args>
+            <args>file://${project.basedir}/model2docx.genconf</args>
           </applicationsArgs>
           <dependencies>
             <!-- We need the actual launcher application -->
             <dependency>
               <artifactId>org.obeonetwork.m2doc.launcher.feature</artifactId>
               <type>eclipse-feature</type>
-            </dependency>        
+            </dependency>
+            <dependency>
+              <artifactId>org.obeonetwork.m2doc.html.feature</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.obeonetwork.m2doc.ui.jdt.feature</artifactId>
+              <type>eclipse-feature</type>
+            </dependency>
             <!-- The project containing the .aird model needs EcoreTools 
               to be resolved correctly -->
             <dependency>
