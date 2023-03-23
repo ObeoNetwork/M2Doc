@@ -897,6 +897,9 @@ public class M2DocHTMLParser extends Parser {
                 res = createHeading(parent, context, element, H5_FONT_SIZE);
             } else if ("h6".equals(nodeName)) {
                 res = createHeading(parent, context, element, H6_FONT_SIZE);
+            } else if ("center".equals(nodeName)) {
+                res = createMParagraph(context, parent, element, null, null);
+                ((MParagraph) parent.get(parent.size() - 1)).setHAlignment(HAlignment.CENTER);
             } else {
                 res = parent;
             }
