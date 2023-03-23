@@ -93,6 +93,11 @@ public class M2DocHTMLParser extends Parser {
     private static final String COURIER_NEW_FONT = "Courier New";
 
     /**
+     * Nebula code CSS class color.
+     */
+    private static final int CODE_GREEN = 0x004000;
+
+    /**
      * Wingdings font.
      */
     private static final String WINGDINGS_FONT = "Wingdings";
@@ -915,6 +920,7 @@ public class M2DocHTMLParser extends Parser {
     private void applyGlobalAttibutes(Context context, Node node) {
         applyCSSStyle(node, context);
         applyMarkerClass(context, node);
+        applyCodeClass(context, node);
         applyDir(context, node);
     }
 
@@ -929,6 +935,22 @@ public class M2DocHTMLParser extends Parser {
     private void applyMarkerClass(Context context, Node node) {
         if (node.hasAttr(CLASS_ATTR) && "marker".equals(node.attr(CLASS_ATTR))) {
             context.style.setBackgroundColor(Color.YELLOW);
+        }
+    }
+
+    /**
+     * Applies the code class. This is specific to the nebula rich text editor used in Capella.
+     * 
+     * @param context
+     *            the {@link Context}
+     * @param node
+     *            the {@link Node}
+     */
+    private void applyCodeClass(Context context, Node node) {
+        if (node.hasAttr(CLASS_ATTR) && "code".equals(node.attr(CLASS_ATTR))) {
+            context.style.setForegroundColor(new Color(CODE_GREEN));
+            setModifiers(context.style, MStyle.FONT_BOLD);
+            context.style.setFontName(COURIER_NEW_FONT);
         }
     }
 
