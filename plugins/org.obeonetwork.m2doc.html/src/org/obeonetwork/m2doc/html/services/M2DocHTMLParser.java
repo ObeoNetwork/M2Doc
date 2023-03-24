@@ -367,6 +367,16 @@ public class M2DocHTMLParser extends Parser {
 
             return res;
         }
+
+        /**
+         * Gets the CSS properties.
+         * 
+         * @return the CSS properties
+         */
+        public Map<String, List<String>> getCssProperties() {
+            return cssProperties;
+        }
+
     }
 
     /**
@@ -544,14 +554,13 @@ public class M2DocHTMLParser extends Parser {
                     if ("th".equals(rowChild.nodeName()) || "td".equals(rowChild.nodeName())) {
                         final MList contents = new MListImpl();
                         final MCell cell = new MCellImpl(contents, null);
-                        final Context localContext;
+                        final Context localContext = context.copy();
+                        applyGlobalAttibutes(localContext, rowChild);
                         if ("th".equals(rowChild.nodeName())) {
                             cell.setHAlignment(HAlignment.CENTER);
-                            localContext = context.copy();
                             setModifiers(localContext.style, MStyle.FONT_BOLD);
-                        } else {
-                            localContext = context;
                         }
+                        CSS_PARSER.setStyle(localContext.cssProperties, cell);
                         walkChildren(rowChild, localContext, contents);
                         currentColumn = insertMergedCells(row, rowChild, cell, rowSpans, vMergeCopies, currentColumn);
                     }
@@ -1298,8 +1307,7 @@ public class M2DocHTMLParser extends Parser {
         } else {
             paragraph.setTextDirection(null);
         }
-
-        CSS_PARSER.setStyle(context.cssProperties, context, paragraph);
+        CSS_PARSER.setStyle(context, paragraph);
 
         return res;
     }

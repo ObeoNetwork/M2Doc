@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021 Obeo. 
+ *  Copyright (c) 2021, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -16,8 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.obeonetwork.m2doc.element.MElementContainer;
+import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
 import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.html.services.M2DocHTMLParser.Context;
 
 /**
@@ -191,6 +194,49 @@ public class M2DocCSSParser extends Parser {
     }
 
     /**
+     * Sets the CSS styles to the given {@link MCell}.
+     * 
+     * @param cssProperties
+     *            the CSS properties
+     * @param mCell
+     *            the {@link MCell}
+     */
+    public void setStyle(Map<String, List<String>> cssProperties, MCell mCell) {
+        final List<String> cssBackgroundColors = cssProperties.get(CSS_BACKGROUND_COLOR);
+        if (cssBackgroundColors != null) {
+            for (String cssBackgroundColor : cssBackgroundColors) {
+                mCell.setBackgroundColor(htmlToColor(cssBackgroundColor));
+            }
+        }
+        setContainerStyle(cssProperties, mCell);
+    }
+
+    /**
+     * Sets the CSS styles to the given {@link MElementContainer}.
+     * 
+     * @param cssProperties
+     *            the CSS properties
+     * @param mContainer
+     *            the {@link MElementContainer}
+     */
+    private void setContainerStyle(Map<String, List<String>> cssProperties, MElementContainer mContainer) {
+        final List<String> cssTextAligns = cssProperties.get(CSS_TEXT_ALIGN);
+        if (cssTextAligns != null) {
+            for (String cssTextAlign : cssTextAligns) {
+                if ("center".equalsIgnoreCase(cssTextAlign)) {
+                    mContainer.setHAlignment(HAlignment.CENTER);
+                } else if ("left".equalsIgnoreCase(cssTextAlign)) {
+                    mContainer.setHAlignment(HAlignment.LEFT);
+                } else if ("right".equalsIgnoreCase(cssTextAlign)) {
+                    mContainer.setHAlignment(HAlignment.RIGHT);
+                } else if ("justify".equalsIgnoreCase(cssTextAlign)) {
+                    mContainer.setHAlignment(HAlignment.BOTH);
+                }
+            }
+        }
+    }
+
+    /**
      * Tells if the given CSS properties has the given property and value.
      * 
      * @param cssProperties
@@ -220,15 +266,13 @@ public class M2DocCSSParser extends Parser {
     /**
      * Sets the CSS styles for the given {@link MParagraph}.
      * 
-     * @param cssProperties
-     *            the CSS style properties
      * @param context
      *            the current {@link Context}
      * @param paragraph
      *            the {@link MParagraph}
      */
-    public void setStyle(Map<String, List<String>> cssProperties, Context context, MParagraph paragraph) {
-        final List<String> cssMarginLefts = cssProperties.get(CSS_MARGIN_LEFT);
+    public void setStyle(Context context, MParagraph paragraph) {
+        final List<String> cssMarginLefts = context.getCssProperties().get(CSS_MARGIN_LEFT);
         if (cssMarginLefts != null) {
             int value = -1;
             for (String cssMarginLeft : cssMarginLefts) {
@@ -242,6 +286,7 @@ public class M2DocCSSParser extends Parser {
         if (marginLeft != null) {
             paragraph.setMarginLeft(marginLeft);
         }
+        setContainerStyle(context.getCssProperties(), paragraph);
     }
 
 }

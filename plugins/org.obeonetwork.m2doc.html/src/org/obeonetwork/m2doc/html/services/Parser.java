@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021 Obeo. 
+ *  Copyright (c) 2021, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -253,22 +253,29 @@ public abstract class Parser {
      * @return the {@link Color} from the given HTML color {@link String}
      */
     protected Color htmlToColor(String htmlColor) {
-        final Color res;
+        Color res;
 
-        final Color knownColor = COLORS.get(htmlColor);
-        if (knownColor != null) {
-            res = knownColor;
-        } else {
-            final Matcher matcher = RGB_PATTERN.matcher(htmlColor);
-            if (matcher.matches()) {
-                final int r = Integer.valueOf(matcher.group(R_GROUP_INDEX));
-                final int g = Integer.valueOf(matcher.group(G_GROUP_INDEX));
-                final int b = Integer.valueOf(matcher.group(B_GROUP_INDEX));
-                res = new Color(r, g, b);
+        try {
+            final Color knownColor = COLORS.get(htmlColor);
+            if (knownColor != null) {
+                res = knownColor;
             } else {
-                res = Color.decode(htmlColor.replace("#", "0x"));
+                final Matcher matcher = RGB_PATTERN.matcher(htmlColor);
+                if (matcher.matches()) {
+                    final int r = Integer.valueOf(matcher.group(R_GROUP_INDEX));
+                    final int g = Integer.valueOf(matcher.group(G_GROUP_INDEX));
+                    final int b = Integer.valueOf(matcher.group(B_GROUP_INDEX));
+                    res = new Color(r, g, b);
+                } else {
+                    res = Color.decode(htmlColor.replace("#", "0x"));
+                }
+                COLORS.put(htmlColor, res);
             }
-            COLORS.put(htmlColor, res);
+            // CHECKSTYLE:OFF ignore color
+        } catch (Exception e) {
+            // CHECKSTYLE:ON
+            // something went wrong ignore the color
+            res = null;
         }
 
         return res;
