@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019 Obeo. 
+ *  Copyright (c) 2019, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -134,7 +134,8 @@ public class M2DocGenerationPage extends WizardPage {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
-            final URI modelURI = mainVariablePage.getVariableValue().eResource().getURI();
+            final URI modelURI = URI
+                    .createURI(URI.decode(mainVariablePage.getVariableValue().eResource().getURI().toString()));
             final String templateName = new Path(newTemplatePage.getTemplateName()).removeFileExtension().lastSegment();
             if (generationName == null) {
                 generationName = URI.createURI(templateName + DOT + GenconfUtils.GENCONF_EXTENSION_FILE)
