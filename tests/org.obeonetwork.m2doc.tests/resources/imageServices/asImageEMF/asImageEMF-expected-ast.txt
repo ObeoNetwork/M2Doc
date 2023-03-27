@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Checks ImageServices registration :
+  [query: .fit(.asImage('music.emf'), 400, 400)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

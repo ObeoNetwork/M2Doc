@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,12 +11,14 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.element.impl;
 
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.apache.poi.hemf.usermodel.HemfPicture;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MImage;
@@ -94,20 +96,34 @@ public class MImageImpl implements MImage {
         this.uriConverter = uriConverter;
         this.uri = uri;
         this.type = type;
-        try (InputStream input = getInputStream()) {
-            final BufferedImage image = ImageIO.read(input);
-            if (image != null) {
-                width = image.getWidth();
-                height = image.getHeight();
-                conserveRatio = true;
-                ratio = ((double) width) / ((double) height);
-            } else {
-                conserveRatio = false;
+        if (type == PictureType.EMF) {
+            try {
+                try (InputStream is = getInputStream()) {
+                    HemfPicture emfPicture = new HemfPicture(is);
+                    final Rectangle2D bounds = emfPicture.getBounds();
+                    width = (int) bounds.getWidth();
+                    width = (int) bounds.getWidth();
+                }
+            } catch (IOException e) {
+                // will continue with out ratio and width x height preset
                 ratio = -1;
             }
-        } catch (IOException e) {
-            // will continue with out ratio and width x height preset
-            ratio = -1;
+        } else {
+            try (InputStream input = getInputStream()) {
+                final BufferedImage image = ImageIO.read(input);
+                if (image != null) {
+                    width = image.getWidth();
+                    height = image.getHeight();
+                    conserveRatio = true;
+                    ratio = ((double) width) / ((double) height);
+                } else {
+                    conserveRatio = false;
+                    ratio = -1;
+                }
+            } catch (IOException e) {
+                // will continue with out ratio and width x height preset
+                ratio = -1;
+            }
         }
     }
 
