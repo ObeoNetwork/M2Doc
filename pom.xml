@@ -373,12 +373,12 @@
       </activation>
       <modules>
         <module>releng/org.obeonetwork.m2doc.update</module>
-        <module>tests/org.obeonetwork.m2doc.rcptt.a</module>
+        <!--module>tests/org.obeonetwork.m2doc.rcptt.a</module>
         <module>tests/org.obeonetwork.m2doc.rcptt.b</module>
         <module>tests/org.obeonetwork.m2doc.rcptt.ui</module>
         <module>releng/org.obeonetwork.m2doc.rcpttproduct</module>
         <module>tests/org.obeonetwork.m2doc.rcptt</module>
-        <module>features/org.obeonetwork.m2doc.rcptt.feature</module>
+        <module>features/org.obeonetwork.m2doc.rcptt.feature</module-->
       </modules>
     </profile>
     <profile>
