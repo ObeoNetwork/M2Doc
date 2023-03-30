@@ -84,9 +84,10 @@ jobs:
         ./scripts/website-build.sh $TAG
 
     - name: Install metacity and xvfb
-      run: |
-        sudo apt update
-        sudo apt install xvfb metacity
+      - uses: awalsh128/cache-apt-pkgs-action@v1.3.0
+        with:
+          packages: xvfb metacity
+          version: 1.0
 
     - name: Build with Maven (${{ matrix.profile }})
       env:
