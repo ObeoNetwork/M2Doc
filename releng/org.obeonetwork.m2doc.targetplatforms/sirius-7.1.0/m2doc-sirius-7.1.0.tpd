@@ -1,4 +1,4 @@
-target "M2Doc 2022-12 Target Platform"
+target "M2Doc Sirius 7.1.0 Target Platform"
 
 with source requirements
 
@@ -29,19 +29,9 @@ location Eclipse "https://download.eclipse.org/releases/2022-12" {
 	org.eclipse.uml2.feature.group lazy
 	org.eclipse.pde.feature.group lazy
 
-	// Sirius
-	org.eclipse.sirius.runtime.feature.group lazy
-	org.eclipse.sirius lazy
-	org.eclipse.sirius.diagram lazy
-	org.eclipse.sirius.diagram.ui lazy
-	org.eclipse.sirius.table lazy
-	org.eclipse.sirius.table.ui lazy
-	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
 	org.apache.xerces lazy
 
 	// AQL
-	org.eclipse.acceleo.query.feature.group lazy
-	org.eclipse.acceleo.query.source.feature.group lazy
 	org.antlr.runtime [4.7.2,4.7.3)
 
 	// wikitext
@@ -54,6 +44,20 @@ location Eclipse "https://download.eclipse.org/releases/2022-12" {
 	org.eclipse.mylyn.wikitext.textile [3.0.0,3.1.0)
 	org.eclipse.mylyn.wikitext.tracwiki [3.0.0,3.1.0)
 	org.eclipse.mylyn.wikitext.twiki [3.0.0,3.1.0)
+}
+
+location "https://download.eclipse.org/sirius/updates/releases/7.1.0/2021-06/" {
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius lazy
+	org.eclipse.sirius.diagram lazy
+	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
+	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
+
+	// AQL
+	org.eclipse.acceleo.query.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
 }
 
 location Orbit-202212 "https://download.eclipse.org/tools/orbit/downloads/drops/R20221123021534/repository/" {

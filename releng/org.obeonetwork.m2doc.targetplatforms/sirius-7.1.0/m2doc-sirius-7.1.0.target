@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc 2022-12 Target Platform" sequenceNumber="1680171126">
+<target name="M2Doc Sirius 7.1.0 Target Platform" sequenceNumber="1680173290">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -26,16 +26,7 @@
       <unit id="org.w3c.css.sac" version="0.0.0"/>
       <unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.sirius" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.diagram.ui" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.table" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.table.ui" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
       <unit id="org.apache.xerces" version="0.0.0"/>
-      <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
       <unit id="org.antlr.runtime" version="4.7.2.v20221112-0806"/>
       <unit id="org.eclipse.mylyn.wikitext" version="3.0.42.20220107230029"/>
       <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="3.0.42.20220107230029"/>
@@ -47,6 +38,18 @@
       <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.42.20220107230029"/>
       <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.42.20220107230029"/>
       <repository id="Eclipse" location="https://download.eclipse.org/releases/2022-12"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.sirius" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.diagram.ui" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.table" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.table.ui" version="0.0.0"/>
+      <unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
+      <repository location="https://download.eclipse.org/sirius/updates/releases/7.1.0/2021-06/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.apache.batik.ext" version="1.16.0.v20221027-0840"/>
