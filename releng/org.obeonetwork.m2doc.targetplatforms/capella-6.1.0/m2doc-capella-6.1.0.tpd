@@ -2,7 +2,7 @@ target "M2Doc Capella 6.1.0 Target Platform"
 
 with source requirements
 
-//include "https://download.eclipse.org/capella/core/updates/stable/6.1.0-S20230214/targets/capella.target-definition.targetplatform"
+//include "https://download.eclipse.org/capella/core/updates/releases/6.1.0//targets/capella.target-definition.targetplatform"
 
 location GMF-Notation-1.13.1 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202211151334" {
 	org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
@@ -103,7 +103,7 @@ location Xerces-2.12.2 "https://download.eclipse.org/modeling/gmp/gmf-runtime/up
 	org.apache.xerces lazy
 }
 
-location sirius "https://download.eclipse.org/sirius/updates/stable/7.1.0-S20230210-122000/2021-06" {
+location sirius "https://download.eclipse.org/sirius/updates/stable/7.1.0-S20230302-034329/2021-06" {
 	org.eclipse.sirius.doc.feature.feature.group lazy
 	org.eclipse.sirius.doc.feature.source.feature.group lazy
 	org.eclipse.sirius.runtime.source.feature.group lazy
@@ -116,7 +116,7 @@ location sirius "https://download.eclipse.org/sirius/updates/stable/7.1.0-S20230
 	org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group lazy
 }
 
-location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/6.1.0.20230213/" {
+location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/6.1.0.20230322/" {
 	org.polarsys.kitalpha.ad.runtime.feature.source.feature.group lazy
 	org.polarsys.kitalpha.cadence.feature.source.feature.group lazy
 	org.polarsys.kitalpha.common.feature.source.feature.group lazy
@@ -141,12 +141,12 @@ location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/upd
 	org.polarsys.kitalpha.sirius.rotativeimage.feature.feature.group lazy
 }
 
-location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/6.1.0.20230213/" {
+location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/6.1.0.20230322/" {
 	org.polarsys.kitalpha.doc.feature.feature.group lazy
 	org.polarsys.kitalpha.emde.sdk.feature.source.feature.group lazy
 }
 
-location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.14.1-S20221130/emf-diffmerge-site/" {
+location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.14.1-S20230321/emf-diffmerge-site/" {
 	org.eclipse.emf.diffmerge.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.sirius.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.gmf.feature.source.feature.group lazy
@@ -175,7 +175,7 @@ location eclipse-shared-license "https://download.eclipse.org/cbi/updates/licens
 	org.eclipse.license.feature.group lazy
 }
 
-location site_Capella "https://download.eclipse.org/capella/core/updates/stable/6.1.0-S20230214/org.polarsys.capella.rcp.site/" {
+location site_Capella "https://download.eclipse.org/capella/core/updates/releases/6.1.0/org.polarsys.capella.rcp.site/" {
 	org.polarsys.capella.core.feature.feature.group lazy
 }
 
