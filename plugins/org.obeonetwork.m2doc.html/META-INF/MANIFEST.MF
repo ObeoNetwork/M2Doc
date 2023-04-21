@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.acceleo.annotations;bundle-version="[5.0.0,8.0.0)",
  org.eclipse.emf.ecore,
  org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",
- org.jsoup;bundle-version="[1.8.3,1.8.4)",
+ org.jsoup;bundle-version="[1.14.3,2.0.0)",
  org.eclipse.acceleo.query
 Export-Package: org.obeonetwork.m2doc.html.services
 Automatic-Module-Name: org.obeonetwork.m2doc.html

@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.html.services;
 
 import java.awt.Color;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -426,7 +427,7 @@ public class M2DocHTMLParser extends Parser {
 
         final Document document = Jsoup.parse(htmlString, baseURI.toString());
         document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
-        document.outputSettings().charset("UTF-8");
+        document.outputSettings().charset(StandardCharsets.UTF_8);
 
         final MStyle defaultStyle = new MStyleImpl(null, -1, null, null, -1);
         if (document.body().hasAttr("bgcolor")) {
@@ -756,7 +757,7 @@ public class M2DocHTMLParser extends Parser {
      *            tells if a new paragraph is needed
      */
     private void insertText(MList parent, final Context context, TextNode node, boolean needNewParagraph) {
-        final String text = node.text();
+        final String text = text(node);
         if (!text.trim().isEmpty()) {
             final String textToInsert;
             if (needNewParagraph) {
@@ -778,11 +779,11 @@ public class M2DocHTMLParser extends Parser {
     }
 
     /**
-     * Trims the begining of the given {@link String}.
+     * Trims the beginning of the given {@link String}.
      * 
      * @param text
      *            the {@link String}
-     * @return the trimed {@link String}
+     * @return the trimmed {@link String}
      */
     private String trimFirst(String text) {
         final String res;
@@ -799,6 +800,66 @@ public class M2DocHTMLParser extends Parser {
         }
 
         return res;
+    }
+
+    /**
+     * Gets the text of the given {@link TextNode}.
+     * Taken from JSoup see https://github.com/jhy/jsoup/issues/1063
+     * 
+     * @param textNode
+     *            the {@link TextNode}
+     * @return the text of the given {@link TextNode}
+     */
+    private String text(TextNode textNode) {
+        final String string = textNode.getWholeText();
+        StringBuilder sb = new StringBuilder(string.length());
+        appendNormalisedWhitespace(sb, string, false);
+        return sb.toString();
+    }
+
+    /**
+     * Tests if a code point is "whitespace" as defined in the HTML spec.
+     * Taken from JSoup see https://github.com/jhy/jsoup/issues/1063
+     * 
+     * @param c
+     *            code point to test
+     * @return true if code point is whitespace, false otherwise
+     */
+    private boolean isWhitespace(int c) {
+        return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+    }
+
+    /**
+     * After normalizing the whitespace within a string, appends it to a string builder.
+     * Taken from JSoup see https://github.com/jhy/jsoup/issues/1063
+     * 
+     * @param accum
+     *            builder to append to
+     * @param string
+     *            string to normalize whitespace within
+     * @param stripLeading
+     *            set to true if you wish to remove any leading whitespace
+     */
+    public void appendNormalisedWhitespace(StringBuilder accum, String string, boolean stripLeading) {
+        boolean lastWasWhite = false;
+        boolean reachedNonWhite = false;
+
+        int len = string.length();
+        int c;
+        for (int i = 0; i < len; i += Character.charCount(c)) {
+            c = string.codePointAt(i);
+            if (isWhitespace(c)) {
+                if ((stripLeading && !reachedNonWhite) || lastWasWhite) {
+                    continue;
+                }
+                accum.append(' ');
+                lastWasWhite = true;
+            } else {
+                accum.appendCodePoint(c);
+                lastWasWhite = false;
+                reachedNonWhite = true;
+            }
+        }
     }
 
     /**
@@ -822,7 +883,7 @@ public class M2DocHTMLParser extends Parser {
         } else if (BLOCKQUOTE_TAG.equals(nodeName)) {
             if (element.childNodeSize() > 0 && element.childNode(0) instanceof TextNode) {
                 TextNode textNode = (TextNode) element.childNode(0);
-                String newText = trimFirst(textNode.text());
+                String newText = trimFirst(text(textNode));
                 textNode.text(newText);
                 if (!newText.isEmpty()) {
                     res = createMParagraph(context, parent, element, null, null);
