@@ -48,6 +48,7 @@ jobs:
         PROFILE: ${{ matrix.profile }}
       run: |
         if [[ "$PROFILE" == *"updatesites"* ]]; then export UPDATE_SITES=true; fi
+        echo "UPDATE_SITES=${UPDATE_SITES}"
         echo "UPDATE_SITES=${UPDATE_SITES}" >> $GITHUB_OUTPUT
 
     - name: Check out code
@@ -101,16 +102,17 @@ jobs:
 
     - name: Prepare deploy local directory
       id: prepare_deploy
-      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && github.ref == 'refs/heads/master' }}
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
       run: |
         export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)/nightly"
         if [[ "$(echo $GITHUB_REF | cut -d"/" -f2)" != "heads" ]]; then export TAG_OR_BRANCH="$(echo $GITHUB_REF | cut -d"/" -f3)"; fi
         chmod a+x ./scripts/prepare-deploy-local-dir.sh
         ./scripts/prepare-deploy-local-dir.sh $GITHUB_WORKSPACE/$TAG_OR_BRANCH
+        echo "TAG_OR_BRANCH=${TAG_OR_BRANCH}"
         echo "TAG_OR_BRANCH=${TAG_OR_BRANCH}" >> $GITHUB_OUTPUT
 
     - name: Deploy to S3
-      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && github.ref == 'refs/heads/master' }}
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --delete
