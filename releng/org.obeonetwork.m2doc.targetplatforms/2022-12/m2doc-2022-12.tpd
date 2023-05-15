@@ -1,6 +1,6 @@
 target "M2Doc 2022-12 Target Platform"
 
-with source requirements
+with requirements
 
 location Eclipse-Shared-License "https://download.eclipse.org/cbi/updates/license" {
 	org.eclipse.license.feature.group lazy
