@@ -61,7 +61,7 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R201809052019
 	com.google.guava [15.0.0,16.0.0)
 }
 
-location ObeoNetworkBits "http://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/bits/master/thirdparties" {
+location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
 }
 
