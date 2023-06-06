@@ -463,6 +463,13 @@ public class M2DocHTMLParser extends Parser {
         final Context contextCopy = context.copy();
         if (node instanceof Element) {
             if ("table".equals(node.nodeName())) {
+                Node tHeader = null;
+                for (Node child : node.childNodes()) {
+                    if ("thead".equals(child.nodeName())) {
+                        tHeader = child;
+                        break;
+                    }
+                }
                 Node tBody = null;
                 for (Node child : node.childNodes()) {
                     if ("tbody".equals(child.nodeName())) {
@@ -471,7 +478,7 @@ public class M2DocHTMLParser extends Parser {
                     }
                 }
                 if (tBody != null) {
-                    insertTable(parent, context, tBody);
+                    insertTable(parent, context, tHeader, tBody);
                 }
             } else {
                 if (UL_TAG.equals(node.nodeName()) || OL_TAG.equals(node.nodeName())) {
@@ -538,15 +545,25 @@ public class M2DocHTMLParser extends Parser {
      *            the parent {@link MList}
      * @param context
      *            the current {@link Context}
-     * @param node
-     *            the table {@link Node};
+     * @param header
+     *            the table header {@link Node};
+     * @param body
+     *            the table body {@link Node};
      */
-    private void insertTable(MList parent, Context context, Node node) {
+    private void insertTable(MList parent, Context context, Node header, Node body) {
         final MTable table = new MTableImpl();
         parent.add(table);
         final Map<Integer, Integer> rowSpans = new HashMap<>();
         final Map<Integer, List<MCell>> vMergeCopies = new HashMap<>();
-        for (Node child : node.childNodes()) {
+        final List<Node> childNodes;
+        if (header != null) {
+            childNodes = new ArrayList<>(header.childNodes());
+            childNodes.addAll(body.childNodes());
+        } else {
+            childNodes = new ArrayList<>(body.childNodes());
+        }
+
+        for (Node child : childNodes) {
             if ("tr".equals(child.nodeName())) {
                 final MRow row = new MRowImpl();
                 table.getRows().add(row);
