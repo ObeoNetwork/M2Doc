@@ -89,6 +89,11 @@ public class M2DocHTMLParser extends Parser {
     private static final String BLOCKQUOTE_TAG = "blockquote";
 
     /**
+     * The center HTML tag.
+     */
+    private static final String CENTER_TAG = "center";
+
+    /**
      * Courier New font.
      */
     private static final String COURIER_NEW_FONT = "Courier New";
@@ -424,6 +429,7 @@ public class M2DocHTMLParser extends Parser {
      */
     public List<MElement> parse(URI baseURI, String htmlString) {
         final MList res = new MListImpl();
+        final MParagraph parent = new MParagraphImpl(res, null);
 
         final Document document = Jsoup.parse(htmlString, baseURI.toString());
         document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
@@ -442,16 +448,17 @@ public class M2DocHTMLParser extends Parser {
             context.popMarginLeft();
         }
 
-        walkNodeTree(res, context, document.body(), null);
+        walkChildren(document.body(), context, parent);
+        createNeededParagraphes(parent);
 
         return res;
     }
 
     /**
-     * Walks the given {@link Node} recursibly to produce {@link MElement}.
+     * Walks the given {@link Node} recursively to produce {@link MElement}.
      * 
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      * @param context
      *            the current {@link Context}
      * @param node
@@ -459,7 +466,7 @@ public class M2DocHTMLParser extends Parser {
      * @param lastElement
      *            the last {@link Element} if any, <code>null</code> otherwise
      */
-    private void walkNodeTree(MList parent, Context context, Node node, Element lastElement) {
+    private void walkNodeTree(MParagraph parent, Context context, Node node, Element lastElement) {
         final Context contextCopy = context.copy();
         if (node instanceof Element) {
             if ("table".equals(node.nodeName())) {
@@ -490,18 +497,16 @@ public class M2DocHTMLParser extends Parser {
                 if (BLOCKQUOTE_TAG.equals(node.nodeName())) {
                     contextCopy.replaceLastDefaultMarginLeft(BLOCKQUOTE_DEFAULT_MARGING_LEFT);
                 }
-                final MList element = startElement(parent, contextCopy, (Element) node);
+                final MParagraph element = startElement(parent, contextCopy, (Element) node);
                 try {
                     walkChildren(node, contextCopy, element);
                 } finally {
                     contextCopy.popMarginLeft();
                 }
-                endElement(parent, element);
+                endParagraph(parent, element);
             }
         } else if (node instanceof TextNode) {
-            final boolean needNewParagraph = lastElement != null && (UL_TAG.equals(lastElement.nodeName())
-                || OL_TAG.equals(lastElement.nodeName()) || BLOCKQUOTE_TAG.equals(lastElement.nodeName()));
-            insertText(parent, contextCopy, (TextNode) node, needNewParagraph);
+            insertText(parent, contextCopy, (TextNode) node, lastElement);
         }
     }
 
@@ -513,20 +518,21 @@ public class M2DocHTMLParser extends Parser {
      * @param context
      *            the current {@link Context}
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      */
-    private void walkChildren(Node node, Context context, MList parent) {
+    private void walkChildren(Node node, Context context, MParagraph parent) {
         Element lastElement = null;
+        final MList parentContents = (MList) parent.getContents();
         for (Node child : node.childNodes()) {
             final boolean needQuotes = "q".equals(child.nodeName());
             if (needQuotes) {
                 final MText mText = new MTextImpl("«", null);
-                parent.add(mText);
+                parentContents.add(mText);
             }
             walkNodeTree(parent, context, child, lastElement);
             if (needQuotes) {
                 final MText mText = new MTextImpl("»", null);
-                parent.add(mText);
+                parentContents.add(mText);
             }
             if (!"div".equals(child.nodeName())) {
                 if (child instanceof Element) {
@@ -536,13 +542,76 @@ public class M2DocHTMLParser extends Parser {
                 }
             }
         }
+        createNeededParagraphes(parent);
+    }
+
+    /**
+     * Creates {@link MParagraph} for MElement that are not already in a {@link MParagraph} (excluding {@link MParagraph} and
+     * {@link MTable}).
+     * 
+     * @param parent
+     *            the parent {@link MParagraph}
+     */
+    private void createNeededParagraphes(MParagraph parent) {
+        final MList newParent = new MListImpl();
+
+        final MList parentContents = (MList) parent.getContents();
+        MList paragraphList = new MListImpl();
+        MParagraph currentParagraph = createEmptyParagraphWithSameStyle(parent, paragraphList);
+        boolean paragraphEncountered = false;
+        for (MElement child : parentContents) {
+
+            if (child instanceof MParagraph || child instanceof MTable) {
+                paragraphEncountered = paragraphEncountered || child instanceof MParagraphImpl;
+                if (!paragraphList.isEmpty()) {
+                    newParent.add(currentParagraph);
+                    paragraphList = new MListImpl();
+                    currentParagraph = createEmptyParagraphWithSameStyle(parent, paragraphList);
+                }
+                newParent.add(child);
+            } else if (paragraphEncountered) {
+                if (!(child == MPagination.ligneBreak && paragraphList.isEmpty())) {
+                    paragraphList.add(child);
+                }
+            } else {
+                newParent.add(child);
+            }
+        }
+
+        if (!paragraphList.isEmpty()) {
+            newParent.add(currentParagraph);
+        }
+
+        parentContents.clear();
+        parentContents.addAll(newParent);
+    }
+
+    /**
+     * Creates a new {@link MParagraph} with the same style as the given {@link MParagraph} and the given {@link MList} as contents.
+     * 
+     * @param paragraph
+     *            the style {@link MParagraph}
+     * @param contents
+     *            the {@link MList} contents
+     * @return the new {@link MParagraph} with the same style as the given {@link MParagraph} and the given {@link MList} as contents
+     */
+    private MParagraph createEmptyParagraphWithSameStyle(MParagraph paragraph, MList contents) {
+        final MParagraph currentParagraph = new MParagraphImpl(contents, paragraph.getStyleName());
+
+        currentParagraph.setHAlignment(paragraph.getHAlignment());
+        currentParagraph.setMarginLeft(paragraph.getMarginLeft());
+        currentParagraph.setNumberingID(paragraph.getNumberingID());
+        currentParagraph.setNumberingLevel(paragraph.getNumberingLevel());
+        currentParagraph.setTextDirection(paragraph.getTextDirection());
+
+        return currentParagraph;
     }
 
     /**
      * Inserts a table.
      * 
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      * @param context
      *            the current {@link Context}
      * @param header
@@ -550,9 +619,10 @@ public class M2DocHTMLParser extends Parser {
      * @param body
      *            the table body {@link Node};
      */
-    private void insertTable(MList parent, Context context, Node header, Node body) {
+    private void insertTable(MParagraph parent, Context context, Node header, Node body) {
         final MTable table = new MTableImpl();
-        parent.add(table);
+        final MList parentContents = (MList) parent.getContents();
+        parentContents.add(table);
         final Map<Integer, Integer> rowSpans = new HashMap<>();
         final Map<Integer, List<MCell>> vMergeCopies = new HashMap<>();
         final List<Node> childNodes;
@@ -571,6 +641,7 @@ public class M2DocHTMLParser extends Parser {
                 for (Node rowChild : child.childNodes()) {
                     if ("th".equals(rowChild.nodeName()) || "td".equals(rowChild.nodeName())) {
                         final MList contents = new MListImpl();
+                        final MParagraph newParagraph = new MParagraphImpl(contents, null);
                         final MCell cell = new MCellImpl(contents, null);
                         final Context localContext = context.copy();
                         applyGlobalAttibutes(localContext, rowChild);
@@ -579,7 +650,8 @@ public class M2DocHTMLParser extends Parser {
                             setModifiers(localContext.style, MStyle.FONT_BOLD);
                         }
                         CSS_PARSER.setStyle(localContext.cssProperties, cell);
-                        walkChildren(rowChild, localContext, contents);
+                        walkChildren(rowChild, localContext, newParagraph);
+                        createNeededParagraphes(newParagraph);
                         currentColumn = insertMergedCells(row, rowChild, cell, rowSpans, vMergeCopies, currentColumn);
                     }
                 }
@@ -743,18 +815,20 @@ public class M2DocHTMLParser extends Parser {
     }
 
     /**
-     * Ends the given {@link MElement}.
+     * Ends the given {@link MParagraph}.
      * 
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      * @param element
-     *            the {@link MElement} to end
+     *            the {@link MParagraph} to end
      */
-    private void endElement(MList parent, MElement element) {
-        if (element instanceof MList && ((MList) element).isEmpty()) {
-            for (MElement child : parent) {
-                if (child instanceof MParagraph && ((MParagraph) child).getContents() == element) {
-                    parent.remove(child);
+    private void endParagraph(MParagraph parent, MParagraph element) {
+        final MList parentContents = (MList) parent.getContents();
+        final MList elementContents = (MList) element.getContents();
+        if (elementContents.isEmpty()) {
+            for (MElement child : parentContents) {
+                if (child instanceof MParagraph && ((MParagraph) child).getContents() == elementContents) {
+                    parentContents.remove(child);
                     break;
                 }
             }
@@ -765,32 +839,34 @@ public class M2DocHTMLParser extends Parser {
      * Inserts the text of the given {@link TextNode}.
      * 
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      * @param context
      *            the {@link Context}
      * @param node
      *            the {@link TextNode}
-     * @param needNewParagraph
-     *            tells if a new paragraph is needed
+     * @param lastElement
+     *            The last {@link Element}
      */
-    private void insertText(MList parent, final Context context, TextNode node, boolean needNewParagraph) {
+    private void insertText(MParagraph parent, final Context context, TextNode node, Element lastElement) {
         final String text = text(node);
+        final boolean needTrimFirst = lastElement != null && (UL_TAG.equals(lastElement.nodeName())
+            || OL_TAG.equals(lastElement.nodeName()) || BLOCKQUOTE_TAG.equals(lastElement.nodeName()));
         if (!text.trim().isEmpty()) {
             final String textToInsert;
-            if (needNewParagraph) {
-                createMParagraph(context, parent, null, null, null);
+            if (needTrimFirst) {
                 textToInsert = trimFirst(text);
             } else {
                 textToInsert = text;
             }
+            final MList parentContents = (MList) parent.getContents();
             if (context.linkTargetURI == null) {
                 final MText mText = new MTextImpl(textToInsert, context.style);
-                parent.add(mText);
+                parentContents.add(mText);
             } else {
                 context.style.setForegroundColor(LINK_COLOR);
                 final MHyperLink mLink = new MHyperLinkImpl(textToInsert, context.style,
                         context.linkTargetURI.toString());
-                parent.add(mLink);
+                parentContents.add(mLink);
             }
         }
     }
@@ -883,15 +959,15 @@ public class M2DocHTMLParser extends Parser {
      * Starts the given {@link Element}.
      * 
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      * @param context
      *            the current {@link Context}
      * @param element
      *            the {@link Element}
-     * @return the new parent {@link MList} for {@link Element#children() children}
+     * @return the new parent {@link MParagraph} for {@link Element#children() children}
      */
-    private MList startElement(MList parent, Context context, Element element) {
-        final MList res;
+    private MParagraph startElement(MParagraph parent, Context context, Element element) {
+        final MParagraph res;
 
         final String nodeName = element.nodeName();
         boolean isNumbering = false;
@@ -944,7 +1020,8 @@ public class M2DocHTMLParser extends Parser {
             context.linkTargetURI = URI.createURI(element.attr("href")).resolve(context.baseURI);
             res = parent;
         } else if ("br".equals(nodeName)) {
-            parent.add(MPagination.ligneBreak);
+            final MList parentContents = (MList) parent.getContents();
+            parentContents.add(MPagination.ligneBreak);
             res = parent;
         } else if ("li".equals(nodeName)) {
             res = createMParagraph(context, parent, element, context.numberingID.longValue(),
@@ -960,7 +1037,8 @@ public class M2DocHTMLParser extends Parser {
             res = parent;
         } else if ("img".equals(nodeName)) {
             final MImage mImage = createMImage(context, element);
-            parent.add(mImage);
+            final MList parentContents = (MList) parent.getContents();
+            parentContents.add(mImage);
             res = parent;
         } else if ("big".equals(nodeName)) {
             setBigFont(context);
@@ -984,9 +1062,9 @@ public class M2DocHTMLParser extends Parser {
                 res = createHeading(parent, context, element, H5_FONT_SIZE);
             } else if ("h6".equals(nodeName)) {
                 res = createHeading(parent, context, element, H6_FONT_SIZE);
-            } else if ("center".equals(nodeName)) {
+            } else if (CENTER_TAG.equals(nodeName)) {
                 res = createMParagraph(context, parent, element, null, null);
-                ((MParagraph) parent.get(parent.size() - 1)).setHAlignment(HAlignment.CENTER);
+                res.setHAlignment(HAlignment.CENTER);
             } else {
                 res = parent;
             }
@@ -1114,17 +1192,17 @@ public class M2DocHTMLParser extends Parser {
      * Creates the heading with the given font size.
      * 
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      * @param context
      *            the current {@link Context}
      * @param element
      *            the {@link Element}
      * @param fontSize
      *            the font size
-     * @return the new parent {@link MList} for {@link Element#children() children}
+     * @return the new parent {@link MParagraph} for {@link Element#children() children}
      */
-    private MList createHeading(MList parent, Context context, Element element, int fontSize) {
-        final MList res;
+    private MParagraph createHeading(MParagraph parent, Context context, Element element, int fontSize) {
+        final MParagraph res;
 
         res = createMParagraph(context, parent, element, null, null);
         context.style.setFontSize(fontSize);
@@ -1349,7 +1427,7 @@ public class M2DocHTMLParser extends Parser {
      * @param context
      *            the current {@link Context}
      * @param parent
-     *            the parent {@link MList}
+     *            the parent {@link MParagraph}
      * @param element
      *            the {@link Element}
      * @param numberingID
@@ -1358,34 +1436,35 @@ public class M2DocHTMLParser extends Parser {
      *            the numbering level
      * @return the created {@link MParagraph}
      */
-    private MList createMParagraph(Context context, MList parent, Element element, Long numberingID,
+    private MParagraph createMParagraph(Context context, MParagraph parent, Element element, Long numberingID,
             Long numberingLevel) {
-        final MList res = new MListImpl();
+        final MList newParagraphContents = new MListImpl();
+        final MParagraph res = new MParagraphImpl(newParagraphContents, null);
 
-        final MParagraph paragraph = new MParagraphImpl(res, null);
-        parent.add(paragraph);
-        paragraph.setNumberingID(numberingID);
-        paragraph.setNumberingLevel(numberingLevel);
+        final MList parentContents = (MList) parent.getContents();
+        parentContents.add(res);
+        res.setNumberingID(numberingID);
+        res.setNumberingLevel(numberingLevel);
         if (element != null && element.hasAttr("align")) {
             final String align = element.attr("align");
             if ("left".equals(align)) {
-                paragraph.setHAlignment(HAlignment.LEFT);
+                res.setHAlignment(HAlignment.LEFT);
             } else if ("right".equals(align)) {
-                paragraph.setHAlignment(HAlignment.RIGHT);
+                res.setHAlignment(HAlignment.RIGHT);
             } else if ("center".equals(align)) {
-                paragraph.setHAlignment(HAlignment.CENTER);
+                res.setHAlignment(HAlignment.CENTER);
             } else if ("justify".equals(align)) {
-                paragraph.setHAlignment(HAlignment.DISTRIBUTE);
+                res.setHAlignment(HAlignment.DISTRIBUTE);
             }
         }
         if (context.dir == Context.Dir.LTR) {
-            paragraph.setTextDirection(MParagraph.Dir.LTR);
+            res.setTextDirection(MParagraph.Dir.LTR);
         } else if (context.dir == Context.Dir.RTL) {
-            paragraph.setTextDirection(MParagraph.Dir.RTL);
+            res.setTextDirection(MParagraph.Dir.RTL);
         } else {
-            paragraph.setTextDirection(null);
+            res.setTextDirection(null);
         }
-        CSS_PARSER.setStyle(context, paragraph);
+        CSS_PARSER.setStyle(context, res);
 
         return res;
     }
