@@ -1017,7 +1017,7 @@ public class M2DocHTMLParser extends Parser {
             }
             res = parent;
         } else if ("a".equals(nodeName)) {
-            context.linkTargetURI = URI.createURI(element.attr("href")).resolve(context.baseURI);
+            context.linkTargetURI = toURI(context.baseURI, element.attr("href"));
             res = parent;
         } else if ("br".equals(nodeName)) {
             final MList parentContents = (MList) parent.getContents();
@@ -1221,7 +1221,7 @@ public class M2DocHTMLParser extends Parser {
      * @return the created {@link MImage}
      */
     private MImage createMImage(Context context, Element element) {
-        final URI imageURI = URI.createURI(element.attr("src")).resolve(context.baseURI);
+        final URI imageURI = toURI(context.baseURI, element.attr("src"));
         final MImage mImage = new MImageImpl(uriConverter, imageURI);
 
         if (element.hasAttr(WIDTH_ATTR)) {
@@ -1237,6 +1237,19 @@ public class M2DocHTMLParser extends Parser {
         }
 
         return mImage;
+    }
+
+    /**
+     * Converts the attribute URI to an actual URI by replacing backslashes for instance.
+     * 
+     * @param baseURI
+     *            the base {@link URI} to resolve relative {@link URI} to
+     * @param uri
+     *            the attribute URI
+     * @return the converted URI
+     */
+    private URI toURI(URI baseURI, String uri) {
+        return URI.createURI(uri.replace('\\', '/')).resolve(baseURI);
     }
 
     /**
