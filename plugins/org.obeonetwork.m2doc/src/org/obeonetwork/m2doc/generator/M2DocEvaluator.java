@@ -410,7 +410,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFParagraph newParagraph;
         if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph || paragraph == null) {
             newParagraph = createNewParagraph(generatedDocument, (XWPFParagraph) srcRun.getParent());
-            forceNewParagraph = false;
         } else {
             newParagraph = paragraph;
         }
@@ -446,7 +445,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFParagraph newParagraph;
         if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph) {
             newParagraph = createNewParagraph(generatedDocument, (XWPFParagraph) srcRun.getParent());
-            forceNewParagraph = false;
         } else {
             newParagraph = paragraph;
         }
@@ -545,6 +543,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
         currentTemplateParagraph = srcParagraph;
         currentGeneratedParagraph = res;
+        forceNewParagraph = false;
 
         return res;
     }
