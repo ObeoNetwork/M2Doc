@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -139,6 +139,8 @@ public class MTableImpl implements MTable {
      */
     private String styleID;
 
+    private MTableAlign tableAlign;
+
     @Override
     public List<MRow> getRows() {
         return rows;
@@ -175,4 +177,15 @@ public class MTableImpl implements MTable {
     public void setStyleID(String styleID) {
         this.styleID = styleID;
     }
+
+    @Override
+    public MTableAlign getTableAlign() {
+        return tableAlign;
+    }
+
+    @Override
+    public void setTableAlign(MTableAlign tableAlign) {
+        this.tableAlign = tableAlign;
+    }
+
 }

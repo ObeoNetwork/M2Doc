@@ -40,6 +40,7 @@ import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.MTable.MTableAlign;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.element.PictureType;
 import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
@@ -633,6 +634,7 @@ public class M2DocHTMLParser extends Parser {
         final MTable table = new MTableImpl();
         final MList parentContents = (MList) parent.getContents();
         parentContents.add(table);
+        setTableAlign(parent, table);
         final Map<Integer, Integer> rowSpans = new HashMap<>();
         final Map<Integer, List<MCell>> vMergeCopies = new HashMap<>();
         final List<Node> childNodes;
@@ -666,6 +668,35 @@ public class M2DocHTMLParser extends Parser {
                     }
                 }
                 insertRowspans(row, rowSpans, vMergeCopies);
+            }
+        }
+    }
+
+    /**
+     * Sets the {@link MTableAlign}.
+     * 
+     * @param parent
+     *            the parent {@link MParagraph}
+     * @param table
+     *            the {@link MTable}
+     */
+    private void setTableAlign(MParagraph parent, MTable table) {
+        final HAlignment parentAlignment = parent.getHAlignment();
+        if (parentAlignment != null) {
+            switch (parentAlignment) {
+                case LEFT:
+                    table.setTableAlign(MTableAlign.LEFT);
+                    break;
+                case CENTER:
+                    table.setTableAlign(MTableAlign.CENTER);
+                    break;
+                case RIGHT:
+                    table.setTableAlign(MTableAlign.RIGHT);
+                    break;
+
+                default:
+                    // nothing to do here
+                    break;
             }
         }
     }

@@ -33,6 +33,7 @@ import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.TableRowAlign;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.VerticalAlign;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -71,6 +72,7 @@ import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.MTable.MTableAlign;
 import org.obeonetwork.m2doc.element.MText;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
@@ -1081,6 +1083,38 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
         if (xwpfTable != null) {
             fillTable(xwpfTable, table);
+            setTableAlign(xwpfTable, table);
+        }
+    }
+
+    /**
+     * Sets the given {@link XWPFTable} align according to the given {@link MTable}.
+     * 
+     * @param xwpfTable
+     *            the {@link XWPFTable}
+     * @param table
+     *            the {@link MTable}
+     */
+    private void setTableAlign(XWPFTable xwpfTable, MTable table) {
+        final MTableAlign tableAlign = table.getTableAlign();
+        if (tableAlign != null) {
+            switch (tableAlign) {
+                case LEFT:
+                    xwpfTable.setTableAlignment(TableRowAlign.LEFT);
+                    break;
+
+                case CENTER:
+                    xwpfTable.setTableAlignment(TableRowAlign.CENTER);
+                    break;
+
+                case RIGHT:
+                    xwpfTable.setTableAlignment(TableRowAlign.RIGHT);
+                    break;
+
+                default:
+                    // nothing to do here
+                    break;
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -58,8 +58,37 @@ public interface MTable extends MElement {
             // nothing to do here
         }
 
+        @Override
+        public MTableAlign getTableAlign() {
+            return null;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.obeonetwork.m2doc.element.MTable#setTableAlign(org.obeonetwork.m2doc.element.MTable.MTableAlign)
+         */
+        @Override
+        public void setTableAlign(MTableAlign align) {
+            // nothing to do here
+        }
+
     };
     // CHECKSTYLE:ON
+
+    /**
+     * Alignement of the table in the Page.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    enum MTableAlign {
+        /** Left alignement. */
+        LEFT,
+        /** Centered. */
+        CENTER,
+        /** Right alignement. */
+        RIGHT;
+    }
 
     /**
      * Interface that represents a table row, whose label can be used as row header.
@@ -235,4 +264,20 @@ public interface MTable extends MElement {
      *            the new style ID
      */
     void setStyleID(String styleID);
+
+    /**
+     * Gets the {@link MTableAlign}.
+     * 
+     * @return the {@link MTableAlign}
+     */
+    MTableAlign getTableAlign();
+
+    /**
+     * Sets the {@link MTableAlign}.
+     * 
+     * @param align
+     *            the
+     *            {@link MTableAlign}
+     */
+    void setTableAlign(MTableAlign align);
 }
