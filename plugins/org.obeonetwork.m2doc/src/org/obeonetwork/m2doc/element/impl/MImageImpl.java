@@ -22,14 +22,12 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
-import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.ext.awt.image.codec.png.PNGTranscoderInternalCodecWriteAdapter;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.transcoder.image.resources.Messages;
-import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.poi.hemf.usermodel.HemfPicture;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -81,12 +79,6 @@ public class MImageImpl implements MImage {
     }
 
     /**
-     * The {@link SAXSVGDocumentFactory}.
-     */
-    private static final SAXSVGDocumentFactory SAXSVG_DOCUMENT_FACTORY = new SAXSVGDocumentFactory(
-            XMLResourceDescriptor.getXMLParserClassName());
-
-    /**
      * The {@link URI} to retrieve the content of the image.
      */
     private final URI uri;
@@ -114,12 +106,17 @@ public class MImageImpl implements MImage {
     /**
      * The type.
      */
-    private PictureType type;
+    private final PictureType type;
 
     /**
      * The URI converter to use.
      */
-    private URIConverter uriConverter;
+    private final URIConverter uriConverter;
+
+    /**
+     * A buffer to store the image content instead of using the {@link URIConverter} and the {@link URI}.
+     */
+    private final byte[] buffer;
 
     /**
      * Constructor.
@@ -138,6 +135,18 @@ public class MImageImpl implements MImage {
     }
 
     /**
+     * Constructor.
+     * 
+     * @param buffer
+     *            the image buffer
+     * @param type
+     *            the picture {@link PictureType type}
+     */
+    public MImageImpl(byte[] buffer, PictureType type) {
+        this(buffer, null, URI.createURI("memory_buffer." + type.name().toLowerCase()), type);
+    }
+
+    /**
      * Constructor with enforced image type.
      * 
      * @param uriConverter
@@ -148,6 +157,23 @@ public class MImageImpl implements MImage {
      *            the picture {@link PictureType type}
      */
     public MImageImpl(URIConverter uriConverter, URI uri, PictureType type) {
+        this(null, uriConverter, uri, type);
+    }
+
+    /**
+     * Constructor with enforced image type.
+     * 
+     * @param buffer
+     *            optional image buffer
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use
+     * @param uri
+     *            the {@link URI}
+     * @param type
+     *            the picture {@link PictureType type}
+     */
+    public MImageImpl(byte[] buffer, URIConverter uriConverter, URI uri, PictureType type) {
+        this.buffer = buffer;
         this.uriConverter = uriConverter;
         this.uri = uri;
         this.type = type;
@@ -242,8 +268,7 @@ public class MImageImpl implements MImage {
         if (getType() == PictureType.SVG) {
             // svg to png conversion.
             final M2DocPNGTranscoder transcoder = new M2DocPNGTranscoder();
-            try (InputStream is = uriConverter.createInputStream(uri);
-                    ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            try (InputStream is = createInputStream(); ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                 final TranscoderInput input = new TranscoderInput(is);
                 final TranscoderOutput output = new TranscoderOutput(os);
                 transcoder.transcode(input, output);
@@ -252,6 +277,25 @@ public class MImageImpl implements MImage {
                 e.printStackTrace();
                 throw new IOException("SVG to PNG transcode issue", e);
             }
+        } else {
+            res = createInputStream();
+        }
+
+        return res;
+    }
+
+    /**
+     * Creates the image {@link InputStream}.
+     * 
+     * @return the image {@link InputStream}
+     * @throws IOException
+     *             if the {@link InputStream} can't be created
+     */
+    protected InputStream createInputStream() throws IOException {
+        final InputStream res;
+
+        if (buffer != null) {
+            res = new ByteArrayInputStream(buffer);
         } else {
             res = uriConverter.createInputStream(uri);
         }

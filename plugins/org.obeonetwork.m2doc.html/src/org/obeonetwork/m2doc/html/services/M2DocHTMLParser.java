@@ -41,6 +41,7 @@ import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MText;
+import org.obeonetwork.m2doc.element.PictureType;
 import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.element.impl.MListImpl;
@@ -82,6 +83,11 @@ public class M2DocHTMLParser extends Parser {
      * The ul HTML tag.
      */
     private static final String UL_TAG = "ul";
+
+    /**
+     * The svg HTML tag.
+     */
+    private static final String SVG_TAG = "svg";
 
     /**
      * The blockquote HTML tag.
@@ -487,6 +493,10 @@ public class M2DocHTMLParser extends Parser {
                 if (tBody != null) {
                     insertTable(parent, context, tHeader, tBody);
                 }
+            } else if (SVG_TAG.equals(node.nodeName())) {
+                final MImageImpl mImage = new MImageImpl(node.toString().getBytes(), PictureType.SVG);
+                final MList parentContents = (MList) parent.getContents();
+                parentContents.add(mImage);
             } else {
                 if (UL_TAG.equals(node.nodeName()) || OL_TAG.equals(node.nodeName())) {
                     // remove inherited list-style-type
@@ -1224,6 +1234,21 @@ public class M2DocHTMLParser extends Parser {
         final URI imageURI = toURI(context.baseURI, element.attr("src"));
         final MImage mImage = new MImageImpl(uriConverter, imageURI);
 
+        setImageSize(element, mImage);
+
+        return mImage;
+    }
+
+    /**
+     * Sets the image {@link MImage#getHeight() height} and {@link MImage#getWidth() width} according to the given {@link Node}
+     * attributes.
+     * 
+     * @param element
+     *            the {@link Node}
+     * @param mImage
+     *            the {@link MImage}
+     */
+    private void setImageSize(Node element, final MImage mImage) {
         if (element.hasAttr(WIDTH_ATTR)) {
             if (element.hasAttr(HEIGHT_ATTR)) {
                 mImage.setConserveRatio(false);
@@ -1235,8 +1260,6 @@ public class M2DocHTMLParser extends Parser {
         } else if (element.hasAttr(HEIGHT_ATTR)) {
             mImage.setHeight(Integer.valueOf(element.attr(HEIGHT_ATTR)));
         }
-
-        return mImage;
     }
 
     /**
