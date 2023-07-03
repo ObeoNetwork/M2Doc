@@ -32,6 +32,21 @@ public abstract class Parser {
     protected static final Map<String, Color> COLORS = initializeColors();
 
     /**
+     * The default font size.
+     */
+    protected static final int DEFAULT_FONT_SIZE = 11;
+
+    /**
+     * The class attribute.
+     */
+    protected static final String CLASS_ATTR = "class";
+
+    /**
+     * The hexadecimal color string length.
+     */
+    private static final int HEXA_COLOR_LENGTH = 7;
+
+    /**
      * The rgb(x,x,x) {@link Pattern}.
      */
     private static final Pattern RGB_PATTERN = Pattern
@@ -55,7 +70,7 @@ public abstract class Parser {
     /**
      * The fixed size regex.
      */
-    private static final Pattern FIXED_SIZE_PATTERN = Pattern.compile("([0-9]+(\\.[0-9]+)?)(cm|mm|px|in|pt|pc)");
+    private static final Pattern FIXED_SIZE_PATTERN = Pattern.compile("([0-9]+(\\.[0-9]+)?)(cm|mm|px|in|pt|pc|em|%)");
 
     /**
      * The value group for {@link #FIXED_SIZE_PATTERN}.
@@ -266,8 +281,13 @@ public abstract class Parser {
                     final int g = Integer.valueOf(matcher.group(G_GROUP_INDEX));
                     final int b = Integer.valueOf(matcher.group(B_GROUP_INDEX));
                     res = new Color(r, g, b);
-                } else {
+                } else if (htmlColor.length() == HEXA_COLOR_LENGTH) {
                     res = Color.decode(htmlColor.replace("#", "0x"));
+                } else if (htmlColor.length() == 4) {
+                    res = Color.decode("0x" + htmlColor.charAt(1) + htmlColor.charAt(1) + htmlColor.charAt(2)
+                        + htmlColor.charAt(2) + htmlColor.charAt(3) + htmlColor.charAt(3));
+                } else {
+                    res = null;
                 }
                 COLORS.put(htmlColor, res);
             }
@@ -335,7 +355,14 @@ public abstract class Parser {
      */
     protected int getPixels(String propertyValue) {
         final int res;
-        final Matcher matcher = FIXED_SIZE_PATTERN.matcher(propertyValue.trim().toLowerCase());
+
+        final Matcher matcher;
+        final String localPropertyValue = propertyValue.trim().toLowerCase();
+        if (localPropertyValue.startsWith(".")) {
+            matcher = FIXED_SIZE_PATTERN.matcher("0" + localPropertyValue);
+        } else {
+            matcher = FIXED_SIZE_PATTERN.matcher(localPropertyValue);
+        }
 
         if (matcher.find()) {
             final double value = Double.valueOf(matcher.group(FIXED_SIZE_PATTERN_VALUE_GROUP));
@@ -360,6 +387,12 @@ public abstract class Parser {
                     break;
                 case "pc":
                     res = (int) (((value * 12d) / 72d) * 96d);
+                    break;
+                case "em":
+                    res = (int) (value * Double.valueOf(DEFAULT_FONT_SIZE));
+                    break;
+                case "%":
+                    res = (int) ((value / 100d) * Double.valueOf(DEFAULT_FONT_SIZE));
                     break;
 
                 default:

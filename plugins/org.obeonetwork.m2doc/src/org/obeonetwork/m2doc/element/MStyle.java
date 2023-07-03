@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -19,18 +19,32 @@ import java.awt.Color;
  * @author ldelaigue
  */
 public interface MStyle {
-    /** Modifier flag for BOLD font, to be checked by and-ing it with the value returned by getFontModidiers(). */
+    /** Modifier flag for BOLD font, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#setBold(boolean) setBold()}. */
     int FONT_BOLD = 1;
-    /** Modifier flag for ITALIC font, to be checked by and-ing it with the value returned by getFontModidiers(). */
+    /** Modifier flag for ITALIC font, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#setItalic(boolean) setItalic()}. */
     int FONT_ITALIC = 1 << 1;
-    /** Modifier flag for UNDERLINE font, to be checked by and-ing it with the value returned by getFontModidiers(). */
+    /**
+     * Modifier flag for UNDERLINE font, see
+     * {@link org.apache.poi.xwpf.usermodel.XWPFRun#setUnderline(org.apache.poi.xwpf.usermodel.UnderlinePatterns) setUnderline()}.
+     */
     int FONT_UNDERLINE = 1 << 2;
-    /** Modifier flag for STRIKE-THROUGH font, to be checked by and-ing it with the value returned by getFontModidiers(). */
+    /**
+     * Modifier flag for STRIKE-THROUGH font, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#setStrikeThrough(boolean)
+     * setStrikeThrough()}.
+     */
     int FONT_STRIKE_THROUGH = 1 << 3;
-    /** Modifier flag for SUBSCRIPT, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#getSubscript() getSubscript()}. */
+    /**
+     * Modifier flag for SUBSCRIPT, see
+     * {@link org.apache.poi.xwpf.usermodel.XWPFRun#setSubscript(org.apache.poi.xwpf.usermodel.VerticalAlign) setSubscript()}.
+     */
     int SUBSCRIPT = 1 << 4;
-    /** Modifier flag for SUPERSCRIPT, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#getSubscript() getSubscript()}. */
+    /**
+     * Modifier flag for SUPERSCRIPT, see
+     * {@link org.apache.poi.xwpf.usermodel.XWPFRun#setSubscript(org.apache.poi.xwpf.usermodel.VerticalAlign) setSubscript()}.
+     */
     int SUPERSCRIPT = 1 << 5;
+    /** Modifier flag for FONT_SMALL_CAPS, see {@link org.apache.poi.xwpf.usermodel.XWPFRun#setSmallCaps(boolean) setSmallCaps()}. */
+    int FONT_SMALL_CAPS = 1 << 6;
 
     /**
      * Gets the font size in points.

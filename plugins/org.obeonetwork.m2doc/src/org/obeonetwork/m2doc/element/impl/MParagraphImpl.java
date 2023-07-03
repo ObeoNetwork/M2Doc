@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.element.impl;
 
+import org.obeonetwork.m2doc.element.MBorder;
 import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MParagraph;
 
@@ -45,6 +46,41 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
      * The left margin in pixels.
      */
     private int marginLeft = -1;
+
+    /**
+     * The right margin in pixels.
+     */
+    private int marginRight = -1;
+
+    /**
+     * The top margin in pixels.
+     */
+    private int marginTop = -1;
+
+    /**
+     * The bottom margin in pixels.
+     */
+    private int marginBottom = -1;
+
+    /**
+     * The left {@link MBorder}.
+     */
+    private MBorder leftBorder;
+
+    /**
+     * The right {@link MBorder}.
+     */
+    private MBorder rightBorder;
+
+    /**
+     * The top {@link MBorder}.
+     */
+    private MBorder topBorder;
+
+    /**
+     * The bottom {@link MBorder}.
+     */
+    private MBorder bottomBorder;
 
     /**
      * Constructor.
@@ -129,6 +165,76 @@ public class MParagraphImpl extends AbstractMElementContainer implements MParagr
     @Override
     public void setMarginLeft(int value) {
         marginLeft = value;
+    }
+
+    @Override
+    public int getMarginRight() {
+        return marginRight;
+    }
+
+    @Override
+    public void setMarginRight(int value) {
+        marginRight = value;
+    }
+
+    @Override
+    public int getMarginTop() {
+        return marginTop;
+    }
+
+    @Override
+    public void setMarginTop(int value) {
+        marginTop = value;
+    }
+
+    @Override
+    public int getMarginBottom() {
+        return marginBottom;
+    }
+
+    @Override
+    public void setMarginBottom(int value) {
+        marginBottom = value;
+    }
+
+    @Override
+    public MBorder getLeftBorder() {
+        return leftBorder;
+    }
+
+    @Override
+    public void setLeftBorder(MBorder border) {
+        this.leftBorder = border;
+    }
+
+    @Override
+    public MBorder getRightBorder() {
+        return rightBorder;
+    }
+
+    @Override
+    public void setRightBorder(MBorder border) {
+        this.rightBorder = border;
+    }
+
+    @Override
+    public MBorder getTopBorder() {
+        return topBorder;
+    }
+
+    @Override
+    public void setTopBorder(MBorder border) {
+        this.topBorder = border;
+    }
+
+    @Override
+    public MBorder getBottomBorder() {
+        return bottomBorder;
+    }
+
+    @Override
+    public void setBottomBorder(MBorder border) {
+        this.bottomBorder = border;
     }
 
 }

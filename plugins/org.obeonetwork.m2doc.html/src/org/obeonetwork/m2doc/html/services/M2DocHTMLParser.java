@@ -12,10 +12,15 @@
 package org.obeonetwork.m2doc.html.services;
 
 import java.awt.Color;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -76,6 +81,16 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat.Enu
 public class M2DocHTMLParser extends Parser {
 
     /**
+     * The none value.
+     */
+    private static final String NONE = "none";
+
+    /**
+     * The href HTML tag.
+     */
+    private static final String HREF = "href";
+
+    /**
      * The ol HTML tag.
      */
     private static final String OL_TAG = "ol";
@@ -121,11 +136,6 @@ public class M2DocHTMLParser extends Parser {
     private static final String SYMBOL_FONT = "Symbol";
 
     /**
-     * The default font size.
-     */
-    private static final int DEFAULT_FONT_SIZE = 11;
-
-    /**
      * The big tag ratio.
      */
     private static final double BIG_RATIO = 1.33;
@@ -144,16 +154,6 @@ public class M2DocHTMLParser extends Parser {
      * The width attribute.
      */
     private static final String WIDTH_ATTR = "width";
-
-    /**
-     * The style attribute.
-     */
-    private static final String STYLE_ATTR = "style";
-
-    /**
-     * The class attribute.
-     */
-    private static final String CLASS_ATTR = "class";
 
     /**
      * The dir attribute.
@@ -290,6 +290,21 @@ public class M2DocHTMLParser extends Parser {
         private Stack<Integer> marginLefts = new Stack<Integer>();
 
         /**
+         * The stack of margin right.
+         */
+        private Stack<Integer> marginRights = new Stack<Integer>();
+
+        /**
+         * The stack of margin top.
+         */
+        private Stack<Integer> marginTops = new Stack<Integer>();
+
+        /**
+         * The stack of margin bottom.
+         */
+        private Stack<Integer> marginBottoms = new Stack<Integer>();
+
+        /**
          * Constructor.
          * 
          * @param baseURI
@@ -319,6 +334,9 @@ public class M2DocHTMLParser extends Parser {
             res.dir = dir;
             res.cssProperties.putAll(cssProperties);
             res.marginLefts = marginLefts;
+            res.marginRights = marginRights;
+            res.marginTops = marginTops;
+            res.marginBottoms = marginBottoms;
 
             return res;
         }
@@ -334,12 +352,69 @@ public class M2DocHTMLParser extends Parser {
         }
 
         /**
+         * Pushes the given margin right value.
+         * 
+         * @param value
+         *            the margin right value
+         */
+        public void pushMarginRight(Integer value) {
+            marginRights.push(value);
+        }
+
+        /**
+         * Pushes the given margin top value.
+         * 
+         * @param value
+         *            the margin top value
+         */
+        public void pushMarginTop(Integer value) {
+            marginTops.push(value);
+        }
+
+        /**
+         * Pushes the given margin bottom value.
+         * 
+         * @param value
+         *            the margin bottom value
+         */
+        public void pushMarginBottom(Integer value) {
+            marginBottoms.push(value);
+        }
+
+        /**
          * Pops the last {@link #pushMarginLeft(int) pushed} margin left value.
          * 
          * @return the last {@link #pushMarginLeft(int) pushed} margin left value
          */
         public Integer popMarginLeft() {
             return marginLefts.pop();
+        }
+
+        /**
+         * Pops the last {@link #pushMarginRight(int) pushed} margin right value.
+         * 
+         * @return the last {@link #pushMarginRight(int) pushed} margin right value
+         */
+        public Integer popMarginRight() {
+            return marginRights.pop();
+        }
+
+        /**
+         * Pops the last {@link #pushMarginTop(int) pushed} margin top value.
+         * 
+         * @return the last {@link #pushMarginTop(int) pushed} margin top value
+         */
+        public Integer popMarginTop() {
+            return marginTops.pop();
+        }
+
+        /**
+         * Pops the last {@link #pushMarginBottom(int) pushed} margin bottom value.
+         * 
+         * @return the last {@link #pushMarginBottom(int) pushed} margin bottom value
+         */
+        public Integer popMarginBottom() {
+            return marginBottoms.pop();
         }
 
         /**
@@ -356,6 +431,45 @@ public class M2DocHTMLParser extends Parser {
         }
 
         /**
+         * Replaces the last {@link #pushMarginTop(int) pushed} margin top value if it's <code>null</code>.
+         * 
+         * @param value
+         *            the new margin top value
+         */
+        public void replaceLastDefaultMarginTop(Integer value) {
+            if (marginTops.peek() == null) {
+                popMarginTop();
+                pushMarginTop(value);
+            }
+        }
+
+        /**
+         * Replaces the last {@link #pushMarginBottom(int) pushed} margin bottom value if it's <code>null</code>.
+         * 
+         * @param value
+         *            the new margin bottom value
+         */
+        public void replaceLastDefaultMarginBottom(Integer value) {
+            if (marginBottoms.peek() == null) {
+                popMarginBottom();
+                pushMarginBottom(value);
+            }
+        }
+
+        /**
+         * Replaces the last {@link #pushMarginRight(int) pushed} margin right value if it's <code>null</code>.
+         * 
+         * @param value
+         *            the new margin right value
+         */
+        public void replaceLastDefaultMarginRight(Integer value) {
+            if (marginRights.peek() == null) {
+                popMarginRight();
+                pushMarginRight(value);
+            }
+        }
+
+        /**
          * Gets the current margin left.
          * 
          * @return the current margin left if any, <code>null</code> otherwise
@@ -368,6 +482,84 @@ public class M2DocHTMLParser extends Parser {
                 if (currentMarginLeft != null) {
                     hasValue = true;
                     sum += currentMarginLeft;
+                }
+            }
+
+            final Integer res;
+            if (hasValue) {
+                res = Integer.valueOf(sum);
+            } else {
+                res = null;
+            }
+
+            return res;
+        }
+
+        /**
+         * Gets the current margin right.
+         * 
+         * @return the current margin right if any, <code>null</code> otherwise
+         */
+        public Integer getMarginRight() {
+            int sum = 0;
+
+            boolean hasValue = false;
+            for (Integer currentMarginRight : marginRights) {
+                if (currentMarginRight != null) {
+                    hasValue = true;
+                    sum += currentMarginRight;
+                }
+            }
+
+            final Integer res;
+            if (hasValue) {
+                res = Integer.valueOf(sum);
+            } else {
+                res = null;
+            }
+
+            return res;
+        }
+
+        /**
+         * Gets the current margin top.
+         * 
+         * @return the current margin top if any, <code>null</code> otherwise
+         */
+        public Integer getMarginTop() {
+            int sum = 0;
+
+            boolean hasValue = false;
+            for (Integer currentMarginTop : marginTops) {
+                if (currentMarginTop != null) {
+                    hasValue = true;
+                    sum += currentMarginTop;
+                }
+            }
+
+            final Integer res;
+            if (hasValue) {
+                res = Integer.valueOf(sum);
+            } else {
+                res = null;
+            }
+
+            return res;
+        }
+
+        /**
+         * Gets the current margin bottom.
+         * 
+         * @return the current margin bottom if any, <code>null</code> otherwise
+         */
+        public Integer getMarginBottom() {
+            int sum = 0;
+
+            boolean hasValue = false;
+            for (Integer currentMarginBottom : marginBottoms) {
+                if (currentMarginBottom != null) {
+                    hasValue = true;
+                    sum += currentMarginBottom;
                 }
             }
 
@@ -403,6 +595,11 @@ public class M2DocHTMLParser extends Parser {
     private static final M2DocCSSParser CSS_PARSER = new M2DocCSSParser();
 
     /**
+     * The mapping from the CSS class name to its {@link #parse(String) CSS styles}.
+     */
+    private final Map<String, Map<String, List<String>>> cssClasses = new LinkedHashMap<String, Map<String, List<String>>>();
+
+    /**
      * The {@link URIConverter}.
      */
     private final URIConverter uriConverter;
@@ -410,7 +607,7 @@ public class M2DocHTMLParser extends Parser {
     /**
      * The destination {@link XWPFDocument}.
      */
-    private XWPFDocument destinationDocument;
+    private final XWPFDocument destinationDocument;
 
     /**
      * Constructor.
@@ -442,23 +639,63 @@ public class M2DocHTMLParser extends Parser {
         document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
         document.outputSettings().charset(StandardCharsets.UTF_8);
 
+        final Element htmlElement = document.getElementsByTag("html").get(0);
+        final Element headElement = htmlElement.getElementsByTag("head").get(0);
+        parseHead(baseURI, headElement);
+
+        final Element bodyElement = htmlElement.getElementsByTag("body").get(0);
         final MStyle defaultStyle = new MStyleImpl(null, -1, null, null, -1);
         if (document.body().hasAttr("bgcolor")) {
-            defaultStyle.setBackgroundColor(htmlToColor(document.body().attr("bgcolor").toLowerCase()));
+            defaultStyle.setBackgroundColor(htmlToColor(bodyElement.attr("bgcolor").toLowerCase()));
         }
-
         final Context context = new Context(baseURI, defaultStyle);
         context.pushMarginLeft(null);
+        context.pushMarginRight(null);
+        context.pushMarginTop(null);
+        context.pushMarginBottom(null);
         try {
-            applyGlobalAttibutes(context, document.body());
+            applyGlobalAttibutes(context, bodyElement);
         } finally {
             context.popMarginLeft();
+            context.popMarginRight();
+            context.popMarginTop();
+            context.popMarginBottom();
         }
-
-        walkChildren(document.body(), context, parent);
+        walkChildren(bodyElement, context, parent);
         createNeededParagraphes(parent);
 
         return res;
+    }
+
+    /**
+     * Parses the head {@link Element}.
+     * 
+     * @param baseURI
+     *            the base {@link URI}
+     * @param headElement
+     *            the head {@link Element}
+     */
+    private void parseHead(URI baseURI, Element headElement) {
+        for (Node child : headElement.childNodes()) {
+            if (child instanceof Element) {
+                final Element element = (Element) child;
+                if ("link".equals(element.nodeName()) && element.hasAttr("rel")
+                    && "stylesheet".equals(element.attr("rel")) && element.hasAttr(HREF)) {
+                    final URI cssURI = toURI(baseURI, element.attr(HREF));
+                    try (InputStream is = uriConverter.createInputStream(cssURI)) {
+                        final Map<String, Map<String, List<String>>> loadedCssClasses = CSS_PARSER
+                                .parseClasses(getContent(is, "UTF-8"));
+                        CSS_PARSER.mergeCSSStyles(loadedCssClasses, cssClasses);
+                    } catch (IOException e) {
+                        // nothing to do here
+                    }
+                } else if ("style".equals(element.nodeName()) && element.childNodeSize() >= 1) {
+                    final Map<String, Map<String, List<String>>> parsedCssClasses = CSS_PARSER
+                            .parseClasses(element.childNodes().get(0).toString());
+                    CSS_PARSER.mergeCSSStyles(parsedCssClasses, cssClasses);
+                }
+            }
+        }
     }
 
     /**
@@ -475,7 +712,7 @@ public class M2DocHTMLParser extends Parser {
      */
     private void walkNodeTree(MParagraph parent, Context context, Node node, Element lastElement) {
         final Context contextCopy = context.copy();
-        if (node instanceof Element) {
+        if (node instanceof Element && !isHidden(node)) {
             if ("table".equals(node.nodeName())) {
                 Node tHeader = null;
                 for (Node child : node.childNodes()) {
@@ -504,6 +741,9 @@ public class M2DocHTMLParser extends Parser {
                     contextCopy.cssProperties.remove(M2DocCSSParser.CSS_LIST_STYLE_TYPE);
                 }
                 contextCopy.pushMarginLeft(null);
+                contextCopy.pushMarginRight(null);
+                contextCopy.pushMarginTop(null);
+                contextCopy.pushMarginBottom(null);
                 applyGlobalAttibutes(contextCopy, node);
                 if (BLOCKQUOTE_TAG.equals(node.nodeName())) {
                     contextCopy.replaceLastDefaultMarginLeft(BLOCKQUOTE_DEFAULT_MARGING_LEFT);
@@ -513,12 +753,35 @@ public class M2DocHTMLParser extends Parser {
                     walkChildren(node, contextCopy, element);
                 } finally {
                     contextCopy.popMarginLeft();
+                    contextCopy.popMarginRight();
+                    contextCopy.popMarginTop();
+                    contextCopy.popMarginBottom();
                 }
                 endParagraph(parent, element);
             }
         } else if (node instanceof TextNode) {
             insertText(parent, contextCopy, (TextNode) node, lastElement);
         }
+    }
+
+    /**
+     * Tells if the given {@link Node} os hidden.
+     * 
+     * @param node
+     *            the {@link Node}
+     * @return <code>true</code> if the given {@link Node} os hidden, <code>false</code> otherwise
+     */
+    private boolean isHidden(Node node) {
+        final boolean res;
+
+        if (node.hasAttr("hidden")) {
+            res = true;
+        } else {
+            final Map<String, List<String>> cssProperties = CSS_PARSER.getCSSProperties(node, cssClasses);
+            res = CSS_PARSER.hasCSS(cssProperties, M2DocCSSParser.CSS_DISPLAY, NONE);
+        }
+
+        return res;
     }
 
     /**
@@ -994,6 +1257,7 @@ public class M2DocHTMLParser extends Parser {
                 reachedNonWhite = true;
             }
         }
+
     }
 
     /**
@@ -1058,7 +1322,7 @@ public class M2DocHTMLParser extends Parser {
             }
             res = parent;
         } else if ("a".equals(nodeName)) {
-            context.linkTargetURI = toURI(context.baseURI, element.attr("href"));
+            context.linkTargetURI = toURI(context.baseURI, element.attr(HREF));
             res = parent;
         } else if ("br".equals(nodeName)) {
             final MList parentContents = (MList) parent.getContents();
@@ -1127,9 +1391,9 @@ public class M2DocHTMLParser extends Parser {
      *            the {@link Node}
      */
     private void applyGlobalAttibutes(Context context, Node node) {
-        applyCSSStyle(node, context);
         applyMarkerClass(context, node);
         applyCodeClass(context, node);
+        applyCSSStyle(node, context);
         applyDir(context, node);
     }
 
@@ -1156,7 +1420,7 @@ public class M2DocHTMLParser extends Parser {
      *            the {@link Node}
      */
     private void applyCodeClass(Context context, Node node) {
-        if (node.hasAttr(CLASS_ATTR) && "code".equals(node.attr(CLASS_ATTR))) {
+        if (node.hasAttr(Parser.CLASS_ATTR) && "code".equals(node.attr(CLASS_ATTR))) {
             context.style.setForegroundColor(new Color(CODE_GREEN));
             setModifiers(context.style, MStyle.FONT_BOLD);
             context.style.setFontName(COURIER_NEW_FONT);
@@ -1222,8 +1486,8 @@ public class M2DocHTMLParser extends Parser {
      *            the current {@link Context}
      */
     private void applyCSSStyle(Node node, Context context) {
-        if (node.hasAttr(STYLE_ATTR)) {
-            final Map<String, List<String>> cssProperties = CSS_PARSER.parse(node.attr(STYLE_ATTR));
+        final Map<String, List<String>> cssProperties = CSS_PARSER.getCSSProperties(node, cssClasses);
+        if (!cssProperties.isEmpty()) {
             CSS_PARSER.setStyle(cssProperties, context.style);
             context.cssProperties.putAll(cssProperties);
         }
@@ -1330,7 +1594,7 @@ public class M2DocHTMLParser extends Parser {
                 || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "circle")) {
                     symbol = CIRCLE_SYMBOL;
                     type = STNumberFormat.BULLET;
-                } else if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
+                } else if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, NONE)) {
                     symbol = DISC_SYMBOL;
                     type = STNumberFormat.BULLET;
                 } else {
@@ -1376,7 +1640,7 @@ public class M2DocHTMLParser extends Parser {
                             M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-roman")) {
                                 type = STNumberFormat.LOWER_ROMAN;
                             } else
-                        if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "none")) {
+                        if (!CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, NONE)) {
                             type = STNumberFormat.DECIMAL;
                         } else {
                             type = STNumberFormat.NONE;
@@ -1534,6 +1798,33 @@ public class M2DocHTMLParser extends Parser {
         CSS_PARSER.setStyle(context, res);
 
         return res;
+    }
+
+    /**
+     * Gets the content of the given {@link InputStream}.
+     * 
+     * @param stream
+     *            the {@link InputStream}
+     * @param charsetName
+     *            The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
+     * @return a {@link CharSequence} of the content of the given {@link InputStream}
+     * @throws IOException
+     *             if the {@link InputStream} can't be read
+     */
+    public static String getContent(InputStream stream, String charsetName) throws IOException {
+        final int len = 8192;
+        StringBuilder res = new StringBuilder(len);
+        if (len != 0) {
+            try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream), charsetName)) {
+                char[] buffer = new char[len];
+                int length = input.read(buffer);
+                while (length != -1) {
+                    res.append(buffer, 0, length);
+                    length = input.read(buffer);
+                }
+            }
+        }
+        return res.toString();
     }
 
 }

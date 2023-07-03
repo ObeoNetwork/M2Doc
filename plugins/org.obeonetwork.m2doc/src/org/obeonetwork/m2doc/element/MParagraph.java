@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -104,5 +104,110 @@ public interface MParagraph extends MElementContainer, MElement {
      *            the margin left in pixel
      */
     void setMarginLeft(int value);
+
+    /**
+     * Gets the margin right in pixel.
+     * 
+     * @return the margin right in pixel
+     */
+    int getMarginRight();
+
+    /**
+     * Sets the margin right in pixel.
+     * 
+     * @param value
+     *            the margin right in pixel
+     */
+    void setMarginRight(int value);
+
+    /**
+     * Gets the margin top in pixel.
+     * 
+     * @return the margin top in pixel
+     */
+    int getMarginTop();
+
+    /**
+     * Sets the margin top in pixel.
+     * 
+     * @param value
+     *            the margin top in pixel
+     */
+    void setMarginTop(int value);
+
+    /**
+     * Gets the margin bottom in pixel.
+     * 
+     * @return the margin bottom in pixel
+     */
+    int getMarginBottom();
+
+    /**
+     * Sets the margin bottom in pixel.
+     * 
+     * @param value
+     *            the margin bottom in pixel
+     */
+    void setMarginBottom(int value);
+
+    /**
+     * Gets the left {@link MBorder}.
+     * 
+     * @return the left {@link MBorder}
+     */
+    MBorder getLeftBorder();
+
+    /**
+     * Sets the left {@link MBorder}.
+     * 
+     * @param border
+     *            the {@link MBorder}
+     */
+    void setLeftBorder(MBorder border);
+
+    /**
+     * Gets the right {@link MBorder}.
+     * 
+     * @return the right {@link MBorder}
+     */
+    MBorder getRightBorder();
+
+    /**
+     * Sets the right {@link MBorder}.
+     * 
+     * @param border
+     *            the {@link MBorder}
+     */
+    void setRightBorder(MBorder border);
+
+    /**
+     * Gets the top {@link MBorder}.
+     * 
+     * @return the top {@link MBorder}
+     */
+    MBorder getTopBorder();
+
+    /**
+     * Sets the top {@link MBorder}.
+     * 
+     * @param border
+     *            the {@link MBorder}
+     */
+    void setTopBorder(MBorder border);
+
+    /**
+     * Gets the bottom {@link MBorder}.
+     * 
+     * @return the bottom {@link MBorder}
+     */
+    MBorder getBottomBorder();
+
+    /**
+     * Sets the bottom {@link MBorder}.
+     * 
+     * @param border
+     *            the {@link MBorder}
+     */
+    void setBottomBorder(MBorder border);
 
 }

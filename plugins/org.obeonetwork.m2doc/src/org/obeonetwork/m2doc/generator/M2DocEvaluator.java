@@ -60,6 +60,7 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MBorder;
 import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
 import org.obeonetwork.m2doc.element.MHyperLink;
@@ -104,8 +105,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHdrFtr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHyperlink;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTInd;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTLvl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumbering;
@@ -122,7 +121,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
 
@@ -138,6 +136,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * The generation monitor work.
      */
     public static final int MONITOR_WORK = 30;
+
+    /**
+     * Constant to get from pixel size to border size.
+     */
+    private static final int BORDER_SIZE_CONSTANT = 8;
 
     /**
      * Error message when a {@link Bookmark} errors.
@@ -913,16 +916,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph.getCTP().getPPr().getNumPr().addNewIlvl()
                     .setVal(BigInteger.valueOf(paragraph.getNumberingLevel()));
             if (paragraph.getMarginLeft() != -1) {
-                if (newParagraph.getCTP().getPPr() == null) {
-                    newParagraph.getCTP().addNewPPr();
-                }
-                final CTInd indentation = newParagraph.getCTP().getPPr().addNewInd();
-                final CTJc ctjc = CTJc.Factory.newInstance();
-                ctjc.setVal(STJc.LEFT);
-                newParagraph.getCTP().getPPr().setJc(ctjc);
                 // CHECKSTYLE:OFF empiric constant
-                indentation.setLeft(BigInteger.valueOf(paragraph.getMarginLeft() * 14
-                    + getNumberingIndentLeft(paragraph.getNumberingID(), paragraph.getNumberingLevel())));
+                newParagraph.setIndentationLeft(paragraph.getMarginLeft() * 14
+                    + getNumberingIndentLeft(paragraph.getNumberingID(), paragraph.getNumberingLevel()));
                 // CHECKSTYLE:ON
             }
         } else if (paragraph.getMarginLeft() != -1) {
@@ -930,7 +926,21 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph.setIndentationLeft(paragraph.getMarginLeft() * 14);
             // CHECKSTYLE:ON
         }
-
+        if (paragraph.getMarginRight() != -1) {
+            // CHECKSTYLE:OFF empiric constant
+            newParagraph.setIndentationRight(paragraph.getMarginLeft() * 14);
+            // CHECKSTYLE:ON
+        }
+        if (paragraph.getMarginTop() != -1) {
+            // CHECKSTYLE:OFF empiric constant
+            newParagraph.setSpacingBefore(paragraph.getMarginLeft() * 14);
+            // CHECKSTYLE:ON
+        }
+        if (paragraph.getMarginBottom() != -1) {
+            // CHECKSTYLE:OFF empiric constant
+            newParagraph.setSpacingAfter(paragraph.getMarginLeft() * 14);
+            // CHECKSTYLE:ON
+        }
         if (paragraph.getTextDirection() == Dir.LTR) {
             if (newParagraph.getCTP().getPPr() == null) {
                 newParagraph.getCTP().addNewPPr();
@@ -955,6 +965,59 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             onOff.setStringValue("on");
             value.xsetVal(onOff);
             newParagraph.getCTP().getPPr().setBidi(value);
+        }
+
+        final MBorder leftBorder = paragraph.getLeftBorder();
+        if (leftBorder != null) {
+            newParagraph.setBorderLeft(leftBorder.getType().toPOI());
+            final Color color = leftBorder.getColor();
+            if (color != null) {
+                newParagraph.getCTP().getPPr().getPBdr().getLeft().setColor(hexColor(color));
+            }
+            final int size = leftBorder.getSize();
+            if (size >= 0) {
+                newParagraph.getCTP().getPPr().getPBdr().getLeft()
+                        .setSz(BigInteger.valueOf(size * BORDER_SIZE_CONSTANT));
+            }
+        }
+        final MBorder rightBorder = paragraph.getRightBorder();
+        if (rightBorder != null) {
+            newParagraph.setBorderRight(rightBorder.getType().toPOI());
+            final Color color = rightBorder.getColor();
+            if (color != null) {
+                newParagraph.getCTP().getPPr().getPBdr().getRight().setColor(hexColor(color));
+            }
+            final int size = rightBorder.getSize();
+            if (size >= 0) {
+                newParagraph.getCTP().getPPr().getPBdr().getRight()
+                        .setSz(BigInteger.valueOf(size * BORDER_SIZE_CONSTANT));
+            }
+        }
+        final MBorder topBorder = paragraph.getTopBorder();
+        if (topBorder != null) {
+            newParagraph.setBorderTop(topBorder.getType().toPOI());
+            final Color color = topBorder.getColor();
+            if (color != null) {
+                newParagraph.getCTP().getPPr().getPBdr().getTop().setColor(hexColor(color));
+            }
+            final int size = topBorder.getSize();
+            if (size >= 0) {
+                newParagraph.getCTP().getPPr().getPBdr().getTop()
+                        .setSz(BigInteger.valueOf(size * BORDER_SIZE_CONSTANT));
+            }
+        }
+        final MBorder bottomBorder = paragraph.getBottomBorder();
+        if (bottomBorder != null) {
+            newParagraph.setBorderBottom(bottomBorder.getType().toPOI());
+            final Color color = bottomBorder.getColor();
+            if (color != null) {
+                newParagraph.getCTP().getPPr().getPBdr().getBottom().setColor(hexColor(color));
+            }
+            final int size = bottomBorder.getSize();
+            if (size >= 0) {
+                newParagraph.getCTP().getPPr().getPBdr().getBottom()
+                        .setSz(BigInteger.valueOf(size * BORDER_SIZE_CONSTANT));
+            }
         }
 
         return insertObject(newParagraph, paragraph.getContents(), run);
@@ -1152,7 +1215,6 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             for (int column = 0; column < mRow.getCells().size(); column++) {
                 final MCell mCell = mRow.getCells().get(column);
                 final XWPFTableCell xwpfCell = xwpfRow.createCell();
-
                 // Populate cell
                 XWPFParagraph xwpfCellParagraph = xwpfCell.getParagraphs().get(0);
                 xwpfCellParagraph.setSpacingBefore(0);
@@ -1410,6 +1472,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             }
             if ((style.getFontModifiers() & MStyle.SUPERSCRIPT) != 0) {
                 run.setSubscript(VerticalAlign.SUPERSCRIPT);
+            }
+            if ((style.getFontModifiers() & MStyle.FONT_SMALL_CAPS) != 0) {
+                run.setSmallCaps(true);
             }
         }
         if (style.getForegroundColor() != null) {
