@@ -313,4 +313,13 @@ public class MImageImpl implements MImage {
         return "Image " + uri.toString();
     }
 
+    /**
+     * Gets the buffer.
+     * 
+     * @return the buffer if nay, <code>null</code> otherwise
+     */
+    public byte[] getBuffer() {
+        return buffer;
+    }
+
 }

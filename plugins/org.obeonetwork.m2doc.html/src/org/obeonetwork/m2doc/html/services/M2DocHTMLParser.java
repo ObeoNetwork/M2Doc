@@ -610,6 +610,16 @@ public class M2DocHTMLParser extends Parser {
     private final XWPFDocument destinationDocument;
 
     /**
+     * SVG list because SVG is case sensitive and is broken by JSoup HTML parser.
+     */
+    private final List<String> svgs = new ArrayList<>();
+
+    /**
+     * The current SVG index.
+     */
+    private int svgIndex;
+
+    /**
      * Constructor.
      * 
      * @param uriConverter
@@ -634,6 +644,9 @@ public class M2DocHTMLParser extends Parser {
     public List<MElement> parse(URI baseURI, String htmlString) {
         final MList res = new MListImpl();
         final MParagraph parent = new MParagraphImpl(res, null);
+
+        initializeSVGs(svgs, Jsoup.parse(htmlString, baseURI.toString(), org.jsoup.parser.Parser.xmlParser()));
+        svgIndex = 0;
 
         final Document document = Jsoup.parse(htmlString, baseURI.toString());
         document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
@@ -665,6 +678,26 @@ public class M2DocHTMLParser extends Parser {
         createNeededParagraphes(parent);
 
         return res;
+    }
+
+    /**
+     * Initializes SVG to prevent JSoup's HTML parser from breaking case sensitive SVG.
+     * 
+     * @param svgsResults
+     *            the resulting {@link List} of SVG
+     * @param node
+     *            the current {@link Node}
+     */
+    private void initializeSVGs(List<String> svgsResults, Node node) {
+        if (node instanceof Element) {
+            if (SVG_TAG.equals(node.nodeName())) {
+                svgsResults.add(node.toString());
+            } else {
+                for (Node child : node.childNodes()) {
+                    initializeSVGs(svgsResults, child);
+                }
+            }
+        }
     }
 
     /**
@@ -732,7 +765,7 @@ public class M2DocHTMLParser extends Parser {
                     insertTable(parent, context, tHeader, tBody);
                 }
             } else if (SVG_TAG.equals(node.nodeName())) {
-                final MImageImpl mImage = new MImageImpl(node.toString().getBytes(), PictureType.SVG);
+                final MImageImpl mImage = new MImageImpl(svgs.get(svgIndex++).getBytes(), PictureType.SVG);
                 final MList parentContents = (MList) parent.getContents();
                 parentContents.add(mImage);
             } else {
