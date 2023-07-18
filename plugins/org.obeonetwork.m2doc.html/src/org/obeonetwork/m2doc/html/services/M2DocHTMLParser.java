@@ -612,7 +612,7 @@ public class M2DocHTMLParser extends Parser {
     /**
      * SVG list because SVG is case sensitive and is broken by JSoup HTML parser.
      */
-    private final List<String> svgs = new ArrayList<>();
+    private List<String> svgs;
 
     /**
      * The current SVG index.
@@ -645,6 +645,7 @@ public class M2DocHTMLParser extends Parser {
         final MList res = new MListImpl();
         final MParagraph parent = new MParagraphImpl(res, null);
 
+        svgs = new ArrayList<>();
         initializeSVGs(svgs, Jsoup.parse(htmlString, baseURI.toString(), org.jsoup.parser.Parser.xmlParser()));
         svgIndex = 0;
 

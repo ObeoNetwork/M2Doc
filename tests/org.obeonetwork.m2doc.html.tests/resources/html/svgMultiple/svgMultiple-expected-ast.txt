@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .fromHTMLURI('doc.html')]
+  A query using a second html file with a different inlined SVG image :
+  [query: .fromHTMLURI('doc1.html')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
