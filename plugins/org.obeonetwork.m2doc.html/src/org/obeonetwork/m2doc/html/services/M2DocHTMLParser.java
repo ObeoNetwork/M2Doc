@@ -766,7 +766,8 @@ public class M2DocHTMLParser extends Parser {
                     insertTable(parent, context, tHeader, tBody);
                 }
             } else if (SVG_TAG.equals(node.nodeName())) {
-                final MImageImpl mImage = new MImageImpl(svgs.get(svgIndex++).getBytes(), PictureType.SVG);
+                final MImageImpl mImage = new MImageImpl(svgs.get(svgIndex++).getBytes(StandardCharsets.UTF_8),
+                        PictureType.SVG);
                 final MList parentContents = (MList) parent.getContents();
                 parentContents.add(mImage);
             } else {
