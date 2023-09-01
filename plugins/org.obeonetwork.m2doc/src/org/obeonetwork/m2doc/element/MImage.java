@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -79,6 +79,31 @@ public interface MImage extends MElement {
         public boolean conserveRatio() {
             return false;
         }
+
+        @Override
+        public double getRatio() {
+            return 1;
+        }
+
+        @Override
+        public int getRelativeHeight() {
+            return -1;
+        }
+
+        @Override
+        public int getRelativeWidth() {
+            return -1;
+        }
+
+        @Override
+        public void setRelativeHeight(int relativeHeight) {
+            // nothing to do here
+        }
+
+        @Override
+        public void setRelativeWidth(int relativeWidth) {
+            // nothing to do here
+        }
     };
     // CHECKSTYLE:ON
 
@@ -98,6 +123,21 @@ public interface MImage extends MElement {
     void setWidth(int width);
 
     /**
+     * Gets the relative image width from its future container (0..100).
+     * 
+     * @return the relative image width from its future container if any, <code>-1</code> otherwise
+     */
+    int getRelativeWidth();
+
+    /**
+     * Sets the relative image width from its future container (0..100) or <code>-1</code> to unset.
+     * 
+     * @param relativeWidth
+     *            the relative image width from its future container
+     */
+    void setRelativeWidth(int relativeWidth);
+
+    /**
      * Gets the image height.
      * 
      * @return the image height
@@ -113,6 +153,21 @@ public interface MImage extends MElement {
     void setHeight(int height);
 
     /**
+     * Gets the relative image height from its future container (0..100).
+     * 
+     * @return the relative image height from its future container if any, <code>-1</code> otherwise
+     */
+    int getRelativeHeight();
+
+    /**
+     * Sets the relative image height from its future container (0..100) or <code>-1</code> to unset.
+     * 
+     * @param relativeHeight
+     *            the relative image height from its future container
+     */
+    void setRelativeHeight(int relativeHeight);
+
+    /**
      * Tells if we conserve aspect ratio.
      * 
      * @return <code>true</code> if we conserve aspect ratio, <code>false</code> otherwise
@@ -126,6 +181,13 @@ public interface MImage extends MElement {
      *            <code>true</code> to conserve the {@link #getRatio() aspect ration}, <code>false</code> otherwise
      */
     void setConserveRatio(boolean conserveRatio);
+
+    /**
+     * Gets the aspect ratio.
+     * 
+     * @return the aspect ratio
+     */
+    double getRatio();
 
     /**
      * Gets the {@link URI}.

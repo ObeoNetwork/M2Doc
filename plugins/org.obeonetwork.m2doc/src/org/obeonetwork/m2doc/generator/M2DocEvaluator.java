@@ -75,6 +75,7 @@ import org.obeonetwork.m2doc.element.MTable.MCell.VAlignment;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MTable.MTableAlign;
 import org.obeonetwork.m2doc.element.MText;
+import org.obeonetwork.m2doc.element.impl.AbosluteResizedImage;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -114,6 +115,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTbl;
@@ -136,6 +138,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * The generation monitor work.
      */
     public static final int MONITOR_WORK = 30;
+
+    /**
+     * Ratio from some unit to pixels.
+     */
+    private static final double UNIT_CONVERSION = 20.0d;
 
     /**
      * Constant to get from pixel size to border size.
@@ -819,11 +826,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      */
     private void insertMImage(XWPFParagraph paragraph, XWPFRun run, MImage image) {
         try {
-            int heigth = Units.toEMU(image.getHeight());
-            int width = Units.toEMU(image.getWidth());
-
-            try (InputStream imageStream = image.getInputStream()) {
-                run.addPicture(imageStream, image.getType().getPoiType(), image.getURI().toString(), width, heigth);
+            final MImage asoluteImage = getAbsoluteSizedImage(paragraph, image);
+            final int heigth = Units.toEMU(asoluteImage.getHeight());
+            final int width = Units.toEMU(asoluteImage.getWidth());
+            try (InputStream imageStream = asoluteImage.getInputStream()) {
+                run.addPicture(imageStream, asoluteImage.getType().getPoiType(), asoluteImage.getURI().toString(),
+                        width, heigth);
             }
         } catch (InvalidFormatException e) {
             insertMessage(paragraph, ValidationMessageLevel.ERROR,
@@ -832,6 +840,189 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             insertMessage(paragraph, ValidationMessageLevel.ERROR,
                     String.format(AN_I_O_PROBLEM_OCCURED_WHILE_READING, image.getURI().toString(), e.getMessage()));
         }
+    }
+
+    /**
+     * Gets the absolute sized image from the given {@link MImage}.
+     * 
+     * @param paragraph
+     *            the current paragraph
+     * @param image
+     *            the {@link MImage}
+     * @return the absolute sized image from the given {@link MImage}
+     */
+    private MImage getAbsoluteSizedImage(XWPFParagraph paragraph, MImage image) {
+        final MImage res;
+
+        if (image.getRelativeWidth() >= 0) {
+            res = new AbosluteResizedImage(image);
+            final int width = getAbsoluteImageWidth(paragraph, image);
+            if (image.getRelativeHeight() >= 0) {
+                final int height = getAbsoluteImageHeight(paragraph, image);
+                res.setConserveRatio(false);
+                res.setWidth(width);
+                res.setHeight(height);
+            } else {
+                res.setWidth(width);
+            }
+        } else if (image.getRelativeHeight() >= 0) {
+            res = new AbosluteResizedImage(image);
+            final int height = getAbsoluteImageHeight(paragraph, image);
+            res.setHeight(height);
+        } else {
+            res = image;
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the image width.
+     * 
+     * @param paragraph
+     *            the current paragraph.
+     * @param image
+     *            the {@link MImage}
+     * @return the image width
+     */
+    private int getAbsoluteImageWidth(XWPFParagraph paragraph, MImage image) {
+        final int res;
+
+        if (paragraph.getCTP() != null && paragraph.getCTP().getPPr() != null
+            && paragraph.getCTP().getPPr().getSectPr() != null) {
+            final CTSectPr section = paragraph.getCTP().getPPr().getSectPr();
+            res = getAbsoluteWidthFromSection(image, section);
+        } else {
+            // no section attached to the paragraph try the containing boby
+            final IBody body = paragraph.getBody();
+            if (body instanceof XWPFDocument) {
+                final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
+                res = getAbsoluteWidthFromSection(image, section);
+            } else if (body instanceof XWPFHeaderFooter) {
+                final CTSectPr section = ((XWPFHeaderFooter) body).getXWPFDocument().getDocument().getBody()
+                        .getSectPr();
+                res = getAbsoluteWidthFromSection(image, section);
+            } else if (body instanceof XWPFTableCell) {
+                final int cellWidth = ((XWPFTableCell) body).getWidth();
+                res = (int) (cellWidth * image.getRelativeWidth() / 100.0d / UNIT_CONVERSION);
+            } else {
+                throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the absolute width of the given {@link MImage} for the given section.
+     * 
+     * @param image
+     *            the {@link MImage}
+     * @param section
+     *            the {@link CTSectPr}
+     * @return the absolute width of the given {@link MImage} for the given section.
+     */
+    private int getAbsoluteWidthFromSection(MImage image, final CTSectPr section) {
+        final int res;
+        if (section.getPgSz() != null) {
+            final int containerWidth;
+            final int pageWidth = bigIntegerToInt((BigInteger) section.getPgSz().getW());
+            if (section.getPgMar() != null) {
+                final int leftMargin = bigIntegerToInt((BigInteger) section.getPgMar().getLeft());
+                final int rightMargin = bigIntegerToInt((BigInteger) section.getPgMar().getRight());
+                containerWidth = pageWidth - leftMargin - rightMargin;
+            } else {
+                containerWidth = pageWidth;
+            }
+            res = (int) (containerWidth * image.getRelativeWidth() / 100.0d / UNIT_CONVERSION);
+        } else {
+            res = image.getWidth();
+        }
+        return res;
+    }
+
+    /**
+     * Gets the image height.
+     * 
+     * @param paragraph
+     *            the current paragraph.
+     * @param image
+     *            the {@link MImage}
+     * @return the image height
+     */
+    private int getAbsoluteImageHeight(XWPFParagraph paragraph, MImage image) {
+        final int res;
+
+        if (paragraph.getCTP() != null && paragraph.getCTP().getPPr() != null
+            && paragraph.getCTP().getPPr().getSectPr() != null) {
+            final CTSectPr section = paragraph.getCTP().getPPr().getSectPr();
+            res = getAbsoluteHeightFromSection(image, section);
+        } else {
+            // no section attached to the paragraph try the containing boby
+            final IBody body = paragraph.getBody();
+            if (body instanceof XWPFDocument) {
+                final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
+                res = getAbsoluteHeightFromSection(image, section);
+            } else if (body instanceof XWPFHeaderFooter) {
+                final CTSectPr section = ((XWPFHeaderFooter) body).getXWPFDocument().getDocument().getBody()
+                        .getSectPr();
+                res = getAbsoluteHeightFromSection(image, section);
+            } else if (body instanceof XWPFTableCell) {
+                // TODO technically the cell height depend on its content
+                res = image.getHeight();
+            } else {
+                throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the absolute height of the given {@link MImage} for the given section.
+     * 
+     * @param image
+     *            the {@link MImage}
+     * @param section
+     *            the {@link CTSectPr}
+     * @return the absolute height of the given {@link MImage} for the given section.
+     */
+    private int getAbsoluteHeightFromSection(MImage image, final CTSectPr section) {
+        final int res;
+        if (section.getPgSz() != null) {
+            final int containerHeight;
+            final int pageHeight = bigIntegerToInt((BigInteger) section.getPgSz().getH());
+            if (section.getPgMar() != null) {
+                final int topMargin = bigIntegerToInt((BigInteger) section.getPgMar().getTop());
+                final int bottomMargin = bigIntegerToInt((BigInteger) section.getPgMar().getBottom());
+                containerHeight = pageHeight - topMargin - bottomMargin;
+            } else {
+                containerHeight = pageHeight;
+            }
+            res = (int) (containerHeight * image.getRelativeHeight() / 100.0d / UNIT_CONVERSION);
+        } else {
+            res = image.getHeight();
+        }
+        return res;
+    }
+
+    /**
+     * Gets the value of the given {@link BigInteger}.
+     * 
+     * @param bigInteger
+     *            the {@link BigInteger}
+     * @return the value of the given {@link BigInteger}
+     */
+    private int bigIntegerToInt(BigInteger bigInteger) {
+        final int res;
+
+        if (bigInteger != null) {
+            res = bigInteger.intValue();
+        } else {
+            res = 0;
+        }
+
+        return res;
     }
 
     /**

@@ -1,0 +1,17 @@
+
+=== HEADER ===
+
+  
+  
+  A simple demonstration of a query :
+  [query: .fromHTMLURI('doc.html')]
+  End of demonstration.
+=== BODY ===
+
+  
+=== FOOTER ===
+
+  
+  
+  
+=== TEMPLATES ===

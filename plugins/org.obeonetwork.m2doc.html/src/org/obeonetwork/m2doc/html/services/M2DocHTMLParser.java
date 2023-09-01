@@ -81,6 +81,11 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat.Enu
 public class M2DocHTMLParser extends Parser {
 
     /**
+     * The % string.
+     */
+    private static final String PERCENT = "%";
+
+    /**
      * The none value.
      */
     private static final String NONE = "none";
@@ -1580,16 +1585,74 @@ public class M2DocHTMLParser extends Parser {
      */
     private void setImageSize(Node element, final MImage mImage) {
         if (element.hasAttr(WIDTH_ATTR)) {
+            final String width = element.attr(WIDTH_ATTR);
             if (element.hasAttr(HEIGHT_ATTR)) {
+                final String height = element.attr(HEIGHT_ATTR);
                 mImage.setConserveRatio(false);
-                mImage.setWidth(Integer.valueOf(element.attr(WIDTH_ATTR)));
-                mImage.setHeight(Integer.valueOf(element.attr(HEIGHT_ATTR)));
+                setImageWidth(mImage, width);
+                setImageHeight(mImage, height);
             } else {
-                mImage.setWidth(Integer.valueOf(element.attr(WIDTH_ATTR)));
+                setImageWidth(mImage, width);
             }
         } else if (element.hasAttr(HEIGHT_ATTR)) {
-            mImage.setHeight(Integer.valueOf(element.attr(HEIGHT_ATTR)));
+            final String height = element.attr(HEIGHT_ATTR);
+            setImageHeight(mImage, height);
         }
+    }
+
+    /**
+     * Sets the given {@link MImage} {@link MImage#getHeight() height} or {@link MImage#getRelativeHeight()
+     * relative height}.
+     * 
+     * @param mImage
+     *            the {@link MImage}
+     * @param height
+     *            the height
+     */
+    private void setImageHeight(final MImage mImage, final String height) {
+        final int relativeHeight = getRelativeSize(height);
+        if (relativeHeight != -1) {
+            mImage.setRelativeHeight(relativeHeight);
+        } else {
+            mImage.setHeight(Integer.valueOf(height));
+        }
+    }
+
+    /**
+     * Sets the given {@link MImage} {@link MImage#getWidth() width} or {@link MImage#getRelativeWidth() relative width}.
+     * 
+     * @param mImage
+     *            the {@link MImage}
+     * @param width
+     *            the width
+     */
+    private void setImageWidth(final MImage mImage, final String width) {
+        final int relativeWidth = getRelativeSize(width);
+        if (relativeWidth != -1) {
+            mImage.setRelativeWidth(relativeWidth);
+        } else {
+            mImage.setWidth(Integer.valueOf(width));
+        }
+    }
+
+    /**
+     * Gets the relative size for the given image size (x%).
+     * 
+     * @param imageSize
+     *            the image size attribute
+     * @return the relative size if it's relative, <code>-1</code> otherwise
+     */
+    private int getRelativeSize(String imageSize) {
+        final int res;
+
+        final int percentIndex = imageSize.indexOf(PERCENT);
+        if (percentIndex >= 0) {
+            res = Integer.valueOf(imageSize.substring(0, percentIndex));
+        } else {
+            res = -1;
+        }
+
+        return res;
     }
 
     /**
@@ -1760,9 +1823,9 @@ public class M2DocHTMLParser extends Parser {
             } else {
                 final CTInd indentation = level.addNewPPr().addNewInd();
                 if (type == STNumberFormat.NONE) {
-                    text.setVal("%" + (context.numberingLevel + 1));
+                    text.setVal(PERCENT + (context.numberingLevel + 1));
                 } else {
-                    text.setVal("%" + (context.numberingLevel + 1) + ".");
+                    text.setVal(PERCENT + (context.numberingLevel + 1) + ".");
                 }
                 if (context.numberingLevel > 0) {
                     final STOnOff onOff = STOnOff.Factory.newInstance();

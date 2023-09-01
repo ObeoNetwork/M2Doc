@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -51,6 +51,16 @@ public class MImageAWTImpl implements MImage {
     private int height;
 
     /**
+     * The relative width.
+     */
+    private int relativeWidth = -1;
+
+    /**
+     * The relative height.
+     */
+    private int relativeHeight = -1;
+
+    /**
      * Tells if we keep the aspect ratio.
      */
     private boolean conserveRatio;
@@ -86,7 +96,7 @@ public class MImageAWTImpl implements MImage {
     public void setWidth(int width) {
         this.width = width;
         if (conserveRatio) {
-            height = (int) (1 / ratio * width);
+            height = (int) (1 / getRatio() * width);
         }
     }
 
@@ -99,8 +109,28 @@ public class MImageAWTImpl implements MImage {
     public void setHeight(int height) {
         this.height = height;
         if (conserveRatio) {
-            width = (int) (ratio * height);
+            width = (int) (getRatio() * height);
         }
+    }
+
+    @Override
+    public int getRelativeWidth() {
+        return relativeWidth;
+    }
+
+    @Override
+    public void setRelativeWidth(int relativeWidth) {
+        this.relativeWidth = relativeWidth;
+    }
+
+    @Override
+    public int getRelativeHeight() {
+        return relativeHeight;
+    }
+
+    @Override
+    public void setRelativeHeight(int relativeHeight) {
+        this.relativeHeight = relativeHeight;
     }
 
     @Override
@@ -116,12 +146,8 @@ public class MImageAWTImpl implements MImage {
         this.conserveRatio = conserveRatio;
     }
 
-    /**
-     * Gets the aspect ratio.
-     * 
-     * @return the aspect ratio
-     */
-    protected double getRatio() {
+    @Override
+    public double getRatio() {
         return ratio;
     }
 
