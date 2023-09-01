@@ -97,6 +97,7 @@
    <bundle id="org.apache.batik.script" version="1.16.0.v20221027-0840"/>
    <bundle id="org.apache.batik.awt.util" version="1.16.0.v20221027-0840"/>
    <bundle id="org.apache.batik.svggen" version="1.16.0.v20221027-0840"/>
+   <bundle id="org.apache.batik.codec" version="1.16.0.v20221027-0840"/>
 
    <bundle id="org.apache.xmlgraphics" version="2.7.0"/>
    <bundle id="org.w3c.dom.svg" version="1.1.0.v201011041433"/>
