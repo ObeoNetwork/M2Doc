@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021 Obeo. 
+ *  Copyright (c) 2021, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -863,19 +863,27 @@ public class M2DocInterpreterView extends ViewPart {
                 final EObject current = it.next();
                 if (current instanceof Let) {
                     final Let let = (Let) current;
-                    final IValidationResult validationResult = validator.validate(varTypes, let.getValue());
-                    final Set<IType> possibleTypes = validationResult.getPossibleTypes(let.getValue().getAst());
-                    res.put(let.getName(), possibleTypes);
+                    if (let.getName() != null) {
+                        final IValidationResult validationResult = validator.validate(varTypes, let.getValue());
+                        final Set<IType> possibleTypes = validationResult.getPossibleTypes(let.getValue().getAst());
+                        res.put(let.getName(), possibleTypes);
+                    }
                 } else if (current instanceof Repetition) {
                     final Repetition repetition = (Repetition) current;
-                    final IValidationResult validationResult = validator.validate(varTypes, repetition.getQuery());
-                    final Set<IType> possibleTypes = validationResult.getPossibleTypes(repetition.getQuery().getAst());
-                    res.put(repetition.getIterationVar(), possibleTypes);
+                    if (repetition.getIterationVar() != null) {
+                        final IValidationResult validationResult = validator.validate(varTypes, repetition.getQuery());
+                        final Set<IType> possibleTypes = validationResult
+                                .getPossibleTypes(repetition.getQuery().getAst());
+                        res.put(repetition.getIterationVar(), possibleTypes);
+                    }
                 } else if (current instanceof Parameter) {
                     final Parameter parameter = (Parameter) current;
-                    final IValidationResult validationResult = validator.validate(varTypes, parameter.getType());
-                    final Set<IType> possibleTypes = validationResult.getPossibleTypes(parameter.getType().getAst());
-                    res.put(parameter.getName(), possibleTypes);
+                    if (parameter.getName() != null) {
+                        final IValidationResult validationResult = validator.validate(varTypes, parameter.getType());
+                        final Set<IType> possibleTypes = validationResult
+                                .getPossibleTypes(parameter.getType().getAst());
+                        res.put(parameter.getName(), possibleTypes);
+                    }
                 }
             }
 
@@ -914,21 +922,14 @@ public class M2DocInterpreterView extends ViewPart {
                 final EObject current = it.next();
                 if (current instanceof Let) {
                     final Let let = (Let) current;
-                    final EvaluationResult evaluationResult = engine.eval(let.getValue(), res);
-                    final Object value = evaluationResult.getResult();
-                    res.put(let.getName(), value);
+                    if (let.getName() != null) {
+                        final EvaluationResult evaluationResult = engine.eval(let.getValue(), res);
+                        final Object value = evaluationResult.getResult();
+                        res.put(let.getName(), value);
+                    }
                 } else if (current instanceof Repetition) {
                     final Repetition repetition = (Repetition) current;
-                    final EvaluationResult evaluationResult = engine.eval(repetition.getQuery(), res);
-                    final Object value = evaluationResult.getResult();
-                    if (value != null) {
-                        Iterator<?> valIt = ((Collection<?>) value).iterator();
-                        if (valIt.hasNext()) {
-                            res.put(repetition.getIterationVar(), valIt.next());
-                        } else {
-                            // TODO ?
-                        }
-                    } // Else may happen if some variable name are reused with different type
+                    res.putAll(getRepetitionVariableValues(engine, repetition));
                 } else if (current instanceof Parameter) {
                     // final Parameter parameter = (Parameter) current;
                     // TODO ?
@@ -940,6 +941,34 @@ public class M2DocInterpreterView extends ViewPart {
         } catch (DocumentParserException e) {
             // nothing to do here: if we can't parse it doesn't matter
         }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link Repetition} variable value.
+     * 
+     * @param engine
+     *            the {@link QueryEvaluationEngine}
+     * @param repetition
+     *            the {@link Repetition}
+     * @return the {@link Repetition} variable value
+     */
+    private Map<String, Object> getRepetitionVariableValues(QueryEvaluationEngine engine, final Repetition repetition) {
+        final Map<String, Object> res = new HashMap<>();
+
+        final EvaluationResult evaluationResult = engine.eval(repetition.getQuery(), res);
+        final Object value = evaluationResult.getResult();
+        if (value != null) {
+            Iterator<?> valIt = ((Collection<?>) value).iterator();
+            if (valIt.hasNext()) {
+                if (repetition.getIterationVar() != null) {
+                    res.put(repetition.getIterationVar(), valIt.next());
+                }
+            } else {
+                // TODO ?
+            }
+        } // Else may happen if some variable name are reused with different type
 
         return res;
     }
