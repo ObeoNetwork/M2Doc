@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2019 Obeo. 
+ * Copyright (c) 2017, 2023 Obeo. 
  *    All rights reserved. This program and the accompanying materials
  *    are made available under the terms of the Eclipse Public License v2.0
  *    which accompanies this distribution, and is available at
@@ -292,7 +292,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             if (!Boolean.TRUE.toString().equalsIgnoreCase(forceRefreshStr)
                 && !Boolean.FALSE.toString().equalsIgnoreCase(forceRefreshStr)) {
                 diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocSiriusUtils.PLUGIN_ID, 0,
-                        "The Sirius force refresh must be a boolean true or flase: " + forceRefreshStr,
+                        "The Sirius force refresh must be a boolean true or false: " + forceRefreshStr,
                         new Object[] {forceRefreshStr}));
             }
         }
