@@ -80,7 +80,9 @@ public class M2DocCDOURIHandler extends CDOURIHandler {
             if (node instanceof CDOBinaryResource) {
                 ((CDOBinaryResource) node).setContents(new CDOBlob(new ByteArrayInputStream(buffer.toByteArray())));
             } else if (node instanceof CDOTextResource) {
-                ((CDOTextResource) node).setContents(new CDOClob(new StringReader(buffer.toString("UTF-8"))));
+                final CDOTextResource textResource = (CDOTextResource) node;
+                final String encoding = getEncoding(textResource);
+                textResource.setContents(new CDOClob(new StringReader(buffer.toString(encoding))));
             } else {
                 throw new IllegalStateException("CDOResourceNode type not supported.");
             }
@@ -108,12 +110,31 @@ public class M2DocCDOURIHandler extends CDOURIHandler {
         if (node instanceof CDOBinaryResource) {
             res = ((CDOBinaryResource) node).getContents().getContents();
         } else if (node instanceof CDOTextResource) {
-            res = new ReaderInputStream(((CDOTextResource) node).getContents().getContents(), "UTF-8");
+            final CDOTextResource textResource = (CDOTextResource) node;
+            final String encoding = getEncoding(textResource);
+            res = new ReaderInputStream(textResource.getContents().getContents(), encoding);
         } else {
             res = super.createInputStream(uri, options);
         }
 
         return res;
+    }
+
+    /**
+     * Gets the encoding of the given {@link CDOTextResource} and fallback to UTF-8.
+     * 
+     * @param textResource
+     *            the {@link CDOTextResource}
+     * @return the encoding of the given {@link CDOTextResource} and fallback to UTF-8
+     */
+    private static String getEncoding(final CDOTextResource textResource) {
+        final String encoding;
+        if (textResource.getEncoding() != null) {
+            encoding = textResource.getEncoding();
+        } else {
+            encoding = "UTF-8";
+        }
+        return encoding;
     }
 
     @Override
