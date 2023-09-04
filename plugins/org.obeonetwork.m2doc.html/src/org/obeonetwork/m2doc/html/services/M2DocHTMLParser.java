@@ -798,6 +798,10 @@ public class M2DocHTMLParser extends Parser {
                     contextCopy.popMarginBottom();
                 }
                 endParagraph(parent, element);
+                // we created a new paragraph
+                if (element != parent) {
+                    createNeededParagraphes(element);
+                }
             }
         } else if (node instanceof TextNode) {
             insertText(parent, contextCopy, (TextNode) node, lastElement);
@@ -856,7 +860,6 @@ public class M2DocHTMLParser extends Parser {
                 }
             }
         }
-        createNeededParagraphes(parent);
     }
 
     /**
