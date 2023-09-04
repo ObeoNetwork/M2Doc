@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019 Obeo. 
+ *  Copyright (c) 2019, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -452,8 +452,10 @@ public class SWTPromptServices extends AbstractServiceProvider {
 
         if ("promptEObject".equals(method.getName())) {
             result = new EOBjectPromptService(method, this);
-        } else {
+        } else if (!"dispose".equals(method.getName())) {
             result = new JavaMethodService(method, this);
+        } else {
+            result = null;
         }
 
         return result;
