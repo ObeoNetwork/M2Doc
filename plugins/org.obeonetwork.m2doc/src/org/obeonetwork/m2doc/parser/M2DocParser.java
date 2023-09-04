@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -587,7 +587,7 @@ public class M2DocParser extends AbstractBodyParser {
                 M2DocUtils.validationError(template,
                         M2DocUtils.message(ParsingErrorMessage.MALFORMEDTEMPLATENOPARAMETERSPECIFIED, tagText));
             }
-            final int indexOfCloseParenthesis = tagText.indexOf(')');
+            final int indexOfCloseParenthesis = tagText.lastIndexOf(')');
             final List<Parameter> parameters;
             if (indexOfCloseParenthesis < 0) {
                 parameters = parseParameters(template, tagText.substring(indexOfOpenParenthesis));

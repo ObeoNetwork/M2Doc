@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: ->myTemplate(OrderedSet{2, 3, 4}, 'some suffix')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (values : OrderedSet(java.lang.Integerjava.util.Set, suffix : java.lang.String)
+  
+  for value | values do
+    [query: .add(value, value)]
+  endfor
+  
+  [query: suffix]

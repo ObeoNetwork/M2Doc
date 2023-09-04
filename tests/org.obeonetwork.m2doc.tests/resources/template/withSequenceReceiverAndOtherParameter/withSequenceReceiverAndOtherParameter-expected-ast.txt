@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: ->myTemplate(Sequence{2, 3, 4}, 'some suffix')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (values : Sequence(java.lang.Integerjava.util.List, suffix : java.lang.String)
+  
+  for value | values do
+    [query: .add(value, value)]
+  endfor
+  
+  [query: suffix]
