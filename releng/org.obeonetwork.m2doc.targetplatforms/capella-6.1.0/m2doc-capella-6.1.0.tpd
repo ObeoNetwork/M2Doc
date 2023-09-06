@@ -116,7 +116,7 @@ location sirius "https://download.eclipse.org/sirius/updates/releases/7.1.0/2021
 	org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group lazy
 }
 
-location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/stable/runtime/6.1.0.20230322/" {
+location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/releases/runtime/6.1.0/" {
 	org.polarsys.kitalpha.ad.runtime.feature.source.feature.group lazy
 	org.polarsys.kitalpha.cadence.feature.source.feature.group lazy
 	org.polarsys.kitalpha.common.feature.source.feature.group lazy
