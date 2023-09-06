@@ -917,22 +917,24 @@ public class RawCopier {
             final XWPFTable inputTable) {
         final List<XWPFTableRow> inputRows = inputTable.getRows();
         final List<XWPFTableRow> outputRows = outputTable.getRows();
-        for (int rowIndex = 0; rowIndex < inputRows.size(); rowIndex++) {
-            final XWPFTableRow inputRow = inputRows.get(rowIndex);
-            final XWPFTableRow outputRow = outputRows.get(rowIndex);
-            final List<XWPFTableCell> inputCells = inputRow.getTableCells();
-            final List<XWPFTableCell> outputCells = outputRow.getTableCells();
-            for (int cellIndex = 0; cellIndex < inputCells.size(); cellIndex++) {
-                final XWPFTableCell inputCell = inputCells.get(cellIndex);
-                final XWPFTableCell outputCell = outputCells.get(cellIndex);
-                final List<IBodyElement> inputBodyElements = inputCell.getBodyElements();
-                final List<IBodyElement> outputBodyElements = outputCell.getBodyElements();
-                for (int bodyElementIndex = 0; bodyElementIndex < inputBodyElements.size(); bodyElementIndex++) {
-                    final IBodyElement inputBodyElement = inputBodyElements.get(bodyElementIndex);
-                    if (inputBodyElement instanceof XWPFParagraph) {
-                        final IBodyElement outputBodyElement = outputBodyElements.get(bodyElementIndex);
-                        updateBookmarks(bookmarkManager, ((XWPFParagraph) outputBodyElement).getCTP(),
-                                ((XWPFParagraph) inputBodyElement).getCTP(), outputTable.getBody());
+        if (inputRows.size() == outputRows.size()) {
+            for (int rowIndex = 0; rowIndex < inputRows.size(); rowIndex++) {
+                final XWPFTableRow inputRow = inputRows.get(rowIndex);
+                final XWPFTableRow outputRow = outputRows.get(rowIndex);
+                final List<XWPFTableCell> inputCells = inputRow.getTableCells();
+                final List<XWPFTableCell> outputCells = outputRow.getTableCells();
+                for (int cellIndex = 0; cellIndex < inputCells.size(); cellIndex++) {
+                    final XWPFTableCell inputCell = inputCells.get(cellIndex);
+                    final XWPFTableCell outputCell = outputCells.get(cellIndex);
+                    final List<IBodyElement> inputBodyElements = inputCell.getBodyElements();
+                    final List<IBodyElement> outputBodyElements = outputCell.getBodyElements();
+                    for (int bodyElementIndex = 0; bodyElementIndex < inputBodyElements.size(); bodyElementIndex++) {
+                        final IBodyElement inputBodyElement = inputBodyElements.get(bodyElementIndex);
+                        if (inputBodyElement instanceof XWPFParagraph) {
+                            final IBodyElement outputBodyElement = outputBodyElements.get(bodyElementIndex);
+                            updateBookmarks(bookmarkManager, ((XWPFParagraph) outputBodyElement).getCTP(),
+                                    ((XWPFParagraph) inputBodyElement).getCTP(), outputTable.getBody());
+                        }
                     }
                 }
             }

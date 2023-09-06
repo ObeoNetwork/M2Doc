@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .myTemplate('doc.html')]
+  End of demonstration.
+  
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (path : java.lang.String)
+  [query: .fromHTMLURI(path)]
