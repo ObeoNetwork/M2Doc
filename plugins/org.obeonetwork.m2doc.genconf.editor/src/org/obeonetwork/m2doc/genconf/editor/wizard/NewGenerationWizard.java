@@ -1,6 +1,7 @@
 package org.obeonetwork.m2doc.genconf.editor.wizard;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -90,7 +91,8 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
      */
     public NewGenerationWizard() {
         generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
-        final Resource resource = new XMIResourceImpl();
+        final XMIResourceImpl resource = new XMIResourceImpl();
+        resource.setEncoding(StandardCharsets.UTF_8.name());
         final ResourceSet rs = new ResourceSetImpl();
         rs.getResources().add(resource);
         resource.getContents().add(generation);
