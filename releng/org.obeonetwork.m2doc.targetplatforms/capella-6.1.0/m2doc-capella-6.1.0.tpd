@@ -103,7 +103,7 @@ location Xerces-2.12.2 "https://download.eclipse.org/modeling/gmp/gmf-runtime/up
 	org.apache.xerces lazy
 }
 
-location sirius "https://download.eclipse.org/sirius/updates/stable/7.1.0-S20230302-034329/2021-06" {
+location sirius "https://download.eclipse.org/sirius/updates/releases/7.1.0/2021-06" {
 	org.eclipse.sirius.doc.feature.feature.group lazy
 	org.eclipse.sirius.doc.feature.source.feature.group lazy
 	org.eclipse.sirius.runtime.source.feature.group lazy
@@ -141,12 +141,12 @@ location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/upd
 	org.polarsys.kitalpha.sirius.rotativeimage.feature.feature.group lazy
 }
 
-location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/stable/sdk/6.1.0.20230322/" {
+location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/releases/sdk/6.1.0/" {
 	org.polarsys.kitalpha.doc.feature.feature.group lazy
 	org.polarsys.kitalpha.emde.sdk.feature.source.feature.group lazy
 }
 
-location diffmerge-core "https://download.eclipse.org/diffmerge/stable/0.14.1-S20230321/emf-diffmerge-site/" {
+location diffmerge-core "https://download.eclipse.org/diffmerge/releases/0.14.1/emf-diffmerge-site/" {
 	org.eclipse.emf.diffmerge.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.sirius.feature.source.feature.group lazy
 	org.eclipse.emf.diffmerge.gmf.feature.source.feature.group lazy
