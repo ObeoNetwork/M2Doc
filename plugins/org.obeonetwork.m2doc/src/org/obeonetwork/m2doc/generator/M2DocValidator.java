@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2022 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -124,6 +124,24 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      */
     public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnv,
             Monitor monitor) {
+        return validate(documentTemplate, queryEnv, false, monitor);
+    }
+
+    /**
+     * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param queryEnv
+     *            the {@link IQueryEnvironment}
+     * @param ignoreVersionCheck
+     *            ignore the {@link M2DocUtils#VERSION} check
+     * @param monitor
+     *            the {@link Monitor}
+     * @return the {@link ValidationMessageLevel}
+     */
+    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnv,
+            boolean ignoreVersionCheck, Monitor monitor) {
 
         progressMonitor = monitor;
         progressMonitor.beginTask("Validating " + documentTemplate.eResource().getURI(), TOTAL_VALIDATE_MONITOR_WORK);
@@ -137,7 +155,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         if (templateProperties.getM2DocVersion() == null) {
             documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(
                     ValidationMessageLevel.WARNING, "No M2Doc version set in the template.", run));
-        } else if (!M2DocUtils.VERSION.equals(templateProperties.getM2DocVersion())) {
+        } else if (!ignoreVersionCheck && !M2DocUtils.VERSION.equals(templateProperties.getM2DocVersion())) {
             documentTemplate.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.WARNING, "M2Doc version mismatch: template is "
                         + templateProperties.getM2DocVersion() + " and runtime is " + M2DocUtils.VERSION, run));

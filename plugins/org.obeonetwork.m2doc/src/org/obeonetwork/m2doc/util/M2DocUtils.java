@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2021 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -145,6 +145,11 @@ public final class M2DocUtils {
      * The install {@link ECrossReferenceAdapter} option.
      */
     public static final String INSTALL_CROSS_REFERENCE_ADAPTER_OPTION = "InstallCrossReferenceAdapter";
+
+    /**
+     * The ignore {@link #VERSION} check option.
+     */
+    public static final String IGNORE_VERSION_CHECK_OPTION = "IgnoreVersionCheck";
 
     /**
      * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
@@ -742,8 +747,26 @@ public final class M2DocUtils {
      */
     public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
             IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
+        return validate(documentTemplate, queryEnvironment, false, monitor);
+    }
+
+    /**
+     * Validates the given {@link DocumentTemplate} with the given {@link IReadOnlyQueryEnvironment} and variables types.
+     * 
+     * @param documentTemplate
+     *            the {@link DocumentTemplate}
+     * @param queryEnvironment
+     *            the {@link IReadOnlyQueryEnvironment}
+     * @param ignoreVersionCheck
+     *            ignore the {@link #VERSION} check
+     * @param monitor
+     *            used to track the progress will generating
+     * @return the {@link ValidationMessageLevel}
+     */
+    public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
+            IReadOnlyQueryEnvironment queryEnvironment, boolean ignoreVersionCheck, Monitor monitor) {
         final M2DocValidator validator = new M2DocValidator();
-        return validator.validate(documentTemplate, queryEnvironment, monitor);
+        return validator.validate(documentTemplate, queryEnvironment, ignoreVersionCheck, monitor);
     }
 
     /**
@@ -984,6 +1007,7 @@ public final class M2DocUtils {
         final Map<String, String> res = new LinkedHashMap<>();
 
         res.put(M2DocUtils.UPDATE_FIELDS_OPTION, Boolean.FALSE.toString());
+        res.put(M2DocUtils.IGNORE_VERSION_CHECK_OPTION, Boolean.FALSE.toString());
         for (IServicesConfigurator configurator : getConfigurators()) {
             res.putAll(configurator.getInitializedOptions(options));
         }
@@ -1004,6 +1028,7 @@ public final class M2DocUtils {
         }
 
         res.add(UPDATE_FIELDS_OPTION);
+        res.add(IGNORE_VERSION_CHECK_OPTION);
         res.add(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION);
 
         return res;

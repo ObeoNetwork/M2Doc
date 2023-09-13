@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -176,11 +176,13 @@ public class GenconfUtilsTests {
 
         GenconfUtils.initializeOptions(generation);
 
-        assertEquals(2, generation.getOptions().size());
+        assertEquals(3, generation.getOptions().size());
         assertEquals(M2DocUtils.UPDATE_FIELDS_OPTION, generation.getOptions().get(0).getName());
         assertEquals("false", generation.getOptions().get(0).getValue());
-        assertEquals(TestServiceConfigurator.OPTION, generation.getOptions().get(1).getName());
-        assertEquals(TestServiceConfigurator.VALUE, generation.getOptions().get(1).getValue());
+        assertEquals(M2DocUtils.IGNORE_VERSION_CHECK_OPTION, generation.getOptions().get(1).getName());
+        assertEquals("false", generation.getOptions().get(1).getValue());
+        assertEquals(TestServiceConfigurator.OPTION, generation.getOptions().get(2).getName());
+        assertEquals(TestServiceConfigurator.VALUE, generation.getOptions().get(2).getValue());
     }
 
     @Test
@@ -193,11 +195,13 @@ public class GenconfUtilsTests {
 
         GenconfUtils.initializeOptions(generation);
 
-        assertEquals(2, generation.getOptions().size());
+        assertEquals(3, generation.getOptions().size());
         assertEquals(TestServiceConfigurator.OPTION, generation.getOptions().get(0).getName());
         assertEquals(TestServiceConfigurator.VALUE, generation.getOptions().get(0).getValue());
         assertEquals(M2DocUtils.UPDATE_FIELDS_OPTION, generation.getOptions().get(1).getName());
         assertEquals("false", generation.getOptions().get(1).getValue());
+        assertEquals(M2DocUtils.IGNORE_VERSION_CHECK_OPTION, generation.getOptions().get(2).getName());
+        assertEquals("false", generation.getOptions().get(2).getValue());
     }
 
     @Test

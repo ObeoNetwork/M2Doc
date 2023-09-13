@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -73,7 +73,7 @@ public class M2DocValidatorTests {
             selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
             selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 
-            validator.validate(documentTemplate, queryEnvironment, new BasicMonitor());
+            validator.validate(documentTemplate, queryEnvironment, false, new BasicMonitor());
 
             assertEquals(0, conditional.getValidationMessages().size());
 
@@ -104,7 +104,7 @@ public class M2DocValidatorTests {
         final DocumentTemplate documentTemplate = M2DocTestUtils.createDocumentTemplate(body);
 
         final M2DocValidator validator = new M2DocValidator();
-        validator.validate(documentTemplate, queryEnvironment, new BasicMonitor());
+        validator.validate(documentTemplate, queryEnvironment, false, new BasicMonitor());
 
         assertEquals(1, query.getValidationMessages().size());
         assertTemplateValidationMessage(query.getValidationMessages().get(0), ValidationMessageLevel.ERROR,

@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _uSzOkH3uEeii_sZyBcvLmQ
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 2/11/20 1:07 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 9/13/23, 3:26 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -28,7 +28,7 @@ with [get-window "Generation configuration"] {
 }
 get-window "Generation configuration" | get-tab-folder | get-tab-item "Options (expert)" | click
 with [get-window "Generation configuration"] {
-    get-table | get-property itemCount | equals 1 | verify-true
+    get-table | get-property itemCount | equals 2 | verify-true
     get-button Add | get-property enablement | equals true | verify-true
     get-button Edit | get-property enablement | equals false | verify-true
     get-button Remove | get-property enablement | equals false | verify-true

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -499,8 +499,9 @@ public final class GenconfUtils {
             Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
 
             // validate template
+            final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
             final URI resultValidationURI = validate(uriConverter, generatedURI, validationURI, documentTemplate,
-                    queryEnvironment, monitor);
+                    queryEnvironment, ignoreVersionCheck, monitor);
 
             // launch generation
             final boolean updateFields = Boolean.valueOf(options.get(M2DocUtils.UPDATE_FIELDS_OPTION));
@@ -576,8 +577,10 @@ public final class GenconfUtils {
             }
 
             // validate template
+            final Map<String, String> options = getOptions(generation);
+            final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
             res = validate(resourceSetForModel.getURIConverter(), templateURI, validationURI, documentTemplate,
-                    queryEnvironment, monitor) != null;
+                    queryEnvironment, ignoreVersionCheck, monitor) != null;
         }
 
         // validate output path
@@ -620,6 +623,8 @@ public final class GenconfUtils {
      *            DocumentTemplate
      * @param queryEnvironment
      *            the {@link IReadOnlyQueryEnvironment}
+     * @param ignoreVersionCheck
+     *            ignore the {@link M2DocUtils#VERSION} check
      * @param monitor
      *            the {@link Monitor}
      * @return the validation {@link URI} if the validation isn't OK, <code>null</code> otherwise
@@ -629,11 +634,12 @@ public final class GenconfUtils {
      *             IOException
      */
     private static URI validate(URIConverter uriConverter, URI generatedURI, URI validationURI,
-            DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor)
-            throws DocumentGenerationException, IOException {
+            DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment, boolean ignoreVersionCheck,
+            Monitor monitor) throws DocumentGenerationException, IOException {
         final URI res;
 
-        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment, monitor);
+        final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment,
+                ignoreVersionCheck, monitor);
         if (validationLevel != ValidationMessageLevel.OK) {
             if (validationURI != null) {
                 res = validationURI;

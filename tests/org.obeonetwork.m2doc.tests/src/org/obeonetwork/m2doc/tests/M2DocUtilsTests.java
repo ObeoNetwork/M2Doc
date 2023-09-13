@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -151,8 +151,9 @@ public class M2DocUtilsTests {
 
         final Map<String, String> initializedOptions = M2DocUtils.getInitializedOptions(options);
 
-        assertEquals(2, initializedOptions.size());
+        assertEquals(3, initializedOptions.size());
         assertEquals("false", initializedOptions.get(M2DocUtils.UPDATE_FIELDS_OPTION));
+        assertEquals("false", initializedOptions.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
         assertEquals(TestServiceConfigurator.VALUE, initializedOptions.get(TestServiceConfigurator.OPTION));
     }
 

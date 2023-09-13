@@ -307,8 +307,10 @@ public abstract class AbstractTemplatesTestSuite {
      */
     @Test
     public void validation() throws IOException, DocumentGenerationException {
+        final boolean ignoreVersionCheck = Boolean
+                .valueOf(GenconfUtils.getOptions(generation).get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
         final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment,
-                new BasicMonitor());
+                ignoreVersionCheck, new BasicMonitor());
 
         final URI expectedValidationURI = getExpectedValidatedURI(new File(testFolderPath));
         final URI outputURI;
