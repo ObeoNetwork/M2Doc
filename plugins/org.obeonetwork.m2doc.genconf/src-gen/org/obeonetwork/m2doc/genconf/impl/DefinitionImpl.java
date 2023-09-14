@@ -72,6 +72,7 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
      * 
      * @generated
      */
+    @Override
     public String getKey() {
         return key;
     }
@@ -82,6 +83,7 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
      * 
      * @generated
      */
+    @Override
     public void setKey(String newKey) {
         String oldKey = key;
         key = newKey;
@@ -162,7 +164,7 @@ public abstract class DefinitionImpl extends MinimalEObjectImpl.Container implem
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (key: ");
         result.append(key);
         result.append(')');

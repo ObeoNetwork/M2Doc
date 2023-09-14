@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.genconf.editor.wizard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -54,15 +55,25 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.obeonetwork.m2doc.genconf.BooleanDefinition;
+import org.obeonetwork.m2doc.genconf.BooleanOrderedSetDefinition;
+import org.obeonetwork.m2doc.genconf.BooleanSequenceDefinition;
 import org.obeonetwork.m2doc.genconf.Definition;
 import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.IntegerDefinition;
+import org.obeonetwork.m2doc.genconf.IntegerOrderedSetDefinition;
+import org.obeonetwork.m2doc.genconf.IntegerSequenceDefinition;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
+import org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition;
+import org.obeonetwork.m2doc.genconf.ModelSequenceDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.RealDefinition;
+import org.obeonetwork.m2doc.genconf.RealOrderedSetDefinition;
+import org.obeonetwork.m2doc.genconf.RealSequenceDefinition;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
+import org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition;
+import org.obeonetwork.m2doc.genconf.StringSequenceDefinition;
 import org.obeonetwork.m2doc.genconf.editor.GenerationListener;
 import org.obeonetwork.m2doc.genconf.editor.ITemplateCustomPropertiesProvider;
 import org.obeonetwork.m2doc.genconf.editor.VariableValueCellLabelProvider;
@@ -77,6 +88,88 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class VariableAndOptionPage extends WizardPage {
+
+    /**
+     * Sets the definition value command.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private static final class SetValueCommand extends RecordingCommand {
+
+        /**
+         * The {@link Definition} to set.
+         */
+        private final Definition definition;
+
+        /**
+         * The {@link DefinitionValueDialog} holding the value.
+         */
+        private final DefinitionValueDialog dialog;
+
+        /**
+         * Constructor.
+         * 
+         * @param domain
+         *            the {@link TransactionalEditingDomain}
+         * @param definition
+         *            the {@link Definition}
+         * @param dialog
+         *            the {@link DefinitionValueDialog} holding the value
+         */
+        private SetValueCommand(TransactionalEditingDomain domain, Definition definition,
+                DefinitionValueDialog dialog) {
+            super(domain);
+            this.definition = definition;
+            this.dialog = dialog;
+        }
+
+        @Override
+        protected void doExecute() {
+            if (definition instanceof BooleanDefinition) {
+                ((BooleanDefinition) definition).setValue((boolean) dialog.getValue());
+            } else if (definition instanceof BooleanSequenceDefinition) {
+                ((BooleanSequenceDefinition) definition).getValue().clear();
+                ((BooleanSequenceDefinition) definition).getValue().addAll((Collection<Boolean>) dialog.getValue());
+            } else if (definition instanceof BooleanOrderedSetDefinition) {
+                ((BooleanOrderedSetDefinition) definition).getValue().clear();
+                ((BooleanOrderedSetDefinition) definition).getValue().addAll((Collection<Boolean>) dialog.getValue());
+            } else if (definition instanceof IntegerDefinition) {
+                ((IntegerDefinition) definition).setValue((int) dialog.getValue());
+            } else if (definition instanceof IntegerSequenceDefinition) {
+                ((IntegerSequenceDefinition) definition).getValue().clear();
+                ((IntegerSequenceDefinition) definition).getValue().addAll((Collection<Integer>) dialog.getValue());
+            } else if (definition instanceof IntegerOrderedSetDefinition) {
+                ((IntegerOrderedSetDefinition) definition).getValue().clear();
+                ((IntegerOrderedSetDefinition) definition).getValue().addAll((Collection<Integer>) dialog.getValue());
+            } else if (definition instanceof ModelDefinition) {
+                ((ModelDefinition) definition).setValue((EObject) dialog.getValue());
+            } else if (definition instanceof ModelSequenceDefinition) {
+                ((ModelSequenceDefinition) definition).getValue().clear();
+                ((ModelSequenceDefinition) definition).getValue().addAll((Collection<EObject>) dialog.getValue());
+            } else if (definition instanceof ModelOrderedSetDefinition) {
+                ((ModelOrderedSetDefinition) definition).getValue().clear();
+                ((ModelOrderedSetDefinition) definition).getValue().addAll((Collection<EObject>) dialog.getValue());
+            } else if (definition instanceof RealDefinition) {
+                ((RealDefinition) definition).setValue((double) dialog.getValue());
+            } else if (definition instanceof RealSequenceDefinition) {
+                ((RealSequenceDefinition) definition).getValue().clear();
+                ((RealSequenceDefinition) definition).getValue().addAll((Collection<Double>) dialog.getValue());
+            } else if (definition instanceof RealOrderedSetDefinition) {
+                ((RealOrderedSetDefinition) definition).getValue().clear();
+                ((RealOrderedSetDefinition) definition).getValue().addAll((Collection<Double>) dialog.getValue());
+            } else if (definition instanceof StringDefinition) {
+                ((StringDefinition) definition).setValue((String) dialog.getValue());
+            } else if (definition instanceof StringSequenceDefinition) {
+                ((StringSequenceDefinition) definition).getValue().clear();
+                ((StringSequenceDefinition) definition).getValue().addAll((Collection<String>) dialog.getValue());
+            } else if (definition instanceof StringOrderedSetDefinition) {
+                ((StringOrderedSetDefinition) definition).getValue().clear();
+                ((StringOrderedSetDefinition) definition).getValue().addAll((Collection<String>) dialog.getValue());
+            } else {
+                throw new IllegalStateException("don't know what to do with " + definition);
+            }
+        }
+    }
 
     /**
      * The edit {@link Button} {@link SelectionListener}.
@@ -118,25 +211,7 @@ public class VariableAndOptionPage extends WizardPage {
             final int dialogResult = dialog.open();
             if (dialogResult == IDialogConstants.OK_ID) {
                 final TransactionalEditingDomain generationDomain = TransactionUtil.getEditingDomain(gen);
-                generationDomain.getCommandStack().execute(new RecordingCommand(generationDomain) {
-
-                    @Override
-                    protected void doExecute() {
-                        if (def instanceof BooleanDefinition) {
-                            ((BooleanDefinition) def).setValue((boolean) dialog.getValue());
-                        } else if (def instanceof IntegerDefinition) {
-                            ((IntegerDefinition) def).setValue((int) dialog.getValue());
-                        } else if (def instanceof ModelDefinition) {
-                            ((ModelDefinition) def).setValue((EObject) dialog.getValue());
-                        } else if (def instanceof RealDefinition) {
-                            ((RealDefinition) def).setValue((double) dialog.getValue());
-                        } else if (def instanceof StringDefinition) {
-                            ((StringDefinition) def).setValue((String) dialog.getValue());
-                        } else {
-                            throw new IllegalStateException("don't know what to do with " + def);
-                        }
-                    }
-                });
+                generationDomain.getCommandStack().execute(new SetValueCommand(generationDomain, def, dialog));
             }
         }
 

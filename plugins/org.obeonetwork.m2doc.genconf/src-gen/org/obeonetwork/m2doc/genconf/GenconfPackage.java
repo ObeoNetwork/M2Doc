@@ -245,6 +245,110 @@ public interface GenconfPackage extends EPackage {
     int MODEL_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.ModelSequenceDefinitionImpl <em>Model Sequence
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.ModelSequenceDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getModelSequenceDefinition()
+     * @generated
+     */
+    int MODEL_SEQUENCE_DEFINITION = 3;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_SEQUENCE_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_SEQUENCE_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Model Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_SEQUENCE_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Model Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_SEQUENCE_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.ModelOrderedSetDefinitionImpl <em>Model Ordered Set
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.ModelOrderedSetDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getModelOrderedSetDefinition()
+     * @generated
+     */
+    int MODEL_ORDERED_SET_DEFINITION = 4;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_ORDERED_SET_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_ORDERED_SET_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Model Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_ORDERED_SET_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Model Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int MODEL_ORDERED_SET_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl <em>String Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -253,7 +357,7 @@ public interface GenconfPackage extends EPackage {
      * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getStringDefinition()
      * @generated
      */
-    int STRING_DEFINITION = 3;
+    int STRING_DEFINITION = 5;
 
     /**
      * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -296,6 +400,110 @@ public interface GenconfPackage extends EPackage {
     int STRING_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.StringSequenceDefinitionImpl <em>String Sequence
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.StringSequenceDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getStringSequenceDefinition()
+     * @generated
+     */
+    int STRING_SEQUENCE_DEFINITION = 6;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_SEQUENCE_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_SEQUENCE_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>String Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_SEQUENCE_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>String Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_SEQUENCE_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.StringOrderedSetDefinitionImpl <em>String Ordered Set
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.StringOrderedSetDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getStringOrderedSetDefinition()
+     * @generated
+     */
+    int STRING_ORDERED_SET_DEFINITION = 7;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_ORDERED_SET_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_ORDERED_SET_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>String Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_ORDERED_SET_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>String Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int STRING_ORDERED_SET_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerDefinitionImpl <em>Integer Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -304,7 +512,7 @@ public interface GenconfPackage extends EPackage {
      * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getIntegerDefinition()
      * @generated
      */
-    int INTEGER_DEFINITION = 4;
+    int INTEGER_DEFINITION = 8;
 
     /**
      * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -347,6 +555,110 @@ public interface GenconfPackage extends EPackage {
     int INTEGER_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerSequenceDefinitionImpl <em>Integer Sequence
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.IntegerSequenceDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getIntegerSequenceDefinition()
+     * @generated
+     */
+    int INTEGER_SEQUENCE_DEFINITION = 9;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_SEQUENCE_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_SEQUENCE_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Integer Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_SEQUENCE_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Integer Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_SEQUENCE_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerOrderedSetDefinitionImpl <em>Integer Ordered Set
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.IntegerOrderedSetDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getIntegerOrderedSetDefinition()
+     * @generated
+     */
+    int INTEGER_ORDERED_SET_DEFINITION = 10;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_ORDERED_SET_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_ORDERED_SET_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Integer Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_ORDERED_SET_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Integer Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int INTEGER_ORDERED_SET_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.RealDefinitionImpl <em>Real Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -355,7 +667,7 @@ public interface GenconfPackage extends EPackage {
      * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getRealDefinition()
      * @generated
      */
-    int REAL_DEFINITION = 5;
+    int REAL_DEFINITION = 11;
 
     /**
      * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -398,6 +710,110 @@ public interface GenconfPackage extends EPackage {
     int REAL_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.RealSequenceDefinitionImpl <em>Real Sequence Definition</em>}'
+     * class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.RealSequenceDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getRealSequenceDefinition()
+     * @generated
+     */
+    int REAL_SEQUENCE_DEFINITION = 12;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_SEQUENCE_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_SEQUENCE_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Real Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_SEQUENCE_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Real Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_SEQUENCE_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.RealOrderedSetDefinitionImpl <em>Real Ordered Set
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.RealOrderedSetDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getRealOrderedSetDefinition()
+     * @generated
+     */
+    int REAL_ORDERED_SET_DEFINITION = 13;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_ORDERED_SET_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_ORDERED_SET_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Real Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_ORDERED_SET_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Real Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int REAL_ORDERED_SET_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanDefinitionImpl <em>Boolean Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -406,7 +822,7 @@ public interface GenconfPackage extends EPackage {
      * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getBooleanDefinition()
      * @generated
      */
-    int BOOLEAN_DEFINITION = 6;
+    int BOOLEAN_DEFINITION = 14;
 
     /**
      * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -449,6 +865,110 @@ public interface GenconfPackage extends EPackage {
     int BOOLEAN_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanSequenceDefinitionImpl <em>Boolean Sequence
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.BooleanSequenceDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getBooleanSequenceDefinition()
+     * @generated
+     */
+    int BOOLEAN_SEQUENCE_DEFINITION = 15;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_SEQUENCE_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_SEQUENCE_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Boolean Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_SEQUENCE_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Boolean Sequence Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_SEQUENCE_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanOrderedSetDefinitionImpl <em>Boolean Ordered Set
+     * Definition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.genconf.impl.BooleanOrderedSetDefinitionImpl
+     * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getBooleanOrderedSetDefinition()
+     * @generated
+     */
+    int BOOLEAN_ORDERED_SET_DEFINITION = 16;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_ORDERED_SET_DEFINITION__KEY = DEFINITION__KEY;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_ORDERED_SET_DEFINITION__VALUE = DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Boolean Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_ORDERED_SET_DEFINITION_FEATURE_COUNT = DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Boolean Ordered Set Definition</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BOOLEAN_ORDERED_SET_DEFINITION_OPERATION_COUNT = DEFINITION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl <em>Option</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -457,7 +977,7 @@ public interface GenconfPackage extends EPackage {
      * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getOption()
      * @generated
      */
-    int OPTION = 7;
+    int OPTION = 17;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -536,7 +1056,8 @@ public interface GenconfPackage extends EPackage {
     EAttribute getGeneration_TemplateFileName();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getResultFileName <em>Result File Name</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.genconf.Generation#getResultFileName <em>Result File
+     * Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -633,6 +1154,55 @@ public interface GenconfPackage extends EPackage {
     EReference getModelDefinition_Value();
 
     /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.ModelSequenceDefinition <em>Model Sequence Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Model Sequence Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.ModelSequenceDefinition
+     * @generated
+     */
+    EClass getModelSequenceDefinition();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.obeonetwork.m2doc.genconf.ModelSequenceDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the reference list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.ModelSequenceDefinition#getValue()
+     * @see #getModelSequenceDefinition()
+     * @generated
+     */
+    EReference getModelSequenceDefinition_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition <em>Model Ordered Set
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Model Ordered Set Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition
+     * @generated
+     */
+    EClass getModelOrderedSetDefinition();
+
+    /**
+     * Returns the meta object for the reference list '{@link org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the reference list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition#getValue()
+     * @see #getModelOrderedSetDefinition()
+     * @generated
+     */
+    EReference getModelOrderedSetDefinition_Value();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.StringDefinition <em>String Definition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -654,6 +1224,56 @@ public interface GenconfPackage extends EPackage {
      * @generated
      */
     EAttribute getStringDefinition_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.StringSequenceDefinition <em>String Sequence
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>String Sequence Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.StringSequenceDefinition
+     * @generated
+     */
+    EClass getStringSequenceDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.StringSequenceDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.StringSequenceDefinition#getValue()
+     * @see #getStringSequenceDefinition()
+     * @generated
+     */
+    EAttribute getStringSequenceDefinition_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition <em>String Ordered Set
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>String Ordered Set Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition
+     * @generated
+     */
+    EClass getStringOrderedSetDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition#getValue()
+     * @see #getStringOrderedSetDefinition()
+     * @generated
+     */
+    EAttribute getStringOrderedSetDefinition_Value();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.IntegerDefinition <em>Integer Definition</em>}'.
@@ -679,6 +1299,56 @@ public interface GenconfPackage extends EPackage {
     EAttribute getIntegerDefinition_Value();
 
     /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.IntegerSequenceDefinition <em>Integer Sequence
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Integer Sequence Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.IntegerSequenceDefinition
+     * @generated
+     */
+    EClass getIntegerSequenceDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.IntegerSequenceDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.IntegerSequenceDefinition#getValue()
+     * @see #getIntegerSequenceDefinition()
+     * @generated
+     */
+    EAttribute getIntegerSequenceDefinition_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.IntegerOrderedSetDefinition <em>Integer Ordered Set
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Integer Ordered Set Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.IntegerOrderedSetDefinition
+     * @generated
+     */
+    EClass getIntegerOrderedSetDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.IntegerOrderedSetDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.IntegerOrderedSetDefinition#getValue()
+     * @see #getIntegerOrderedSetDefinition()
+     * @generated
+     */
+    EAttribute getIntegerOrderedSetDefinition_Value();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.RealDefinition <em>Real Definition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -702,6 +1372,55 @@ public interface GenconfPackage extends EPackage {
     EAttribute getRealDefinition_Value();
 
     /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.RealSequenceDefinition <em>Real Sequence Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Real Sequence Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.RealSequenceDefinition
+     * @generated
+     */
+    EClass getRealSequenceDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.RealSequenceDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.RealSequenceDefinition#getValue()
+     * @see #getRealSequenceDefinition()
+     * @generated
+     */
+    EAttribute getRealSequenceDefinition_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.RealOrderedSetDefinition <em>Real Ordered Set
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Real Ordered Set Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.RealOrderedSetDefinition
+     * @generated
+     */
+    EClass getRealOrderedSetDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.RealOrderedSetDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.RealOrderedSetDefinition#getValue()
+     * @see #getRealOrderedSetDefinition()
+     * @generated
+     */
+    EAttribute getRealOrderedSetDefinition_Value();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.BooleanDefinition <em>Boolean Definition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -723,6 +1442,56 @@ public interface GenconfPackage extends EPackage {
      * @generated
      */
     EAttribute getBooleanDefinition_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.BooleanSequenceDefinition <em>Boolean Sequence
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Boolean Sequence Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.BooleanSequenceDefinition
+     * @generated
+     */
+    EClass getBooleanSequenceDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.BooleanSequenceDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.BooleanSequenceDefinition#getValue()
+     * @see #getBooleanSequenceDefinition()
+     * @generated
+     */
+    EAttribute getBooleanSequenceDefinition_Value();
+
+    /**
+     * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.BooleanOrderedSetDefinition <em>Boolean Ordered Set
+     * Definition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for class '<em>Boolean Ordered Set Definition</em>'.
+     * @see org.obeonetwork.m2doc.genconf.BooleanOrderedSetDefinition
+     * @generated
+     */
+    EClass getBooleanOrderedSetDefinition();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.genconf.BooleanOrderedSetDefinition#getValue
+     * <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Value</em>'.
+     * @see org.obeonetwork.m2doc.genconf.BooleanOrderedSetDefinition#getValue()
+     * @see #getBooleanOrderedSetDefinition()
+     * @generated
+     */
+    EAttribute getBooleanOrderedSetDefinition_Value();
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.genconf.Option <em>Option</em>}'.
@@ -890,7 +1659,50 @@ public interface GenconfPackage extends EPackage {
         EReference MODEL_DEFINITION__VALUE = eINSTANCE.getModelDefinition_Value();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl <em>String Definition</em>}' class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.ModelSequenceDefinitionImpl <em>Model Sequence
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.ModelSequenceDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getModelSequenceDefinition()
+         * @generated
+         */
+        EClass MODEL_SEQUENCE_DEFINITION = eINSTANCE.getModelSequenceDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EReference MODEL_SEQUENCE_DEFINITION__VALUE = eINSTANCE.getModelSequenceDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.ModelOrderedSetDefinitionImpl <em>Model Ordered Set
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.ModelOrderedSetDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getModelOrderedSetDefinition()
+         * @generated
+         */
+        EClass MODEL_ORDERED_SET_DEFINITION = eINSTANCE.getModelOrderedSetDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EReference MODEL_ORDERED_SET_DEFINITION__VALUE = eINSTANCE.getModelOrderedSetDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.StringDefinitionImpl <em>String Definition</em>}'
+         * class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
@@ -910,7 +1722,50 @@ public interface GenconfPackage extends EPackage {
         EAttribute STRING_DEFINITION__VALUE = eINSTANCE.getStringDefinition_Value();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerDefinitionImpl <em>Integer Definition</em>}' class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.StringSequenceDefinitionImpl <em>String Sequence
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.StringSequenceDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getStringSequenceDefinition()
+         * @generated
+         */
+        EClass STRING_SEQUENCE_DEFINITION = eINSTANCE.getStringSequenceDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute STRING_SEQUENCE_DEFINITION__VALUE = eINSTANCE.getStringSequenceDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.StringOrderedSetDefinitionImpl <em>String Ordered Set
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.StringOrderedSetDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getStringOrderedSetDefinition()
+         * @generated
+         */
+        EClass STRING_ORDERED_SET_DEFINITION = eINSTANCE.getStringOrderedSetDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute STRING_ORDERED_SET_DEFINITION__VALUE = eINSTANCE.getStringOrderedSetDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerDefinitionImpl <em>Integer Definition</em>}'
+         * class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
@@ -928,6 +1783,48 @@ public interface GenconfPackage extends EPackage {
          * @generated
          */
         EAttribute INTEGER_DEFINITION__VALUE = eINSTANCE.getIntegerDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerSequenceDefinitionImpl <em>Integer Sequence
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.IntegerSequenceDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getIntegerSequenceDefinition()
+         * @generated
+         */
+        EClass INTEGER_SEQUENCE_DEFINITION = eINSTANCE.getIntegerSequenceDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute INTEGER_SEQUENCE_DEFINITION__VALUE = eINSTANCE.getIntegerSequenceDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.IntegerOrderedSetDefinitionImpl <em>Integer Ordered
+         * Set Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.IntegerOrderedSetDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getIntegerOrderedSetDefinition()
+         * @generated
+         */
+        EClass INTEGER_ORDERED_SET_DEFINITION = eINSTANCE.getIntegerOrderedSetDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute INTEGER_ORDERED_SET_DEFINITION__VALUE = eINSTANCE.getIntegerOrderedSetDefinition_Value();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.RealDefinitionImpl <em>Real Definition</em>}' class.
@@ -950,7 +1847,50 @@ public interface GenconfPackage extends EPackage {
         EAttribute REAL_DEFINITION__VALUE = eINSTANCE.getRealDefinition_Value();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanDefinitionImpl <em>Boolean Definition</em>}' class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.RealSequenceDefinitionImpl <em>Real Sequence
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.RealSequenceDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getRealSequenceDefinition()
+         * @generated
+         */
+        EClass REAL_SEQUENCE_DEFINITION = eINSTANCE.getRealSequenceDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute REAL_SEQUENCE_DEFINITION__VALUE = eINSTANCE.getRealSequenceDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.RealOrderedSetDefinitionImpl <em>Real Ordered Set
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.RealOrderedSetDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getRealOrderedSetDefinition()
+         * @generated
+         */
+        EClass REAL_ORDERED_SET_DEFINITION = eINSTANCE.getRealOrderedSetDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute REAL_ORDERED_SET_DEFINITION__VALUE = eINSTANCE.getRealOrderedSetDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanDefinitionImpl <em>Boolean Definition</em>}'
+         * class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
@@ -968,6 +1908,48 @@ public interface GenconfPackage extends EPackage {
          * @generated
          */
         EAttribute BOOLEAN_DEFINITION__VALUE = eINSTANCE.getBooleanDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanSequenceDefinitionImpl <em>Boolean Sequence
+         * Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.BooleanSequenceDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getBooleanSequenceDefinition()
+         * @generated
+         */
+        EClass BOOLEAN_SEQUENCE_DEFINITION = eINSTANCE.getBooleanSequenceDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute BOOLEAN_SEQUENCE_DEFINITION__VALUE = eINSTANCE.getBooleanSequenceDefinition_Value();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.BooleanOrderedSetDefinitionImpl <em>Boolean Ordered
+         * Set Definition</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.genconf.impl.BooleanOrderedSetDefinitionImpl
+         * @see org.obeonetwork.m2doc.genconf.impl.GenconfPackageImpl#getBooleanOrderedSetDefinition()
+         * @generated
+         */
+        EClass BOOLEAN_ORDERED_SET_DEFINITION = eINSTANCE.getBooleanOrderedSetDefinition();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute BOOLEAN_ORDERED_SET_DEFINITION__VALUE = eINSTANCE.getBooleanOrderedSetDefinition_Value();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.genconf.impl.OptionImpl <em>Option</em>}' class.

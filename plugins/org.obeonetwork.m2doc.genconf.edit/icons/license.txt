@@ -4,9 +4,19 @@ These followings icons are made available under the terms of the Eclipse Public 
 
 <icon file path> - <original eclipse plug-in> - <original file path>
 
-icons/full/obj16/ModelDefinition.gif - org.eclipse.jdt.debug.ui - org.eclipse.jdt.debug.ui/icons/full/obj16/jmeth_obj.gif
-icons/full/obj16/Generation.gif - org.eclipse.platform.doc.user - org.eclipse.platform.doc.user/images/help_icon_capabilities.png
-icons/full/obj16/BooleanDefinition.gif - org.eclipse.uml2 - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralBoolean.gif
-icons/full/obj16/IntegerDefinition.gif - org.eclipse.uml2 - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralInteger.gif
-icons/full/obj16/RealDefinition.gif - org.eclipse.uml2 - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralReal.gif
-icons/full/obj16/StringDefinition.gif - org.eclipse.uml2 - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralString.gif
+icons/full/obj16/ModelDefinition.gif             - org.eclipse.jdt.debug.ui      - org.eclipse.jdt.debug.ui/icons/full/obj16/jmeth_obj.gif
+icons/full/obj16/ModelSequenceDefinition.gif     - org.eclipse.jdt.debug.ui      - org.eclipse.jdt.debug.ui/icons/full/obj16/jmeth_obj.gif
+icons/full/obj16/ModelOrderedSetDefinition.gif   - org.eclipse.jdt.debug.ui      - org.eclipse.jdt.debug.ui/icons/full/obj16/jmeth_obj.gif
+icons/full/obj16/Generation.gif                  - org.eclipse.platform.doc.user - org.eclipse.platform.doc.user/images/help_icon_capabilities.png
+icons/full/obj16/BooleanDefinition.gif           - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralBoolean.gif
+icons/full/obj16/BooleanSequenceDefinition.gif   - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralBoolean.gif
+icons/full/obj16/BooleanOrderedSetDefinition.gif - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralBoolean.gif
+icons/full/obj16/IntegerDefinition.gif           - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralInteger.gif
+icons/full/obj16/IntegerSequenceDefinition.gif   - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralInteger.gif
+icons/full/obj16/IntegerOrderedSetDefinition.gif - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralInteger.gif
+icons/full/obj16/RealDefinition.gif              - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralReal.gif
+icons/full/obj16/RealSequenceDefinition.gif      - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralReal.gif
+icons/full/obj16/RealOrderedSetDefinition.gif    - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralReal.gif
+icons/full/obj16/StringDefinition.gif            - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralString.gif
+icons/full/obj16/StringSequenceDefinition.gif    - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralString.gif
+icons/full/obj16/StringOrderedSetDefinition.gif  - org.eclipse.uml2              - plugins/org.eclipse.uml2.uml.edit/icons/full/obj16/LiteralString.gif

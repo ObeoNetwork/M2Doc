@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019 Obeo. 
+ *  Copyright (c) 2019, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.ide.ui.dialog;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -47,6 +48,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
@@ -93,6 +95,11 @@ public class EObjectSelectionDialog extends MessageDialog {
     private Set<EClass> acceptedEClasses;
 
     /**
+     * Tells if we should allow multi selection.
+     */
+    private boolean multiSelection;
+
+    /**
      * Constructor.
      * 
      * @param parentShell
@@ -120,6 +127,16 @@ public class EObjectSelectionDialog extends MessageDialog {
         this.acceptedEClasses = acceptedEClasses;
     }
 
+    /**
+     * Sets the multi selection.
+     * 
+     * @param multiSelection
+     *            the multiSelection to set
+     */
+    public void setMultiSelection(boolean multiSelection) {
+        this.multiSelection = multiSelection;
+    }
+
     @Override
     protected Control createCustomArea(Composite parent) {
         final Composite container = new Composite(parent, parent.getStyle());
@@ -144,33 +161,53 @@ public class EObjectSelectionDialog extends MessageDialog {
      *            the container {@link Composite}
      */
     protected void createModelCustomArea(final Set<IType> acceptedTypes, Composite container) {
-        final int style = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
+        final int style;
+        if (multiSelection) {
+            style = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.CHECK;
+        } else {
+            style = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
+        }
         final FilteredTree filteredTree = new FilteredTree(container, style, new PatternFilter(), true);
         final TreeViewer treeViewer = filteredTree.getViewer();
 
-        treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+        if (multiSelection) {
+            treeViewer.getTree().addSelectionListener(new SelectionListener() {
 
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                final Object selected = ((IStructuredSelection) event.getSelection()).getFirstElement();
-                final boolean enableOKButton;
-                if (selected instanceof EObject) {
-                    final EObject eObj = (EObject) selected;
-                    if (isValidValue(acceptedTypes, eObj)) {
-                        value = eObj;
-                        enableOKButton = true;
+                @Override
+                public void widgetSelected(SelectionEvent event) {
+                    handleEvent(acceptedTypes, event);
+                }
+
+                @Override
+                public void widgetDefaultSelected(SelectionEvent event) {
+                    // nothing to do here
+                }
+            });
+        } else {
+            treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+                @Override
+                public void selectionChanged(SelectionChangedEvent event) {
+                    final Object selected = ((IStructuredSelection) event.getSelection()).getFirstElement();
+                    final boolean enableOKButton;
+                    if (selected instanceof EObject) {
+                        final EObject eObj = (EObject) selected;
+                        if (isValidValue(acceptedTypes, eObj)) {
+                            value = eObj;
+                            enableOKButton = true;
+                        } else {
+                            enableOKButton = false;
+                        }
                     } else {
                         enableOKButton = false;
                     }
-                } else {
-                    enableOKButton = false;
+                    final Button okButton = getButton(OK);
+                    if (okButton != null) {
+                        okButton.setEnabled(enableOKButton);
+                    }
                 }
-                final Button okButton = getButton(OK);
-                if (okButton != null) {
-                    okButton.setEnabled(enableOKButton);
-                }
-            }
-        });
+            });
+        }
         treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
         treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
         final GridData gdTable = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
@@ -196,7 +233,7 @@ public class EObjectSelectionDialog extends MessageDialog {
         treeViewer.setInput(resourceSet);
         final Button okButton = getButton(OK);
         if (okButton != null) {
-            okButton.setEnabled(false);
+            okButton.setEnabled(multiSelection);
         }
 
         final Composite filterCheckboxComposite = new Composite(container, container.getStyle());
@@ -238,6 +275,30 @@ public class EObjectSelectionDialog extends MessageDialog {
     }
 
     /**
+     * Handles multi selection tree events.
+     * 
+     * @param acceptedTypes
+     *            the {@link Set} of accepted {@link IType}.
+     * @param event
+     *            the {@link SelectionEvent}
+     */
+    private void handleEvent(final Set<IType> acceptedTypes, SelectionEvent event) {
+        if (event.detail == SWT.CHECK) {
+            final TreeItem item = (TreeItem) event.item;
+            final EObject eObj = (EObject) item.getData();
+            if (item.getChecked()) {
+                if (isValidValue(acceptedTypes, eObj)) {
+                    ((Collection<Object>) value).add(eObj);
+                } else {
+                    item.setChecked(false);
+                }
+            } else {
+                ((Collection<Object>) value).remove(eObj);
+            }
+        }
+    }
+
+    /**
      * Creates the load resource {@link Button}.
      * 
      * @param parent
@@ -273,7 +334,8 @@ public class EObjectSelectionDialog extends MessageDialog {
      *            the {@link Set} of accepted {@link IType}
      * @param eObj
      *            the {@link EObject}
-     * @return <code>true</code> if the given {@link ModelDefinition} and the given {@link EObject} are compatible, <code>false</code> otherwise
+     * @return <code>true</code> if the given {@link ModelDefinition} and the given {@link EObject} are compatible, <code>false</code>
+     *         otherwise
      */
     private boolean isValidValue(Set<IType> acceptedTypes, EObject eObj) {
         boolean res = false;

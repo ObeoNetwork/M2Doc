@@ -126,6 +126,56 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.ModelSequenceDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected ModelSequenceDefinitionItemProvider modelSequenceDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.ModelSequenceDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createModelSequenceDefinitionAdapter() {
+        if (modelSequenceDefinitionItemProvider == null) {
+            modelSequenceDefinitionItemProvider = new ModelSequenceDefinitionItemProvider(this);
+        }
+
+        return modelSequenceDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected ModelOrderedSetDefinitionItemProvider modelOrderedSetDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createModelOrderedSetDefinitionAdapter() {
+        if (modelOrderedSetDefinitionItemProvider == null) {
+            modelOrderedSetDefinitionItemProvider = new ModelOrderedSetDefinitionItemProvider(this);
+        }
+
+        return modelOrderedSetDefinitionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.StringDefinition} instances.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -148,6 +198,56 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
         }
 
         return stringDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.StringSequenceDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected StringSequenceDefinitionItemProvider stringSequenceDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.StringSequenceDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createStringSequenceDefinitionAdapter() {
+        if (stringSequenceDefinitionItemProvider == null) {
+            stringSequenceDefinitionItemProvider = new StringSequenceDefinitionItemProvider(this);
+        }
+
+        return stringSequenceDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected StringOrderedSetDefinitionItemProvider stringOrderedSetDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createStringOrderedSetDefinitionAdapter() {
+        if (stringOrderedSetDefinitionItemProvider == null) {
+            stringOrderedSetDefinitionItemProvider = new StringOrderedSetDefinitionItemProvider(this);
+        }
+
+        return stringOrderedSetDefinitionItemProvider;
     }
 
     /**
@@ -176,6 +276,56 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.IntegerSequenceDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected IntegerSequenceDefinitionItemProvider integerSequenceDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.IntegerSequenceDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createIntegerSequenceDefinitionAdapter() {
+        if (integerSequenceDefinitionItemProvider == null) {
+            integerSequenceDefinitionItemProvider = new IntegerSequenceDefinitionItemProvider(this);
+        }
+
+        return integerSequenceDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.IntegerOrderedSetDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected IntegerOrderedSetDefinitionItemProvider integerOrderedSetDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.IntegerOrderedSetDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createIntegerOrderedSetDefinitionAdapter() {
+        if (integerOrderedSetDefinitionItemProvider == null) {
+            integerOrderedSetDefinitionItemProvider = new IntegerOrderedSetDefinitionItemProvider(this);
+        }
+
+        return integerOrderedSetDefinitionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.RealDefinition} instances.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -201,6 +351,56 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.RealSequenceDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected RealSequenceDefinitionItemProvider realSequenceDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.RealSequenceDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createRealSequenceDefinitionAdapter() {
+        if (realSequenceDefinitionItemProvider == null) {
+            realSequenceDefinitionItemProvider = new RealSequenceDefinitionItemProvider(this);
+        }
+
+        return realSequenceDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.RealOrderedSetDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected RealOrderedSetDefinitionItemProvider realOrderedSetDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.RealOrderedSetDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createRealOrderedSetDefinitionAdapter() {
+        if (realOrderedSetDefinitionItemProvider == null) {
+            realOrderedSetDefinitionItemProvider = new RealOrderedSetDefinitionItemProvider(this);
+        }
+
+        return realOrderedSetDefinitionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.BooleanDefinition} instances.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -223,6 +423,56 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
         }
 
         return booleanDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.BooleanSequenceDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected BooleanSequenceDefinitionItemProvider booleanSequenceDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.BooleanSequenceDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createBooleanSequenceDefinitionAdapter() {
+        if (booleanSequenceDefinitionItemProvider == null) {
+            booleanSequenceDefinitionItemProvider = new BooleanSequenceDefinitionItemProvider(this);
+        }
+
+        return booleanSequenceDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.obeonetwork.m2doc.genconf.BooleanOrderedSetDefinition} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected BooleanOrderedSetDefinitionItemProvider booleanOrderedSetDefinitionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.obeonetwork.m2doc.genconf.BooleanOrderedSetDefinition}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public Adapter createBooleanOrderedSetDefinitionAdapter() {
+        if (booleanOrderedSetDefinitionItemProvider == null) {
+            booleanOrderedSetDefinitionItemProvider = new BooleanOrderedSetDefinitionItemProvider(this);
+        }
+
+        return booleanOrderedSetDefinitionItemProvider;
     }
 
     /**
@@ -257,6 +507,7 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
      * 
      * @generated
      */
+    @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
         return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
     }
@@ -268,6 +519,7 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
      * 
      * @generated
      */
+    @Override
     public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
         this.parentAdapterFactory = parentAdapterFactory;
     }
@@ -320,6 +572,7 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
      * 
      * @generated
      */
+    @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
         changeNotifier.addListener(notifyChangedListener);
     }
@@ -331,6 +584,7 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
      * 
      * @generated
      */
+    @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
         changeNotifier.removeListener(notifyChangedListener);
     }
@@ -342,6 +596,7 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
      * 
      * @generated
      */
+    @Override
     public void fireNotifyChanged(Notification notification) {
         changeNotifier.fireNotifyChanged(notification);
 
@@ -357,19 +612,40 @@ public class GenconfItemProviderAdapterFactory extends GenconfAdapterFactory
      * 
      * @generated
      */
+    @Override
     public void dispose() {
         if (generationItemProvider != null)
             generationItemProvider.dispose();
         if (modelDefinitionItemProvider != null)
             modelDefinitionItemProvider.dispose();
+        if (modelSequenceDefinitionItemProvider != null)
+            modelSequenceDefinitionItemProvider.dispose();
+        if (modelOrderedSetDefinitionItemProvider != null)
+            modelOrderedSetDefinitionItemProvider.dispose();
         if (stringDefinitionItemProvider != null)
             stringDefinitionItemProvider.dispose();
+        if (stringSequenceDefinitionItemProvider != null)
+            stringSequenceDefinitionItemProvider.dispose();
+        if (stringOrderedSetDefinitionItemProvider != null)
+            stringOrderedSetDefinitionItemProvider.dispose();
         if (integerDefinitionItemProvider != null)
             integerDefinitionItemProvider.dispose();
+        if (integerSequenceDefinitionItemProvider != null)
+            integerSequenceDefinitionItemProvider.dispose();
+        if (integerOrderedSetDefinitionItemProvider != null)
+            integerOrderedSetDefinitionItemProvider.dispose();
         if (realDefinitionItemProvider != null)
             realDefinitionItemProvider.dispose();
+        if (realSequenceDefinitionItemProvider != null)
+            realSequenceDefinitionItemProvider.dispose();
+        if (realOrderedSetDefinitionItemProvider != null)
+            realOrderedSetDefinitionItemProvider.dispose();
         if (booleanDefinitionItemProvider != null)
             booleanDefinitionItemProvider.dispose();
+        if (booleanSequenceDefinitionItemProvider != null)
+            booleanSequenceDefinitionItemProvider.dispose();
+        if (booleanOrderedSetDefinitionItemProvider != null)
+            booleanOrderedSetDefinitionItemProvider.dispose();
         if (optionItemProvider != null)
             optionItemProvider.dispose();
     }

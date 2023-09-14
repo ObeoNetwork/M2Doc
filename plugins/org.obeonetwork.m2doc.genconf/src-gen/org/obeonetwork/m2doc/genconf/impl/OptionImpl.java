@@ -95,6 +95,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * 
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -105,6 +106,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * 
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
@@ -118,6 +120,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * 
      * @generated
      */
+    @Override
     public String getValue() {
         return value;
     }
@@ -128,6 +131,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
      * 
      * @generated
      */
+    @Override
     public void setValue(String newValue) {
         String oldValue = value;
         value = newValue;
@@ -218,7 +222,7 @@ public class OptionImpl extends MinimalEObjectImpl.Container implements Option {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(name);
         result.append(", value: ");

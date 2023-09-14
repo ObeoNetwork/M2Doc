@@ -156,6 +156,7 @@ public class GenconfModelWizard extends Wizard implements INewWizard {
      * 
      * @generated
      */
+    @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         this.workbench = workbench;
         this.selection = selection;
@@ -262,6 +263,7 @@ public class GenconfModelWizard extends Wizard implements INewWizard {
             if (activePart instanceof ISetSelectionTarget) {
                 final ISelection targetSelection = new StructuredSelection(modelFile);
                 getShell().getDisplay().asyncExec(new Runnable() {
+                    @Override
                     public void run() {
                         ((ISetSelectionTarget) activePart).selectReveal(targetSelection);
                     }
@@ -386,6 +388,7 @@ public class GenconfModelWizard extends Wizard implements INewWizard {
          * 
          * @generated
          */
+        @Override
         public void createControl(Composite parent) {
             Composite composite = new Composite(parent, SWT.NONE);
             {
@@ -461,6 +464,7 @@ public class GenconfModelWizard extends Wizard implements INewWizard {
          * @generated
          */
         protected ModifyListener validator = new ModifyListener() {
+            @Override
             public void modifyText(ModifyEvent e) {
                 setPageComplete(validatePage());
             }

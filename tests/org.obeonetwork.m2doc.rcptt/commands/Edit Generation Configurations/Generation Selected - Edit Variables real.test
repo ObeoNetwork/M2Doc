@@ -1,0 +1,37 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_Kqq5AFLUEe65GYDxKaEUmg
+Element-Name: Generation Selected - Edit Variables real
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _VrQ0cFLbEe65GYDxKaEUmg
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 9/14/23, 11:17 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/variables.genconf" | get-menu 
+    -path "Edit Documentation Configurations" | click -metaKeys ""
+with [get-window "Generation configuration"] {
+    get-button "Next >" | click -metaKeys ""
+}
+with [get-window "Generation configuration"] {
+    get-table | select realDefinition
+    get-button Edit | click -metaKeys ""
+    with [get-window "Select value for realDefinition"] {
+        with [get-editbox -after [get-label "realDefinition ="]] {
+            set-text ""
+            type-text "10"
+        }
+        get-button OK | click -metaKeys ""
+    }
+}
+with [get-window "Generation configuration" | get-table | get-item -path realDefinition] {
+    get-property "columns[0]" | equals realDefinition | verify-true
+    get-property "columns[1]" | equals "10.0" | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

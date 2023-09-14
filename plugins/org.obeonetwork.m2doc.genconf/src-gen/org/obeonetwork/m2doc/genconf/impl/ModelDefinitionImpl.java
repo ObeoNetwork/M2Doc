@@ -62,6 +62,7 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
      * 
      * @generated
      */
+    @Override
     public EObject getValue() {
         if (value != null && value.eIsProxy()) {
             InternalEObject oldValue = (InternalEObject) value;
@@ -91,6 +92,7 @@ public class ModelDefinitionImpl extends DefinitionImpl implements ModelDefiniti
      * 
      * @generated
      */
+    @Override
     public void setValue(EObject newValue) {
         EObject oldValue = value;
         value = newValue;

@@ -71,6 +71,7 @@ public class BooleanDefinitionImpl extends DefinitionImpl implements BooleanDefi
      * 
      * @generated
      */
+    @Override
     public boolean isValue() {
         return value;
     }
@@ -81,6 +82,7 @@ public class BooleanDefinitionImpl extends DefinitionImpl implements BooleanDefi
      * 
      * @generated
      */
+    @Override
     public void setValue(boolean newValue) {
         boolean oldValue = value;
         value = newValue;
@@ -162,7 +164,7 @@ public class BooleanDefinitionImpl extends DefinitionImpl implements BooleanDefi
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (value: ");
         result.append(value);
         result.append(')');

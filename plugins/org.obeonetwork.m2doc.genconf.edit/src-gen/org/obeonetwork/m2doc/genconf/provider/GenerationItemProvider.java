@@ -244,16 +244,46 @@ public class GenerationItemProvider extends ItemProviderAdapter implements IEdit
                 GenconfFactory.eINSTANCE.createModelDefinition()));
 
         newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createModelSequenceDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createModelOrderedSetDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
                 GenconfFactory.eINSTANCE.createStringDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createStringSequenceDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createStringOrderedSetDefinition()));
 
         newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
                 GenconfFactory.eINSTANCE.createIntegerDefinition()));
 
         newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createIntegerSequenceDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createIntegerOrderedSetDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
                 GenconfFactory.eINSTANCE.createRealDefinition()));
 
         newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createRealSequenceDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createRealOrderedSetDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
                 GenconfFactory.eINSTANCE.createBooleanDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createBooleanSequenceDefinition()));
+
+        newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__DEFINITIONS,
+                GenconfFactory.eINSTANCE.createBooleanOrderedSetDefinition()));
 
         newChildDescriptors.add(createChildParameter(GenconfPackage.Literals.GENERATION__OPTIONS,
                 GenconfFactory.eINSTANCE.createOption()));

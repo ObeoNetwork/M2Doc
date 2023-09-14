@@ -167,6 +167,7 @@ public class GenconfActionBarContributor extends EditingDomainActionBarContribut
      */
     @Override
     public void contributeToToolBar(IToolBarManager toolBarManager) {
+        super.contributeToToolBar(toolBarManager);
         toolBarManager.add(new Separator("genconf-settings"));
         toolBarManager.add(new Separator("genconf-additions"));
     }
@@ -206,6 +207,7 @@ public class GenconfActionBarContributor extends EditingDomainActionBarContribut
         // Force an update because Eclipse hides empty menus now.
         //
         submenuManager.addMenuListener(new IMenuListener() {
+            @Override
             public void menuAboutToShow(IMenuManager menuManager) {
                 menuManager.updateAll(true);
             }
@@ -254,6 +256,7 @@ public class GenconfActionBarContributor extends EditingDomainActionBarContribut
      * 
      * @generated
      */
+    @Override
     public void selectionChanged(SelectionChangedEvent event) {
         // Remove any menu items for old selection.
         //

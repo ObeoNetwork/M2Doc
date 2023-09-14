@@ -204,37 +204,82 @@ public final class GenconfUtils {
         Map<String, Object> result = new HashMap<String, Object>();
         for (Definition def : generation.getDefinitions()) {
             if (def instanceof ModelDefinition) {
-                EObject val = null;
-                final EObject originalValue = ((ModelDefinition) def).getValue();
-                if (originalValue != null) {
-                    URI uri = EcoreUtil.getURI(originalValue);
-                    try {
-                        val = resourceSetForModels.getEObject(uri, true);
-                    } catch (WrappedException e) {
-                        /*
-                         * The resource could not be loaded, in that case the value is reset to a proxy with the same uri.
-                         */
-                        if (originalValue != null) {
-                            InternalEObject eobj = (InternalEObject) EcoreUtil.create(originalValue.eClass());
-                            eobj.eSetProxyURI(uri);
-                            val = eobj;
-                        }
-                    }
+                final EObject value = getEObjectValue(resourceSetForModels, ((ModelDefinition) def).getValue());
+                result.put(def.getKey(), value);
+            } else if (def instanceof ModelSequenceDefinition) {
+                final List<EObject> value = new ArrayList<>();
+                for (EObject eObj : ((ModelSequenceDefinition) def).getValue()) {
+                    value.add(getEObjectValue(resourceSetForModels, eObj));
                 }
-                result.put(((ModelDefinition) def).getKey(), val);
+            } else if (def instanceof ModelOrderedSetDefinition) {
+                final List<EObject> value = new ArrayList<>();
+                for (EObject eObj : ((ModelOrderedSetDefinition) def).getValue()) {
+                    value.add(getEObjectValue(resourceSetForModels, eObj));
+                }
             } else if (def instanceof StringDefinition) {
-                result.put(((StringDefinition) def).getKey(), ((StringDefinition) def).getValue());
+                result.put(def.getKey(), ((StringDefinition) def).getValue());
+            } else if (def instanceof StringSequenceDefinition) {
+                final List<String> value = new ArrayList<>(((StringSequenceDefinition) def).getValue());
+                result.put(def.getKey(), value);
+            } else if (def instanceof StringOrderedSetDefinition) {
+                final Set<String> value = new LinkedHashSet<>(((StringOrderedSetDefinition) def).getValue());
+                result.put(def.getKey(), value);
             } else if (def instanceof IntegerDefinition) {
-                result.put(((IntegerDefinition) def).getKey(), ((IntegerDefinition) def).getValue());
+                result.put(def.getKey(), ((IntegerDefinition) def).getValue());
+            } else if (def instanceof IntegerSequenceDefinition) {
+                final List<Integer> value = new ArrayList<>(((IntegerSequenceDefinition) def).getValue());
+                result.put(def.getKey(), value);
+            } else if (def instanceof IntegerOrderedSetDefinition) {
+                final Set<Integer> value = new LinkedHashSet<>(((IntegerOrderedSetDefinition) def).getValue());
+                result.put(def.getKey(), value);
             } else if (def instanceof RealDefinition) {
-                result.put(((RealDefinition) def).getKey(), ((RealDefinition) def).getValue());
+                result.put(def.getKey(), ((RealDefinition) def).getValue());
+            } else if (def instanceof RealSequenceDefinition) {
+                final List<Double> value = new ArrayList<>(((RealSequenceDefinition) def).getValue());
+                result.put(def.getKey(), value);
+            } else if (def instanceof RealOrderedSetDefinition) {
+                final Set<Double> value = new LinkedHashSet<>(((RealOrderedSetDefinition) def).getValue());
+                result.put(def.getKey(), value);
             } else if (def instanceof BooleanDefinition) {
-                result.put(((BooleanDefinition) def).getKey(), ((BooleanDefinition) def).isValue());
+                result.put(def.getKey(), ((BooleanDefinition) def).isValue());
+            } else if (def instanceof BooleanSequenceDefinition) {
+                final List<Boolean> value = new ArrayList<>(((BooleanSequenceDefinition) def).getValue());
+                result.put(def.getKey(), value);
+            } else if (def instanceof BooleanOrderedSetDefinition) {
+                final Set<Boolean> value = new LinkedHashSet<>(((BooleanOrderedSetDefinition) def).getValue());
+                result.put(def.getKey(), value);
             } else {
                 throw new UnsupportedOperationException();
             }
         }
         return result;
+    }
+
+    /**
+     * Gets the {@link EObject} value from the given {@link EObject} original value in the given {@link ResourceSet} for models.
+     * 
+     * @param resourceSetForModels
+     *            the {@link ResourceSet}
+     * @param originalValue
+     *            the {@link EObject}
+     * @return the {@link EObject} value from the given {@link EObject} original value in the given {@link ResourceSet} for models
+     */
+    private static EObject getEObjectValue(ResourceSet resourceSetForModels, EObject originalValue) {
+        EObject val = null;
+        if (originalValue != null) {
+            URI uri = EcoreUtil.getURI(originalValue);
+            try {
+                val = resourceSetForModels.getEObject(uri, true);
+            } catch (WrappedException e) {
+                // The resource could not be loaded, in that case the value is reset to a proxy with the same uri.
+                if (originalValue != null) {
+                    InternalEObject eobj = (InternalEObject) EcoreUtil.create(originalValue.eClass());
+                    eobj.eSetProxyURI(uri);
+                    val = eobj;
+                }
+            }
+        }
+        return val;
     }
 
     /**
@@ -325,15 +370,80 @@ public final class GenconfUtils {
             Set<IType> types) {
         Definition res = null;
 
-        final ClassType eObjectType = new ClassType(queryEnvironment, EObject.class);
-        final ClassType stringType = new ClassType(queryEnvironment, String.class);
+        final IType eObjectType = new ClassType(queryEnvironment, EObject.class);
+        final IType eObjectSequenceType = new ForkedSequenceType(queryEnvironment, eObjectType);
+        final IType eObjectOrderedSetType = new ForkedSetType(queryEnvironment, eObjectType);
+        final IType stringType = new ClassType(queryEnvironment, String.class);
+        final IType stringSequenceType = new ForkedSequenceType(queryEnvironment, stringType);
+        final IType stringOrderedSetType = new ForkedSetType(queryEnvironment, stringType);
+        final IType integerType = new ClassType(queryEnvironment, Integer.class);
+        final IType integerSequenceType = new ForkedSequenceType(queryEnvironment, integerType);
+        final IType integerOrderedSetType = new ForkedSetType(queryEnvironment, integerType);
+        final IType realType = new ClassType(queryEnvironment, Double.class);
+        final IType realSequenceType = new ForkedSequenceType(queryEnvironment, realType);
+        final IType realOrderedSetType = new ForkedSetType(queryEnvironment, realType);
+        final IType booleanType = new ClassType(queryEnvironment, Boolean.class);
+        final IType booleanSequenceType = new ForkedSequenceType(queryEnvironment, booleanType);
+        final IType booleanOrderedSetType = new ForkedSetType(queryEnvironment, booleanType);
         for (IType type : types) {
             if (eObjectType.isAssignableFrom(type)) {
                 res = GenconfPackage.eINSTANCE.getGenconfFactory().createModelDefinition();
                 res.setKey(name);
                 break;
+            } else if (eObjectSequenceType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createModelOrderedSetDefinition();
+                res.setKey(name);
+                break;
+            } else if (eObjectOrderedSetType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createModelOrderedSetDefinition();
+                res.setKey(name);
+                break;
             } else if (stringType.isAssignableFrom(type)) {
                 res = GenconfPackage.eINSTANCE.getGenconfFactory().createStringDefinition();
+                res.setKey(name);
+                break;
+            } else if (stringSequenceType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createStringSequenceDefinition();
+                res.setKey(name);
+                break;
+            } else if (stringOrderedSetType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createStringOrderedSetDefinition();
+                res.setKey(name);
+                break;
+            } else if (integerType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createIntegerDefinition();
+                res.setKey(name);
+                break;
+            } else if (integerSequenceType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createIntegerSequenceDefinition();
+                res.setKey(name);
+                break;
+            } else if (integerOrderedSetType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createIntegerOrderedSetDefinition();
+                res.setKey(name);
+                break;
+            } else if (realType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createRealDefinition();
+                res.setKey(name);
+                break;
+            } else if (realSequenceType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createRealSequenceDefinition();
+                res.setKey(name);
+                break;
+            } else if (realOrderedSetType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createRealOrderedSetDefinition();
+                res.setKey(name);
+                break;
+            } else if (booleanType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createBooleanDefinition();
+                res.setKey(name);
+                break;
+            } else if (booleanSequenceType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createBooleanSequenceDefinition();
+                res.setKey(name);
+                break;
+            } else if (booleanOrderedSetType.isAssignableFrom(type)) {
+                res = GenconfPackage.eINSTANCE.getGenconfFactory().createBooleanOrderedSetDefinition();
                 res.setKey(name);
                 break;
             }
@@ -360,28 +470,78 @@ public final class GenconfUtils {
             Set<IType> types) {
         boolean res = false;
 
-        final ClassType eObjectType = new ClassType(queryEnvironment, EObject.class);
-        final ClassType stringType = new ClassType(queryEnvironment, String.class);
-        final ClassType integerType = new ClassType(queryEnvironment, Integer.class);
-        final ClassType realType = new ClassType(queryEnvironment, Double.class);
-        final ClassType booleanType = new ClassType(queryEnvironment, Boolean.class);
+        final IType eObjectType = new ClassType(queryEnvironment, EObject.class);
+        final IType eObjectSequenceType = new ForkedSequenceType(queryEnvironment, eObjectType);
+        final IType eObjectOrderedSetType = new ForkedSetType(queryEnvironment, eObjectType);
+        final IType stringType = new ClassType(queryEnvironment, String.class);
+        final IType stringSequenceType = new ForkedSequenceType(queryEnvironment, stringType);
+        final IType stringOrderedSetType = new ForkedSetType(queryEnvironment, stringType);
+        final IType integerType = new ClassType(queryEnvironment, Integer.class);
+        final IType integerSequenceType = new ForkedSequenceType(queryEnvironment, integerType);
+        final IType integerOrderedSetType = new ForkedSetType(queryEnvironment, integerType);
+        final IType realType = new ClassType(queryEnvironment, Double.class);
+        final IType realSequenceType = new ForkedSequenceType(queryEnvironment, realType);
+        final IType realOrderedSetType = new ForkedSetType(queryEnvironment, realType);
+        final IType booleanType = new ClassType(queryEnvironment, Boolean.class);
+        final IType booleanSequenceType = new ForkedSequenceType(queryEnvironment, booleanType);
+        final IType booleanOrderedSetType = new ForkedSetType(queryEnvironment, booleanType);
         for (IType type : types) {
             if (eObjectType.isAssignableFrom(type) && definition instanceof ModelDefinition) {
                 res = true;
                 break;
-            } else if (stringType.isAssignableFrom(type) && definition instanceof StringDefinition) {
+            } else if (eObjectSequenceType.isAssignableFrom(type) && definition instanceof ModelSequenceDefinition) {
                 res = true;
                 break;
-            } else if (integerType.isAssignableFrom(type) && definition instanceof IntegerDefinition) {
-                res = true;
-                break;
-            } else if (realType.isAssignableFrom(type) && definition instanceof RealDefinition) {
-                res = true;
-                break;
-            } else if (booleanType.isAssignableFrom(type) && definition instanceof BooleanDefinition) {
-                res = true;
-                break;
-            }
+            } else
+                if (eObjectOrderedSetType.isAssignableFrom(type) && definition instanceof ModelOrderedSetDefinition) {
+                    res = true;
+                    break;
+                } else if (stringType.isAssignableFrom(type) && definition instanceof StringDefinition) {
+                    res = true;
+                    break;
+                } else
+                    if (stringSequenceType.isAssignableFrom(type) && definition instanceof StringSequenceDefinition) {
+                        res = true;
+                        break;
+                    } else if (stringOrderedSetType.isAssignableFrom(type)
+                        && definition instanceof StringOrderedSetDefinition) {
+                            res = true;
+                            break;
+                        } else if (integerType.isAssignableFrom(type) && definition instanceof IntegerDefinition) {
+                            res = true;
+                            break;
+                        } else if (integerSequenceType.isAssignableFrom(type)
+                            && definition instanceof IntegerSequenceDefinition) {
+                                res = true;
+                                break;
+                            } else if (integerOrderedSetType.isAssignableFrom(type)
+                                && definition instanceof IntegerOrderedSetDefinition) {
+                                    res = true;
+                                    break;
+                                } else if (realType.isAssignableFrom(type) && definition instanceof RealDefinition) {
+                                    res = true;
+                                    break;
+                                } else if (realSequenceType.isAssignableFrom(type)
+                                    && definition instanceof RealSequenceDefinition) {
+                                        res = true;
+                                        break;
+                                    } else if (realOrderedSetType.isAssignableFrom(type)
+                                        && definition instanceof RealOrderedSetDefinition) {
+                                            res = true;
+                                            break;
+                                        } else if (booleanType.isAssignableFrom(type)
+                                            && definition instanceof BooleanDefinition) {
+                                                res = true;
+                                                break;
+                                            } else if (booleanSequenceType.isAssignableFrom(type)
+                                                && definition instanceof BooleanSequenceDefinition) {
+                                                    res = true;
+                                                    break;
+                                                } else if (booleanOrderedSetType.isAssignableFrom(type)
+                                                    && definition instanceof BooleanOrderedSetDefinition) {
+                                                        res = true;
+                                                        break;
+                                                    }
         }
 
         return res;

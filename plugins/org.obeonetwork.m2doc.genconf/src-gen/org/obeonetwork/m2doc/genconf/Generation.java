@@ -131,7 +131,8 @@ public interface Generation extends EObject {
     String getValidationFileName();
 
     /**
-     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.Generation#getValidationFileName <em>Validation File Name</em>}' attribute.
+     * Sets the value of the '{@link org.obeonetwork.m2doc.genconf.Generation#getValidationFileName <em>Validation File Name</em>}'
+     * attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 

@@ -174,6 +174,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -184,6 +185,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
@@ -197,6 +199,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public String getTemplateFileName() {
         return templateFileName;
     }
@@ -207,6 +210,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public void setTemplateFileName(String newTemplateFileName) {
         String oldTemplateFileName = templateFileName;
         templateFileName = newTemplateFileName;
@@ -221,6 +225,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public String getResultFileName() {
         return resultFileName;
     }
@@ -231,6 +236,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public void setResultFileName(String newResultFileName) {
         String oldResultFileName = resultFileName;
         resultFileName = newResultFileName;
@@ -245,6 +251,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public String getValidationFileName() {
         return validationFileName;
     }
@@ -255,6 +262,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public void setValidationFileName(String newValidationFileName) {
         String oldValidationFileName = validationFileName;
         validationFileName = newValidationFileName;
@@ -269,6 +277,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public EList<Definition> getDefinitions() {
         if (definitions == null) {
             definitions = new EObjectContainmentEList<Definition>(Definition.class, this,
@@ -283,6 +292,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
      * 
      * @generated
      */
+    @Override
     public EList<Option> getOptions() {
         if (options == null) {
             options = new EObjectContainmentEList<Option>(Option.class, this, GenconfPackage.GENERATION__OPTIONS);
@@ -436,7 +446,7 @@ public class GenerationImpl extends MinimalEObjectImpl.Container implements Gene
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(name);
         result.append(", templateFileName: ");

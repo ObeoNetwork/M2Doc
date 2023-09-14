@@ -44,6 +44,26 @@ public interface GenconfFactory extends EFactory {
     ModelDefinition createModelDefinition();
 
     /**
+     * Returns a new object of class '<em>Model Sequence Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Model Sequence Definition</em>'.
+     * @generated
+     */
+    ModelSequenceDefinition createModelSequenceDefinition();
+
+    /**
+     * Returns a new object of class '<em>Model Ordered Set Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Model Ordered Set Definition</em>'.
+     * @generated
+     */
+    ModelOrderedSetDefinition createModelOrderedSetDefinition();
+
+    /**
      * Returns a new object of class '<em>String Definition</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -52,6 +72,26 @@ public interface GenconfFactory extends EFactory {
      * @generated
      */
     StringDefinition createStringDefinition();
+
+    /**
+     * Returns a new object of class '<em>String Sequence Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>String Sequence Definition</em>'.
+     * @generated
+     */
+    StringSequenceDefinition createStringSequenceDefinition();
+
+    /**
+     * Returns a new object of class '<em>String Ordered Set Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>String Ordered Set Definition</em>'.
+     * @generated
+     */
+    StringOrderedSetDefinition createStringOrderedSetDefinition();
 
     /**
      * Returns a new object of class '<em>Integer Definition</em>'.
@@ -64,6 +104,26 @@ public interface GenconfFactory extends EFactory {
     IntegerDefinition createIntegerDefinition();
 
     /**
+     * Returns a new object of class '<em>Integer Sequence Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Integer Sequence Definition</em>'.
+     * @generated
+     */
+    IntegerSequenceDefinition createIntegerSequenceDefinition();
+
+    /**
+     * Returns a new object of class '<em>Integer Ordered Set Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Integer Ordered Set Definition</em>'.
+     * @generated
+     */
+    IntegerOrderedSetDefinition createIntegerOrderedSetDefinition();
+
+    /**
      * Returns a new object of class '<em>Real Definition</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -74,6 +134,26 @@ public interface GenconfFactory extends EFactory {
     RealDefinition createRealDefinition();
 
     /**
+     * Returns a new object of class '<em>Real Sequence Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Real Sequence Definition</em>'.
+     * @generated
+     */
+    RealSequenceDefinition createRealSequenceDefinition();
+
+    /**
+     * Returns a new object of class '<em>Real Ordered Set Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Real Ordered Set Definition</em>'.
+     * @generated
+     */
+    RealOrderedSetDefinition createRealOrderedSetDefinition();
+
+    /**
      * Returns a new object of class '<em>Boolean Definition</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -82,6 +162,26 @@ public interface GenconfFactory extends EFactory {
      * @generated
      */
     BooleanDefinition createBooleanDefinition();
+
+    /**
+     * Returns a new object of class '<em>Boolean Sequence Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Boolean Sequence Definition</em>'.
+     * @generated
+     */
+    BooleanSequenceDefinition createBooleanSequenceDefinition();
+
+    /**
+     * Returns a new object of class '<em>Boolean Ordered Set Definition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return a new object of class '<em>Boolean Ordered Set Definition</em>'.
+     * @generated
+     */
+    BooleanOrderedSetDefinition createBooleanOrderedSetDefinition();
 
     /**
      * Returns a new object of class '<em>Option</em>'.
