@@ -136,7 +136,7 @@ public final class GenconfUtils {
         for (Option option : generation.getOptions()) {
             if (initializedOptions.containsKey(option.getName())) {
                 final String initialValue = initializedOptions.remove(option.getName());
-                if (option.getValue() == null) {
+                if (option.getValue() == null || option.getValue().trim().isEmpty()) {
                     option.setValue(initialValue);
                 }
             }
