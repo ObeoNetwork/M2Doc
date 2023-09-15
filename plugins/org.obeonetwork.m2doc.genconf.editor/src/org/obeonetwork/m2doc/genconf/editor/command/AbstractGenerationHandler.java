@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.genconf.editor.command;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -205,15 +206,17 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
             throws DocumentGenerationException, IOException {
         boolean res = true;
 
+        final Map<String, String> options = GenconfUtils.getOptions(gen);
         final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(), gen,
-                new ResourceSetImpl(), GenconfUtils.getOptions(gen));
+                new ResourceSetImpl(), options);
         final String templateFilePath = gen.getTemplateFileName();
         if (templateFilePath != null && !templateFilePath.isEmpty()) {
             final URI templateURI = GenconfUtils.getResolvedURI(gen, URI.createURI(templateFilePath, false));
 
             final TemplateCustomProperties properties = POIServices.getInstance()
                     .getTemplateCustomProperties(resourceSetForModel.getURIConverter(), templateURI);
-            if (!M2DocUtils.VERSION.equals(properties.getM2DocVersion())) {
+            final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
+            if (!ignoreVersionCheck && !M2DocUtils.VERSION.equals(properties.getM2DocVersion())) {
                 RunnableFuture<Boolean> runnable = new ConfirmRunnable(dialogTitle, properties, shell);
                 Display.getDefault().syncExec(runnable);
                 try {

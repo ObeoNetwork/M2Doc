@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.genconf.editor.wizard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -565,7 +566,9 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
 
         if (res != null) {
             setPageComplete(true);
-            if (!M2DocUtils.VERSION.equals(res.getM2DocVersion())) {
+            final Map<String, String> options = GenconfUtils.getOptions(generation);
+            final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
+            if (!ignoreVersionCheck && !M2DocUtils.VERSION.equals(res.getM2DocVersion())) {
                 setMessage("M2Doc version mismatch: template version is " + res.getM2DocVersion()
                     + " and current M2Doc version is " + M2DocUtils.VERSION, IMessageProvider.WARNING);
             } else {

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="wrongM2DocVersion" templateFileName="wrongM2DocVersion-template.docx" resultFileName="wrongM2DocVersion-actual-generation.docx" validationFileName="wrongM2DocVersion-actual-validation.docx">
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="wrongM2DocVersion" templateFileName="wrongM2DocVersionIgnoreVersionCheck-template.docx" resultFileName="wrongM2DocVersionIgnoreVersionCheck-actual-generation.docx" validationFileName="wrongM2DocVersionIgnoreVersionCheck-actual-validation.docx">
   <options name="IgnoreVersionCheck" value="true"/>
 </genconf:Generation>
