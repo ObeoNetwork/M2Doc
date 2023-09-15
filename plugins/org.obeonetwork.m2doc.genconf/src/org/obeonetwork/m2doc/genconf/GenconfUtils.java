@@ -135,7 +135,10 @@ public final class GenconfUtils {
         final Map<String, String> initializedOptions = M2DocUtils.getInitializedOptions(options);
         for (Option option : generation.getOptions()) {
             if (initializedOptions.containsKey(option.getName())) {
-                option.setValue(initializedOptions.remove(option.getName()));
+                final String initialValue = initializedOptions.remove(option.getName());
+                if (option.getValue() == null) {
+                    option.setValue(initialValue);
+                }
             }
         }
         for (Entry<String, String> entry : initializedOptions.entrySet()) {
