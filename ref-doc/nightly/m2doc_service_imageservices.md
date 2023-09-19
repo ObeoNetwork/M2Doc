@@ -53,7 +53,7 @@ Convert a String representing an URI to an Image and serialize it in the given f
 
 ## org.obeonetwork.m2doc.element.MImage.fit(Integer, Integer) : org.obeonetwork.m2doc.element.MImage
 
-Fits the Image in the given rectangle width and height.
+Fits the Image in the given rectangle width and height. same as myImage.fit(width, height, true)
 
 ### Parameter
 
@@ -65,6 +65,22 @@ Fits the Image in the given rectangle width and height.
 
 * myImage.fit(200, 300)
   * will fit the image in a rectangle (width=200, height=300)
+
+## org.obeonetwork.m2doc.element.MImage.fit(Integer, Integer, boolean) : org.obeonetwork.m2doc.element.MImage
+
+Fits the Image in the given rectangle width and height.
+
+### Parameter
+
+* **image**: The Image
+* **width**: The width to fit
+* **height**: The height to fit
+* **zoomIn**: The image will be zoomed in if smaller
+
+### Example
+
+* myImage.fit(200, 300, false)
+  * will fit the image in a rectangle (width=200, height=300) if the original image size is smaller it will not be zoomed in
 
 ## org.obeonetwork.m2doc.element.MImage.getHeight() : Integer
 
