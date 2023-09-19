@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Checks ImageServices registration :
+  [query: .fit(.asImage('Mona_Lisa.jpg'), 100, 150, false)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

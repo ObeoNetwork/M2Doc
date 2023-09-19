@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -199,7 +199,7 @@ public class ImageServices {
 
     // @formatter:off
     @Documentation(
-        value = "Fits the Image in the given rectangle width and height.",
+        value = "Fits the Image in the given rectangle width and height. same as myImage.fit(width, height, true)",
         params = {
             @Param(name = "image", value = "The Image"),
             @Param(name = "width", value = "The width to fit"),
@@ -215,6 +215,44 @@ public class ImageServices {
         image.setWidth(width);
         if (!image.conserveRatio() || image.getHeight() > height) {
             image.setHeight(height);
+        }
+
+        return fit(image, width, height, true);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Fits the Image in the given rectangle width and height.",
+        params = {
+            @Param(name = "image", value = "The Image"),
+            @Param(name = "width", value = "The width to fit"),
+            @Param(name = "height", value = "The height to fit"),
+            @Param(name = "zoomIn", value = "The image will be zoomed in if smaller"),
+        },
+        result = "the image with new dimensions",
+        examples = {
+            @Example(expression = "myImage.fit(200, 300, false)", result = "will fit the image in a rectangle (width=200, height=300) if the original image size is smaller it will not be zoomed in"),
+        }
+    )
+    // @formatter:on
+    public MImage fit(MImage image, Integer width, Integer height, boolean zoomIn) {
+        if (zoomIn) {
+            image.setWidth(width);
+            if (!image.conserveRatio() || image.getHeight() > height) {
+                image.setHeight(height);
+            }
+        } else {
+            if (image.getWidth() > width) {
+                image.setWidth(width);
+                if (image.getHeight() > height) {
+                    image.setHeight(height);
+                }
+            } else if (image.getHeight() > height) {
+                image.setHeight(height);
+                if (image.getWidth() > width) {
+                    image.setWidth(width);
+                }
+            }
         }
 
         return image;
