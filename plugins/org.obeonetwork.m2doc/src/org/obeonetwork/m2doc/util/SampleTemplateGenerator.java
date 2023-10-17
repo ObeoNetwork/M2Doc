@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019 Obeo. 
+ *  Copyright (c) 2019, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -50,7 +50,8 @@ public class SampleTemplateGenerator {
     private static final int BUFFER_SIZE = 1024 * 8;
 
     /**
-     * Creates the sample template {@link XWPFDocument}. The returned {@link XWPFDocument} should be {@link XWPFDocument#close() closed} by the
+     * Creates the sample template {@link XWPFDocument}. The returned {@link XWPFDocument} should be {@link XWPFDocument#close() closed} by
+     * the
      * caller.
      * 
      * @param variableName
@@ -68,12 +69,17 @@ public class SampleTemplateGenerator {
         final InputStream is = SampleTemplateGenerator.class.getResourceAsStream("/resources/sampleTemplate.docx");
         final OPCPackage pkg = OPCPackage.open(is);
 
-        String featureName = eCls.getEAllAttributes().get(0).getName();
-        for (EAttribute attribute : eCls.getEAllAttributes()) {
-            if (attribute.getEType() == EcorePackage.eINSTANCE.getEString()) {
-                featureName = attribute.getName();
-                break;
+        String featureName;
+        if (!eCls.getEAllAttributes().isEmpty()) {
+            featureName = eCls.getEAllAttributes().get(0).getName();
+            for (EAttribute attribute : eCls.getEAllAttributes()) {
+                if (attribute.getEType() == EcorePackage.eINSTANCE.getEString()) {
+                    featureName = attribute.getName();
+                    break;
+                }
             }
+        } else {
+            featureName = null;
         }
 
         final StringBuilder builder = new StringBuilder();
@@ -86,8 +92,14 @@ public class SampleTemplateGenerator {
                 nbBytes = partIS.read(buffer);
             }
         }
-        String xml = builder.toString().replace(VARIABLE_NAME_TAG, variableName);
-        xml = xml.replace(FEATURE_NAME_TAG, featureName);
+        String xml;
+        if (featureName != null) {
+            xml = builder.toString().replace(VARIABLE_NAME_TAG, variableName);
+            xml = xml.replace(FEATURE_NAME_TAG, featureName);
+        } else {
+            xml = builder.toString().replace(VARIABLE_NAME_TAG, variableName + " EClass");
+            xml = xml.replace(FEATURE_NAME_TAG, "eClass().name");
+        }
 
         try (OutputStream partOS = part.getOutputStream()) {
             partOS.write(xml.getBytes("UTF-8"));
