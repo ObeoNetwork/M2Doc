@@ -165,7 +165,7 @@ The next page of the wizard is dedicated to variables and binding values to them
 
 To reference new values you can load new resources using the `Load resource` button. Note the `Options (expert)` tab that allow to set advanced options to find values from a Sirius session for instance.
 
-If you are using M2Doc with [Sirius](https://www.eclipse.org/sirius/), [Obeo Designer](https://www.obeodesigner.com/en/), [Obeo Designer Team](https://www.obeodesigner.com/en/collaborative-features), [Capella](https://www.eclipse.org/capella/), or [Team for Capella](https://www.obeo.fr/en/capella-professional-offer), you need to set the SiriusSession option. This will allow you to use [Sirius services](index.html#services) like exporting diagrams as images:
+If you are using M2Doc with [Sirius](https://www.eclipse.dev/sirius/), [Obeo Designer](https://www.obeodesigner.com/en/), [Obeo Designer Team](https://www.obeodesigner.com/en/collaborative-features), [Capella](https://mbse-capella.org/), or [Team for Capella](https://www.obeosoft.com/en/capella-professional-offer), you need to set the SiriusSession option. This will allow you to use [Sirius services](index.html#services) like exporting diagrams as images:
 
 ![SiriusSession Option.]({{page.relativePath}}/capella/images/SiriusSession%20Option.png "SiriusSession Option.")
 
@@ -175,7 +175,7 @@ Setting this option should allow you to select model elements for each model var
 
 When the `Finish` button is pushed the generation configuration file is created or edited.
 
-You can also use M2Doc with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer) or [Obeo Designer Team](https://www.obeodesigner.com/en/collaborative-features). If you had existing .genconf files before you shared your project to Team for Capella or Obeo Designer Team, you will need to edit them.
+You can also use M2Doc with [Team for Capella](https://www.obeosoft.com/en/capella-professional-offer) or [Obeo Designer Team](https://www.obeodesigner.com/en/collaborative-features). If you had existing .genconf files before you shared your project to Team for Capella or Obeo Designer Team, you will need to edit them.
 
 First you need to change the SiriusSession since the .aird file has been renamed. You should need to add "team" like this:
 
@@ -542,7 +542,7 @@ When the class has no explicit constructor or the constructor doesn&#8217;t have
 
 When there is an explicit constructor with at least a parameter M2Doc can&#8217;t instantiate your class since there is no default constructor. You need to implement the [IServicesConfigurator](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/configurator/IServicesConfigurator.java) interface. This interface link one or more options in the generation configuration to the service class in order to instantiate it. You need to use the org.obeonetwork.m2doc.ide.servicesConfigurator extension point to declare your implementation of [IServicesConfigurator](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/services/configurator/IServicesConfigurator.java). If you want to use your implementation in standalone you can register it programmatically using M2DocUtils.registerServicesConfigurator().
 
-An example of implementation can be found in the [Sirius](https://eclipse.org/sirius/) integration plug-in see the class [SiriusServiceConfigurator](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/configurator/SiriusServiceConfigurator.java) and the extension in the [plugin.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/plugin.xml).
+An example of implementation can be found in the [Sirius](https://www.eclipse.dev/sirius/) integration plug-in see the class [SiriusServiceConfigurator](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/configurator/SiriusServiceConfigurator.java) and the extension in the [plugin.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/plugin.xml).
 
 ### Special return types
 

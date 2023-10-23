@@ -13,7 +13,7 @@ Generation is driven by templates that navigate through a source model and trans
 
 ![Generated document.]({{page.relativePath}}/capella/images/m2doc-capella.png "Generated document.")
 
-This tutorial explains how to install and launch two templates written for [Capella](https://www.eclipse.org/capella/) models:
+This tutorial explains how to install and launch two templates written for [Capella](https://mbse-capella.org/) models:
 
 * [LA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-template.docx): Logical specification of a system ([generated document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/LA-Complete/LA-Complete-expected-generation.docx))
 * [SA](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-template.docx): Whole specification of a system ([generated document](https://github.com/ObeoNetwork/Capella-Extensions/raw/master/tests/org.obeonetwork.capella.m2doc.aql.queries.tests/resources/IFE/SA-Complete/SA-Complete-expected-generation.docx))
@@ -29,11 +29,11 @@ You can also replay this webinar which explains how to launch M2Doc from Capella
 <iframe height="350" width="600" src="https://www.youtube.com/embed/tnLDinb0jkg?start=970"></iframe>
 
 
-Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer). You can test the generation by sharing the IFE example project provided in the extensions. Then edit the .genconf file to reference the shared SystemEngineering model element. You might need to open the Capella session first by double clicking the .aird file.
+Note: M2Doc 1.1.0 and above are compatible with [Team for Capella](https://www.obeosoft.com/en/capella-professional-offer). You can test the generation by sharing the IFE example project provided in the extensions. Then edit the .genconf file to reference the shared SystemEngineering model element. You might need to open the Capella session first by double clicking the .aird file.
 
 # Installation
 
-First you need to download [Capella](https://www.eclipse.org/capella/). It can be downloaded from this [download page](https://www.eclipse.org/capella/download.html).
+First you need to download [Capella](https://mbse-capella.org/). It can be downloaded from this [download page](https://mbse-capella.org/download.html).
 
 Once your download is finished, extract the downloaded archive and run the eclipe executable in the eclipse sub folder. You are now ready for the last step of the installation. You will need to [add a new update site](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm):
 
@@ -80,7 +80,7 @@ Once your download is finished, extract the downloaded archive and run the eclip
 
 * `https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.1.0/full/org.obeonetwork.capella.update.full.zip) (M2Doc 1.0.0)
 
-This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://www.eclipse.org/capella/) integration. Select the following feature:
+This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://mbse-capella.org/) integration. Select the following feature:
 
 ![The feature to install.]({{page.relativePath}}/capella/images/Install.png "The feature to install.")
 
@@ -128,7 +128,7 @@ The validation button will only be enable if the selected value is compatible wi
 
 # Team for Capella
 
-You can also use M2Doc with [Team for Capella](https://www.obeo.fr/en/capella-professional-offer). If you had existing .genconf files before you shared your project to Team for Capella, you will need to edit them.
+You can also use M2Doc with [Team for Capella](https://www.obeosoft.com/en/capella-professional-offer). If you had existing .genconf files before you shared your project to Team for Capella, you will need to edit them.
 
 First you need to change the SiriusSession since the .aird file has been renamed. You should need to add "team" like this:
 
