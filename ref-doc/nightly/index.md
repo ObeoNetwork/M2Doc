@@ -15,7 +15,7 @@ If you need an other version use one of our [released versions]({{page.relativeP
 
 ## Overview
 
-The M2Doc project provides Word document (.docx files) generation based on a document template and [EMF](https://www.eclipse.org/modeling/emf/) models. 
+The M2Doc project provides Word document (.docx files) generation based on a document template and [EMF](https://www.eclipse.dev/modeling/emf/) models. 
 
 The overall approach consists in creating templates in the [OOXML](https://en.wikipedia.org/wiki/Office_Open_XML) format where static text authoring benefits from the WYSIWYG capabilities of Microsoft Word. Dynamic parts are inserted using a dedicated vocabulary of [OOXML](https://en.wikipedia.org/wiki/Office_Open_XML) fields code. Fields are mainly used to insert page numbers, references, etc. M2Doc makes use of them to describe documentation generation directives. This allows a total separation between the document and the M2Doc directives.
 
@@ -29,7 +29,7 @@ The generation looks like this:
 
 ![DB Result]({{page.relativePath}}/ref-doc/nightly/images/DBResult.png)
 
-The template language makes an extensive use of the [Acceleo Query Language](https://www.eclipse.org/acceleo/documentation/aql.html) which provides a full-fledged, extensible model query language and engine. 
+The template language makes an extensive use of the [Acceleo Query Language](https://www.eclipse.dev/acceleo/documentation/aql.html) which provides a full-fledged, extensible model query language and engine. 
 The M2Doc templates can be [validated](index.html#validating-a-generation-setup). If errors are found, an annotated templates is produced describing the problems found.
 
 ### Principles
@@ -85,7 +85,7 @@ You want to create your own template:
 You want to provide document generation in your own project using M2Doc:
 
 * see [Using M2Doc programmatically](index.html#using-m2doc-programmatically)
-* see [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)
+* see [Using AQL programmatically](https://www.eclipse.dev/acceleo/documentation/aql.html#UsingAQLprogrammatically) (optional)
 
 ## Architecture
 
@@ -97,8 +97,8 @@ The template is parsed in an internal representation (the AST). From here you ca
 
 The architecture of M2Doc is organized around three building blocks:
 * [Apache POI](https://poi.apache.org/) for the parsing and generation of [OOXML](https://en.wikipedia.org/wiki/Office_Open_XML) documents
-* [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying the models
-* [EMF](https://www.eclipse.org/modeling/emf/) as a general platform
+* [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) for querying the models
+* [EMF](https://www.eclipse.dev/modeling/emf/) as a general platform
 
 ![Technical architecture]({{page.relativePath}}/ref-doc/nightly/images/TechnicalArchitecture.png)
 
@@ -264,7 +264,7 @@ The template is created after clicking finish:
 
 ### M2Doc interpreter view
 
-The M2Doc interpreter view provides completion for [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions in the context of a generation model (.genconf file). To create a generation model file you can read the [initialize generation](index.html#initializing-a-generation-configuration) section.
+The M2Doc interpreter view provides completion for [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) expressions in the context of a generation model (.genconf file). To create a generation model file you can read the [initialize generation](index.html#initializing-a-generation-configuration) section.
 
 To open the M2Doc interpreter view, select the Windows / Show View / Other... :
 
@@ -282,7 +282,7 @@ Select your generation model (.genconf file) in the following dialog:
 
 ![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view4.png "M2Doc Interpreter View.")
 
-You can then start typing [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions and use CTRL+SPACE for completion:
+You can then start typing [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) expressions and use CTRL+SPACE for completion:
 
 ![M2Doc Interpreter View.]({{page.relativePath}}/ref-doc/nightly/images/Interpreter%20view5.png "M2Doc Interpreter View.")
 
@@ -300,9 +300,9 @@ When an error/warning/info is detected, you can over the message to highlight th
 
 The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use `ALT+F9`. To insert a new field, use `CTRL+F9`.
 
-All syntax elements of M2Doc should be placed into fields using `ALT+F9` to show fields and `CTRL+F9` to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
+All syntax elements of M2Doc should be placed into fields using `ALT+F9` to show fields and `CTRL+F9` to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
 
-In order to create your [AQL](https://www.eclipse.org/acceleo/documentation/aql.html) expressions with completion and see the result for a selected object you can use the [M2Doc interpreter](index.html#m2doc-interpreter-view).
+In order to create your [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) expressions with completion and see the result for a selected object you can use the [M2Doc interpreter](index.html#m2doc-interpreter-view).
 
 In the following explanations `{` and `}` will denote a Word field.
 
@@ -340,13 +340,13 @@ Anything that is not a M2Doc field is generated as is.
 
 #### Query ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query/nominal))
 
-The [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) is evaluated and its result is inserted in the generated document. [M2Doc services](index.html#services) and [provided services](index.html#providing-new-services) can be used. Some [specific return types](index.html#special-return-types) will be interpreted by M2Doc.
+The [AQL expression](https://www.eclipse.dev/acceleo/documentation/aql.html) is evaluated and its result is inserted in the generated document. [M2Doc services](index.html#services) and [provided services](index.html#providing-new-services) can be used. Some [specific return types](index.html#special-return-types) will be interpreted by M2Doc.
 
 `{m:AQL expression}`
 
 #### Conditional ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/conditional/nominal))
 
-If the condition is true the &#171;then block&#187; is inserted in the generated document. if it&#8217;s false and the &#171;else if&#187; condition is true the &#171;else if block&#187; is inserted. if all condition are false the &#171;else block&#187; is inserted. You can have zero or more &#171;elseif blocks&#187;, zero or one &#171;else block&#187;. All [AQL expressions](https://www.eclipse.org/acceleo/documentation/aql.html) should evaluate to a Boolean.
+If the condition is true the &#171;then block&#187; is inserted in the generated document. if it&#8217;s false and the &#171;else if&#187; condition is true the &#171;else if block&#187; is inserted. if all condition are false the &#171;else block&#187; is inserted. You can have zero or more &#171;elseif blocks&#187;, zero or one &#171;else block&#187;. All [AQL expressions](https://www.eclipse.dev/acceleo/documentation/aql.html) should evaluate to a Boolean.
 
 `{m:if AQL expression}`
 
@@ -366,7 +366,7 @@ If you want to use a variable named 'elseif', 'else', 'endif' you can use an ext
 
 #### Repetition ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
-Generates the &#171;repetition block&#187; for each value of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html).
+Generates the &#171;repetition block&#187; for each value of the [AQL expression](https://www.eclipse.dev/acceleo/documentation/aql.html).
 
 `{m:for variable | AQL expression} ...repetition block... {m:endfor}`
 
@@ -374,7 +374,7 @@ If you want to use a variable named 'for' or 'endfor' you can use an extra space
 
 #### Let ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/repetition/nominal))
 
-Declares a variable named &#171;variable&#187; with the result of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) as its value. The variable is accessible in the &#171;let block&#187;.
+Declares a variable named &#171;variable&#187; with the result of the [AQL expression](https://www.eclipse.dev/acceleo/documentation/aql.html) as its value. The variable is accessible in the &#171;let block&#187;.
 
 `{m:let variable = AQL expression} ...let block... {m:endlet}`
 
@@ -382,7 +382,7 @@ If you want to use a variable named 'endlet' you can use an extra space after 'm
 
 #### Bookmark ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/bookmark/nominal))
 
-Generates a bookmark with the result of the [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) as identifier and the &#171;bookmark block&#187; as content.
+Generates a bookmark with the result of the [AQL expression](https://www.eclipse.dev/acceleo/documentation/aql.html) as identifier and the &#171;bookmark block&#187; as content.
 
 `{m:bookmark AQL expression} ...bookmark block... {m:endbookmark}`
 
@@ -394,7 +394,7 @@ Generates a link to the [bookmark](index.html#bookmark-examplehttpsgithubcomobeo
 
 `{m:link AQL expression AQL expression}`
 
-The first [AQL expression](https://www.eclipse.org/acceleo/documentation/aql.html) id the identifier and the second one is the text to display.
+The first [AQL expression](https://www.eclipse.dev/acceleo/documentation/aql.html) id the identifier and the second one is the text to display.
 If you want to use a variable named 'link' you can use an extra space after 'm:'.
 
 #### User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))
@@ -421,7 +421,7 @@ If you want to use a variable named 'template' or 'endtemplate' you can use an e
 
 ### Services
 
-All [AQL services](https://www.eclipse.org/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#providing-new-services).
+All [AQL services](https://www.eclipse.dev/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#providing-new-services).
 
 * [Boolean services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_booleanservices.html)
 * [EObject services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2doceobjectservices.html)
@@ -595,7 +595,7 @@ You can launch your generation using [Maven](https://maven.apache.org/) and [Tyc
 
 ## Using M2Doc programmatically
 
-This section is for developers wanting to integrate M2Doc in their own project. It will show how to use the main features of M2Doc programmatically. Since M2Doc uses AQL for expressions it can be useful to have a look at [Using AQL programmatically](https://www.eclipse.org/acceleo/documentation/aql.html#UsingAQLprogrammatically).
+This section is for developers wanting to integrate M2Doc in their own project. It will show how to use the main features of M2Doc programmatically. Since M2Doc uses AQL for expressions it can be useful to have a look at [Using AQL programmatically](https://www.eclipse.dev/acceleo/documentation/aql.html#UsingAQLprogrammatically).
 
 ### Parsing
 
