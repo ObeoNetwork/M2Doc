@@ -7,7 +7,7 @@ relativePath: ../..
 
 <!--
 /********************************************************************************
-** Copyright (c) 2015 Obeo.
+** Copyright (c) 2015, 2023 Obeo.
 ** All rights reserved. This program and the accompanying materials
 ** are made available under the terms of the Eclipse Public License v2.0
 ** which accompanies this distribution, and is available at
@@ -50,6 +50,22 @@ Convert a String representing an URI to an Image and serialize it in the given f
 
 * 'image.png'.asImage('jpg')
   * insert the image 'image.jpg'
+
+## org.obeonetwork.m2doc.element.MElement.fitAll(Integer, Integer, boolean) : org.obeonetwork.m2doc.element.MElement
+
+Fits all Images of the given MElement in the given rectangle width and height.
+
+### Parameter
+
+* **element**: The MElement
+* **width**: The width to fit
+* **height**: The height to fit
+* **zoomIn**: The image will be zoomed in if smaller
+
+### Example
+
+* myImage.fitAll(200, 300, false)
+  * will fit all images in a rectangle (width=200, height=300) if the original image size is smaller it will not be zoomed in
 
 ## org.obeonetwork.m2doc.element.MImage.fit(Integer, Integer) : org.obeonetwork.m2doc.element.MImage
 

@@ -7,7 +7,7 @@ relativePath: ../..
 
 <!--
 /********************************************************************************
-** Copyright (c) 2015 Obeo.
+** Copyright (c) 2015, 2023 Obeo.
 ** All rights reserved. This program and the accompanying materials
 ** are made available under the terms of the Eclipse Public License v2.0
 ** which accompanies this distribution, and is available at
@@ -159,6 +159,21 @@ Tell if the given DRepresentation is visible in LM.
 * myDRepresentation.isVisibleInDoc({some::Extension1 | some::Extension2})
   * true if the given DRepresentation is visible in LM, false otherwise
 
+## org.obeonetwork.m2doc.element.MElement.reduceAllImages(Integer, Integer) : org.obeonetwork.m2doc.element.MElement
+
+Reduces all MImages from the given MElement to a maximum of the given size. Smaller images will not be changed.
+
+### Parameter
+
+* **element**: The given MElement
+* **width**: The maximum width
+* **height**: The maximum height
+
+### Example
+
+* myMElement.reduceAllImages(200, 300)
+  * all reduced MImages from the given MElement
+
 ## org.obeonetwork.m2doc.element.MElement.replaceLink(EObject) : org.obeonetwork.m2doc.element.MElement
 
 Replace the MLink uri from the given MElement to reference document bookmarks.
@@ -170,7 +185,7 @@ Replace the MLink uri from the given MElement to reference document bookmarks.
 
 ### Example
 
-* myDataPkg.replaceLink(eObj)
+* myMElement.replaceLink(eObj)
   * replaced the MLink uri from the given MElement to reference document bookmarks
 
 
