@@ -16,6 +16,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
@@ -23,7 +25,13 @@ import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MImage;
+import org.obeonetwork.m2doc.element.MList;
+import org.obeonetwork.m2doc.element.MParagraph;
+import org.obeonetwork.m2doc.element.MTable;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.PictureType;
 import org.obeonetwork.m2doc.element.impl.MImageAWTImpl;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
@@ -321,6 +329,59 @@ public class ImageServices {
         g2d.dispose();
 
         return new MImageAWTImpl(rotated, image.getURI());
+    }
+
+    // @formatter:off
+    @Documentation(
+            value = "Fits all Images of the given MElement in the given rectangle width and height.",
+            params = {
+                @Param(name = "element", value = "The MElement"),
+                @Param(name = "width", value = "The width to fit"),
+                @Param(name = "height", value = "The height to fit"),
+                @Param(name = "zoomIn", value = "The image will be zoomed in if smaller"),
+            },
+            result = "the MElement with resized images",
+            examples = {
+                @Example(expression = "myImage.fitAll(200, 300, false)", result = "will fit all images in a rectangle (width=200, height=300) if the original image size is smaller it will not be zoomed in"),
+            }
+        )
+    // @formatter:on
+    public MElement fitAll(MElement element, Integer width, Integer height, boolean zoomIn) {
+        final MElement res;
+
+        if (element instanceof MList) {
+            final List<MElement> newElements = new ArrayList<>();
+            for (MElement e : (MList) element) {
+                newElements.add(fitAll(e, width, height, zoomIn));
+            }
+            ((MList) element).clear();
+            ((MList) element).addAll(newElements);
+            res = element;
+        } else if (element instanceof MParagraph) {
+            final MElement newContent = fitAll(((MParagraph) element).getContents(), width, height, zoomIn);
+            if (newContent != ((MParagraph) element).getContents()) {
+                ((MParagraph) element).setContents(newContent);
+            }
+            res = element;
+        } else if (element instanceof MTable) {
+            for (MRow row : ((MTable) element).getRows()) {
+                for (MCell cell : row.getCells()) {
+                    final MElement newContent = fitAll(cell.getContents(), width, height, zoomIn);
+                    if (newContent != cell.getContents()) {
+                        cell.setContents(newContent);
+                    }
+                }
+            }
+            res = element;
+        } else if (element instanceof MImage) {
+            final MImage image = (MImage) element;
+            fit(image, width, height, zoomIn);
+            res = image;
+        } else {
+            res = element;
+        }
+
+        return res;
     }
 
 }
