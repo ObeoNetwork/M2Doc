@@ -221,7 +221,7 @@ public final class M2DocHelpContentUtils {
 		buffer.append("<html lang=\"en\">").append(LS);
 		buffer.append("<!--").append(LS);
 		buffer.append("/********************************************************************************").append(LS);
-		buffer.append("** Copyright (c) 2015 Obeo.").append(LS);
+		buffer.append("** Copyright (c) 2015, 2023 Obeo.").append(LS);
 		buffer.append("** All rights reserved. This program and the accompanying materials").append(LS);
 		buffer.append("** are made available under the terms of the Eclipse Public License v2.0").append(LS);
 		buffer.append("** which accompanies this distribution, and is available at").append(LS);
@@ -626,7 +626,7 @@ public final class M2DocHelpContentUtils {
 		servicesSection.append("<!--").append(LS);
 		servicesSection.append("/********************************************************************************")
 				.append(LS);
-		servicesSection.append("** Copyright (c) 2015 Obeo.").append(LS);
+		servicesSection.append("** Copyright (c) 2015, 2023 Obeo.").append(LS);
 		servicesSection.append("** All rights reserved. This program and the accompanying materials").append(LS);
 		servicesSection.append("** are made available under the terms of the Eclipse Public License v2.0").append(LS);
 		servicesSection.append("** which accompanies this distribution, and is available at").append(LS);
