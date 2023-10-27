@@ -22,6 +22,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -655,6 +656,8 @@ public class VariableAndOptionPage extends WizardPage {
         final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
         defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                 new XMIResourceFactoryImpl());
+        defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+                .putAll(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
 
         if (editingDomain != null) {
             M2DocUtils.cleanResourceSetForModels(queryEnvironment, editingDomain.getResourceSet());

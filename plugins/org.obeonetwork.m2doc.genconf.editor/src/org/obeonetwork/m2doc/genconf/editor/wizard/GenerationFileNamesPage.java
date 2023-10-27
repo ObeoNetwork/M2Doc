@@ -21,6 +21,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -537,6 +538,9 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
                 final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
                 defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                         new XMIResourceFactoryImpl());
+                defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+                        .putAll(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
+
                 final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(
                         new ArrayList<Exception>(), queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
 

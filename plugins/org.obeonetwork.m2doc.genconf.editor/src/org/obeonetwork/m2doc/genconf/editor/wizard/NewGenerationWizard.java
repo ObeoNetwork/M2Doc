@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2018, 2023 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v2.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v20.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.wizard;
 
 import java.io.IOException;
@@ -216,6 +227,9 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
+            defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+                    .putAll(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
+
             final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
                     queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
             final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, properties);
