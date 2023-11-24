@@ -1040,8 +1040,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFParagraph res;
         switch (mPagination) {
             case newColumn:
-                insertFieldRunReplacement(paragraph, run, "").addBreak(BreakType.COLUMN);
-                res = paragraph;
+                final XWPFRun newColumnRun = insertFieldRunReplacement(paragraph, run, "");
+                newColumnRun.addBreak(BreakType.COLUMN);
+                res = (XWPFParagraph) newColumnRun.getParent();
                 break;
 
             case newParagraph:
@@ -1049,8 +1050,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 break;
 
             case newPage:
-                insertFieldRunReplacement(paragraph, run, "").addBreak(BreakType.PAGE);
-                res = paragraph;
+                final XWPFRun newPageRun = insertFieldRunReplacement(paragraph, run, "");
+                newPageRun.addBreak(BreakType.PAGE);
+                res = (XWPFParagraph) newPageRun.getParent();
                 break;
 
             case newTableOfContent:
@@ -1064,13 +1066,15 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 break;
 
             case newTextWrapping:
-                insertFieldRunReplacement(paragraph, run, "").addBreak(BreakType.TEXT_WRAPPING);
-                res = paragraph;
+                final XWPFRun newTextWrappingRun = insertFieldRunReplacement(paragraph, run, "");
+                newTextWrappingRun.addBreak(BreakType.TEXT_WRAPPING);
+                res = (XWPFParagraph) newTextWrappingRun.getParent();
                 break;
 
             case ligneBreak:
-                insertFieldRunReplacement(paragraph, run, "").addBreak();
-                res = paragraph;
+                final XWPFRun ligneBreakRun = insertFieldRunReplacement(paragraph, run, "");
+                ligneBreakRun.addBreak();
+                res = (XWPFParagraph) ligneBreakRun.getParent();
                 break;
 
             default:
