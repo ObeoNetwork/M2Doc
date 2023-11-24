@@ -24,8 +24,8 @@ with [get-window "Template properties"] {
 get-view "Project Explorer" | get-tree | select "test/nominal-template.genconf" | get-menu 
     -path "Validate Documentation Template" | click
 get-window "M2Doc validation" 
-    | get-label "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.1. Do you want to continue ?" 
-    | get-property caption | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.1. Do you want to continue ?" 
+    | get-label "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.2. Do you want to continue ?" 
+    | get-property caption | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.2. Do you want to continue ?" 
     | verify-true
 get-window "M2Doc validation" | get-button OK | click
 get-window "M2Doc validation"

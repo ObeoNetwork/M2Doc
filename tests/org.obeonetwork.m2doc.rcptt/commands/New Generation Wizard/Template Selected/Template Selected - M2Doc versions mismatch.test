@@ -31,7 +31,7 @@ with [get-window -class WizardDialog] {
     get-label "" -after [get-label "Select files"] | get-property "image.path" 
         | equals "org.eclipse.jface/icons/full/message_warning.png" | verify-true
     get-editbox -after [get-label "Select files"] | get-property text 
-        | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.1" | verify-true
+        | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.2" | verify-true
 
     get-editbox -after [get-label "Generation file:"] | get-property text 
         | equals "platform:/resource/test/asImageByRepresentationDescriptionName-template.genconf" | verify-true

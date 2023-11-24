@@ -25,8 +25,8 @@ exec-with-options {
     get-view "Project Explorer" | get-tree | get-menu -path "Generate Documentation" | click
 }
 get-window "M2Doc generation" 
-    | get-label "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.1. Do you want to continue ?" 
-    | get-property caption | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.1. Do you want to continue ?" 
+    | get-label "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.2. Do you want to continue ?" 
+    | get-property caption | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 3.3.2. Do you want to continue ?" 
     | verify-true
 get-window "M2Doc generation" | get-button Cancel | click
 get-view "Project Explorer" | get-tree | get-item -path test | get-property childCount | equals 4 | verify-true

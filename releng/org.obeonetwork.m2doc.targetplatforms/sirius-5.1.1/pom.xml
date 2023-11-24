@@ -6,13 +6,13 @@
   <parent>
 	<groupId>org.obeonetwork.m2doc</groupId>
 	<artifactId>org.obeonetwork.m2doc.parent</artifactId>
-	<version>3.3.1-SNAPSHOT</version>
+	<version>3.3.2-SNAPSHOT</version>
     <relativePath>../../..</relativePath>
   </parent>
 
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>m2doc-sirius-5.1.1</artifactId>
-  <version>3.3.1-SNAPSHOT</version>
+  <version>3.3.2-SNAPSHOT</version>
   <packaging>eclipse-target-definition</packaging>
 
 </project>

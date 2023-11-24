@@ -20,7 +20,7 @@ get-window "Template properties" | get-button "Next >" | click
 with [get-window "Template properties"] {
     get-button "Edit" | get-property enablement | equals false | verify-true
     get-table | get-property itemCount | equals 17 | verify-true
-    get-editbox -after [get-label "M2Doc version:"] | get-property text | equals "3.3.1" | verify-true
+    get-editbox -after [get-label "M2Doc version:"] | get-property text | equals "3.3.2" | verify-true
     get-button "Current version" | get-property enablement | equals true | verify-true
 }
 with [get-window "Template properties"] {
