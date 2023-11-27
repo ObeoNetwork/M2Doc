@@ -876,10 +876,12 @@ public class M2DocHTMLParser extends Parser {
         MList paragraphList = new MListImpl();
         MParagraph currentParagraph = createEmptyParagraphWithSameStyle(parent, paragraphList);
         boolean paragraphEncountered = false;
+        boolean tableEncountered = false;
         for (MElement child : parentContents) {
 
             if (child instanceof MParagraph || child instanceof MTable) {
-                paragraphEncountered = paragraphEncountered || child instanceof MParagraphImpl;
+                paragraphEncountered = true;
+                tableEncountered = child instanceof MTable;
                 if (!paragraphList.isEmpty()) {
                     newParent.add(currentParagraph);
                     paragraphList = new MListImpl();
@@ -887,9 +889,10 @@ public class M2DocHTMLParser extends Parser {
                 }
                 newParent.add(child);
             } else if (paragraphEncountered) {
-                if (!(child == MPagination.ligneBreak && paragraphList.isEmpty())) {
+                if (tableEncountered || !(child == MPagination.ligneBreak && paragraphList.isEmpty())) {
                     paragraphList.add(child);
                 }
+                tableEncountered = false;
             } else {
                 newParent.add(child);
             }

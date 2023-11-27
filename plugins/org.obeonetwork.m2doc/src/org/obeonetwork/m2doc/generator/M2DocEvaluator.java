@@ -648,13 +648,13 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         } else if (object instanceof MHyperLink) {
             res = insertMHyperLink(paragraph, run, (MHyperLink) object);
         } else if (object instanceof MBookmark) {
-            insertMBookmark(paragraph, run, (MBookmark) object);
-            res = paragraph;
+            res = insertMBookmark(paragraph, run, (MBookmark) object);
         } else if (object instanceof MImage) {
             if (object != MImage.EMPTY) {
                 final XWPFRun imageRun = insertFieldRunReplacement(paragraph, run, "");
-                insertMImage((XWPFParagraph) imageRun.getParent(), imageRun, (MImage) object);
-                res = (XWPFParagraph) imageRun.getParent();
+                final XWPFParagraph imageParagraph = (XWPFParagraph) imageRun.getParent();
+                insertMImage(imageParagraph, imageRun, (MImage) object);
+                res = imageParagraph;
             } else {
                 res = paragraph;
             }
@@ -773,16 +773,20 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            the {@link XWPFRun}
      * @param bookmark
      *            the {@link MBookmark}
+     * @return the {@link XWPFParagraph} where the bookmark was inserted
      */
-    private void insertMBookmark(XWPFParagraph paragraph, XWPFRun run, MBookmark bookmark) {
-        XWPFParagraph newParagraph = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
+    private XWPFParagraph insertMBookmark(XWPFParagraph paragraph, XWPFRun run, MBookmark bookmark) {
+        final XWPFParagraph res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
+
         if (bookmark.isReference()) {
-            bookmarkManager.insertReference(newParagraph, bookmark.getId(), bookmark.getText());
+            bookmarkManager.insertReference(res, bookmark.getId(), bookmark.getText());
         } else {
-            bookmarkManager.startBookmark(result, newParagraph, bookmark.getId());
-            insertFieldRunReplacement(newParagraph, run, bookmark.getText());
-            bookmarkManager.endBookmark(result, newParagraph, bookmark.getId());
+            bookmarkManager.startBookmark(result, res, bookmark.getId());
+            insertFieldRunReplacement(res, run, bookmark.getText());
+            bookmarkManager.endBookmark(result, res, bookmark.getId());
         }
+
+        return res;
     }
 
     /**
