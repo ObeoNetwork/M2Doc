@@ -67,5 +67,20 @@ Converts a String to an hyperlink
 * 'My website'.asLink('https://www.example.org')
   * a link to https://www.example.org with the label My website
 
+## String.asLink(String, String) : org.obeonetwork.m2doc.element.MHyperLink
+
+Converts a String to an hyperlink
+
+### Parameter
+
+* **text**: The label of the link
+* **url**: The destination of the link
+* **toolTip**: The tool tip of the link
+
+### Example
+
+* 'My website'.asLink('https://www.example.org', 'My tool tip')
+  * a link to https://www.example.org with the label My website with a tool tip
+
 
 
