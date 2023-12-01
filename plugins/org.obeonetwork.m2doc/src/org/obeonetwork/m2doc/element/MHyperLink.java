@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -32,5 +32,20 @@ public interface MHyperLink extends MText {
      *            the new url
      */
     void setUrl(String url);
+
+    /**
+     * Gets the tool tip.
+     * 
+     * @return the tool tip
+     */
+    String getToolTip();
+
+    /**
+     * Sets the tool tip.
+     * 
+     * @param toolTip
+     *            the new tool tip
+     */
+    void setToolTip(String toolTip);
 
 }

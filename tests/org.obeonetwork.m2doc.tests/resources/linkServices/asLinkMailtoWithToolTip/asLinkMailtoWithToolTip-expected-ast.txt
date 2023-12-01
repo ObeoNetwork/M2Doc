@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of an http hyperlink:
+  [query: .asLink('Yvan Lussaud', 'mailto:yvan.lussaud@obeo.fr', 'Send me an email !')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of an http hyperlink:
+  [query: .asLink('Mona Lisa', 'Mona_Lisa.jpg', 'The Mona Lisa painting')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

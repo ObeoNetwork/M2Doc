@@ -270,6 +270,11 @@ public class M2DocHTMLParser extends Parser {
         private URI linkTargetURI;
 
         /**
+         * The current link title if any, <code>null</code> otherwise.
+         */
+        private String linkTitle;
+
+        /**
          * The numbering ID.
          */
         private BigInteger numberingID;
@@ -333,6 +338,7 @@ public class M2DocHTMLParser extends Parser {
             Context res = new Context(baseURI, mStyle);
 
             res.linkTargetURI = linkTargetURI;
+            res.linkTitle = linkTitle;
             res.numbering = numbering;
             res.numberingID = numberingID;
             res.numberingLevel = numberingLevel;
@@ -1215,7 +1221,7 @@ public class M2DocHTMLParser extends Parser {
             } else {
                 context.style.setForegroundColor(LINK_COLOR);
                 final MHyperLink mLink = new MHyperLinkImpl(textToInsert, context.style,
-                        context.linkTargetURI.toString());
+                        context.linkTargetURI.toString(), context.linkTitle);
                 parentContents.add(mLink);
             }
         }
@@ -1369,6 +1375,9 @@ public class M2DocHTMLParser extends Parser {
             res = parent;
         } else if ("a".equals(nodeName)) {
             context.linkTargetURI = toURI(context.baseURI, element.attr(HREF));
+            if (element.hasAttr("title")) {
+                context.linkTitle = element.attr("title");
+            }
             res = parent;
         } else if ("br".equals(nodeName)) {
             final MList parentContents = (MList) parent.getContents();

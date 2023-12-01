@@ -1,0 +1,10 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  [query: .asLink('some link', 'http://www.obeo.fr', 'Some tool tip.')]
+  
+=== FOOTER ===
+
+=== TEMPLATES ===

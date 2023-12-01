@@ -808,6 +808,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 .addExternalRelationship(hyperLink.getUrl(), XWPFRelation.HYPERLINK.getRelation()).getId();
         final CTHyperlink cLink = res.getCTP().addNewHyperlink();
         cLink.setId(id);
+        final String toolTip = hyperLink.getToolTip();
+        if (toolTip != null) {
+            cLink.setTooltip(toolTip);
+        }
 
         if (hyperLink.getStyle() != null) {
             applyMStyle(linkRun, hyperLink.getStyle());

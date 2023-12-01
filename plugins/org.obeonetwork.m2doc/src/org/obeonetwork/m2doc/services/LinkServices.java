@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2023 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -42,6 +42,24 @@ public class LinkServices {
     )
     // @formatter:on
     public MHyperLink asLink(String text, String url) {
+        return asLink(text, url, null);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Converts a String to an hyperlink",
+        params = {
+            @Param(name = "text", value = "The label of the link"),
+            @Param(name = "url", value = "The destination of the link"),
+            @Param(name = "toolTip", value = "The tool tip of the link"),
+        },
+        result = "A link with the given label that point to the given url.",
+        examples = {
+            @Example(expression = "'My website'.asLink('https://www.example.org', 'My tool tip')", result = "a link to https://www.example.org with the label My website with a tool tip"),
+        }
+    )
+    // @formatter:on
+    public MHyperLink asLink(String text, String url, String toolTip) {
         final String localText;
         if (text != null) {
             localText = text;
@@ -55,7 +73,7 @@ public class LinkServices {
             localURL = "";
         }
 
-        return new MHyperLinkImpl(localText, null, localURL);
+        return new MHyperLinkImpl(localText, null, localURL, toolTip);
     }
 
     // @formatter:off
