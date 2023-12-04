@@ -424,6 +424,7 @@ If you want to use a variable named 'template' or 'endtemplate' you can use an e
 All [AQL services](https://www.eclipse.dev/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#providing-new-services).
 
 * [Boolean services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_booleanservices.html)
+* [Document services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_documentservices.html)
 * [EObject services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2doceobjectservices.html)
 * [Excel services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_excelservices.html)
 * [HTML services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2dochtmlservices.html)
