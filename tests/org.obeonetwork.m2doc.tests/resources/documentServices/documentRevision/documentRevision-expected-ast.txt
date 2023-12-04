@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .setDocumentRevision('Some value')]
+  [query: .getDocumentRevision('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

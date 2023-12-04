@@ -1,0 +1,45 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .addDocumentProperty('true', 'MyProperty')]
+  After Add:Property exists : 
+  [query: .hasDocumentProperty('MyProperty')]
+  Property is number: 
+  [query: .documentPropertyIsNumber('MyProperty')]
+  Boolean : 
+  [query: .getDocumentPropertyAsBoolean('MyProperty')]
+  String : 
+  [query: .getDocumentPropertyAsString('MyProperty')]
+  Double : 
+  [query: .getDocumentPropertyAsDouble('MyProperty')]
+  Float : 
+  [query: .getDocumentPropertyAsFloat('MyProperty')]
+  Integer : 
+  [query: .getDocumentPropertyAsInteger('MyProperty')]
+  Long : 
+  [query: .getDocumentPropertyAsLong('MyProperty')]
+  [query: .removeDocumentProperty('MyProperty')]
+  After Remove:Property exists : 
+  [query: .hasDocumentProperty('MyProperty')]
+  Property is number: 
+  [query: .documentPropertyIsNumber('MyProperty')]
+  Boolean : 
+  [query: .getDocumentPropertyAsBoolean('MyProperty')]
+  String : 
+  [query: .getDocumentPropertyAsString('MyProperty')]
+  Double : 
+  [query: .getDocumentPropertyAsDouble('MyProperty')]
+  Float : 
+  [query: .getDocumentPropertyAsFloat('MyProperty')]
+  Integer : 
+  [query: .getDocumentPropertyAsInteger('MyProperty')]
+  Long : 
+  [query: .getDocumentPropertyAsLong('MyProperty')]
+  [query: .addDocumentProperty('true', 'MyProperty')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

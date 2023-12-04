@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2023 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.obeonetwork.m2doc.html.services.M2DocHTMLServices;
 import org.obeonetwork.m2doc.ide.ui.services.M2DocEObjectServices;
 import org.obeonetwork.m2doc.ide.ui.services.SWTPromptServices;
 import org.obeonetwork.m2doc.services.BooleanServices;
+import org.obeonetwork.m2doc.services.DocumentServices;
 import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
@@ -53,7 +54,7 @@ public final class DocumentationGenerator {
 	private static final Class<?>[] STANDARD_SERVICE_PROVIDERS = new Class<?>[] { BooleanServices.class,
 			ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
 			ExcelServices.class, M2DocHTMLServices.class, PromptServices.class, SWTPromptServices.class,
-			M2DocEObjectServices.class, M2DocWikiTextServices.class, M2DocGenServices.class,
+			M2DocEObjectServices.class, M2DocWikiTextServices.class, DocumentServices.class, M2DocGenServices.class,
 			SemanticBrowserServices.class, };
 
 	/**

@@ -65,6 +65,7 @@ import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.BooleanServices;
+import org.obeonetwork.m2doc.services.DocumentServiceConfigurator;
 import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
@@ -72,6 +73,7 @@ import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
+import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -219,6 +221,11 @@ public final class M2DocUtils {
      * The mapping from {@link Object key} to installed {@link ECrossReferenceAdapter}.
      */
     private static final Map<Object, ECrossReferenceAdapter> CROSS_REFERENCE_ADAPTERS = new HashMap<>();
+
+    // register standalone IServiceConfigurator
+    static {
+        registerServicesConfigurator(new ServicesConfiguratorDescriptor(new DocumentServiceConfigurator()));
+    }
 
     /**
      * Constructor.

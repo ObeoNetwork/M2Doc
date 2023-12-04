@@ -1,0 +1,40 @@
+ERROR - getDocumentPropertyAsDouble(java.lang.String) with arguments [MyProperty] failed:
+	For input string: "Some String"
+java.lang.NumberFormatException: For input string: "Some String"
+...STACK...
+ERROR - getDocumentPropertyAsFloat(java.lang.String) with arguments [MyProperty] failed:
+	For input string: "Some String"
+java.lang.NumberFormatException: For input string: "Some String"
+...STACK...
+ERROR - getDocumentPropertyAsInteger(java.lang.String) with arguments [MyProperty] failed:
+	For input string: "Some String"
+java.lang.NumberFormatException: For input string: "Some String"
+...STACK...
+ERROR - getDocumentPropertyAsLong(java.lang.String) with arguments [MyProperty] failed:
+	For input string: "Some String"
+java.lang.NumberFormatException: For input string: "Some String"
+...STACK...
+ERROR - getDocumentPropertyAsBoolean(java.lang.String) with arguments [MyProperty] failed:
+	The property MyProperty doesn't exist.
+java.lang.IllegalArgumentException: The property MyProperty doesn't exist.
+...STACK...
+ERROR - getDocumentPropertyAsString(java.lang.String) with arguments [MyProperty] failed:
+	The property MyProperty doesn't exist.
+java.lang.IllegalArgumentException: The property MyProperty doesn't exist.
+...STACK...
+ERROR - getDocumentPropertyAsDouble(java.lang.String) with arguments [MyProperty] failed:
+	The property MyProperty doesn't exist.
+java.lang.IllegalArgumentException: The property MyProperty doesn't exist.
+...STACK...
+ERROR - getDocumentPropertyAsFloat(java.lang.String) with arguments [MyProperty] failed:
+	The property MyProperty doesn't exist.
+java.lang.IllegalArgumentException: The property MyProperty doesn't exist.
+...STACK...
+ERROR - getDocumentPropertyAsInteger(java.lang.String) with arguments [MyProperty] failed:
+	The property MyProperty doesn't exist.
+java.lang.IllegalArgumentException: The property MyProperty doesn't exist.
+...STACK...
+ERROR - getDocumentPropertyAsLong(java.lang.String) with arguments [MyProperty] failed:
+	The property MyProperty doesn't exist.
+java.lang.IllegalArgumentException: The property MyProperty doesn't exist.
+...STACK...

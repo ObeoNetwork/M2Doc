@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .setDocumentCreator('Some value')]
+  [query: .getDocumentCreator('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

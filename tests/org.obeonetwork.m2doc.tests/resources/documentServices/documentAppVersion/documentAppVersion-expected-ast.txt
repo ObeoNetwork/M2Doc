@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .setDocumentAppVersion('Some value')]
+  [query: .getDocumentAppVersion('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .setDocumentContentStatus('Some value')]
+  [query: .getDocumentContentStatus('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

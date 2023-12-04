@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .setDocumentCategory('Some value')]
+  [query: .getDocumentCategory('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

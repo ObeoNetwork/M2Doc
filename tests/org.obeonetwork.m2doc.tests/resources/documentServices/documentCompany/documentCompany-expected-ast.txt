@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .setDocumentCompany('Some value')]
+  [query: .getDocumentCompany('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

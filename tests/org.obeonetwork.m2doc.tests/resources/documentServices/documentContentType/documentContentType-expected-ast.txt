@@ -1,0 +1,12 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration:
+  [query: .setDocumentContentType('Some value')]
+  [query: .getDocumentContentType('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
