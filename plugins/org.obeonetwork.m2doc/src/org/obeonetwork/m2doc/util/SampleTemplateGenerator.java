@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -88,7 +89,7 @@ public class SampleTemplateGenerator {
         try (InputStream partIS = part.getInputStream()) {
             int nbBytes = partIS.read(buffer);
             while (nbBytes != -1) {
-                builder.append(new String(buffer, 0, nbBytes));
+                builder.append(new String(buffer, 0, nbBytes, StandardCharsets.UTF_8));
                 nbBytes = partIS.read(buffer);
             }
         }
