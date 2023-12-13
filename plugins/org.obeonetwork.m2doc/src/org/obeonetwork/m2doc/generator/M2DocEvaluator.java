@@ -65,6 +65,7 @@ import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
 import org.obeonetwork.m2doc.element.MHyperLink;
 import org.obeonetwork.m2doc.element.MImage;
+import org.obeonetwork.m2doc.element.MList;
 import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MParagraph.Dir;
@@ -1432,6 +1433,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     && xwpfCell.getCTTc().getTcPr().isSetTcBorders()) {
                     xwpfCell.getCTTc().getTcPr().unsetTcBorders();
                 }
+
             }
         }
     }
@@ -1606,12 +1608,37 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     currentTemplateParagraph = savedTemplateParagraph;
                 }
                 cellParagraph.removeRun(cellParagraph.getRuns().indexOf(cellRun));
+                if (startWithMParagraph(contents)) {
+                    cell.removeParagraph(0);
+                }
             }
             final Color backGroundColor = mCell.getBackgroundColor();
             if (backGroundColor != null) {
                 cell.setColor(hexColor(backGroundColor));
             }
         }
+    }
+
+    /**
+     * Tells if the given {@link MElement} starts with a {@link MParagraph}.
+     * 
+     * @param contents
+     *            the {@link MElement}
+     * @return <code>true</code> if the given {@link MElement} starts with a {@link MParagraph},
+     */
+    private boolean startWithMParagraph(MElement contents) {
+        final boolean res;
+
+        if (contents instanceof MParagraph) {
+            res = true;
+        } else if (contents instanceof MList) {
+            final MList mList = (MList) contents;
+            res = !mList.isEmpty() && startWithMParagraph(mList.get(0));
+        } else {
+            res = false;
+        }
+
+        return res;
     }
 
     /**
