@@ -938,7 +938,7 @@
               <target>
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
-                  <artifactId>m2doc-sirius-7.2.0</artifactId>
+                  <artifactId>m2doc-sirius-7.2.1</artifactId>
                   <version>3.3.2-SNAPSHOT</version>
                 </artifact>
               </target>
