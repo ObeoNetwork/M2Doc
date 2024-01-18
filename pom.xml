@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2016, 2023 Obeo. 
+    Copyright (c) 2016, 2024 Obeo. 
        All rights reserved. This program and the accompanying materials
        are made available under the terms of the Eclipse Public License v2.0
        which accompanies this distribution, and is a  vailable at
@@ -39,6 +39,7 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/photon</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module>
     <!-- Sirius -->
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.2.1</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.1.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.6.0</module>
@@ -916,6 +917,36 @@
     </profile>
 
     <!-- Sirius -->
+    <profile>
+      <id>platform-sirius-7.2.1</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-7.2.1</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/7.2.1/2022-12/</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-7.2.0</artifactId>
+                  <version>3.3.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-sirius-7.1.0</id>
       <activation>

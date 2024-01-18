@@ -1,0 +1,5 @@
+target "M2Doc Sirius 7.2.1 Target Platform SDK"
+
+with source requirements
+
+include "m2doc-sirius-7.2.1.tpd"
