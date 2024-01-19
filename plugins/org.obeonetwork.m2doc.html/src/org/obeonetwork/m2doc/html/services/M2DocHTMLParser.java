@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2023 Obeo. 
+ *  Copyright (c) 2019, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -91,11 +91,6 @@ public class M2DocHTMLParser extends Parser {
     private static final String NONE = "none";
 
     /**
-     * The href HTML tag.
-     */
-    private static final String HREF = "href";
-
-    /**
      * The ol HTML tag.
      */
     private static final String OL_TAG = "ol";
@@ -164,6 +159,16 @@ public class M2DocHTMLParser extends Parser {
      * The dir attribute.
      */
     private static final String DIR_ATTR = "dir";
+
+    /**
+     * The href attribute.
+     */
+    private static final String HREF_ATTR = "href";
+
+    /**
+     * The size attribute.
+     */
+    private static final String SIZE_ATTR = "size";
 
     /**
      * The indentation left.
@@ -725,8 +730,8 @@ public class M2DocHTMLParser extends Parser {
             if (child instanceof Element) {
                 final Element element = (Element) child;
                 if ("link".equals(element.nodeName()) && element.hasAttr("rel")
-                    && "stylesheet".equals(element.attr("rel")) && element.hasAttr(HREF)) {
-                    final URI cssURI = toURI(baseURI, element.attr(HREF));
+                    && "stylesheet".equals(element.attr("rel")) && element.hasAttr(HREF_ATTR)) {
+                    final URI cssURI = toURI(baseURI, element.attr(HREF_ATTR));
                     try (InputStream is = uriConverter.createInputStream(cssURI)) {
                         final Map<String, Map<String, List<String>>> loadedCssClasses = CSS_PARSER
                                 .parseClasses(getContent(is, "UTF-8"));
@@ -1369,12 +1374,12 @@ public class M2DocHTMLParser extends Parser {
                 // TODO double check this
                 context.style.setFontName(element.attr("face"));
             }
-            if (element.hasAttr("size")) {
-                context.style.setFontSize(fontSizeToPoint(Integer.valueOf(element.attr("size"))));
+            if (element.hasAttr(SIZE_ATTR)) {
+                context.style.setFontSize(fontSizeToPoint(element.attr(SIZE_ATTR)));
             }
             res = parent;
         } else if ("a".equals(nodeName)) {
-            context.linkTargetURI = toURI(context.baseURI, element.attr(HREF));
+            context.linkTargetURI = toURI(context.baseURI, element.attr(HREF_ATTR));
             if (element.hasAttr("title")) {
                 context.linkTitle = element.attr("title");
             }

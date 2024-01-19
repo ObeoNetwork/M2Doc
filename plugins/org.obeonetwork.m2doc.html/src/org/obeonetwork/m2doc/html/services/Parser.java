@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2023 Obeo. 
+ *  Copyright (c) 2021, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -81,6 +81,21 @@ public abstract class Parser {
      * The unit group for {@link #FIXED_SIZE_PATTERN}.
      */
     private static final int FIXED_SIZE_PATTERN_UNIT_GROUP = 3;
+
+    /**
+     * The font size regex.
+     */
+    private static final Pattern FONT_SIZE_PATTERN = Pattern.compile("([0-9]+(\\.[0-9]+)?)(pt)?");
+
+    /**
+     * The value group for {@link #FONT_SIZE_PATTERN}.
+     */
+    private static final int FONT_SIZE_PATTERN_VALUE_GROUP = 1;
+
+    /**
+     * The unit group for {@link #FONT_SIZE_PATTERN}.
+     */
+    private static final int FONT_SIZE_PATTERN_UNIT_GROUP = 3;
 
     /**
      * Initializes the {@link Color} mapping.
@@ -304,42 +319,62 @@ public abstract class Parser {
     /**
      * Gets the number of point for the given font size.
      * 
-     * @param size
+     * @param fontSize
      *            the font size
      * @return the number of point for the given font size
      */
-    protected int fontSizeToPoint(int size) {
+    protected int fontSizeToPoint(String fontSize) {
         final int res;
 
-        // CHECKSTYLE:OFF
-        switch (size) {
-            case 1:
-                res = 7;
-                break;
+        final Matcher matcher;
+        final String localPropertyValue = fontSize.trim().toLowerCase();
+        if (localPropertyValue.startsWith(".")) {
+            matcher = FONT_SIZE_PATTERN.matcher("0" + localPropertyValue);
+        } else {
+            matcher = FONT_SIZE_PATTERN.matcher(localPropertyValue);
+        }
 
-            case 2:
-                res = 10;
-                break;
+        if (matcher.find()) {
+            final double value = Double.valueOf(matcher.group(FONT_SIZE_PATTERN_VALUE_GROUP));
+            final String unit = matcher.group(FONT_SIZE_PATTERN_UNIT_GROUP);
 
-            case 3:
-                res = 12;
-                break;
+            if (unit == null || "pt".equals(unit)) {
+                // CHECKSTYLE:OFF
+                switch ((int) value) {
+                    case 1:
+                        res = 7;
+                        break;
 
-            case 4:
-                res = 13;
-                break;
+                    case 2:
+                        res = 10;
+                        break;
 
-            case 5:
-                res = 18;
-                break;
+                    case 3:
+                        res = 12;
+                        break;
 
-            case 6:
-                res = 24;
-                break;
+                    case 4:
+                        res = 14;
+                        break;
 
-            default:
-                res = 3;
-                break;
+                    case 5:
+                        res = 18;
+                        break;
+
+                    case 6:
+                        res = 24;
+                        break;
+
+                    default:
+                        res = 36;
+                        break;
+                }
+            } else {
+                res = -1;
+            }
+            // CHECKSTYLE:ON
+        } else {
+            res = -1;
         }
         // CHECKSTYLE:ON
 
