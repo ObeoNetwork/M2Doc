@@ -2,7 +2,7 @@ target "M2Doc Capella 6.1.0 Target Platform"
 
 with requirements
 
-//include "https://download.eclipse.org/capella/core/updates/releases/6.1.0//targets/capella.target-definition.targetplatform"
+//include "https://download.eclipse.org/capella/core/updates/releases/6.1.0/targets/capella.target-definition.targetplatform"
 
 location GMF-Notation-1.13.1 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202211151334" {
 	org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
