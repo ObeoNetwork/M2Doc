@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc Sirius 7.1.0 Target Platform SDK" sequenceNumber="1684143032">
+<target name="M2Doc Sirius 7.2.1 Target Platform SDK" sequenceNumber="1707988591">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -17,9 +17,6 @@
       <unit id="org.eclipse.epp.mpc.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
       <unit id="org.junit" version="4.13.2.v20211018-1956"/>
-      <unit id="org.eclipse.gmf" version="0.0.0"/>
-      <unit id="org.eclipse.gmf.runtime.diagram.ui" version="0.0.0"/>
-      <unit id="org.eclipse.gmf.runtime.diagram.ui.render" version="0.0.0"/>
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.w3c.dom.svg" version="0.0.0"/>
       <unit id="org.w3c.dom.smil" version="0.0.0"/>
@@ -28,16 +25,31 @@
       <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
       <unit id="org.apache.xerces" version="0.0.0"/>
       <unit id="org.antlr.runtime" version="4.7.2.v20221112-0806"/>
-      <unit id="org.eclipse.mylyn.wikitext" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.confluence" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.html" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.markdown" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.mediawiki" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.textile" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.42.20220107230029"/>
-      <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.42.20220107230029"/>
-      <repository id="Eclipse" location="https://download.eclipse.org/releases/2022-12"/>
+      <unit id="org.eclipse.mylyn.wikitext" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.confluence" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.html" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.markdown" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.mediawiki" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.textile" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.tracwiki" version="3.0.46.202301111837"/>
+      <unit id="org.eclipse.mylyn.wikitext.twiki" version="3.0.46.202301111837"/>
+      <repository id="Eclipse" location="https://download.eclipse.org/releases/2023-03"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="0.0.0"/>
+      <repository id="GMF-Notation-1.13.1" location="https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202211151334"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.gmf.runtime.thirdparty.feature.group" version="0.0.0"/>
+      <repository id="GMF-Runtime-1.16" location="https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202305230839/"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.gef.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.draw2d.sdk.feature.group" version="0.0.0"/>
+      <repository id="GEF-Classic" location="https://download.eclipse.org/tools/gef/classic/releases/3.16.0"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
@@ -49,7 +61,7 @@
       <unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/sirius/updates/releases/7.1.0/2021-06/"/>
+      <repository location="https://download.eclipse.org/sirius/updates/releases/7.2.1/2023-03/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.apache.batik.ext" version="1.16.0.v20221027-0840"/>
