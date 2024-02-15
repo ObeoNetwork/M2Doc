@@ -39,6 +39,7 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/photon</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module-->
     <!-- Sirius -->
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.4.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.2.1</module>
     <!--module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.1.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.0.0</module>
@@ -917,6 +918,36 @@
     </profile>
 
     <!-- Sirius -->
+    <profile>
+      <id>platform-sirius-7.4.0</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>sirius-7.4.0</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/stable/7.4.0-S20240124-123506/2023-03/</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-sirius-7.4.0</artifactId>
+                  <version>3.3.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-sirius-7.2.1</id>
       <activation>
