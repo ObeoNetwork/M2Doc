@@ -42,7 +42,7 @@ public interface TemplatePackage extends EPackage {
      * 
      * @generated
      */
-    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    String copyright = " Copyright (c) 2016, 2024 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The package name.
@@ -1842,7 +1842,7 @@ public interface TemplatePackage extends EPackage {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
+     * @see org.eclipse.acceleo.query.parser.AstResult
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
@@ -1939,7 +1939,8 @@ public interface TemplatePackage extends EPackage {
     EAttribute getIConstruct_Runs();
 
     /**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.IConstruct#getClosingRuns <em>Closing Runs</em>}'.
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.IConstruct#getClosingRuns <em>Closing
+     * Runs</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2458,7 +2459,8 @@ public interface TemplatePackage extends EPackage {
     EReference getDocumentTemplate_Footers();
 
     /**
-     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}'.
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody
+     * <em>Body</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2470,7 +2472,8 @@ public interface TemplatePackage extends EPackage {
     EReference getDocumentTemplate_Body();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input
+     * Stream</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2482,7 +2485,8 @@ public interface TemplatePackage extends EPackage {
     EAttribute getDocumentTemplate_InputStream();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc
+     * Package</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2741,13 +2745,13 @@ public interface TemplatePackage extends EPackage {
     EDataType getRun();
 
     /**
-     * Returns the meta object for data type '{@link org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult <em>Ast Result</em>}'.
+     * Returns the meta object for data type '{@link org.eclipse.acceleo.query.parser.AstResult <em>Ast Result</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @return the meta object for data type '<em>Ast Result</em>'.
-     * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
-     * @model instanceClass="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"
+     * @see org.eclipse.acceleo.query.parser.AstResult
+     * @model instanceClass="org.eclipse.acceleo.query.parser.AstResult"
      * @generated
      */
     EDataType getAstResult();
@@ -2801,7 +2805,8 @@ public interface TemplatePackage extends EPackage {
     EDataType getBody();
 
     /**
-     * Returns the meta object for data type '{@link org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock <em>CT Sdt Block</em>}'.
+     * Returns the meta object for data type '{@link org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock <em>CT Sdt
+     * Block</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -3264,7 +3269,8 @@ public interface TemplatePackage extends EPackage {
         EAttribute CELL__TABLE_CELL = eINSTANCE.getCell_TableCell();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl <em>Document Template</em>}' class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl <em>Document Template</em>}'
+         * class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
@@ -3535,7 +3541,7 @@ public interface TemplatePackage extends EPackage {
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
-         * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
+         * @see org.eclipse.acceleo.query.parser.AstResult
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
          * @generated
          */

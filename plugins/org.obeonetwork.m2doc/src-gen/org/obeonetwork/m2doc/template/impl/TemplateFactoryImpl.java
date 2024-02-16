@@ -19,7 +19,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -64,7 +64,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2024 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * Creates the default factory implementation.
@@ -231,6 +231,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Comment createComment() {
         CommentImpl comment = new CommentImpl();
         return comment;
@@ -242,6 +243,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Conditional createConditional() {
         ConditionalImpl conditional = new ConditionalImpl();
         return conditional;
@@ -253,6 +255,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Repetition createRepetition() {
         RepetitionImpl repetition = new RepetitionImpl();
         return repetition;
@@ -264,6 +267,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public UserDoc createUserDoc() {
         UserDocImpl userDoc = new UserDocImpl();
         return userDoc;
@@ -275,6 +279,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public UserContent createUserContent() {
         UserContentImpl userContent = new UserContentImpl();
         return userContent;
@@ -286,6 +291,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Query createQuery() {
         QueryImpl query = new QueryImpl();
         return query;
@@ -297,6 +303,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Block createBlock() {
         BlockImpl block = new BlockImpl();
         return block;
@@ -308,6 +315,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Template createTemplate() {
         TemplateImpl template = new TemplateImpl();
         return template;
@@ -319,6 +327,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Parameter createParameter() {
         ParameterImpl parameter = new ParameterImpl();
         return parameter;
@@ -330,6 +339,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public StaticFragment createStaticFragment() {
         StaticFragmentImpl staticFragment = new StaticFragmentImpl();
         return staticFragment;
@@ -341,6 +351,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Table createTable() {
         TableImpl table = new TableImpl();
         return table;
@@ -352,6 +363,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Row createRow() {
         RowImpl row = new RowImpl();
         return row;
@@ -363,6 +375,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Cell createCell() {
         CellImpl cell = new CellImpl();
         return cell;
@@ -374,6 +387,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public DocumentTemplate createDocumentTemplate() {
         DocumentTemplateImpl documentTemplate = new DocumentTemplateImpl();
         return documentTemplate;
@@ -385,6 +399,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Bookmark createBookmark() {
         BookmarkImpl bookmark = new BookmarkImpl();
         return bookmark;
@@ -396,6 +411,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Link createLink() {
         LinkImpl link = new LinkImpl();
         return link;
@@ -407,6 +423,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public Let createLet() {
         LetImpl let = new LetImpl();
         return let;
@@ -418,6 +435,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public ContentControl createContentControl() {
         ContentControlImpl contentControl = new ContentControlImpl();
         return contentControl;
@@ -674,6 +692,7 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * 
      * @generated
      */
+    @Override
     public TemplatePackage getTemplatePackage() {
         return (TemplatePackage) getEPackage();
     }

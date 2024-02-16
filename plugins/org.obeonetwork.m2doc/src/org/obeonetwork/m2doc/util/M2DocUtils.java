@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -519,7 +519,7 @@ public final class M2DocUtils {
     public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             URI templateURI, Map<String, String> options) {
 
-        Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
+        Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, LinkServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
@@ -645,7 +645,7 @@ public final class M2DocUtils {
         for (Entry<String, String> entry : properties.getServiceClasses().entrySet()) {
             try {
                 final Class<?> cls = classProvider.getClass(entry.getKey(), entry.getValue());
-                final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
+                final Set<IService<?>> s = ServiceUtils.getServices(queryEnvironment, cls);
                 ServiceUtils.registerServices(queryEnvironment, s);
             } catch (ClassNotFoundException e) {
                 final XWPFRun run = getOrCreateFirstRun(document);

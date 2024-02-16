@@ -58,7 +58,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2024 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The default value of the '{@link #getStyleRun() <em>Style Run</em>}' attribute.
@@ -186,6 +186,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public XWPFRun getStyleRun() {
         return styleRun;
     }
@@ -196,6 +197,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setStyleRun(XWPFRun newStyleRun) {
         XWPFRun oldStyleRun = styleRun;
         styleRun = newStyleRun;
@@ -210,6 +212,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
             runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.TEMPLATE__RUNS);
@@ -223,6 +226,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
             closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this,
@@ -237,6 +241,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
             validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
@@ -251,6 +256,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -261,6 +267,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
@@ -274,6 +281,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<Parameter> getParameters() {
         if (parameters == null) {
             parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this,
@@ -288,6 +296,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public Block getBody() {
         return body;
     }
@@ -317,6 +326,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setBody(Block newBody) {
         if (newBody != body) {
             NotificationChain msgs = null;
@@ -339,6 +349,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public DocumentTemplate getDocumentTemplate() {
         if (eContainerFeatureID() != TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE)
             return null;
@@ -363,6 +374,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setDocumentTemplate(DocumentTemplate newDocumentTemplate) {
         if (newDocumentTemplate != eInternalContainer()
             || (eContainerFeatureID() != TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE && newDocumentTemplate != null)) {
@@ -582,7 +594,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (styleRun: ");
         result.append(styleRun);
         result.append(", runs: ");

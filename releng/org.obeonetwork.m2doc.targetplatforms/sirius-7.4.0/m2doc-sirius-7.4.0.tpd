@@ -28,9 +28,6 @@ location Eclipse "https://download.eclipse.org/releases/2023-03" {
 
 	org.apache.xerces lazy
 
-	// AQL
-	org.antlr.runtime [4.7.2,4.7.3)
-
 	// wikitext
 	org.eclipse.mylyn.wikitext [3.0.0,3.1.0)
 	org.eclipse.mylyn.wikitext.asciidoc [3.0.0,3.1.0)
@@ -86,18 +83,23 @@ location "https://download.eclipse.org/sirius/updates/stable/7.4.0-S20240124-123
 	org.eclipse.sirius.table lazy
 	org.eclipse.sirius.table.ui lazy
 	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
+}
 
+location Acceleo4 "https://download.eclipse.org/acceleo/updates/nightly/latest/" {
 	// AQL
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.source.feature.group lazy
 }
 
-location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
-	org.kohsuke.args4j [2.0.21,2.1.0)
-	javax.servlet [3.1.0,3.2.0)
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20230302014618/repository/" {
+	org.kohsuke.args4j [2.33.0,2.34.0)
+
+	// AQL
+	org.antlr.runtime [4.10.1,4.10.2)
 }
 
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
+	javax.servlet [3.1.0,3.2.0)
 	com.google.guava [15.0.0,16.0.0)
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.obeonetwork.m2doc.properties;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -33,6 +32,7 @@ import org.apache.poi.ooxml.POIXMLProperties.CustomProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
+import org.eclipse.acceleo.query.ast.ASTNode;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
@@ -40,11 +40,11 @@ import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -73,7 +73,6 @@ import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.IClassProvider;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
@@ -420,7 +419,7 @@ public class TemplateCustomProperties {
         for (Entry<String, String> entry : getServiceClasses().entrySet()) {
             try {
                 final Class<?> cls = classProvider.getClass(entry.getKey(), entry.getValue());
-                final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
+                final Set<IService<?>> s = ServiceUtils.getServices(queryEnvironment, cls);
                 ServiceUtils.registerServices(queryEnvironment, s);
             } catch (ClassNotFoundException e) {
                 res.add(entry.getKey());
@@ -523,11 +522,10 @@ public class TemplateCustomProperties {
      * @return the corresponding {@link AstResult}
      */
     private AstResult parseWhileAqlTypeLiteral(IReadOnlyQueryEnvironment queryEnvironment, String type) {
-        final IQueryBuilderEngine.AstResult result;
+        final AstResult result;
 
         if (type != null && type.length() > 0) {
-            AstBuilderListener astBuilder = AQL56Compatibility
-                    .createAstBuilderListener((IQueryEnvironment) queryEnvironment);
+            AstBuilderListener astBuilder = new AstBuilderListener();
             CharStream input = new UnbufferedCharStream(new StringReader(type), type.length());
             QueryLexer lexer = new QueryLexer(input);
             lexer.setTokenFactory(new CommonTokenFactory(true));
@@ -546,14 +544,25 @@ public class TemplateCustomProperties {
                     .create(AstPackage.eINSTANCE.getErrorTypeLiteral());
             List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<>(1);
             errors.add(errorTypeLiteral);
-            final Map<Object, Integer> positions = new HashMap<>();
+            final Positions<ASTNode> positions = new Positions<>();
             if (type != null) {
-                positions.put(errorTypeLiteral, Integer.valueOf(0));
+                positions.setIdentifierStartPositions(errorTypeLiteral, Integer.valueOf(0));
+                positions.setIdentifierStartLines(errorTypeLiteral, Integer.valueOf(0));
+                positions.setIdentifierStartColumns(errorTypeLiteral, Integer.valueOf(0));
+                positions.setIdentifierEndPositions(errorTypeLiteral, Integer.valueOf(0));
+                positions.setIdentifierEndLines(errorTypeLiteral, Integer.valueOf(0));
+                positions.setIdentifierEndColumns(errorTypeLiteral, Integer.valueOf(0));
+                positions.setStartPositions(errorTypeLiteral, Integer.valueOf(0));
+                positions.setStartLines(errorTypeLiteral, Integer.valueOf(0));
+                positions.setStartColumns(errorTypeLiteral, Integer.valueOf(0));
+                positions.setEndPositions(errorTypeLiteral, Integer.valueOf(0));
+                positions.setEndLines(errorTypeLiteral, Integer.valueOf(0));
+                positions.setEndColumns(errorTypeLiteral, Integer.valueOf(0));
             }
             final BasicDiagnostic diagnostic = new BasicDiagnostic();
             diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0, "null or empty type.",
                     new Object[] {errorTypeLiteral }));
-            result = new AstResult(errorTypeLiteral, positions, positions, errors, diagnostic);
+            result = new AstResult(errorTypeLiteral, positions, errors, diagnostic);
         }
 
         return result;

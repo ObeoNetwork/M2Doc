@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -63,8 +64,12 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
+
+    /**
+     * Empty variable types.
+     */
+    private static final Map<String, Set<IType>> EMPTY_VARIABLE_TYPES = Collections.emptyMap();
 
     /**
      * The gengine initialization monitor work.
@@ -244,7 +249,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final Map<String, Set<IType>> parameters = new HashMap<>();
         ValidationMessageLevel parameterLevel = ValidationMessageLevel.OK;
         for (Parameter parameter : template.getParameters()) {
-            final IValidationResult validationResult = aqlValidator.validate(null, parameter.getType());
+            final IValidationResult validationResult = aqlValidator.validate(EMPTY_VARIABLE_TYPES, parameter.getType());
             final XWPFRun run = template.getRuns().get(1);
             addValidationMessages(template, run, validationResult);
             if (parameters.containsKey(parameter.getName())) {

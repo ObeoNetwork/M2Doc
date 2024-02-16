@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2019, 2024 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v2.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v20.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
 package org.obeonetwork.m2doc.wikitext.services;
 
 import java.util.Collections;
@@ -45,7 +56,7 @@ public class WikiTextServicesConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
+    public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options) {
         M2DocWikiTextServices instance = new M2DocWikiTextServices(resourceSetForModels.getURIConverter(),
                 URI.createURI(options.get(M2DocUtils.TEMPLATE_URI_OPTION)));

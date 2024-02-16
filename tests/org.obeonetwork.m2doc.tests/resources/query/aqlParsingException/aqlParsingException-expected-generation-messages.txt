@@ -1,1 +1,0 @@
-ERROR - Invalid query statement: Expression "self.b.c->filter(ecore::EClass)->select(not name.startsWith('A'))" is invalid: Unable to parse AQL Expression check the syntax.

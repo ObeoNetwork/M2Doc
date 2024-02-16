@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2023 Obeo. 
+ *  Copyright (c) 2018, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -25,11 +25,9 @@ import java.util.Set;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.eclipse.acceleo.query.ast.Call;
-import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractService;
@@ -50,8 +48,7 @@ import org.obeonetwork.m2doc.template.Template;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
-public class M2DocTemplateService extends AbstractService {
+public class M2DocTemplateService extends AbstractService<Template> {
 
     /**
      * The maximum depth of a recursive call.
@@ -59,9 +56,9 @@ public class M2DocTemplateService extends AbstractService {
     private static final int MAX_DEPTH = 256;
 
     /**
-     * The {@link Template} to call.
+     * Empty variable types.
      */
-    private final Template template;
+    private static final Map<String, Set<IType>> EMPTY_VARIABLE_TYPES = Collections.emptyMap();
 
     /**
      * The {@link M2DocEvaluationEnvironment}.
@@ -139,10 +136,9 @@ public class M2DocTemplateService extends AbstractService {
      */
     public M2DocTemplateService(Template template, byte[] serializedDocument, M2DocEvaluationEnvironment m2docEnv,
             Monitor monitor) {
-        this.template = template;
+        super(template);
         this.m2docEnv = m2docEnv;
         this.monitor = monitor;
-        this.shortSignature = computeShortSignature(template);
         this.numberOfParameters = template.getParameters().size();
         this.serializedDocument = serializedDocument;
 
@@ -153,11 +149,12 @@ public class M2DocTemplateService extends AbstractService {
         final AstValidator aqlValidator = new AstValidator(new ValidationServices(m2docEnv.getQueryEnvironment()));
         for (Parameter parameter : template.getParameters()) {
             final AstResult type = parameter.getType();
-            final IValidationResult validatationResult = aqlValidator.validate(null, type);
+            final IValidationResult validatationResult = aqlValidator.validate(EMPTY_VARIABLE_TYPES, type);
             Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(m2docEnv.getQueryEnvironment(),
                     validatationResult.getPossibleTypes(type.getAst()));
             parameterTypes.add(possibleTypes.iterator().next());
         }
+        this.shortSignature = computeShortSignature(template);
 
         if (serializedDocument != null) {
             try {
@@ -178,19 +175,14 @@ public class M2DocTemplateService extends AbstractService {
      * @return the {@link #getShortSignature() short signature}
      */
     private String computeShortSignature(Template t) {
-        final Object[] argumentTypes = new Object[t.getParameters().size()];
-
-        int index = 0;
-        for (Parameter parameter : t.getParameters()) {
-            argumentTypes[index++] = ((TypeLiteral) parameter.getType().getAst()).getValue();
-        }
+        final IType[] argumentTypes = parameterTypes.toArray(new IType[parameterTypes.size()]);
 
         return serviceShortSignature(argumentTypes);
     }
 
     @Override
     public String getName() {
-        return template.getName();
+        return getOrigin().getName();
     }
 
     @Override
@@ -200,7 +192,7 @@ public class M2DocTemplateService extends AbstractService {
 
     @Override
     public String getLongSignature() {
-        return EcoreUtil.getURI(template).toString() + " (" + getShortSignature() + ")";
+        return EcoreUtil.getURI(getOrigin()).toString() + " (" + getShortSignature() + ")";
     }
 
     @Override
@@ -219,8 +211,12 @@ public class M2DocTemplateService extends AbstractService {
     }
 
     @Override
-    public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-            IReadOnlyQueryEnvironment env, List<IType> argTypes) {
+    protected List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+        return new ArrayList<>(computeType(queryEnvironment));
+    }
+
+    @Override
+    protected Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
         return returnTypes;
     }
 
@@ -232,7 +228,7 @@ public class M2DocTemplateService extends AbstractService {
 
         final Map<String, Object> variables = new HashMap<>();
         int index = 0;
-        for (Parameter parameter : template.getParameters()) {
+        for (Parameter parameter : getOrigin().getParameters()) {
             variables.put(parameter.getName(), arguments[index++]);
         }
         final M2DocEvaluator evaluator = new M2DocEvaluator(m2docEnv, monitor);
@@ -241,7 +237,7 @@ public class M2DocTemplateService extends AbstractService {
             if (documents[callDepth] == null) {
                 documents[callDepth] = deserializeDocument(serializedDocument);
             }
-            return evaluator.generate(template, variables, documents[callDepth]);
+            return evaluator.generate(getOrigin(), variables, documents[callDepth]);
         } finally {
             callDepth--;
         }
@@ -272,15 +268,6 @@ public class M2DocTemplateService extends AbstractService {
     public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
             Set<IType> receiverTypes) {
         return Collections.<ICompletionProposal> singletonList(new M2DocTemplateServiceCompletionProposal(this));
-    }
-
-    /**
-     * Gets the {@link Template}.
-     * 
-     * @return the {@link Template}
-     */
-    public Template getTemplate() {
-        return template;
     }
 
 }

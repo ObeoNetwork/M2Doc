@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2023 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -66,7 +66,6 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public final class GenconfUtils {
 
     static {
