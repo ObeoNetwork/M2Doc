@@ -245,6 +245,7 @@ public final class M2DocTestUtils {
 
         res = textContent.replaceAll("/home/.*/M2Doc", "/home/.../M2Doc"); // remove folder prefix
         res = res.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc"); // remove folder prefix
+        res = res.replaceAll("Aucun fichier ou dossier de ce nom", "No such file or directory"); // replace localized message
         res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace localized message
         res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");// strip lost user doc date
         res = res.replaceAll("@[a-f0-9]{5,8}[, )]", "@00000000 "); // object address in toString()
