@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Checks ImageServices registration :
+  [query: .asImage('d h 1.gif')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
