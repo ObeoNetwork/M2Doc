@@ -1,7 +1,17 @@
 [
   {
     "java":"17",
-    "profile":"platform-sirius-7.4.0,tests,updatesites",
+    "profile":"platform-2024-03,tests,updatesites",
+    "tycho":"3.0.3"
+  },
+  {
+    "java":"17",
+    "profile":"platform-sirius-7.4.0,tests",
+    "tycho":"3.0.3"
+  },
+  {
+    "java":"17",
+    "profile":"platform-capella-7.0.0,tests",
     "tycho":"3.0.3"
   }
 ]

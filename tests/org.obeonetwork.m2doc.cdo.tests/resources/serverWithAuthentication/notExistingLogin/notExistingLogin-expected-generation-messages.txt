@@ -1,1 +1,1 @@
-ERROR - Invalid block: No such user: NotExistingUser
+ERROR - Invalid block: null

@@ -1,2 +1,1 @@
-ERROR - Invalid block: org.eclipse.emf.cdo.server.RepositoryNotFoundException: Repository not found: null
-...STACK...
+ERROR - Invalid block: Repository not found: null

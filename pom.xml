@@ -21,8 +21,9 @@
 
   <modules>
     <!-- Eclipse -->
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/2022-12</module>
-    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/2021-12</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2024-03</module>
+    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/2022-12</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2021-12</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2021-09</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2021-06</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2021-03</module>
@@ -40,8 +41,8 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/oxygen</module-->
     <!-- Sirius -->
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.4.0</module>
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.2.1</module>
-    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.1.0</module>
+    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.2.1</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.1.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-7.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.6.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.5.1</module>
@@ -57,8 +58,9 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-5.1.1</module-->
     <!-- Capella -->
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.1.0</module>
-    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.0.0</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-7.0.0</module>
+    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.1.0</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.2.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.1.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.0.0</module>
@@ -406,6 +408,36 @@
     </profile>
 
     <!-- Eclipse -->
+    <profile>
+      <id>platform-2024-03</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2024-03</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2024-03</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2024-03</artifactId>
+                  <version>3.3.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-2022-12</id>
       <activation>
@@ -1431,6 +1463,36 @@
 
     <!-- Capella -->
     <profile>
+      <id>platform-capella-7.0.0</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>capella-7.0.0</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/stable/7.4.1-S20240319-042018/2023-03</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-capella-7.0.0</artifactId>
+                  <version>3.3.2-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>platform-capella-6.1.0</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -1440,7 +1502,7 @@
         </property>
       </activation>
       <properties>
-        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/stable/7.1.0-S20230210-122000/2021-06</eclipse-rcptt-inject-site>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/releases/7.1.0/2021-06</eclipse-rcptt-inject-site>
       </properties>
       <build>
         <plugins>

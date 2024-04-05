@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc Sirius 7.4.0 Target Platform" sequenceNumber="1710862069">
+<target name="M2Doc Sirius 7.4.0 Target Platform" sequenceNumber="1712329387">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -97,11 +97,11 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.net4j.feature.group" version="0.0.0"/>
-      <repository id="CDO" location="https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/"/>
+      <repository id="CDO" location="https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.xtext.sdk.feature.group" version="2.29.0.v20221121-1054"/>
-      <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.29.0/"/>
+      <unit id="org.eclipse.xtext.sdk.feature.group" version="2.30.0.v20230227-1344"/>
+      <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.30.0/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.rcptt.platform.feature.group" version="0.0.0"/>
