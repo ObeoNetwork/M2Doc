@@ -1559,19 +1559,6 @@ Returns the Sequence of incoming involvement links for the given FunctionalChain
 * myFunctionalChainInvolvementFunction.getIncomingInvolvementLinks()
   * the Sequence of incoming involvement links for the given FunctionalChainInvolvementFunction
 
-## org.polarsys.capella.core.data.pa.PhysicalComponent.getIncomingPhysicalLinks() : Sequence{org.polarsys.capella.core.data.cs.PhysicalLink}
-
-Returns the Sequence of incoming physical links for the given PhysicalComponent.
-
-### Parameter
-
-* **value**: the PhysicalComponent
-
-### Example
-
-* myPhysicalComponent.getIncomingPhysicalLinks()
-  * the Sequence of incoming physical links for the given PhysicalComponent
-
 ## org.polarsys.capella.common.data.modellingcore.IState.getIncomingTransition() : Sequence{org.polarsys.capella.core.data.capellacommon.StateTransition}
 
 Returns the Sequence of incoming transitions for the given IState.
@@ -2638,19 +2625,6 @@ Returns the Sequence of outgoing involvement links for the given FunctionalChain
 * myFunctionalChainInvolvementFunction.getOutgoingInvolvementLinks()
   * the Sequence of outgoing involvement links for the given FunctionalChainInvolvementFunction
 
-## org.polarsys.capella.core.data.pa.PhysicalComponent.getOutgoingPhysicalLinks() : Sequence{org.polarsys.capella.core.data.cs.PhysicalLink}
-
-Returns the Sequence of outgoing physical links for the given PhysicalComponent.
-
-### Parameter
-
-* **value**: the PhysicalComponent
-
-### Example
-
-* myPhysicalComponent.getOutgoingPhysicalLinks()
-  * the Sequence of outgoing physical links for the given PhysicalComponent
-
 ## org.polarsys.capella.common.data.modellingcore.IState.getOutgoingTransition() : Sequence{org.polarsys.capella.core.data.capellacommon.StateTransition}
 
 Returns the Sequence of outgoing transitions for the given IState.
@@ -3054,19 +3028,6 @@ Returns the Sequence of part target for the given SequenceMessage.
 * mySequenceMessage.getPartTarget()
   * the Sequence of part target for the given SequenceMessage
 
-## org.polarsys.capella.core.data.cs.PhysicalLink.getPhysicalLinkEnds() : Sequence{org.polarsys.capella.core.data.cs.Component}
-
-Returns the Sequence of physical links ends for the given PhysicalLink.
-
-### Parameter
-
-* **value**: the PhysicalLink
-
-### Example
-
-* myPhysicalLink.getPhysicalLinkEnds()
-  * the Sequence of physical links ends for the given PhysicalLink
-
 ## org.polarsys.capella.core.data.cs.PhysicalLinkCategory.getPhysicalLinks() : Sequence{org.polarsys.capella.core.data.cs.PhysicalLink}
 
 Returns the Sequence of physical links for the given PhysicalLinkCategory.
@@ -3079,19 +3040,6 @@ Returns the Sequence of physical links for the given PhysicalLinkCategory.
 
 * myPhysicalLinkCategory.getPhysicalLinks()
   * the Sequence of physical links for the given PhysicalLinkCategory
-
-## org.polarsys.capella.core.data.cs.PhysicalPort.getPhysicalLinks() : Sequence{org.polarsys.capella.core.data.cs.PhysicalLink}
-
-Returns the Sequence of physical links for the given PhysicalPort.
-
-### Parameter
-
-* **value**: the PhysicalPort
-
-### Example
-
-* myPhysicalPort.getPhysicalLinks()
-  * the Sequence of physical links for the given PhysicalPort
 
 ## org.polarsys.capella.core.data.cs.PhysicalLink.getPhysicalPaths() : Sequence{org.polarsys.capella.core.data.cs.PhysicalPath}
 
@@ -4250,19 +4198,6 @@ Returns the Sequence of required interfaces for the given ComponentPort.
 * myComponentPort.getRequiredInterfaces()
   * the Sequence of required interfaces for the given ComponentPort
 
-## org.polarsys.capella.core.data.capellacore.CapellaElement.getRequirements() : Sequence{org.polarsys.capella.common.data.modellingcore.TraceableElement}
-
-Returns the Sequence of requirements for the given CapellaElement.
-
-### Parameter
-
-* **value**: the CapellaElement
-
-### Example
-
-* myCapellaElement.getRequirements()
-  * the Sequence of requirements for the given CapellaElement
-
 ## org.polarsys.capella.core.data.cs.Interface.getRequirers() : Sequence{org.polarsys.capella.core.data.fa.ComponentPort}
 
 Returns the Sequence of requirers for the given Interface.
@@ -4912,19 +4847,6 @@ Returns the Sequence of target for the given CommunicationMean.
 
 * myCommunicationMean.getTarget()
   * the Sequence of target for the given CommunicationMean
-
-## org.polarsys.capella.core.data.requirement.Requirement.getTracedElements() : Sequence{org.polarsys.capella.common.data.modellingcore.TraceableElement}
-
-Returns the Sequence of traced elements for the given Requirement.
-
-### Parameter
-
-* **value**: the Requirement
-
-### Example
-
-* myRequirement.getTracedElements()
-  * the Sequence of traced elements for the given Requirement
 
 ## org.polarsys.capella.core.data.capellacommon.StateTransition.getTrigger() : Sequence{org.polarsys.capella.common.data.behavior.AbstractEvent}
 
