@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ public final class M2DocUtils {
     /**
      * M2Doc version.
      */
-    public static final String VERSION = "3.3.2";
+    public static final String VERSION = "3.3.3";
 
     /**
      * The plugin ID.

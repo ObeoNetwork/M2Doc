@@ -17,10 +17,10 @@
         <groupId>org.obeonetwork.m2doc</groupId>
         <artifactId>org.obeonetwork.m2doc.parent</artifactId>
         <relativePath>../..</relativePath>
-      <version>3.3.2-SNAPSHOT</version>
+      <version>3.3.3-SNAPSHOT</version>
     </parent>
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>org.obeonetwork.m2doc.ui.jdt.feature</artifactId>
-  <version>3.3.2-SNAPSHOT</version>
+  <version>3.3.3-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 </project>
