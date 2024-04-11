@@ -29,7 +29,7 @@
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-  </pluginRepositories> 
+  </pluginRepositories>
 
   <properties>
     <rcptt-maven-version>2.5.4</rcptt-maven-version>
@@ -47,15 +47,9 @@
           </runner>
           <aut>
             <explicit>${project.basedir}/../../releng/org.obeonetwork.m2doc.rcpttproduct/target/products/M2Doc-linux.gtk.x86_64.tar.gz</explicit>
-            <injections>
-              <injection>
-                <site>${eclipse-rcptt-inject-site}</site>
-                <features>
-                   <feature>org.eclipse.sirius.runtime.feature.group</feature>
-                   <feature>org.eclipse.sirius.runtime.ide.ui.feature.group</feature>
-                </features>      
-              </injection>
-            </injections>
+            <vmArgs>
+              <vmArg>-Xmx2048m</vmArg>
+            </vmArgs>
           </aut>
           <skipTags>
             <skipTag>fail</skipTag>

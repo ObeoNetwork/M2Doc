@@ -378,13 +378,55 @@
       </activation>
       <modules>
         <module>releng/org.obeonetwork.m2doc.update</module>
-        <!--module>tests/org.obeonetwork.m2doc.rcptt.a</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>rcptt</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <modules>
+        <module>releng/org.obeonetwork.m2doc.targetplatforms/rcptt</module>
+        <module>tests/org.obeonetwork.m2doc.rcptt.a</module>
         <module>tests/org.obeonetwork.m2doc.rcptt.b</module>
         <module>tests/org.obeonetwork.m2doc.rcptt.ui</module>
         <module>releng/org.obeonetwork.m2doc.rcpttproduct</module>
         <module>tests/org.obeonetwork.m2doc.rcptt</module>
-        <module>features/org.obeonetwork.m2doc.rcptt.feature</module-->
+        <module>features/org.obeonetwork.m2doc.rcptt.feature</module>
+
+        <module>tests/org.obeonetwork.m2doc.tests</module>
+        <module>tests/org.obeonetwork.m2doc.ide.tests</module>
+        <module>tests/org.obeonetwork.m2doc.sirius.tests</module>
+        <module>tests/org.obeonetwork.m2doc.genconf.tests</module>
+        <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
+        <module>tests/org.obeonetwork.m2doc.cdo.tests</module>
+        <module>tests/org.obeonetwork.m2doc.html.tests</module>
+        <module>tests/org.obeonetwork.m2doc.wikitext.tests</module>
+
+        <module>tests/org.xtext.example.mydsl</module>
+        <module>tests/org.xtext.example.mydsl.ide</module>
+        <module>tests/org.xtext.example.mydsl.ui</module>
       </modules>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2024-03</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-rcptt</artifactId>
+                  <version>3.3.3-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>tests</id>

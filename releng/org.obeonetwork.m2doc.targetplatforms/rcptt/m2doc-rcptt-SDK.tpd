@@ -1,0 +1,5 @@
+target "M2Doc RCPTT Target Platform SDK"
+
+with source requirements
+
+include "m2doc-rcptt.tpd"
