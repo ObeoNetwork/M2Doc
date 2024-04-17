@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Checks ImageServices registration :
+  [query: .resize(null, null)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

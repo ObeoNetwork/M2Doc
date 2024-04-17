@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Checks ImageServices registration :
+  [query: .setConserveRatio(null, true)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

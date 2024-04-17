@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -80,8 +80,16 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage asImage(String uriStr) {
-        final URI imageURI = URI.createURI(uriStr, true);
-        return asImage(uriStr, PictureType.toType(imageURI));
+        final MImage res;
+
+        if (uriStr != null) {
+            final URI imageURI = URI.createURI(uriStr, true);
+            res = asImage(uriStr, PictureType.toType(imageURI));
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     // @formatter:off
@@ -97,7 +105,15 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage asImage(String uriStr, String type) {
-        return asImage(uriStr, PictureType.valueOf(type.toUpperCase()));
+        final MImage res;
+
+        if (uriStr != null && type != null) {
+            res = asImage(uriStr, PictureType.valueOf(type.toUpperCase()));
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     /**
@@ -110,10 +126,17 @@ public class ImageServices {
      * @return the {@link MImage} corresponding to the given path
      */
     private MImage asImage(String uriStr, PictureType type) {
-        final URI imageURI = URI.createURI(uriStr, true);
-        final URI uri = imageURI.resolve(templateURI);
+        final MImage res;
 
-        return new MImageImpl(uriConverter, uri, type);
+        if (uriStr != null && type != null) {
+            final URI imageURI = URI.createURI(uriStr, true);
+            final URI uri = imageURI.resolve(templateURI);
+            res = new MImageImpl(uriConverter, uri, type);
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     // @formatter:off
@@ -122,14 +145,22 @@ public class ImageServices {
         params = {
             @Param(name = "image", value = "The Image"),
         },
-        result = "gets the width of the image",
+        result = "gets the width of the image, -1 if the image is null",
         examples = {
             @Example(expression = "myImage.getWidth()", result = "300"),
         }
     )
     // @formatter:on
     public Integer getWidth(MImage image) {
-        return image.getWidth();
+        final Integer res;
+
+        if (image != null) {
+            res = image.getWidth();
+        } else {
+            res = -1;
+        }
+
+        return res;
     }
 
     // @formatter:off
@@ -146,7 +177,9 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage setWidth(MImage image, Integer width) {
-        image.setWidth(width);
+        if (image != null && width != null) {
+            image.setWidth(width);
+        }
 
         return image;
     }
@@ -157,14 +190,22 @@ public class ImageServices {
         params = {
             @Param(name = "image", value = "The Image"),
         },
-        result = "gets the height of the image",
+        result = "gets the height of the image, -1 if the image is null",
         examples = {
             @Example(expression = "myImage.getHeight()", result = "300"),
         }
     )
     // @formatter:on
     public Integer getHeight(MImage image) {
-        return image.getHeight();
+        final Integer res;
+
+        if (image != null) {
+            res = image.getHeight();
+        } else {
+            res = -1;
+        }
+
+        return res;
     }
 
     // @formatter:off
@@ -181,7 +222,9 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage setHeight(MImage image, Integer height) {
-        image.setHeight(height);
+        if (image != null && height != null) {
+            image.setHeight(height);
+        }
 
         return image;
     }
@@ -200,7 +243,9 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage setConserveRatio(MImage image, Boolean conserve) {
-        image.setConserveRatio(conserve);
+        if (image != null && conserve != null) {
+            image.setConserveRatio(conserve);
+        }
 
         return image;
     }
@@ -220,12 +265,20 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage fit(MImage image, Integer width, Integer height) {
-        image.setWidth(width);
-        if (!image.conserveRatio() || image.getHeight() > height) {
-            image.setHeight(height);
+        final MImage res;
+
+        if (image != null && width != null && height != null) {
+            image.setWidth(width);
+            if (!image.conserveRatio() || image.getHeight() > height) {
+                image.setHeight(height);
+            }
+
+            res = fit(image, width, height, true);
+        } else {
+            res = null;
         }
 
-        return fit(image, width, height, true);
+        return res;
     }
 
     // @formatter:off
@@ -244,21 +297,23 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage fit(MImage image, Integer width, Integer height, boolean zoomIn) {
-        if (zoomIn) {
-            image.setWidth(width);
-            if (!image.conserveRatio() || image.getHeight() > height) {
-                image.setHeight(height);
-            }
-        } else {
-            if (image.getWidth() > width) {
+        if (image != null && width != null && height != null) {
+            if (zoomIn) {
                 image.setWidth(width);
-                if (image.getHeight() > height) {
+                if (!image.conserveRatio() || image.getHeight() > height) {
                     image.setHeight(height);
                 }
-            } else if (image.getHeight() > height) {
-                image.setHeight(height);
+            } else {
                 if (image.getWidth() > width) {
                     image.setWidth(width);
+                    if (image.getHeight() > height) {
+                        image.setHeight(height);
+                    }
+                } else if (image.getHeight() > height) {
+                    image.setHeight(height);
+                    if (image.getWidth() > width) {
+                        image.setWidth(width);
+                    }
                 }
             }
         }
@@ -280,16 +335,25 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage resize(MImage image, Double factor) throws IOException {
-        final BufferedImage bufferedImage = MImageAWTImpl.getBufferedImage(image);
+        final MImage res;
 
-        final BufferedImage resized = new BufferedImage((int) (bufferedImage.getWidth() * factor),
-                (int) (bufferedImage.getHeight() * factor), bufferedImage.getType());
+        if (image != null && factor != null) {
+            final BufferedImage bufferedImage = MImageAWTImpl.getBufferedImage(image);
 
-        final AffineTransform zoomTransfort = AffineTransform.getScaleInstance(factor, factor);
-        final AffineTransformOp retaillerImage = new AffineTransformOp(zoomTransfort, AffineTransformOp.TYPE_BILINEAR);
-        retaillerImage.filter(bufferedImage, resized);
+            final BufferedImage resized = new BufferedImage((int) (bufferedImage.getWidth() * factor),
+                    (int) (bufferedImage.getHeight() * factor), bufferedImage.getType());
 
-        return new MImageAWTImpl(resized, image.getURI());
+            final AffineTransform zoomTransfort = AffineTransform.getScaleInstance(factor, factor);
+            final AffineTransformOp retaillerImage = new AffineTransformOp(zoomTransfort,
+                    AffineTransformOp.TYPE_BILINEAR);
+            retaillerImage.filter(bufferedImage, resized);
+
+            res = new MImageAWTImpl(resized, image.getURI());
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     // @formatter:off
@@ -306,29 +370,37 @@ public class ImageServices {
     )
     // @formatter:on
     public MImage rotate(MImage image, Integer angle) throws IOException {
-        final BufferedImage bufferedImage = MImageAWTImpl.getBufferedImage(image);
+        final MImage res;
 
-        final double rads = Math.toRadians(angle);
-        final double sin = Math.abs(Math.sin(rads));
-        final double cos = Math.abs(Math.cos(rads));
-        final int width = bufferedImage.getWidth();
-        final int height = bufferedImage.getHeight();
-        final int x = width / 2;
-        final int y = height / 2;
-        final int newWidth = (int) Math.floor(width * cos + height * sin);
-        final int newHeight = (int) Math.floor(height * cos + width * sin);
+        if (image != null && angle != null) {
+            final BufferedImage bufferedImage = MImageAWTImpl.getBufferedImage(image);
 
-        final BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-        final AffineTransform translateTransform = new AffineTransform();
-        translateTransform.translate((newWidth - width) / 2, (newHeight - height) / 2);
-        translateTransform.rotate(rads, x, y);
+            final double rads = Math.toRadians(angle);
+            final double sin = Math.abs(Math.sin(rads));
+            final double cos = Math.abs(Math.cos(rads));
+            final int width = bufferedImage.getWidth();
+            final int height = bufferedImage.getHeight();
+            final int x = width / 2;
+            final int y = height / 2;
+            final int newWidth = (int) Math.floor(width * cos + height * sin);
+            final int newHeight = (int) Math.floor(height * cos + width * sin);
 
-        final Graphics2D g2d = rotated.createGraphics();
-        g2d.setTransform(translateTransform);
-        g2d.drawImage(bufferedImage, 0, 0, null);
-        g2d.dispose();
+            final BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            final AffineTransform translateTransform = new AffineTransform();
+            translateTransform.translate((newWidth - width) / 2, (newHeight - height) / 2);
+            translateTransform.rotate(rads, x, y);
 
-        return new MImageAWTImpl(rotated, image.getURI());
+            final Graphics2D g2d = rotated.createGraphics();
+            g2d.setTransform(translateTransform);
+            g2d.drawImage(bufferedImage, 0, 0, null);
+            g2d.dispose();
+
+            res = new MImageAWTImpl(rotated, image.getURI());
+        } else {
+            res = null;
+        }
+
+        return res;
     }
 
     // @formatter:off

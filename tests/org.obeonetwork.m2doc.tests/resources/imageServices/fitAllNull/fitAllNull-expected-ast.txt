@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Checks ImageServices registration :
+  [query: .fitAll(null, null, null, true)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
