@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2023 Obeo. 
+ *  Copyright (c) 2021, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -635,9 +635,9 @@ public class M2DocInterpreterView extends ViewPart {
             final IClassProvider classProvider = M2DocPlugin.getClassProvider();
             final URIConverter uriConverter = resourceSetForModels.getURIConverter();
             try (XWPFDocument document = POIServices.getInstance()
-                    .getXWPFDocument(resourceSetForModels.getURIConverter(), templateURI);) {
-                final DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, queryEnvironment,
-                        classProvider, new BasicMonitor());
+                    .getXWPFDocument(resourceSetForModels.getURIConverter(), templateURI);
+                    DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, queryEnvironment,
+                            classProvider, new BasicMonitor());) {
                 final TemplateCustomProperties properties = new TemplateCustomProperties(document);
                 properties.configureQueryEnvironmentWithResult(queryEnvironment);
                 properties.configureQueryEnvironmentWithResult(queryEnvironment, classProvider);
