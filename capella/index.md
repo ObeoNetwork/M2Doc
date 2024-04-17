@@ -129,9 +129,9 @@ The validation button will only be enable if the selected value is compatible wi
 
 # Team for Capella
 
-You can also use M2Doc with [Team for Capella](https://www.obeosoft.com/en/capella-professional-offer). If you had existing .genconf files before you shared your project to Team for Capella, you will need to edit them.
+You can also use M2Doc with [Team for Capella](https://www.obeosoft.com/en/capella-professional-offer). The easiest way to get started with your shared project, is to create a new .genconf file in that project that will reference your template. If you had existing .genconf files before you shared your project to Team for Capella, they will still reference the local Capella model. You can also edit them to reference the shared project's .aird file.
 
-First you need to change the SiriusSession since the .aird file has been renamed. You should need to add "team" like this:
+To use the shared project make sure the SiriusSession option reference the shared .aird file that has been renamed. You should need to add "team" like this:
 
 * In-Flight Entertainment System.aird
 
@@ -146,6 +146,8 @@ Secondly you will need to set the value of your model variables since the model 
 You will see your Capella model to select the value from:
 
 ![Select Variable Value.]({{page.relativePath}}/capella/images/Select%20Variable%20Value.png "Select Variable Value.")
+
+If you want to make sure you are referencing the shared model, you can open the .genconf file in a text editor and make sure the model reference starts with "cdo://".
 
 # Templates
 
