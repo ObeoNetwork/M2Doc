@@ -81,16 +81,6 @@ public class M2DocTemplateService extends AbstractService<Template> {
     private final int numberOfParameters;
 
     /**
-     * The {@link Set} of returned {@link IType}.
-     */
-    private final Set<IType> returnTypes;
-
-    /**
-     * The {@link List} of parameter {@link IType}.
-     */
-    private final List<IType> parameterTypes;
-
-    /**
      * {@link Exception} during initialization.
      */
     private Exception exception;
@@ -142,19 +132,9 @@ public class M2DocTemplateService extends AbstractService<Template> {
         this.numberOfParameters = template.getParameters().size();
         this.serializedDocument = serializedDocument;
 
-        this.returnTypes = new HashSet<>();
-        returnTypes.add(new ClassType(m2docEnv.getQueryEnvironment(), GenerationResult.class));
-
-        this.parameterTypes = new ArrayList<>();
-        final AstValidator aqlValidator = new AstValidator(new ValidationServices(m2docEnv.getQueryEnvironment()));
-        for (Parameter parameter : template.getParameters()) {
-            final AstResult type = parameter.getType();
-            final IValidationResult validatationResult = aqlValidator.validate(EMPTY_VARIABLE_TYPES, type);
-            Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(m2docEnv.getQueryEnvironment(),
-                    validatationResult.getPossibleTypes(type.getAst()));
-            parameterTypes.add(possibleTypes.iterator().next());
-        }
-        this.shortSignature = computeShortSignature(template);
+        final List<Set<IType>> parameterTypes = getParameterTypes(m2docEnv.getQueryEnvironment());
+        final Object[] argumentTypes = parameterTypes.toArray(new Object[parameterTypes.size()]);
+        this.shortSignature = serviceShortSignature(argumentTypes);
 
         if (serializedDocument != null) {
             try {
@@ -165,19 +145,6 @@ public class M2DocTemplateService extends AbstractService<Template> {
                 exception = e;
             }
         }
-    }
-
-    /**
-     * Computes the {@link #getShortSignature() short signature}.
-     * 
-     * @param t
-     *            the {@link Template}
-     * @return the {@link #getShortSignature() short signature}
-     */
-    private String computeShortSignature(Template t) {
-        final IType[] argumentTypes = parameterTypes.toArray(new IType[parameterTypes.size()]);
-
-        return serviceShortSignature(argumentTypes);
     }
 
     @Override
@@ -196,11 +163,6 @@ public class M2DocTemplateService extends AbstractService<Template> {
     }
 
     @Override
-    public List<IType> getParameterTypes(IReadOnlyQueryEnvironment env) {
-        return parameterTypes;
-    }
-
-    @Override
     public int getNumberOfParameters() {
         return numberOfParameters;
     }
@@ -211,13 +173,27 @@ public class M2DocTemplateService extends AbstractService<Template> {
     }
 
     @Override
-    protected List<IType> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-        return new ArrayList<>(computeType(queryEnvironment));
+    protected List<Set<IType>> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
+        final List<Set<IType>> res = new ArrayList<>();
+        final AstValidator aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
+        for (Parameter parameter : getOrigin().getParameters()) {
+            final AstResult type = parameter.getType();
+            final IValidationResult validatationResult = aqlValidator.validate(EMPTY_VARIABLE_TYPES, type);
+            Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(m2docEnv.getQueryEnvironment(),
+                    validatationResult.getPossibleTypes(type.getAst()));
+            res.add(possibleTypes);
+        }
+
+        return res;
     }
 
     @Override
     protected Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
-        return returnTypes;
+        final Set<IType> res = new HashSet<>();
+
+        res.add(new ClassType(m2docEnv.getQueryEnvironment(), GenerationResult.class));
+
+        return res;
     }
 
     @Override
