@@ -61,6 +61,7 @@
    <bundle id="org.obeonetwork.m2doc.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.cdo.tests" version="0.0.0"/>
    <bundle id="org.obeonetwork.m2doc.html.tests" version="0.0.0"/>
+   <bundle id="org.obeonetwork.m2doc.wikitext.tests" version="0.0.0"/>
 
    <bundle id="org.xtext.example.mydsl" version="0.0.0"/>
    <bundle id="org.xtext.example.mydsl.ide" version="0.0.0"/>
