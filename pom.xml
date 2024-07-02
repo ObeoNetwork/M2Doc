@@ -397,7 +397,7 @@
         <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
         <module>tests/org.obeonetwork.m2doc.cdo.tests</module>
         <module>tests/org.obeonetwork.m2doc.html.tests</module>
-        <!--module>tests/org.obeonetwork.m2doc.wikitext.tests</module-->
+        <module>tests/org.obeonetwork.m2doc.wikitext.tests</module>
 
         <module>tests/org.xtext.example.mydsl</module>
         <module>tests/org.xtext.example.mydsl.ide</module>
