@@ -85,7 +85,7 @@ location "https://download.eclipse.org/sirius/updates/releases/7.4.1/2023-03/" {
 	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
 }
 
-location Acceleo4 "https://download.eclipse.org/acceleo/updates/nightly/4.0.0.202407010928/" {
+location Acceleo4 "https://download.eclipse.org/acceleo/updates/releases/4.0/R202407021157/" {
 	// AQL
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.source.feature.group lazy
