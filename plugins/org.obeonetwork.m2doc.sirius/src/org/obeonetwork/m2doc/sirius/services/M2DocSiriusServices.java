@@ -21,6 +21,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.business.api.dialect.command.CreateRepresentationCommand;
+import org.eclipse.sirius.business.api.image.ImageManagerProvider;
 import org.eclipse.sirius.business.api.query.DRepresentationDescriptorQuery;
 import org.eclipse.sirius.business.api.query.DRepresentationQuery;
 import org.eclipse.sirius.business.api.session.Session;
@@ -836,6 +837,20 @@ public class M2DocSiriusServices {
         }
 
         return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Transforms the serialized text to a text that will be used for html page. This method only changes the image paths. It also ensures that the image is available at the modified location",
+        params = {
+            @Param(name = "htmlString", value = "The HTML text"),
+            @Param(name = "context", value = "An EObject context"),
+        },
+        result = "Transformed HTML text"
+    )
+    // @formatter:on
+    public String computeAndConvertPathsToHtmlFromOriginal(String htmlString, EObject context) {
+        return ImageManagerProvider.getImageManager().computeAndConvertPathsToHtmlFromOriginal(context, htmlString);
     }
 
 }
