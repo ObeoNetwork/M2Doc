@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.html.services;
 
 import java.awt.Color;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -1685,7 +1686,16 @@ public class M2DocHTMLParser extends Parser {
      * @return the converted URI
      */
     private URI toURI(URI baseURI, String uri) {
-        return URI.createURI(uri.replace('\\', '/')).resolve(baseURI);
+        final URI res;
+
+        final File file = new File(uri);
+        if (file.isAbsolute()) {
+            res = URI.createFileURI(uri);
+        } else {
+            res = URI.createURI(uri.replace('\\', '/')).resolve(baseURI);
+        }
+
+        return res;
     }
 
     /**
