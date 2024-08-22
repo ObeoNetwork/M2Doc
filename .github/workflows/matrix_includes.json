@@ -6,7 +6,7 @@
   },
   {
     "java":"17",
-    "profile":"platform-sirius-7.4.0,tests",
+    "profile":"platform-sirius-7.4.2,tests",
     "tycho":"3.0.3"
   },
   {
