@@ -29,5 +29,6 @@ cp -R css ../plugins/org.obeonetwork.m2doc.doc/doc/
 cp -R images ../plugins/org.obeonetwork.m2doc.doc/doc/
 cp -R capella ../plugins/org.obeonetwork.m2doc.doc/doc/
 cp -R font-awesome ../plugins/org.obeonetwork.m2doc.doc/doc/
+cp ref-doc/index-toc.xml ../plugins/org.obeonetwork.m2doc.doc/doc/ref-doc/index-toc.xml
 cd -
 
