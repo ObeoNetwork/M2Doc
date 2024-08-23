@@ -64,12 +64,6 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '**/*.product') }}
         restore-keys: |
           ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '**/*.product') }}
-
-    - name: Setup website (documentation)
-      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES }}
-      run: |
-        chmod a+x ./scripts/website-install.sh
-        ./scripts/website-install.sh
     
     - name: Create directory for website (documentation)
       run: |
