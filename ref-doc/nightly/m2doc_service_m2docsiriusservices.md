@@ -70,6 +70,39 @@ Gets the Sequence of images for the diagrams associated to the given EObject wit
 * ePackage.asImageByRepresentationDescriptionName('class diagram', true, OrderedSet{'Layer 1', 'Layer 2'})
   * Sequence{image1, image2}
 
+## EObject.asImageByRepresentationDescriptionName(String, String, boolean) : Sequence{org.obeonetwork.m2doc.element.MImage}
+
+Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+* **refresh**: true to refresh the representation
+
+### Example
+
+* ePackage.asImageByRepresentationDescriptionName('class diagram', 'JPG', true)
+  * Sequence{image1, image2}
+
+## EObject.asImageByRepresentationDescriptionName(String, String, boolean, OrderedSet{String}) : Sequence{org.obeonetwork.m2doc.element.MImage}
+
+Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.
+
+### Parameter
+
+* **eObject**: Any eObject that is in the session where to search
+* **representationDescriptionName**: the name of the searched representation description
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+* **refresh**: true to refresh the representation
+* **layerNames**: the OrderedSet of layer names to activate
+
+### Example
+
+* ePackage.asImageByRepresentationDescriptionName('class diagram', 'JPG', true, OrderedSet{'Layer 1', 'Layer 2'})
+  * Sequence{image1, image2}
+
 ## String.asImageByRepresentationName() : org.obeonetwork.m2doc.element.MImage
 
 Insert the image of the given representation name.
@@ -112,6 +145,51 @@ Insert the image of the given representation name.
 * 'MyEPackage class diagram'.asImageByRepresentationName(true, OrderedSet{'Layer 1', 'Layer 2'})
   * insert the image
 
+## String.asImageByRepresentationName(String) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation name.
+
+### Parameter
+
+* **representationName**: the name of the searched representation
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+
+### Example
+
+* 'MyEPackage class diagram'.asImageByRepresentationName('JPG')
+  * insert the image
+
+## String.asImageByRepresentationName(String, boolean) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation name.
+
+### Parameter
+
+* **representationName**: the name of the searched representation
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+* **refresh**: true to refresh the representation
+
+### Example
+
+* 'MyEPackage class diagram'.asImageByRepresentationName('JPG', true)
+  * insert the image after refreshing the representation
+
+## String.asImageByRepresentationName(String, boolean, OrderedSet{String}) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation name.
+
+### Parameter
+
+* **representationName**: the name of the searched representation
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+* **refresh**: true to refresh the representation
+* **layerNames**: the OrderedSet of layer names to activate
+
+### Example
+
+* 'MyEPackage class diagram'.asImageByRepresentationName('JPG, 'true, OrderedSet{'Layer 1', 'Layer 2'})
+  * insert the image
+
 ## org.eclipse.sirius.viewpoint.DRepresentation.asImage() : org.obeonetwork.m2doc.element.MImage
 
 Insert the image of the given representation if it's a diagram.
@@ -152,6 +230,51 @@ Insert the image of the given representation if it's a diagram.
 ### Example
 
 * dRepresentation.asImage(true, OrderedSet{'Layer 1', 'Layer 2'})
+  * insert the image of the given representation if it's a diagram
+
+## org.eclipse.sirius.viewpoint.DRepresentation.asImage(String) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation if it's a diagram.
+
+### Parameter
+
+* **representation**: the DRepresentation
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+
+### Example
+
+* dRepresentation.asImage()
+  * insert the image of the given representation if it's a diagram
+
+## org.eclipse.sirius.viewpoint.DRepresentation.asImage(String, boolean) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation if it's a diagram.
+
+### Parameter
+
+* **representation**: the DRepresentation
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+* **refresh**: true to refresh the representation
+
+### Example
+
+* dRepresentation.asImage('JPG', true)
+  * insert the image of the given representation after refreshing it if it's a diagram
+
+## org.eclipse.sirius.viewpoint.DRepresentation.asImage(String, boolean, OrderedSet{String}) : org.obeonetwork.m2doc.element.MImage
+
+Insert the image of the given representation if it's a diagram.
+
+### Parameter
+
+* **representation**: the DRepresentation
+* **format**: the image format: BMP, GIF, JPG, JPEG, PNG, SVG
+* **refresh**: true to refresh the representation
+* **layerNames**: the OrderedSet of layer names to activate
+
+### Example
+
+* dRepresentation.asImage('JPG', true, OrderedSet{'Layer 1', 'Layer 2'})
   * insert the image of the given representation if it's a diagram
 
 ## EObject.asTableByRepresentationDescriptionName(String) : Sequence{org.obeonetwork.m2doc.element.MTable}
@@ -249,6 +372,15 @@ List all available DRepresentation in a table.
 
 * ''.availableRepresentations()
   * the table listing available DRepresentation
+
+## String.computeAndConvertPathsToHtmlFromOriginal(EObject) : String
+
+Transforms the serialized text to a text that will be used for html page. This method only changes the image paths. It also ensures that the image is available at the modified location
+
+### Parameter
+
+* **htmlString**: The HTML text
+* **context**: An EObject context
 
 ## org.eclipse.sirius.viewpoint.DRepresentation.getDescriptor() : org.eclipse.sirius.viewpoint.DRepresentationDescriptor
 
