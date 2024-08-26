@@ -21,8 +21,6 @@ Require-Bundle: org.eclipse.ui,
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",
  org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.acceleo.query;bundle-version="[6.0.1,8.0.0)",
- org.eclipse.jdt.ui,
- org.eclipse.jdt.core,
  org.eclipse.acceleo.annotations
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
@@ -33,5 +31,6 @@ Export-Package: org.obeonetwork.m2doc.ide.ui,
  org.obeonetwork.m2doc.ide.ui.propertyTester,
  org.obeonetwork.m2doc.ide.ui.services,
  org.obeonetwork.m2doc.ide.ui.services.configurator,
+ org.obeonetwork.m2doc.ide.ui.util,
  org.obeonetwork.m2doc.ide.ui.wizard
 Automatic-Module-Name: org.obeonetwork.m2doc.ide.ui

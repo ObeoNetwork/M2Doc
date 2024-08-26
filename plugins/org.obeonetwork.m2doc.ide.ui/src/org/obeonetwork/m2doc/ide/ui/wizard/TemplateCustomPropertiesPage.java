@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -12,21 +12,14 @@
 package org.obeonetwork.m2doc.ide.ui.wizard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.presentation.EcoreActionBarContributor.ExtendedLoadResourceAction.RegisteredPackageDialog;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -53,11 +46,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.PlatformUI;
+import org.obeonetwork.m2doc.ide.ui.Activator;
+import org.obeonetwork.m2doc.ide.ui.util.IClassPropertyUpdater;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.TokenRegistry;
 import org.obeonetwork.m2doc.util.M2DocUtils;
-import org.osgi.framework.Bundle;
 
 /**
  * Edit properties page.
@@ -248,28 +241,6 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             }
         });
         removeButton.setEnabled(false);
-    }
-
-    /**
-     * Gets the bundle name of the given {@link IType}.
-     * 
-     * @param type
-     *            the {@link IType}
-     * @return the bundle name of the given {@link IType} if any, <code>null</code> otherwise
-     */
-    private String getBundleName(IType type) {
-        final String packageName = type.getParent().getParent().getElementName();
-        final List<String> segments = new ArrayList<>(Arrays.asList(packageName.split("\\.")));
-        while (!segments.isEmpty()) {
-            String bundleName = String.join(".", segments);
-            final Bundle bundle = Platform.getBundle(bundleName);
-            if (bundle != null) {
-                return bundle.getSymbolicName();
-            }
-            segments.remove(segments.size() - 1);
-        }
-
-        return null;
     }
 
     /**
@@ -518,31 +489,11 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      */
     private void openClassSelectionDialog(Viewer tokenViewer, Viewer servicesTable,
             final TemplateCustomProperties customProperties) {
-        final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
-        final FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(
-                Display.getCurrent().getActiveShell(), true, PlatformUI.getWorkbench().getProgressService(), scope,
-                IJavaSearchConstants.CLASS);
-        if (dialog.open() == Dialog.OK && dialog.getResult() != null && dialog.getResult().length != 0) {
-            for (Object object : dialog.getResult()) {
-                IPath parentPath = ((IType) object).getParent().getPath();
-                if (parentPath.getFileExtension().equals("jar")) {
-                    int indexOfUnderscore = parentPath.lastSegment().indexOf('_');
-                    if (indexOfUnderscore > -1) {
-                        final String pluginName = parentPath.lastSegment().substring(0, indexOfUnderscore);
-                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(), pluginName);
-                    } else {
-                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(), "");
-                    }
-                } else {
-                    final String bundleName = getBundleName((IType) object);
-                    if (bundleName != null) {
-                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(), bundleName);
-                    } else {
-                        customProperties.getServiceClasses().put(((IType) object).getFullyQualifiedName(),
-                                ((IType) object).getJavaProject().getProject().getName());
-                    }
-                }
-            }
+        final IClassPropertyUpdater updater = Activator.getClassPropertyUpdater();
+        if (updater == null) {
+            MessageDialog.openInformation(getShell(), "No class property updater is registered",
+                    "You can try to install the M2Doc JDT feature to solve this issue.");
+        } else if (updater.updatePropertyClasses(customProperties)) {
             tokenViewer.refresh();
             servicesTable.refresh();
             templateVariablesProperties.validatePage(customProperties);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,11 +14,16 @@ package org.obeonetwork.m2doc.ide.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
+import org.obeonetwork.m2doc.ide.ui.util.ClassPropertyUpdaterRegistryListener;
+import org.obeonetwork.m2doc.ide.ui.util.IClassPropertyUpdater;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -47,34 +52,37 @@ public class Activator extends AbstractUIPlugin {
     private static Activator plugin;
 
     /**
+     * The {@link ClassPropertyUpdaterRegistryListener}.
+     */
+    private static final ClassPropertyUpdaterRegistryListener classPropertyUpdaterRegistryListener = new ClassPropertyUpdaterRegistryListener();
+
+    /**
+     * The registered {@link IClassPropertyUpdater}.
+     */
+    private static IClassPropertyUpdater classPropertyUpdater;
+
+    /**
      * The constructor.
      */
     public Activator() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.
-     * BundleContext)
-     */
     @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+        final IExtensionRegistry registry = Platform.getExtensionRegistry();
+        registry.addListener(classPropertyUpdaterRegistryListener,
+                ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
+        classPropertyUpdaterRegistryListener.parseInitialContributions();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.
-     * BundleContext)
-     */
     @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
-
+        final IExtensionRegistry registry = Platform.getExtensionRegistry();
+        registry.removeListener(classPropertyUpdaterRegistryListener);
     }
 
     /**
@@ -108,5 +116,24 @@ public class Activator extends AbstractUIPlugin {
         } catch (MalformedURLException e) {
             getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
         }
+    }
+
+    /**
+     * Gets the registered {@link IClassPropertyUpdater}.
+     * 
+     * @return the registered {@link IClassPropertyUpdater}
+     */
+    public static IClassPropertyUpdater getClassPropertyUpdater() {
+        return classPropertyUpdater;
+    }
+
+    /**
+     * Registers the given {@link IClassPropertyUpdater}.
+     * 
+     * @param updater
+     *            the {@link IClassPropertyUpdater} to update
+     */
+    public static void registerClassPropertyUpdater(IClassPropertyUpdater updater) {
+        classPropertyUpdater = updater;
     }
 }

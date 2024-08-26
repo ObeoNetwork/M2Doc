@@ -13,6 +13,7 @@
  -->
 
 <plugin>
+   <extension-point id="org.obeonetwork.m2doc.ide.ui.classpropertyupdater" name="M2Doc class property updater" schema="schema/org.obeonetwork.m2doc.ide.ui.classpropertyupdater.exsd"/>
    
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
