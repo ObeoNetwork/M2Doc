@@ -970,7 +970,6 @@ public class M2DocHTMLParser extends Parser {
             if ("tr".equals(child.nodeName())) {
                 final MRow row = new MRowImpl();
                 table.getRows().add(row);
-                int currentColumn = 0;
                 for (Node rowChild : child.childNodes()) {
                     if ("th".equals(rowChild.nodeName()) || "td".equals(rowChild.nodeName())) {
                         final MList contents = new MListImpl();
@@ -985,7 +984,7 @@ public class M2DocHTMLParser extends Parser {
                         CSS_PARSER.setStyle(localContext.cssProperties, cell);
                         walkChildren(rowChild, localContext, newParagraph);
                         createNeededParagraphes(newParagraph);
-                        currentColumn = insertMergedCells(row, rowChild, cell, rowSpans, vMergeCopies, currentColumn);
+                        insertMergedCells(row, rowChild, cell, rowSpans, vMergeCopies);
                     }
                 }
                 insertRowspans(row, rowSpans, vMergeCopies);
@@ -1064,14 +1063,12 @@ public class M2DocHTMLParser extends Parser {
      *            the {@link Map} from the starting column to the number of remaining cells to merge
      * @param vMergeCopies
      *            the {@link Map} from the starting column to the {@link List} of {@link MCell} to copy
-     * @param currentColumn
-     *            the current column
-     * @return the new current column
      */
-    private int insertMergedCells(final MRow row, Node rowChild, final MCell cell, Map<Integer, Integer> rowSpans,
-            Map<Integer, List<MCell>> vMergeCopies, int currentColumn) {
-        int res = currentColumn;
-
+    private void insertMergedCells(final MRow row, Node rowChild, final MCell cell, Map<Integer, Integer> rowSpans,
+            Map<Integer, List<MCell>> vMergeCopies) {
+        insertRowspans(row, rowSpans, vMergeCopies);
+        final int currentColumn = row.getCells().size();
+        int lastColumn = currentColumn;
         final int rowSpan = getRowSpan(rowChild);
         final boolean restartVMerge;
         if (rowSpan > -1) {
@@ -1084,11 +1081,10 @@ public class M2DocHTMLParser extends Parser {
             }
         } else {
             restartVMerge = false;
-            insertRowspans(row, rowSpans, vMergeCopies);
         }
 
         row.getCells().add(cell);
-        res++;
+        lastColumn++;
 
         final int colSpan = getColSpan(rowChild);
         final boolean restartHMerge;
@@ -1101,7 +1097,7 @@ public class M2DocHTMLParser extends Parser {
                 hMergedCell.setHMerge(MCell.Merge.CONTINUE);
                 hMergedCell.setVMerge(cell.getVMerge());
                 row.getCells().add(hMergedCell);
-                res++;
+                lastColumn++;
             }
         } else {
             restartHMerge = false;
@@ -1117,7 +1113,7 @@ public class M2DocHTMLParser extends Parser {
             }
             vMergeCopy.add(vMergedCell);
 
-            for (int i = 0; i < res - currentColumn - 1; i++) {
+            for (int i = 0; i < lastColumn - currentColumn - 1; i++) {
                 final MList hMergedContents = new MListImpl();
                 final MCell hMergedCell = new MCellImpl(hMergedContents, null);
                 hMergedCell.setVMerge(MCell.Merge.CONTINUE);
@@ -1126,8 +1122,6 @@ public class M2DocHTMLParser extends Parser {
             }
             vMergeCopies.put(currentColumn, vMergeCopy);
         }
-
-        return res;
     }
 
     /**
