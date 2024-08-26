@@ -410,7 +410,7 @@ If you want to use a variable named 'userdoc' or 'enduserdoc' you can use an ext
 
 A template construct is basically a block of template with parameters that can be called like a service. When the template construct is called its contents is inserted after all dynamic parts have been interpreted by M2Doc.
 
-`{m:template myTemplate(a : Integer, b : Integer)} ...user block... {m:endtemplate}`
+`{m:template myTemplate(a : Integer, b : Integer)} ...template block... {m:endtemplate}`
 
 This template can be called as follow using a simple [query](index.html#query-example):
 
