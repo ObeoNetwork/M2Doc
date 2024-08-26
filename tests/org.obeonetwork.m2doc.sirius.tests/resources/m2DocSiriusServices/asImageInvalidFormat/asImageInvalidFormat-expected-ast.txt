@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+  
+=== BODY ===
+
+  This demonstrate the simple usage of representationByName service :
+  [query: .asImage(.representationByName('anydsl class diagram'), 'INVALID_FORMAT')]
+  End of demonstration.
+=== FOOTER ===
+
+  
+=== TEMPLATES ===

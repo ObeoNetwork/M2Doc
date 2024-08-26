@@ -1,8 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2017, 2024 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v20.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.services;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -58,6 +69,13 @@ value = "Services available for Sirius. You will have to set the \"SiriusSession
 public class M2DocSiriusServices {
 
     /**
+     * The default image format.
+     */
+    private static final String JPG = "JPG";
+
+    private static final Set<String> VALID_IMAGE_FORMATS = initializeValidImageFormats();
+
+    /**
      * Registry of cleaning jobs.
      * 
      * @author Romain Guider
@@ -97,12 +115,6 @@ public class M2DocSiriusServices {
         }
 
     }
-
-    /**
-     * The {@link ExportFormat}.
-     */
-    private static final ExportFormat FORMAT = new ExportFormat(ExportFormat.ExportDocumentFormat.NONE,
-            ImageFileFormat.JPG);
 
     /**
      * The Sirius {@link Session}.
@@ -167,6 +179,19 @@ public class M2DocSiriusServices {
         } else {
             shouldCloseSession = false;
         }
+    }
+
+    private static Set<String> initializeValidImageFormats() {
+        final Set<String> res = new LinkedHashSet<>();
+
+        res.add(ImageFileFormat.BMP.getName());
+        res.add(ImageFileFormat.GIF.getName());
+        res.add(ImageFileFormat.JPG.getName());
+        res.add(ImageFileFormat.JPEG.getName());
+        res.add(ImageFileFormat.PNG.getName());
+        res.add(ImageFileFormat.SVG.getName());
+
+        return res;
     }
 
     // @formatter:off
@@ -301,6 +326,26 @@ public class M2DocSiriusServices {
     // @formatter:on
     public MImage asImage(DRepresentation representation, boolean refresh, Set<String> layerNames)
             throws SizeTooLargeException, IOException {
+        return asImage(representation, JPG, refresh, layerNames);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation if it's a diagram.",
+        params = {
+            @Param(name = "representation", value = "the DRepresentation"),
+            @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "insert the image of the given representation if it's a diagram.",
+        examples = {
+            @Example(expression = "dRepresentation.asImage('JPG', true, OrderedSet{'Layer 1', 'Layer 2'})", result = "insert the image of the given representation if it's a diagram"),
+        }
+    )
+    // @formatter:on
+    public MImage asImage(DRepresentation representation, String format, boolean refresh, Set<String> layerNames)
+            throws SizeTooLargeException, IOException {
         final MImage res;
 
         if (representation instanceof DDiagram) {
@@ -313,13 +358,13 @@ public class M2DocSiriusServices {
             }
 
             final boolean isSessionDirtyBeforeExport = SessionStatus.DIRTY.equals(session.getStatus());
-            final DDiagram diagramtoExport = SiriusRepresentationUtils.getDDiagramToExport(diagram, refresh, layers,
+            final DDiagram diagramToExport = SiriusRepresentationUtils.getDDiagramToExport(diagram, refresh, layers,
                     session, SiriusRepresentationUtils.getEditor(session, diagram) != null);
 
-            res = internalAsImage(diagramtoExport);
+            res = internalAsImage(diagramToExport, format);
 
             // remove representation copy if needed
-            if (!diagramtoExport.equals(diagram)) {
+            if (!diagramToExport.equals(diagram)) {
                 session.getTransactionalEditingDomain().getCommandStack().undo();
             }
             // save session if not dirty before diagram export
@@ -331,6 +376,24 @@ public class M2DocSiriusServices {
         }
 
         return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation if it's a diagram.",
+        params = {
+            @Param(name = "representation", value = "the DRepresentation"),
+            @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+        },
+        result = "insert the image of the given representation if it's a diagram.",
+        examples = {
+            @Example(expression = "dRepresentation.asImage()", result = "insert the image of the given representation if it's a diagram"),
+        }
+    )
+    // @formatter:on
+    public MImage asImage(final DRepresentation representation, String format)
+            throws SizeTooLargeException, IOException {
+        return asImage(representation, format, false);
     }
 
     // @formatter:off
@@ -364,13 +427,32 @@ public class M2DocSiriusServices {
     // @formatter:on
     public MImage asImage(final DRepresentation representation, boolean refresh)
             throws SizeTooLargeException, IOException {
+        return asImage(representation, JPG, refresh);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation if it's a diagram.",
+        params = {
+            @Param(name = "representation", value = "the DRepresentation"),
+            @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+        },
+        result = "insert the image of the given representation if it's a diagram.",
+        examples = {
+            @Example(expression = "dRepresentation.asImage('JPG', true)", result = "insert the image of the given representation after refreshing it if it's a diagram"),
+        }
+    )
+    // @formatter:on
+    public MImage asImage(final DRepresentation representation, String format, boolean refresh)
+            throws SizeTooLargeException, IOException {
         final MImage res;
 
         if ((forceRefresh || refresh) && representation instanceof DDiagram) {
             final Set<String> layerNames = getActivatedLayerNames(representation);
             res = asImage(representation, forceRefresh || refresh, layerNames);
         } else {
-            res = internalAsImage(representation);
+            res = internalAsImage(representation, format);
         }
 
         return res;
@@ -396,13 +478,23 @@ public class M2DocSiriusServices {
      * 
      * @param representation
      *            the {@link DRepresentation} to export
+     * @param format
+     *            the image format
      * @return the exported {@link MImage}
      * @throws IOException
      *             if the image can't be serialized
      */
-    protected MImage internalAsImage(final DRepresentation representation) throws IOException {
+    protected MImage internalAsImage(final DRepresentation representation, String format) throws IOException {
         final MImage res;
-        final File tmpFile = File.createTempFile(sanitize(representation.getName()) + "-m2doc", ".jpg");
+
+        if (!VALID_IMAGE_FORMATS.contains(format)) {
+            final String validFormatString = Arrays.toString(VALID_IMAGE_FORMATS.toArray());
+            throw new IllegalArgumentException(format + " is not a valide format: " + validFormatString);
+        }
+        final ExportFormat exportFormat = new ExportFormat(ExportFormat.ExportDocumentFormat.NONE,
+                ImageFileFormat.resolveImageFormat(format));
+        final File tmpFile = File.createTempFile(sanitize(representation.getName()) + "-m2doc",
+                "." + format.toLowerCase());
         tmpFiles.add(tmpFile);
 
         // Make sure to run the Sirius image export in the UI thread.
@@ -411,7 +503,7 @@ public class M2DocSiriusServices {
             public void run() {
                 try {
                     DialectUIManager.INSTANCE.export(representation, session, new Path(tmpFile.getAbsolutePath()),
-                            FORMAT, new NullProgressMonitor());
+                            exportFormat, new NullProgressMonitor());
                 } catch (SizeTooLargeException e) {
                     throw new RuntimeException(e);
                 }
@@ -491,20 +583,20 @@ public class M2DocSiriusServices {
     }
 
     // @formatter:off
-        @Documentation(
-            value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
-            params = {
-                @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
-                @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
-                @Param(name = "refresh", value = "true to refresh the representation"),
-                @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
-            },
-            result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
-            examples = {
-                @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram', true, OrderedSet{'Layer 1', 'Layer 2'})", result = "Sequence{image1, image2}"),
-            }
-        )
-        // @formatter:on
+    @Documentation(
+        value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        params = {
+            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        examples = {
+            @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram', true, OrderedSet{'Layer 1', 'Layer 2'})", result = "Sequence{image1, image2}"),
+        }
+    )
+    // @formatter:on
     public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName, boolean refresh,
             Set<String> layerNames) throws SizeTooLargeException, IOException {
         final List<MImage> res = new ArrayList<>();
@@ -513,6 +605,35 @@ public class M2DocSiriusServices {
                 .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName));
         for (DRepresentation representation : representations) {
             res.add(asImage(representation, refresh, layerNames));
+        }
+
+        return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        params = {
+            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+            @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+        examples = {
+            @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram', 'JPG', true, OrderedSet{'Layer 1', 'Layer 2'})", result = "Sequence{image1, image2}"),
+        }
+    )
+    // @formatter:on
+    public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName, String format,
+            boolean refresh, Set<String> layerNames) throws SizeTooLargeException, IOException {
+        final List<MImage> res = new ArrayList<>();
+
+        List<DRepresentation> representations = new ArrayList<>(SiriusRepresentationUtils
+                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName));
+        for (DRepresentation representation : representations) {
+            res.add(asImage(representation, format, refresh, layerNames));
         }
 
         return res;
@@ -537,19 +658,19 @@ public class M2DocSiriusServices {
     }
 
     // @formatter:off
-    @Documentation(
-        value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
-        params = {
-            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
-            @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
-            @Param(name = "refresh", value = "true to refresh the representation"),
-        },
-        result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
-        examples = {
-            @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram', true)", result = "Sequence{image1, image2}"),
-        }
-    )
-    // @formatter:on
+        @Documentation(
+            value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+            params = {
+                @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+                @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+                @Param(name = "refresh", value = "true to refresh the representation"),
+            },
+            result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+            examples = {
+                @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram', true)", result = "Sequence{image1, image2}"),
+            }
+        )
+        // @formatter:on
     public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName, boolean refresh)
             throws SizeTooLargeException, IOException {
         final List<MImage> res = new ArrayList<>();
@@ -564,18 +685,46 @@ public class M2DocSiriusServices {
     }
 
     // @formatter:off
-    @Documentation(
-        value = "Gets the Sequence of tables for the tables associated to the given EObject with the given description name (with header styles).",
-        params = {
-            @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
-            @Param(name = "representationDescriptionName", value = "the name of the searched representation description (with header styles)"),
-        },
-        result = "the Sequence of tables for the tables associated to the given EObject with the given description name (with header styles).",
-        examples = {
-            @Example(expression = "ePackage.asTableByRepresentationDescriptionName('dependency table')", result = "Sequence{table1, table2}"),
+        @Documentation(
+            value = "Gets the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+            params = {
+                @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+                @Param(name = "representationDescriptionName", value = "the name of the searched representation description"),
+                @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+                @Param(name = "refresh", value = "true to refresh the representation"),
+            },
+            result = "the Sequence of images for the diagrams associated to the given EObject with the given description name.",
+            examples = {
+                @Example(expression = "ePackage.asImageByRepresentationDescriptionName('class diagram', 'JPG', true)", result = "Sequence{image1, image2}"),
+            }
+        )
+        // @formatter:on
+    public List<MImage> asImageByRepresentationDescriptionName(EObject eObj, String descriptionName, String format,
+            boolean refresh) throws SizeTooLargeException, IOException {
+        final List<MImage> res = new ArrayList<>();
+
+        List<DRepresentation> representations = new ArrayList<>(SiriusRepresentationUtils
+                .getRepresentationByRepresentationDescriptionName(session, eObj, descriptionName));
+        for (DRepresentation representation : representations) {
+            res.add(asImage(representation, format, refresh));
         }
-    )
-    // @formatter:on
+
+        return res;
+    }
+
+    // @formatter:off
+        @Documentation(
+            value = "Gets the Sequence of tables for the tables associated to the given EObject with the given description name (with header styles).",
+            params = {
+                @Param(name = "eObject", value = "Any eObject that is in the session where to search"),
+                @Param(name = "representationDescriptionName", value = "the name of the searched representation description (with header styles)"),
+            },
+            result = "the Sequence of tables for the tables associated to the given EObject with the given description name (with header styles).",
+            examples = {
+                @Example(expression = "ePackage.asTableByRepresentationDescriptionName('dependency table')", result = "Sequence{table1, table2}"),
+            }
+        )
+        // @formatter:on
     public List<MTable> asTableByRepresentationDescriptionName(EObject eObj, String descriptionName) {
         return asTableByRepresentationDescriptionName(eObj, descriptionName, true);
     }
@@ -646,19 +795,19 @@ public class M2DocSiriusServices {
     }
 
     // @formatter:off
-        @Documentation(
-            value = "Insert the image of the given representation name.",
-            params = {
-                @Param(name = "representationName", value = "the name of the searched representation"),
-                @Param(name = "refresh", value = "true to refresh the representation"),
-                @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
-            },
-            result = "Insert the image of the given representation name",
-            examples = {
-                @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName(true, OrderedSet{'Layer 1', 'Layer 2'})", result = "insert the image"),
-            }
-        )
-        // @formatter:on
+    @Documentation(
+        value = "Insert the image of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "Insert the image of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName(true, OrderedSet{'Layer 1', 'Layer 2'})", result = "insert the image"),
+        }
+    )
+    // @formatter:on
     public MImage asImageByRepresentationName(String representationName, boolean refresh, Set<String> layerNames)
             throws SizeTooLargeException, IOException {
         final MImage res;
@@ -675,19 +824,67 @@ public class M2DocSiriusServices {
     }
 
     // @formatter:off
-        @Documentation(
-            value = "Insert the image of the given representation name.",
-            params = {
-                @Param(name = "representationName", value = "the name of the searched representation"),
-            },
-            result = "Insert the image of the given representation name",
-            examples = {
-                @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName()", result = "insert the image"),
-            }
-        )
-        // @formatter:on
+    @Documentation(
+        value = "Insert the image of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+            @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+            @Param(name = "layerNames", value = "the OrderedSet of layer names to activate"),
+        },
+        result = "Insert the image of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName('JPG, 'true, OrderedSet{'Layer 1', 'Layer 2'})", result = "insert the image"),
+        }
+    )
+    // @formatter:on
+    public MImage asImageByRepresentationName(String representationName, String format, boolean refresh,
+            Set<String> layerNames) throws SizeTooLargeException, IOException {
+        final MImage res;
+
+        final DRepresentationDescriptor description = SiriusRepresentationUtils
+                .getAssociatedRepresentationByName(representationName, session);
+        if (description != null) {
+            res = asImage(description.getRepresentation(), format, refresh, layerNames);
+        } else {
+            res = MImage.EMPTY;
+        }
+
+        return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+        },
+        result = "Insert the image of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName()", result = "insert the image"),
+        }
+    )
+    // @formatter:on
     public MImage asImageByRepresentationName(String representationName) throws SizeTooLargeException, IOException {
         return asImageByRepresentationName(representationName, false);
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+            @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+        },
+        result = "Insert the image of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName('JPG')", result = "insert the image"),
+        }
+    )
+    // @formatter:on
+    public MImage asImageByRepresentationName(String representationName, String format)
+            throws SizeTooLargeException, IOException {
+        return asImageByRepresentationName(representationName, format, false);
     }
 
     // @formatter:off
@@ -711,6 +908,35 @@ public class M2DocSiriusServices {
                 .getAssociatedRepresentationByName(representationName, session);
         if (descriptor != null) {
             res = asImage(descriptor.getRepresentation(), refresh);
+        } else {
+            res = MImage.EMPTY;
+        }
+
+        return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the image of the given representation name.",
+        params = {
+            @Param(name = "representationName", value = "the name of the searched representation"),
+            @Param(name = "format", value = "the image format: BMP, GIF, JPG, JPEG, PNG, SVG"),
+            @Param(name = "refresh", value = "true to refresh the representation"),
+        },
+        result = "Insert the image of the given representation name",
+        examples = {
+            @Example(expression = "'MyEPackage class diagram'.asImageByRepresentationName('JPG', true)", result = "insert the image after refreshing the representation"),
+        }
+    )
+    // @formatter:on
+    public MImage asImageByRepresentationName(String representationName, String format, boolean refresh)
+            throws SizeTooLargeException, IOException {
+        final MImage res;
+
+        final DRepresentationDescriptor descriptor = SiriusRepresentationUtils
+                .getAssociatedRepresentationByName(representationName, session);
+        if (descriptor != null) {
+            res = asImage(descriptor.getRepresentation(), format, refresh);
         } else {
             res = MImage.EMPTY;
         }

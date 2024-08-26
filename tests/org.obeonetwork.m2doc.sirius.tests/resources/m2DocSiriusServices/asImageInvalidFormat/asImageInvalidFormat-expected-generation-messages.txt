@@ -1,0 +1,4 @@
+ERROR - asImage(org.eclipse.sirius.viewpoint.DRepresentation,java.lang.String) with arguments [org.eclipse.sirius.diagram.model.business.internal.spec.DSemanticDiagramSpec@00000000 (uid: _CbYCALe3EeadeJgQTriozQ) (synchronized: true, isInLayoutingMode: false, isInShowingMode: false, headerHeight: 1), INVALID_FORMAT] failed:
+	INVALID_FORMAT is not a valide format: [BMP, GIF, JPG, JPEG, PNG, SVG]
+java.lang.IllegalArgumentException: INVALID_FORMAT is not a valide format: [BMP, GIF, JPG, JPEG, PNG, SVG]
+...STACK...
