@@ -54,7 +54,7 @@ public class Activator extends AbstractUIPlugin {
     /**
      * The {@link ClassPropertyUpdaterRegistryListener}.
      */
-    private static final ClassPropertyUpdaterRegistryListener classPropertyUpdaterRegistryListener = new ClassPropertyUpdaterRegistryListener();
+    private static final ClassPropertyUpdaterRegistryListener CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER = new ClassPropertyUpdaterRegistryListener();
 
     /**
      * The registered {@link IClassPropertyUpdater}.
@@ -72,9 +72,9 @@ public class Activator extends AbstractUIPlugin {
         super.start(context);
         plugin = this;
         final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        registry.addListener(classPropertyUpdaterRegistryListener,
+        registry.addListener(CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER,
                 ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
-        classPropertyUpdaterRegistryListener.parseInitialContributions();
+        CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER.parseInitialContributions();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class Activator extends AbstractUIPlugin {
         plugin = null;
         super.stop(context);
         final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        registry.removeListener(classPropertyUpdaterRegistryListener);
+        registry.removeListener(CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER);
     }
 
     /**
