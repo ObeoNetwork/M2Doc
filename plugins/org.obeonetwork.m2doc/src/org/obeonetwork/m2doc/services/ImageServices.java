@@ -94,21 +94,22 @@ public class ImageServices {
 
     // @formatter:off
     @Documentation(
-        value = "Convert a String representing an URI to an Image and serialize it in the given format.",
+        value = "Convert a String representing an URI to an Image and specify the image format of the input.",
         params = {
             @Param(name = "uri", value = "The Image uri, it can be relative to the template"),
+            @Param(name = "format", value = "the image format: BMP, DIB, EMF, EPS, GIF, JPG, JPEG, PICT, PNG, SVG, TIFF, WMF, WPG"),
         },
         result = "insert the image",
         examples = {
-            @Example(expression = "'image.png'.asImage('jpg')", result = "insert the image 'image.jpg'"),
+            @Example(expression = "'image'.asImage('jpg')", result = "insert the image as a jpg image"),
         }
     )
     // @formatter:on
-    public MImage asImage(String uriStr, String type) {
+    public MImage asImage(String uriStr, String format) {
         final MImage res;
 
-        if (uriStr != null && type != null) {
-            res = asImage(uriStr, PictureType.valueOf(type.toUpperCase()));
+        if (uriStr != null && format != null) {
+            res = asImage(uriStr, PictureType.valueOf(format.toUpperCase()));
         } else {
             res = null;
         }
