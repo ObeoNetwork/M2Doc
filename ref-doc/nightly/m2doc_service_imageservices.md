@@ -7,7 +7,7 @@ relativePath: ../..
 
 <!--
 /********************************************************************************
-** Copyright (c) 2015, 2023 Obeo.
+** Copyright (c) 2015, 2024 Obeo.
 ** All rights reserved. This program and the accompanying materials
 ** are made available under the terms of the Eclipse Public License v2.0
 ** which accompanies this distribution, and is available at
@@ -40,16 +40,17 @@ Convert a String representing an URI to an Image.
 
 ## String.asImage(String) : org.obeonetwork.m2doc.element.MImage
 
-Convert a String representing an URI to an Image and serialize it in the given format.
+Convert a String representing an URI to an Image and specify the image format of the input.
 
 ### Parameter
 
 * **uri**: The Image uri, it can be relative to the template
+* **format**: the image format: BMP, DIB, EMF, EPS, GIF, JPG, JPEG, PICT, PNG, SVG, TIFF, WMF, WPG
 
 ### Example
 
-* 'image.png'.asImage('jpg')
-  * insert the image 'image.jpg'
+* 'image'.asImage('jpg')
+  * insert the image as a jpg image
 
 ## org.obeonetwork.m2doc.element.MElement.fitAll(Integer, Integer, boolean) : org.obeonetwork.m2doc.element.MElement
 
