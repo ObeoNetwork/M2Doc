@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.generator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.URI;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -34,6 +35,7 @@ import org.apache.poi.openxml4j.opc.PackagingURIHelper;
 import org.apache.poi.openxml4j.opc.TargetMode;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
+import org.apache.poi.xwpf.usermodel.XWPFAbstractNum;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
@@ -51,7 +53,10 @@ import org.apache.xmlbeans.impl.common.IOUtil;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.parser.AbstractBodyParser;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBookmark;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDecimalNumber;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
@@ -242,20 +247,21 @@ public class RawCopier {
 
         final Map<String, String> inputRelationIdToOutputMap = new HashMap<>();
         final Map<URI, URI> inputPartURIToOutputPartURI = new HashMap<>();
+        final Map<BigInteger, BigInteger> numIDmap = new HashMap<>();
         if (inlineStartUserContent) {
             if (inline) {
                 if (endUserContentParagraph == startUserContentParagraph) {
-                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, outputParagraph,
-                            startUserContentParagraph, startXmlObject, endXmlObject);
+                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                            outputParagraph, startUserContentParagraph, startXmlObject, endXmlObject);
                 } else {
-                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, outputParagraph,
-                            startUserContentParagraph, startXmlObject, null);
+                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                            outputParagraph, startUserContentParagraph, startXmlObject, null);
                 }
                 res = outputParagraph;
             } else {
                 if (endUserContentParagraph == startUserContentParagraph) {
                     res = createNewParagraph(outputBody);
-                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, res,
+                    copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap, res,
                             endUserContentParagraph, null, endXmlObject);
                 }
             }
@@ -272,11 +278,11 @@ public class RawCopier {
                 }
                 if (element instanceof XWPFParagraph) {
                     final XWPFParagraph inputParagraph = (XWPFParagraph) element;
-                    res = copyParagraph(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
+                    res = copyParagraph(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
                             inputParagraph, null);
                 } else if (element instanceof XWPFTable) {
-                    copyTable(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI, (XWPFTable) element,
-                            null);
+                    copyTable(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                            (XWPFTable) element, null);
                     res = null;
                 } else if (element instanceof XWPFSDT) {
                     copyCTSdtBlock(outputBody, AbstractBodyParser.getCTSdtBlock(inputBody, (XWPFSDT) element));
@@ -292,7 +298,7 @@ public class RawCopier {
                 ctp.getFldSimpleList().clear();
                 ctp.getHyperlinkList().clear();
                 res.getCTP().set(ctp);
-                copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, res,
+                copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap, res,
                         endUserContentParagraph, null, endXmlObject);
             } else {
                 // nothing to do here the last body element has already been copied
@@ -313,6 +319,8 @@ public class RawCopier {
      *            the relation ID mapping
      * @param inputPartURIToOutputPartURI
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
+     * @param numIDmap
+     *            the mapping from input numID to output numID
      * @param inputParagraph
      *            the input {@link XWPFParagraph}
      * @param bookmarkManager
@@ -328,20 +336,48 @@ public class RawCopier {
      *             if relations can't be updated
      */
     private XWPFParagraph copyParagraph(final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, XWPFParagraph inputParagraph, BookmarkManager bookmarkManager)
+            Map<URI, URI> inputPartURIToOutputPartURI, Map<BigInteger, BigInteger> numIDmap,
+            XWPFParagraph inputParagraph, BookmarkManager bookmarkManager)
             throws InvalidFormatException, NoSuchAlgorithmException, IOException, XmlException {
         final XWPFParagraph res = createNewParagraph(outputBody);
 
         // Copy new paragraph
         res.getCTP().set(inputParagraph.getCTP());
         // Create relation embedded in run and keep relation id in map (input to output)
-        updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputParagraph.getBody(), outputBody,
-                res.getCTP());
+        updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                inputParagraph.getBody(), outputBody, res.getCTP());
         if (bookmarkManager != null) {
             updateBookmarks(bookmarkManager, res.getCTP(), inputParagraph.getCTP(), outputBody);
         }
 
         return res;
+    }
+
+    /**
+     * Copies the given numID from the input {@link IBody} to the output {@link IBody}.
+     * 
+     * @param inputBody
+     *            the input {@link IBody}
+     * @param outputBody
+     *            the ouput {@link IBody}
+     * @param inputNumID
+     *            the numID
+     * @return the numID in the output {@link IBody}
+     */
+    @SuppressWarnings("resource")
+    private BigInteger copyNumID(IBody inputBody, IBody outputBody, BigInteger inputNumID) {
+        final XWPFDocument inputDocument = inputBody.getXWPFDocument();
+        final XWPFDocument ouptutDocument = outputBody.getXWPFDocument();
+
+        final XWPFAbstractNum inputNum = inputDocument.getNumbering()
+                .getAbstractNum(inputNumID.subtract(BigInteger.ONE));
+
+        final XWPFAbstractNum outputNum = new XWPFAbstractNum((CTAbstractNum) inputNum.getCTAbstractNum().copy());
+        final BigInteger newID = BigInteger.valueOf(ouptutDocument.getNumbering().getAbstractNums().size());
+        outputNum.getAbstractNum().setAbstractNumId(newID);
+        BigInteger outputNumID = ouptutDocument.getNumbering().addAbstractNum(outputNum);
+        ouptutDocument.getNumbering().addNum(outputNumID);
+        return outputNumID;
     }
 
     /**
@@ -353,6 +389,8 @@ public class RawCopier {
      *            the relation ID mapping
      * @param inputPartURIToOutputPartURI
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
+     * @param numIDmap
+     *            the mapping from input numID to output numID
      * @param inputTable
      *            the input {@link XWPFTable}
      * @param bookmarkManager
@@ -367,16 +405,18 @@ public class RawCopier {
      * @throws XmlException
      *             if relations can't be updated
      */
+    @SuppressWarnings("resource")
     private XWPFTable copyTable(final IBody outputBody, final Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, final XWPFTable inputTable, BookmarkManager bookmarkManager)
+            Map<URI, URI> inputPartURIToOutputPartURI, Map<BigInteger, BigInteger> numIDmap, final XWPFTable inputTable,
+            BookmarkManager bookmarkManager)
             throws IOException, InvalidFormatException, NoSuchAlgorithmException, XmlException {
         final XWPFTable res = POIServices.getInstance().createTable(outputBody);
 
         res.getCTTbl().set(inputTable.getCTTbl().copy());
         copyTableStyle(inputTable, outputBody.getXWPFDocument());
         // Create relation embedded in run and keep relation id in map (input to output)
-        updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputTable.getBody(), res.getBody(),
-                res.getCTTbl());
+        updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                inputTable.getBody(), res.getBody(), res.getCTTbl());
         if (bookmarkManager != null) {
             updateBookmarks(bookmarkManager, res, inputTable);
         }
@@ -392,6 +432,8 @@ public class RawCopier {
      *            the relation ID mapping
      * @param inputPartURIToOutputPartURI
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
+     * @param numIDmap
+     *            the mapping from input numID to output numID
      * @param outputParagraph
      *            the output {@link XWPFParagraph}
      * @param inputParagraph
@@ -410,9 +452,9 @@ public class RawCopier {
      *             if MD5 can't be found
      */
     private void copyParagraphFragment(Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, XWPFParagraph outputParagraph, XWPFParagraph inputParagraph,
-            XmlObject startXmlObject, XmlObject endXmlObject)
-            throws XmlException, InvalidFormatException, NoSuchAlgorithmException, IOException {
+            Map<URI, URI> inputPartURIToOutputPartURI, Map<BigInteger, BigInteger> numIDmap,
+            XWPFParagraph outputParagraph, XWPFParagraph inputParagraph, XmlObject startXmlObject,
+            XmlObject endXmlObject) throws XmlException, InvalidFormatException, NoSuchAlgorithmException, IOException {
         if (inputParagraph.getCTP().isSetPPr()) {
             outputParagraph.getCTP().setPPr((CTPPr) inputParagraph.getCTP().getPPr().copy());
         }
@@ -426,8 +468,7 @@ public class RawCopier {
         }
         try {
             if (startXmlObject == null || inputCursor.getObject().equals(startXmlObject)) {
-                final XmlCursor outputCursor = outputParagraph.getCTP().newCursor();
-                try {
+                try (XmlCursor outputCursor = outputParagraph.getCTP().newCursor()) {
                     outputCursor.toLastChild();
                     outputCursor.toEndToken();
                     outputCursor.toNextToken();
@@ -436,20 +477,19 @@ public class RawCopier {
                             break;
                         }
                         inputCursor.copyXml(outputCursor);
-                        final XmlCursor tmpCursor = outputCursor.newCursor();
-                        tmpCursor.toPrevSibling();
-                        tmpCursor.getObject();
-                        updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
-                                inputParagraph.getBody(), outputParagraph.getBody(), tmpCursor.getObject());
-                        // TODO update bookmark manager
-                        tmpCursor.dispose();
+                        try (XmlCursor tmpCursor = outputCursor.newCursor()) {
+                            tmpCursor.toPrevSibling();
+                            tmpCursor.getObject();
+                            updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
+                                    numIDmap, inputParagraph.getBody(), outputParagraph.getBody(),
+                                    tmpCursor.getObject());
+                            // TODO update bookmark manager
+                        }
                     } while (inputCursor.toNextSibling());
-                } finally {
-                    outputCursor.dispose();
                 }
             }
         } finally {
-            inputCursor.dispose();
+            inputCursor.close();
         }
     }
 
@@ -564,6 +604,8 @@ public class RawCopier {
      *            the relation ID mapping
      * @param inputPartURIToOutputPartURI
      *            the mapping form input part {@link PackagePartName} to output par {@link PackagePartName}
+     * @param numIDmap
+     *            the mapping from input numID to output numID
      * @param outputBody
      *            the input {@link IBody}
      * @param inputBody
@@ -579,9 +621,21 @@ public class RawCopier {
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be read
      */
-    private void updateRelationIds(Map<String, String> inputRelationIdToOutputMap,
-            Map<URI, URI> inputPartURIToOutputPartURI, IBody inputBody, IBody outputBody, XmlObject xmlObject)
+    private void updateRelationAndNumberingIds(Map<String, String> inputRelationIdToOutputMap,
+            Map<URI, URI> inputPartURIToOutputPartURI, Map<BigInteger, BigInteger> numIDmap, IBody inputBody,
+            IBody outputBody, XmlObject xmlObject)
             throws XmlException, InvalidFormatException, NoSuchAlgorithmException, IOException {
+        if (xmlObject instanceof CTNumPr) {
+            // copy paragraph numbering
+            final CTNumPr ctNumPr = (CTNumPr) xmlObject;
+            final CTDecimalNumber numIdChild = ctNumPr.getNumId();
+            final BigInteger inputNumID = numIdChild.getVal();
+            if (inputNumID != null) {
+                final BigInteger outputNumID = numIDmap.computeIfAbsent(inputNumID,
+                        id -> copyNumID(inputBody, outputBody, id));
+                numIdChild.setVal(outputNumID);
+            }
+        }
         final XmlObject idAttr = xmlObject.selectAttribute(RELATIONSHIPS_URI, "id");
         if (idAttr != null) {
             updateRelationAttribute(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
@@ -593,16 +647,16 @@ public class RawCopier {
                         embedAttr);
             }
         }
-        final XmlCursor cursor = xmlObject.newCursor();
-        if (cursor.toFirstChild()) {
-            updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
-                    cursor.getObject());
-            while (cursor.toNextSibling()) {
-                updateRelationIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
-                        cursor.getObject());
+        try (XmlCursor cursor = xmlObject.newCursor()) {
+            if (cursor.toFirstChild()) {
+                updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                        inputBody, outputBody, cursor.getObject());
+                while (cursor.toNextSibling()) {
+                    updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                            inputBody, outputBody, cursor.getObject());
+                }
             }
         }
-        cursor.dispose();
     }
 
     /**
@@ -660,6 +714,7 @@ public class RawCopier {
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be read
      */
+    @SuppressWarnings("resource")
     private String createRelation(Map<String, String> inputRelationIdToOutputMap,
             Map<URI, URI> inputPartURIToOutputPartURI, String inputRelationID, IBody inputBody, IBody outputBody)
             throws InvalidFormatException, NoSuchAlgorithmException, IOException {
@@ -743,6 +798,7 @@ public class RawCopier {
      * @throws InvalidFormatException
      *             if {@link PackagePart} can't be accessed
      */
+    @SuppressWarnings("resource")
     private PackagePart getOrCopyPart(Map<URI, URI> inputPartURIToOutputPartURI, PackagePart source,
             XWPFDocument outputDoc) throws InvalidFormatException, NoSuchAlgorithmException, IOException {
         final PackagePart res;
@@ -773,6 +829,7 @@ public class RawCopier {
      * @throws IOException
      *             if a {@link PackagePart} can't be read
      */
+    @SuppressWarnings("resource")
     private PackagePart copyPart(PackagePart source, XWPFDocument outputDoc)
             throws InvalidFormatException, NoSuchAlgorithmException, IOException {
         final PackagePart res;
@@ -815,6 +872,7 @@ public class RawCopier {
      * @throws InvalidFormatException
      *             if a {@link PackagePart} can't be accessed
      */
+    @SuppressWarnings("resource")
     private PackagePartName getOutputPartName(PackagePart source, XWPFDocument outputDoc)
             throws InvalidFormatException {
         PackagePartName possiblePartName = source.getPartName();
@@ -869,21 +927,22 @@ public class RawCopier {
 
             final Map<String, String> inputRelationIdToOutputMap = new HashMap<>();
             final Map<URI, URI> inputPartURIToOutputPartURI = new HashMap<>();
+            final Map<BigInteger, BigInteger> numIDmap = new HashMap<>();
             for (IBodyElement element : body.getBodyElements()) {
                 if (element instanceof XWPFParagraph) {
                     final XWPFParagraph inputParagraph = (XWPFParagraph) element;
                     if (inline) {
                         // inline the all paragraph
-                        copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, outputParagraph,
-                                inputParagraph, null, null);
+                        copyParagraphFragment(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                                outputParagraph, inputParagraph, null, null);
                         res = outputParagraph;
                     } else {
                         res = copyParagraph(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
-                                inputParagraph, bookmarkManager);
+                                numIDmap, inputParagraph, bookmarkManager);
                     }
                 } else if (element instanceof XWPFTable) {
                     final XWPFTable inputTable = (XWPFTable) element;
-                    copyTable(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputTable,
+                    copyTable(outputBody, inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap, inputTable,
                             bookmarkManager);
                     res = null;
                 } else if (element instanceof XWPFSDT) {

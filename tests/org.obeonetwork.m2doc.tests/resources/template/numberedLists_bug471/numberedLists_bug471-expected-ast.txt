@@ -1,0 +1,23 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Start of demonstration :
+  
+  for eCls | ->filter(.aqlFeatureAccess(self, 'eClassifiers'), EClass) do
+    [query: .myTemplate(eCls)]
+  endfor
+  
+  End of demonstration :
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (eCls : EClass)
+  [query: .aqlFeatureAccess(eCls, 'name')]
+  
+  for feature | .aqlFeatureAccess(eCls, 'eStructuralFeatures') do
+    [query: .aqlFeatureAccess(feature, 'name')]
+  endfor
+  
