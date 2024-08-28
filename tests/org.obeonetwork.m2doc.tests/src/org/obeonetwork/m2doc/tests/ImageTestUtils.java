@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -139,6 +139,26 @@ public final class ImageTestUtils {
     }
 
     /**
+     * Asserts that the given expected and actual PNGs look like each other.
+     * 
+     * @param diffOutput
+     *            the difference PNG or <code>null</code>
+     * @param expectedIs
+     *            the expected PNG
+     * @param actualIs
+     *            the actual PNG
+     * @param threshold
+     *            the difference threshold of a block
+     */
+    public static void assertBMP(File diffOutput, InputStream expectedIs, InputStream actualIs, double threshold) {
+        try {
+            assertTrue(fuzzyCompareImage("BMP", diffOutput, expectedIs, actualIs, threshold));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    /**
      * Asserts that the given expected and actual JPGs look like each other.
      * 
      * @param diffOutput
@@ -162,7 +182,7 @@ public final class ImageTestUtils {
      * Tells if the actual image look like the expected image.
      * 
      * @param imageFormat
-     *            GIF,PNG, or JPG
+     *            GIF, PNG, BMP, or JPG
      * @param diffOutput
      *            the difference {@link File} or <code>null</code>
      * @param expectedIs

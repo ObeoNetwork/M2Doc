@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -355,6 +355,9 @@ public final class M2DocTestUtils {
                 } else if (entry.getKey().endsWith(".png")) {
                     final File imageDiff = getDiffImageFile(expectedURI.toFileString(), entry.getKey());
                     ImageTestUtils.assertPNG(imageDiff, expectedInputStream, actualInputStream, IMAGE_THRESHOLD);
+                } else if (entry.getKey().endsWith(".bmp")) {
+                    final File imageDiff = getDiffImageFile(expectedURI.toFileString(), entry.getKey());
+                    ImageTestUtils.assertBMP(imageDiff, expectedInputStream, actualInputStream, IMAGE_THRESHOLD);
                 } else {
                     final String expectedHash = getZipEntryHash(expectedInputStream, entry.getKey());
                     final String actualHash = getZipEntryHash(actualInputStream, entry.getKey());
