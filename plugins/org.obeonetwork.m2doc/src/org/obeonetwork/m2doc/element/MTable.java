@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2023 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -63,11 +63,6 @@ public interface MTable extends MElement {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.obeonetwork.m2doc.element.MTable#setTableAlign(org.obeonetwork.m2doc.element.MTable.MTableAlign)
-         */
         @Override
         public void setTableAlign(MTableAlign align) {
             // nothing to do here
@@ -161,6 +156,31 @@ public interface MTable extends MElement {
         }
 
         /**
+         * Witdh type.
+         * 
+         * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+         */
+        enum WidthType {
+            /**
+             * Width is determined by content.
+             */
+            AUTO,
+            /**
+             * Width is an integer number of 20ths of a point (twips).
+             */
+            DXA,
+            /**
+             * No width value set.
+             */
+            NIL,
+            /**
+             * Width is a percentage, e.g. "33.3%" or 50 times percentage value, rounded to an integer,
+             * e.g. 2500 for 50%.
+             */
+            PCT
+        }
+
+        /**
          * Gets the background {@link Color}.
          * 
          * @return the background {@link Color} if any, <code>null</code> otherwise
@@ -219,6 +239,36 @@ public interface MTable extends MElement {
          *            the horizontal {@link Merge}
          */
         void setHMerge(Merge merge);
+
+        /**
+         * Gets the width.
+         * 
+         * @return the width
+         */
+        int getWitdh();
+
+        /**
+         * Sets the width.
+         * 
+         * @param width
+         *            the width, <code>-1</code> for default
+         */
+        void setWidth(int width);
+
+        /**
+         * Gets the {@link WidthType}.
+         * 
+         * @return the {@link WidthType} if any, <code>-1</code> otherwise
+         */
+        WidthType getWidthType();
+
+        /**
+         * Sets the {@link WidthType}.
+         * 
+         * @param type
+         *            the {@link WidthType}
+         */
+        void setWidthType(WidthType type);
     }
 
     /**

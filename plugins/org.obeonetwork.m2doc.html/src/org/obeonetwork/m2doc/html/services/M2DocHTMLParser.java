@@ -82,11 +82,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat.Enu
 public class M2DocHTMLParser extends Parser {
 
     /**
-     * The % string.
-     */
-    private static final String PERCENT = "%";
-
-    /**
      * The none value.
      */
     private static final String NONE = "none";
@@ -154,7 +149,7 @@ public class M2DocHTMLParser extends Parser {
     /**
      * The width attribute.
      */
-    private static final String WIDTH_ATTR = "width";
+    private static final String WIDTH_ATTR = WIDTH;
 
     /**
      * The dir attribute.
@@ -981,6 +976,9 @@ public class M2DocHTMLParser extends Parser {
                             cell.setHAlignment(HAlignment.CENTER);
                             setModifiers(localContext.style, MStyle.FONT_BOLD);
                         }
+                        if (rowChild.hasAttr(WIDTH_ATTR)) {
+                            setCellWidth(cell, rowChild.attr(WIDTH_ATTR));
+                        }
                         CSS_PARSER.setStyle(localContext.cssProperties, cell);
                         walkChildren(rowChild, localContext, newParagraph);
                         createNeededParagraphes(newParagraph);
@@ -1648,26 +1646,6 @@ public class M2DocHTMLParser extends Parser {
         } else {
             mImage.setWidth(Integer.valueOf(width));
         }
-    }
-
-    /**
-     * Gets the relative size for the given image size (x%).
-     * 
-     * @param imageSize
-     *            the image size attribute
-     * @return the relative size if it's relative, <code>-1</code> otherwise
-     */
-    private int getRelativeSize(String imageSize) {
-        final int res;
-
-        final int percentIndex = imageSize.indexOf(PERCENT);
-        if (percentIndex >= 0) {
-            res = Integer.valueOf(imageSize.substring(0, percentIndex));
-        } else {
-            res = -1;
-        }
-
-        return res;
     }
 
     /**

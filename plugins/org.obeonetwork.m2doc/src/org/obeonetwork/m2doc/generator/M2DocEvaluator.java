@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.TableRowAlign;
+import org.apache.poi.xwpf.usermodel.TableWidthType;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.VerticalAlign;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -1427,8 +1428,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     xwpfCellParagraph.setAlignment(getHAllignment(mCell.getHAlignment()));
                 }
                 setCellContent(xwpfCell, mCell);
-                setVMerge(xwpfCell, mTable, mCell, row, column);
-                setHMerge(xwpfCell, mTable, mCell, row, column);
+                setVMerge(xwpfCell, mCell);
+                setHMerge(xwpfCell, mCell);
+                setCellWidth(xwpfCell, mCell);
                 if (removeBorders && xwpfCell.getCTTc().getTcPr() != null
                     && xwpfCell.getCTTc().getTcPr().isSetTcBorders()) {
                     xwpfCell.getCTTc().getTcPr().unsetTcBorders();
@@ -1439,20 +1441,54 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     }
 
     /**
+     * Sets the width for the given cell.
+     * 
+     * @param xwpfCell
+     *            the {@link XWPFTableCell}
+     * @param mCell
+     *            the {@link MCell}
+     */
+    private void setCellWidth(XWPFTableCell xwpfCell, MCell mCell) {
+        if (mCell != null) {
+            if (mCell.getWidthType() != null) {
+                final TableWidthType type;
+                switch (mCell.getWidthType()) {
+                    case AUTO:
+                        type = TableWidthType.AUTO;
+                        break;
+
+                    case DXA:
+                        type = TableWidthType.DXA;
+                        break;
+
+                    case NIL:
+                        type = TableWidthType.NIL;
+                        break;
+
+                    case PCT:
+                        type = TableWidthType.PCT;
+                        break;
+
+                    default:
+                        throw new IllegalStateException();
+                }
+                xwpfCell.setWidthType(type);
+            }
+            if (mCell.getWitdh() != -1) {
+                xwpfCell.setWidth(String.valueOf(mCell.getWitdh()));
+            }
+        }
+    }
+
+    /**
      * Sets the vertical merge for the given cell.
      * 
      * @param xwpfCell
      *            the {@link XWPFTableCell}
-     * @param mTable
-     *            the {@link MTable}
      * @param mCell
      *            the {@link MCell}
-     * @param row
-     *            the current row number
-     * @param column
-     *            the current column number
      */
-    private void setVMerge(XWPFTableCell xwpfCell, MTable mTable, MCell mCell, int row, int column) {
+    private void setVMerge(XWPFTableCell xwpfCell, MCell mCell) {
         if (mCell != null && mCell.getVMerge() != null) {
             final CTVMerge hmerge = CTVMerge.Factory.newInstance();
             switch (mCell.getVMerge()) {
@@ -1491,16 +1527,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * 
      * @param xwpfCell
      *            the {@link XWPFTableCell}
-     * @param mTable
-     *            the {@link MTable}
      * @param mCell
      *            the {@link MCell}
-     * @param row
-     *            the current row number
-     * @param column
-     *            the current column number
      */
-    private void setHMerge(XWPFTableCell xwpfCell, MTable mTable, MCell mCell, int row, int column) {
+    private void setHMerge(XWPFTableCell xwpfCell, MCell mCell) {
         if (mCell != null && mCell.getHMerge() != null) {
             final CTHMerge hmerge = CTHMerge.Factory.newInstance();
             switch (mCell.getHMerge()) {

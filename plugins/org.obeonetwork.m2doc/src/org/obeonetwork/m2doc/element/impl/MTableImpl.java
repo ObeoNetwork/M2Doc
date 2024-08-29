@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2023 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ public class MTableImpl implements MTable {
         private Color backgroundColor;
 
         /**
-         * The vertical alignemnt.
+         * The vertical alignment.
          */
         private VAlignment vAlign;
 
@@ -69,6 +69,16 @@ public class MTableImpl implements MTable {
          * The horizontal {@link Merge}.
          */
         private Merge horizontallyMerge;
+
+        /**
+         * The width.
+         */
+        private int width = -1;
+
+        /**
+         * The {@link WidthType}.
+         */
+        private WidthType widthType;
 
         /**
          * Constructor.
@@ -122,6 +132,26 @@ public class MTableImpl implements MTable {
         public void setHMerge(Merge merge) {
             horizontallyMerge = merge;
         }
+
+        @Override
+        public int getWitdh() {
+            return width;
+        }
+
+        @Override
+        public void setWidth(int width) {
+            this.width = width;
+        }
+
+        @Override
+        public WidthType getWidthType() {
+            return widthType;
+        }
+
+        @Override
+        public void setWidthType(WidthType type) {
+            this.widthType = type;
+        }
     }
 
     /**
@@ -139,6 +169,9 @@ public class MTableImpl implements MTable {
      */
     private String styleID;
 
+    /**
+     * The {@link MTableAlign}.
+     */
     private MTableAlign tableAlign;
 
     @Override

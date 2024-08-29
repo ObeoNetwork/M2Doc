@@ -17,7 +17,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.poi.xwpf.usermodel.TableWidthType;
 import org.obeonetwork.m2doc.element.MStyle;
+import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MCell.WidthType;
 
 /**
  * Abstract parser class for utility methods.
@@ -40,6 +43,16 @@ public abstract class Parser {
      * The class attribute.
      */
     protected static final String CLASS_ATTR = "class";
+
+    /**
+     * The width attribute or CSS property.
+     */
+    protected static final String WIDTH = "width";
+
+    /**
+     * The % string.
+     */
+    protected static final String PERCENT = "%";
 
     /**
      * The hexadecimal color string length.
@@ -96,6 +109,11 @@ public abstract class Parser {
      * The unit group for {@link #FONT_SIZE_PATTERN}.
      */
     private static final int FONT_SIZE_PATTERN_UNIT_GROUP = 3;
+
+    /**
+     * Relative (percent) multiplier see {@link TableWidthType#PCT}.
+     */
+    private static final int RELATIVE_CELL_WIDTH_MULTIPLIER = 50;
 
     /**
      * Initializes the {@link Color} mapping.
@@ -440,6 +458,50 @@ public abstract class Parser {
         }
 
         return res;
+    }
+
+    /**
+     * Gets the relative size for the given size (x%).
+     * 
+     * @param size
+     *            the image size attribute
+     * @return the relative size if it's relative, <code>-1</code> otherwise
+     */
+    protected int getRelativeSize(String size) {
+        final int res;
+
+        final int percentIndex = size.indexOf(PERCENT);
+        if (percentIndex >= 0) {
+            res = Integer.valueOf(size.substring(0, percentIndex));
+        } else {
+            res = -1;
+        }
+
+        return res;
+    }
+
+    /**
+     * Sets the given {@link MCell} width to the given width.
+     * 
+     * @param mCell
+     *            the {@link MCell}
+     * @param width
+     *            the width
+     */
+    protected void setCellWidth(MCell mCell, String width) {
+        final int relativeWidth = getRelativeSize(width);
+        if (relativeWidth != -1) {
+            mCell.setWidth(relativeWidth * RELATIVE_CELL_WIDTH_MULTIPLIER);
+            mCell.setWidthType(WidthType.PCT);
+        } else {
+            double pixels = (double) getPixels(width);
+            if (pixels == -1) {
+                pixels = Integer.valueOf(width);
+            }
+            final double twipSize = pixels / (1d + 1d / 3d) * 20d;
+            mCell.setWidth((int) twipSize);
+            mCell.setWidthType(WidthType.DXA);
+        }
     }
 
 }

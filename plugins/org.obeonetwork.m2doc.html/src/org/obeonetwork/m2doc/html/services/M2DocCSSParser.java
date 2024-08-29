@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2023 Obeo. 
+ *  Copyright (c) 2021, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -172,9 +172,14 @@ public class M2DocCSSParser extends Parser {
     protected static final String CSS_DISPLAY = "display";
 
     /**
-     * The display property.
+     * The float property.
      */
     protected static final String CSS_FLOAT = "float";
+
+    /**
+     * The width property.
+     */
+    private static final String CSS_WIDTH = WIDTH;
 
     /**
      * The CSS dot class separator.
@@ -527,6 +532,12 @@ public class M2DocCSSParser extends Parser {
         if (cssBackgrounds != null) {
             for (String cssBackground : cssBackgrounds) {
                 mCell.setBackgroundColor(htmlToColor(cssBackground));
+            }
+        }
+        final List<String> cssWidths = cssProperties.get(CSS_WIDTH);
+        if (cssWidths != null) {
+            for (String cssWidth : cssWidths) {
+                setCellWidth(mCell, cssWidth);
             }
         }
         setContainerStyle(cssProperties, mCell);
