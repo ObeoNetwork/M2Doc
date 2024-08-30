@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  End of demonstration.
+  [query: 'Title']
+   
+  [query: .asBookmark('bookmark', 'ID')]
+  Some static text and a 
+  [query: .asBookmarkRef('bookmark reference', 'ID')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
