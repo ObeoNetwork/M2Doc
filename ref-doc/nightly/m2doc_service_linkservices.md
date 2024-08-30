@@ -7,7 +7,7 @@ relativePath: ../..
 
 <!--
 /********************************************************************************
-** Copyright (c) 2015, 2023 Obeo.
+** Copyright (c) 2015, 2024 Obeo.
 ** All rights reserved. This program and the accompanying materials
 ** are made available under the terms of the Eclipse Public License v2.0
 ** which accompanies this distribution, and is available at
@@ -38,6 +38,21 @@ Converts a String to a bookmark reference
 
 * 'Artifact1'.asBookmarkRef('Art1')
   * a bookmark reference with the ID 'Art1' the label 'Artifact1'
+
+## String.asBookmarkRef(String, boolean) : org.obeonetwork.m2doc.element.MBookmark
+
+Converts a String to a bookmark reference
+
+### Parameter
+
+* **text**: The label of the bookmark reference
+* **id**: The ID of the bookmark reference
+* **optional**: If true, this reference will only generate the text if the corresponding bookmark doesn't exists
+
+### Example
+
+* 'Artifact1'.asBookmarkRef('Art1', true)
+  * a bookmark reference with the ID 'Art1' the label 'Artifact1' only if a bookmark with ID 'Art1' exists
 
 ## String.asBookmark(String) : org.obeonetwork.m2doc.element.MBookmark
 
