@@ -28,6 +28,7 @@ import org.obeonetwork.m2doc.element.MBorder;
 import org.obeonetwork.m2doc.element.MBorder.Type;
 import org.obeonetwork.m2doc.element.MElementContainer;
 import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
+import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable.MCell;
@@ -398,6 +399,32 @@ public class M2DocCSSParser extends Parser {
         }
 
         return res;
+    }
+
+    /**
+     * Sets the CSS styles to the given {@link MImage}.
+     * 
+     * @param cssProperties
+     *            the CSS properties
+     * @param mImage
+     *            the {@link MImage}
+     */
+    public void setStyle(Map<String, List<String>> cssProperties, MImage mImage) {
+        final List<String> cssWidths = cssProperties.get(CSS_WIDTH);
+        String width = null;
+        if (cssWidths != null) {
+            for (String cssWidth : cssWidths) {
+                width = cssWidth;
+            }
+        }
+        final List<String> cssHeights = cssProperties.get(CSS_HEIGHT);
+        String height = null;
+        if (cssHeights != null) {
+            for (String cssHeight : cssHeights) {
+                height = cssHeight;
+            }
+        }
+        setImageSize(mImage, width, height);
     }
 
     /**

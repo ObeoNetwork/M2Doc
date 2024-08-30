@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.poi.xwpf.usermodel.TableWidthType;
+import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MCell.WidthType;
@@ -501,7 +502,7 @@ public abstract class Parser {
             mCell.setWidth(relativeWidth * RELATIVE_CELL_WIDTH_MULTIPLIER);
             mCell.setWidthType(WidthType.PCT);
         } else {
-            double pixels = (double) getPixels(width);
+            int pixels = getPixels(width);
             if (pixels == -1) {
                 pixels = Integer.valueOf(width);
             }
@@ -522,12 +523,79 @@ public abstract class Parser {
     protected void setRowHeight(MRow row, String height) {
         final int relativeHeight = getRelativeSize(height);
         if (relativeHeight == -1) {
-            double pixels = (double) getPixels(height);
+            int pixels = getPixels(height);
             if (pixels == -1) {
                 pixels = Integer.valueOf(height);
             }
-            row.setHeight((int) pixels * 10);
+            row.setHeight(pixels * 10);
             row.setHeightRule(HeightRule.AT_LEAST);
+        }
+    }
+
+    /**
+     * Sets the image {@link MImage#getWidth() width} and {@link MImage#getHeight() height} according to the given width and height.
+     * 
+     * @param mImage
+     *            the {@link MImage}
+     * @param width
+     *            the width if any, <code>null</code> otherwise
+     * @param height
+     *            the height if any, <code>null</code> otherwise
+     */
+    protected void setImageSize(MImage mImage, String width, String height) {
+        if (width != null) {
+            if (height != null) {
+                mImage.setConserveRatio(false);
+                setImageWidth(mImage, width);
+                setImageHeight(mImage, height);
+            } else {
+                setImageWidth(mImage, width);
+            }
+        } else if (height != null) {
+            setImageHeight(mImage, height);
+        }
+    }
+
+    /**
+     * Sets the given {@link MImage} {@link MImage#getHeight() height} or {@link MImage#getRelativeHeight()
+     * relative height}.
+     * 
+     * @param mImage
+     *            the {@link MImage}
+     * @param height
+     *            the height
+     */
+    private void setImageHeight(final MImage mImage, final String height) {
+        final int relativeHeight = getRelativeSize(height);
+        if (relativeHeight != -1) {
+            mImage.setRelativeHeight(relativeHeight);
+        } else {
+            int pixels = getPixels(height);
+            if (pixels == -1) {
+                pixels = Integer.valueOf(height);
+            }
+            mImage.setHeight(pixels);
+        }
+    }
+
+    /**
+     * Sets the given {@link MImage} {@link MImage#getWidth() width} or {@link MImage#getRelativeWidth() relative width}.
+     * 
+     * @param mImage
+     *            the {@link MImage}
+     * @param width
+     *            the width
+     */
+    private void setImageWidth(final MImage mImage, final String width) {
+        final int relativeWidth = getRelativeSize(width);
+        if (relativeWidth != -1) {
+            mImage.setRelativeWidth(relativeWidth);
+        } else {
+            int pixels = getPixels(width);
+            if (pixels == -1) {
+                pixels = Integer.valueOf(width);
+            }
+            mImage.setWidth(pixels);
         }
     }
 

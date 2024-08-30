@@ -1588,70 +1588,22 @@ public class M2DocHTMLParser extends Parser {
         final URI imageURI = toURI(context.baseURI, element.attr("src"));
         final MImage mImage = new MImageImpl(uriConverter, imageURI);
 
-        setImageSize(element, mImage);
+        final String width;
+        if (element.hasAttr(WIDTH_ATTR)) {
+            width = element.attr(WIDTH_ATTR);
+        } else {
+            width = null;
+        }
+        final String height;
+        if (element.hasAttr(HEIGHT_ATTR)) {
+            height = element.attr(HEIGHT_ATTR);
+        } else {
+            height = null;
+        }
+        setImageSize(mImage, width, height);
+        CSS_PARSER.setStyle(context.cssProperties, mImage);
 
         return mImage;
-    }
-
-    /**
-     * Sets the image {@link MImage#getHeight() height} and {@link MImage#getWidth() width} according to the given {@link Node}
-     * attributes.
-     * 
-     * @param element
-     *            the {@link Node}
-     * @param mImage
-     *            the {@link MImage}
-     */
-    private void setImageSize(Node element, final MImage mImage) {
-        if (element.hasAttr(WIDTH_ATTR)) {
-            final String width = element.attr(WIDTH_ATTR);
-            if (element.hasAttr(HEIGHT_ATTR)) {
-                final String height = element.attr(HEIGHT_ATTR);
-                mImage.setConserveRatio(false);
-                setImageWidth(mImage, width);
-                setImageHeight(mImage, height);
-            } else {
-                setImageWidth(mImage, width);
-            }
-        } else if (element.hasAttr(HEIGHT_ATTR)) {
-            final String height = element.attr(HEIGHT_ATTR);
-            setImageHeight(mImage, height);
-        }
-    }
-
-    /**
-     * Sets the given {@link MImage} {@link MImage#getHeight() height} or {@link MImage#getRelativeHeight()
-     * relative height}.
-     * 
-     * @param mImage
-     *            the {@link MImage}
-     * @param height
-     *            the height
-     */
-    private void setImageHeight(final MImage mImage, final String height) {
-        final int relativeHeight = getRelativeSize(height);
-        if (relativeHeight != -1) {
-            mImage.setRelativeHeight(relativeHeight);
-        } else {
-            mImage.setHeight(Integer.valueOf(height));
-        }
-    }
-
-    /**
-     * Sets the given {@link MImage} {@link MImage#getWidth() width} or {@link MImage#getRelativeWidth() relative width}.
-     * 
-     * @param mImage
-     *            the {@link MImage}
-     * @param width
-     *            the width
-     */
-    private void setImageWidth(final MImage mImage, final String width) {
-        final int relativeWidth = getRelativeSize(width);
-        if (relativeWidth != -1) {
-            mImage.setRelativeWidth(relativeWidth);
-        } else {
-            mImage.setWidth(Integer.valueOf(width));
-        }
     }
 
     /**
