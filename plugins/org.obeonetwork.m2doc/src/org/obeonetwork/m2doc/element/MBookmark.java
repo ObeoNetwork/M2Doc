@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -55,5 +55,23 @@ public interface MBookmark extends MElement {
      *         declaration
      */
     boolean isReference();
+
+    /**
+     * Tells if this reference can be omitted when the bookmark declaration doesn't exists.
+     * 
+     * @return <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
+     *         error
+     *         should be raised.
+     */
+    boolean isOptional();
+
+    /**
+     * Sets if this reference can be omitted when the bookmark declaration doesn't exists.
+     * 
+     * @param optional
+     *            <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
+     *            error
+     */
+    void setOptional(boolean optional);
 
 }

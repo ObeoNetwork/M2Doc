@@ -782,7 +782,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         final XWPFParagraph res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
 
         if (bookmark.isReference()) {
-            bookmarkManager.insertReference(res, bookmark.getId(), bookmark.getText());
+            bookmarkManager.insertReference(res, bookmark.getId(), bookmark.getText(), bookmark.isOptional());
         } else {
             bookmarkManager.startBookmark(result, res, bookmark.getId());
             insertFieldRunReplacement(res, run, bookmark.getText());
@@ -2344,7 +2344,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                             textResult.getDiagnostic());
                 } else {
                     bookmarkManager.insertReference(currentParagraph, nameResult.getResult().toString(),
-                            textResult.getResult().toString());
+                            textResult.getResult().toString(), false);
                 }
             }
         }

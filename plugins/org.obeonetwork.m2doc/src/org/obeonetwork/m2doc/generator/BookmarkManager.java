@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -65,6 +65,11 @@ public class BookmarkManager {
      * Pending references for a given bookmark name.
      */
     private final Map<String, Set<CTText>> pendingReferences = new HashMap<>();
+
+    /**
+     * The {@link Map} of optional references to its text.
+     */
+    private final Map<CTText, String> optionalReferences = new HashMap<>();
 
     /**
      * The mapping from {@link XmlObject} to bookmark name.
@@ -179,14 +184,20 @@ public class BookmarkManager {
      *            the bookmark name
      * @param text
      *            the text
+     * @param optional
+     *            <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
+     *            error
      */
-    public void insertReference(XWPFParagraph paragraph, String name, String text) {
+    public void insertReference(XWPFParagraph paragraph, String name, String text, boolean optional) {
         final CTBookmark bookmark = bookmarks.get(name);
         if (bookmark != null) {
             insertReference(paragraph, bookmark, text);
         } else {
             final XWPFRun messageRun = paragraph.createRun();
             final CTText ref = insertPendingReference(paragraph, name, text);
+            if (optional) {
+                optionalReferences.put(ref, text);
+            }
             ref.setStringValue(String.format(REF_TAG, name));
             messagePositions.put(ref, messageRun);
             Set<CTText> pendingRefs = pendingReferences.get(name);
@@ -309,9 +320,22 @@ public class BookmarkManager {
         if (res) {
             for (Entry<String, Set<CTText>> entry : pendingReferences.entrySet()) {
                 for (CTText ref : entry.getValue()) {
-                    final XWPFRun refRun = messagePositions.remove(ref);
-                    result.addMessage(M2DocUtils.insertMessageAfter(refRun, ValidationMessageLevel.ERROR,
-                            "dangling reference for bookmark " + entry.getKey()));
+                    final String text = optionalReferences.remove(ref);
+                    if (text != null) {
+                        final XWPFRun refRun = messagePositions.remove(ref);
+                        refRun.setText(text);
+                        final XWPFParagraph paragraph = (XWPFParagraph) refRun.getParent();
+                        final int refRunIndex = paragraph.getRuns().indexOf(refRun);
+                        paragraph.removeRun(refRunIndex - 1);
+                        paragraph.removeRun(refRunIndex);
+                        paragraph.removeRun(refRunIndex);
+                        paragraph.removeRun(refRunIndex);
+                        paragraph.removeRun(refRunIndex);
+                    } else {
+                        final XWPFRun refRun = messagePositions.remove(ref);
+                        result.addMessage(M2DocUtils.insertMessageAfter(refRun, ValidationMessageLevel.ERROR,
+                                "dangling reference for bookmark " + entry.getKey()));
+                    }
                 }
             }
         }

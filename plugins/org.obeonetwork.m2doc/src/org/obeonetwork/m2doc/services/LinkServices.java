@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -107,7 +107,29 @@ public class LinkServices {
     )
     // @formatter:on
     public MBookmark asBookmarkRef(String text, String id) {
-        return new MBookmarkImpl(text, id, true);
+        return asBookmarkRef(text, id, false);
+    }
+
+    // @formatter:off
+    @Documentation(
+      value = "Converts a String to a bookmark reference",
+      params = {
+          @Param(name = "text", value = "The label of the bookmark reference"),
+          @Param(name = "id", value = "The ID of the bookmark reference"),
+          @Param(name = "optional", value = "If true, this reference will only generate the text if the corresponding bookmark doesn't exists"),
+      },
+      result = "A bookmark reference with the given label and ID.",
+      examples = {
+          @Example(expression = "'Artifact1'.asBookmarkRef('Art1', true)", result = "a bookmark reference with the ID 'Art1' the label 'Artifact1' only if a bookmark with ID 'Art1' exists, otherwise only the label 'Artifact1'"),
+      }
+    )
+    // @formatter:on
+    public MBookmark asBookmarkRef(String text, String id, boolean optional) {
+        final MBookmarkImpl res = new MBookmarkImpl(text, id, true);
+
+        res.setOptional(optional);
+
+        return res;
     }
 
 }

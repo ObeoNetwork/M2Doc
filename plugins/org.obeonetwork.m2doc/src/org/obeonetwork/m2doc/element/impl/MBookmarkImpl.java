@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -34,6 +34,12 @@ public class MBookmarkImpl implements MBookmark {
      * <code>true</code> if this is a reference to a {@link MBookmarkImpl}, <code>false</code> if it's a {@link MBookmarkImpl} declaration.
      */
     private final boolean reference;
+
+    /**
+     * <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an error
+     * should be raised.
+     */
+    private boolean optional;
 
     /**
      * Constructor.
@@ -75,6 +81,16 @@ public class MBookmarkImpl implements MBookmark {
     @Override
     public boolean isReference() {
         return reference;
+    }
+
+    @Override
+    public boolean isOptional() {
+        return optional;
+    }
+
+    @Override
+    public void setOptional(boolean optional) {
+        this.optional = optional;
     }
 
 }
