@@ -21,6 +21,8 @@ import org.apache.poi.xwpf.usermodel.TableWidthType;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable.MCell;
 import org.obeonetwork.m2doc.element.MTable.MCell.WidthType;
+import org.obeonetwork.m2doc.element.MTable.MRow;
+import org.obeonetwork.m2doc.element.MTable.MRow.HeightRule;
 
 /**
  * Abstract parser class for utility methods.
@@ -48,6 +50,11 @@ public abstract class Parser {
      * The width attribute or CSS property.
      */
     protected static final String WIDTH = "width";
+
+    /**
+     * The height attribute or CSS property.
+     */
+    protected static final String HEIGHT = "height";
 
     /**
      * The % string.
@@ -501,6 +508,26 @@ public abstract class Parser {
             final double twipSize = pixels / (1d + 1d / 3d) * 20d;
             mCell.setWidth((int) twipSize);
             mCell.setWidthType(WidthType.DXA);
+        }
+    }
+
+    /**
+     * Sets the given {@link MRow} to the given height.
+     * 
+     * @param row
+     *            the {@link MRow}
+     * @param height
+     *            the height
+     */
+    protected void setRowHeight(MRow row, String height) {
+        final int relativeHeight = getRelativeSize(height);
+        if (relativeHeight == -1) {
+            double pixels = (double) getPixels(height);
+            if (pixels == -1) {
+                pixels = Integer.valueOf(height);
+            }
+            row.setHeight((int) pixels * 10);
+            row.setHeightRule(HeightRule.AT_LEAST);
         }
     }
 

@@ -31,6 +31,7 @@ import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
 import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.impl.MBorderImpl;
 import org.obeonetwork.m2doc.html.services.M2DocHTMLParser.Context;
 
@@ -182,6 +183,11 @@ public class M2DocCSSParser extends Parser {
     private static final String CSS_WIDTH = WIDTH;
 
     /**
+     * The width property.
+     */
+    private static final String CSS_HEIGHT = HEIGHT;
+
+    /**
      * The CSS dot class separator.
      */
     private static final String CSS_CLASS_DOT = ".";
@@ -257,6 +263,11 @@ public class M2DocCSSParser extends Parser {
     private static final int CSS_FONT_WEIGHT_BOLD_THRESHOLD = 700;
 
     /**
+     * Regular expression spaces match.
+     */
+    private static final String REG_EXP_SPACES = "\\s+";
+
+    /**
      * The style attribute.
      */
     private static final String STYLE_ATTR = "style";
@@ -274,7 +285,7 @@ public class M2DocCSSParser extends Parser {
         final Matcher matcher = CSS_CLASS_PATTERN.matcher(cssClasses);
         while (matcher.find()) {
             final String classNames = matcher.group(CSS_CLASS_PATTERN_NAME_GROUP);
-            for (String className : classNames.split("\\s+")) {
+            for (String className : classNames.split(REG_EXP_SPACES)) {
                 final Map<String, List<String>> styles = parseStyles(matcher.group(CSS_CLASS_PATTERN_CSS_STYLES_GROUP));
                 res.computeIfAbsent(className, n -> new LinkedHashMap<String, List<String>>()).putAll(styles);
             }
@@ -310,7 +321,7 @@ public class M2DocCSSParser extends Parser {
 
         res.add(node.nodeName());
         if (node.hasAttr(CLASS_ATTR)) {
-            for (String className : node.attr(CLASS_ATTR).split("\\s+")) {
+            for (String className : node.attr(CLASS_ATTR).split(REG_EXP_SPACES)) {
                 res.add(CSS_CLASS_DOT + className);
                 res.add(VALUE_SEPARATOR + className);
                 res.add(node.nodeName() + CSS_CLASS_DOT + className);
@@ -544,6 +555,23 @@ public class M2DocCSSParser extends Parser {
     }
 
     /**
+     * Sets the CSS styles to the given {@link MRow}.
+     * 
+     * @param cssProperties
+     *            the CSS properties
+     * @param mRow
+     *            the {@link MRow}
+     */
+    public void setStyle(Map<String, List<String>> cssProperties, MRow mRow) {
+        final List<String> cssHeights = cssProperties.get(CSS_HEIGHT);
+        if (cssHeights != null) {
+            for (String cssHeight : cssHeights) {
+                setRowHeight(mRow, cssHeight);
+            }
+        }
+    }
+
+    /**
      * Sets the CSS styles to the given {@link MElementContainer}.
      * 
      * @param cssProperties
@@ -637,7 +665,7 @@ public class M2DocCSSParser extends Parser {
         final List<String> cssBorderStyles = context.getCssProperties().get(CSS_BORDER_STYLE);
         if (cssBorderStyles != null) {
             for (String cssBorderStyle : cssBorderStyles) {
-                final String[] borderStyles = cssBorderStyle.split("\\s+");
+                final String[] borderStyles = cssBorderStyle.split(REG_EXP_SPACES);
                 if (borderStyles.length == 1) {
                     final Type type = getBorderType(borderStyles[0]);
                     final MBorder leftBorder = new MBorderImpl();
@@ -686,7 +714,7 @@ public class M2DocCSSParser extends Parser {
         final List<String> cssBorders = context.getCssProperties().get(CSS_BORDER);
         if (cssBorders != null) {
             for (String cssBorder : cssBorders) {
-                final String[] borders = cssBorder.split("\\s+");
+                final String[] borders = cssBorder.split(REG_EXP_SPACES);
                 if (borders.length == 1) {
                     final Type type = getBorderType(borders[0]);
                     final MBorder leftBorder = new MBorderImpl();
@@ -795,7 +823,7 @@ public class M2DocCSSParser extends Parser {
         final List<String> cssMargins = context.getCssProperties().get(CSS_MARGIN);
         if (cssMargins != null) {
             for (String cssMargin : cssMargins) {
-                final String[] margins = cssMargin.split("\\s+");
+                final String[] margins = cssMargin.split(REG_EXP_SPACES);
                 final int marginLeft;
                 final int marginRight;
                 final int marginTop;
@@ -889,7 +917,7 @@ public class M2DocCSSParser extends Parser {
         final List<String> cssPaddings = context.getCssProperties().get(CSS_PADDING);
         if (cssPaddings != null) {
             for (String cssPadding : cssPaddings) {
-                final String[] paddings = cssPadding.split("\\s+");
+                final String[] paddings = cssPadding.split(REG_EXP_SPACES);
                 final int paddingLeft;
                 final int paddingRight;
                 final int paddingTop;

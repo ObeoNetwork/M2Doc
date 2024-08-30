@@ -144,7 +144,7 @@ public class M2DocHTMLParser extends Parser {
     /**
      * The height attribute.
      */
-    private static final String HEIGHT_ATTR = "height";
+    private static final String HEIGHT_ATTR = HEIGHT;
 
     /**
      * The width attribute.
@@ -965,22 +965,28 @@ public class M2DocHTMLParser extends Parser {
             if ("tr".equals(child.nodeName())) {
                 final MRow row = new MRowImpl();
                 table.getRows().add(row);
+                if (child.hasAttr(HEIGHT_ATTR)) {
+                    setRowHeight(row, child.attr(HEIGHT_ATTR));
+                }
+                final Context localRowContext = context.copy();
+                applyGlobalAttibutes(localRowContext, child);
+                CSS_PARSER.setStyle(localRowContext.cssProperties, row);
                 for (Node rowChild : child.childNodes()) {
                     if ("th".equals(rowChild.nodeName()) || "td".equals(rowChild.nodeName())) {
                         final MList contents = new MListImpl();
                         final MParagraph newParagraph = new MParagraphImpl(contents, null);
                         final MCell cell = new MCellImpl(contents, null);
-                        final Context localContext = context.copy();
-                        applyGlobalAttibutes(localContext, rowChild);
+                        final Context localCellContext = context.copy();
+                        applyGlobalAttibutes(localCellContext, rowChild);
                         if ("th".equals(rowChild.nodeName())) {
                             cell.setHAlignment(HAlignment.CENTER);
-                            setModifiers(localContext.style, MStyle.FONT_BOLD);
+                            setModifiers(localCellContext.style, MStyle.FONT_BOLD);
                         }
                         if (rowChild.hasAttr(WIDTH_ATTR)) {
                             setCellWidth(cell, rowChild.attr(WIDTH_ATTR));
                         }
-                        CSS_PARSER.setStyle(localContext.cssProperties, cell);
-                        walkChildren(rowChild, localContext, newParagraph);
+                        CSS_PARSER.setStyle(localCellContext.cssProperties, cell);
+                        walkChildren(rowChild, localCellContext, newParagraph);
                         createNeededParagraphes(newParagraph);
                         insertMergedCells(row, rowChild, cell, rowSpans, vMergeCopies);
                     }

@@ -33,6 +33,16 @@ public class MTableImpl implements MTable {
     public static class MRowImpl implements MRow {
 
         /**
+         * The height.
+         */
+        private int height = -1;
+
+        /**
+         * The {@link HeightRule}.
+         */
+        private HeightRule heightRule;
+
+        /**
          * The {@link List} of {@link MCell}.
          */
         private final List<MCell> cells = new ArrayList<>();
@@ -40,6 +50,27 @@ public class MTableImpl implements MTable {
         @Override
         public List<MCell> getCells() {
             return cells;
+        }
+
+        @Override
+        public int getHeight() {
+            return height;
+        }
+
+        @Override
+        public void setHeight(int height) {
+            this.height = height;
+
+        }
+
+        @Override
+        public HeightRule getHeightRule() {
+            return heightRule;
+        }
+
+        @Override
+        public void setHeightRule(HeightRule rule) {
+            this.heightRule = rule;
         }
     }
 

@@ -91,6 +91,27 @@ public interface MTable extends MElement {
      * @author ldelaigue
      */
     public interface MRow {
+
+        /**
+         * The height rule.
+         * 
+         * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+         */
+        enum HeightRule {
+            /**
+             * Auto height.
+             */
+            AUTO,
+            /**
+             * Excact height.
+             */
+            EXACT,
+            /**
+             * At least height.
+             */
+            AT_LEAST;
+        }
+
         /**
          * The row's defined cells (i.e. non-empty cells). A row may have no cell at all, or may not have a cell for each column of its
          * table.
@@ -98,6 +119,37 @@ public interface MTable extends MElement {
          * @return The row's defined cells.
          */
         List<MCell> getCells();
+
+        /**
+         * Gets the height.
+         * 
+         * @return the height if any, <code>-1</code> otherwise
+         */
+        int getHeight();
+
+        /**
+         * Set the height.
+         * 
+         * @param height
+         *            the height, <code>-1</code> for default
+         */
+        void setHeight(int height);
+
+        /**
+         * Gets the {@link HeightRule}.
+         * 
+         * @return the {@link HeightRule} if any, <code>null</code> otherwise
+         */
+        HeightRule getHeightRule();
+
+        /**
+         * Sets the {@link HeightRule}.
+         * 
+         * @param rule
+         *            the {@link HeightRule}
+         */
+        void setHeightRule(HeightRule rule);
+
     }
 
     /**
@@ -243,7 +295,7 @@ public interface MTable extends MElement {
         /**
          * Gets the width.
          * 
-         * @return the width
+         * @return the width, <code>-1</code> otherwise
          */
         int getWitdh();
 
@@ -258,7 +310,7 @@ public interface MTable extends MElement {
         /**
          * Gets the {@link WidthType}.
          * 
-         * @return the {@link WidthType} if any, <code>-1</code> otherwise
+         * @return the {@link WidthType} if any, <code>null</code> otherwise
          */
         WidthType getWidthType();
 

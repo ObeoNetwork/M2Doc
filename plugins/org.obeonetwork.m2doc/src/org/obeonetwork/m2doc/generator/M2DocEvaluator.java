@@ -34,6 +34,7 @@ import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.TableRowAlign;
+import org.apache.poi.xwpf.usermodel.TableRowHeightRule;
 import org.apache.poi.xwpf.usermodel.TableWidthType;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.VerticalAlign;
@@ -1408,13 +1409,13 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
 
         // Iterate over the rows
-        for (int row = 0; row < mTable.getRows().size(); row++) {
-            final MRow mRow = mTable.getRows().get(row);
+        for (MRow mRow : mTable.getRows()) {
             final XWPFTableRow xwpfRow = xwpfTable.createRow();
             while (!xwpfRow.getTableCells().isEmpty()) {
                 xwpfRow.removeCell(0);
             }
             xwpfRow.getCtRow().getTcList().clear();
+            setRowHeight(xwpfRow, mRow);
 
             // Iterate over the columns
             for (int column = 0; column < mRow.getCells().size(); column++) {
@@ -1435,7 +1436,42 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     && xwpfCell.getCTTc().getTcPr().isSetTcBorders()) {
                     xwpfCell.getCTTc().getTcPr().unsetTcBorders();
                 }
+            }
+        }
+    }
 
+    /**
+     * Sets the for the given row.
+     * 
+     * @param xwpfRow
+     *            the {@link XWPFTableRow}
+     * @param mRow
+     *            the {@link MRow}
+     */
+    private void setRowHeight(XWPFTableRow xwpfRow, MRow mRow) {
+        if (mRow != null) {
+            if (mRow.getHeightRule() != null) {
+                final TableRowHeightRule rule;
+                switch (mRow.getHeightRule()) {
+                    case AUTO:
+                        rule = TableRowHeightRule.AUTO;
+                        break;
+
+                    case EXACT:
+                        rule = TableRowHeightRule.AT_LEAST;
+                        break;
+
+                    case AT_LEAST:
+                        rule = TableRowHeightRule.AT_LEAST;
+                        break;
+
+                    default:
+                        throw new IllegalStateException();
+                }
+                xwpfRow.setHeightRule(rule);
+            }
+            if (mRow.getHeight() != -1) {
+                xwpfRow.setHeight(mRow.getHeight());
             }
         }
     }
