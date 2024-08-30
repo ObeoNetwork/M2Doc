@@ -52,7 +52,7 @@ Converts a String to a bookmark reference
 ### Example
 
 * 'Artifact1'.asBookmarkRef('Art1', true)
-  * a bookmark reference with the ID 'Art1' the label 'Artifact1' only if a bookmark with ID 'Art1' exists
+  * a bookmark reference with the ID 'Art1' the label 'Artifact1' only if a bookmark with ID 'Art1' exists, otherwise only the label 'Artifact1'
 
 ## String.asBookmark(String) : org.obeonetwork.m2doc.element.MBookmark
 
