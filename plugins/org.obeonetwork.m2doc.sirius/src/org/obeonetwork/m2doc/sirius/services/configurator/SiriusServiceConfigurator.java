@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo. 
+ * Copyright (c) 2017, 2024 Obeo. 
  *    All rights reserved. This program and the accompanying materials
  *    are made available under the terms of the Eclipse Public License v2.0
  *    which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.obeonetwork.m2doc.sirius.services.configurator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +44,7 @@ import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
+import org.eclipse.sirius.ui.business.api.dialect.ExportFormat.ScalingPolicy;
 import org.eclipse.ui.PlatformUI;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
@@ -92,6 +94,8 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
 
         res.add(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         res.add(M2DocSiriusUtils.SIRIUS_FORCE_REFRESH);
+        res.add(M2DocSiriusUtils.SIRIUS_SCALING_POLICY);
+        res.add(M2DocSiriusUtils.SIRIUS_SCALE_LEVEL);
 
         return res;
     }
@@ -239,7 +243,20 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
             if (URIConverter.INSTANCE.exists(sessionURI, Collections.emptyMap())) {
                 final Session session = SessionManager.INSTANCE.getSession(sessionURI, new NullProgressMonitor());
                 final boolean forceRefresh = Boolean.valueOf(options.get(M2DocSiriusUtils.SIRIUS_FORCE_REFRESH));
-                final M2DocSiriusServices serviceInstance = new M2DocSiriusServices(session, forceRefresh);
+                final ScalingPolicy scalingPolicy;
+                if (options.containsKey(M2DocSiriusUtils.SIRIUS_SCALING_POLICY)) {
+                    scalingPolicy = ScalingPolicy.valueOf(options.get(M2DocSiriusUtils.SIRIUS_SCALING_POLICY));
+                } else {
+                    scalingPolicy = ScalingPolicy.WORKSPACE_DEFAULT;
+                }
+                final Integer scaleLevel;
+                if (options.containsKey(M2DocSiriusUtils.SIRIUS_SCALE_LEVEL)) {
+                    scaleLevel = Integer.valueOf(options.get(M2DocSiriusUtils.SIRIUS_SCALE_LEVEL));
+                } else {
+                    scaleLevel = null;
+                }
+                final M2DocSiriusServices serviceInstance = new M2DocSiriusServices(session, forceRefresh,
+                        scalingPolicy, scaleLevel);
                 res.addAll(ServiceUtils.getServices(queryEnvironment, serviceInstance));
                 services.put(queryEnvironment, serviceInstance);
             }
@@ -285,7 +302,7 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                         "The Sirius session doesn't exist: " + sessionURI.toString(), new Object[] {sessionURI}));
             }
         }
-        final String forceRefreshStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        final String forceRefreshStr = options.get(M2DocSiriusUtils.SIRIUS_FORCE_REFRESH);
         if (forceRefreshStr != null) {
             final List<Diagnostic> diagnostics = new ArrayList<>();
             res.put(M2DocSiriusUtils.SIRIUS_FORCE_REFRESH, diagnostics);
@@ -294,6 +311,44 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                 diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocSiriusUtils.PLUGIN_ID, 0,
                         "The Sirius force refresh must be a boolean true or false: " + forceRefreshStr,
                         new Object[] {forceRefreshStr}));
+            }
+        }
+        final String scalePolicyStr = options.get(M2DocSiriusUtils.SIRIUS_SCALING_POLICY);
+        if (!isValidScalePolicy(scalePolicyStr)) {
+            final List<Diagnostic> diagnostics = new ArrayList<>();
+            res.put(M2DocSiriusUtils.SIRIUS_SCALING_POLICY, diagnostics);
+            diagnostics.add(new BasicDiagnostic(
+                    Diagnostic.ERROR, M2DocSiriusUtils.PLUGIN_ID, 0, "The Sirius scale policy must be one of "
+                        + Arrays.toString(ScalingPolicy.values()) + ": " + scalePolicyStr,
+                    new Object[] {scalePolicyStr}));
+        }
+        final String scaleLevelStr = options.get(M2DocSiriusUtils.SIRIUS_SCALE_LEVEL);
+        try {
+            Integer.valueOf(scaleLevelStr);
+        } catch (NumberFormatException e) {
+            final List<Diagnostic> diagnostics = new ArrayList<>();
+            res.put(M2DocSiriusUtils.SIRIUS_SCALE_LEVEL, diagnostics);
+            diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, M2DocSiriusUtils.PLUGIN_ID, 0,
+                    "The Sirius scale level must be an integer: " + scalePolicyStr, new Object[] {scaleLevelStr}));
+        }
+
+        return res;
+    }
+
+    /**
+     * Tells if the given scale policy {@link String} is a valid {@link ScalingPolicy}.
+     * 
+     * @param scalePolicyStr
+     *            the scale policy {@link String}
+     * @return <code>true</code> if the given scale policy {@link String} is a valid {@link ScalingPolicy}, <code>false</code> otherwise
+     */
+    private boolean isValidScalePolicy(String scalePolicyStr) {
+        boolean res = false;
+
+        for (ScalingPolicy policy : ScalingPolicy.values()) {
+            if (policy.name().equals(scalePolicyStr)) {
+                res = true;
+                break;
             }
         }
 

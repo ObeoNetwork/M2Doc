@@ -45,6 +45,7 @@ import org.eclipse.sirius.table.metamodel.table.DTable;
 import org.eclipse.sirius.table.metamodel.table.description.TableDescription;
 import org.eclipse.sirius.ui.business.api.dialect.DialectUIManager;
 import org.eclipse.sirius.ui.business.api.dialect.ExportFormat;
+import org.eclipse.sirius.ui.business.api.dialect.ExportFormat.ScalingPolicy;
 import org.eclipse.sirius.ui.tools.api.actions.export.SizeTooLargeException;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
@@ -73,6 +74,9 @@ public class M2DocSiriusServices {
      */
     private static final String JPG = "JPG";
 
+    /**
+     * The {@link Set} of valid {@link ImageFileFormat} {@link ImageFileFormat#getName() names}.
+     */
     private static final Set<String> VALID_IMAGE_FORMATS = initializeValidImageFormats();
 
     /**
@@ -132,6 +136,16 @@ public class M2DocSiriusServices {
     private final boolean forceRefresh;
 
     /**
+     * The {@link ScalingPolicy} for diagram image export.
+     */
+    private final ScalingPolicy scalingPolicy;
+
+    /**
+     * The scale level for the diagram image export.
+     */
+    private final Integer scaleLevel;
+
+    /**
      * The {@link CleaningJobRegistry}.
      */
     private final CleaningJobRegistry registry = new CleaningJobRegistry();
@@ -168,8 +182,26 @@ public class M2DocSiriusServices {
      * 
      * @param session
      *            the Sirius {@link Session}
+     * @param forceRefresh
+     *            for the refresh of diagarms before image export
      */
     public M2DocSiriusServices(Session session, boolean forceRefresh) {
+        this(session, forceRefresh, ScalingPolicy.WORKSPACE_DEFAULT, null);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param session
+     *            the Sirius {@link Session}
+     * @param forceRefresh
+     *            for the refresh of diagarms before image export
+     * @param scalingPolicy
+     *            the {@link ScalingPolicy} for diagram image export
+     * @param scaleLevel
+     *            the scale level for diagram image export
+     */
+    public M2DocSiriusServices(Session session, boolean forceRefresh, ScalingPolicy scalingPolicy, Integer scaleLevel) {
         this.session = session;
         this.uriConverter = session.getTransactionalEditingDomain().getResourceSet().getURIConverter();
         this.forceRefresh = forceRefresh;
@@ -179,6 +211,8 @@ public class M2DocSiriusServices {
         } else {
             shouldCloseSession = false;
         }
+        this.scalingPolicy = scalingPolicy;
+        this.scaleLevel = scaleLevel;
     }
 
     private static Set<String> initializeValidImageFormats() {
@@ -492,7 +526,7 @@ public class M2DocSiriusServices {
             throw new IllegalArgumentException(format + " is not a valide format: " + validFormatString);
         }
         final ExportFormat exportFormat = new ExportFormat(ExportFormat.ExportDocumentFormat.NONE,
-                ImageFileFormat.resolveImageFormat(format));
+                ImageFileFormat.resolveImageFormat(format), scalingPolicy, scaleLevel);
         final File tmpFile = File.createTempFile(sanitize(representation.getName()) + "-m2doc",
                 "." + format.toLowerCase());
         tmpFiles.add(tmpFile);

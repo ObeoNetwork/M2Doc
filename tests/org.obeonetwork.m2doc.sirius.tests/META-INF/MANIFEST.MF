@@ -8,6 +8,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.junit,
  org.obeonetwork.m2doc.sirius;bundle-version="[3.0.0,4.0.0)",
+ org.eclipse.sirius.ui;bundle-version="[6.5.1,7.5.0)",
  org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.core.runtime,
  org.obeonetwork.m2doc.genconf;bundle-version="[3.0.0,4.0.0)",

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class M2DocSiriusServicesWithForceRefreshTests extends AbstractTemplatesTestSuite {
+public class M2DocSiriusServicesWithScaleLevel50Tests extends AbstractTemplatesTestSuite {
 
     /**
      * Constructor.
@@ -40,7 +40,7 @@ public class M2DocSiriusServicesWithForceRefreshTests extends AbstractTemplatesT
      * @throws DocumentParserException
      *             if the tested template can't be parsed
      */
-    public M2DocSiriusServicesWithForceRefreshTests(String testFolder) throws IOException, DocumentParserException {
+    public M2DocSiriusServicesWithScaleLevel50Tests(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
     }
 
@@ -49,8 +49,8 @@ public class M2DocSiriusServicesWithForceRefreshTests extends AbstractTemplatesT
         super.setTemplateFileName(gen, templateFileName);
         final Option scalingPolicyOption = GenconfUtils.getOrCreateOption(gen, M2DocSiriusUtils.SIRIUS_SCALING_POLICY);
         scalingPolicyOption.setValue(ScalingPolicy.AUTO_SCALING.name());
-        final Option option = GenconfUtils.getOrCreateOption(gen, M2DocSiriusUtils.SIRIUS_FORCE_REFRESH);
-        option.setValue(Boolean.TRUE.toString());
+        final Option scaleLevelOption = GenconfUtils.getOrCreateOption(gen, M2DocSiriusUtils.SIRIUS_SCALE_LEVEL);
+        scaleLevelOption.setValue("50");
     }
 
     /**
@@ -60,7 +60,7 @@ public class M2DocSiriusServicesWithForceRefreshTests extends AbstractTemplatesT
      */
     @Parameters(name = "{0}")
     public static Collection<Object[]> retrieveTestFolders() {
-        return retrieveTestFolders("resources/asImageWithSiriusForceRefresh");
+        return retrieveTestFolders("resources/asImageWithSiriusScaleLevel50");
     }
 
 }
