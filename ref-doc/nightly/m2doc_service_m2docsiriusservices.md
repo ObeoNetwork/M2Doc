@@ -20,7 +20,7 @@ relativePath: ../..
 
 # M2DocSiriusServices
 
-Services available for Sirius. You will have to set the "SiriusSession" option in the generation configuration. It must contains the .aird file URI. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices). In addition, you can force the refresh of all representation with option "SiriusForceRefresh" set to "true". Note this option might have an impact on memory usage, calls to services with the refresh parameter should be prefered.
+Services available for Sirius. You will have to set the "SiriusSession" option in the generation configuration. It must contains the .aird file URI. See [document examples](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.sirius.tests/resources/m2DocSiriusServices). In addition, you can force the refresh of all representation with option "SiriusForceRefresh" set to "true". Note this option might have an impact on memory usage, calls to services with the refresh parameter should be prefered. You can also use the two following options to define the size of the exported images from Sirius diagrams: "SiriusScalingPolicy" that can be one of: WORKSPACE_DEFAULT, AUTO_SCALING, NO_SCALING, AUTO_SCALING_IF_LARGER and "SiriusScaleLevel" and integer.
 
 * TOC
 {:toc}
