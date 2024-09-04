@@ -328,6 +328,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         return result;
     }
 
+    @SuppressWarnings("resource")
     @Override
     public XWPFParagraph caseDocumentTemplate(DocumentTemplate documentTemplate) {
         cleanBody(generatedDocument);
@@ -336,12 +337,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             / (1 + documentTemplate.getFooters().size() + documentTemplate.getHeaders().size());
 
         doSwitch(documentTemplate.getBody());
-        try (XWPFDocument document = generatedDocument.getXWPFDocument()) {
-            updateSequences(document.getDocument(), new HashMap<>());
-        } catch (IOException e) {
-            result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
-                    e.getMessage()));
-        }
+        updateSequences(generatedDocument.getXWPFDocument().getDocument(), new HashMap<>());
         worked(monitor, unitOfWork);
 
         final XWPFDocument document = (XWPFDocument) generatedDocument;
