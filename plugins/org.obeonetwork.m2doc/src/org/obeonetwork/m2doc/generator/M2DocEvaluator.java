@@ -53,6 +53,8 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell.XWPFVertAlign;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlObject;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
@@ -103,7 +105,9 @@ import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.util.TemplateSwitch;
+import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.obeonetwork.m2doc.util.SequenceField;
 import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
@@ -201,6 +205,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * Invalid format picture message.
      */
     private static final String PICTURE_INVALID_FORMAT = "Picture in %s has an invalid format: %s.";
+
+    /**
+     * The {@link FieldUtils} instance.
+     */
+    private static final FieldUtils FIELD_UTILS = new FieldUtils();
 
     /**
      * The {@link BookmarkManager}.
@@ -327,6 +336,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             / (1 + documentTemplate.getFooters().size() + documentTemplate.getHeaders().size());
 
         doSwitch(documentTemplate.getBody());
+        try (XWPFDocument document = generatedDocument.getXWPFDocument()) {
+            updateSequences(document.getDocument(), new HashMap<>());
+        } catch (IOException e) {
+            result.addMessage(M2DocUtils.appendMessageRun(currentGeneratedParagraph, ValidationMessageLevel.ERROR,
+                    e.getMessage()));
+        }
         worked(monitor, unitOfWork);
 
         final XWPFDocument document = (XWPFDocument) generatedDocument;
@@ -348,6 +363,34 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         }
 
         return currentGeneratedParagraph;
+    }
+
+    /**
+     * Updates sequences (<code>SEQ<code>) numbers in the given {@link XWPFDocument}.
+     * 
+     * @param xmlObject
+     *            the {@link XmlObject}
+     * @param sequenceToIndex
+     *            the mapping from {@link SequenceField#getName() sequence name} to its current index
+     */
+    private void updateSequences(XmlObject xmlObject, HashMap<String, Integer> sequenceToIndex) {
+        if (xmlObject instanceof CTR) {
+            final SequenceField sequence = FIELD_UTILS.getSequenceField((CTR) xmlObject);
+            if (sequence != null) {
+                final int index = sequenceToIndex.getOrDefault(sequence.getName(), 1);
+                sequence.setIndex(index);
+                sequenceToIndex.put(sequence.getName(), index + 1);
+            }
+        } else {
+            try (XmlCursor cursor = xmlObject.newCursor()) {
+                if (cursor.toFirstChild()) {
+                    updateSequences(cursor.getObject(), sequenceToIndex);
+                    while (cursor.toNextSibling()) {
+                        updateSequences(cursor.getObject(), sequenceToIndex);
+                    }
+                }
+            }
+        }
     }
 
     /**

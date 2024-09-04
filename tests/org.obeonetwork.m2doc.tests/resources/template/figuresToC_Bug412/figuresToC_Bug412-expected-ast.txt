@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Aucune entrée de table d'illustration n'a été trouvée.A simple demonstration of a template :
+  
+  for value | Sequence{1, 2, 3} do
+    [query: .myTemplate(value)]
+  endfor
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template myTemplate (a : java.lang.Integer)
+  [query: a]
+  Figure 1 : my figure.

@@ -1,0 +1,47 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  
+  content control
+  
+  Basic for demonstration : 
+  
+  for v | .aqlFeatureAccess(self, 'eClassifiers') do
+    [query: .aqlFeatureAccess(v, 'name')]
+    Some text and a figure :
+    table
+      row
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+      row
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+      row
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+          [query: .aqlFeatureAccess(v, 'name')]
+        
+      
+    Figure i  
+    [query: .aqlFeatureAccess(v, 'name')]
+  endfor
+  
+  End of demonstration.Figure 1	1 
+=== FOOTER ===
+
+=== TEMPLATES ===

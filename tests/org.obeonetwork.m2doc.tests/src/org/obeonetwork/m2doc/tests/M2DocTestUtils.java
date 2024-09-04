@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -517,7 +518,7 @@ public final class M2DocTestUtils {
      *            the XML file content.
      * @return the indented XML file content
      */
-    private static String indentXML(String fileContent) {
+    private static String indentXML(String fileContent) throws IOException {
         final String res;
 
         StreamResult xmlOutput = null;
@@ -541,10 +542,13 @@ public final class M2DocTestUtils {
         }
 
         if (xmlOutput != null) {
-            res = xmlOutput.getWriter().toString();
+            try (Writer writer = xmlOutput.getWriter()) {
+                res = writer.toString();
+            }
         } else {
             res = fileContent;
         }
+
         return res;
     }
 
