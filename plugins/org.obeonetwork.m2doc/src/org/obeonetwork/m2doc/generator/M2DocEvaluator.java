@@ -698,17 +698,24 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 insertMImage(imageParagraph, imageRun, (MImage) object);
                 res = imageParagraph;
             } else {
+                // nothing to do here
                 res = paragraph;
             }
         } else if (object instanceof MText) {
-            res = (XWPFParagraph) insertMText(paragraph, run, (MText) object).getParent();
+            if (((MText) object).getText() != null && !((MText) object).getText().isEmpty()) {
+                res = (XWPFParagraph) insertMText(paragraph, run, (MText) object).getParent();
+            } else {
+                // nothing to do here
+                res = paragraph;
+            }
         } else if (object instanceof MTable) {
-            if (!((MTable) object).getRows().isEmpty()) {
+            if (!((MTable) object).getRows().isEmpty() && ((MTable) object).getColumnsCount() != 0) {
                 XWPFRun tableRun = run;
                 tableRun.getCTR().getInstrTextList().clear();
                 insertMTable(tableRun, (MTable) object);
                 res = (XWPFParagraph) tableRun.getParent();
             } else {
+                // nothing to do here
                 res = paragraph;
             }
         } else if (object instanceof MPagination) {
@@ -716,15 +723,32 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         } else if (object instanceof MParagraph) {
             res = insertMParagraph(generatedDocument, (MParagraph) object, run);
         } else if (object instanceof IBody) {
-            final XWPFRun bodyRun = insertFieldRunReplacement(paragraph, run, "");
-            res = insertBody((XWPFParagraph) bodyRun.getParent(), (IBody) object);
+            if (!((IBody) object).getBodyElements().isEmpty()) {
+                final XWPFRun bodyRun = insertFieldRunReplacement(paragraph, run, "");
+                res = insertBody((XWPFParagraph) bodyRun.getParent(), (IBody) object);
+            } else {
+                // nothing to do here
+                res = paragraph;
+            }
         } else if (object instanceof GenerationResult) {
-            final XWPFRun generationRun = insertFieldRunReplacement(paragraph, run, "");
-            res = insertGenerationResult((XWPFParagraph) generationRun.getParent(), (GenerationResult) object);
+            if (!((GenerationResult) object).getBody().getBodyElements().isEmpty()) {
+                final XWPFRun generationRun = insertFieldRunReplacement(paragraph, run, "");
+                res = insertGenerationResult((XWPFParagraph) generationRun.getParent(), (GenerationResult) object);
+            } else {
+                // nothing to do here
+                res = paragraph;
+            }
         } else if (object == null) {
-            res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
+            // nothing to do here
+            res = paragraph;
         } else {
-            res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, object.toString()).getParent();
+            final String stringValue = object.toString();
+            if (stringValue != null && !stringValue.isEmpty()) {
+                res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, stringValue).getParent();
+            } else {
+                // nothing to do here
+                res = paragraph;
+            }
         }
 
         return res;
@@ -744,9 +768,9 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             result.addMessage(message);
         }
 
-        final XWPFParagraph insertBody = insertBody(paragraph, generationResult.getBody());
-        currentGeneratedParagraph = insertBody;
-        return insertBody;
+        final XWPFParagraph res = insertBody(paragraph, generationResult.getBody());
+        currentGeneratedParagraph = res;
+        return res;
     }
 
     /**
