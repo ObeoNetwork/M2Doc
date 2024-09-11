@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc 2024-03 Target Platform" sequenceNumber="1712330205">
+<target name="M2Doc 2024-03 Target Platform" sequenceNumber="1726041396">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -45,6 +45,7 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.w3c.dom.svg" version="0.0.0"/>
       <unit id="org.w3c.dom.smil" version="0.0.0"/>
+      <unit id="org.w3c.dom.events" version="0.0.0"/>
       <unit id="org.w3c.css.sac" version="0.0.0"/>
       <repository id="Eclipse2023-03" location="https://download.eclipse.org/releases/2023-03"/>
     </location>

@@ -53,6 +53,7 @@ location Eclipse "https://download.eclipse.org/releases/2024-03" {
 location Eclipse2023-03 "https://download.eclipse.org/releases/2023-03" {
 	org.w3c.dom.svg lazy
 	org.w3c.dom.smil lazy
+	org.w3c.dom.events lazy
 	org.w3c.css.sac lazy
 }
 

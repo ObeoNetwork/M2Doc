@@ -102,6 +102,7 @@
    <bundle id="org.apache.xmlgraphics" version="2.9.0"/>
    <bundle id="org.w3c.dom.svg" version="1.1.0.v201011041433"/>
    <bundle id="org.w3c.dom.smil" version="1.0.1.v200903091627"/>
+   <bundle id="org.w3c.dom.events" version="3.0.0.draft20060413_v201105210656"/>
    <bundle id="org.w3c.css.sac" version="1.3.1.v200903091627"/>
    <bundle id="org.w3c.dom.svg" version="1.1.0.v201011041433"/>
 
