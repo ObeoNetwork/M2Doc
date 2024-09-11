@@ -14,7 +14,7 @@ wget -r --no-parent --no-host-directories --no-verbose -P ../plugins/org.obeonet
 # replace nigthly by current tag
 if [ -n "$TAG" ]; then
     echo " - Replace Nightly to" $TAG
-    mv ../plugins/org.obeonetwork.m2doc.doc/doc/ref-doc/nightly ../plugins/org.obeonetwork.m2doc.doc/doc/$TAG
+    mv ../plugins/org.obeonetwork.m2doc.doc/doc/ref-doc/nightly ../plugins/org.obeonetwork.m2doc.doc/doc/ref-doc/$TAG
     find ../plugins/org.obeonetwork.m2doc.doc/doc/ -name "*.html" -exec sed -i 's#Nightly#'$TAG'#g' {} \;
     find ../plugins/org.obeonetwork.m2doc.doc/doc/ -name "*.html" -exec sed -i 's#nightly#'$TAG'#g' {} \;
 fi
