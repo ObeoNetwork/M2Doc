@@ -10,10 +10,11 @@ echo "Build gh-pages"
 mkdir ../plugins/org.obeonetwork.m2doc.doc/doc
 # download the nighlty documentation
 echo " - Download nightly documentation"
-wget -r --no-parent --no-host-directories --no-verbose -P ../plugins/org.obeonetwork.m2doc.doc/doc/ https://www.m2doc.org/ref-doc/nightly/
+wget -r --no-parent --no-host-directories --no-verbose -P ../plugins/org.obeonetwork.m2doc.doc/doc/ https://www.m2doc.org/ref-doc/ /
 # replace nigthly by current tag
 if [ -n "$TAG" ]; then
     echo " - Replace Nightly to" $TAG
+    mv ../plugins/org.obeonetwork.m2doc.doc/doc/nightly ../plugins/org.obeonetwork.m2doc.doc/doc/$TAG
     find ../plugins/org.obeonetwork.m2doc.doc/doc/ -name "*.html" -exec sed -i 's#Nightly#'$TAG'#g' {} \;
     find ../plugins/org.obeonetwork.m2doc.doc/doc/ -name "*.html" -exec sed -i 's#nightly#'$TAG'#g' {} \;
 fi
@@ -30,5 +31,8 @@ cp -R images ../plugins/org.obeonetwork.m2doc.doc/doc/
 cp -R capella ../plugins/org.obeonetwork.m2doc.doc/doc/
 cp -R font-awesome ../plugins/org.obeonetwork.m2doc.doc/doc/
 cp ref-doc/index-toc.xml ../plugins/org.obeonetwork.m2doc.doc/doc/ref-doc/index-toc.xml
+if [ -n "$TAG" ]; then
+    find ../plugins/org.obeonetwork.m2doc.doc/doc/ -name "index-toc.xml" -exec sed -i 's#nightly#'$TAG'#g' {} \;
+fi
 cd -
 
