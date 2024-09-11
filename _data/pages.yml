@@ -34,6 +34,8 @@
   - title: Nightly
     file: ref-doc/nightly/index
 #---TAG---
+  - title: 3.3.3
+    file: ref-doc/3.3.3/index
   - title: 3.3.2
     file: ref-doc/3.3.2/index
   - title: 3.3.1
