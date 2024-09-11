@@ -10,7 +10,7 @@ echo "Build gh-pages"
 mkdir ../plugins/org.obeonetwork.m2doc.doc/doc
 # download the nighlty documentation
 echo " - Download nightly documentation"
-wget -r --no-parent --no-host-directories --no-verbose -P ../plugins/org.obeonetwork.m2doc.doc/doc/ https://www.m2doc.org/ref-doc/ /
+wget -r --no-parent --no-host-directories --no-verbose -P ../plugins/org.obeonetwork.m2doc.doc/doc/ https://www.m2doc.org/ref-doc/nightly/
 # replace nigthly by current tag
 if [ -n "$TAG" ]; then
     echo " - Replace Nightly to" $TAG
