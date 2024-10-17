@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.ide.ui.Activator;
+import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.TokenRegistry;
 
@@ -110,7 +110,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
                     setPageComplete(false);
                 }
             });
-            Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+            M2DocUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, e.getMessage(), e));
         }
     }
 
@@ -121,15 +121,15 @@ public class TemplateCustomPropertiesWizard extends Wizard {
 
             @Override
             public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-                Status status = new Status(IStatus.OK, Activator.PLUGIN_ID, "Template saved succesfully");
+                Status status = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, "Template saved succesfully");
 
                 properties.save();
                 try {
                     POIServices.getInstance().saveFile(URIConverter.INSTANCE, document, templateURI);
                     document.close();
                 } catch (IOException e) {
-                    status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
-                    Activator.getDefault().getLog().log(status);
+                    status = new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, e.getMessage(), e);
+                    M2DocUIPlugin.getDefault().getLog().log(status);
                 }
                 return status;
             }
@@ -146,7 +146,7 @@ public class TemplateCustomPropertiesWizard extends Wizard {
             try {
                 document.close();
             } catch (IOException e) {
-                Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
+                M2DocUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, e.getMessage(), e));
             }
         }
         return super.performCancel();

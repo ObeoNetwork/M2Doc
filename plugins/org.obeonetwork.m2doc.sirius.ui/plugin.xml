@@ -3,61 +3,58 @@
 <plugin>
 <extension
          point="org.eclipse.ui.commands">
-      <category
-            id="org.obeonetwork.m2doc.sirius.commands.category"
-            name="M2doc ">
-      </category>
-      <command
-            categoryId="org.obeonetwork.m2doc.sirius.commands.category"
-            id="org.obeonetwork.m2doc.sirius.commands.generateCommand"
-            name="Generate Documentation Command">
-      </command>
+   <command
+         id="org.obeonetwork.m2doc.sirius.ui.generateWithTemplateLibrary"
+         name="M2Doc Generate with Template Library">
+   </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.obeonetwork.m2doc.sirius.ui.handlers.CDOGenerateHandler"
-            commandId="org.obeonetwork.m2doc.sirius.commands.generateCommand">
+            class="org.obeonetwork.m2doc.sirius.ui.command.GenerateWithTemplateLibrary"
+            commandId="org.obeonetwork.m2doc.sirius.ui.generateWithTemplateLibrary">
       </handler>
-   </extension>
-   <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="org.obeonetwork.m2doc.sirius.commands.generateCommand"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+6">
-      </key>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               id="org.obeonetwork.m2doc.sirius.menus.generateDocumentationMenu"
-               label="Generate Documentation"
-               mnemonic="M">
-            <command
-                  commandId="org.obeonetwork.m2doc.sirius.commands.sampleCommand"
-                  icon="icons/m2doc.gif"
-                  id="org.obeonetwork.m2doc.sirius.menus.sampleCommand"
-                  mnemonic="S">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="org.obeonetwork.m2doc.sirius.ui.generateWithTemplateLibrary"
+               icon="icons/m2doc.gif"
+               label="M2Doc Generate with Template Library"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
                      <iterate
                            ifEmpty="false"
                            operator="or">
                         <test
                               forcePluginActivation="true"
-                              property="org.obeonetwork.m2doc.sirius.propertyTester.testCDOGeneration">
+                              property="org.obeonetwork.m2doc.sirius.ui.property.hasLibraryTemplate">
                         </test>
                      </iterate>
-                  </with>
-               </visibleWhen>
-            </command>
-         </menu>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.obeonetwork.m2doc.sirius.ui.propertyTester.TemplatePropertyTester"
+            id="org.obeonetwork.m2doc.sirius.ui.property"
+            namespace="org.obeonetwork.m2doc.sirius.ui.property"
+            properties="hasLibraryTemplate"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 </plugin>

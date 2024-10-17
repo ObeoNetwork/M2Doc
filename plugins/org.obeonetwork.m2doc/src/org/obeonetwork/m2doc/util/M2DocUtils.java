@@ -1023,6 +1023,27 @@ public final class M2DocUtils {
     }
 
     /**
+     * Gets the {@link Map} of initialized options for the given {@link EObject}.
+     * 
+     * @param options
+     *            the {@link Map} of existing options.
+     * @param eObj
+     *            the {@link EObject}
+     * @return the {@link Map} of initialized options for the given {@link EObject}
+     */
+    public static Map<String, String> getInitializedOptions(Map<String, String> options, EObject eObj) {
+        final Map<String, String> res = new LinkedHashMap<>();
+
+        res.put(M2DocUtils.UPDATE_FIELDS_OPTION, Boolean.FALSE.toString());
+        res.put(M2DocUtils.IGNORE_VERSION_CHECK_OPTION, Boolean.FALSE.toString());
+        for (IServicesConfigurator configurator : getConfigurators()) {
+            res.putAll(configurator.getInitializedOptions(options));
+        }
+
+        return res;
+    }
+
+    /**
      * Gets the {@link List} of possible option names.
      * 
      * @return the {@link List} of possible option names

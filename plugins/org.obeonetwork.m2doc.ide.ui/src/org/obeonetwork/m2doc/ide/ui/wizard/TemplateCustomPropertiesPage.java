@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
-import org.obeonetwork.m2doc.ide.ui.Activator;
+import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.ide.ui.util.IClassPropertyUpdater;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.TokenRegistry;
@@ -489,7 +489,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      */
     private void openClassSelectionDialog(Viewer tokenViewer, Viewer servicesTable,
             final TemplateCustomProperties customProperties) {
-        final IClassPropertyUpdater updater = Activator.getClassPropertyUpdater();
+        final IClassPropertyUpdater updater = M2DocUIPlugin.getClassPropertyUpdater();
         if (updater == null) {
             MessageDialog.openInformation(getShell(), "No class property updater is registered",
                     "You can try to install the M2Doc JDT feature to solve this issue.");

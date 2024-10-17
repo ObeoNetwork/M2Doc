@@ -11,8 +11,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.ecore,
  org.eclipse.sirius;bundle-version="[6.5.1,7.5.0)",
  org.obeonetwork.m2doc.genconf,
+ org.obeonetwork.m2doc.genconf.editor,
  org.obeonetwork.m2doc,
- org.obeonetwork.m2doc.ide
+ org.obeonetwork.m2doc.ide,
+ org.eclipse.emf.common.ui,
+ org.eclipse.core.expressions,
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.obeonetwork.m2doc.ide.ui
 Bundle-Activator: org.obeonetwork.m2doc.sirius.ui.M2DocSiriusUIPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

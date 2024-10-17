@@ -1,0 +1,52 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,__ps_IIvFEe-XVvXOlTYmPQ
+Element-Name: Generate from Library - Generate from template library Sirius
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _mERyMIvHEe-XVvXOlTYmPQ
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/16/24, 7:28 PM
+Tags: fail
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-preferences-menu | click
+get-window Preferences | get-tree | select "M2Doc/Libraries"
+set-dialog-result Folder "platform:/resource/test"
+with [get-window Preferences] {
+    get-button "New..." | click -metaKeys ""
+    get-button "Apply and Close" | click -metaKeys ""
+}
+
+get-view "Project Explorer" | get-tree | select "test/anydsl.ecore/anydsl/anydsl class diagram" | double-click
+with [get-editor "anydsl class diagram" | get-diagram -index 1] {
+    with [get-edit-part -name "anydsl class diagram"] {
+        mouse-move 96 119
+        mouse-press 96 119 button3
+    }
+    get-menu -path "M2Doc Generate with Template Library" | click -metaKeys ""
+}
+
+set-dialog-result File "platform:/resource/test/document.docx"
+with [get-window "Generation Configuration"] {
+    get-button "..." | click -metaKeys ""
+    get-button Finish | click -metaKeys ""
+}
+get-window Complete | get-button OK | click -metaKeys ""
+with [get-view "Project Explorer" | get-tree] {
+    select test | get-menu -path Refresh | click -metaKeys ""
+}
+get-view "Project Explorer" | get-tree | select "test/document.docx"
+
+get-preferences-menu | click
+with [get-window Preferences] {
+    get-list | select ".*test"
+    get-button Remove | click -metaKeys ""
+    get-button "Apply and Close" | click -metaKeys ""
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

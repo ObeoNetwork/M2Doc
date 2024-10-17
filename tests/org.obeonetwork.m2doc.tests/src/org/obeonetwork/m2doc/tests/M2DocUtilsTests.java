@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2023 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.AfterClass;
@@ -84,6 +85,11 @@ public class M2DocUtilsTests {
             res.put(OPTION, VALUE);
 
             return res;
+        }
+
+        @Override
+        public Map<String, String> getInitializedOptions(Map<String, String> options, EObject eObj) {
+            return Collections.emptyMap();
         }
 
         @Override

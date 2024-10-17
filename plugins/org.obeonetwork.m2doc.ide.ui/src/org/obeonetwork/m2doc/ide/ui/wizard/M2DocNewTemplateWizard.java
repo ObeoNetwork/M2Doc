@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.obeonetwork.m2doc.POIServices;
-import org.obeonetwork.m2doc.ide.ui.Activator;
+import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;
 
@@ -96,7 +96,7 @@ public class M2DocNewTemplateWizard extends Wizard implements INewWizard {
 
         @Override
         protected IStatus run(IProgressMonitor monitor) {
-            IStatus res = new Status(IStatus.OK, Activator.PLUGIN_ID, String.format(OK_MESSAGE, templateName));
+            IStatus res = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, String.format(OK_MESSAGE, templateName));
 
             final URIConverter uriConverter = new ExtensibleURIConverterImpl();
             final MemoryURIHandler handler = new MemoryURIHandler();
@@ -110,12 +110,12 @@ public class M2DocNewTemplateWizard extends Wizard implements INewWizard {
                     final IFile templateFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(templateName));
                     templateFile.create(source, true, monitor);
                 } catch (CoreException e) {
-                    res = new Status(IStatus.OK, Activator.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
+                    res = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
                 }
             } catch (InvalidFormatException e) {
-                res = new Status(IStatus.OK, Activator.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
+                res = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
             } catch (IOException e) {
-                res = new Status(IStatus.OK, Activator.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
+                res = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
             }
 
             return res;

@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2019, 2024 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v2.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v20.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
 package org.obeonetwork.m2doc.wikitext.services;
 
 import java.util.Collections;
@@ -12,6 +23,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -35,6 +47,11 @@ public class WikiTextServicesConfigurator implements IServicesConfigurator {
 
     @Override
     public Map<String, String> getInitializedOptions(Map<String, String> options) {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public Map<String, String> getInitializedOptions(Map<String, String> options, EObject eObj) {
         return Collections.emptyMap();
     }
 

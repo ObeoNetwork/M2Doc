@@ -1,0 +1,54 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_DwpogH31Eeiu8KolG1i86A
+Element-Name: Generation Selected - Select files page change template URI library
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _OvN3oIvEEe-XVvXOlTYmPQ
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/16/24, 6:10 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-preferences-menu | click
+get-window Preferences | get-tree | select "M2Doc/Libraries"
+set-dialog-result Folder "platform:/resource/test"
+with [get-window Preferences] {
+    get-button "New..." | click -metaKeys ""
+    get-button "Apply and Close" | click -metaKeys ""
+}
+
+get-view "Project Explorer" | get-tree | select "test/asImageByRepresentationDescriptionName.genconf" | get-menu 
+    -path "Edit Documentation Configurations" | click
+with [get-window "Generation configuration"] {
+    with [get-group "Relative to generation file"] {
+        get-editbox -after [get-label "Template File:"] | get-property text 
+            | equals "asImageByRepresentationDescriptionName-template.docx" | verify-true
+    }
+}
+with [get-window "Generation configuration"] {
+    get-group "Relative to generation file" | get-button "Browse libraries" | click -metaKeys ""
+    with [get-window "Select registered template."] {
+        get-table 
+            | select ".*asImageByRepresentationDescriptionName-template.docx" 
+            | double-click
+        get-button OK | click -metaKeys ""
+    }
+}
+get-window "Generation configuration" | get-group "Relative to generation file" | get-editbox 
+    -after [get-label "Template File:"] | get-property text 
+    | equals "file:.*asImageByRepresentationDescriptionName-template.docx" 
+    | verify-true
+get-window "Generation configuration" | get-button Cancel | click
+
+get-preferences-menu | click
+with [get-window Preferences] {
+    get-list | select "*.test"
+    get-button Remove | click -metaKeys ""
+    get-button "Apply and Close" | click -metaKeys ""
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

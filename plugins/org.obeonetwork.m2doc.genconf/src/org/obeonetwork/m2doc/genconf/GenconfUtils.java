@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2023 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -133,6 +133,34 @@ public final class GenconfUtils {
         final Map<String, String> options = getOptions(generation);
 
         final Map<String, String> initializedOptions = M2DocUtils.getInitializedOptions(options);
+        for (Option option : generation.getOptions()) {
+            if (initializedOptions.containsKey(option.getName())) {
+                final String initialValue = initializedOptions.remove(option.getName());
+                if (option.getValue() == null || option.getValue().trim().isEmpty()) {
+                    option.setValue(initialValue);
+                }
+            }
+        }
+        for (Entry<String, String> entry : initializedOptions.entrySet()) {
+            final Option option = GenconfPackage.eINSTANCE.getGenconfFactory().createOption();
+            option.setName(entry.getKey());
+            option.setValue(entry.getValue());
+            generation.getOptions().add(option);
+        }
+    }
+
+    /**
+     * Initializes options for the given {@link Generation} for the given {@link EObject}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @param eObj
+     *            the {@link EObject}
+     */
+    public static void initializeOptions(Generation generation, EObject eObj) {
+        final Map<String, String> options = getOptions(generation);
+
+        final Map<String, String> initializedOptions = M2DocUtils.getInitializedOptions(options, eObj);
         for (Option option : generation.getOptions()) {
             if (initializedOptions.containsKey(option.getName())) {
                 final String initialValue = initializedOptions.remove(option.getName());

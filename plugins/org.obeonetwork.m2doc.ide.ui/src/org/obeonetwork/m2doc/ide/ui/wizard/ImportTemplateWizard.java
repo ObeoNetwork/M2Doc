@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2018, 2024 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v2.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v20.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
 package org.obeonetwork.m2doc.ide.ui.wizard;
 
 import java.io.IOException;
@@ -27,7 +38,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.ide.ui.Activator;
+import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.services.TemplateRegistry;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -118,7 +129,7 @@ public class ImportTemplateWizard extends Wizard implements IImportWizard {
 
         @Override
         public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-            Status status = new Status(IStatus.OK, Activator.PLUGIN_ID, "Template imported succesfully");
+            Status status = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, "Template imported succesfully");
 
             final IContainer container;
             if (containerFullPath.segmentCount() == 1) {
@@ -136,14 +147,14 @@ public class ImportTemplateWizard extends Wizard implements IImportWizard {
                         file.setContents(is, true, true, new NullProgressMonitor());
                     }
                 } catch (IOException e) {
-                    status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't open input stream", e);
-                    Activator.getDefault().getLog().log(status);
+                    status = new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, "can't open input stream", e);
+                    M2DocUIPlugin.getDefault().getLog().log(status);
                 } catch (CoreException e) {
-                    status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't save file", e);
-                    Activator.getDefault().getLog().log(status);
+                    status = new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, "can't save file", e);
+                    M2DocUIPlugin.getDefault().getLog().log(status);
                 }
             } else {
-                status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                status = new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID,
                         "Null template URI. Check your extension point.");
             }
 

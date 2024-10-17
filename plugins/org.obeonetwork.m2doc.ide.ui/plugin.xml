@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <!--
-     Copyright (c) 2016, 2020 Obeo. 
+     Copyright (c) 2016, 2024 Obeo. 
      All rights reserved. This program and the accompanying materials
      are made available under the terms of the Eclipse Public License v2.0
      which accompanies this distribution, and is available at
@@ -19,9 +19,9 @@
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
             class="org.obeonetwork.m2doc.ide.ui.propertyTester.TemplatePropertyTester"
-            id="org.obeonetwork.m2doc.ide.ui.testTemplate"
-            namespace="org.obeonetwork.m2doc.ide.ui"
-            properties="testTemplate"
+            id="org.obeonetwork.m2doc.ide.ui.property"
+            namespace="org.obeonetwork.m2doc.ide.ui.property"
+            properties="isTemplate,hasLibraryTemplate"
             type="java.lang.Object">
       </propertyTester>
    </extension>
@@ -89,7 +89,7 @@
                         operator="or">
                      <test
                            forcePluginActivation="true"
-                           property="org.obeonetwork.m2doc.ide.ui.testTemplate">
+                           property="org.obeonetwork.m2doc.ide.ui.property.isTemplate">
                      </test>
                   </iterate>
                </with>
@@ -105,6 +105,20 @@
       <servicesConfigurators
             class="org.obeonetwork.m2doc.ide.ui.services.configurator.M2DocEObjectServicesConfigurator">
       </servicesConfigurators>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.obeonetwork.m2doc.ide.ui.preference.M2DocPreferences"
+            id="org.obeonetwork.m2doc.ide.ui.m2docPreferences"
+            name="M2Doc">
+      </page>
+      <page
+            category="org.obeonetwork.m2doc.ide.ui.m2docPreferences"
+            class="org.obeonetwork.m2doc.ide.ui.preference.M2DocLibrariesPreferences"
+            id="org.obeonetwork.m2doc.ide.ui.librariesPreferences"
+            name="Libraries">
+      </page>
    </extension>
 
 </plugin>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020 Obeo. 
+ *  Copyright (c) 2020, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -301,11 +302,20 @@ public class GenconfResourceListener implements IResourceChangeListener {
      * @return the {@link Generation} from the given {@link IResource} if any, <code>null</code> otherwise
      */
     private Generation getGeneration(IResource resource) {
-        final Generation res;
+        Generation res;
 
-        if (GenconfUtils.GENCONF_EXTENSION_FILE.equals(resource.getLocation().getFileExtension())) {
+        if (GenconfUtils.GENCONF_EXTENSION_FILE.equals(resource.getLocation().getFileExtension())
+            && resource.isAccessible()) {
             final URI genconfURI = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
-            res = GenconfUtils.getGeneration(genconfURI);
+            try {
+                res = GenconfUtils.getGeneration(genconfURI);
+                // CHECKSTYLE:OFF
+            } catch (Exception e) {
+                // CHECKSTYLE:ON
+                GenconfPlugin.INSTANCE.log(new Status(Status.ERROR, GenconfPlugin.PLUGIN_ID, Status.ERROR,
+                        "can't load: " + genconfURI, e));
+                res = null;
+            }
         } else {
             res = null;
         }

@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.obeonetwork.m2doc.ide.ui.Activator;
+import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.util.IClassProvider;
 
 /**
@@ -86,11 +86,11 @@ public class ClassPropertyUpdaterRegistryListener implements IRegistryEventListe
                     try {
                         final IClassPropertyUpdater updater = (IClassPropertyUpdater) element
                                 .createExecutableExtension(CLASS_PROPERTY_UPDATER_ATTRIBUTE_CLASS);
-                        if (Activator.getClassPropertyUpdater().getClass() == updater.getClass()) {
-                            Activator.registerClassPropertyUpdater(null);
+                        if (M2DocUIPlugin.getClassPropertyUpdater().getClass() == updater.getClass()) {
+                            M2DocUIPlugin.registerClassPropertyUpdater(null);
                         }
                     } catch (CoreException e) {
-                        Activator.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), e.getMessage()));
+                        M2DocUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), e.getMessage()));
                     }
                 }
             }
@@ -115,9 +115,9 @@ public class ClassPropertyUpdaterRegistryListener implements IRegistryEventListe
                 try {
                     final IClassPropertyUpdater updater = (IClassPropertyUpdater) element
                             .createExecutableExtension(CLASS_PROPERTY_UPDATER_ATTRIBUTE_CLASS);
-                    Activator.registerClassPropertyUpdater(updater);
+                    M2DocUIPlugin.registerClassPropertyUpdater(updater);
                 } catch (CoreException e) {
-                    Activator.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), e.getMessage()));
+                    M2DocUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, getClass(), e.getMessage()));
                 }
             }
         }

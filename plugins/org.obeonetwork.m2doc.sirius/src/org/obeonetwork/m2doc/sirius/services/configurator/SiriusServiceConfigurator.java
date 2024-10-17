@@ -36,11 +36,13 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.sirius.business.api.helper.SiriusUtil;
 import org.eclipse.sirius.business.api.modelingproject.ModelingProject;
+import org.eclipse.sirius.business.api.query.EObjectQuery;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.business.internal.session.SessionTransientAttachment;
@@ -111,6 +113,25 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
                 res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
             }
         }
+        return res;
+    }
+
+    @Override
+    public Map<String, String> getInitializedOptions(Map<String, String> options, EObject eObj) {
+        final Map<String, String> res = new HashMap<>();
+
+        if (!options.containsKey(M2DocSiriusUtils.SIRIUS_SESSION_OPTION)) {
+            final Session session = new EObjectQuery(eObj).getSession();
+            if (session != null) {
+                final String genConfURIStr = options.get(GenconfUtils.GENCONF_URI_OPTION);
+                final URI genConfURI = URI.createURI(genConfURIStr, true);
+                final URI sessionURI = session.getSessionResource().getURI();
+                final String sessionURIStr = URI.decode(sessionURI.deresolve(genConfURI, false, true, true).toString());
+
+                res.put(M2DocSiriusUtils.SIRIUS_SESSION_OPTION, sessionURIStr);
+            }
+        }
+
         return res;
     }
 

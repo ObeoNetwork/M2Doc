@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2023 Obeo. 
+ *  Copyright (c) 2018, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -59,6 +59,7 @@ import org.obeonetwork.m2doc.genconf.editor.GenerationListener;
 import org.obeonetwork.m2doc.genconf.editor.ITemplateCustomPropertiesProvider;
 import org.obeonetwork.m2doc.ide.ui.dialog.M2DocFileSelectionDialog;
 import org.obeonetwork.m2doc.ide.ui.dialog.SelectRegistredTemplateDialog;
+import org.obeonetwork.m2doc.ide.ui.dialog.SelectTemplateFromLibraryDialog;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -350,7 +351,7 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
      */
     private Text createTemplateURIComposite(final Generation gen, Composite composite, boolean canChange) {
         final Composite uriComposite = new Composite(composite, composite.getStyle());
-        uriComposite.setLayout(new GridLayout(4, false));
+        uriComposite.setLayout(new GridLayout(5, false));
         uriComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
         final EditingDomain editingDomain = TransactionUtil.getEditingDomain(gen);
         final Label uriLabel = new Label(uriComposite, composite.getStyle());
@@ -431,6 +432,23 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
             @Override
             public void handleEvent(Event event) {
                 final SelectRegistredTemplateDialog dialog = new SelectRegistredTemplateDialog(getShell());
+
+                final int dialogResult = dialog.open();
+                if ((dialogResult == IDialogConstants.OK_ID) && dialog.getTemplateURI() != null) {
+                    updateTemplateURI(gen, dialog.getTemplateURI());
+                }
+            }
+
+        });
+
+        final Button librariesButton = new Button(uriComposite, SWT.BORDER);
+        librariesButton.setEnabled(canChange);
+        librariesButton.setText("Browse libraries");
+        librariesButton.addListener(SWT.Selection, new Listener() {
+
+            @Override
+            public void handleEvent(Event event) {
+                final SelectTemplateFromLibraryDialog dialog = new SelectTemplateFromLibraryDialog(getShell());
 
                 final int dialogResult = dialog.open();
                 if ((dialogResult == IDialogConstants.OK_ID) && dialog.getTemplateURI() != null) {

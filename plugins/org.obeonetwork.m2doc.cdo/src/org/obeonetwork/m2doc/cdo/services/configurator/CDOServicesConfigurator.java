@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.spi.cdo.InternalCDOView;
 import org.eclipse.net4j.connector.IConnector;
@@ -77,6 +78,11 @@ public class CDOServicesConfigurator implements IServicesConfigurator {
 
     @Override
     public Map<String, String> getInitializedOptions(Map<String, String> options) {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public Map<String, String> getInitializedOptions(Map<String, String> options, EObject eObj) {
         return Collections.emptyMap();
     }
 

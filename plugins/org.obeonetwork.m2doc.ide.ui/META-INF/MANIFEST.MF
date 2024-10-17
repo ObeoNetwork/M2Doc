@@ -6,7 +6,7 @@ Bundle-Version: 3.3.3.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-Activator: org.obeonetwork.m2doc.ide.ui.Activator
+Bundle-Activator: org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
@@ -28,6 +28,7 @@ Export-Package: org.obeonetwork.m2doc.ide.ui,
  org.obeonetwork.m2doc.ide.ui.command,
  org.obeonetwork.m2doc.ide.ui.dialog,
  org.obeonetwork.m2doc.ide.ui.element.impl,
+ org.obeonetwork.m2doc.ide.ui.preference,
  org.obeonetwork.m2doc.ide.ui.propertyTester,
  org.obeonetwork.m2doc.ide.ui.services,
  org.obeonetwork.m2doc.ide.ui.services.configurator,
