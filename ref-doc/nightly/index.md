@@ -157,7 +157,11 @@ At this point you should be on the first page of the generation configuration wi
 
 ![The Generation Configuration Wizard.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20Configuration%20Wizard1.png "The Generation Configuration Wizard.")
 
-On this page you can select the path of the generation configuration .genconf file. It can be changed to create a copy of an existing file for instance. Other file paths are relative to the generation configuration file. This allow to move a folder containing all the files needed for a generation without breaking the generation configuration. The template can be selected from the workspace or the [Template registry](index.html#template-registry). In the later case the path will be absolute to reference the template in the deployed plug-ins.
+On this page you can select the path of the generation configuration .genconf file. It can be changed to create a copy of an existing file for instance. Other file paths are relative to the generation configuration file. This allow to move a folder containing all the files needed for a generation without breaking the generation configuration. The template can be selected from the workspace, the [Template registry](index.html#template-registry), or [Template libraries](index.html#template-libraries):
+
+* workspace: allows to browse templates in the workspace.
+* [Template registry](index.html#template-registry): allows to browse templates in deployed plug-ins.
+* [Template libraries](index.html#template-libraries) allows to browse templates in template libraries.
 
 The next page of the wizard is dedicated to variables and binding values to them:
 
@@ -526,6 +530,32 @@ For example:
 
 * Name: `m:import:org.obeonetwork.m2doc.rcptt.a.ServiceClassA`
 * Value: `org.obeonetwork.m2doc.rcptt.a` 
+
+### Template Libraries
+
+Template libraries are a list of paths from the file system. They can be used to share M2Doc templates across environment via a network file system for instance. M2Doc will scan provided library paths for template with one model element parameter and provides menu to launch the generation when a compatible element is selected.
+
+First you will need to add path to your libraries using the M2Doc/libraries preference page. Select the Window Preferences menu:
+
+![The preferences menu.]({{page.relativePath}}/ref-doc/nightly/images/Preferences%20menu.png "The preferences menu.")
+
+Then select the M2Doc/Libraries page:
+
+![The libraries preferences page.]({{page.relativePath}}/ref-doc/nightly/images/Libraries%20preferences.png "The libraries preferences page.")
+
+You can use this page to add/remove library paths. Once you are done, you can click the apply and close button to validate your changes or the cancel button to cancel them.
+
+In this example the selected path contains a template with one parameter of type EPackage. So we will demonstrate menus by selecting an EPackage object. But in your case it can be any model element type.
+
+You can now select a model element that has at least one compatible template in one of the provided libraries and launch a generation using the "M2Doc Generate with Template Library" menu. You can select your element and right click on it:
+
+![The M2Doc Generate with Template Library menu.]({{page.relativePath}}/ref-doc/nightly/images/M2Doc%20Generate%20with%20Template%20Library menu.png "The M2Doc Generate with Template Library menu.")
+
+Selecting this menu will open the following dialog:
+
+![The Generate with Template Library dialog.]({{page.relativePath}}/ref-doc/nightly/images/Generate%20with%20Template%20Library%20dialog.png "The Generate with Template Library dialog.")
+
+In this dialog, you can select the template you want to generate with from the libraries and the output folder. The selected element will be used as the parameter of the generation. You can then click the finish button to launch the generation or the cancel button to cancel your action.
 
 ## Providing new services
 

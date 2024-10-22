@@ -43,6 +43,7 @@
 				<topic href="doc/ref-doc/nightly/index.html#package-custom-properties" label="Package custom properties"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#service-custom-properties" label="Service custom properties"></topic>
 			</topic>
+			<topic href="doc/ref-doc/nightly/index.html#template-libraries" label="Template Libraries"></topic>
 		</topic>
 		<topic href="doc/ref-doc/nightly/index.html#providing-new-services" label="Providing new services">
 			<topic href="doc/ref-doc/nightly/index.html#service-class" label="Service class">
