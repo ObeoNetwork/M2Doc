@@ -157,11 +157,11 @@ At this point you should be on the first page of the generation configuration wi
 
 ![The Generation Configuration Wizard.]({{page.relativePath}}/ref-doc/nightly/images/Generation%20Configuration%20Wizard1.png "The Generation Configuration Wizard.")
 
-On this page you can select the path of the generation configuration .genconf file. It can be changed to create a copy of an existing file for instance. Other file paths are relative to the generation configuration file. This allow to move a folder containing all the files needed for a generation without breaking the generation configuration. The template can be selected from the workspace, the [Template registry](index.html#template-registry), or [Template libraries](index.html#template-libraries):
+On this page you can select the path of the generation configuration .genconf file. It can be changed to create a copy of an existing file for instance. Other file paths are relative to the generation configuration file. This allow to move a folder containing all the files needed for a generation without breaking the generation configuration. The template can be selected from the workspace, the [Template registry](index.html#template-registry), or [Template libraries](index.html#template-libraries) (in the two last cases the path will be absolute):
 
 * workspace: allows to browse templates in the workspace.
 * [Template registry](index.html#template-registry): allows to browse templates in deployed plug-ins.
-* [Template libraries](index.html#template-libraries) allows to browse templates in template libraries.
+* [Template libraries](index.html#template-libraries): allows to browse templates in template libraries.
 
 The next page of the wizard is dedicated to variables and binding values to them:
 
