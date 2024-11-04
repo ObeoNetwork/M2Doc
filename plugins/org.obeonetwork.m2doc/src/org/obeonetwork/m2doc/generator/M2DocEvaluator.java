@@ -1726,15 +1726,18 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 final IBody savedGeneratedDocument = generatedDocument;
                 final XWPFParagraph savedGeneratedParagraph = currentGeneratedParagraph;
                 final XWPFParagraph savedTemplateParagraph = currentTemplateParagraph;
+                final boolean savedforceNewParagraph = forceNewParagraph;
                 generatedDocument = cell;
                 currentGeneratedParagraph = cellParagraph;
                 currentTemplateParagraph = cellParagraph;
+                forceNewParagraph = false;
                 try {
                     insertObject(cellParagraph, contents, cellRun);
                 } finally {
                     generatedDocument = savedGeneratedDocument;
                     currentGeneratedParagraph = savedGeneratedParagraph;
                     currentTemplateParagraph = savedTemplateParagraph;
+                    forceNewParagraph = savedforceNewParagraph;
                 }
                 cellParagraph.removeRun(cellParagraph.getRuns().indexOf(cellRun));
                 if (startWithMParagraph(contents)) {
