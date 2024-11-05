@@ -21,9 +21,11 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -95,6 +97,108 @@ public class M2DocHTMLParser extends Parser {
      * The ul HTML tag.
      */
     private static final String UL_TAG = "ul";
+
+    /**
+     * The ul HTML tag.
+     */
+    private static final String BR_TAG = "br";
+
+    private static final Set<String> BR_CONTINUE_TAGS = initializeBrContinueTags();
+
+    /**
+     * The small HTML tag.
+     */
+    private static final String SMALL_TAG = "small";
+
+    /**
+     * The big HTML tag.
+     */
+    private static final String BIG_TAG = "big";
+
+    /**
+     * The a HTML tag.
+     */
+    private static final String A_TAG = "a";
+
+    /**
+     * The font HTML tag.
+     */
+    private static final String FONT_TAG = "font";
+
+    /**
+     * The sup HTML tag.
+     */
+    private static final String SUP_TAG = "sup";
+
+    /**
+     * The sub HTML tag.
+     */
+    private static final String SUB_TAG = "sub";
+
+    /**
+     * The ins HTML tag.
+     */
+    private static final String INS_TAG = "ins";
+
+    /**
+     * The u HTML tag.
+     */
+    private static final String U_TAG = "u";
+
+    /**
+     * The del HTML tag.
+     */
+    private static final String DEL_TAG = "del";
+
+    /**
+     * The strike HTML tag.
+     */
+    private static final String STRIKE_TAG = "strike";
+
+    /**
+     * The s HTML tag.
+     */
+    private static final String S_TAG = "s";
+
+    /**
+     * The cite HTML tag.
+     */
+    private static final String CITE_TAG = "cite";
+
+    /**
+     * The var HTML tag.
+     */
+    private static final String VAR_TAG = "var";
+
+    /**
+     * The i HTML tag.
+     */
+    private static final String I_TAG = "i";
+
+    /**
+     * The em HTML tag.
+     */
+    private static final String EM_TAG = "em";
+
+    /**
+     * The b HTML tag.
+     */
+    private static final String B_TAG = "b";
+
+    /**
+     * The strong HTML tag.
+     */
+    private static final String STRONG_TAG = "strong";
+
+    /**
+     * The span HTML tag.
+     */
+    private static final String SPAN_TAG = "span";
+
+    /**
+     * The p HTML tag.
+     */
+    private static final String P_TAG = "p";
 
     /**
      * The svg HTML tag.
@@ -645,6 +749,37 @@ public class M2DocHTMLParser extends Parser {
     }
 
     /**
+     * Initializes the {@link Set} of tags that can continue a list for {@link #BR_TAG} removal.
+     * 
+     * @return the {@link Set} of tags that can continue a list for {@link #BR_TAG} removal
+     */
+    private static Set<String> initializeBrContinueTags() {
+        final Set<String> res = new HashSet<String>();
+
+        res.add(BR_TAG);
+        res.add(SMALL_TAG);
+        res.add(BIG_TAG);
+        res.add(A_TAG);
+        res.add(FONT_TAG);
+        res.add(SUP_TAG);
+        res.add(SUB_TAG);
+        res.add(INS_TAG);
+        res.add(U_TAG);
+        res.add(DEL_TAG);
+        res.add(STRIKE_TAG);
+        res.add(S_TAG);
+        res.add(CITE_TAG);
+        res.add(VAR_TAG);
+        res.add(I_TAG);
+        res.add(EM_TAG);
+        res.add(B_TAG);
+        res.add(STRONG_TAG);
+        res.add(SPAN_TAG);
+
+        return res;
+    }
+
+    /**
      * Parses the given HTML {@link String} with the given base URI.
      * 
      * @param baseURI
@@ -670,6 +805,7 @@ public class M2DocHTMLParser extends Parser {
         parseHead(baseURI, headElement);
 
         final Element bodyElement = htmlElement.getElementsByTag("body").get(0);
+        cleanHTML(bodyElement);
         final MStyle defaultStyle = new MStyleImpl(null, -1, null, null, -1);
         if (document.body().hasAttr("bgcolor")) {
             defaultStyle.setBackgroundColor(htmlToColor(bodyElement.attr("bgcolor").toLowerCase()));
@@ -691,6 +827,85 @@ public class M2DocHTMLParser extends Parser {
         createNeededParagraphes(parent);
 
         return res;
+    }
+
+    /**
+     * Cleans the HTML code.
+     * 
+     * @param node
+     *            the Node to clean
+     */
+    private void cleanHTML(Node node) {
+        final List<Node> toRemove = new ArrayList<Node>();
+
+        if (node instanceof Element) {
+            if (isHidden(node)) {
+                toRemove.add(node);
+            } else {
+                List<Node> nodeList = new ArrayList<Node>();
+                for (Node child : node.childNodes()) {
+                    cleanHTML(child);
+                    if (continueBrList(child)) {
+                        nodeList.add(child);
+                    } else if (!nodeList.isEmpty()) {
+                        removeBrTags(toRemove, nodeList);
+                        nodeList = new ArrayList<Node>();
+                    }
+                }
+                if (!nodeList.isEmpty()) {
+                    removeBrTags(toRemove, nodeList);
+                }
+            }
+        }
+
+        for (Node remove : toRemove) {
+            remove.remove();
+        }
+    }
+
+    /**
+     * Tells if the {@link #BR_TAG} removal {@link List} should be continued with the given {@link Node}.
+     * 
+     * @param node
+     *            the {@link Node}
+     * @return <code>true</code> if the {@link #BR_TAG} removal {@link List} should be continued, <code>false</code> otherwise
+     */
+    private boolean continueBrList(Node node) {
+        final boolean res;
+
+        if (node instanceof TextNode) {
+            res = true;
+        } else {
+            res = BR_CONTINUE_TAGS.contains(node.nodeName());
+        }
+
+        return res;
+    }
+
+    /**
+     * Add irrelevant {@link #BR_TAG} from the given {@link Node} {@link List} to the given to remove {@link List}.
+     * 
+     * @param toRemove
+     *            the to remove {@link List}
+     * @param nodeList
+     *            the {@link Node} {@link List}
+     */
+    private void removeBrTags(final List<Node> toRemove, List<Node> nodeList) {
+        boolean onlyBrTag = true;
+        Node lastBrTag = null;
+        for (Node child : nodeList) {
+            final boolean isEmptyTextChild = child instanceof TextNode && text((TextNode) child).trim().isEmpty();
+            final boolean isBrChild = BR_TAG.equals(child.nodeName());
+            onlyBrTag = onlyBrTag && (isBrChild || isEmptyTextChild);
+            if (isBrChild) {
+                lastBrTag = child;
+            } else if (lastBrTag != null && !isEmptyTextChild) {
+                lastBrTag = null;
+            }
+        }
+        if (!onlyBrTag && lastBrTag != null) {
+            toRemove.add(lastBrTag);
+        }
     }
 
     /**
@@ -758,7 +973,7 @@ public class M2DocHTMLParser extends Parser {
      */
     private void walkNodeTree(MParagraph parent, Context context, Node node, Element lastElement) {
         final Context contextCopy = context.copy();
-        if (node instanceof Element && !isHidden(node)) {
+        if (node instanceof Element) {
             if ("table".equals(node.nodeName())) {
                 Node tHeader = null;
                 for (Node child : node.childNodes()) {
@@ -1332,7 +1547,7 @@ public class M2DocHTMLParser extends Parser {
 
         final String nodeName = element.nodeName();
         boolean isNumbering = false;
-        if ("p".equals(nodeName)) {
+        if (P_TAG.equals(nodeName)) {
             res = createMParagraph(context, parent, element, null, null);
         } else if (BLOCKQUOTE_TAG.equals(nodeName)) {
             if (element.childNodeSize() > 0 && element.childNode(0) instanceof TextNode) {
@@ -1347,91 +1562,92 @@ public class M2DocHTMLParser extends Parser {
             } else {
                 res = parent;
             }
-        } else if ("strong".equals(nodeName) || "b".equals(nodeName)) {
+        } else if (STRONG_TAG.equals(nodeName) || B_TAG.equals(nodeName)) {
             setModifiers(context.style, MStyle.FONT_BOLD);
             res = parent;
-        } else if ("em".equals(nodeName) || "i".equals(nodeName) || "var".equals(nodeName) || "cite".equals(nodeName)) {
-            setModifiers(context.style, MStyle.FONT_ITALIC);
-            res = parent;
-        } else if ("s".equals(nodeName) || "strike".equals(nodeName) || "del".equals(nodeName)) {
-            setModifiers(context.style, MStyle.FONT_STRIKE_THROUGH);
-            res = parent;
-        } else if ("u".equals(nodeName) || "ins".equals(nodeName)) {
-            setModifiers(context.style, MStyle.FONT_UNDERLINE);
-            res = parent;
-        } else if ("sub".equals(nodeName)) {
-            setModifiers(context.style, MStyle.SUBSCRIPT);
-            res = parent;
-        } else if ("sup".equals(nodeName)) {
-            setModifiers(context.style, MStyle.SUPERSCRIPT);
-            res = parent;
-        } else if ("font".equals(nodeName)) {
-            if (element.hasAttr("color")) {
-                context.style.setForegroundColor(htmlToColor(element.attr("color").toLowerCase()));
-            }
-            if (element.hasAttr("face")) {
-                // TODO double check this
-                context.style.setFontName(element.attr("face"));
-            }
-            if (element.hasAttr(SIZE_ATTR)) {
-                context.style.setFontSize(fontSizeToPoint(element.attr(SIZE_ATTR)));
-            }
-            res = parent;
-        } else if ("a".equals(nodeName)) {
-            context.linkTargetURI = toURI(context.baseURI, element.attr(HREF_ATTR));
-            if (element.hasAttr("title")) {
-                context.linkTitle = element.attr("title");
-            }
-            res = parent;
-        } else if ("br".equals(nodeName)) {
-            final MList parentContents = (MList) parent.getContents();
-            parentContents.add(MPagination.ligneBreak);
-            res = parent;
-        } else if ("li".equals(nodeName)) {
-            res = createMParagraph(context, parent, element, context.numberingID.longValue(),
-                    context.numberingLevel - 1);
-            isNumbering = true;
-        } else if (OL_TAG.equals(nodeName)) {
-            setOrderedListNumbering(context, element);
-            isNumbering = true;
-            res = parent;
-        } else if (UL_TAG.equals(nodeName)) {
-            setUnorderedListNumbering(context, element);
-            isNumbering = true;
-            res = parent;
-        } else if ("img".equals(nodeName)) {
-            final MImage mImage = createMImage(context, element);
-            final MList parentContents = (MList) parent.getContents();
-            parentContents.add(mImage);
-            res = parent;
-        } else if ("big".equals(nodeName)) {
-            setBigFont(context);
-            res = parent;
-        } else if ("small".equals(nodeName)) {
-            setSmallFont(context);
-            res = parent;
-        } else
-            if ("tt".equals(nodeName) || "code".equals(nodeName) || "samp".equals(nodeName) || "kbd".equals(nodeName)) {
-                context.style.setFontName(COURIER_NEW_FONT);
+        } else if (EM_TAG.equals(nodeName) || I_TAG.equals(nodeName) || VAR_TAG.equals(nodeName)
+            || CITE_TAG.equals(nodeName)) {
+                setModifiers(context.style, MStyle.FONT_ITALIC);
                 res = parent;
-            } else if ("h1".equals(nodeName)) {
-                res = createHeading(parent, context, element, H1_FONT_SIZE);
-            } else if ("h2".equals(nodeName)) {
-                res = createHeading(parent, context, element, H2_FONT_SIZE);
-            } else if ("h3".equals(nodeName)) {
-                res = createHeading(parent, context, element, H3_FONT_SIZE);
-            } else if ("h4".equals(nodeName)) {
-                res = createHeading(parent, context, element, H4_FONT_SIZE);
-            } else if ("h5".equals(nodeName)) {
-                res = createHeading(parent, context, element, H5_FONT_SIZE);
-            } else if ("h6".equals(nodeName)) {
-                res = createHeading(parent, context, element, H6_FONT_SIZE);
-            } else if (CENTER_TAG.equals(nodeName)) {
-                res = createMParagraph(context, parent, element, null, null);
-                res.setHAlignment(HAlignment.CENTER);
-            } else {
+            } else if (S_TAG.equals(nodeName) || STRIKE_TAG.equals(nodeName) || DEL_TAG.equals(nodeName)) {
+                setModifiers(context.style, MStyle.FONT_STRIKE_THROUGH);
                 res = parent;
-            }
+            } else if (U_TAG.equals(nodeName) || INS_TAG.equals(nodeName)) {
+                setModifiers(context.style, MStyle.FONT_UNDERLINE);
+                res = parent;
+            } else if (SUB_TAG.equals(nodeName)) {
+                setModifiers(context.style, MStyle.SUBSCRIPT);
+                res = parent;
+            } else if (SUP_TAG.equals(nodeName)) {
+                setModifiers(context.style, MStyle.SUPERSCRIPT);
+                res = parent;
+            } else if (FONT_TAG.equals(nodeName)) {
+                if (element.hasAttr("color")) {
+                    context.style.setForegroundColor(htmlToColor(element.attr("color").toLowerCase()));
+                }
+                if (element.hasAttr("face")) {
+                    // TODO double check this
+                    context.style.setFontName(element.attr("face"));
+                }
+                if (element.hasAttr(SIZE_ATTR)) {
+                    context.style.setFontSize(fontSizeToPoint(element.attr(SIZE_ATTR)));
+                }
+                res = parent;
+            } else if (A_TAG.equals(nodeName)) {
+                context.linkTargetURI = toURI(context.baseURI, element.attr(HREF_ATTR));
+                if (element.hasAttr("title")) {
+                    context.linkTitle = element.attr("title");
+                }
+                res = parent;
+            } else if (BR_TAG.equals(nodeName)) {
+                final MList parentContents = (MList) parent.getContents();
+                parentContents.add(MPagination.ligneBreak);
+                res = parent;
+            } else if ("li".equals(nodeName)) {
+                res = createMParagraph(context, parent, element, context.numberingID.longValue(),
+                        context.numberingLevel - 1);
+                isNumbering = true;
+            } else if (OL_TAG.equals(nodeName)) {
+                setOrderedListNumbering(context, element);
+                isNumbering = true;
+                res = parent;
+            } else if (UL_TAG.equals(nodeName)) {
+                setUnorderedListNumbering(context, element);
+                isNumbering = true;
+                res = parent;
+            } else if ("img".equals(nodeName)) {
+                final MImage mImage = createMImage(context, element);
+                final MList parentContents = (MList) parent.getContents();
+                parentContents.add(mImage);
+                res = parent;
+            } else if (BIG_TAG.equals(nodeName)) {
+                setBigFont(context);
+                res = parent;
+            } else if (SMALL_TAG.equals(nodeName)) {
+                setSmallFont(context);
+                res = parent;
+            } else if ("tt".equals(nodeName) || "code".equals(nodeName) || "samp".equals(nodeName)
+                || "kbd".equals(nodeName)) {
+                    context.style.setFontName(COURIER_NEW_FONT);
+                    res = parent;
+                } else if ("h1".equals(nodeName)) {
+                    res = createHeading(parent, context, element, H1_FONT_SIZE);
+                } else if ("h2".equals(nodeName)) {
+                    res = createHeading(parent, context, element, H2_FONT_SIZE);
+                } else if ("h3".equals(nodeName)) {
+                    res = createHeading(parent, context, element, H3_FONT_SIZE);
+                } else if ("h4".equals(nodeName)) {
+                    res = createHeading(parent, context, element, H4_FONT_SIZE);
+                } else if ("h5".equals(nodeName)) {
+                    res = createHeading(parent, context, element, H5_FONT_SIZE);
+                } else if ("h6".equals(nodeName)) {
+                    res = createHeading(parent, context, element, H6_FONT_SIZE);
+                } else if (CENTER_TAG.equals(nodeName)) {
+                    res = createMParagraph(context, parent, element, null, null);
+                    res.setHAlignment(HAlignment.CENTER);
+                } else {
+                    res = parent;
+                }
 
         if (!isNumbering) {
             context.numbering = null;
@@ -1688,13 +1904,13 @@ public class M2DocHTMLParser extends Parser {
         } else if ("A".equals(typeStr)
             || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "upper-alpha")) {
                 type = STNumberFormat.UPPER_LETTER;
-            } else if ("a".equals(typeStr)
+            } else if (A_TAG.equals(typeStr)
                 || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-alpha")) {
                     type = STNumberFormat.LOWER_LETTER;
                 } else if ("I".equals(typeStr)
                     || CSS_PARSER.hasCSS(context.cssProperties, M2DocCSSParser.CSS_LIST_STYLE_TYPE, "upper-roman")) {
                         type = STNumberFormat.UPPER_ROMAN;
-                    } else if ("i".equals(typeStr) || CSS_PARSER.hasCSS(context.cssProperties,
+                    } else if (I_TAG.equals(typeStr) || CSS_PARSER.hasCSS(context.cssProperties,
                             M2DocCSSParser.CSS_LIST_STYLE_TYPE, "lower-roman")) {
                                 type = STNumberFormat.LOWER_ROMAN;
                             } else
