@@ -1132,7 +1132,7 @@ public final class M2DocUtils {
      * Creates a sample template {@link XWPFDocument}.
      * 
      * @param variableName
-     *            the varaible name
+     *            the variable name
      * @param eCls
      *            the variable {@link EClass}
      * @return the created sample template {@link XWPFDocument}

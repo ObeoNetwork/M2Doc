@@ -1920,9 +1920,13 @@ public class M2DocHTMLParser extends Parser {
                             type = STNumberFormat.NONE;
                         }
 
-        final long start;
+        long start;
         if (element.hasAttr("start")) {
-            start = Long.valueOf(element.attr("start"));
+            try {
+                start = Long.valueOf(element.attr("start"));
+            } catch (NumberFormatException e) {
+                start = 1;
+            }
         } else {
             start = 1;
         }

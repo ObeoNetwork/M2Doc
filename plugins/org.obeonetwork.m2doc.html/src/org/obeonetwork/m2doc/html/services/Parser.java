@@ -504,11 +504,17 @@ public abstract class Parser {
         } else {
             int pixels = getPixels(width);
             if (pixels == -1) {
-                pixels = Integer.valueOf(width);
+                try {
+                    pixels = Integer.valueOf(width);
+                } catch (NumberFormatException e) {
+                    pixels = -1;
+                }
             }
-            final double twipSize = pixels / (1d + 1d / 3d) * 20d;
-            mCell.setWidth((int) twipSize);
-            mCell.setWidthType(WidthType.DXA);
+            if (pixels != -1) {
+                final double twipSize = pixels / (1d + 1d / 3d) * 20d;
+                mCell.setWidth((int) twipSize);
+                mCell.setWidthType(WidthType.DXA);
+            }
         }
     }
 
@@ -525,10 +531,16 @@ public abstract class Parser {
         if (relativeHeight == -1) {
             int pixels = getPixels(height);
             if (pixels == -1) {
-                pixels = Integer.valueOf(height);
+                try {
+                    pixels = Integer.valueOf(height);
+                } catch (NumberFormatException e) {
+                    pixels = -1;
+                }
             }
-            row.setHeight(pixels * 10);
-            row.setHeightRule(HeightRule.AT_LEAST);
+            if (pixels != -1) {
+                row.setHeight(pixels * 10);
+                row.setHeightRule(HeightRule.AT_LEAST);
+            }
         }
     }
 
@@ -572,9 +584,15 @@ public abstract class Parser {
         } else {
             int pixels = getPixels(height);
             if (pixels == -1) {
-                pixels = Integer.valueOf(height);
+                try {
+                    pixels = Integer.valueOf(height);
+                } catch (NumberFormatException e) {
+                    pixels = -1;
+                }
             }
-            mImage.setHeight(pixels);
+            if (pixels != -1) {
+                mImage.setHeight(pixels);
+            }
         }
     }
 
@@ -593,9 +611,15 @@ public abstract class Parser {
         } else {
             int pixels = getPixels(width);
             if (pixels == -1) {
-                pixels = Integer.valueOf(width);
+                try {
+                    pixels = Integer.valueOf(width);
+                } catch (NumberFormatException e) {
+                    pixels = -1;
+                }
             }
-            mImage.setWidth(pixels);
+            if (pixels != -1) {
+                mImage.setWidth(pixels);
+            }
         }
     }
 
