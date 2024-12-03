@@ -118,6 +118,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumbering;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
@@ -1172,15 +1173,68 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     private XWPFParagraph insertMParagraph(IBody body, MParagraph paragraph, XWPFRun run) {
         final XWPFParagraph newParagraph = createNewParagraph(body, (XWPFParagraph) run.getParent());
 
+        setParagraphStyleName(paragraph, newParagraph);
+        setParagraphHAlignment(paragraph, newParagraph);
+        setParagraphNumbering(paragraph, newParagraph);
+        setParagraphMargins(paragraph, newParagraph);
+        setParagraphDirection(paragraph, newParagraph);
+        setParagraphBorders(paragraph, newParagraph);
+        setParagraphBackgroundColor(paragraph, newParagraph);
+
+        return insertObject(newParagraph, paragraph.getContents(), run);
+    }
+
+    /**
+     * Sets the style name of the given {@link XWPFParagraph} according to the given {@link MParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @param newParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void setParagraphStyleName(MParagraph paragraph, final XWPFParagraph newParagraph) {
         if (paragraph.getStyleName() != null) {
             newParagraph.setStyle(paragraph.getStyleName());
         }
+    }
+
+    /**
+     * Sets the horizontal alignment of the given {@link XWPFParagraph} according to the given {@link MParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @param newParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void setParagraphHAlignment(MParagraph paragraph, final XWPFParagraph newParagraph) {
         if (paragraph.getHAlignment() != null) {
             newParagraph.setAlignment(getHAllignment(paragraph.getHAlignment()));
         }
+    }
+
+    /**
+     * Sets the numbering of the given {@link XWPFParagraph} according to the given {@link MParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @param newParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void setParagraphNumbering(MParagraph paragraph, final XWPFParagraph newParagraph) {
         if (paragraph.getNumberingID() != null) {
             newParagraph.setNumID(BigInteger.valueOf(paragraph.getNumberingID()));
         }
+    }
+
+    /**
+     * Sets the margins of the given {@link XWPFParagraph} according to the given {@link MParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @param newParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void setParagraphMargins(MParagraph paragraph, final XWPFParagraph newParagraph) {
         if (paragraph.getNumberingLevel() != null) {
             newParagraph.getCTP().getPPr().getNumPr().addNewIlvl()
                     .setVal(BigInteger.valueOf(paragraph.getNumberingLevel()));
@@ -1210,32 +1264,46 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph.setSpacingAfter(paragraph.getMarginLeft() * 14);
             // CHECKSTYLE:ON
         }
-        if (paragraph.getTextDirection() == Dir.LTR) {
-            if (newParagraph.getCTP().getPPr() == null) {
-                newParagraph.getCTP().addNewPPr();
-            }
-            if (newParagraph.getCTP().getPPr().getBidi() == null) {
-                newParagraph.getCTP().getPPr().addNewBidi();
-            }
-            final CTOnOff value = CTOnOff.Factory.newInstance();
-            final STOnOff onOff = STOnOff.Factory.newInstance();
-            onOff.setStringValue("off");
-            value.xsetVal(onOff);
-            newParagraph.getCTP().getPPr().setBidi(value);
-        } else if (paragraph.getTextDirection() == Dir.RTL) {
-            if (newParagraph.getCTP().getPPr() == null) {
-                newParagraph.getCTP().addNewPPr();
-            }
-            if (newParagraph.getCTP().getPPr().getBidi() == null) {
-                newParagraph.getCTP().getPPr().addNewBidi();
-            }
-            final CTOnOff value = CTOnOff.Factory.newInstance();
-            final STOnOff onOff = STOnOff.Factory.newInstance();
-            onOff.setStringValue("on");
-            value.xsetVal(onOff);
-            newParagraph.getCTP().getPPr().setBidi(value);
-        }
+    }
 
+    /**
+     * Sets the background color of the given {@link XWPFParagraph} according to the given {@link MParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @param newParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void setParagraphBackgroundColor(MParagraph paragraph, final XWPFParagraph newParagraph) {
+        if (paragraph.getBackgroundColor() != null) {
+            final CTPPr ctppr;
+            if (newParagraph.getCTP().getPPr() != null) {
+                ctppr = newParagraph.getCTP().getPPr();
+            } else {
+                ctppr = newParagraph.getCTP().addNewPPr();
+            }
+            final CTShd ctshd;
+            if (ctppr.getShd() != null) {
+                ctshd = ctppr.getShd();
+            } else {
+                ctppr.addNewShd();
+                ctshd = ctppr.getShd();
+            }
+            ctshd.setVal(STShd.CLEAR);
+            ctshd.setColor("auto");
+            ctshd.setFill(hexColor(paragraph.getBackgroundColor()));
+        }
+    }
+
+    /**
+     * Sets the borders of the given {@link XWPFParagraph} according to the given {@link MParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @param newParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void setParagraphBorders(MParagraph paragraph, final XWPFParagraph newParagraph) {
         final MBorder leftBorder = paragraph.getLeftBorder();
         if (leftBorder != null) {
             newParagraph.setBorderLeft(leftBorder.getType().toPOI());
@@ -1288,8 +1356,42 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                         .setSz(BigInteger.valueOf(size * BORDER_SIZE_CONSTANT));
             }
         }
+    }
 
-        return insertObject(newParagraph, paragraph.getContents(), run);
+    /**
+     * Sets the direction of the given {@link XWPFParagraph} according to the given {@link MParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link MParagraph}
+     * @param newParagraph
+     *            the {@link XWPFParagraph}
+     */
+    private void setParagraphDirection(MParagraph paragraph, final XWPFParagraph newParagraph) {
+        if (paragraph.getTextDirection() == Dir.LTR) {
+            if (newParagraph.getCTP().getPPr() == null) {
+                newParagraph.getCTP().addNewPPr();
+            }
+            if (newParagraph.getCTP().getPPr().getBidi() == null) {
+                newParagraph.getCTP().getPPr().addNewBidi();
+            }
+            final CTOnOff value = CTOnOff.Factory.newInstance();
+            final STOnOff onOff = STOnOff.Factory.newInstance();
+            onOff.setStringValue("off");
+            value.xsetVal(onOff);
+            newParagraph.getCTP().getPPr().setBidi(value);
+        } else if (paragraph.getTextDirection() == Dir.RTL) {
+            if (newParagraph.getCTP().getPPr() == null) {
+                newParagraph.getCTP().addNewPPr();
+            }
+            if (newParagraph.getCTP().getPPr().getBidi() == null) {
+                newParagraph.getCTP().getPPr().addNewBidi();
+            }
+            final CTOnOff value = CTOnOff.Factory.newInstance();
+            final STOnOff onOff = STOnOff.Factory.newInstance();
+            onOff.setStringValue("on");
+            value.xsetVal(onOff);
+            newParagraph.getCTP().getPPr().setBidi(value);
+        }
     }
 
     /**

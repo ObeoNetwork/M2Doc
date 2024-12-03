@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.element;
 
-import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
 
@@ -231,21 +230,6 @@ public interface MTable extends MElement {
              */
             PCT
         }
-
-        /**
-         * Gets the background {@link Color}.
-         * 
-         * @return the background {@link Color} if any, <code>null</code> otherwise
-         */
-        Color getBackgroundColor();
-
-        /**
-         * Sets the background {@link Color}.
-         * 
-         * @param color
-         *            the new background {@link Color}
-         */
-        void setBackgroundColor(Color color);
 
         /**
          * Gets the {@link VAlignment vertical alignment}.

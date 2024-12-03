@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  *  
  *******************************************************************************/
 package org.obeonetwork.m2doc.element.impl;
+
+import java.awt.Color;
 
 import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MElementContainer;
@@ -30,6 +32,11 @@ public abstract class AbstractMElementContainer implements MElementContainer {
      * The horizontal alignemnt.
      */
     private HAlignment hAlign;
+
+    /**
+     * The background {@link Color}.
+     */
+    private Color backgroundColor;
 
     /**
      * Constructor.
@@ -59,6 +66,16 @@ public abstract class AbstractMElementContainer implements MElementContainer {
     @Override
     public void setHAlignment(HAlignment alignement) {
         hAlign = alignement;
+    }
+
+    @Override
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
+    public void setBackgroundColor(Color color) {
+        backgroundColor = color;
     }
 
 }

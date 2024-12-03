@@ -82,11 +82,6 @@ public class MTableImpl implements MTable {
     public static class MCellImpl extends AbstractMElementContainer implements MCell {
 
         /**
-         * The background {@link Color}.
-         */
-        private Color backgroundColor;
-
-        /**
          * The vertical alignment.
          */
         private VAlignment vAlign;
@@ -121,17 +116,7 @@ public class MTableImpl implements MTable {
          */
         public MCellImpl(MElement contents, Color backgroundColor) {
             super(contents);
-            this.backgroundColor = backgroundColor;
-        }
-
-        @Override
-        public Color getBackgroundColor() {
-            return backgroundColor;
-        }
-
-        @Override
-        public void setBackgroundColor(Color backgroundColor) {
-            this.backgroundColor = backgroundColor;
+            setBackgroundColor(backgroundColor);
         }
 
         @Override

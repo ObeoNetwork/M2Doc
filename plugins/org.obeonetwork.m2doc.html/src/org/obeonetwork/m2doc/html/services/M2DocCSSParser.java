@@ -244,9 +244,15 @@ public class M2DocCSSParser extends Parser {
     private static final int ALL_FONT_MODIFIERS_MASK = 0xFFFFFFFF;
 
     /**
+     * The {@link Pattern} that parse a CSS comment.
+     */
+    private static final Pattern CSS_COMMENT_PATTERN = Pattern.compile("/\\*.*?\\*/");
+
+    /**
      * The {@link Pattern} that parse a CSS class.
      */
-    private static final Pattern CSS_CLASS_PATTERN = Pattern.compile("([_a-zA-Z0-9.:]+\\s)+\\{([^\\}]*)\\}");
+    private static final Pattern CSS_CLASS_PATTERN = Pattern
+            .compile("(([_a-zA-Z0-9.:\\->,\\[\\]()\"=@^* #+~$\n\r]+\\s)+)\\{([^\\}]*)\\}");
 
     /**
      * The class name group from {@link #CSS_CLASS_PATTERN}.
@@ -256,7 +262,7 @@ public class M2DocCSSParser extends Parser {
     /**
      * The CSS styles group from {@link #CSS_CLASS_PATTERN}.
      */
-    private static final int CSS_CLASS_PATTERN_CSS_STYLES_GROUP = 2;
+    private static final int CSS_CLASS_PATTERN_CSS_STYLES_GROUP = 3;
 
     /**
      * The bold threshold for font weight.
@@ -267,6 +273,11 @@ public class M2DocCSSParser extends Parser {
      * Regular expression spaces match.
      */
     private static final String REG_EXP_SPACES = "\\s+";
+
+    /**
+     * The expression separating CSS class definition.
+     */
+    private static final String CLASS_DEFINITION_SEPARATOR = ",";
 
     /**
      * The style attribute.
@@ -283,16 +294,54 @@ public class M2DocCSSParser extends Parser {
     public Map<String, Map<String, List<String>>> parseClasses(String cssClasses) {
         Map<String, Map<String, List<String>>> res = new LinkedHashMap<>();
 
-        final Matcher matcher = CSS_CLASS_PATTERN.matcher(cssClasses);
+        final String cssNoComments = CSS_COMMENT_PATTERN.matcher(cssClasses).replaceAll("");
+        final String cssNoAtRule = removeAtRules(cssNoComments);
+
+        final Matcher matcher = CSS_CLASS_PATTERN.matcher(cssNoAtRule);
         while (matcher.find()) {
             final String classNames = matcher.group(CSS_CLASS_PATTERN_NAME_GROUP);
-            for (String className : classNames.split(REG_EXP_SPACES)) {
-                final Map<String, List<String>> styles = parseStyles(matcher.group(CSS_CLASS_PATTERN_CSS_STYLES_GROUP));
-                res.computeIfAbsent(className, n -> new LinkedHashMap<String, List<String>>()).putAll(styles);
+            final Map<String, List<String>> styles = parseStyles(matcher.group(CSS_CLASS_PATTERN_CSS_STYLES_GROUP));
+            for (String name : classNames.split(CLASS_DEFINITION_SEPARATOR)) {
+                final String className = name.trim();
+                if (className != null && !className.isEmpty()) {
+                    res.computeIfAbsent(className.trim(), n -> new LinkedHashMap<String, List<String>>())
+                            .putAll(styles);
+                }
             }
         }
 
         return res;
+    }
+
+    /**
+     * Removes @ rules (@media, @scope, ...) form the given CSS.
+     * 
+     * @param cssNoComments
+     *            the CSS without comment
+     * @return the CSS without @ rules
+     */
+    private String removeAtRules(String cssNoComments) {
+        final StringBuilder res = new StringBuilder();
+
+        boolean inAtRule = false;
+        int curlyBraceDepth = 0;
+        for (int i = 0; i < cssNoComments.length(); i++) {
+            final char current = cssNoComments.charAt(i);
+            if (current == '@') {
+                inAtRule = true;
+            } else if (inAtRule) {
+                if (current == '{') {
+                    curlyBraceDepth++;
+                } else if (current == '}') {
+                    curlyBraceDepth--;
+                    inAtRule = curlyBraceDepth > 0;
+                }
+            } else {
+                res.append(current);
+            }
+        }
+
+        return res.toString();
     }
 
     /**
@@ -519,9 +568,9 @@ public class M2DocCSSParser extends Parser {
         final List<String> cssFontSizes = cssProperties.get(CSS_FONT_SIZE);
         if (cssFontSizes != null) {
             for (String cssFontSize : cssFontSizes) {
-                final int pixelSize = getPixels(cssFontSize);
-                if (pixelSize != -1) {
-                    mStyle.setFontSize(pixelSize);
+                final int fontSize = fontSizeToPoint(cssFontSize);
+                if (fontSize != -1) {
+                    mStyle.setFontSize(fontSize);
                 }
             }
         }
@@ -560,18 +609,7 @@ public class M2DocCSSParser extends Parser {
      *            the {@link MCell}
      */
     public void setStyle(Map<String, List<String>> cssProperties, MCell mCell) {
-        final List<String> cssBackgroundColors = cssProperties.get(CSS_BACKGROUND_COLOR);
-        if (cssBackgroundColors != null) {
-            for (String cssBackgroundColor : cssBackgroundColors) {
-                mCell.setBackgroundColor(htmlToColor(cssBackgroundColor));
-            }
-        }
-        final List<String> cssBackgrounds = cssProperties.get(CSS_BACKGROUND);
-        if (cssBackgrounds != null) {
-            for (String cssBackground : cssBackgrounds) {
-                mCell.setBackgroundColor(htmlToColor(cssBackground));
-            }
-        }
+        setContainerBackgroundColor(cssProperties, mCell);
         final List<String> cssWidths = cssProperties.get(CSS_WIDTH);
         if (cssWidths != null) {
             for (String cssWidth : cssWidths) {
@@ -579,6 +617,29 @@ public class M2DocCSSParser extends Parser {
             }
         }
         setContainerStyle(cssProperties, mCell);
+    }
+
+    /**
+     * Sets the given {@link MElementContainer} {@link MElementContainer#getBackgroundColor() background color}.
+     * 
+     * @param cssProperties
+     *            the CSS properties
+     * @param mContainer
+     *            the {@link MElementContainer}
+     */
+    public void setContainerBackgroundColor(Map<String, List<String>> cssProperties, MElementContainer mContainer) {
+        final List<String> cssBackgroundColors = cssProperties.get(CSS_BACKGROUND_COLOR);
+        if (cssBackgroundColors != null) {
+            for (String cssBackgroundColor : cssBackgroundColors) {
+                mContainer.setBackgroundColor(htmlToColor(cssBackgroundColor));
+            }
+        }
+        final List<String> cssBackgrounds = cssProperties.get(CSS_BACKGROUND);
+        if (cssBackgrounds != null) {
+            for (String cssBackground : cssBackgrounds) {
+                mContainer.setBackgroundColor(htmlToColor(cssBackground));
+            }
+        }
     }
 
     /**

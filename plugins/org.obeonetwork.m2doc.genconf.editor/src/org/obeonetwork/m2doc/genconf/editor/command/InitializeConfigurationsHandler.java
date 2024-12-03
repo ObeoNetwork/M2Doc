@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.editor.GenconfEditorLauncher;
 
 /**
- * Initialize configurations for documention generation.
+ * Initialize configurations for documentation generation.
  * 
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */

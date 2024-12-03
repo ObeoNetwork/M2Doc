@@ -106,7 +106,7 @@ public abstract class Parser {
     /**
      * The font size regex.
      */
-    private static final Pattern FONT_SIZE_PATTERN = Pattern.compile("([0-9]+(\\.[0-9]+)?)(pt)?");
+    private static final Pattern FONT_SIZE_PATTERN = Pattern.compile("([0-9]+(\\.[0-9]+)?)(pt|px|em|%)?");
 
     /**
      * The value group for {@link #FONT_SIZE_PATTERN}.
@@ -365,7 +365,7 @@ public abstract class Parser {
             final String unit = matcher.group(FONT_SIZE_PATTERN_UNIT_GROUP);
 
             if (unit == null || "pt".equals(unit)) {
-                // CHECKSTYLE:OFF
+                // CHECKSTYLE:OFF unit conversion
                 switch ((int) value) {
                     case 1:
                         res = 7;
@@ -395,6 +395,12 @@ public abstract class Parser {
                         res = 36;
                         break;
                 }
+            } else if ("px".equals(unit)) {
+                res = (int) (0.75d * value);
+            } else if ("em".equals(unit)) {
+                res = (int) (value * Double.valueOf(DEFAULT_FONT_SIZE));
+            } else if ("%".equals(unit)) {
+                res = (int) ((value / 100d) * Double.valueOf(DEFAULT_FONT_SIZE));
             } else {
                 res = -1;
             }
@@ -402,7 +408,6 @@ public abstract class Parser {
         } else {
             res = -1;
         }
-        // CHECKSTYLE:ON
 
         return res;
     }

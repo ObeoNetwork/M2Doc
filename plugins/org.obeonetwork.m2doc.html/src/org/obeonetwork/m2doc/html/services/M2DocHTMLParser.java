@@ -103,6 +103,10 @@ public class M2DocHTMLParser extends Parser {
      */
     private static final String BR_TAG = "br";
 
+    /**
+     * The {@link Set} of <br>
+     * continue tags.
+     */
     private static final Set<String> BR_CONTINUE_TAGS = initializeBrContinueTags();
 
     /**
@@ -214,6 +218,11 @@ public class M2DocHTMLParser extends Parser {
      * The center HTML tag.
      */
     private static final String CENTER_TAG = "center";
+
+    /**
+     * The pre HTML tag.
+     */
+    private static final String PRE_TAG = "pre";
 
     /**
      * Courier New font.
@@ -1481,7 +1490,11 @@ public class M2DocHTMLParser extends Parser {
     private String text(TextNode textNode) {
         final String string = textNode.getWholeText();
         StringBuilder sb = new StringBuilder(string.length());
-        appendNormalisedWhitespace(sb, string, false);
+        if (PRE_TAG.equals(textNode.parent().nodeName())) {
+            sb.append(string);
+        } else {
+            appendNormalisedWhitespace(sb, string, false);
+        }
         return sb.toString();
     }
 
@@ -1549,6 +1562,9 @@ public class M2DocHTMLParser extends Parser {
         boolean isNumbering = false;
         if (P_TAG.equals(nodeName)) {
             res = createMParagraph(context, parent, element, null, null);
+        } else if (PRE_TAG.equals(nodeName)) {
+            res = createMParagraph(context, parent, element, null, null);
+            CSS_PARSER.setContainerBackgroundColor(context.cssProperties, (MParagraph) res);
         } else if (BLOCKQUOTE_TAG.equals(nodeName)) {
             if (element.childNodeSize() > 0 && element.childNode(0) instanceof TextNode) {
                 TextNode textNode = (TextNode) element.childNode(0);

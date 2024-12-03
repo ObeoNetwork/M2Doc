@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  *  
  *******************************************************************************/
 package org.obeonetwork.m2doc.element;
+
+import java.awt.Color;
 
 /**
  * A container for {@link MElement}.
@@ -106,5 +108,20 @@ public interface MElementContainer {
      *            the new {@link HAlignment horizontal alignment}
      */
     void setHAlignment(HAlignment alignment);
+
+    /**
+     * Gets the background {@link Color}.
+     * 
+     * @return the background {@link Color} if any, <code>null</code> otherwise
+     */
+    Color getBackgroundColor();
+
+    /**
+     * Sets the background {@link Color}.
+     * 
+     * @param color
+     *            the new background {@link Color}, <code>null</code> for default
+     */
+    void setBackgroundColor(Color color);
 
 }
