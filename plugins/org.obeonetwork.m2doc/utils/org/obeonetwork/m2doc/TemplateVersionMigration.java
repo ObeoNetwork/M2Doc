@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2022 Obeo. 
+ *  Copyright (c) 2022, 2024 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ public final class TemplateVersionMigration {
                             uri)) {
                         TemplateCustomProperties properties = new TemplateCustomProperties(xwpfDocument);
                         // TODO update version number
-                        if ("3.2.2".equals(properties.getM2DocVersion())) {
+                        if ("3.3.3".equals(properties.getM2DocVersion())) {
                             properties.setM2DocVersion(M2DocUtils.VERSION);
                             properties.save();
                             POIServices.getInstance().saveFile(URIConverter.INSTANCE, xwpfDocument, uri);

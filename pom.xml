@@ -16,7 +16,7 @@
   </prerequisites>
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>org.obeonetwork.m2doc.parent</artifactId>
-  <version>3.3.3-SNAPSHOT</version>
+  <version>3.3.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -421,7 +421,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-rcptt</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -473,7 +473,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2024-03</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -503,7 +503,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2022-12</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -533,7 +533,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2021-12</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -563,7 +563,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2021-09</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -593,7 +593,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2021-06</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -623,7 +623,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2021-03</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -653,7 +653,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2020-12</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -683,7 +683,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2020-09</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -713,7 +713,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2020-06</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -743,7 +743,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2020-03</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -773,7 +773,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2019-12</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -803,7 +803,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2019-09</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -833,7 +833,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2019-06</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -863,7 +863,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2019-03</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -893,7 +893,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2018-12</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -923,7 +923,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2018-09</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -953,7 +953,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-photon</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -983,7 +983,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-oxygen</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1015,7 +1015,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-7.4.2</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1045,7 +1045,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-7.4.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1075,7 +1075,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-7.2.1</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1105,7 +1105,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-7.1.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1135,7 +1135,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-7.0.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1165,7 +1165,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.6.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1195,7 +1195,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.5.1</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1225,7 +1225,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.5.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1255,7 +1255,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.4.x</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1285,7 +1285,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.4.1</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1315,7 +1315,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.4.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1345,7 +1345,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.3.5</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1375,7 +1375,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.2.2</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1405,7 +1405,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.1.3</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1435,7 +1435,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.1.1</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1465,7 +1465,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.1.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1495,7 +1495,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-6.0.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1525,7 +1525,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-sirius-5.1.1</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1557,7 +1557,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-7.0.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1587,7 +1587,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-6.1.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1617,7 +1617,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-6.0.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1647,7 +1647,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-5.2.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1677,7 +1677,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-5.1.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1707,7 +1707,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-5.0.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1737,7 +1737,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-1.4.2</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1767,7 +1767,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-1.4.1</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>
@@ -1797,7 +1797,7 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-capella-1.4.0</artifactId>
-                  <version>3.3.3-SNAPSHOT</version>
+                  <version>3.3.4-SNAPSHOT</version>
                 </artifact>
               </target>
             </configuration>

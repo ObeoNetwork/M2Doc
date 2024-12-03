@@ -14,11 +14,11 @@
     <groupId>org.obeonetwork.m2doc</groupId>
     <artifactId>org.obeonetwork.m2doc.parent</artifactId>
     <relativePath>../..</relativePath>
-    <version>3.3.3-SNAPSHOT</version>
+    <version>3.3.4-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.obeonetwork.m2doc.rcptt</artifactId>
-  <version>3.3.3-SNAPSHOT</version>
+  <version>3.3.4-SNAPSHOT</version>
 
   <packaging>rcpttTest</packaging>
 
