@@ -19,7 +19,7 @@ location Eclipse "https://download.eclipse.org/releases/2024-03" {
 	org.junit [4.0.0,5.0.0)
 	org.eclipse.jdt.feature.group lazy
 
-    // for testing purpose only
+	// for testing purpose only
 	org.eclipse.uml2.feature.group lazy
 	org.eclipse.pde.feature.group lazy
 
@@ -36,7 +36,6 @@ location Eclipse "https://download.eclipse.org/releases/2024-03" {
 	// AQL
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.source.feature.group lazy
-	org.antlr.runtime [4.7.2,4.7.3)
 
 	// wikitext
 	org.eclipse.mylyn.wikitext [4.2.0,5.0.0)
@@ -58,17 +57,17 @@ location Eclipse2023-03 "https://download.eclipse.org/releases/2023-03" {
 }
 
 location GMF-Notation-1.13.1 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202211151334" {
-    org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
+	org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
 }
 
 location GMF-Runtime-1.16.3 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/milestones/S202401081627/" {
-    org.eclipse.gmf.runtime.sdk.feature.group lazy
-    org.eclipse.gmf.runtime.thirdparty.feature.group lazy
+	org.eclipse.gmf.runtime.sdk.feature.group lazy
+	org.eclipse.gmf.runtime.thirdparty.feature.group lazy
 
-    org.apache.batik.ext [1.17.0,1.17.1)
-    org.apache.batik.codec [1.17.0,1.17.1)
-    org.apache.batik.bridge [1.17.0,1.17.1)
-    org.apache.batik.script [1.17.0,1.17.1)
+	org.apache.batik.ext [1.17.0,1.17.1)
+	org.apache.batik.codec [1.17.0,1.17.1)
+	org.apache.batik.bridge [1.17.0,1.17.1)
+	org.apache.batik.script [1.17.0,1.17.1)
 
 	org.apache.batik.transcoder [1.17.0,1.17.1)
 	org.apache.batik.util [1.17.0,1.17.1)
@@ -87,9 +86,9 @@ location GMF-Runtime-1.16.3 "https://download.eclipse.org/modeling/gmp/gmf-runti
 }
 
 location GEF-Classic  "https://download.eclipse.org/tools/gef/classic/releases/3.17.0" {
-    org.eclipse.gef.feature.group lazy
-    org.eclipse.gef.sdk.feature.group lazy
-    org.eclipse.draw2d.sdk.feature.group lazy
+	org.eclipse.gef.feature.group lazy
+	org.eclipse.gef.sdk.feature.group lazy
+	org.eclipse.draw2d.sdk.feature.group lazy
 }
 
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
@@ -103,6 +102,9 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R201809052019
 
 location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
+
+	// AQL
+	org.antlr.runtime [4.7.2,4.7.3)
 }
 
 location CDO "https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126/" {
@@ -111,7 +113,7 @@ location CDO "https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126
 }
 
 location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.30.0/" {
-    // for testing purpose only
+	// for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.30.0,2.31.0)
 }
 

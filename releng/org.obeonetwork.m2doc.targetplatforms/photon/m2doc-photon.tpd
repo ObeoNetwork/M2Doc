@@ -21,7 +21,7 @@ location Eclipse "https://download.eclipse.org/releases/photon" {
 	org.eclipse.gmf.runtime.diagram.ui.render lazy
 	org.eclipse.jdt.feature.group lazy
 
-    // for testing purpose only
+	// for testing purpose only
 	org.eclipse.uml2.feature.group lazy
 	org.eclipse.pde.feature.group lazy
 
@@ -71,6 +71,6 @@ location CDO "https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7
 }
 
 location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.16.0/" {
-    // for testing purpose only
+	// for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.16.0,2.17.0)
 }

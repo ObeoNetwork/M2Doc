@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc 2024-03 Target Platform" sequenceNumber="1726041396">
+<target name="M2Doc 2024-03 Target Platform" sequenceNumber="1733240843">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -30,7 +30,6 @@
       <unit id="org.apache.xerces" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.source.feature.group" version="0.0.0"/>
-      <unit id="org.antlr.runtime" version="4.7.2.v20221112-0806"/>
       <unit id="org.eclipse.mylyn.wikitext" version="4.2.0.v20240302-0923"/>
       <unit id="org.eclipse.mylyn.wikitext.asciidoc" version="4.2.0.v20240227-1539"/>
       <unit id="org.eclipse.mylyn.wikitext.confluence" version="4.2.0.v20240302-0923"/>
@@ -93,6 +92,7 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.apache.poi.feature.feature.group" version="0.0.0"/>
+      <unit id="org.antlr.runtime" version="4.7.2.v20221112-9999"/>
       <repository id="ObeoNetworkBits" location="https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">

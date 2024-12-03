@@ -25,14 +25,11 @@ location Eclipse "https://download.eclipse.org/releases/2022-12" {
 	org.w3c.dom.smil lazy
 	org.w3c.css.sac lazy
 
-    // for testing purpose only
+	// for testing purpose only
 	org.eclipse.uml2.feature.group lazy
 	org.eclipse.pde.feature.group lazy
 
 	org.apache.xerces lazy
-
-	// AQL
-	org.antlr.runtime [4.7.2,4.7.3)
 
 	// wikitext
 	org.eclipse.mylyn.wikitext [3.0.0,3.1.0)
@@ -61,10 +58,10 @@ location "https://download.eclipse.org/sirius/updates/releases/7.1.0/2021-06/" {
 }
 
 location Orbit-202212 "https://download.eclipse.org/tools/orbit/downloads/drops/R20221123021534/repository/" {
-    org.apache.batik.ext [1.16.0,1.16.1)
-    org.apache.batik.codec [1.16.0,1.16.1)
-    org.apache.batik.bridge [1.16.0,1.16.1)
-    org.apache.batik.script [1.16.0,1.16.1)
+	org.apache.batik.ext [1.16.0,1.16.1)
+	org.apache.batik.codec [1.16.0,1.16.1)
+	org.apache.batik.bridge [1.16.0,1.16.1)
+	org.apache.batik.script [1.16.0,1.16.1)
 
 	org.apache.batik.transcoder [1.16.0,1.16.1)
 	org.apache.batik.util [1.16.0,1.16.1)
@@ -93,6 +90,9 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R201809052019
 
 location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
+
+	// AQL
+	org.antlr.runtime [4.7.2,4.7.3)
 }
 
 location CDO "https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/" {
@@ -101,7 +101,7 @@ location CDO "https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7
 }
 
 location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.29.0/" {
-    // for testing purpose only
+	// for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.29.0,2.30.0)
 }
 
