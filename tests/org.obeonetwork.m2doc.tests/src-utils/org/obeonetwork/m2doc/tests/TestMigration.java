@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -64,6 +65,7 @@ public class TestMigration {
             } else if (child.getName().endsWith(".docx")) {
                 final URI uri = URI.createFileURI(child.getAbsolutePath());
                 if (!isEmpty(uri)) {
+                    ZipSecureFile.setMinInflateRatio(0.002);
                     try (XWPFDocument xwpfDocument = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                             uri)) {
                         TemplateCustomProperties properties = new TemplateCustomProperties(xwpfDocument);
