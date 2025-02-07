@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.genconf;singleton:=true
-Bundle-Version: 3.3.4.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -13,7 +13,7 @@ Export-Package: org.obeonetwork.m2doc.genconf,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.acceleo.query;bundle-version="[6.0.1,8.0.0)",
- org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.1)",
  org.eclipse.emf.ecore.xmi,
  org.obeonetwork.m2doc.ide,
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",

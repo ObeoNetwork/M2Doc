@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="m2doc" uid="org.obeonetwork.m2doc.product" id="org.obeonetwork.m2doc.launcher.M2DocLauncherProduct" application="org.obeonetwork.m2doc.launcher.M2DocLauncher" version="3.3.4.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="m2doc" uid="org.obeonetwork.m2doc.product" id="org.obeonetwork.m2doc.launcher.M2DocLauncherProduct" application="org.obeonetwork.m2doc.launcher.M2DocLauncher" version="4.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>

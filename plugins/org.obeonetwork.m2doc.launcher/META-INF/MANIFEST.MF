@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.launcher;singleton:=true
-Bundle-Version: 3.3.4.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.kohsuke.args4j;bundle-version="2.0.21",
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  org.obeonetwork.m2doc;bundle-version="0.10.0",
  org.obeonetwork.m2doc.genconf;bundle-version="0.10.0",
- org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.1)",
  org.eclipse.equinox.common,
  org.eclipse.core.runtime
 Bundle-Activator: org.obeonetwork.m2doc.launcher.internal.M2DocLauncherPlugin$Implementation

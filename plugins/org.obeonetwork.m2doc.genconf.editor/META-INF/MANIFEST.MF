@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.genconf.editor;singleton:=true
-Bundle-Version: 3.3.4.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -18,18 +18,18 @@ Export-Package: org.obeonetwork.m2doc.genconf.editor,
  org.obeonetwork.m2doc.genconf.propertyTester
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
- org.obeonetwork.m2doc.genconf.edit;bundle-version="[3.0.0,4.0.0)",
- org.obeonetwork.m2doc.genconf;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc.genconf.edit;bundle-version="[3.0.0,4.0.1)",
+ org.obeonetwork.m2doc.genconf;bundle-version="[3.0.0,4.0.1)",
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
  org.eclipse.acceleo.query;bundle-version="[6.0.1,8.0.0)",
- org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.0)",
- org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.1)",
+ org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.1)",
  org.eclipse.core.expressions,
  org.eclipse.emf.transaction,
- org.obeonetwork.m2doc.ide.ui;bundle-version="[3.0.0,4.0.0)",
+ org.obeonetwork.m2doc.ide.ui;bundle-version="[3.0.0,4.0.1)",
  org.apache.poi,
  org.eclipse.swt,
  org.eclipse.jface.text,
