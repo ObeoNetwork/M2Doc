@@ -4,10 +4,10 @@ Bundle-Name: %pluginName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.obeonetwork.m2doc.html.ide;singleton:=true
 Bundle-Version: 4.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.1)",
- org.obeonetwork.m2doc.ide;bundle-version="[3.0.0,4.0.1)",
- org.obeonetwork.m2doc.html;bundle-version="[3.0.0,4.0.1)",
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
+ org.obeonetwork.m2doc.ide;bundle-version="[4.0.0,5.0.0)",
+ org.obeonetwork.m2doc.html;bundle-version="[4.0.0,5.0.0)",
  org.eclipse.acceleo.query;bundle-version="[6.0.1,8.0.0)",
  org.obeonetwork.m2doc.genconf,
  org.apache.poi;bundle-version="[5.2.3,5.2.4)"

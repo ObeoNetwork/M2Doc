@@ -6,14 +6,14 @@ Bundle-Version: 4.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.obeonetwork.m2doc.genconf,
  org.obeonetwork.m2doc.genconf.impl,
  org.obeonetwork.m2doc.genconf.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.acceleo.query;bundle-version="[6.0.1,8.0.0)",
- org.obeonetwork.m2doc;bundle-version="[3.0.0,4.0.1)",
+ org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
  org.eclipse.emf.ecore.xmi,
  org.obeonetwork.m2doc.ide,
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",
