@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.obeonetwork.m2doc.tests.generator.GeneratorTests;
+import org.obeonetwork.m2doc.tests.migration.MigrationTests;
 import org.obeonetwork.m2doc.tests.parser.ParserTests;
 import org.obeonetwork.m2doc.tests.properties.PropertiesTests;
 import org.obeonetwork.m2doc.tests.services.ServicesTests;
@@ -29,7 +30,8 @@ import org.obeonetwork.m2doc.tests.userdoc.UserdocTests;
 @SuiteClasses(value = {GeneratorTests.class, ParserTests.class, PropertiesTests.class, ServicesTests.class,
     UserdocTests.class, BookmarkTests.class, CommentTests.class, ConditionalTests.class, LetTests.class,
     QueryTests.class, UML2Tests.class, XTextTests.class, RepetitionTests.class, StaticTests.class, UserDocTests.class,
-    M2DocUtilsTests.class, MTableTests.class, MListTests.class, MParagraphTests.class, TemplateTests.class })
+    M2DocUtilsTests.class, MTableTests.class, MListTests.class, MParagraphTests.class, TemplateTests.class,
+    MigrationTests.class })
 public class AllTests {
 
 }

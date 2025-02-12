@@ -56,6 +56,9 @@ import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.generator.M2DocEvaluator;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.generator.TemplateValidationGenerator;
+import org.obeonetwork.m2doc.migrator.IM2DocMigrator;
+import org.obeonetwork.m2doc.migrator.M2Doc4Migrator;
+import org.obeonetwork.m2doc.migrator.Version;
 import org.obeonetwork.m2doc.parser.BodyGeneratedParser;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.M2DocParser;
@@ -1145,6 +1148,81 @@ public final class M2DocUtils {
             throws InvalidFormatException, IOException {
         final SampleTemplateGenerator generator = new SampleTemplateGenerator();
         return generator.generate(variableName, eCls);
+    }
+
+    /**
+     * Migrates the template at the given {@link URI} to the output {@link URI}.
+     * 
+     * @param uriConverter
+     *            the {@link URIConverter uri converter} to use.
+     * @param templateURI
+     *            {@link URI} for the template to migrate
+     * @param outputURI
+     *            the output {@link URI}
+     * @param monitor
+     *            used to track the progress will generating
+     * @return the {@link List} of {@link TemplateValidationMessage}
+     * @throws DocumentParserException
+     *             if the migration fails
+     */
+    public static List<TemplateValidationMessage> migrate(URIConverter uriConverter, URI templateURI, URI outputURI,
+            Monitor monitor) throws DocumentParserException {
+        final List<TemplateValidationMessage> result = new ArrayList<>();
+
+        monitor.beginTask("Migrating " + templateURI, TOTAL_PARSE_MONITOR_WORK + LOAD_TEMPLATE_MONITOR_WORK);
+        monitor.subTask("Loading template");
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
+            nextSubTask(monitor, LOAD_TEMPLATE_MONITOR_WORK, "Parsing template custom properties");
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            if (properties.getM2DocVersion() != null) {
+                final Version templateVersion = new Version(properties.getM2DocVersion());
+                final List<IM2DocMigrator> migrators = new ArrayList<>();
+                if (new Version("4.0.0").compareTo(templateVersion) > 0) {
+                    migrators.add(new M2Doc4Migrator());
+                }
+
+                final int unitOfWork = PARSE_TEMPLATE_MONITOR_WORK
+                    / (1 + document.getFooterList().size() + document.getHeaderList().size());
+
+                nextSubTask(monitor, PARSE_TEMPLATE_CUSTOM_PROPERTIES_MONITOR_WORK, "Parsing template body");
+
+                for (IM2DocMigrator migrator : migrators) {
+                    migrator.migrate(document);
+                }
+
+                nextSubTask(monitor, unitOfWork, "Migrating template footers");
+
+                for (XWPFFooter footer : document.getFooterList()) {
+                    for (IM2DocMigrator migrator : migrators) {
+                        migrator.migrate(footer);
+                    }
+
+                    monitor.worked(unitOfWork);
+                }
+
+                nextSubTask(monitor, 0, "Migrating template headers");
+
+                for (XWPFHeader header : document.getHeaderList()) {
+                    for (IM2DocMigrator migrator : migrators) {
+                        migrator.migrate(header);
+                    }
+
+                    monitor.worked(unitOfWork);
+                }
+
+                nextSubTask(monitor, 0, "Save template " + outputURI);
+
+                properties.setM2DocVersion(VERSION);
+                properties.save();
+                POIServices.getInstance().saveFile(uriConverter, document, outputURI);
+            }
+        } catch (IOException e) {
+            throw new DocumentParserException("Unable to open " + templateURI + " or save " + outputURI, e);
+        } finally {
+            monitor.done();
+        }
+
+        return result;
     }
 
 }
