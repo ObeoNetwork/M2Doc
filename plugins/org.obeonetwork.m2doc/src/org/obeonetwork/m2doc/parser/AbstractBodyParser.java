@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public abstract class AbstractBodyParser {
     /**
      * {@link IQueryBuilderEngine} used to parse AQL queries.
      */
-    protected IQueryBuilderEngine queryParser;
+    protected final IQueryBuilderEngine queryParser;
 
     /**
      * The {@link IQueryEnvironment}.
@@ -86,11 +86,7 @@ public abstract class AbstractBodyParser {
      *            the query environment to used during parsing.
      */
     public AbstractBodyParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
-        this.document = inputDocument;
-        runIterator = new TokenProvider(inputDocument);
-        this.queryParser = AQL56Compatibility.createQueryBuilderEngine(queryEnvironment);
-        this.queryEnvironment = queryEnvironment;
-        this.fieldUtils = new FieldUtils();
+        this(inputDocument, AQL56Compatibility.createQueryBuilderEngine(queryEnvironment), queryEnvironment);
     }
 
     /**
