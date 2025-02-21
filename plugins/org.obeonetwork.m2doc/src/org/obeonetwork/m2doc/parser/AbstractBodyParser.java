@@ -101,7 +101,7 @@ public abstract class AbstractBodyParser {
     protected AbstractBodyParser(IBody inputDocument, IQueryBuilderEngine queryParser,
             IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
-        runIterator = new TokenProvider(inputDocument);
+        runIterator = new TokenProvider(new TokenIterator(inputDocument));
         this.queryParser = queryParser;
         this.queryEnvironment = queryEnvironment;
         this.fieldUtils = new FieldUtils();
