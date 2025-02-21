@@ -42,7 +42,6 @@ import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
-import static org.obeonetwork.m2doc.util.FieldUtils.readUpInstrText;
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
 
 /**
@@ -227,7 +226,7 @@ public abstract class AbstractBodyParser {
             if (fieldUtils.isFieldEnd(run)) {
                 break;
             }
-            final String runText = readUpInstrText(run).toString();
+            final String runText = fieldUtils.readUpInstrText(run);
             result.append(runText);
             // the style run hasn't been discovered yet.
             if (styleRun == null) {

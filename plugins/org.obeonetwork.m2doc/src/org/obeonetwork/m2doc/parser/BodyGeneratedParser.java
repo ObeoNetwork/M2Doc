@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -80,7 +80,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         final XWPFRun run = token.getRun();
         // is run a field begin run
         if (fieldUtils.isFieldBegin(run)) {
-            String type = getType(fieldUtils.lookAheadTag(runIterator));
+            String type = getType(fieldUtils.lookAheadFieldTag(runIterator));
             if (type == null) {
                 result = TokenType.STATIC;
             } else if (type.equals(TokenType.ENDUSERCONTENT.getValue())) {

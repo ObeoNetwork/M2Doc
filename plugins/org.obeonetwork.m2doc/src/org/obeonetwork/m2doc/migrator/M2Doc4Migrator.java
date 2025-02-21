@@ -76,7 +76,7 @@ public class M2Doc4Migrator implements IM2DocMigrator {
             if (inField) {
                 fieldRuns.add(run);
                 if (!isM2DocInstruction) {
-                    final String runInstructionText = FieldUtils.readUpInstrText(run).toString();
+                    final String runInstructionText = FIELD_UTILS.readUpInstrText(run);
                     if (!runInstructionText.isEmpty()) {
                         instructionText.append(runInstructionText);
                         isM2DocInstruction = instructionText.indexOf(M2DocUtils.M) > -1;
@@ -111,7 +111,7 @@ public class M2Doc4Migrator implements IM2DocMigrator {
         XWPFRun lastRun = null;
         boolean isFirstRun = true;
         for (XWPFRun run : fieldRuns) {
-            final String instructionText = FieldUtils.readUpInstrText(run).toString();
+            final String instructionText = FIELD_UTILS.readUpInstrText(run);
             if (FIELD_UTILS.isFieldBegin(run) || FIELD_UTILS.isFieldEnd(run)
                 || FIELD_UTILS.isFieldSeparate(run.getCTR()) || instructionText.isBlank()) {
                 final int index = paragraph.getRuns().indexOf(run);

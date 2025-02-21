@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -64,7 +64,7 @@ public class FieldUtils {
      *            run iterator
      * @return the complete text of the current field.
      */
-    public String lookAheadTag(final TokenProvider runIterator) {
+    public String lookAheadFieldTag(final TokenProvider runIterator) {
         int i = 1;
         // first run must begin a field.
         XWPFRun run = runIterator.lookAhead(i).getRun();
@@ -233,12 +233,12 @@ public class FieldUtils {
      *            the run to read.
      * @return the aggregated instruction text of the run
      */
-    public static StringBuilder readUpInstrText(XWPFRun run) {
+    public String readUpInstrText(XWPFRun run) {
         List<CTText> texts = run.getCTR().getInstrTextList();
         StringBuilder runBuilder = new StringBuilder();
         for (CTText text : texts) {
             runBuilder.append(text.getStringValue());
         }
-        return runBuilder;
+        return runBuilder.toString();
     }
 }

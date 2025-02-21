@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -35,7 +35,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.eclipse.acceleo.query.ast.AstPackage;
-import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
@@ -129,7 +128,7 @@ public class M2DocParser extends AbstractBodyParser {
         final XWPFRun run = token.getRun();
         // is run a field begin run
         if (fieldUtils.isFieldBegin(run)) {
-            final String type = getType(fieldUtils.lookAheadTag(runIterator));
+            final String type = getType(fieldUtils.lookAheadFieldTag(runIterator));
             if (type == null) {
                 result = TokenType.STATIC;
             } else if (type.equals(TokenType.FOR.getValue())) {
@@ -396,8 +395,7 @@ public class M2DocParser extends AbstractBodyParser {
             final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
             query.getValidationMessages().addAll(getValidationMessage(diagnostic, queryText, lastRun));
 
-            query.setQuery(new AstResult(null, new HashMap<Object, Integer>(), new HashMap<Object, Integer>(),
-                    new ArrayList<Error>(), diagnostic));
+            query.setQuery(new AstResult(null, new HashMap<>(), new HashMap<>(), new ArrayList<>(), diagnostic));
         }
 
         return query;
