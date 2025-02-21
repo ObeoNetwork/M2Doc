@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -20,20 +20,23 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Test;
+import org.obeonetwork.m2doc.parser.TokenIterator;
+import org.obeonetwork.m2doc.parser.TokenIteratorFieldRewriter;
 import org.obeonetwork.m2doc.parser.TokenProvider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class RunProviderTests {
+public class TokenProviderTokenIteratorFieldRewriterTests {
 
     @Test
     public void testNonEmptyDoc() throws InvalidFormatException, IOException {
         try (FileInputStream is = new FileInputStream("resources/document/notEmpty/notEmpty-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
-            TokenProvider iterator = new TokenProvider(document);
+            TokenIterator tokenIterator = new TokenIteratorFieldRewriter(document);
+            TokenProvider iterator = new TokenProvider(tokenIterator);
             XWPFRun run = iterator.next().getRun();
             assertEquals("P1Run1 ", run.getText(run.getTextPosition()));
             run = iterator.next().getRun();
@@ -59,7 +62,8 @@ public class RunProviderTests {
         try (FileInputStream is = new FileInputStream("resources/document/notEmpty/notEmpty-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
-            TokenProvider iterator = new TokenProvider(document);
+            TokenIterator tokenIterator = new TokenIteratorFieldRewriter(document);
+            TokenProvider iterator = new TokenProvider(tokenIterator);
             iterator.next().getRun();
             iterator.next().getRun();
             iterator.next().getRun();
@@ -77,7 +81,8 @@ public class RunProviderTests {
         try (FileInputStream is = new FileInputStream("resources/document/notEmpty/notEmpty-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
-            TokenProvider iterator = new TokenProvider(document);
+            TokenIterator tokenIterator = new TokenIteratorFieldRewriter(document);
+            TokenProvider iterator = new TokenProvider(tokenIterator);
             iterator.next().getRun();
             iterator.next().getRun();
             iterator.next().getRun();
@@ -95,7 +100,8 @@ public class RunProviderTests {
         try (FileInputStream is = new FileInputStream("resources/document/notEmpty/notEmpty-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
-            TokenProvider iterator = new TokenProvider(document);
+            TokenIterator tokenIterator = new TokenIteratorFieldRewriter(document);
+            TokenProvider iterator = new TokenProvider(tokenIterator);
             // CHECKSTYLE:OFF
             assertTrue(iterator.hasElements(7));
             // CHECKSTYLE:ON
@@ -131,7 +137,8 @@ public class RunProviderTests {
         try (FileInputStream is = new FileInputStream("resources/document/notEmpty/notEmpty-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
-            TokenProvider iterator = new TokenProvider(document);
+            TokenIterator tokenIterator = new TokenIteratorFieldRewriter(document);
+            TokenProvider iterator = new TokenProvider(tokenIterator);
             // CHECKSTYLE:OFF
             assertTrue(iterator.hasElements(7));
             XWPFRun run;
@@ -159,7 +166,8 @@ public class RunProviderTests {
         try (FileInputStream is = new FileInputStream("resources/document/notEmpty/notEmpty-template.docx");
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument document = new XWPFDocument(oPackage);) {
-            TokenProvider iterator = new TokenProvider(document);
+            TokenIterator tokenIterator = new TokenIteratorFieldRewriter(document);
+            TokenProvider iterator = new TokenProvider(tokenIterator);
             // CHECKSTYLE:OFF
             assertTrue(iterator.hasElements(7));
             // CHECKSTYLE:ON

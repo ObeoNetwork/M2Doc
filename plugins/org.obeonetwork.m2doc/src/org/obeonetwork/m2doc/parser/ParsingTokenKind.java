@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import org.apache.poi.xwpf.usermodel.BodyElementType;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Enum used to determine the kind of parsing token.
@@ -35,7 +36,22 @@ public enum ParsingTokenKind {
     /**
      * {@link XWPFSDT} kind.
      */
-    CONTENTCONTROL,;
+    CONTENTCONTROL,
+
+    /**
+     * {@link M2DocUtils#M_FIELD_START} kind.
+     */
+    FIELD_START,
+
+    /**
+     * {@link M2DocUtils#M_FIELD_END} kind.
+     */
+    FIELD_END,
+
+    /**
+     * Missing {@link M2DocUtils#M_FIELD_END} kind.
+     */
+    MISSING_FIELD_END,;
 
     /**
      * Gets the {@link ParsingTokenKind} from the given {@link BodyElementType}.

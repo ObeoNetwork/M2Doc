@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -13,8 +13,6 @@ package org.obeonetwork.m2doc.parser;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import org.apache.poi.xwpf.usermodel.IBody;
 
 /**
  * Token are Iterator of {@link ParsingToken} instances that provide lookahead facilities.
@@ -35,12 +33,12 @@ public class TokenProvider implements Iterator<ParsingToken> {
     /**
      * Creates a new {@link TokenProvider} instance.
      * 
-     * @param body
-     *            the parsed body
+     * @param iterator
+     *            the {@link TokenIterator}
      */
-    public TokenProvider(IBody body) {
-        this.runIterator = new TokenIterator(body);
-        lookAhead = new LinkedList<ParsingToken>();
+    public TokenProvider(TokenIterator iterator) {
+        this.runIterator = iterator;
+        lookAhead = new LinkedList<>();
     }
 
     /**

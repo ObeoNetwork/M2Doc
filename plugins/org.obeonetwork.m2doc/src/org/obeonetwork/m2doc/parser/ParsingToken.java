@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,8 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
+import java.util.StringJoiner;
+
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 /**
  * Token used to direct parsing of gendoc templates.
@@ -20,6 +23,22 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
  * @author Romain Guider
  */
 public class ParsingToken {
+
+    /**
+     * The start field token {@link ParsingToken}.
+     */
+    public static final ParsingToken START_FIELD_TOKEN = new ParsingToken(ParsingTokenKind.FIELD_START);
+
+    /**
+     * The end field token {@link ParsingToken}.
+     */
+    public static final ParsingToken END_FIELD_TOKEN = new ParsingToken(ParsingTokenKind.FIELD_END);
+
+    /**
+     * The missing end field token {@link ParsingToken}.
+     */
+    public static final ParsingToken MISSING_END_FIELD_TOKEN = new ParsingToken(ParsingTokenKind.MISSING_FIELD_END);
+
     /**
      * The underlying body element.
      */
@@ -41,9 +60,7 @@ public class ParsingToken {
      *            the {@link XWPFRun}
      */
     public ParsingToken(XWPFRun run) {
-        bodyElement = null;
-        this.run = run;
-        kind = ParsingTokenKind.RUN;
+        this(run, null, ParsingTokenKind.RUN);
     }
 
     /**
@@ -53,9 +70,33 @@ public class ParsingToken {
      *            the {@link IBodyElement}
      */
     public ParsingToken(IBodyElement bodyElement) {
+        this(null, bodyElement, ParsingTokenKind.getParsingTokenKind(bodyElement.getElementType()));
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param kind
+     *            the {@link ParsingTokenKind}
+     */
+    private ParsingToken(ParsingTokenKind kind) {
+        this(null, null, kind);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param run
+     *            the {@link XWPFRun}
+     * @param bodyElement
+     *            the {@link IBodyElement}
+     * @param kind
+     *            the {@link ParsingTokenKind}
+     */
+    private ParsingToken(XWPFRun run, IBodyElement bodyElement, ParsingTokenKind kind) {
         this.bodyElement = bodyElement;
-        run = null;
-        kind = ParsingTokenKind.getParsingTokenKind(bodyElement.getElementType());
+        this.run = run;
+        this.kind = kind;
     }
 
     /**
@@ -81,7 +122,26 @@ public class ParsingToken {
      * 
      * @return the {@link ParsingTokenKind}
      */
-    ParsingTokenKind getKind() {
+    public ParsingTokenKind getKind() {
         return kind;
+    }
+
+    @Override
+    public String toString() {
+        final String result;
+
+        if (getKind() == ParsingTokenKind.RUN) {
+            final StringJoiner joiner = new StringJoiner(", ", getKind().toString() + ": [", "]");
+
+            for (CTText text : getRun().getCTR().getTList()) {
+                joiner.add(text.getStringValue());
+            }
+
+            result = joiner.toString();
+        } else {
+            result = getKind().toString();
+        }
+
+        return result;
     }
 }

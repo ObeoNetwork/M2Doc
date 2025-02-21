@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -21,7 +21,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {RunIteratorTests.class, RunProviderTests.class, })
+@SuiteClasses(value = {TokenIteratorTests.class, TokenIteratorFieldRewriterTests.class,
+    TokenProviderTokenIteratorTests.class, TokenProviderTokenIteratorFieldRewriterTests.class, })
 public class ParserTests {
 
 }

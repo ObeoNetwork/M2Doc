@@ -102,9 +102,19 @@ public final class M2DocUtils {
     public static final String PLUGIN_ID = "org.obeonetwork.m2doc";
 
     /**
-     * The {@link org.obeonetwork.m2doc.template.Query Query} tag.
+     * The {@link org.obeonetwork.m2doc.template.Query Query} field tag.
      */
     public static final String M = "m:";
+
+    /**
+     * The {@link org.obeonetwork.m2doc.template.Query Query} field.
+     */
+    public static final String M_FIELD_START = "{" + M;
+
+    /**
+     * The {@link org.obeonetwork.m2doc.template.Query Query} field end.
+     */
+    public static final String M_FIELD_END = "}";
 
     /**
      * constant defining the color of info messages.
@@ -792,6 +802,7 @@ public final class M2DocUtils {
      * @throws IOException
      *             if the {@link DocumentTemplate} can't be serialized to the given destination
      */
+    @SuppressWarnings("resource")
     public static void serializeValidatedDocumentTemplate(URIConverter uriConverter, DocumentTemplate documentTemplate,
             URI destination) throws IOException {
         TemplateValidationGenerator generator = new TemplateValidationGenerator();
@@ -948,6 +959,7 @@ public final class M2DocUtils {
      * @throws IOException
      *             if the serialization fail
      */
+    @SuppressWarnings("resource")
     private static byte[] serializeDocument(DocumentTemplate documentTemplate) throws IOException {
         final byte[] serializedDocument;
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
