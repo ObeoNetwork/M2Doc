@@ -185,7 +185,7 @@ public final class POIServices {
                 for (CTSimpleField field : ctp.getFldSimpleList()) {
                     final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
                             .newInstance();
-                    onOff.setStringValue("true");
+                    onOff.setStringValue(Boolean.TRUE.toString());
                     field.setDirty(onOff);
                 }
             }
@@ -195,7 +195,7 @@ public final class POIServices {
                     for (CTFldChar field : ctr.getFldCharList()) {
                         final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
                                 .newInstance();
-                        onOff.setStringValue("true");
+                        onOff.setStringValue(Boolean.TRUE.toString());
                         field.setDirty(onOff);
                     }
                     if (run instanceof XWPFHyperlinkRun) {
@@ -203,14 +203,14 @@ public final class POIServices {
                         for (CTSimpleField field : ctHyperlink.getFldSimpleList()) {
                             final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
                                     .newInstance();
-                            onOff.setStringValue("true");
+                            onOff.setStringValue(Boolean.TRUE.toString());
                             field.setDirty(onOff);
                         }
                         for (CTR ctrHyperlink : ctHyperlink.getRList()) {
                             for (CTFldChar field : ctrHyperlink.getFldCharList()) {
                                 final org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff onOff = org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff.Factory
                                         .newInstance();
-                                onOff.setStringValue("true");
+                                onOff.setStringValue(Boolean.TRUE.toString());
                                 field.setDirty(onOff);
                             }
                         }
