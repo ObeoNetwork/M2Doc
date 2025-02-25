@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
 package org.obeonetwork.m2doc.ide.ui.propertyTester;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,11 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -52,8 +55,7 @@ public class TemplatePropertyTester extends PropertyTester {
         } else {
             switch (property) {
                 case "isTemplate":
-                    res = receiver instanceof IResource
-                        && M2DocUtils.DOCX_EXTENSION_FILE.equals(((IResource) receiver).getFileExtension());
+                    res = isTemplate(receiver);
                     break;
 
                 case "hasLibraryTemplate":
@@ -78,6 +80,17 @@ public class TemplatePropertyTester extends PropertyTester {
                     }
                     break;
 
+                case "needMigration":
+                    boolean needMigration;
+                    try {
+                        needMigration = isTemplate(receiver) && M2DocUtils.needMigration(URIConverter.INSTANCE,
+                                URI.createPlatformResourceURI(((IFile) receiver).getFullPath().toString(), true));
+                    } catch (IOException e) {
+                        needMigration = false;
+                    }
+                    res = needMigration;
+                    break;
+
                 default:
                     res = false;
                     break;
@@ -85,6 +98,18 @@ public class TemplatePropertyTester extends PropertyTester {
         }
 
         return res;
+    }
+
+    /**
+     * Tells if the given {@link Object} is a template.
+     * 
+     * @param receiver
+     *            the receiver
+     * @return <code>true</code> if the given {@link Object} is a template, <code>false</code> otherwise
+     */
+    private boolean isTemplate(Object receiver) {
+        return receiver instanceof IFile
+            && M2DocUtils.DOCX_EXTENSION_FILE.equals(((IFile) receiver).getFileExtension());
     }
 
 }

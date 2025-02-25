@@ -21,7 +21,7 @@
             class="org.obeonetwork.m2doc.ide.ui.propertyTester.TemplatePropertyTester"
             id="org.obeonetwork.m2doc.ide.ui.property"
             namespace="org.obeonetwork.m2doc.ide.ui.property"
-            properties="isTemplate,hasLibraryTemplate"
+            properties="isTemplate,hasLibraryTemplate,needMigration"
             type="java.lang.Object">
       </propertyTester>
    </extension>
@@ -62,12 +62,20 @@
             id="org.obeonetwork.m2doc.ide.ui.editTemplateProperties"
             name="Edit template properties">
       </command>
+      <command
+            id="org.obeonetwork.m2doc.ide.ui.migrateTemplate"
+            name="Migrate template">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="org.obeonetwork.m2doc.ide.ui.command.EditTemplatePropertiesHandler"
             commandId="org.obeonetwork.m2doc.ide.ui.editTemplateProperties">
+      </handler>
+      <handler
+            class="org.obeonetwork.m2doc.ide.ui.command.MigrateTemplateHandler"
+            commandId="org.obeonetwork.m2doc.ide.ui.migrateTemplate">
       </handler>
    </extension>
    <extension
@@ -90,6 +98,26 @@
                      <test
                            forcePluginActivation="true"
                            property="org.obeonetwork.m2doc.ide.ui.property.isTemplate">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.obeonetwork.m2doc.ide.ui.migrateTemplate"
+               icon="icons/m2doc.gif"
+               label="Migrate template"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <test
+                           forcePluginActivation="true"
+                           property="org.obeonetwork.m2doc.ide.ui.property.needMigration">
                      </test>
                   </iterate>
                </with>

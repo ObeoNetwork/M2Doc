@@ -1188,10 +1188,7 @@ public final class M2DocUtils {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             if (properties.getM2DocVersion() != null) {
                 final Version templateVersion = new Version(properties.getM2DocVersion());
-                final List<IM2DocMigrator> migrators = new ArrayList<>();
-                if (new Version("4.0.0").compareTo(templateVersion) > 0) {
-                    migrators.add(new M2Doc4Migrator());
-                }
+                final List<IM2DocMigrator> migrators = getTemplateMigrators(templateVersion);
 
                 final int unitOfWork = PARSE_TEMPLATE_MONITOR_WORK
                     / (1 + document.getFooterList().size() + document.getHeaderList().size());
@@ -1235,6 +1232,50 @@ public final class M2DocUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Gets the {@link List} of {@link IM2DocMigrator} for the given M2Doc {@link Version}.
+     * 
+     * @param version
+     *            the M2Doc {@link Version}
+     * @return the {@link List} of {@link IM2DocMigrator} for the given M2Doc {@link Version}
+     */
+    public static List<IM2DocMigrator> getTemplateMigrators(final Version version) {
+        final List<IM2DocMigrator> result = new ArrayList<>();
+
+        if (new Version("4.0.0").compareTo(version) > 0) {
+            result.add(new M2Doc4Migrator());
+        }
+
+        return result;
+    }
+
+    /**
+     * Tells if the given template {@link URI} needs to be migrated.
+     * 
+     * @param uriConverter
+     *            the {@link URIConverter}
+     * @param templateURI
+     *            the template {@link URI}
+     * @return <code>true</code> if the given template {@link URI} needs to be migrated, <code>false</code> otherwise
+     * @throws IOException
+     *             if the template can't be read
+     */
+    public static boolean needMigration(URIConverter uriConverter, URI templateURI) throws IOException {
+        final boolean result;
+
+        try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(uriConverter, templateURI)) {
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            if (properties.getM2DocVersion() != null) {
+                final Version templateVersion = new Version(properties.getM2DocVersion());
+                result = !getTemplateMigrators(templateVersion).isEmpty();
+            } else {
+                result = false;
+            }
+        }
+
+        return true;
     }
 
 }

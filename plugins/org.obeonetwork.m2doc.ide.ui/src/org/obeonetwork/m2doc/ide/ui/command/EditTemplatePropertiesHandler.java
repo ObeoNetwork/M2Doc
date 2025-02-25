@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.ide.ui.wizard.TemplateCustomPropertiesWizard;
 
 /**
- * Edite template custom properties.
+ * Edit template custom properties.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
