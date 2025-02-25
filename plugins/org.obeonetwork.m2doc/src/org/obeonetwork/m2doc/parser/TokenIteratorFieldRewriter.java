@@ -21,7 +21,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
- * Rewrites M2Doc field (see {@link M2DocUtils#M_FIELD_START} and {@link M2DocUtils#M_FIELD_END}) inside of {@link XWPFParagraph}.
+ * Rewrites M2Doc field (see {@link M2DocUtils#M_FIELD_START} and {@link M2DocUtils#FIELD_END}) inside of {@link XWPFParagraph}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
@@ -48,16 +48,16 @@ public class TokenIteratorFieldRewriter extends TokenIterator {
         int startFieldMachingIndex = 0;
         RunSplit currentSplit = null;
         while (iterator.hasNext()) {
-            final char currentChar = iterator.next();
             if (inField) {
                 // look for the field end
                 final Character lastChar = consuteUntilAqlExpressionEndLimit(iterator);
-                if (lastChar != null && lastChar == M2DocUtils.M_FIELD_END.charAt(0)) {
+                if (lastChar != null && lastChar == M2DocUtils.FIELD_END.charAt(0)) {
                     inField = false;
                     splits.add(iterator.getRunSplit(ParsingToken.END_FIELD_TOKEN));
                 }
             } else {
                 // look for the field start
+                final char currentChar = iterator.next();
                 if (currentChar == M2DocUtils.M_FIELD_START.charAt(startFieldMachingIndex)) {
                     startFieldMachingIndex++;
                     if (startFieldMachingIndex == 1) {
@@ -100,7 +100,7 @@ public class TokenIteratorFieldRewriter extends TokenIterator {
         Character currentCharacter = null;
         while (iterator.hasNext()) {
             currentCharacter = iterator.next();
-            if (currentCharacter == M2DocUtils.M_FIELD_END.charAt(0) && parenthesisDepth == 0
+            if (currentCharacter == M2DocUtils.FIELD_END.charAt(0) && parenthesisDepth == 0
                 && curlyBracketDepth == 0) {
                 break;
             }

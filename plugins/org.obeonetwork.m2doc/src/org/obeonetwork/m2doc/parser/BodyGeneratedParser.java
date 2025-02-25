@@ -26,9 +26,11 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.Block;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
+import org.obeonetwork.m2doc.util.FieldUtils;
 
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
 
@@ -39,6 +41,11 @@ import static org.obeonetwork.m2doc.util.M2DocUtils.message;
  * @author ohaegi
  */
 public class BodyGeneratedParser extends AbstractBodyParser {
+
+    /**
+     * The {@link FieldUtils}.
+     */
+    protected final FieldUtils fieldUtils = new FieldUtils();
 
     /**
      * User Conetnt Ids list.
@@ -71,6 +78,11 @@ public class BodyGeneratedParser extends AbstractBodyParser {
     private BodyGeneratedParser(IBody inputDocument, IQueryBuilderEngine queryParser,
             IQueryEnvironment queryEnvironment) {
         super(inputDocument, queryParser, queryEnvironment);
+    }
+
+    @Override
+    protected TokenProvider createTokenProvider(IBody inputDocument) {
+        return new TokenProvider(new TokenIterator(inputDocument));
     }
 
     @Override
@@ -124,7 +136,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
                         res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
                                 message(ParsingErrorMessage.UNEXPECTEDTAGWITHHEADER, type.getValue(), header), run));
                     }
-                    readTag(res, res.getRuns());
+                    readFieldTag(res, res.getRuns());
                     break;
                 case EOF:
                     final XWPFParagraph lastParagraph = document.getParagraphs()
@@ -175,7 +187,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
     private UserContent parseUserContent() throws DocumentParserException {
         // first read the tag that opens the user content
         final UserContent userContent = (UserContent) EcoreUtil.create(TemplatePackage.Literals.USER_CONTENT);
-        final String header = readTag(userContent, userContent.getRuns()).trim();
+        final String header = readFieldTag(userContent, userContent.getRuns()).trim();
         // remove the prefix
         final String id = header.substring(TokenType.USERCONTENT.getValue().length()).trim();
 
@@ -201,17 +213,65 @@ public class BodyGeneratedParser extends AbstractBodyParser {
         final Block body = parseBlock(null, header, TokenType.ENDUSERCONTENT);
         userContent.setBody(body);
         if (getNextTokenType() != TokenType.EOF) {
-            readTag(userContent, userContent.getClosingRuns());
+            readFieldTag(userContent, userContent.getClosingRuns());
         }
 
         return userContent;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Reads up a tag so that it can be parsed as a simple string.
      * 
-     * @see org.obeonetwork.m2doc.parser.BodyAbstractParser#getNewParser(org.apache.poi.xwpf.usermodel.IBody)
+     * @param construct
+     *            the construct to read tag to
+     * @param runsToFill
+     *            the run list to fill
+     * @return the string present into the tag as typed by the template author.
      */
+    protected String readFieldTag(IConstruct construct, List<XWPFRun> runsToFill) {
+        XWPFRun run = this.runIterator.lookAhead(1).getRun();
+        if (run == null) {
+            throw new IllegalStateException("readTag shouldn't be called with a table in the lookahead window.");
+        } else if (!fieldUtils.isFieldBegin(run)) {
+            throw new IllegalStateException("Shouldn't call readTag if the current run doesn't start a field");
+        }
+
+        final StringBuilder result = new StringBuilder();
+
+        runsToFill.add(runIterator.next().getRun()); // Consume begin field
+        XWPFRun styleRun = null;
+        boolean columnRead = false;
+        while (runIterator.hasNext()) {
+            run = runIterator.next().getRun();
+            if (run == null) {
+                // XXX : treat this as a proper parsing error.
+                throw new IllegalArgumentException("table cannot be inserted into tags.");
+            }
+            runsToFill.add(run);
+            if (fieldUtils.isFieldEnd(run)) {
+                break;
+            }
+            final String runText = fieldUtils.readUpInstrText(run);
+            result.append(runText);
+            // the style run hasn't been discovered yet.
+            if (styleRun == null) {
+                if (columnRead && !runText.isEmpty()) {
+                    styleRun = run;
+                    construct.setStyleRun(styleRun);
+                } else {
+                    final int indexOfColumn = runText.indexOf(':');
+                    columnRead = indexOfColumn >= 0;
+                    if (columnRead && indexOfColumn < runText.length() - 1) {
+                        styleRun = run; // ':' doesn't appear at the end of the string
+                        construct.setStyleRun(styleRun);
+                    } // otherwise, use the next non empty run.
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
     @Override
     protected AbstractBodyParser getNewParser(IBody inputDocument) {
         AbstractBodyParser parser = new BodyGeneratedParser(inputDocument, this.queryParser, this.queryEnvironment);

@@ -110,19 +110,6 @@ class RunSplit {
     private void doSplitStartFieldStartRun() {
         // no split needed start field at the beginning of the run
         tokens.add(runIndex, tokenToInsert);
-        // remove the { start field
-        final XWPFRun run = paragraph.getRuns().get(runIndex);
-        final CTText text = run.getCTR().getTList().get(0);
-        text.setStringValue(text.getStringValue().substring(1));
-        if (text.getStringValue().isEmpty()) {
-            // remove empty CTText
-            final CTText[] tArray = run.getCTR().getTArray();
-            run.getCTR().setTArray(Arrays.copyOfRange(tArray, 1, tArray.length));
-        }
-        if (isEmpty(run)) {
-            paragraph.removeRun(runIndex);
-            tokens.remove(runIndex + 1);
-        }
     }
 
     /**
@@ -154,16 +141,12 @@ class RunSplit {
         final CTText[] newCopyTArray = Arrays.copyOfRange(runCopy.getCTR().getTArray(), tIndex,
                 runCopy.getCTR().getTArray().length);
         final String stringCoptyToCut = newCopyTArray[0].getStringValue();
-        newCopyTArray[0].setStringValue(stringCoptyToCut.substring(charIndex + 1, stringCoptyToCut.length()));
+        newCopyTArray[0].setStringValue(stringCoptyToCut.substring(charIndex, stringCoptyToCut.length()));
         runCopy.getCTR().setTArray(newCopyTArray);
 
         // add the token to insert and the new run
         tokens.add(runIndex + 1, tokenToInsert);
-        if (isEmpty(runCopy)) {
-            paragraph.removeRun(paragraph.getRuns().indexOf(runCopy));
-        } else {
-            tokens.add(runIndex + 2, new ParsingToken(runCopy));
-        }
+        tokens.add(runIndex + 2, new ParsingToken(runCopy));
     }
 
     /**
@@ -177,18 +160,6 @@ class RunSplit {
     private void doSplitEndFieldEndRun(final XWPFRun runtoSplit, final CTText textToSplit) {
         // no split needed end field at the end of the run
         tokens.add(runIndex + 1, tokenToInsert);
-        // remove the } end field
-        textToSplit
-                .setStringValue(textToSplit.getStringValue().substring(0, textToSplit.getStringValue().length() - 1));
-        // remove empty CTText
-        if (textToSplit.getStringValue().isEmpty()) {
-            final CTText[] tArray = runtoSplit.getCTR().getTArray();
-            runtoSplit.getCTR().setTArray(Arrays.copyOfRange(tArray, 0, tArray.length - 1));
-        }
-        if (isEmpty(runtoSplit)) {
-            paragraph.removeRun(runIndex);
-            tokens.remove(runIndex);
-        }
     }
 
     /**
@@ -202,7 +173,7 @@ class RunSplit {
         // remove everything after the cut in run
         final CTText[] newTArray = Arrays.copyOfRange(run.getCTR().getTArray(), 0, tIndex + 1);
         final String stringToCut = newTArray[newTArray.length - 1].getStringValue();
-        newTArray[newTArray.length - 1].setStringValue(stringToCut.substring(0, charIndex));
+        newTArray[newTArray.length - 1].setStringValue(stringToCut.substring(0, charIndex + 1));
         run.getCTR().setTArray(newTArray);
 
         // remove everything before the cut in runCopy
@@ -228,23 +199,7 @@ class RunSplit {
 
         // add the token to insert and the new run
         tokens.add(runIndex + 1, tokenToInsert);
-        if (isEmpty(runCopy)) {
-            paragraph.removeRun(paragraph.getRuns().indexOf(runCopy));
-        } else {
-            tokens.add(runIndex + 2, new ParsingToken(runCopy));
-        }
-    }
-
-    /**
-     * Tells if the given {@link XWPFRun} is empty.
-     * 
-     * @param run
-     *            the {@link XWPFRun}
-     * @return <code>true</code> if the given {@link XWPFRun} is empty, <code>false</code> otherwise
-     */
-    private boolean isEmpty(XWPFRun run) {
-        final CTText[] texts = run.getCTR().getTArray();
-        return texts.length == 0 || (texts.length == 1 && texts[0].getStringValue().isEmpty());
+        tokens.add(runIndex + 2, new ParsingToken(runCopy));
     }
 
 }

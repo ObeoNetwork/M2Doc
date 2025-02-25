@@ -1,0 +1,3 @@
+ERROR - Couldn't find the 'self' variable
+WARNING - Couldn't find the 'aqlFeatureAccess(org.eclipse.acceleo.query.runtime.impl.Nothing,java.lang.String)' service
+ERROR - dangling reference for bookmark bookmark1

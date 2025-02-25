@@ -169,6 +169,7 @@ public abstract class AbstractTemplatesTestSuite {
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor());
         for (Exception e : exceptions) {
+            @SuppressWarnings("resource")
             final XWPFRun run = M2DocUtils.getOrCreateFirstRun(documentTemplate.getDocument());
             documentTemplate.getBody().getValidationMessages()
                     .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, e.getMessage(), run));
@@ -360,6 +361,7 @@ public abstract class AbstractTemplatesTestSuite {
      *            the {@link URI} to check
      * @return <code>true</code> if the given {@link URI} is empty, <code>false</code> otherwise
      */
+    @SuppressWarnings("resource")
     private boolean isEmpty(URI uri) {
         try {
             try (InputStream inputStream = resourceSetForModels.getURIConverter().createInputStream(uri);) {

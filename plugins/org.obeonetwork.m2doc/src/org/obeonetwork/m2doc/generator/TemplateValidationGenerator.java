@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,9 +14,7 @@ package org.obeonetwork.m2doc.generator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
@@ -51,23 +49,6 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
      * The font size of error messages.
      */
     private static final int ERROR_MESSAGE_FONT_SIZE = 16;
-
-    /**
-     * Separator between the text of a M2DOC template element and a corresponding parsing error and between two parsing error.
-     */
-    private static final String BLANK_SEPARATOR = "    ";
-
-    /**
-     * The separator between the tag were a parsing error has been detected and the start of the error message.
-     */
-    private static final String LOCATION_SEPARATOR = "<---";
-
-    /**
-     * Create a new {@link TemplateValidationGenerator} instance given some definitions
-     * and a query environment.
-     */
-    public TemplateValidationGenerator() {
-    }
 
     @Override
     public Void caseDocumentTemplate(DocumentTemplate documentTemplate) {
@@ -210,16 +191,6 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
             final int shift = addRunError(message, offset);
             offsets.put(message.getLocation(), offset + shift);
         }
-        for (Entry<XWPFRun, Integer> entry : offsets.entrySet()) {
-            if (entry.getValue() != 0) {
-                // We insert a blank after the last error message
-                final IRunBody parent = entry.getKey().getParent();
-                if (parent instanceof XWPFParagraph) {
-                    XWPFRun newBlankRun = ((XWPFParagraph) parent).insertNewRun(entry.getValue() + 1);
-                    newBlankRun.setText(BLANK_SEPARATOR);
-                }
-            }
-        }
     }
 
     /**
@@ -243,11 +214,11 @@ public class TemplateValidationGenerator extends TemplateSwitch<Void> {
             res++;
             final String color = M2DocUtils.getColor(message.getLevel());
             XWPFRun newBlankRun = paragraph.insertNewRun(basePosition + res);
-            newBlankRun.setText(BLANK_SEPARATOR);
+            newBlankRun.setText(M2DocUtils.BLANK_SEPARATOR);
 
             res++;
             final XWPFRun separationRun = paragraph.insertNewRun(basePosition + res);
-            separationRun.setText(LOCATION_SEPARATOR);
+            separationRun.setText(M2DocUtils.LOCATION_SEPARATOR);
             separationRun.setColor(color);
             separationRun.setFontSize(ERROR_MESSAGE_FONT_SIZE);
             final CTHighlight separationHighlight = separationRun.getCTR().getRPr().addNewHighlight();

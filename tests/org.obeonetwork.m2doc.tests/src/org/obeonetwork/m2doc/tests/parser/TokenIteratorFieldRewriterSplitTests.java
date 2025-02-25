@@ -68,69 +68,73 @@ public class TokenIteratorFieldRewriterSplitTests {
     private static Map<String, List<String>> initializeExpecteds() {
         final Map<String, List<String>> result = new HashMap<>();
 
-        result.put("oneRun.docx", Arrays.asList("FIELD_START", "RUN: [m:self]", "FIELD_END"));
+        result.put("oneRun.docx", Arrays.asList("FIELD_START", "RUN: [{m:self}]", "FIELD_END"));
         result.put("oneRunWithPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:self]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:self}]", "FIELD_END"));
         result.put("oneRunWithPrefixAndSuffix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:self]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:self}]", "FIELD_END", "RUN: [suffix]"));
         result.put("oneRunWithRunPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:self]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:self}]", "FIELD_END"));
         result.put("oneRunWithRunPrefixAndRunSuffix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:self]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:self}]", "FIELD_END", "RUN: [suffix]"));
         result.put("oneRunWithRunSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:self]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("FIELD_START", "RUN: [{m:self}]", "FIELD_END", "RUN: [suffix]"));
         result.put("oneRunWithSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:self]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("FIELD_START", "RUN: [{m:self}]", "FIELD_END", "RUN: [suffix]"));
         result.put("oneRunWithTPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:self]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:self}]", "FIELD_END"));
         result.put("oneRunWithTPrefixAndTSuffix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:self]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:self}]", "FIELD_END", "RUN: [suffix]"));
         result.put("oneRunWithTSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:self]", "FIELD_END", "RUN: [suffix]"));
-        result.put("runSplit.docx", Arrays.asList("FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END"));
-        result.put("runSplitEndFieldAlone.docx", Arrays.asList("FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END"));
+                Arrays.asList("FIELD_START", "RUN: [{m:self}]", "FIELD_END", "RUN: [suffix]"));
+        result.put("runSplit.docx", Arrays.asList("FIELD_START", "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END"));
+        result.put("runSplitEndFieldAlone.docx",
+                Arrays.asList("FIELD_START", "RUN: [{m:se]", "RUN: [lf]", "RUN: [}]", "FIELD_END"));
+        result.put("runSplitMissingEndField.docx",
+                Arrays.asList("FIELD_START", "RUN: [{m:se]", "RUN: [lf]", "MISSING_FIELD_END"));
         result.put("runSplitStartField.docx",
-                Arrays.asList("FIELD_START", "RUN: [m]", "RUN: [:se]", "RUN: [lf]", "FIELD_END"));
+                Arrays.asList("FIELD_START", "RUN: [{m]", "RUN: [:se]", "RUN: [lf}]", "FIELD_END"));
         result.put("runSplitStartFieldAlone.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END"));
+                Arrays.asList("FIELD_START", "RUN: [{]", "RUN: [m:se]", "RUN: [lf}]", "FIELD_END"));
         result.put("runSplitWithPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END"));
         result.put("runSplitWithRunPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END"));
         result.put("runSplitWithRunPrefixAndRunSuffix.docx", Arrays.asList("RUN: [prefix]", "FIELD_START",
-                "RUN: [m:se]", "RUN: [lf]", "FIELD_END", "RUN: [suffix]"));
+                "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("runSplitWithRunSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("FIELD_START", "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("runSplitWithSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("FIELD_START", "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("runSplitWithTPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END"));
-        result.put("runSplitWithTPrefixAndTSuffix.docx", Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se]",
-                "RUN: [lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END"));
+        result.put("runSplitWithTPrefixAndTSuffix.docx", Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se]",
+                "RUN: [lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("runSplitWithTSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:se]", "RUN: [lf]", "FIELD_END", "RUN: [suffix]"));
-        result.put("tSplit.docx", Arrays.asList("FIELD_START", "RUN: [m:se, lf]", "FIELD_END"));
-        result.put("tSplitEndFieldAlone.docx", Arrays.asList("FIELD_START", "RUN: [m:se, lf]", "FIELD_END"));
-        result.put("tSplitStartField.docx", Arrays.asList("FIELD_START", "RUN: [m, :se, lf]", "FIELD_END"));
-        result.put("tSplitStartFieldAlone.docx", Arrays.asList("FIELD_START", "RUN: [m:se, lf]", "FIELD_END"));
+                Arrays.asList("FIELD_START", "RUN: [{m:se]", "RUN: [lf}]", "FIELD_END", "RUN: [suffix]"));
+        result.put("tSplit.docx", Arrays.asList("FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END"));
+        result.put("tSplitEndFieldAlone.docx", Arrays.asList("FIELD_START", "RUN: [{m:se, lf, }]", "FIELD_END"));
+        result.put("tSplitMissingEndField.docx", Arrays.asList("FIELD_START", "RUN: [{m:se, lf]", "MISSING_FIELD_END"));
+        result.put("tSplitStartField.docx", Arrays.asList("FIELD_START", "RUN: [{m, :se, lf}]", "FIELD_END"));
+        result.put("tSplitStartFieldAlone.docx", Arrays.asList("FIELD_START", "RUN: [{, m:se, lf}]", "FIELD_END"));
         result.put("tSplitWithPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se, lf]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END"));
         result.put("tSplitWithPrefixAndSuffix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se, lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("tSplitWithRunPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se, lf]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END"));
         result.put("tSplitWithRunPrefixAndRunSuffix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se, lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("tSplitWithRunSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:se, lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("tSplitWithSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:se, lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("tSplitWithTPrefix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se, lf]", "FIELD_END"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END"));
         result.put("tSplitWithTPrefixAndTSuffix.docx",
-                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [m:se, lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("RUN: [prefix]", "FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END", "RUN: [suffix]"));
         result.put("tSplitWithTSuffix.docx",
-                Arrays.asList("FIELD_START", "RUN: [m:se, lf]", "FIELD_END", "RUN: [suffix]"));
+                Arrays.asList("FIELD_START", "RUN: [{m:se, lf}]", "FIELD_END", "RUN: [suffix]"));
 
         return result;
     }

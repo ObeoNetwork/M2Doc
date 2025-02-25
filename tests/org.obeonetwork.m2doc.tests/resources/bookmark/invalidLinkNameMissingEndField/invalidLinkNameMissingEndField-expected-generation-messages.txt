@@ -1,0 +1,3 @@
+ERROR - Invalid link statement: Missing end tag }
+ERROR - Invalid link statement: Expression "self. 'a reference to bookmark1'" is invalid: missing feature access or service call
+ERROR - Invalid link statement: Expression "" is invalid: null or empty string.

@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Invalid initialization expression :
+  
+  for v | .aqlFeatureAccess(self, 'A') do
+    End of demonstration.
+  endfor
+  
+=== FOOTER ===
+
+=== TEMPLATES ===

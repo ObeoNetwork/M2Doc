@@ -31,14 +31,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Cell;
 import org.obeonetwork.m2doc.template.ContentControl;
-import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
-import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
@@ -72,11 +70,6 @@ public abstract class AbstractBodyParser {
     protected final IQueryEnvironment queryEnvironment;
 
     /**
-     * The {@link FieldUtils}.
-     */
-    protected final FieldUtils fieldUtils;
-
-    /**
      * Creates a new {@link M2DocParser} instance.
      * 
      * @param inputDocument
@@ -101,11 +94,19 @@ public abstract class AbstractBodyParser {
     protected AbstractBodyParser(IBody inputDocument, IQueryBuilderEngine queryParser,
             IQueryEnvironment queryEnvironment) {
         this.document = inputDocument;
-        runIterator = new TokenProvider(new TokenIterator(inputDocument));
+        runIterator = createTokenProvider(inputDocument);
         this.queryParser = queryParser;
         this.queryEnvironment = queryEnvironment;
-        this.fieldUtils = new FieldUtils();
     }
+
+    /**
+     * Creates the {@link TokenProvider} for the given {@link IBody}.
+     * 
+     * @param inputDocument
+     *            the {@link IBody}
+     * @return the {@link TokenProvider} for the given {@link IBody}
+     */
+    protected abstract TokenProvider createTokenProvider(IBody inputDocument);
 
     /**
      * returns the next token type after index.
@@ -193,59 +194,6 @@ public abstract class AbstractBodyParser {
      */
     public abstract Block parseBlock(List<Template> templates, String header, TokenType... endTypes)
             throws DocumentParserException;
-
-    /**
-     * Reads up a tag so that it can be parsed as a simple string.
-     * 
-     * @param construct
-     *            the construct to read tag to
-     * @param runsToFill
-     *            the run list to fill
-     * @return the string present into the tag as typed by the template author.
-     */
-    protected String readTag(IConstruct construct, List<XWPFRun> runsToFill) {
-        XWPFRun run = this.runIterator.lookAhead(1).getRun();
-        if (run == null) {
-            throw new IllegalStateException("readTag shouldn't be called with a table in the lookahead window.");
-        } else if (!fieldUtils.isFieldBegin(run)) {
-            throw new IllegalStateException("Shouldn't call readTag if the current run doesn't start a field");
-        }
-
-        final StringBuilder result = new StringBuilder();
-
-        runsToFill.add(runIterator.next().getRun()); // Consume begin field
-        XWPFRun styleRun = null;
-        boolean columnRead = false;
-        while (runIterator.hasNext()) {
-            run = runIterator.next().getRun();
-            if (run == null) {
-                // XXX : treat this as a proper parsing error.
-                throw new IllegalArgumentException("table cannot be inserted into tags.");
-            }
-            runsToFill.add(run);
-            if (fieldUtils.isFieldEnd(run)) {
-                break;
-            }
-            final String runText = fieldUtils.readUpInstrText(run);
-            result.append(runText);
-            // the style run hasn't been discovered yet.
-            if (styleRun == null) {
-                if (columnRead && !runText.isEmpty()) {
-                    styleRun = run;
-                    construct.setStyleRun(styleRun);
-                } else {
-                    final int indexOfColumn = runText.indexOf(':');
-                    columnRead = indexOfColumn >= 0;
-                    if (columnRead && indexOfColumn < runText.length() - 1) {
-                        styleRun = run; // ':' doesn't appear at the end of the string
-                        construct.setStyleRun(styleRun);
-                    } // otherwise, use the next non empty run.
-                }
-            }
-        }
-
-        return result.toString();
-    }
 
     /**
      * Gets the {@link List} of {@link TemplateValidationMessage} from the given {@link Diagnostic}.

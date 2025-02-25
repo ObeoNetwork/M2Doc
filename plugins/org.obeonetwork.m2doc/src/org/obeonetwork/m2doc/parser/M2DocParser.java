@@ -50,6 +50,7 @@ import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Comment;
 import org.obeonetwork.m2doc.template.Conditional;
+import org.obeonetwork.m2doc.template.IConstruct;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Parameter;
@@ -60,6 +61,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 /**
  * DocumentParser reads a {@link XWPFDocument} and produces a abstract syntax
@@ -102,6 +104,11 @@ public class M2DocParser extends AbstractBodyParser {
         super(inputDocument, queryParser, queryEnvironment);
     }
 
+    @Override
+    protected TokenProvider createTokenProvider(IBody inputDocument) {
+        return new TokenProvider(new TokenIteratorFieldRewriter(inputDocument));
+    }
+
     /**
      * Initializes {@link #EXTRA_SPACES_PATTERNS}.
      *
@@ -125,10 +132,9 @@ public class M2DocParser extends AbstractBodyParser {
     protected TokenType getNextTokenMTag(final ParsingToken token) {
         final TokenType result;
 
-        final XWPFRun run = token.getRun();
         // is run a field begin run
-        if (fieldUtils.isFieldBegin(run)) {
-            final String type = getType(fieldUtils.lookAheadFieldTag(runIterator));
+        if (token == ParsingToken.START_FIELD_TOKEN) {
+            final String type = getType(lookAheadFieldTag(runIterator));
             if (type == null) {
                 result = TokenType.STATIC;
             } else if (type.equals(TokenType.FOR.getValue())) {
@@ -177,6 +183,66 @@ public class M2DocParser extends AbstractBodyParser {
         return result;
     }
 
+    /**
+     * read up a tag looking ahead the runs so that a prediction can be made
+     * over the nature of a field.
+     * <p>
+     * Using such a method is mandatory because for some reasons fields like
+     * {m:if ...} can be broken up in an unexpected number of runs thus
+     * precluding the tag nature prediction based on the first run only.
+     * </p>
+     * 
+     * @param runIterator
+     *            run iterator
+     * @return the complete text of the current field.
+     */
+    public String lookAheadFieldTag(final TokenProvider runIterator) {
+        int i = 1;
+        // first run must begin a field.
+        ParsingToken token = runIterator.lookAhead(i);
+        XWPFRun run = token.getRun();
+        if (run == null && token.getKind() == null) {
+            throw new IllegalStateException("lookAheadTag shouldn't be called on a table.");
+        }
+        if (token == ParsingToken.START_FIELD_TOKEN) {
+            StringBuilder builder = new StringBuilder();
+            i++;
+            token = runIterator.lookAhead(i);
+            run = token.getRun();
+            // run is null when EOF is reached or a table is encountered.
+            while (run != null && token != ParsingToken.END_FIELD_TOKEN) {
+                builder.append(readUpTText(run));
+                run = runIterator.lookAhead(++i).getRun();
+            }
+            if (builder.indexOf(M2DocUtils.FIELD_START) == 0) {
+                builder.deleteCharAt(0);
+            }
+            if (builder.lastIndexOf(M2DocUtils.FIELD_END) == builder.length() - 1) {
+                builder.deleteCharAt(builder.length() - 1);
+            }
+
+            return builder.toString().trim();
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * reads up the text of a run.
+     * 
+     * @param run
+     *            the run to read.
+     * @return the aggregated text of the run
+     */
+    protected String readUpTText(XWPFRun run) {
+        List<CTText> texts = run.getCTR().getTList();
+        StringBuilder runBuilder = new StringBuilder();
+        for (CTText text : texts) {
+            runBuilder.append(text.getStringValue());
+        }
+        return runBuilder.toString();
+    }
+
     @Override
     public Block parseBlock(List<Template> templates, String header, TokenType... endTypes)
             throws DocumentParserException {
@@ -214,25 +280,28 @@ public class M2DocParser extends AbstractBodyParser {
                 case ENDCOMMENTBLOCK:
                     // report the error and ignore the problem so that parsing
                     // continues in other parts of the document.
-                    XWPFRun run = runIterator.lookAhead(1).getRun();
+                    XWPFRun run = runIterator.lookAhead(2).getRun();
                     if (run == null) {
                         throw new IllegalStateException(
                                 "Token of type " + type + " detected. Run shouldn't be null at this place.");
                     }
+                    readTag(res, res.getRuns());
+                    XWPFRun tagLastRun = res.getRuns().get(res.getRuns().size() - 1);
                     if (header == null) {
                         res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
-                                M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), run));
+                                M2DocUtils.message(ParsingErrorMessage.UNEXPECTEDTAG, type.getValue()), tagLastRun));
                     } else {
                         res.getValidationMessages()
-                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, M2DocUtils.message(
-                                        ParsingErrorMessage.UNEXPECTEDTAGWITHHEADER, type.getValue(), header), run));
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, M2DocUtils
+                                        .message(ParsingErrorMessage.UNEXPECTEDTAGWITHHEADER, type.getValue(), header),
+                                        tagLastRun));
                     }
                     if (!endTypeSet.contains(TokenType.EOF)) {
-                        res.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.INFO,
-                                M2DocUtils.message(ParsingErrorMessage.DIDYOUFORGETENDBLOCK, Arrays.toString(endTypes)),
-                                run));
+                        res.getValidationMessages()
+                                .add(new TemplateValidationMessage(ValidationMessageLevel.INFO, M2DocUtils
+                                        .message(ParsingErrorMessage.DIDYOUFORGETENDBLOCK, Arrays.toString(endTypes)),
+                                        tagLastRun));
                     }
-                    readTag(res, res.getRuns());
                     break;
                 case EOF:
                     final XWPFParagraph lastParagraph = document.getParagraphs()
@@ -276,7 +345,7 @@ public class M2DocParser extends AbstractBodyParser {
                     } else {
                         // report the error and ignore the problem so that parsing
                         // continues in other parts of the document.
-                        XWPFRun templateRun = runIterator.lookAhead(1).getRun();
+                        XWPFRun templateRun = runIterator.lookAhead(2).getRun();
                         if (templateRun == null) {
                             throw new IllegalStateException(
                                     "Token of type " + type + " detected. Run shouldn't be null at this place.");
@@ -296,6 +365,72 @@ public class M2DocParser extends AbstractBodyParser {
         }
 
         return res;
+    }
+
+    /**
+     * Reads up a tag so that it can be parsed as a simple string.
+     * 
+     * @param construct
+     *            the construct to read tag to
+     * @param runsToFill
+     *            the run list to fill
+     * @return the string present into the tag as typed by the template author.
+     */
+    protected String readTag(IConstruct construct, List<XWPFRun> runsToFill) {
+        final StringBuilder result = new StringBuilder();
+
+        ParsingToken token = runIterator.lookAhead(1);
+        XWPFRun run = token.getRun();
+        if (token == ParsingToken.START_FIELD_TOKEN) {
+            // We skip the start field
+            runIterator.next();
+        } else if (run == null) {
+            throw new IllegalStateException("readTag shouldn't be called with a table in the lookahead window.");
+        } else {
+            throw new IllegalStateException("Shouldn't call readTag if the current run doesn't start a field");
+        }
+
+        XWPFRun styleRun = null;
+        boolean columnRead = false;
+        while (runIterator.hasNext()) {
+            token = runIterator.next();
+            run = token.getRun();
+            if (token == ParsingToken.END_FIELD_TOKEN) {
+                break;
+            } else if (token == ParsingToken.MISSING_END_FIELD_TOKEN) {
+                construct.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.ERROR,
+                        M2DocUtils.message(ParsingErrorMessage.MISSINGENDTAG), runsToFill.get(runsToFill.size() - 1)));
+                break;
+            } else if (run == null) {
+                // XXX : treat this as a proper parsing error.
+                throw new IllegalArgumentException("table cannot be inserted into tags.");
+            }
+            runsToFill.add(run);
+            final String runText = readUpTText(run);
+            result.append(runText);
+            // the style run hasn't been discovered yet.
+            if (styleRun == null) {
+                if (columnRead && !runText.isEmpty()) {
+                    styleRun = run;
+                    construct.setStyleRun(styleRun);
+                } else {
+                    final int indexOfColumn = runText.indexOf(':');
+                    columnRead = indexOfColumn >= 0;
+                    if (columnRead && indexOfColumn < runText.length() - 1) {
+                        styleRun = run; // ':' doesn't appear at the end of the string
+                        construct.setStyleRun(styleRun);
+                    } // otherwise, use the next non empty run.
+                }
+            }
+        }
+        if (result.indexOf(M2DocUtils.FIELD_START) == 0) {
+            result.deleteCharAt(0);
+        }
+        if (result.lastIndexOf(M2DocUtils.FIELD_END) == result.length() - 1) {
+            result.deleteCharAt(result.length() - 1);
+        }
+
+        return result.toString();
     }
 
     /**
@@ -484,6 +619,7 @@ public class M2DocParser extends AbstractBodyParser {
                 readTag(block, block.getRuns());
                 final Block elseCompound = parseBlock(null,
                         M2DocUtils.message(ParsingErrorMessage.MISSINGENDIFAFTREELSE, header), TokenType.ENDIF);
+                elseCompound.getValidationMessages().addAll(block.getValidationMessages());
                 conditional.setElse(elseCompound);
 
                 // read up the m:endif tag if it exists

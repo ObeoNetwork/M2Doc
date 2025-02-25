@@ -1,0 +1,21 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Basic if demonstration :
+  
+  if .differs(.aqlFeatureAccess(self, 'name'), 'anydsl') then
+    The THEN paragraph.
+  else
+    
+    if .equals(.aqlFeatureAccess(self, 'name'), ***ERROR***) then
+      The ELSEIF paragraph.
+    endif
+    
+  endif
+  
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

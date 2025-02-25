@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -158,8 +158,8 @@ public class TemplateVariablesPage extends WizardPage {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                final String variableName = ((Entry<String, ?>) ((IStructuredSelection) variablesTable.getSelection())
-                        .getFirstElement()).getKey();
+                final String variableName = (String) ((Entry<?, ?>) ((IStructuredSelection) variablesTable
+                        .getSelection()).getFirstElement()).getKey();
                 final M2DocTypeSelectionDialog dialog = new M2DocTypeSelectionDialog(getShell(), variableName,
                         properties.getVariables().get(variableName), properties.getPackagesURIs());
                 final int dialogResult = dialog.open();

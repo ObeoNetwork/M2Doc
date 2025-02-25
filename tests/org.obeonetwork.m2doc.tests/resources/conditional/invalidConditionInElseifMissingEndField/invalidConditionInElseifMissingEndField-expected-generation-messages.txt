@@ -1,0 +1,2 @@
+ERROR - Invalid if statement: Missing end tag }
+ERROR - Invalid if statement: Expression "self.name =" is invalid: missing expression

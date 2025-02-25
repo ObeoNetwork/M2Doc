@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.CancellationException;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -140,6 +141,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      *            the {@link Monitor}
      * @return the {@link ValidationMessageLevel}
      */
+    @SuppressWarnings("resource")
     public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnv,
             boolean ignoreVersionCheck, Monitor monitor) {
 
@@ -149,9 +151,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
         this.queryEnvironment = queryEnv;
         aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
-        final TemplateCustomProperties templateProperties = new TemplateCustomProperties(
-                documentTemplate.getDocument());
-        final XWPFRun run = M2DocUtils.getOrCreateFirstRun(documentTemplate.getDocument());
+        final XWPFDocument document = documentTemplate.getDocument();
+        final TemplateCustomProperties templateProperties = new TemplateCustomProperties(document);
+        final XWPFRun run = M2DocUtils.getOrCreateFirstRun(document);
         if (templateProperties.getM2DocVersion() == null) {
             documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(
                     ValidationMessageLevel.WARNING, "No M2Doc version set in the template.", run));
@@ -245,7 +247,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         ValidationMessageLevel parameterLevel = ValidationMessageLevel.OK;
         for (Parameter parameter : template.getParameters()) {
             final IValidationResult validationResult = aqlValidator.validate(null, parameter.getType());
-            final XWPFRun run = template.getRuns().get(1);
+            final XWPFRun run = template.getRuns().get(template.getRuns().size() - 1);
             addValidationMessages(template, run, validationResult);
             if (parameters.containsKey(parameter.getName())) {
                 parameterLevel = ValidationMessageLevel.ERROR;
@@ -271,7 +273,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     public ValidationMessageLevel caseBookmark(Bookmark bookmark) {
         if (bookmark.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult validationResult = aqlValidator.validate(stack.peek(), bookmark.getName());
-            final XWPFRun run = bookmark.getRuns().get(1);
+            final XWPFRun run = bookmark.getRuns().get(bookmark.getRuns().size() - 1);
             addValidationMessages(bookmark, run, validationResult);
         }
 
@@ -284,13 +286,13 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     public ValidationMessageLevel caseLink(Link link) {
         if (link.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult nameValidationResult = aqlValidator.validate(stack.peek(), link.getName());
-            final XWPFRun run = link.getRuns().get(1);
+            final XWPFRun run = link.getRuns().get(link.getRuns().size() - 1);
             addValidationMessages(link, run, nameValidationResult);
         }
 
         if (link.getText().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult textValidationResult = aqlValidator.validate(stack.peek(), link.getText());
-            final XWPFRun run = link.getRuns().get(1);
+            final XWPFRun run = link.getRuns().get(link.getRuns().size() - 1);
             addValidationMessages(link, run, textValidationResult);
         }
 
@@ -302,7 +304,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final ValidationMessageLevel idLevel;
         if (userDoc.getId().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult validationResult = aqlValidator.validate(stack.peek(), userDoc.getId());
-            final XWPFRun run = userDoc.getRuns().get(1);
+            final XWPFRun run = userDoc.getRuns().get(userDoc.getRuns().size() - 1);
             addValidationMessages(userDoc, run, validationResult);
             idLevel = checkUserDocIdTypes(userDoc, run, validationResult);
         } else {
@@ -335,7 +337,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final Set<IType> types = validationResult.getPossibleTypes(conditional.getCondition().getAst());
         final ValidationMessageLevel conditionLevel;
         if (conditional.getCondition().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final XWPFRun run = conditional.getRuns().get(1);
+            final XWPFRun run = conditional.getRuns().get(conditional.getRuns().size() - 1);
             addValidationMessages(conditional, run, validationResult);
             conditionLevel = checkConditionalConditionTypes(conditional, run, types);
         } else {
@@ -458,7 +460,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
         final IValidationResult validationResult = aqlValidator.validate(stack.peek(), repetition.getQuery());
         final Set<IType> types = validationResult.getPossibleTypes(repetition.getQuery().getAst());
-        final XWPFRun run = repetition.getRuns().get(1);
+        final XWPFRun run = repetition.getRuns().get(repetition.getRuns().size() - 1);
         ValidationMessageLevel iteratorLevel;
         if (repetition.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             addValidationMessages(repetition, run, validationResult);
@@ -502,7 +504,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final IValidationResult validationResult = aqlValidator.validate(stack.peek(), let.getValue());
         final Set<IType> types = validationResult.getPossibleTypes(let.getValue().getAst());
 
-        final XWPFRun run = let.getRuns().get(1);
+        final XWPFRun run = let.getRuns().get(let.getRuns().size() - 1);
         ValidationMessageLevel variableLevel;
         if (let.getValue().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             addValidationMessages(let, run, validationResult);
@@ -560,7 +562,12 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     public ValidationMessageLevel caseQuery(Query query) {
         if (query.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
             final IValidationResult validationResult = aqlValidator.validate(stack.peek(), query.getQuery());
-            final XWPFRun run = query.getStyleRun();
+            final XWPFRun run;
+            if (query.getRuns().isEmpty()) {
+                run = query.getStyleRun();
+            } else {
+                run = query.getRuns().get(query.getRuns().size() - 1);
+            }
             addValidationMessages(query, run, validationResult);
         }
 
@@ -569,8 +576,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseComment(Comment comment) {
-        // noting to do here
-        return ValidationMessageLevel.OK;
+        return getHighestMessageLevel(comment);
     }
 
     @Override

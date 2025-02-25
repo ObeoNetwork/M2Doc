@@ -107,14 +107,19 @@ public final class M2DocUtils {
     public static final String M = "m:";
 
     /**
+     * The field start.
+     */
+    public static final String FIELD_START = "{";
+
+    /**
      * The {@link org.obeonetwork.m2doc.template.Query Query} field.
      */
-    public static final String M_FIELD_START = "{" + M;
+    public static final String M_FIELD_START = FIELD_START + M;
 
     /**
      * The {@link org.obeonetwork.m2doc.template.Query Query} field end.
      */
-    public static final String M_FIELD_END = "}";
+    public static final String FIELD_END = "}";
 
     /**
      * constant defining the color of info messages.
@@ -165,6 +170,16 @@ public final class M2DocUtils {
      * The ignore {@link #VERSION} check option.
      */
     public static final String IGNORE_VERSION_CHECK_OPTION = "IgnoreVersionCheck";
+
+    /**
+     * Separator between the text of a M2DOC template element and a corresponding parsing error and between two parsing error.
+     */
+    public static final String BLANK_SEPARATOR = "    ";
+
+    /**
+     * The separator between the tag were a parsing error has been detected and the start of the error message.
+     */
+    public static final String LOCATION_SEPARATOR = "<---";
 
     /**
      * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
@@ -262,7 +277,7 @@ public final class M2DocUtils {
             String message) {
         final XWPFRun run = paragraph.createRun();
 
-        setRunMessage(run, level, message);
+        setRunMessage(run, level, BLANK_SEPARATOR + LOCATION_SEPARATOR + message);
 
         return new TemplateValidationMessage(level, message, run);
     }

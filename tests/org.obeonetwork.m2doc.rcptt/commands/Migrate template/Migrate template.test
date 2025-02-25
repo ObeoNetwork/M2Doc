@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _JgoTMPNcEe-iEteHtnm5xg
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 2/26/25, 10:28 AM
+Save-Time: 3/3/25, 10:54 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -19,5 +19,7 @@ with [get-view "Project Explorer" | get-tree] {
     select "test/version_3/template-migrated-expected.docx" "test/version_3/template-migrated.docx"
     get-menu -path "Assert docx are equals" | click -metaKeys ""
 }
+get-window "M2Doc assert equals .docx" | get-label "Same .docx files" | get-property caption 
+    | equals "Same .docx files" | verify-true
 get-window "M2Doc assert equals .docx" | get-button OK | click -metaKeys ""
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

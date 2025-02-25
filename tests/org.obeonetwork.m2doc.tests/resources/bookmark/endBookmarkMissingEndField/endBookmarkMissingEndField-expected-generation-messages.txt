@@ -1,0 +1,2 @@
+ERROR - Invalid bookmark statement: Missing end tag }
+ERROR - dangling reference for bookmark bookmark1

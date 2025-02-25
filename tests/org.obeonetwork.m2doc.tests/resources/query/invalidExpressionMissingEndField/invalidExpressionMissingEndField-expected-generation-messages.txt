@@ -1,0 +1,2 @@
+ERROR - Invalid query statement: Missing end tag }
+ERROR - Invalid query statement: Expression "self." is invalid: missing feature access or service call

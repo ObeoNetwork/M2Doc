@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -181,6 +181,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * Error message when a {@link Link} errors.
      */
     private static final String INVALID_LINK_STATEMENT = "Invalid link statement: ";
+
+    /**
+     * Error message when a {@link Link} errors.
+     */
+    private static final String INVALID_COMMENT_STATEMENT = "Invalid comment statement: ";
 
     /**
      * Error message when a {@link Query} errors.
@@ -568,6 +573,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     private XWPFRun insertFragment(XWPFParagraph paragraph, XWPFRun srcRun, String fragment) {
         XWPFRun generatedRun = paragraph.createRun();
         generatedRun.getCTR().set(srcRun.getCTR().copy());
+        generatedRun.getCTR().getTList().clear();
         generatedRun.getCTR().getInstrTextList().clear();
         generatedRun.setText(fragment);
         return generatedRun;
@@ -827,8 +833,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     @Override
     public XWPFParagraph caseComment(Comment comment) {
-        // nothing to do here
-        return currentGeneratedParagraph;
+        XWPFParagraph currentParagraph = currentGeneratedParagraph;
+        if (hasError(comment)) {
+            currentParagraph = insertQuerySyntaxMessages(currentParagraph, comment, INVALID_COMMENT_STATEMENT);
+        }
+        return currentParagraph;
     }
 
     /**

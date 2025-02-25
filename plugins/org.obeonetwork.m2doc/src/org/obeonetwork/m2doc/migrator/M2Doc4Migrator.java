@@ -119,7 +119,7 @@ public class M2Doc4Migrator implements IM2DocMigrator {
         for (XWPFRun run : fieldRuns) {
             final String instructionText = FIELD_UTILS.readUpInstrText(run);
             if (FIELD_UTILS.isFieldBegin(run) || FIELD_UTILS.isFieldEnd(run)
-                || FIELD_UTILS.isFieldSeparate(run.getCTR()) || instructionText.isBlank()) {
+                || FIELD_UTILS.isFieldSeparate(run.getCTR())) {
                 final int index = paragraph.getRuns().indexOf(run);
                 paragraph.removeRun(index);
             } else {
@@ -142,7 +142,7 @@ public class M2Doc4Migrator implements IM2DocMigrator {
         if (lastRun != null) {
             final String text = lastRun.getText(0);
             int endIndex = text.length();
-            while (endIndex >= 0 && Character.isWhitespace(text.charAt(endIndex - 1))) {
+            while (endIndex > 0 && Character.isWhitespace(text.charAt(endIndex - 1))) {
                 endIndex--;
             }
             lastRun.setText(lastRun.getText(0).substring(0, endIndex) + "}", 0);
