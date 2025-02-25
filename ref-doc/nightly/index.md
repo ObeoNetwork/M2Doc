@@ -589,6 +589,16 @@ The M2Doc evaluation engine converts any object to a string in order to insert i
 
 Default implementations are also provided by M2Doc in [this package](https://github.com/ObeoNetwork/M2Doc/tree/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/impl).
 
+## Template migration
+
+The template format has changed between version 3.x and 4.x. In version 3.x M2Doc statements were stored in MS Word fields that could be visualized with `ALT+F9` and inserted with `CTRL+F9`. Since version 4.x the fields has been replaced by plain text (`{m:...}`).
+
+You can migrate your template toward the current version of M2Doc by right clicking on the template an selecting the `Migrate template` menu.
+
+![The migrate template menu.]({{page.relativePath}}/ref-doc/nightly/images/Migrate%20template%20menu.png "The migrate template menu.")
+
+This menu is only available if the template needs to be migrated according to its version number (see the [Template properties wizard](index.html#template-properties-wizard) section).
+
 ## Extension points
 
 ### Services and packages token
