@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.ide.ui.command;
 
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -29,6 +31,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -38,37 +41,78 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  */
 public class MigrateTemplateHandler extends AbstractHandler {
 
+    /**
+     * A dot.
+     */
+    private static final String DOT = ".";
+
+    /**
+     * The migration {@link Job}.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class MigrationJob extends Job {
+
+        /**
+         * The template {@link URI}.
+         */
+        private final URI templateURI;
+
+        /**
+         * the template {@link IFile}.
+         */
+        private final IFile templateFile;
+
+        /**
+         * Constructor.
+         * 
+         * @param templateFile
+         *            the template {@link IFile}
+         */
+        private MigrationJob(IFile templateFile) {
+            super("Migrate " + templateFile.getFullPath().toString());
+            templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
+            this.templateFile = templateFile;
+        }
+
+        @Override
+        protected IStatus run(IProgressMonitor monitor) {
+            IStatus status;
+
+            try {
+                final URI targetURI = URI.createURI(templateFile.getName().replace(DOT + M2DocUtils.DOCX_EXTENSION_FILE,
+                        "-migrated" + DOT + M2DocUtils.DOCX_EXTENSION_FILE)).resolve(templateURI);
+                final URI targetErrorURI = URI
+                        .createURI(templateFile.getName().replace(DOT + M2DocUtils.DOCX_EXTENSION_FILE,
+                                "-migrated-errors" + DOT + M2DocUtils.DOCX_EXTENSION_FILE))
+                        .resolve(templateURI);
+                final List<TemplateValidationMessage> messages = M2DocUtils.migrate(URIConverter.INSTANCE, templateURI,
+                        targetURI, targetErrorURI, BasicMonitor.toMonitor(monitor));
+
+                if (!messages.isEmpty()) {
+                    status = new Status(IStatus.ERROR, getClass(),
+                            "Errors while migrating " + templateURI + " see " + targetErrorURI + ".");
+                } else {
+                    status = new Status(IStatus.OK, getClass(), templateURI + " migrated.");
+                }
+
+                templateFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
+            } catch (DocumentParserException | CoreException e) {
+                status = new Status(IStatus.ERROR, getClass(), "Can't migrate " + templateURI, e);
+            }
+
+            return status;
+        }
+    }
+
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
         if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
             for (Object selected : ((IStructuredSelection) selection).toList()) {
                 IFile templateFile = (IFile) selected;
-                final URI templateURI = URI.createPlatformResourceURI(templateFile.getFullPath().toString(), true);
 
-                final Job job = new Job("Migrate " + templateURI) {
-
-                    @Override
-                    protected IStatus run(IProgressMonitor monitor) {
-                        IStatus status;
-
-                        try {
-                            final URI targetURI = URI
-                                    .createURI(templateFile.getName().replace("." + M2DocUtils.DOCX_EXTENSION_FILE,
-                                            "-migrated" + "." + M2DocUtils.DOCX_EXTENSION_FILE))
-                                    .resolve(templateURI);
-                            M2DocUtils.migrate(URIConverter.INSTANCE, templateURI, targetURI,
-                                    BasicMonitor.toMonitor(monitor));
-                            templateFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
-                            status = new Status(IStatus.OK, getClass(), templateURI + " migrated.");
-                        } catch (DocumentParserException | CoreException e) {
-                            status = new Status(IStatus.ERROR, getClass(), "Can't migrate " + templateURI, e);
-                        }
-
-                        return status;
-                    }
-
-                };
+                final Job job = new MigrationJob(templateFile);
 
                 job.setRule(ResourcesPlugin.getWorkspace().getRoot());
                 job.schedule();

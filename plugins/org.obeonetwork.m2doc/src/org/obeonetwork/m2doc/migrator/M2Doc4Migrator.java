@@ -22,6 +22,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -90,7 +91,12 @@ public class M2Doc4Migrator implements IM2DocMigrator {
                     }
                 }
             }
+        }
 
+        if (inField) {
+            final XWPFRun lastParagraphRun = paragraph.getRuns().get(paragraph.getRuns().size() - 1);
+            result.add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "Multi paragraph field detected.",
+                    lastParagraphRun));
         }
 
         return result;

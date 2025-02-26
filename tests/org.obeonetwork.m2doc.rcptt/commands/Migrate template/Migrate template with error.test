@@ -1,0 +1,37 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _nPYeUHgzEeeKcP-oL2U8_A,_0QtY0PNbEe-iEteHtnm5xg
+Element-Name: Migrate template with error
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _ohpFYPQmEe-w8pEVpZ8CGA
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 2/26/25, 12:17 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "test/version_3/multiLine-template.docx"
+exec-with-options {
+    get-view "Project Explorer" | get-tree | get-menu -path "Migrate template" | click -metaKeys ""
+    get-window "Problem Occurred" 
+        | get-label "Errors while migrating platform:/resource/test/version_3/multiLine-template.docx see platform:/resource/test/version_3/multiLine-template-migrated-errors.docx." 
+        | get-property caption 
+        | equals "Errors while migrating platform:/resource/test/version_3/multiLine-template.docx see platform:/resource/test/version_3/multiLine-template-migrated-errors.docx." 
+        | verify-true
+    get-window "Problem Occurred" | get-button OK | click -metaKeys ""
+} -allowStatusDialog
+with [get-view "Project Explorer" | get-tree] {
+    select "test/version_3/multiLine-template-migrated-expected.docx" "test/version_3/multiLine-template-migrated.docx"
+    get-menu -path "Assert docx are equals" | click -metaKeys ""
+}
+get-window "M2Doc assert equals .docx" | get-button OK | click -metaKeys ""
+with [get-view "Project Explorer" | get-tree] {
+    select "test/version_3/multiLine-template-migrated-errors-expected.docx" "test/version_3/multiLine-template-migrated-errors.docx"
+    get-menu -path "Assert docx are equals" | click -metaKeys ""
+}
+get-window "M2Doc assert equals .docx" | get-button OK | click -metaKeys ""
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -1171,6 +1171,8 @@ public final class M2DocUtils {
      *            {@link URI} for the template to migrate
      * @param outputURI
      *            the output {@link URI}
+     * @param outputErrorURI
+     *            the error document serialization {@link URI} if any, <code>null</code> otherwise
      * @param monitor
      *            used to track the progress will generating
      * @return the {@link List} of {@link TemplateValidationMessage}
@@ -1178,7 +1180,7 @@ public final class M2DocUtils {
      *             if the migration fails
      */
     public static List<TemplateValidationMessage> migrate(URIConverter uriConverter, URI templateURI, URI outputURI,
-            Monitor monitor) throws DocumentParserException {
+            URI outputErrorURI, Monitor monitor) throws DocumentParserException {
         final List<TemplateValidationMessage> result = new ArrayList<>();
 
         monitor.beginTask("Migrating " + templateURI, TOTAL_PARSE_MONITOR_WORK + LOAD_TEMPLATE_MONITOR_WORK);
@@ -1196,14 +1198,14 @@ public final class M2DocUtils {
                 nextSubTask(monitor, PARSE_TEMPLATE_CUSTOM_PROPERTIES_MONITOR_WORK, "Parsing template body");
 
                 for (IM2DocMigrator migrator : migrators) {
-                    migrator.migrate(document);
+                    result.addAll(migrator.migrate(document));
                 }
 
                 nextSubTask(monitor, unitOfWork, "Migrating template footers");
 
                 for (XWPFFooter footer : document.getFooterList()) {
                     for (IM2DocMigrator migrator : migrators) {
-                        migrator.migrate(footer);
+                        result.addAll(migrator.migrate(footer));
                     }
 
                     monitor.worked(unitOfWork);
@@ -1213,17 +1215,24 @@ public final class M2DocUtils {
 
                 for (XWPFHeader header : document.getHeaderList()) {
                     for (IM2DocMigrator migrator : migrators) {
-                        migrator.migrate(header);
+                        result.addAll(migrator.migrate(header));
                     }
 
                     monitor.worked(unitOfWork);
                 }
 
                 nextSubTask(monitor, 0, "Save template " + outputURI);
-
                 properties.setM2DocVersion(VERSION);
                 properties.save();
                 POIServices.getInstance().saveFile(uriConverter, document, outputURI);
+
+                // save the error template if needed
+                if (!result.isEmpty() && outputErrorURI != null) {
+                    for (TemplateValidationMessage message : result) {
+                        insertMessageAfter(message.getLocation(), message.getLevel(), message.getMessage());
+                    }
+                    POIServices.getInstance().saveFile(uriConverter, document, outputErrorURI);
+                }
             }
         } catch (IOException e) {
             throw new DocumentParserException("Unable to open " + templateURI + " or save " + outputURI, e);
@@ -1275,7 +1284,7 @@ public final class M2DocUtils {
             }
         }
 
-        return true;
+        return result;
     }
 
 }

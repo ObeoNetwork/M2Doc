@@ -101,12 +101,14 @@ public class MigrationTests {
             if (!uriConverter.exists(expectedMigratedURI, Collections.EMPTY_MAP)) {
                 final URI actualMigratedURI = getActualMigratedURI(testTemplateFile);
 
-                messages.addAll(M2DocUtils.migrate(uriConverter, templateURI, actualMigratedURI, new BasicMonitor()));
+                messages.addAll(
+                        M2DocUtils.migrate(uriConverter, templateURI, actualMigratedURI, null, new BasicMonitor()));
 
                 fail(expectedMigratedURI + DOESN_T_EXIST);
             } else {
                 final URI memoryMigratedURI = getMemoryMigratedURI(testTemplateFile);
-                messages.addAll(M2DocUtils.migrate(uriConverter, templateURI, memoryMigratedURI, new BasicMonitor()));
+                messages.addAll(
+                        M2DocUtils.migrate(uriConverter, templateURI, memoryMigratedURI, null, new BasicMonitor()));
                 M2DocTestUtils.assertDocx(uriConverter, expectedMigratedURI, memoryMigratedURI);
             }
         } catch (Exception e) {
