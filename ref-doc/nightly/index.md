@@ -302,21 +302,15 @@ When an error/warning/info is detected, you can over the message to highlight th
 
 ### Syntax
 
-The template should be edited using your Microsoft Word document editor. M2Doc uses Word fields to declare dynamic elements. To make fields visible during the edition of your template in Microsoft Word, use `ALT+F9`. To insert a new field, use `CTRL+F9`.
+The template should be edited using your Microsoft Word document editor. Older versions of M2Doc used Word fields to declare dynamic elements. Since version 4.0.0 M2Doc statements are in plain text:
 
-All syntax elements of M2Doc should be placed into fields using `ALT+F9` to show fields and `CTRL+F9` to insert a new field. M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
+`{m:...}`
+
+The start `{m:` can't contain spaces nor tabulation (for instance `{ m:` is not a M2Doc statement). Also each instruction should start and end in the same paragraph.
+
+M2Doc is an imperative template language built on top of [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) for querying. The language supports type inference and can be extended using [custom services](index.html#providing-new-services).
 
 In order to create your [AQL](https://www.eclipse.dev/acceleo/documentation/aql.html) expressions with completion and see the result for a selected object you can use the [M2Doc interpreter](index.html#m2doc-interpreter-view).
-
-In the following explanations `{` and `}` will denote a Word field.
-
-Note that fields are also used by Microsoft Word page number, table of contents, ... Switching from field visualization mode to field edition mode will change the visualization of the document:
-
-![Fields edition.]({{page.relativePath}}/ref-doc/nightly/images/Field%20edition.png "Fields edition.")
-
-`ALT+F9`
-
-![Fields visualization.]({{page.relativePath}}/ref-doc/nightly/images/Field%20visualization.png "Fields visualization.")
 
 #### Comment ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/comment/nominal))
 
