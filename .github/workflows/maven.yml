@@ -61,9 +61,9 @@ jobs:
     - uses: actions/cache@v4.2.0
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '**/*.product') }}
+        key: ${{ runner.os }}-maven-${{ matrix.profile }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
         restore-keys: |
-          ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '**/*.product') }}
+          ${{ runner.os }}-maven-${{ matrix.profile }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
     
     - name: Create directory for website (documentation)
       run: |

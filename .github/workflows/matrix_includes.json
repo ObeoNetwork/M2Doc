@@ -11,7 +11,7 @@
   },
   {
     "java":"17",
-    "profile":"platform-capella-7.0.0,tests",
+    "profile":"platform-capella-7.0.1,tests",
     "tycho":"3.0.3"
   }
 ]

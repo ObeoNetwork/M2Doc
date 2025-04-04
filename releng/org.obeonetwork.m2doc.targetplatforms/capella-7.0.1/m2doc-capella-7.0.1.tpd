@@ -1,0 +1,200 @@
+target "M2Doc Capella 7.0.1 Target Platform"
+
+with requirements
+
+//include "https://download.eclipse.org/capella/core/updates/releases/7.0.1/targets/capella.target-definition.targetplatform"
+
+location GMF-Notation-1.13.1 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202211151334" {
+	org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
+}
+
+location GMF-Runtime-1.16 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/milestones/S202401081627/" {
+	org.eclipse.gmf.runtime.sdk.feature.group lazy
+	org.eclipse.gmf.runtime.thirdparty.feature.group lazy
+
+	org.apache.batik.ext [1.17.0,1.17.1)
+	org.apache.batik.codec [1.17.0,1.17.1)
+	org.apache.batik.bridge [1.17.0,1.17.1)
+	org.apache.batik.script [1.17.0,1.17.1)
+
+	org.apache.batik.transcoder [1.17.0,1.17.1)
+	org.apache.batik.util [1.17.0,1.17.1)
+	org.apache.batik.constants [1.17.0,1.17.1)
+	org.apache.batik.dom [1.17.0,1.17.1)
+	org.apache.batik.css [1.17.0,1.17.1)
+	org.apache.batik.gvt [1.17.0,1.17.1)
+	org.apache.batik.anim [1.17.0,1.17.1)
+	org.apache.batik.i18n [1.17.0,1.17.1)
+	org.apache.batik.dom.svg [1.17.0,1.17.1)
+	org.apache.batik.xml [1.17.0,1.17.1)
+	org.apache.batik.parser [1.17.0,1.17.1)
+	org.apache.batik.awt.util [1.17.0,1.17.1)
+	org.apache.batik.svggen [1.17.0,1.17.1)
+	org.apache.xmlgraphics [2.9.0,2.9.1)
+}
+
+location GEF-Classic  "https://archive.eclipse.org/tools/gef/classic/releases/3.17.0/" {
+	org.eclipse.gef.feature.group lazy
+	org.eclipse.gef.source.feature.group
+	org.eclipse.gef.sdk.feature.group lazy
+	org.eclipse.draw2d.sdk.feature.group lazy
+	org.eclipse.draw2d.source.feature.group lazy
+}
+
+location eclipse "https://download.eclipse.org/releases/2023-03" {
+	org.eclipse.sdk.feature.group lazy
+	org.eclipse.platform.feature.group lazy
+	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.emf.validation.source.feature.group lazy
+	org.eclipse.emf.transaction.source.feature.group lazy
+	org.eclipse.emf.workspace.source.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
+	com.ibm.icu lazy
+	org.eclipse.viatra.query.runtime.feature.source.feature.group lazy
+	org.eclipse.xtext.xbase.lib.feature.group lazy
+	org.eclipse.jgit.source.feature.group lazy
+	org.eclipse.egit.source.feature.group lazy
+	org.apache.log4j lazy
+	org.apache.commons.lang lazy
+	com.google.guava [31, 32)
+	
+	// For M2Doc
+	org.eclipse.platform.sdk lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
+	org.junit [4.0.0,5.0.0)
+	org.eclipse.jdt.feature.group lazy
+	org.w3c.dom.svg lazy
+	org.w3c.dom.smil lazy
+	org.w3c.css.sac lazy
+
+	// wikitext
+	org.eclipse.mylyn.wikitext [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.asciidoc [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.confluence [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.html [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.markdown [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.mediawiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.textile [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.tracwiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.twiki [3.0.0,3.1.0)
+
+	// for testing purpose only
+	org.eclipse.uml2.feature.group lazy
+	org.eclipse.pde.feature.group lazy
+}
+
+location Mylyn-3.26 "https://download.eclipse.org/mylyn/releases/3.26/" {
+	org.eclipse.mylyn_feature.feature.group [3.26.0,3.27.0)
+	org.eclipse.mylyn.commons.feature.group [3.26.0,3.27.0)
+	org.eclipse.mylyn.context_feature.feature.group [3.26.0,3.27.0)
+	org.eclipse.mylyn.monitor.feature.group [3.26.0,3.27.0)
+	org.eclipse.mylyn.team_feature.feature.group [3.26.0,3.27.0)
+	org.eclipse.mylyn.ide_feature.feature.group [3.26.0,3.27.0)
+	org.eclipse.mylyn.help.ui [3.26.0,3.27.0)
+}
+
+location Orbit-2023-03 "https://download.eclipse.org/tools/orbit/downloads/drops/R20230302014618/repository/" {
+	org.slf4j.api lazy
+	ch.qos.logback.slf4j lazy
+	ch.qos.logback.classic lazy
+	ch.qos.logback.core lazy
+}
+
+location sirius "https://download.eclipse.org/sirius/updates/releases/7.4.5/2023-03/" {
+	org.eclipse.sirius.doc.feature.feature.group lazy
+	org.eclipse.sirius.doc.feature.source.feature.group lazy
+	org.eclipse.sirius.runtime.source.feature.group lazy
+	org.eclipse.sirius.runtime.aql.source.feature.group lazy
+	org.eclipse.sirius.runtime.ide.ui.source.feature.group lazy
+	org.eclipse.sirius.interpreter.feature.source.feature.group lazy
+	org.eclipse.acceleo.ui.interpreter.source.feature.group lazy
+	org.eclipse.sirius.aql.source.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
+	org.eclipse.sirius.runtime.ide.ui.acceleo.source.feature.group lazy
+}
+
+location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/releases/runtime/7.0.1/" {
+	org.polarsys.kitalpha.ad.runtime.feature.source.feature.group lazy
+	org.polarsys.kitalpha.cadence.feature.source.feature.group lazy
+	org.polarsys.kitalpha.common.feature.source.feature.group lazy
+	org.polarsys.kitalpha.emde.feature.source.feature.group lazy
+	org.polarsys.kitalpha.emde.ui.feature.source.feature.group lazy
+	org.polarsys.kitalpha.massactions.feature.source.feature.group lazy
+	org.polarsys.kitalpha.model.common.share.feature.source.feature.group lazy
+	org.polarsys.kitalpha.model.common.commands.feature.source.feature.group lazy
+	org.polarsys.kitalpha.model.common.scrutiny.feature.source.feature.group lazy
+	org.polarsys.kitalpha.model.detachment.contrib.viewpoints.feature.source.feature.group lazy
+	org.polarsys.kitalpha.model.detachment.feature.source.feature.group lazy
+	org.polarsys.kitalpha.model.detachment.ui.feature.source.feature.group lazy
+	org.polarsys.kitalpha.report.feature.source.feature.group lazy
+	org.polarsys.kitalpha.report.ui.feature.source.feature.group lazy
+	org.polarsys.kitalpha.resourcereuse.emfscheme.feature.source.feature.group lazy
+	org.polarsys.kitalpha.resourcereuse.emfscheme.ui.feature.source.feature.group lazy
+	org.polarsys.kitalpha.resourcereuse.feature.source.feature.group lazy
+	org.polarsys.kitalpha.resourcereuse.ui.feature.source.feature.group lazy
+	org.polarsys.kitalpha.richtext.widget.feature.source.feature.group lazy
+	org.polarsys.kitalpha.richtext.widget.ext.feature.source.feature.group lazy
+	org.polarsys.kitalpha.transposer.feature.source.feature.group lazy
+	org.polarsys.kitalpha.sirius.rotativeimage.feature.feature.group lazy
+}
+
+location kitalpha-sdk-master "https://download.eclipse.org/kitalpha/updates/releases/sdk/7.0.1/" {
+	org.polarsys.kitalpha.doc.feature.feature.group lazy
+	org.polarsys.kitalpha.emde.sdk.feature.source.feature.group lazy
+}
+
+location diffmerge-core "https://download.eclipse.org/diffmerge/releases/0.15.0/emf-diffmerge-site/" {
+	org.eclipse.emf.diffmerge.feature.source.feature.group lazy
+	org.eclipse.emf.diffmerge.sirius.feature.source.feature.group lazy
+	org.eclipse.emf.diffmerge.gmf.feature.source.feature.group lazy
+	org.eclipse.emf.diffmerge.sdk.feature.source.feature.group lazy
+	org.eclipse.emf.diffmerge.egit.feature.source.feature.group lazy
+}
+
+location amalgam "https://download.eclipse.org/modeling/amalgam/updates/releases/1.14.0/capella/" {
+	org.eclipse.amalgam.explorer.activity.source.feature.group lazy
+}
+
+location egf "https://download.eclipse.org/egf/updates/1.6.4/2023-03/" {
+	org.eclipse.egf.sdk.feature.source.feature.group lazy
+} 
+
+location Nattable "https://download.eclipse.org/nattable/releases/2.1.0/repository/" {
+	org.eclipse.nebula.widgets.nattable.core.feature.feature.group lazy
+	org.eclipse.nebula.widgets.nattable.extension.glazedlists.feature.feature.group lazy
+}
+
+location nebula "https://download.eclipse.org/nebula/releases/3.0.0/" {
+	org.eclipse.nebula.widgets.richtext.feature.feature.group lazy
+}
+
+location eclipse-shared-license "https://download.eclipse.org/cbi/updates/license" {
+	org.eclipse.license.feature.group lazy
+}
+
+location site_Capella "https://download.eclipse.org/capella/core/updates/releases/7.0.1/org.polarsys.capella.rcp.site/" {
+	org.polarsys.capella.core.feature.feature.group lazy
+}
+
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+	org.kohsuke.args4j [2.0.21,2.1.0)
+	javax.servlet [3.1.0,3.2.0)
+}
+
+location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties" {
+	org.apache.poi.feature.feature.group lazy
+}
+
+location CDO "https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126/" {
+	org.eclipse.emf.cdo.sdk.feature.group lazy
+	org.eclipse.net4j.feature.group lazy
+}
+
+location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.30.0/" {
+	// for testing purpose only
+	org.eclipse.xtext.sdk.feature.group [2.30.0,2.31.0)
+}
