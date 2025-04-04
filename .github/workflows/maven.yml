@@ -61,9 +61,12 @@ jobs:
     - uses: actions/cache@v4.2.0
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ matrix.profile }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
+        CACHE_ID=${{ matrix.profile }}
+        CACHE_ID=${CACHE_ID//,} # remove commas
+        echo "CACHE_ID=${CACHE_ID}" >> $GITHUB_ENV # update GitHub ENV vars
+        key: ${{ runner.os }}-maven-${{ env.CACHE_ID }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
         restore-keys: |
-          ${{ runner.os }}-maven-${{ matrix.profile }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
+          ${{ runner.os }}-maven-${{ env.CACHE_ID }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
     
     - name: Create directory for website (documentation)
       run: |
