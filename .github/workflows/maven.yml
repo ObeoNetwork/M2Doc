@@ -41,6 +41,10 @@ jobs:
         echo JAVA ${{ matrix.java }}
         echo PROFILE ${{ matrix.profile }}
         echo TYCHO ${{ matrix.tycho }}
+        # prepare cache ID
+        CACHE_ID=${{ matrix.profile }}
+        CACHE_ID=${CACHE_ID//,} # remove commas
+        echo "CACHE_ID=${CACHE_ID}" >> $GITHUB_ENV # update GitHub ENV vars
 
     - name: Check if update site is needed
       id: updatesite_check
@@ -59,11 +63,10 @@ jobs:
         distribution: 'adopt'
         java-version: ${{ matrix.java }}
     - uses: actions/cache@v4.2.0
+      env:
+        PROFILE: ${{ matrix.profile }}
       with:
         path: ~/.m2/repository
-        CACHE_ID=${{ matrix.profile }}
-        CACHE_ID=${CACHE_ID//,} # remove commas
-        echo "CACHE_ID=${CACHE_ID}" >> $GITHUB_ENV # update GitHub ENV vars
         key: ${{ runner.os }}-maven-${{ env.CACHE_ID }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
         restore-keys: |
           ${{ runner.os }}-maven-${{ env.CACHE_ID }}-${{ hashFiles('**/pom.xml', '**/*.product') }}
