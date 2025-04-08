@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 /**
@@ -136,6 +137,7 @@ class RunSplit {
             }
         }
         run.getCTR().setTArray(newTArray);
+        preserveSpace(newTArray);
 
         // remove everything before the cut in runCopy
         final CTText[] newCopyTArray = Arrays.copyOfRange(runCopy.getCTR().getTArray(), tIndex,
@@ -143,6 +145,7 @@ class RunSplit {
         final String stringCoptyToCut = newCopyTArray[0].getStringValue();
         newCopyTArray[0].setStringValue(stringCoptyToCut.substring(charIndex, stringCoptyToCut.length()));
         runCopy.getCTR().setTArray(newCopyTArray);
+        preserveSpace(newCopyTArray);
 
         // add the token to insert and the new run
         tokens.add(runIndex + 1, tokenToInsert);
@@ -175,6 +178,7 @@ class RunSplit {
         final String stringToCut = newTArray[newTArray.length - 1].getStringValue();
         newTArray[newTArray.length - 1].setStringValue(stringToCut.substring(0, charIndex + 1));
         run.getCTR().setTArray(newTArray);
+        preserveSpace(newTArray);
 
         // remove everything before the cut in runCopy
         final CTText[] newCopyTArray;
@@ -196,10 +200,45 @@ class RunSplit {
             }
         }
         runCopy.getCTR().setTArray(newCopyTArray);
+        preserveSpace(newCopyTArray);
 
         // add the token to insert and the new run
         tokens.add(runIndex + 1, tokenToInsert);
         tokens.add(runIndex + 2, new ParsingToken(runCopy));
+    }
+
+    /**
+     * Sets needed preserve space on the given {@link CTText} array.
+     * 
+     * @param ctArray
+     *            the {@link CTText} array
+     */
+    private void preserveSpace(CTText[] ctArray) {
+        int fisrtNonEmptyIndex = -1;
+        int lastNonEmptyIndex = -1;
+        if (ctArray.length > 0) {
+            for (int i = 0; i < ctArray.length; i++) {
+                if (!ctArray[i].getStringValue().isEmpty()) {
+                    fisrtNonEmptyIndex = i;
+                    break;
+                }
+            }
+            for (int i = ctArray.length - 1; i > -1; i--) {
+                if (!ctArray[i].getStringValue().isEmpty()) {
+                    lastNonEmptyIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (fisrtNonEmptyIndex != -1
+            && Character.isWhitespace(ctArray[fisrtNonEmptyIndex].getStringValue().charAt(0))) {
+            ctArray[fisrtNonEmptyIndex].setSpace(Space.PRESERVE);
+        }
+        if (lastNonEmptyIndex != -1 && Character.isWhitespace(ctArray[lastNonEmptyIndex].getStringValue()
+                .charAt(ctArray[lastNonEmptyIndex].getStringValue().length() - 1))) {
+            ctArray[lastNonEmptyIndex].setSpace(Space.PRESERVE);
+        }
     }
 
 }
