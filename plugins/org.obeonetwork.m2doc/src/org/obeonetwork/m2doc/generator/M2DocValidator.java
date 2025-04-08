@@ -68,6 +68,11 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     /**
+     * The index varible suffix for {@link Repetition} {@link Repetition#getIterationVar()}.
+     */
+    public static final String INDEX_SUFFIX = "Index";
+
+    /**
      * The gengine initialization monitor work.
      */
     private static final int INIT_ENGINE_MONITOR_WORK = 5;
@@ -91,6 +96,11 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      * boolean {@link IType}.
      */
     private IType booleanType;
+
+    /**
+     * {@link Integer} {@link IType}.
+     */
+    private IType integerType;
 
     /**
      * The {@link Stack} of variables types.
@@ -178,6 +188,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         }
         booleanObjectType = new ClassType(queryEnvironment, Boolean.class);
         booleanType = new ClassType(queryEnvironment, boolean.class);
+        integerType = new ClassType(queryEnvironment, Integer.class);
         stack.clear();
         stack.push(types);
 
@@ -488,6 +499,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         }
         final Map<String, Set<IType>> iterationVariables = new HashMap<>(stack.peek());
         iterationVariables.put(repetition.getIterationVar(), iteratorTypes);
+        final Set<IType> indexTypes = new LinkedHashSet<>();
+        indexTypes.add(integerType);
+        iterationVariables.put(repetition.getIterationVar() + INDEX_SUFFIX, indexTypes);
         stack.push(iterationVariables);
         final ValidationMessageLevel bodyLevel;
         try {

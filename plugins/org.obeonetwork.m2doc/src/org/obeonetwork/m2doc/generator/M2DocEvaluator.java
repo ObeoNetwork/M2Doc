@@ -2009,8 +2009,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 final Map<String, Object> newVariables = new HashMap<>(variablesStack.peek());
                 variablesStack.push(newVariables);
                 try {
+                    int index = 1;
                     for (Object val : iteration) {
                         newVariables.put(repetition.getIterationVar(), val);
+                        newVariables.put(repetition.getIterationVar() + M2DocValidator.INDEX_SUFFIX, index++);
                         currentParagraph = doSwitch(repetition.getBody());
                         closingRepretition(repetition);
                     }

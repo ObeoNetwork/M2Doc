@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2024 Obeo. 
+ *  Copyright (c) 2021, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -95,6 +95,7 @@ import org.obeonetwork.m2doc.genconf.editor.view.aql.AQLConfiguration;
 import org.obeonetwork.m2doc.genconf.editor.view.aql.ColorManager;
 import org.obeonetwork.m2doc.genconf.editor.view.aql.ProposalLabelProvider;
 import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
+import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -840,7 +841,7 @@ public class M2DocInterpreterView extends ViewPart {
     /**
      * Parses the template to retrieve internal variable (let, for, template, ...) types.
      * 
-     * @param ven
+     * @param env
      *            the {@link IReadOnlyQueryEnvironment}
      * @param validator
      *            the {@link AstValidator}
@@ -852,11 +853,11 @@ public class M2DocInterpreterView extends ViewPart {
      *            the template URI
      * @return the mapping of internal variable (let, for, template, ...) types
      */
-    private Map<String, Set<IType>> parseVariableTypes(IReadOnlyQueryEnvironment ven, AstValidator validator,
+    private Map<String, Set<IType>> parseVariableTypes(IReadOnlyQueryEnvironment env, AstValidator validator,
             Map<String, Set<IType>> varTypes, URIConverter uriConv, URI tpltURI) {
         final Map<String, Set<IType>> res = new HashMap<>();
 
-        try (DocumentTemplate template = M2DocUtils.parse(uriConv, tpltURI, (IQueryEnvironment) ven,
+        try (DocumentTemplate template = M2DocUtils.parse(uriConv, tpltURI, (IQueryEnvironment) env,
                 M2DocPlugin.getClassProvider(), new BasicMonitor())) {
             final Iterator<EObject> it = template.eAllContents();
             while (it.hasNext()) {
@@ -875,6 +876,9 @@ public class M2DocInterpreterView extends ViewPart {
                         final Set<IType> possibleTypes = validationResult
                                 .getPossibleTypes(repetition.getQuery().getAst());
                         res.put(repetition.getIterationVar(), possibleTypes);
+                        final Set<IType> indexTypes = new LinkedHashSet<>();
+                        indexTypes.add(new ClassType(env, Integer.class));
+                        res.put(repetition.getIterationVar() + M2DocValidator.INDEX_SUFFIX, indexTypes);
                     }
                 } else if (current instanceof Parameter) {
                     final Parameter parameter = (Parameter) current;
@@ -909,7 +913,7 @@ public class M2DocInterpreterView extends ViewPart {
      *            the {@link URIConverter}
      * @param tpltURI
      *            the template URI
-     * @return the mapping of internal variable (let, for, template, ...) types
+     * @return the mapping of internal variable (let, for, template, ...) values
      */
     private Map<String, Object> parseVariableValues(IReadOnlyQueryEnvironment env, QueryEvaluationEngine engine,
             Map<String, Object> variables, URIConverter uriConverter, URI tpltURI) {
@@ -929,13 +933,12 @@ public class M2DocInterpreterView extends ViewPart {
                     }
                 } else if (current instanceof Repetition) {
                     final Repetition repetition = (Repetition) current;
-                    res.putAll(getRepetitionVariableValues(engine, repetition));
+                    getRepetitionVariableValues(res, engine, repetition);
                 } else if (current instanceof Parameter) {
                     // final Parameter parameter = (Parameter) current;
                     // TODO ?
                 }
             }
-
         } catch (IOException e) {
             // nothing to do here: if we can't parse it doesn't matter
         } catch (DocumentParserException e) {
@@ -948,15 +951,15 @@ public class M2DocInterpreterView extends ViewPart {
     /**
      * Gets the {@link Repetition} variable value.
      * 
+     * @param res
+     *            the mapping of internal variable (let, for, template, ...) values
      * @param engine
      *            the {@link QueryEvaluationEngine}
      * @param repetition
      *            the {@link Repetition}
-     * @return the {@link Repetition} variable value
      */
-    private Map<String, Object> getRepetitionVariableValues(QueryEvaluationEngine engine, final Repetition repetition) {
-        final Map<String, Object> res = new HashMap<>();
-
+    private void getRepetitionVariableValues(Map<String, Object> res, QueryEvaluationEngine engine,
+            final Repetition repetition) {
         final EvaluationResult evaluationResult = engine.eval(repetition.getQuery(), res);
         final Object value = evaluationResult.getResult();
         if (value != null) {
@@ -969,8 +972,7 @@ public class M2DocInterpreterView extends ViewPart {
                 // TODO ?
             }
         } // Else may happen if some variable name are reused with different type
-
-        return res;
+        res.put(repetition.getIterationVar() + M2DocValidator.INDEX_SUFFIX, Integer.valueOf(1));
     }
 
 }
