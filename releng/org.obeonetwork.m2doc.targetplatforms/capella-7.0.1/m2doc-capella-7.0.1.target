@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc Capella 7.0.1 Target Platform" sequenceNumber="1743753027">
+<target name="M2Doc Capella 7.0.1 Target Platform" sequenceNumber="1743775975">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="0.0.0"/>
@@ -53,7 +53,7 @@
       <unit id="org.eclipse.egit.source.feature.group" version="0.0.0"/>
       <unit id="org.apache.log4j" version="0.0.0"/>
       <unit id="org.apache.commons.lang" version="0.0.0"/>
-      <unit id="com.google.guava" version="31.1.0.jre"/>
+      <unit id="com.google.guava" version="0.0.0"/>
       <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
       <unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.core.runtime" version="0.0.0"/>

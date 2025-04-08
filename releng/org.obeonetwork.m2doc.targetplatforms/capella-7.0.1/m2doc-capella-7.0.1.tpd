@@ -56,7 +56,7 @@ location eclipse "https://download.eclipse.org/releases/2023-03" {
 	org.eclipse.egit.source.feature.group lazy
 	org.apache.log4j lazy
 	org.apache.commons.lang lazy
-	com.google.guava [31, 32)
+	com.google.guava lazy
 	
 	// For M2Doc
 	org.eclipse.platform.sdk lazy
