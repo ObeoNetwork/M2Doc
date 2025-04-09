@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -369,8 +369,8 @@ public class RawCopier {
         final XWPFDocument inputDocument = inputBody.getXWPFDocument();
         final XWPFDocument ouptutDocument = outputBody.getXWPFDocument();
 
-        final XWPFAbstractNum inputNum = inputDocument.getNumbering()
-                .getAbstractNum(inputNumID.subtract(BigInteger.ONE));
+        final BigInteger numId = inputDocument.getNumbering().getAbstractNumID(inputNumID);
+        final XWPFAbstractNum inputNum = inputDocument.getNumbering().getAbstractNum(numId);
 
         final XWPFAbstractNum outputNum = new XWPFAbstractNum((CTAbstractNum) inputNum.getCTAbstractNum().copy());
         final BigInteger newID = BigInteger.valueOf(ouptutDocument.getNumbering().getAbstractNums().size());

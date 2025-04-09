@@ -1,0 +1,17 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Bullet list in template for construct
+  [query: .toBulletList('hello,bullets,world')]
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template toBulletList (s : java.lang.String)
+  
+  for word | .tokenize(s, ',') do
+    [query: word]
+  endfor
+  

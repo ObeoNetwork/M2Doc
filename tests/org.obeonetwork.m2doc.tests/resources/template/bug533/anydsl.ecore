@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="anydsl" nsURI="http://www.eclipse.org/acceleo/anydsl" nsPrefix="anydsl">
+  <eClassifiers xsi:type="ecore:EClass" name="World">
+    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
+      <details key="archetype" value="MomentInterval"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="companies" upperBound="-1"
+        eType="#//Company" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foods" upperBound="-1"
+        eType="#//Food" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sources" upperBound="-1"
+        eType="#//Source" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MultiNamedElement" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" upperBound="-1" eType="#//SingleString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//SingleString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Producer" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="adress" eType="#//Adress"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="company" eType="#//Company"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foods" upperBound="-1"
+        eType="#//Food" eOpposite="#//Food/producers"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Adress">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="zipCode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="city" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="country" eType="#//CountryData"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Company" abstract="true" interface="true"
+      eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="adress" eType="#//Adress"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="world" eType="#//World"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProductionCompany" eSuperTypes="#//Company">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="producers" upperBound="-1"
+        eType="#//Producer" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Restaurant" eSuperTypes="#//Company">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="chefs" upperBound="-1"
+        eType="#//Chef" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="menu" upperBound="-1" eType="#//EStringToRecipeMap"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Chef" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="adress" eType="#//Adress"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="recipes" upperBound="-1"
+        eType="#//Recipe" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Recipe" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ingredients" upperBound="-1"
+        eType="#//Food"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Food" eSuperTypes="#//NamedElement">
+    <eOperations name="ripen" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="color" eType="#//Color"/>
+    </eOperations>
+    <eOperations name="preferredColor" eType="#//Color"/>
+    <eOperations name="newFood" eType="#//Food"/>
+    <eOperations name="setColor">
+      <eParameters name="food" eType="#//Food"/>
+      <eParameters name="newColor" eType="#//Color"/>
+    </eOperations>
+    <eOperations name="setCaliber">
+      <eParameters name="food" eType="#//Food"/>
+      <eParameters name="newCaliber" upperBound="-1" eType="#//Caliber"/>
+    </eOperations>
+    <eOperations name="acceptedCaliber" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="caliber" eType="#//Caliber"/>
+    </eOperations>
+    <eOperations name="label">
+      <eParameters name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="preferredLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eParameters name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" upperBound="-1"
+        eType="#//Color"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caliber" eType="#//Caliber"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relatedFoods" upperBound="-1"
+        eType="#//Food"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" eType="#//Group"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Source"
+        eOpposite="#//Source/foods"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="producers" upperBound="-1"
+        eType="#//Producer" eOpposite="#//Producer/foods"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Source" abstract="true" interface="true"
+      eSuperTypes="#//MultiNamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foods" upperBound="-1"
+        eType="#//Food" eOpposite="#//Food/source"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="origin" upperBound="-1"
+        eType="#//CountryData"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Plant" eSuperTypes="#//Source">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//Kind"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Animal" eSuperTypes="#//Source">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="part" upperBound="-1" eType="#//Part"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Color">
+    <eLiterals name="black"/>
+    <eLiterals name="red" value="1"/>
+    <eLiterals name="green" value="2"/>
+    <eLiterals name="yellow" value="3"/>
+    <eLiterals name="orange" value="4"/>
+    <eLiterals name="brown" value="5"/>
+    <eLiterals name="pink" value="6"/>
+    <eLiterals name="palPink" value="7" literal="palPink"/>
+    <eLiterals name="veryYellow" value="8"/>
+    <eLiterals name="white" value="9"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Caliber">
+    <eLiterals name="S"/>
+    <eLiterals name="M" value="1"/>
+    <eLiterals name="L" value="2"/>
+    <eLiterals name="XL" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Group">
+    <eLiterals name="Water"/>
+    <eLiterals name="Dairy" value="1"/>
+    <eLiterals name="Fruit" value="2"/>
+    <eLiterals name="Grain" value="3"/>
+    <eLiterals name="Protein" value="4"/>
+    <eLiterals name="Sweet" value="5"/>
+    <eLiterals name="Vegetable" value="6"/>
+    <eLiterals name="Alcohol" value="7"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Continent">
+    <eLiterals name="Europe"/>
+    <eLiterals name="Asia" value="1"/>
+    <eLiterals name="Africa" value="2"/>
+    <eLiterals name="America" value="3"/>
+    <eLiterals name="Australia" value="4"/>
+    <eLiterals name="Antarctica" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Kind">
+    <eLiterals name="Other"/>
+    <eLiterals name="Seed" value="1"/>
+    <eLiterals name="Oilseed" value="2"/>
+    <eLiterals name="Tree" value="3"/>
+    <eLiterals name="Root" value="4"/>
+    <eLiterals name="Bulb" value="5"/>
+    <eLiterals name="Leaf" value="6"/>
+    <eLiterals name="Stem" value="7"/>
+    <eLiterals name="Flower" value="8"/>
+    <eLiterals name="Inflorescence" value="9"/>
+    <eLiterals name="Spice" value="10"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Part">
+    <eLiterals name="Other"/>
+    <eLiterals name="Muscle" value="1"/>
+    <eLiterals name="Organ" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="CountryData" instanceClassName="anydsl.Country"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="SingleString" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EStringToRecipeMap" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Recipe"/>
+  </eClassifiers>
+</ecore:EPackage>
