@@ -1,0 +1,19 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Bullet list in template for constructCall1 :
+  [query: .toBulletList('hello,bullets,world')]
+  Call2 :
+  [query: .toBulletList('hello,bullets,world')]
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template toBulletList (s : java.lang.String)
+  
+  for word | .tokenize(s, ',') do
+    [query: word]
+  endfor
+  
