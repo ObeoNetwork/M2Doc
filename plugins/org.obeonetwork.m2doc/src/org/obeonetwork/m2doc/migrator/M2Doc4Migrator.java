@@ -88,6 +88,7 @@ public class M2Doc4Migrator implements IM2DocMigrator {
                     inField = false;
                     if (isM2DocInstruction) {
                         migrateField(paragraph, fieldRuns);
+                        isM2DocInstruction = false;
                     }
                 }
             }
