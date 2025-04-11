@@ -39,6 +39,7 @@ import org.apache.poi.xwpf.usermodel.TableWidthType;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.VerticalAlign;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFieldRun;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
@@ -466,6 +467,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      * @return the inserted {@link XWPFRun}
      */
     private XWPFRun insertRun(XWPFParagraph paragraph, XWPFRun srcRun) {
+        final XWPFRun newRun;
 
         final XWPFParagraph newParagraph;
         if (srcRun.getParent() != currentTemplateParagraph || forceNewParagraph || paragraph == null) {
@@ -474,19 +476,23 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph = paragraph;
         }
 
-        XWPFRun newRun = null;
         if (srcRun instanceof XWPFHyperlinkRun) {
             // Hyperlinks meta information is saved in the paragraph and not in the run. So we have to update the paragrapah with a copy of
             // the hyperlink to insert.
-            CTHyperlink newHyperlink = newParagraph.getCTP().addNewHyperlink();
+            final CTHyperlink newHyperlink = newParagraph.getCTP().addNewHyperlink();
             newHyperlink.set(((XWPFHyperlinkRun) srcRun).getCTHyperlink());
 
             newRun = new XWPFHyperlinkRun(newHyperlink, srcRun.getCTR(), srcRun.getParent());
             newParagraph.addRun(newRun);
+        } else if (srcRun instanceof XWPFFieldRun) {
+            newRun = newParagraph.createFieldRun();
+            ((XWPFFieldRun) newRun).setFieldInstruction(((XWPFFieldRun) srcRun).getFieldInstruction());
+            newRun.getCTR().set(srcRun.getCTR());
         } else {
             newRun = newParagraph.createRun();
             newRun.getCTR().set(srcRun.getCTR());
         }
+
         return newRun;
     }
 
