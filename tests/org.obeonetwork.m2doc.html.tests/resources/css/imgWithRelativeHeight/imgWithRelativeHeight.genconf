@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="imgWithWidth" templateFileName="imgWithWidth-template.docx" resultFileName="imgWithWidth-actual-generation.docx" validationFileName="imgWithWidth-actual-validation.docx"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="imgWithWidth" templateFileName="imgWithRelativeHeight-template.docx" resultFileName="imgWithWidth-actual-generation.docx" validationFileName="imgWithWidth-actual-validation.docx"/>

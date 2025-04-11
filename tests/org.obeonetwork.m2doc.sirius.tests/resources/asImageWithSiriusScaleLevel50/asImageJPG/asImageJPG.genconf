@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="representationByName" templateFileName="representationByName-template.docx" resultFileName="representationByName-actual-generation.docx" validationFileName="representationByName-actual-validation.docx">
-  <options name="SiriusSession" value="representationByName.aird"/>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="representationByName" templateFileName="asImageJPG-template.docx" resultFileName="representationByName-actual-generation.docx" validationFileName="representationByName-actual-validation.docx">
+  <options name="SiriusSession" value="asImageJPG.aird"/>
   <options name="SiriusScalingPolicy" value="AUTO_SCALING"/>
   <options name="SiriusScaleLevel" value="50"/>
 </genconf:Generation>

@@ -5,4 +5,5 @@
   </definitions>
   <options name="SiriusSession" value="asImageByRepresentationDescriptionName.aird"/>
   <options name="SiriusForceRefresh" value="true"/>
+  <options name="SiriusScalingPolicy" value="AUTO_SCALING"/>
 </genconf:Generation>
