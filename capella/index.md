@@ -86,9 +86,15 @@ Once your download is finished, extract the downloaded archive and run the eclip
 
 * `https://obeo-networkaggregation-releases.s3-website-eu-west-1.amazonaws.com/capella-extensions/1.1.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/1.1.0/full/org.obeonetwork.capella.update.full.zip) (M2Doc 1.0.0)
 
-This update site contains [M2Doc](https://m2Doc.org) and the [Capella](https://mbse-capella.org/) integration. Select the following feature:
+The update site for version 4.x and above contains [M2Doc](https://m2Doc.org) and the [Capella](https://mbse-capella.org/) integration. Select the following feature:
 
-![The feature to install.]({{page.relativePath}}/capella/images/Install.png "The feature to install.")
+![The feature to install.]({{page.relativePath}}/capella/images/Install_4.png "The feature to install.")
+
+Note: if your are installing other Capella extensions such as capella-requirements-vp or filtering using dropins, you shall not select the jsoup feature.
+
+The update site for version 3.x and below contains [M2Doc](https://m2Doc.org) and the [Capella](https://mbse-capella.org/) integration. Select the following feature:
+
+![The feature to install.]({{page.relativePath}}/capella/images/Install_3.png "The feature to install.")
 
 Note: if your are installing other Capella extensions such as capella-requirements-vp or filtering using dropins, you shall not select the jsoup feature.
 
