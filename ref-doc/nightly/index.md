@@ -408,11 +408,17 @@ If you want to use a variable named 'userdoc' or 'enduserdoc' you can use an ext
 
 A template construct is basically a block of template with parameters that can be called like a service. When the template construct is called its contents is inserted after all dynamic parts have been interpreted by M2Doc.
 
-`{m:template myTemplate(a : Integer, b : Integer)} ...template block... {m:endtemplate}`
+`{m:template public myTemplate(a : Integer, b : Integer)} ...template block... {m:endtemplate}`
 
 This template can be called as follow using a simple [query](index.html#query-example):
 
 `{m:1.myTemplate(3)}`
+
+The template contruct visibility can be one of:
+
+* `public`: the template construct is visible by any document
+* `protected`: the template construct is visible by the current document and any other document extending it directly or indirectly
+* `private`: the template construct is visible only in the current document
 
 If you want more examples of M2Doc syntax you can have a look at the nominal cases in [unit tests](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources).
 If you want to use a variable named 'template' or 'endtemplate' you can use an extra space after 'm:'.
