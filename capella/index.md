@@ -39,6 +39,7 @@ Once your download is finished, extract the downloaded archive and run the eclip
 
 ## Installation for Capella 7.0.x
 
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.1_M2Doc4.0.0/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.1_M2Doc4.0.0/full/org.obeonetwork.capella.update.full.zip) (M2Doc 4.0.0)
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.0_M2Doc3.3.4/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.0_M2Doc3.3.4/full/org.obeonetwork.capella.update.full.zip) (M2Doc 3.3.4)
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.0_M2Doc3.3.3/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.0_M2Doc3.3.3/full/org.obeonetwork.capella.update.full.zip) (M2Doc 3.3.3)
 
