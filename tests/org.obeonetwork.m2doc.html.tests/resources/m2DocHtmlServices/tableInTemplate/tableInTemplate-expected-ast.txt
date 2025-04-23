@@ -11,5 +11,5 @@
 
 === TEMPLATES ===
 
-template myTemplate (path : java.lang.String)
+template public myTemplate (path : java.lang.String)
   [query: .fromHTMLURI(path)]

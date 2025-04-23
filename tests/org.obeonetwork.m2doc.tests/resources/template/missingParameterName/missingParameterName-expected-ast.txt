@@ -10,5 +10,5 @@
 
 === TEMPLATES ===
 
-template myTemplate ( : java.lang.Integer)
+template public myTemplate ( : java.lang.Integer)
   [query: .add(a, a)]

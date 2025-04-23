@@ -10,5 +10,5 @@
 
 === TEMPLATES ===
 
-template myTemplate (a : Sequence(java.lang.Integerjava.util.List)
+template public myTemplate (a : Sequence(java.lang.Integerjava.util.List)
   [query: ->sep(a, '[', '|', ']')]

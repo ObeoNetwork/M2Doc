@@ -15,5 +15,5 @@
 
 === TEMPLATES ===
 
-template myTemplate (str : java.lang.String)
+template public myTemplate (str : java.lang.String)
   [query: .asBookmarkRef('testidref', str)]

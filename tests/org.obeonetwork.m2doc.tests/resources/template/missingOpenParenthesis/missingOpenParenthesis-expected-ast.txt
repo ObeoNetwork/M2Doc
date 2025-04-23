@@ -10,5 +10,5 @@
 
 === TEMPLATES ===
 
-template  myTemplate a:Integer) ()
+template private public myTemplate a:Integer) ()
   [query: .add(a, a)]

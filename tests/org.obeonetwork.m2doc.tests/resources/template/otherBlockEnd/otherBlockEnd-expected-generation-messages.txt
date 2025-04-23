@@ -1,2 +1,2 @@
-ERROR - Invalid block: Unexpected tag m:endfor at this location while parsing: m:template myTemplate(a:Integer)
+ERROR - Invalid block: Unexpected tag m:endfor at this location while parsing: m:template public myTemplate(a:Integer)
 INFO - Invalid block: Did you forget the [ENDTEMPLATE]?

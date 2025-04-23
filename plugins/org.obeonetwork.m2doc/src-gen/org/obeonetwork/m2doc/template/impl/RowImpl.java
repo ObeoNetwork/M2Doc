@@ -47,7 +47,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The cached value of the '{@link #getCells() <em>Cells</em>}' containment reference list.
@@ -109,6 +109,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
      * 
      * @generated
      */
+    @Override
     public EList<Cell> getCells() {
         if (cells == null) {
             cells = new EObjectContainmentEList<Cell>(Cell.class, this, TemplatePackage.ROW__CELLS);
@@ -122,6 +123,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
      * 
      * @generated
      */
+    @Override
     public XWPFTableRow getTableRow() {
         return tableRow;
     }
@@ -132,6 +134,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
      * 
      * @generated
      */
+    @Override
     public void setTableRow(XWPFTableRow newTableRow) {
         XWPFTableRow oldTableRow = tableRow;
         tableRow = newTableRow;
@@ -240,7 +243,7 @@ public class RowImpl extends MinimalEObjectImpl.Container implements Row {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (tableRow: ");
         result.append(tableRow);
         result.append(')');

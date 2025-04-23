@@ -11,5 +11,5 @@
 
 === TEMPLATES ===
 
-template myTemplate (pkg : EPackage)
+template public myTemplate (pkg : EPackage)
   [query: .someCustomService(pkg)]

@@ -98,6 +98,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="Statement" abstract="true" interface="true"
       eSuperTypes="#//IConstruct"/>
   <eClassifiers xsi:type="ecore:EClass" name="Template" eSuperTypes="#//IConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" lowerBound="1"
+        eType="#//Visibility">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+        <details key="documentation" value="The template visibility."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" lowerBound="1"
         upperBound="-1" eType="#//Parameter" containment="true"/>
@@ -188,4 +194,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="CTSdtBlock" instanceClassName="org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="IGenerateable" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="Visibility">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="documentation" value="The visibility defines how an element is visible from other documents."/>
+    </eAnnotations>
+    <eLiterals name="private"/>
+    <eLiterals name="protected" value="1"/>
+    <eLiterals name="public" value="2"/>
+  </eClassifiers>
 </ecore:EPackage>

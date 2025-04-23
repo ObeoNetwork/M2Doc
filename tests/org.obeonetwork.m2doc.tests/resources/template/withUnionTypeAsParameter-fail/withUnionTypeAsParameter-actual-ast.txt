@@ -11,5 +11,5 @@
 
 === TEMPLATES ===
 
-template myTemplate (element : EPackage | EClassifier | })
+template public myTemplate (element : EPackage | EClassifier | })
   [query: .add(' - ', .aqlFeatureAccess(element, 'name'))]

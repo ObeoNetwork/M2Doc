@@ -10,7 +10,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (values : OrderedSet(java.lang.Integerjava.util.Set, suffix : java.lang.String)
+template public myTemplate (values : OrderedSet(java.lang.Integerjava.util.Set, suffix : java.lang.String)
   
   for value | values do
     [query: .add(value, value)]

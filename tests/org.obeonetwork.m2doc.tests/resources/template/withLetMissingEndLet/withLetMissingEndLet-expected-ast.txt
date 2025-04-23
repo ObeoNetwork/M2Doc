@@ -10,7 +10,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (str : java.lang.String)
+template public myTemplate (str : java.lang.String)
   
   let v = str in
     name = 

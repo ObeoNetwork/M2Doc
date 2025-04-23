@@ -11,9 +11,9 @@
 
 === TEMPLATES ===
 
-template myTemplate1 (a : java.lang.Integer)
+template public myTemplate1 (a : java.lang.Integer)
   [query: .add(a, a)]
   [query: .myTemplate2(3)]
 
-template myTemplate2 (a : java.lang.Integer)
+template public myTemplate2 (a : java.lang.Integer)
   [query: .add(.add(a, a), a)]

@@ -9,7 +9,7 @@
 
 === TEMPLATES ===
 
-template toBulletList (s : java.lang.String)
+template public toBulletList (s : java.lang.String)
   
   for word | .tokenize(s, ',') do
     [query: word]

@@ -10,5 +10,5 @@
 
 === TEMPLATES ===
 
-template myTemplate (str : java.lang.String)
+template public myTemplate (str : java.lang.String)
   [query: .asLink(str, 'http://www.obeo.fr')]

@@ -10,7 +10,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (depth : java.lang.Integer)
+template public myTemplate (depth : java.lang.Integer)
   [query: .setWidth(.asImage(.add(.add('dh', depth), '.gif')), 100)]
   
   if .lessThan(depth, 3) then

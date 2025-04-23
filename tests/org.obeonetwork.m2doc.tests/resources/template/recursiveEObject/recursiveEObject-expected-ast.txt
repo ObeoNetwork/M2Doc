@@ -10,7 +10,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (element : ENamedElement, depth : java.lang.Integer)
+template public myTemplate (element : ENamedElement, depth : java.lang.Integer)
   [query: .add(.add(depth, ' - '), .aqlFeatureAccess(element, 'name'))]
   
   for child | ->filter(.eContents(element), ENamedElement) do

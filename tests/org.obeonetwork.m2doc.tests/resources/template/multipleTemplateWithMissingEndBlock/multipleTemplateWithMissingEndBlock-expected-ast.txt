@@ -8,7 +8,7 @@
 
 === TEMPLATES ===
 
-template test1 (level : java.lang.Integer)
+template public test1 (level : java.lang.Integer)
   
   let length = 'bitLength' in
   endfor

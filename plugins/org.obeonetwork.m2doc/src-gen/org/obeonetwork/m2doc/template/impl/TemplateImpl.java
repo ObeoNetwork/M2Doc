@@ -30,6 +30,7 @@ import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
+import org.obeonetwork.m2doc.template.Visibility;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,6 +44,7 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getRuns <em>Runs</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getClosingRuns <em>Closing Runs</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getValidationMessages <em>Validation Messages</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getVisibility <em>Visibility</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getName <em>Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getParameters <em>Parameters</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.TemplateImpl#getBody <em>Body</em>}</li>
@@ -58,7 +60,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The default value of the '{@link #getStyleRun() <em>Style Run</em>}' attribute.
@@ -114,6 +116,28 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * @ordered
      */
     protected EList<TemplateValidationMessage> validationMessages;
+
+    /**
+     * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getVisibility()
+     * @generated
+     * @ordered
+     */
+    protected static final Visibility VISIBILITY_EDEFAULT = Visibility.PRIVATE;
+
+    /**
+     * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getVisibility()
+     * @generated
+     * @ordered
+     */
+    protected Visibility visibility = VISIBILITY_EDEFAULT;
 
     /**
      * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -186,6 +210,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public XWPFRun getStyleRun() {
         return styleRun;
     }
@@ -196,6 +221,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setStyleRun(XWPFRun newStyleRun) {
         XWPFRun oldStyleRun = styleRun;
         styleRun = newStyleRun;
@@ -210,6 +236,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
             runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.TEMPLATE__RUNS);
@@ -223,6 +250,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
             closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this,
@@ -237,6 +265,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
             validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
@@ -251,6 +280,33 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
+    public Visibility getVisibility() {
+        return visibility;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public void setVisibility(Visibility newVisibility) {
+        Visibility oldVisibility = visibility;
+        visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.TEMPLATE__VISIBILITY, oldVisibility,
+                    visibility));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
     public String getName() {
         return name;
     }
@@ -261,6 +317,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
@@ -274,6 +331,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public EList<Parameter> getParameters() {
         if (parameters == null) {
             parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this,
@@ -288,6 +346,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public Block getBody() {
         return body;
     }
@@ -317,6 +376,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setBody(Block newBody) {
         if (newBody != body) {
             NotificationChain msgs = null;
@@ -339,6 +399,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public DocumentTemplate getDocumentTemplate() {
         if (eContainerFeatureID() != TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE)
             return null;
@@ -363,6 +424,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
      * 
      * @generated
      */
+    @Override
     public void setDocumentTemplate(DocumentTemplate newDocumentTemplate) {
         if (newDocumentTemplate != eInternalContainer()
             || (eContainerFeatureID() != TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE && newDocumentTemplate != null)) {
@@ -451,6 +513,8 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 return getClosingRuns();
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 return getValidationMessages();
+            case TemplatePackage.TEMPLATE__VISIBILITY:
+                return getVisibility();
             case TemplatePackage.TEMPLATE__NAME:
                 return getName();
             case TemplatePackage.TEMPLATE__PARAMETERS:
@@ -487,6 +551,9 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 getValidationMessages().addAll((Collection<? extends TemplateValidationMessage>) newValue);
+                return;
+            case TemplatePackage.TEMPLATE__VISIBILITY:
+                setVisibility((Visibility) newValue);
                 return;
             case TemplatePackage.TEMPLATE__NAME:
                 setName((String) newValue);
@@ -526,6 +593,9 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 getValidationMessages().clear();
                 return;
+            case TemplatePackage.TEMPLATE__VISIBILITY:
+                setVisibility(VISIBILITY_EDEFAULT);
+                return;
             case TemplatePackage.TEMPLATE__NAME:
                 setName(NAME_EDEFAULT);
                 return;
@@ -559,6 +629,8 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
                 return closingRuns != null && !closingRuns.isEmpty();
             case TemplatePackage.TEMPLATE__VALIDATION_MESSAGES:
                 return validationMessages != null && !validationMessages.isEmpty();
+            case TemplatePackage.TEMPLATE__VISIBILITY:
+                return visibility != VISIBILITY_EDEFAULT;
             case TemplatePackage.TEMPLATE__NAME:
                 return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
             case TemplatePackage.TEMPLATE__PARAMETERS:
@@ -582,7 +654,7 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (styleRun: ");
         result.append(styleRun);
         result.append(", runs: ");
@@ -591,6 +663,8 @@ public class TemplateImpl extends MinimalEObjectImpl.Container implements Templa
         result.append(closingRuns);
         result.append(", validationMessages: ");
         result.append(validationMessages);
+        result.append(", visibility: ");
+        result.append(visibility);
         result.append(", name: ");
         result.append(name);
         result.append(')');

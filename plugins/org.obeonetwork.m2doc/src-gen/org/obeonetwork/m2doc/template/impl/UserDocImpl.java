@@ -52,7 +52,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The default value of the '{@link #getStyleRun() <em>Style Run</em>}' attribute.
@@ -169,6 +169,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public XWPFRun getStyleRun() {
         return styleRun;
     }
@@ -179,6 +180,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public void setStyleRun(XWPFRun newStyleRun) {
         XWPFRun oldStyleRun = styleRun;
         styleRun = newStyleRun;
@@ -193,6 +195,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
             runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.USER_DOC__RUNS);
@@ -206,6 +209,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
             closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this,
@@ -220,6 +224,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
             validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
@@ -234,6 +239,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public AstResult getId() {
         return id;
     }
@@ -244,6 +250,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public void setId(AstResult newId) {
         AstResult oldId = id;
         id = newId;
@@ -257,6 +264,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public Block getBody() {
         return body;
     }
@@ -286,6 +294,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
      * 
      * @generated
      */
+    @Override
     public void setBody(Block newBody) {
         if (newBody != body) {
             NotificationChain msgs = null;
@@ -444,7 +453,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (styleRun: ");
         result.append(styleRun);
         result.append(", runs: ");

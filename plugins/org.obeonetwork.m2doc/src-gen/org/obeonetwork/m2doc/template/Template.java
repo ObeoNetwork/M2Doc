@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
+ * <li>{@link org.obeonetwork.m2doc.template.Template#getVisibility <em>Visibility</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.Template#getName <em>Name</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.Template#getParameters <em>Parameters</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.Template#getBody <em>Body</em>}</li>
@@ -37,7 +38,36 @@ public interface Template extends IConstruct {
      * 
      * @generated
      */
-    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+
+    /**
+     * Returns the value of the '<em><b>Visibility</b></em>' attribute.
+     * The literals are from the enumeration {@link org.obeonetwork.m2doc.template.Visibility}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the value of the '<em>Visibility</em>' attribute.
+     * @see org.obeonetwork.m2doc.template.Visibility
+     * @see #setVisibility(Visibility)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getTemplate_Visibility()
+     * @model required="true"
+     *        annotation="http://www.eclipse.org/emf/2002/Ecore documentation='The template visibility.'"
+     * @generated
+     */
+    Visibility getVisibility();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.Template#getVisibility <em>Visibility</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @param value
+     *            the new value of the '<em>Visibility</em>' attribute.
+     * @see org.obeonetwork.m2doc.template.Visibility
+     * @see #getVisibility()
+     * @generated
+     */
+    void setVisibility(Visibility value);
 
     /**
      * Returns the value of the '<em><b>Name</b></em>' attribute.

@@ -14,6 +14,6 @@
 
 === TEMPLATES ===
 
-template myTemplate (a : java.lang.Integer)
+template public myTemplate (a : java.lang.Integer)
   [query: a]
   Figure 1 : my figure.

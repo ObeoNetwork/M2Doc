@@ -59,6 +59,7 @@ import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
+import org.obeonetwork.m2doc.template.Visibility;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
@@ -689,7 +690,7 @@ public class M2DocParser extends AbstractBodyParser {
 
     /**
      * Parse a template construct. Template are of the form
-     * <code>{m:template myTemplate (param1 : Integer, param2 : Integer)} runs {m:endtemplate}</code>
+     * <code>{m:template public myTemplate (param1 : Integer, param2 : Integer)} runs {m:endtemplate}</code>
      * 
      * @return the created object
      * @throws DocumentParserException
@@ -700,8 +701,7 @@ public class M2DocParser extends AbstractBodyParser {
         final Template template = (Template) EcoreUtil.create(TemplatePackage.Literals.TEMPLATE);
         final String header = readTag(template, template.getRuns()).trim();
         // remove the prefix
-        final String tagText = header.substring(TokenType.TEMPLATE.getValue().length());
-        // extract the name
+        final String tagText = header.substring(TokenType.TEMPLATE.getValue().length()).trim();
         final int indexOfOpenParenthesis = tagText.indexOf('(');
         if (indexOfOpenParenthesis < 0) {
             M2DocUtils.validationError(template,
@@ -710,7 +710,27 @@ public class M2DocParser extends AbstractBodyParser {
             final Block body = (Block) EcoreUtil.create(TemplatePackage.Literals.BLOCK);
             template.setBody(body);
         } else {
-            final String name = tagText.substring(0, indexOfOpenParenthesis).trim();
+            // extract the visibility
+            final int nameStart;
+            final Visibility visibility;
+            if (tagText.startsWith(Visibility.PRIVATE.getName())) {
+                visibility = Visibility.PRIVATE;
+                nameStart = visibility.getName().length();
+            } else if (tagText.startsWith(Visibility.PROTECTED.getName())) {
+                visibility = Visibility.PROTECTED;
+                nameStart = visibility.getName().length();
+            } else if (tagText.startsWith(Visibility.PUBLIC.getName())) {
+                visibility = Visibility.PUBLIC;
+                nameStart = visibility.getName().length();
+            } else {
+                visibility = null;
+                nameStart = 0;
+                M2DocUtils.validationError(template,
+                        M2DocUtils.message(ParsingErrorMessage.MALFORMEDTEMPLATENOVISIBILITYSPECIFIED));
+            }
+            template.setVisibility(visibility);
+            // extract the name
+            final String name = tagText.substring(nameStart, indexOfOpenParenthesis).trim();
             if ("".equals(name)) {
                 M2DocUtils.validationError(template,
                         M2DocUtils.message(ParsingErrorMessage.MALFORMEDTEMPLATENONAMESPECIFIED));

@@ -10,7 +10,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (ePkg : EPackage)
+template public myTemplate (ePkg : EPackage)
   
   for v | .aqlFeatureAccess(ePkg, 'eClassifiers') do
     name = 

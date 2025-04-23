@@ -57,7 +57,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The cached value of the '{@link #getHeaders() <em>Headers</em>}' containment reference list.
@@ -196,6 +196,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public EList<Block> getHeaders() {
         if (headers == null) {
             headers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
@@ -209,6 +210,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public EList<Block> getFooters() {
         if (footers == null) {
             footers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
@@ -222,6 +224,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public Block getBody() {
         return body;
     }
@@ -251,6 +254,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public void setBody(Block newBody) {
         if (newBody != body) {
             NotificationChain msgs = null;
@@ -274,6 +278,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public InputStream getInputStream() {
         return inputStream;
     }
@@ -284,6 +289,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public void setInputStream(InputStream newInputStream) {
         InputStream oldInputStream = inputStream;
         inputStream = newInputStream;
@@ -298,6 +304,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public OPCPackage getOpcPackage() {
         return opcPackage;
     }
@@ -308,6 +315,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public void setOpcPackage(OPCPackage newOpcPackage) {
         OPCPackage oldOpcPackage = opcPackage;
         opcPackage = newOpcPackage;
@@ -322,6 +330,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public XWPFDocument getDocument() {
         return document;
     }
@@ -332,6 +341,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public void setDocument(XWPFDocument newDocument) {
         XWPFDocument oldDocument = document;
         document = newDocument;
@@ -346,6 +356,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
      * 
      * @generated
      */
+    @Override
     public EList<Template> getTemplates() {
         if (templates == null) {
             templates = new EObjectContainmentWithInverseEList<Template>(Template.class, this,
@@ -528,7 +539,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (inputStream: ");
         result.append(inputStream);
         result.append(", opcPackage: ");

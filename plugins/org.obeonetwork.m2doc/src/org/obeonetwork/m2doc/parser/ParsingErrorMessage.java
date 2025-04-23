@@ -141,6 +141,11 @@ public enum ParsingErrorMessage {
     /**
      * Error message issued when a malformed template no name specified.
      */
+    MALFORMEDTEMPLATENOVISIBILITYSPECIFIED(
+            "Malformed tag m:template : no visibility specified (public, protected, or private)."),
+    /**
+     * Error message issued when a malformed template no name specified.
+     */
     MALFORMEDTEMPLATENONAMESPECIFIED("Malformed tag m:template : no name specified."),
     /**
      * Error message issued when a malformed template no parameter specified.

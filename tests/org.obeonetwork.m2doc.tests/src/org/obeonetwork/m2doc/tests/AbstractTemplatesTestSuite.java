@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -399,7 +399,8 @@ public abstract class AbstractTemplatesTestSuite {
             final URI expectedLostDocumentURI = getExpectedLostDocumentURI(new File(testFolderPath));
             if (!resourceSetForModels.getURIConverter().exists(expectedLostDocumentURI, Collections.EMPTY_MAP)) {
                 final URI actualLostDocumentURI = getActualLostDocumentURI(new File(testFolderPath));
-                copy(generationResult.getLostDocumentURI(), actualLostDocumentURI);
+                copy(resourceSetForModels.getURIConverter(), generationResult.getLostDocumentURI(),
+                        actualLostDocumentURI);
                 fail(expectedLostDocumentURI + DOESN_T_EXIST);
             }
             M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedLostDocumentURI,
@@ -412,7 +413,8 @@ public abstract class AbstractTemplatesTestSuite {
             final URI expectedLostURI = URI
                     .createURI(expectedGeneratedURI.toString() + "-" + entry.getKey() + LOST_DOCX, false);
             if (!resourceSetForModels.getURIConverter().exists(expectedLostURI, Collections.emptyMap())) {
-                copy(actualLostURI, URI.createURI(expectedLostURI.toString().replace("-expected-", "-actual-"), false));
+                copy(resourceSetForModels.getURIConverter(), actualLostURI,
+                        URI.createURI(expectedLostURI.toString().replace("-expected-", "-actual-"), false));
                 fail(expectedLostURI + DOESN_T_EXIST);
             }
             M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedLostURI, actualLostURI);
@@ -483,14 +485,14 @@ public abstract class AbstractTemplatesTestSuite {
      */
     private GenerationResult prepareoutputAndGenerate(final URI userContentURI, URI outputURI) throws Exception {
         if (resourceSetForModels.getURIConverter().exists(userContentURI, Collections.EMPTY_MAP)) {
-            copy(userContentURI, outputURI);
+            copy(resourceSetForModels.getURIConverter(), userContentURI, outputURI);
         }
         for (URI userContentLostURI : getUserContentLostURI(new File(testFolderPath))) {
             final URI destURI = URI.createURI(
                     outputURI.toString() + userContentLostURI.lastSegment().substring(
                             userContentLostURI.lastSegment().indexOf(USER_CONTENT_TAG) + USER_CONTENT_TAG.length()),
                     false);
-            copy(userContentLostURI, destURI);
+            copy(resourceSetForModels.getURIConverter(), userContentLostURI, destURI);
         }
         final boolean updateFields = Boolean
                 .valueOf(GenconfUtils.getOptions(generation).get(M2DocUtils.UPDATE_FIELDS_OPTION));
@@ -810,6 +812,8 @@ public abstract class AbstractTemplatesTestSuite {
     /**
      * Copies all bytes from a source {@link URI} to a destination {@link URI}.
      * 
+     * @param uriConverter
+     *            the {@link URIConverter}
      * @param sourceURI
      *            the source {@link URI}
      * @param destURI
@@ -818,9 +822,9 @@ public abstract class AbstractTemplatesTestSuite {
      * @throws IOException
      *             if the copy can't be done
      */
-    private long copy(URI sourceURI, URI destURI) throws IOException {
-        try (InputStream source = resourceSetForModels.getURIConverter().createInputStream(sourceURI);
-                OutputStream dest = resourceSetForModels.getURIConverter().createOutputStream(destURI);) {
+    public static long copy(URIConverter uriConverter, URI sourceURI, URI destURI) throws IOException {
+        try (InputStream source = uriConverter.createInputStream(sourceURI);
+                OutputStream dest = uriConverter.createOutputStream(destURI);) {
             long nread = 0L;
             byte[] buf = new byte[BUFFER_SIZE];
             int n;

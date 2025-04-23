@@ -42,7 +42,7 @@ public interface TemplatePackage extends EPackage {
      * 
      * @generated
      */
-    String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The package name.
@@ -932,6 +932,16 @@ public interface TemplatePackage extends EPackage {
     int TEMPLATE__VALIDATION_MESSAGES = ICONSTRUCT__VALIDATION_MESSAGES;
 
     /**
+     * The feature id for the '<em><b>Visibility</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int TEMPLATE__VISIBILITY = ICONSTRUCT_FEATURE_COUNT + 0;
+
+    /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -939,7 +949,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEMPLATE__NAME = ICONSTRUCT_FEATURE_COUNT + 0;
+    int TEMPLATE__NAME = ICONSTRUCT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -949,7 +959,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEMPLATE__PARAMETERS = ICONSTRUCT_FEATURE_COUNT + 1;
+    int TEMPLATE__PARAMETERS = ICONSTRUCT_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -959,7 +969,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEMPLATE__BODY = ICONSTRUCT_FEATURE_COUNT + 2;
+    int TEMPLATE__BODY = ICONSTRUCT_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Document Template</b></em>' container reference.
@@ -969,7 +979,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEMPLATE__DOCUMENT_TEMPLATE = ICONSTRUCT_FEATURE_COUNT + 3;
+    int TEMPLATE__DOCUMENT_TEMPLATE = ICONSTRUCT_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>Template</em>' class.
@@ -979,7 +989,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TEMPLATE_FEATURE_COUNT = ICONSTRUCT_FEATURE_COUNT + 4;
+    int TEMPLATE_FEATURE_COUNT = ICONSTRUCT_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Template</em>' class.
@@ -1783,6 +1793,17 @@ public interface TemplatePackage extends EPackage {
     int POSITION = 21;
 
     /**
+     * The meta object id for the '{@link org.obeonetwork.m2doc.template.Visibility <em>Visibility</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.template.Visibility
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getVisibility()
+     * @generated
+     */
+    int VISIBILITY = 22;
+
+    /**
      * The meta object id for the '<em>Input Stream</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1791,7 +1812,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getInputStream()
      * @generated
      */
-    int INPUT_STREAM = 22;
+    int INPUT_STREAM = 23;
 
     /**
      * The meta object id for the '<em>OPC Package</em>' data type.
@@ -1802,7 +1823,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getOPCPackage()
      * @generated
      */
-    int OPC_PACKAGE = 23;
+    int OPC_PACKAGE = 24;
 
     /**
      * The meta object id for the '<em>Document</em>' data type.
@@ -1813,7 +1834,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getDocument()
      * @generated
      */
-    int DOCUMENT = 24;
+    int DOCUMENT = 25;
 
     /**
      * The meta object id for the '<em>WTable</em>' data type.
@@ -1824,7 +1845,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTable()
      * @generated
      */
-    int WTABLE = 25;
+    int WTABLE = 26;
 
     /**
      * The meta object id for the '<em>Run</em>' data type.
@@ -1835,7 +1856,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getRun()
      * @generated
      */
-    int RUN = 26;
+    int RUN = 27;
 
     /**
      * The meta object id for the '<em>Ast Result</em>' data type.
@@ -1846,7 +1867,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
-    int AST_RESULT = 27;
+    int AST_RESULT = 28;
 
     /**
      * The meta object id for the '<em>Validation Message</em>' data type.
@@ -1857,7 +1878,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateValidationMessage()
      * @generated
      */
-    int TEMPLATE_VALIDATION_MESSAGE = 28;
+    int TEMPLATE_VALIDATION_MESSAGE = 29;
 
     /**
      * The meta object id for the '<em>WTable Row</em>' data type.
@@ -1868,7 +1889,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableRow()
      * @generated
      */
-    int WTABLE_ROW = 29;
+    int WTABLE_ROW = 30;
 
     /**
      * The meta object id for the '<em>WTable Cell</em>' data type.
@@ -1879,7 +1900,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getWTableCell()
      * @generated
      */
-    int WTABLE_CELL = 30;
+    int WTABLE_CELL = 31;
 
     /**
      * The meta object id for the '<em>Body</em>' data type.
@@ -1890,7 +1911,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getBody()
      * @generated
      */
-    int BODY = 31;
+    int BODY = 32;
 
     /**
      * The meta object id for the '<em>CT Sdt Block</em>' data type.
@@ -1901,7 +1922,7 @@ public interface TemplatePackage extends EPackage {
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getCTSdtBlock()
      * @generated
      */
-    int CT_SDT_BLOCK = 32;
+    int CT_SDT_BLOCK = 33;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}'.
@@ -1939,7 +1960,8 @@ public interface TemplatePackage extends EPackage {
     EAttribute getIConstruct_Runs();
 
     /**
-     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.IConstruct#getClosingRuns <em>Closing Runs</em>}'.
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.IConstruct#getClosingRuns <em>Closing
+     * Runs</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2220,6 +2242,18 @@ public interface TemplatePackage extends EPackage {
     EClass getTemplate();
 
     /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getVisibility <em>Visibility</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute '<em>Visibility</em>'.
+     * @see org.obeonetwork.m2doc.template.Template#getVisibility()
+     * @see #getTemplate()
+     * @generated
+     */
+    EAttribute getTemplate_Visibility();
+
+    /**
      * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.Template#getName <em>Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2458,7 +2492,8 @@ public interface TemplatePackage extends EPackage {
     EReference getDocumentTemplate_Footers();
 
     /**
-     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody <em>Body</em>}'.
+     * Returns the meta object for the containment reference '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getBody
+     * <em>Body</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2470,7 +2505,8 @@ public interface TemplatePackage extends EPackage {
     EReference getDocumentTemplate_Body();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input Stream</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getInputStream <em>Input
+     * Stream</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2482,7 +2518,8 @@ public interface TemplatePackage extends EPackage {
     EAttribute getDocumentTemplate_InputStream();
 
     /**
-     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc Package</em>}'.
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getOpcPackage <em>Opc
+     * Package</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -2681,6 +2718,17 @@ public interface TemplatePackage extends EPackage {
     EEnum getPOSITION();
 
     /**
+     * Returns the meta object for enum '{@link org.obeonetwork.m2doc.template.Visibility <em>Visibility</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for enum '<em>Visibility</em>'.
+     * @see org.obeonetwork.m2doc.template.Visibility
+     * @generated
+     */
+    EEnum getVisibility();
+
+    /**
      * Returns the meta object for data type '{@link java.io.InputStream <em>Input Stream</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2801,7 +2849,8 @@ public interface TemplatePackage extends EPackage {
     EDataType getBody();
 
     /**
-     * Returns the meta object for data type '{@link org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock <em>CT Sdt Block</em>}'.
+     * Returns the meta object for data type '{@link org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock <em>CT Sdt
+     * Block</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -3101,6 +3150,15 @@ public interface TemplatePackage extends EPackage {
         EClass TEMPLATE = eINSTANCE.getTemplate();
 
         /**
+         * The meta object literal for the '<em><b>Visibility</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute TEMPLATE__VISIBILITY = eINSTANCE.getTemplate_Visibility();
+
+        /**
          * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3264,7 +3322,8 @@ public interface TemplatePackage extends EPackage {
         EAttribute CELL__TABLE_CELL = eINSTANCE.getCell_TableCell();
 
         /**
-         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl <em>Document Template</em>}' class.
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl <em>Document Template</em>}'
+         * class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
@@ -3474,6 +3533,17 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EEnum POSITION = eINSTANCE.getPOSITION();
+
+        /**
+         * The meta object literal for the '{@link org.obeonetwork.m2doc.template.Visibility <em>Visibility</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.template.Visibility
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getVisibility()
+         * @generated
+         */
+        EEnum VISIBILITY = eINSTANCE.getVisibility();
 
         /**
          * The meta object literal for the '<em>Input Stream</em>' data type.

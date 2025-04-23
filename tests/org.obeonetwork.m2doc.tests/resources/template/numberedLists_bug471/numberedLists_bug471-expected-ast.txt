@@ -14,7 +14,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (eCls : EClass)
+template public myTemplate (eCls : EClass)
   [query: .aqlFeatureAccess(eCls, 'name')]
   
   for feature | .aqlFeatureAccess(eCls, 'eStructuralFeatures') do

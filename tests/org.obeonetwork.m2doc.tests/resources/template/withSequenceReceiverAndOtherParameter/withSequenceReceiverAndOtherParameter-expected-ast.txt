@@ -10,7 +10,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (values : Sequence(java.lang.Integerjava.util.List, suffix : java.lang.String)
+template public myTemplate (values : Sequence(java.lang.Integerjava.util.List, suffix : java.lang.String)
   
   for value | values do
     [query: .add(value, value)]

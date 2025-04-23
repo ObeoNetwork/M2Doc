@@ -10,7 +10,7 @@
   End of demonstration.
 === TEMPLATES ===
 
-template myTemplate (a : java.lang.Integer)
+template public myTemplate (a : java.lang.Integer)
   table
     row
       

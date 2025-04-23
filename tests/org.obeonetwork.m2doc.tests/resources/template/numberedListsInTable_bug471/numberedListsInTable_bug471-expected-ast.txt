@@ -14,7 +14,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (eCls : EClass)
+template public myTemplate (eCls : EClass)
   table
     row
       

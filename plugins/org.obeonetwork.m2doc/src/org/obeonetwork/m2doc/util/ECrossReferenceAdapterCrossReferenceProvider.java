@@ -45,7 +45,8 @@ public class ECrossReferenceAdapterCrossReferenceProvider implements CrossRefere
      * 
      * @param self
      *            the {@link EObject}
-     * @return the {@link ECrossReferenceAdapter} either the {@link #adapter} or the one of the given {@link EObject} if any, <code>null</code>
+     * @return the {@link ECrossReferenceAdapter} either the {@link #adapter} or the one of the given {@link EObject} if any,
+     *         <code>null</code>
      *         otherwise
      */
     private ECrossReferenceAdapter getAdapter(EObject self) {

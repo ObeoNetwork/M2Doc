@@ -15,7 +15,7 @@
 
 === TEMPLATES ===
 
-template createPropertyRow (level : java.lang.Integer, property : EStructuralFeature)
+template public createPropertyRow (level : java.lang.Integer, property : EStructuralFeature)
   table
     row
       
@@ -40,7 +40,7 @@ template createPropertyRow (level : java.lang.Integer, property : EStructuralFea
     
   comment: TODO : IF THE FOLLOWING NEWLINE IS REMOVED a NullPointerException is generated (https://forum.mbse-capella.org/t/m2doc-3-1-0-npe-in-a-template/4316)
 
-template createClassRows (level : java.lang.Integer, elem : EClass)
+template public createClassRows (level : java.lang.Integer, elem : EClass)
   
   for prop | .aqlFeatureAccess(elem, 'eAllStructuralFeatures') do
     

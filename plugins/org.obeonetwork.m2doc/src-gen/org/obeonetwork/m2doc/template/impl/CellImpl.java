@@ -42,7 +42,7 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
@@ -104,6 +104,7 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
+    @Override
     public Block getBody() {
         return body;
     }
@@ -133,6 +134,7 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
+    @Override
     public void setBody(Block newBody) {
         if (newBody != body) {
             NotificationChain msgs = null;
@@ -155,6 +157,7 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
+    @Override
     public XWPFTableCell getTableCell() {
         return tableCell;
     }
@@ -165,6 +168,7 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
      * 
      * @generated
      */
+    @Override
     public void setTableCell(XWPFTableCell newTableCell) {
         XWPFTableCell oldTableCell = tableCell;
         tableCell = newTableCell;
@@ -271,7 +275,7 @@ public class CellImpl extends MinimalEObjectImpl.Container implements Cell {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (tableCell: ");
         result.append(tableCell);
         result.append(')');

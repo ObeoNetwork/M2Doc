@@ -200,7 +200,8 @@ public interface DocumentTemplate extends IGenerateable, Closeable {
     /**
      * Returns the value of the '<em><b>Templates</b></em>' containment reference list.
      * The list contents are of type {@link org.obeonetwork.m2doc.template.Template}.
-     * It is bidirectional and its opposite is '{@link org.obeonetwork.m2doc.template.Template#getDocumentTemplate <em>Document Template</em>}'.
+     * It is bidirectional and its opposite is '{@link org.obeonetwork.m2doc.template.Template#getDocumentTemplate <em>Document
+     * Template</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Templates</em>' reference list isn't clear,

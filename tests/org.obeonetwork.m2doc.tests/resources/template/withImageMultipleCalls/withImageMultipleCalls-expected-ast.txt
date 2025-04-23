@@ -14,5 +14,5 @@
 
 === TEMPLATES ===
 
-template myTemplate (name : java.lang.String)
+template public myTemplate (name : java.lang.String)
   [query: .setWidth(.asImage(name), 100)]

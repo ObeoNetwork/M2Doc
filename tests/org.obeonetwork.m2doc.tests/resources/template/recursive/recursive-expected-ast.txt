@@ -10,7 +10,7 @@
 
 === TEMPLATES ===
 
-template myTemplate (a : java.lang.Integer)
+template public myTemplate (a : java.lang.Integer)
   
   if .equals(a, 0) then
     finished

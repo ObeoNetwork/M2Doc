@@ -39,7 +39,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -112,6 +112,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
      * 
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -122,6 +123,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
      * 
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
@@ -135,6 +137,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
      * 
      * @generated
      */
+    @Override
     public AstResult getType() {
         return type;
     }
@@ -145,6 +148,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
      * 
      * @generated
      */
+    @Override
     public void setType(AstResult newType) {
         AstResult oldType = type;
         type = newType;
@@ -235,7 +239,7 @@ public class ParameterImpl extends MinimalEObjectImpl.Container implements Param
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(name);
         result.append(", type: ");

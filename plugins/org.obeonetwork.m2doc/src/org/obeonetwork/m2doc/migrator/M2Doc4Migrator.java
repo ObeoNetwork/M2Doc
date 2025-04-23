@@ -22,7 +22,9 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.parser.TokenType;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.template.Visibility;
 import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -118,7 +120,8 @@ public class M2Doc4Migrator implements IM2DocMigrator {
         XWPFRun lastRun = null;
         boolean isFirstRun = true;
         for (XWPFRun run : fieldRuns) {
-            final String instructionText = FIELD_UTILS.readUpInstrText(run);
+            final String instructionText = FIELD_UTILS.readUpInstrText(run).replace(TokenType.TEMPLATE.getValue(),
+                    TokenType.TEMPLATE.getValue() + " " + Visibility.PUBLIC.getName());
             if (FIELD_UTILS.isFieldBegin(run) || FIELD_UTILS.isFieldEnd(run)
                 || FIELD_UTILS.isFieldSeparate(run.getCTR())) {
                 final int index = paragraph.getRuns().indexOf(run);

@@ -100,8 +100,7 @@ public class TokenIteratorFieldRewriter extends TokenIterator {
         Character currentCharacter = null;
         while (iterator.hasNext()) {
             currentCharacter = iterator.next();
-            if (currentCharacter == M2DocUtils.FIELD_END.charAt(0) && parenthesisDepth == 0
-                && curlyBracketDepth == 0) {
+            if (currentCharacter == M2DocUtils.FIELD_END.charAt(0) && parenthesisDepth == 0 && curlyBracketDepth == 0) {
                 break;
             }
             switch (currentCharacter) {

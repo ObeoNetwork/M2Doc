@@ -51,6 +51,7 @@ import org.obeonetwork.m2doc.template.TemplateFactory;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 import org.obeonetwork.m2doc.template.UserDoc;
+import org.obeonetwork.m2doc.template.Visibility;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
 /**
@@ -67,7 +68,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public static final String copyright = " Copyright (c) 2016 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
+    public static final String copyright = " Copyright (c) 2016, 2025 Obeo. \r\n All rights reserved. This program and the accompanying materials\r\n are made available under the terms of the Eclipse Public License v2.0\r\n which accompanies this distribution, and is available at\r\n http://www.eclipse.org/legal/epl-v20.html\r\n  \r\n  Contributors:\r\n      Obeo - initial API and implementation";
 
     /**
      * <!-- begin-user-doc -->
@@ -251,6 +252,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    private EEnum visibilityEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
     private EDataType inputStreamEDataType = null;
 
     /**
@@ -380,9 +389,10 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
             return (TemplatePackage) EPackage.Registry.INSTANCE.getEPackage(TemplatePackage.eNS_URI);
 
         // Obtain or create and register package
-        TemplatePackageImpl theTemplatePackage = (TemplatePackageImpl) (EPackage.Registry.INSTANCE
-                .get(eNS_URI) instanceof TemplatePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
-                        : new TemplatePackageImpl());
+        Object registeredTemplatePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        TemplatePackageImpl theTemplatePackage = registeredTemplatePackage instanceof TemplatePackageImpl
+                ? (TemplatePackageImpl) registeredTemplatePackage
+                : new TemplatePackageImpl();
 
         isInited = true;
 
@@ -406,6 +416,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getIConstruct() {
         return iConstructEClass;
     }
@@ -416,6 +427,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getIConstruct_StyleRun() {
         return (EAttribute) iConstructEClass.getEStructuralFeatures().get(0);
     }
@@ -426,6 +438,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getIConstruct_Runs() {
         return (EAttribute) iConstructEClass.getEStructuralFeatures().get(1);
     }
@@ -436,6 +449,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getIConstruct_ClosingRuns() {
         return (EAttribute) iConstructEClass.getEStructuralFeatures().get(2);
     }
@@ -446,6 +460,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getIConstruct_ValidationMessages() {
         return (EAttribute) iConstructEClass.getEStructuralFeatures().get(3);
     }
@@ -456,6 +471,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getComment() {
         return commentEClass;
     }
@@ -466,6 +482,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getComment_Text() {
         return (EAttribute) commentEClass.getEStructuralFeatures().get(0);
     }
@@ -476,6 +493,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getConditional() {
         return conditionalEClass;
     }
@@ -486,6 +504,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getConditional_Condition() {
         return (EAttribute) conditionalEClass.getEStructuralFeatures().get(0);
     }
@@ -496,6 +515,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getConditional_Then() {
         return (EReference) conditionalEClass.getEStructuralFeatures().get(1);
     }
@@ -506,6 +526,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getConditional_Else() {
         return (EReference) conditionalEClass.getEStructuralFeatures().get(2);
     }
@@ -516,6 +537,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getRepetition() {
         return repetitionEClass;
     }
@@ -526,6 +548,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getRepetition_IterationVar() {
         return (EAttribute) repetitionEClass.getEStructuralFeatures().get(0);
     }
@@ -536,6 +559,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getRepetition_Query() {
         return (EAttribute) repetitionEClass.getEStructuralFeatures().get(1);
     }
@@ -546,6 +570,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getRepetition_Body() {
         return (EReference) repetitionEClass.getEStructuralFeatures().get(2);
     }
@@ -556,6 +581,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getUserDoc() {
         return userDocEClass;
     }
@@ -566,6 +592,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getUserDoc_Id() {
         return (EAttribute) userDocEClass.getEStructuralFeatures().get(0);
     }
@@ -576,6 +603,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getUserDoc_Body() {
         return (EReference) userDocEClass.getEStructuralFeatures().get(1);
     }
@@ -586,6 +614,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getUserContent() {
         return userContentEClass;
     }
@@ -596,6 +625,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getUserContent_Id() {
         return (EAttribute) userContentEClass.getEStructuralFeatures().get(0);
     }
@@ -606,6 +636,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getUserContent_Body() {
         return (EReference) userContentEClass.getEStructuralFeatures().get(1);
     }
@@ -616,6 +647,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getQuery() {
         return queryEClass;
     }
@@ -626,6 +658,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getQuery_Query() {
         return (EAttribute) queryEClass.getEStructuralFeatures().get(0);
     }
@@ -636,6 +669,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getBlock() {
         return blockEClass;
     }
@@ -646,6 +680,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getBlock_Statements() {
         return (EReference) blockEClass.getEStructuralFeatures().get(0);
     }
@@ -656,6 +691,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getStatement() {
         return statementEClass;
     }
@@ -666,6 +702,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getTemplate() {
         return templateEClass;
     }
@@ -676,7 +713,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EAttribute getTemplate_Name() {
+    @Override
+    public EAttribute getTemplate_Visibility() {
         return (EAttribute) templateEClass.getEStructuralFeatures().get(0);
     }
 
@@ -686,8 +724,9 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EReference getTemplate_Parameters() {
-        return (EReference) templateEClass.getEStructuralFeatures().get(1);
+    @Override
+    public EAttribute getTemplate_Name() {
+        return (EAttribute) templateEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -696,7 +735,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EReference getTemplate_Body() {
+    @Override
+    public EReference getTemplate_Parameters() {
         return (EReference) templateEClass.getEStructuralFeatures().get(2);
     }
 
@@ -706,7 +746,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
-    public EReference getTemplate_DocumentTemplate() {
+    @Override
+    public EReference getTemplate_Body() {
         return (EReference) templateEClass.getEStructuralFeatures().get(3);
     }
 
@@ -716,6 +757,18 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
+    public EReference getTemplate_DocumentTemplate() {
+        return (EReference) templateEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
     public EClass getParameter() {
         return parameterEClass;
     }
@@ -726,6 +779,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getParameter_Name() {
         return (EAttribute) parameterEClass.getEStructuralFeatures().get(0);
     }
@@ -736,6 +790,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getParameter_Type() {
         return (EAttribute) parameterEClass.getEStructuralFeatures().get(1);
     }
@@ -746,6 +801,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getStaticFragment() {
         return staticFragmentEClass;
     }
@@ -756,6 +812,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getTable() {
         return tableEClass;
     }
@@ -766,6 +823,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getTable_Rows() {
         return (EReference) tableEClass.getEStructuralFeatures().get(0);
     }
@@ -776,6 +834,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getTable_Table() {
         return (EAttribute) tableEClass.getEStructuralFeatures().get(1);
     }
@@ -786,6 +845,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getRow() {
         return rowEClass;
     }
@@ -796,6 +856,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getRow_Cells() {
         return (EReference) rowEClass.getEStructuralFeatures().get(0);
     }
@@ -806,6 +867,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getRow_TableRow() {
         return (EAttribute) rowEClass.getEStructuralFeatures().get(1);
     }
@@ -816,6 +878,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getCell() {
         return cellEClass;
     }
@@ -826,6 +889,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getCell_Body() {
         return (EReference) cellEClass.getEStructuralFeatures().get(0);
     }
@@ -836,6 +900,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getCell_TableCell() {
         return (EAttribute) cellEClass.getEStructuralFeatures().get(1);
     }
@@ -846,6 +911,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getDocumentTemplate() {
         return documentTemplateEClass;
     }
@@ -856,6 +922,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getDocumentTemplate_Headers() {
         return (EReference) documentTemplateEClass.getEStructuralFeatures().get(0);
     }
@@ -866,6 +933,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getDocumentTemplate_Footers() {
         return (EReference) documentTemplateEClass.getEStructuralFeatures().get(1);
     }
@@ -876,6 +944,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getDocumentTemplate_Body() {
         return (EReference) documentTemplateEClass.getEStructuralFeatures().get(2);
     }
@@ -886,6 +955,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getDocumentTemplate_InputStream() {
         return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(3);
     }
@@ -896,6 +966,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getDocumentTemplate_OpcPackage() {
         return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(4);
     }
@@ -906,6 +977,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getDocumentTemplate_Document() {
         return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(5);
     }
@@ -916,6 +988,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getDocumentTemplate_Templates() {
         return (EReference) documentTemplateEClass.getEStructuralFeatures().get(6);
     }
@@ -926,6 +999,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getBookmark() {
         return bookmarkEClass;
     }
@@ -936,6 +1010,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getBookmark_Name() {
         return (EAttribute) bookmarkEClass.getEStructuralFeatures().get(0);
     }
@@ -946,6 +1021,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getBookmark_Body() {
         return (EReference) bookmarkEClass.getEStructuralFeatures().get(1);
     }
@@ -956,6 +1032,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getLink() {
         return linkEClass;
     }
@@ -966,6 +1043,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getLink_Name() {
         return (EAttribute) linkEClass.getEStructuralFeatures().get(0);
     }
@@ -976,6 +1054,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getLink_Text() {
         return (EAttribute) linkEClass.getEStructuralFeatures().get(1);
     }
@@ -986,6 +1065,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getLet() {
         return letEClass;
     }
@@ -996,6 +1076,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getLet_Name() {
         return (EAttribute) letEClass.getEStructuralFeatures().get(0);
     }
@@ -1006,6 +1087,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getLet_Value() {
         return (EAttribute) letEClass.getEStructuralFeatures().get(1);
     }
@@ -1016,6 +1098,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EReference getLet_Body() {
         return (EReference) letEClass.getEStructuralFeatures().get(2);
     }
@@ -1026,6 +1109,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getContentControl() {
         return contentControlEClass;
     }
@@ -1036,6 +1120,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EAttribute getContentControl_Block() {
         return (EAttribute) contentControlEClass.getEStructuralFeatures().get(0);
     }
@@ -1046,6 +1131,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EClass getIGenerateable() {
         return iGenerateableEClass;
     }
@@ -1056,6 +1142,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EEnum getPOSITION() {
         return positionEEnum;
     }
@@ -1066,6 +1153,18 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
+    public EEnum getVisibility() {
+        return visibilityEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
     public EDataType getInputStream() {
         return inputStreamEDataType;
     }
@@ -1076,6 +1175,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getOPCPackage() {
         return opcPackageEDataType;
     }
@@ -1086,6 +1186,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getDocument() {
         return documentEDataType;
     }
@@ -1096,6 +1197,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getWTable() {
         return wTableEDataType;
     }
@@ -1106,6 +1208,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getRun() {
         return runEDataType;
     }
@@ -1116,6 +1219,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getAstResult() {
         return astResultEDataType;
     }
@@ -1126,6 +1230,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getTemplateValidationMessage() {
         return templateValidationMessageEDataType;
     }
@@ -1136,6 +1241,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getWTableRow() {
         return wTableRowEDataType;
     }
@@ -1146,6 +1252,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getWTableCell() {
         return wTableCellEDataType;
     }
@@ -1156,6 +1263,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getBody() {
         return bodyEDataType;
     }
@@ -1166,6 +1274,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public EDataType getCTSdtBlock() {
         return ctSdtBlockEDataType;
     }
@@ -1176,6 +1285,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * 
      * @generated
      */
+    @Override
     public TemplateFactory getTemplateFactory() {
         return (TemplateFactory) getEFactoryInstance();
     }
@@ -1238,6 +1348,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         statementEClass = createEClass(STATEMENT);
 
         templateEClass = createEClass(TEMPLATE);
+        createEAttribute(templateEClass, TEMPLATE__VISIBILITY);
         createEAttribute(templateEClass, TEMPLATE__NAME);
         createEReference(templateEClass, TEMPLATE__PARAMETERS);
         createEReference(templateEClass, TEMPLATE__BODY);
@@ -1290,6 +1401,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         // Create enums
         positionEEnum = createEEnum(POSITION);
+        visibilityEEnum = createEEnum(VISIBILITY);
 
         // Create data types
         inputStreamEDataType = createEDataType(INPUT_STREAM);
@@ -1422,6 +1534,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
 
         initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getTemplate_Visibility(), this.getVisibility(), "visibility", null, 1, 1, Template.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getTemplate_Name(), ecorePackage.getEString(), "name", null, 1, 1, Template.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getTemplate_Parameters(), this.getParameter(), null, "parameters", null, 1, -1, Template.class,
@@ -1524,6 +1638,11 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         addEEnumLiteral(positionEEnum, org.obeonetwork.m2doc.template.POSITION.ABOVE);
         addEEnumLiteral(positionEEnum, org.obeonetwork.m2doc.template.POSITION.BELOW);
 
+        initEEnum(visibilityEEnum, Visibility.class, "Visibility");
+        addEEnumLiteral(visibilityEEnum, Visibility.PRIVATE);
+        addEEnumLiteral(visibilityEEnum, Visibility.PROTECTED);
+        addEEnumLiteral(visibilityEEnum, Visibility.PUBLIC);
+
         // Initialize data types
         initEDataType(inputStreamEDataType, InputStream.class, "InputStream", IS_SERIALIZABLE,
                 !IS_GENERATED_INSTANCE_CLASS);
@@ -1589,12 +1708,15 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         addAnnotation(queryEClass, source, new String[] {"documentation",
             "The query produce the {@link Query#getQuery() query} evaluation result in the produced document. More inforamation about <a href=\"https://www.eclipse.org/acceleo/documentation/aql.html\">Acceleo Query Language</a>.",
             "syntax", "{m:<aql query>}" });
+        addAnnotation(getTemplate_Visibility(), source, new String[] {"documentation", "The template visibility." });
         addAnnotation(getTemplate_Body(), source,
                 new String[] {"documentation", "The {@link Block} of {@link Statement}." });
         addAnnotation(getBookmark_Body(), source,
                 new String[] {"documentation", "The {@link Block} of {@link Statement}." });
         addAnnotation(getLet_Body(), source,
                 new String[] {"documentation", "The {@link Block} of {@link Statement}." });
+        addAnnotation(visibilityEEnum, source, new String[] {"documentation",
+            "The visibility defines how an element is visible from other documents." });
     }
 
 } // TemplatePackageImpl
