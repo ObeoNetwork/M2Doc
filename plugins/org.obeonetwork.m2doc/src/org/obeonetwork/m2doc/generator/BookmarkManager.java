@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -50,6 +50,16 @@ public class BookmarkManager {
      * The reference text.
      */
     private static final String REF_TAG = " REF %s \\h ";
+
+    /**
+     * The reference section.
+     */
+    private static final String SECTION_REF_TAG = " REF %s \\n \\h ";
+
+    /**
+     * The reference page.
+     */
+    private static final String PAGE_REF_TAG = " PAGEREF %s \\h ";
 
     /**
      * Known bookmarks so far.
@@ -122,7 +132,6 @@ public class BookmarkManager {
                     } else {
                         throw new IllegalStateException("this should not happend");
                     }
-                    pendingRef.setStringValue(String.format(REF_TAG, bookmark.getName()));
                 }
             }
         }
@@ -176,7 +185,52 @@ public class BookmarkManager {
     }
 
     /**
-     * Inserts a pending reference to the given name in the given {@link XWPFParagraph}.
+     * Inserts a reference with the bookmark page to the given name in the given {@link XWPFParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param name
+     *            the bookmark name
+     * @param optional
+     *            <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
+     *            error should be inserted
+     */
+    public void insertPageReference(XWPFParagraph paragraph, String name, boolean optional) {
+        insertReference(paragraph, name, null, PAGE_REF_TAG, optional);
+    }
+
+    /**
+     * Inserts a reference with the bookmark section to the given name in the given {@link XWPFParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param name
+     *            the bookmark name
+     * @param optional
+     *            <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
+     *            error should be inserted
+     */
+    public void insertSectionReference(XWPFParagraph paragraph, String name, boolean optional) {
+        insertReference(paragraph, name, null, SECTION_REF_TAG, optional);
+    }
+
+    /**
+     * Inserts a reference with the bookmark text to the given name in the given {@link XWPFParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param name
+     *            the bookmark name
+     * @param optional
+     *            <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
+     *            error should be inserted
+     */
+    public void insertTextReference(XWPFParagraph paragraph, String name, boolean optional) {
+        insertReference(paragraph, name, null, REF_TAG, optional);
+    }
+
+    /**
+     * Inserts a reference with a custom text to the given name in the given {@link XWPFParagraph}.
      * 
      * @param paragraph
      *            the {@link XWPFParagraph}
@@ -186,19 +240,38 @@ public class BookmarkManager {
      *            the text
      * @param optional
      *            <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
+     *            error should be inserted
+     */
+    public void insertCustomTextReference(XWPFParagraph paragraph, String name, String text, boolean optional) {
+        insertReference(paragraph, name, text, REF_TAG, optional);
+    }
+
+    /**
+     * Inserts a pending reference to the given name in the given {@link XWPFParagraph}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph}
+     * @param name
+     *            the bookmark name
+     * @param text
+     *            the text
+     * @param format
+     *            the instruction text format
+     * @param optional
+     *            <code>true</code> if this reference can be omitted when the bookmark declaration doesn't exists, <code>false</code> if an
      *            error
      */
-    public void insertReference(XWPFParagraph paragraph, String name, String text, boolean optional) {
+    public void insertReference(XWPFParagraph paragraph, String name, String text, String format, boolean optional) {
         final CTBookmark bookmark = bookmarks.get(name);
         if (bookmark != null) {
-            insertReference(paragraph, bookmark, text);
+            insertReference(paragraph, bookmark, text, format);
         } else {
             final XWPFRun messageRun = paragraph.createRun();
             final CTText ref = insertPendingReference(paragraph, name, text);
             if (optional) {
                 optionalReferences.put(ref, text);
             }
-            ref.setStringValue(String.format(REF_TAG, name));
+            ref.setStringValue(String.format(format, name));
             messagePositions.put(ref, messageRun);
             Set<CTText> pendingRefs = pendingReferences.get(name);
             if (pendingRefs == null) {
@@ -219,11 +292,13 @@ public class BookmarkManager {
      *            the {@link CTBookmark}
      * @param text
      *            the text
+     * @param format
+     *            the instruction text format
      */
-    private void insertReference(XWPFParagraph paragraph, CTBookmark bookmark, String text) {
+    private void insertReference(XWPFParagraph paragraph, CTBookmark bookmark, String text, String format) {
         final String name = bookmark.getName();
         final CTText pendingCTText = insertPendingReference(paragraph, name, text);
-        pendingCTText.setStringValue(String.format(REF_TAG, name));
+        pendingCTText.setStringValue(String.format(format, name));
     }
 
     /**
@@ -320,10 +395,14 @@ public class BookmarkManager {
         if (res) {
             for (Entry<String, Set<CTText>> entry : pendingReferences.entrySet()) {
                 for (CTText ref : entry.getValue()) {
-                    final String text = optionalReferences.remove(ref);
-                    if (text != null) {
+                    if (optionalReferences.containsKey(ref)) {
+                        final String text = optionalReferences.remove(ref);
                         final XWPFRun refRun = messagePositions.remove(ref);
-                        refRun.setText(text);
+                        if (text != null) {
+                            refRun.setText(text);
+                        } else {
+                            refRun.getCTR().setInstrTextArray(null);
+                        }
                         final XWPFParagraph paragraph = (XWPFParagraph) refRun.getParent();
                         final int refRunIndex = paragraph.getRuns().indexOf(refRun);
                         paragraph.removeRun(refRunIndex - 1);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2025 Obeo. 
+ *  Copyright (c) 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -12,11 +12,11 @@
 package org.obeonetwork.m2doc.element;
 
 /**
- * A bookmark that can be returned by services.
+ * A bookmark with a custom text reference (insert the custom text and reference the bookmark).
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MBookmark extends MIdentifiable {
+public interface MBookmarkCustomTextRef extends MBookmarkRef {
 
     /**
      * Gets the text to display.

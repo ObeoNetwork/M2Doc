@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MBookmarkCustomTextRef;
 import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MImage;
 import org.obeonetwork.m2doc.element.MList;
@@ -24,6 +25,7 @@ import org.obeonetwork.m2doc.element.MPagination;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MText;
+import org.obeonetwork.m2doc.element.impl.MBookmarkCustomTextRefImpl;
 import org.obeonetwork.m2doc.element.impl.MBookmarkImpl;
 import org.obeonetwork.m2doc.element.impl.MImageImpl;
 import org.obeonetwork.m2doc.element.impl.MListImpl;
@@ -46,7 +48,7 @@ public class MListTestServices {
     private static MList initSampleMElements() {
         final MList res = new MListImpl();
 
-        final MBookmark bookmark = new MBookmarkImpl("bookmark", "id", false);
+        final MBookmark bookmark = new MBookmarkImpl("bookmark", "id");
         res.add(bookmark);
         res.add(MPagination.newParagraph);
 
@@ -55,7 +57,7 @@ public class MListTestServices {
         res.add(text);
         res.add(MPagination.newParagraph);
 
-        final MBookmark bookmarkRef = new MBookmarkImpl("bookmarkRef", "id", true);
+        final MBookmarkCustomTextRef bookmarkRef = new MBookmarkCustomTextRefImpl("bookmarkRef", "id", false);
         res.add(bookmarkRef);
         res.add(MPagination.newParagraph);
 

@@ -65,6 +65,10 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MBookmarkCustomTextRef;
+import org.obeonetwork.m2doc.element.MBookmarkPageRef;
+import org.obeonetwork.m2doc.element.MBookmarkSectionRef;
+import org.obeonetwork.m2doc.element.MBookmarkTextRef;
 import org.obeonetwork.m2doc.element.MBorder;
 import org.obeonetwork.m2doc.element.MElement;
 import org.obeonetwork.m2doc.element.MElementContainer.HAlignment;
@@ -704,6 +708,14 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             res = insertMHyperLink(paragraph, run, (MHyperLink) object);
         } else if (object instanceof MBookmark) {
             res = insertMBookmark(paragraph, run, (MBookmark) object);
+        } else if (object instanceof MBookmarkPageRef) {
+            res = insertMBookmarkPageRef(paragraph, run, (MBookmarkPageRef) object);
+        } else if (object instanceof MBookmarkSectionRef) {
+            res = insertMBookmarkSectionRef(paragraph, run, (MBookmarkSectionRef) object);
+        } else if (object instanceof MBookmarkTextRef) {
+            res = insertMBookmarkTextRef(paragraph, run, (MBookmarkTextRef) object);
+        } else if (object instanceof MBookmarkCustomTextRef) {
+            res = insertMBookmarkCustomTextRef(paragraph, run, (MBookmarkCustomTextRef) object);
         } else if (object instanceof MImage) {
             if (object != MImage.EMPTY) {
                 final XWPFRun imageRun = insertFieldRunReplacement(paragraph, run, "");
@@ -860,13 +872,87 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
     private XWPFParagraph insertMBookmark(XWPFParagraph paragraph, XWPFRun run, MBookmark bookmark) {
         final XWPFParagraph res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
 
-        if (bookmark.isReference()) {
-            bookmarkManager.insertReference(res, bookmark.getId(), bookmark.getText(), bookmark.isOptional());
-        } else {
-            bookmarkManager.startBookmark(result, res, bookmark.getId());
-            insertFieldRunReplacement(res, run, bookmark.getText());
-            bookmarkManager.endBookmark(result, res, bookmark.getId());
-        }
+        bookmarkManager.startBookmark(result, res, bookmark.getId());
+        insertFieldRunReplacement(res, run, bookmark.getText());
+        bookmarkManager.endBookmark(result, res, bookmark.getId());
+
+        return res;
+    }
+
+    /**
+     * Inserts a {@link MBookmarkPageRef} in the given {@link XWPFRun}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param run
+     *            the {@link XWPFRun}
+     * @param reference
+     *            the {@link MBookmarkPageRef}
+     * @return the {@link XWPFParagraph} where the bookmark page reference was inserted
+     */
+    private XWPFParagraph insertMBookmarkPageRef(XWPFParagraph paragraph, XWPFRun run, MBookmarkPageRef reference) {
+        final XWPFParagraph res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
+
+        bookmarkManager.insertPageReference(res, reference.getId(), reference.isOptional());
+
+        return res;
+    }
+
+    /**
+     * Inserts a {@link MBookmarkSectionRef} in the given {@link XWPFRun}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param run
+     *            the {@link XWPFRun}
+     * @param reference
+     *            the {@link MBookmarkSectionRef}
+     * @return the {@link XWPFParagraph} where the bookmark section reference was inserted
+     */
+    private XWPFParagraph insertMBookmarkSectionRef(XWPFParagraph paragraph, XWPFRun run,
+            MBookmarkSectionRef reference) {
+        final XWPFParagraph res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
+
+        bookmarkManager.insertSectionReference(res, reference.getId(), reference.isOptional());
+
+        return res;
+    }
+
+    /**
+     * Inserts a {@link MBookmarkTextRef} in the given {@link XWPFRun}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param run
+     *            the {@link XWPFRun}
+     * @param reference
+     *            the {@link MBookmarkTextRef}
+     * @return the {@link XWPFParagraph} where the bookmark section reference was inserted
+     */
+    private XWPFParagraph insertMBookmarkTextRef(XWPFParagraph paragraph, XWPFRun run, MBookmarkTextRef reference) {
+        final XWPFParagraph res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
+
+        bookmarkManager.insertTextReference(res, reference.getId(), reference.isOptional());
+
+        return res;
+    }
+
+    /**
+     * Inserts a {@link MBookmarkCustomTextRef} in the given {@link XWPFRun}.
+     * 
+     * @param paragraph
+     *            the {@link XWPFParagraph} to modify
+     * @param run
+     *            the {@link XWPFRun}
+     * @param reference
+     *            the {@link MBookmarkCustomTextRef}
+     * @return the {@link XWPFParagraph} where the bookmark section reference was inserted
+     */
+    private XWPFParagraph insertMBookmarkCustomTextRef(XWPFParagraph paragraph, XWPFRun run,
+            MBookmarkCustomTextRef reference) {
+        final XWPFParagraph res = (XWPFParagraph) insertFieldRunReplacement(paragraph, run, "").getParent();
+
+        bookmarkManager.insertCustomTextReference(res, reference.getId(), reference.getText(), reference.isOptional());
 
         return res;
     }
@@ -2528,7 +2614,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                     currentParagraph = insertQueryEvaluationMessages(currentParagraph, link,
                             textResult.getDiagnostic());
                 } else {
-                    bookmarkManager.insertReference(currentParagraph, nameResult.getResult().toString(),
+                    bookmarkManager.insertCustomTextReference(currentParagraph, nameResult.getResult().toString(),
                             textResult.getResult().toString(), false);
                 }
             }

@@ -1,0 +1,15 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  Some titleA simple demonstration of a bookmark:A reference before
+  [query: .asBookmarkSectionRef('Art1')]
+  The bookmark
+  [query: .asBookmark('Definition of Artifact1', 'Art1')]
+  A reference after
+  [query: .asBookmarkSectionRef('Art1')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
