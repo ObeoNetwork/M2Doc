@@ -25,6 +25,19 @@ Services available for Capella extensions.
 * TOC
 {:toc}
 
+## EObject.availableSBQueries() : Sequence{String}
+
+Gets the list of available semantic browser query names for the given EObject.
+
+### Parameter
+
+* **eObj**: The EObject
+
+### Example
+
+* myCapellaElement.availableSBQueries()
+  * Sequence{'query1', 'query2', ...}
+
 ## org.polarsys.capella.core.data.information.DataPkg.getAllDataPkgs() : Sequence{org.polarsys.capella.core.data.information.DataPkg}
 
 Return recursively all the data subpackages of the given data package.
@@ -132,6 +145,20 @@ Return recursively all the interface subpackages of the given interface packages
 
 * myInterfacePkg.getInterfaceSubPkg()
   * a list of all interface subpackages
+
+## EObject.getSBQuery(String) : Sequence{EObject}
+
+Gets the semantic browser query result for the given query name on the given EObject.
+
+### Parameter
+
+* **eObj**: The EObject
+* **queryName**: The semantic query name
+
+### Example
+
+* myCapellaElement.getSBQuery('query1')
+  * Sequence{eObject1, eObject1, ...}
 
 ## org.eclipse.sirius.viewpoint.DRepresentation.isVisibleInDoc() : boolean
 
