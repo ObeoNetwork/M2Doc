@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2025 Obeo. 
+ *  Copyright (c) 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -12,25 +12,25 @@
 package org.obeonetwork.m2doc.element;
 
 /**
- * A bookmark that can be returned by services.
+ * Identifiable {@link MElement}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public interface MBookmark extends MIdentifiable {
+public interface MIdentifiable extends MElement {
 
     /**
-     * Gets the text to display.
+     * Gets the ID.
      * 
-     * @return the text to display
+     * @return the ID
      */
-    String getText();
+    String getId();
 
     /**
-     * Sets the text to display.
+     * Sets the ID.
      * 
-     * @param text
-     *            the new text to display
+     * @param id
+     *            the new ID
      */
-    void setText(String text);
+    void setId(String id);
 
 }

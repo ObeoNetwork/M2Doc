@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a bookmark:
+  [query: .asBookmarkSectionRef('Art1', true)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

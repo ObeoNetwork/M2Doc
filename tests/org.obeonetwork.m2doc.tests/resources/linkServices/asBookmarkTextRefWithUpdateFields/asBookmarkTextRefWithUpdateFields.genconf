@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genconf:Generation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genconf="http://www.obeonetwork.org/m2doc/genconf/1.0" name="asBookmark" templateFileName="asBookmarkTextRefWithUpdateFields-template.docx" resultFileName="asBookmarkTextRefWithUpdateFields-actual-generation.docx" validationFileName="asBookmarkTextRefWithUpdateFields-actual-validation.docx">
+  <options name="UpdateFields" value="true"/>
+</genconf:Generation>

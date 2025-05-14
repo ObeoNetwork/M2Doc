@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -16,8 +16,16 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.obeonetwork.m2doc.element.MBookmark;
+import org.obeonetwork.m2doc.element.MBookmarkCustomTextRef;
+import org.obeonetwork.m2doc.element.MBookmarkPageRef;
+import org.obeonetwork.m2doc.element.MBookmarkSectionRef;
+import org.obeonetwork.m2doc.element.MBookmarkTextRef;
 import org.obeonetwork.m2doc.element.MHyperLink;
+import org.obeonetwork.m2doc.element.impl.MBookmarkCustomTextRefImpl;
 import org.obeonetwork.m2doc.element.impl.MBookmarkImpl;
+import org.obeonetwork.m2doc.element.impl.MBookmarkPageRefImpl;
+import org.obeonetwork.m2doc.element.impl.MBookmarkSectionRefImpl;
+import org.obeonetwork.m2doc.element.impl.MBookmarkTextRefImpl;
 import org.obeonetwork.m2doc.element.impl.MHyperLinkImpl;
 
 //@formatter:off
@@ -90,7 +98,7 @@ public class LinkServices {
     )
     // @formatter:on
     public MBookmark asBookmark(String text, String id) {
-        return new MBookmarkImpl(text, id, false);
+        return new MBookmarkImpl(text, id);
     }
 
     // @formatter:off
@@ -106,7 +114,7 @@ public class LinkServices {
       }
     )
     // @formatter:on
-    public MBookmark asBookmarkRef(String text, String id) {
+    public MBookmarkCustomTextRef asBookmarkRef(String text, String id) {
         return asBookmarkRef(text, id, false);
     }
 
@@ -124,12 +132,107 @@ public class LinkServices {
       }
     )
     // @formatter:on
-    public MBookmark asBookmarkRef(String text, String id, boolean optional) {
-        final MBookmarkImpl res = new MBookmarkImpl(text, id, true);
+    public MBookmarkCustomTextRef asBookmarkRef(String text, String id, boolean optional) {
+        return new MBookmarkCustomTextRefImpl(text, id, optional);
+    }
 
-        res.setOptional(optional);
+    // @formatter:off
+    @Documentation(
+      value = "Inserts a page number bookmark reference",
+      params = {
+          @Param(name = "id", value = "The ID of the bookmark reference"),
+      },
+      result = "A bookmark reference with the page numder.",
+      examples = {
+          @Example(expression = "'Art1'.asBookmarkPageRef()", result = "a bookmark reference with the ID 'Art1' with the page number"),
+      }
+    )
+    // @formatter:on
+    public MBookmarkPageRef asBookmarkPageRef(String id) {
+        return asBookmarkPageRef(id, false);
+    }
 
-        return res;
+    // @formatter:off
+    @Documentation(
+      value = "Inserts a page number bookmark reference",
+      params = {
+          @Param(name = "id", value = "The ID of the bookmark reference"),
+          @Param(name = "optional", value = "If true, the reference is omitted if the corresponding bookmark doesn't exists"),
+      },
+      result = "A bookmark reference with the page numder.",
+      examples = {
+          @Example(expression = "'Art1'.asBookmarkPageRef(true)", result = "a bookmark reference with the ID 'Art1' with the page number only if a bookmark with ID 'Art1' exists"),
+      }
+    )
+    // @formatter:on
+    public MBookmarkPageRef asBookmarkPageRef(String id, boolean optional) {
+        return new MBookmarkPageRefImpl(id, optional);
+    }
+
+    // @formatter:off
+    @Documentation(
+      value = "Inserts a section bookmark reference",
+      params = {
+          @Param(name = "id", value = "The ID of the bookmark reference"),
+      },
+      result = "A bookmark reference with the section.",
+      examples = {
+          @Example(expression = "'Art1'.asBookmarkSectionRef(true)", result = "a bookmark reference with the ID 'Art1' with the section number"),
+      }
+    )
+    // @formatter:on
+    public MBookmarkSectionRef asBookmarkSectionRef(String id) {
+        return asBookmarkSectionRef(id, false);
+    }
+
+    // @formatter:off
+    @Documentation(
+      value = "Inserts a section bookmark reference",
+      params = {
+          @Param(name = "id", value = "The ID of the bookmark reference"),
+          @Param(name = "optional", value = "If true, the reference is omitted if the corresponding bookmark doesn't exists"),
+      },
+      result = "A bookmark reference with the section.",
+      examples = {
+          @Example(expression = "'Art1'.asBookmarkPageRef(true)", result = "a bookmark reference with the ID 'Art1' with the section number"),
+      }
+    )
+    // @formatter:on
+    public MBookmarkSectionRef asBookmarkSectionRef(String id, boolean optional) {
+        return new MBookmarkSectionRefImpl(id, optional);
+    }
+
+    // @formatter:off
+    @Documentation(
+      value = "Inserts a text bookmark reference",
+      params = {
+          @Param(name = "id", value = "The ID of the bookmark reference"),
+      },
+      result = "A bookmark reference with the bookmark text.",
+      examples = {
+          @Example(expression = "'Art1'.asBookmarkPageRef()", result = "a bookmark reference with the ID 'Art1' with the bookmark text"),
+      }
+    )
+    // @formatter:on
+    public MBookmarkTextRef asBookmarkTextRef(String id) {
+        return asBookmarkTextRef(id, false);
+    }
+
+    // @formatter:off
+    @Documentation(
+      value = "Inserts a text bookmark reference",
+      params = {
+          @Param(name = "id", value = "The ID of the bookmark reference"),
+          @Param(name = "optional", value = "If true, the reference is omitted if the corresponding bookmark doesn't exists"),
+      },
+      result = "A bookmark reference with the bookmark text.",
+      examples = {
+          @Example(expression = "'Art1'.asBookmarkPageRef(true)", result = "a bookmark reference with the ID 'Art1' with the bookmark text only if a bookmark with ID 'Art1' exists"),
+      }
+    )
+    // @formatter:on
+    public MBookmarkTextRef asBookmarkTextRef(String id, boolean optional) {
+        return new MBookmarkTextRefImpl(id, optional);
     }
 
 }
