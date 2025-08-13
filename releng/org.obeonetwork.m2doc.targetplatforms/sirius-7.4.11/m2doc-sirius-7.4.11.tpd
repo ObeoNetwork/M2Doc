@@ -1,0 +1,120 @@
+target "M2Doc Sirius 7.4.11 Target Platform"
+
+with requirements
+
+location Eclipse-Shared-License "https://download.eclipse.org/cbi/updates/license" {
+	org.eclipse.license.feature.group lazy
+}
+
+location Eclipse "https://download.eclipse.org/releases/2023-03" {
+	org.eclipse.platform.sdk lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	org.eclipse.equinox.executable.feature.group lazy
+	org.eclipse.core.runtime lazy
+	org.eclipse.ui lazy
+	org.eclipse.ui.views.log lazy
+	org.eclipse.epp.mpc.feature.group lazy
+
+	org.eclipse.emf.sdk.feature.group lazy
+	org.junit [4.0.0,5.0.0)
+	org.eclipse.jdt.feature.group lazy
+	org.w3c.dom.svg lazy
+	org.w3c.dom.smil lazy
+	org.w3c.css.sac lazy
+
+	// for testing purpose only
+	org.eclipse.uml2.feature.group lazy
+	org.eclipse.pde.feature.group lazy
+
+	org.apache.xerces lazy
+
+	// wikitext
+	org.eclipse.mylyn.wikitext [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.asciidoc [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.confluence [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.html [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.markdown [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.mediawiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.textile [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.tracwiki [3.0.0,3.1.0)
+	org.eclipse.mylyn.wikitext.twiki [3.0.0,3.1.0)
+}
+
+location GMF-Notation-1.13.1 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202211151334" {
+	org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
+}
+
+location GMF-Runtime-1.16.3 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/milestones/S202401081627/" {
+	org.eclipse.gmf.runtime.sdk.feature.group lazy
+	org.eclipse.gmf.runtime.thirdparty.feature.group lazy
+
+	org.apache.batik.ext [1.17.0,1.17.1)
+	org.apache.batik.codec [1.17.0,1.17.1)
+	org.apache.batik.bridge [1.17.0,1.17.1)
+	org.apache.batik.script [1.17.0,1.17.1)
+
+	org.apache.batik.transcoder [1.17.0,1.17.1)
+	org.apache.batik.util [1.17.0,1.17.1)
+	org.apache.batik.constants [1.17.0,1.17.1)
+	org.apache.batik.dom [1.17.0,1.17.1)
+	org.apache.batik.css [1.17.0,1.17.1)
+	org.apache.batik.gvt [1.17.0,1.17.1)
+	org.apache.batik.anim [1.17.0,1.17.1)
+	org.apache.batik.i18n [1.17.0,1.17.1)
+	org.apache.batik.dom.svg [1.17.0,1.17.1)
+	org.apache.batik.xml [1.17.0,1.17.1)
+	org.apache.batik.parser [1.17.0,1.17.1)
+	org.apache.batik.awt.util [1.17.0,1.17.1)
+	org.apache.batik.svggen [1.17.0,1.17.1)
+	org.apache.xmlgraphics [2.9.0,2.9.1)
+}
+
+location GEF-Classic  "https://archive.eclipse.org/tools/gef/classic/releases/3.17.0/" {
+	org.eclipse.gef.feature.group lazy
+	org.eclipse.gef.sdk.feature.group lazy
+	org.eclipse.draw2d.sdk.feature.group lazy
+}
+
+location "https://download.eclipse.org/sirius/updates/releases/7.4.11/2023-03/" {
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius lazy
+	org.eclipse.sirius.diagram lazy
+	org.eclipse.sirius.diagram.ui lazy
+	org.eclipse.sirius.table lazy
+	org.eclipse.sirius.table.ui lazy
+	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
+
+	// AQL
+	org.eclipse.acceleo.query.feature.group lazy
+	org.eclipse.acceleo.query.source.feature.group lazy
+}
+
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
+	org.kohsuke.args4j [2.0.21,2.1.0)
+	javax.servlet [3.1.0,3.2.0)
+}
+
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository/" {
+	com.google.guava [15.0.0,16.0.0)
+}
+
+location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties" {
+	org.apache.poi.feature.feature.group lazy
+
+	// AQL
+	org.antlr.runtime [4.7.2,4.7.3)
+}
+
+location CDO "https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126/" {
+	org.eclipse.emf.cdo.sdk.feature.group lazy
+	org.eclipse.net4j.feature.group lazy
+}
+
+location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.30.0/" {
+	// for testing purpose only
+	org.eclipse.xtext.sdk.feature.group [2.30.0,2.31.0)
+}
+
+location "https://download.eclipse.org/rcptt/release/2.5.4/repository" {
+	org.eclipse.rcptt.platform.feature.group lazy
+}
