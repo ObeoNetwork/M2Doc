@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: org.obeonetwork.m2doc.genconf.provider.M2docconfEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.obeonetwork.m2doc.genconf.provider
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",

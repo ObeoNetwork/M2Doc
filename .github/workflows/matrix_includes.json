@@ -1,16 +1,16 @@
 [
   {
-    "java":"17",
-    "profile":"platform-2024-03,tests,updatesites",
+    "java":"21",
+    "profile":"platform-2025-06,tests,updatesites",
     "tycho":"4.0.12"
   },
   {
-    "java":"17",
+    "java":"21",
     "profile":"platform-sirius-7.4.2,tests",
     "tycho":"4.0.12"
   },
   {
-    "java":"17",
+    "java":"21",
     "profile":"platform-capella-7.0.1,tests",
     "tycho":"4.0.12"
   }

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: B
 Bundle-SymbolicName: org.obeonetwork.m2doc.rcptt.b
 Bundle-Version: 4.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.emf.ecore
 Export-Package: org.obeonetwork.m2doc.rcptt.b
 Automatic-Module-Name: org.obeonetwork.m2doc.rcptt.b

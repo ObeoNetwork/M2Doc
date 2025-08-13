@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.obeonetwork.m2doc.html.ide;singleton:=true
 Bundle-Version: 4.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[4.0.0,5.0.0)",
  org.obeonetwork.m2doc.html;bundle-version="[4.0.0,5.0.0)",

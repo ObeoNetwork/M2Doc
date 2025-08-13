@@ -1,0 +1,5 @@
+target "M2Doc 2025-06 Target Platform SDK"
+
+with source requirements
+
+include "m2doc-2025-06.tpd"

@@ -70,8 +70,8 @@
    <bundle id="org.xtext.example.mydsl.ide" version="0.0.0"/>
    <bundle id="org.xtext.example.mydsl.ui" version="0.0.0"/>
 
-   <feature id="org.eclipse.acceleo.query" version="0.0.0"/>
-   <feature id="org.eclipse.acceleo.query.source" version="0.0.0"/>
+   <feature id="org.eclipse.acceleo.query" version="7.0.0.202408201303"/>
+   <feature id="org.eclipse.acceleo.query.source" version="7.0.0.202408201303"/>
    <bundle id="org.antlr.runtime" version="0.0.0"/>
 
    <bundle id="org.jsoup" version="0.0.0"/>

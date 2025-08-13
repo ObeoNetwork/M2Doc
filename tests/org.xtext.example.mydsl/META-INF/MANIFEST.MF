@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.util,
  org.eclipse.xtend.lib,
  org.eclipse.emf.common
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.xtext.example.mydsl.myDsl.util,
  org.xtext.example.mydsl.parser.antlr.internal,
  org.xtext.example.mydsl.scoping,
