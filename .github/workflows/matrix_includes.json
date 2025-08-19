@@ -8,10 +8,5 @@
     "java":"21",
     "profile":"platform-sirius-7.4.11,tests",
     "tycho":"4.0.13"
-  },
-  {
-    "java":"21",
-    "profile":"platform-capella-7.0.1,tests",
-    "tycho":"4.0.13"
   }
 ]

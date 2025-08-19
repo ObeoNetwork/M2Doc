@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2024 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Monitor;
@@ -66,7 +68,6 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public final class GenconfUtils {
 
     static {
@@ -402,20 +403,20 @@ public final class GenconfUtils {
         Definition res = null;
 
         final IType eObjectType = new ClassType(queryEnvironment, EObject.class);
-        final IType eObjectSequenceType = new ForkedSequenceType(queryEnvironment, eObjectType);
-        final IType eObjectOrderedSetType = new ForkedSetType(queryEnvironment, eObjectType);
+        final IType eObjectSequenceType = new SequenceType(queryEnvironment, eObjectType);
+        final IType eObjectOrderedSetType = new SetType(queryEnvironment, eObjectType);
         final IType stringType = new ClassType(queryEnvironment, String.class);
-        final IType stringSequenceType = new ForkedSequenceType(queryEnvironment, stringType);
-        final IType stringOrderedSetType = new ForkedSetType(queryEnvironment, stringType);
+        final IType stringSequenceType = new SequenceType(queryEnvironment, stringType);
+        final IType stringOrderedSetType = new SetType(queryEnvironment, stringType);
         final IType integerType = new ClassType(queryEnvironment, Integer.class);
-        final IType integerSequenceType = new ForkedSequenceType(queryEnvironment, integerType);
-        final IType integerOrderedSetType = new ForkedSetType(queryEnvironment, integerType);
+        final IType integerSequenceType = new SequenceType(queryEnvironment, integerType);
+        final IType integerOrderedSetType = new SetType(queryEnvironment, integerType);
         final IType realType = new ClassType(queryEnvironment, Double.class);
-        final IType realSequenceType = new ForkedSequenceType(queryEnvironment, realType);
-        final IType realOrderedSetType = new ForkedSetType(queryEnvironment, realType);
+        final IType realSequenceType = new SequenceType(queryEnvironment, realType);
+        final IType realOrderedSetType = new SetType(queryEnvironment, realType);
         final IType booleanType = new ClassType(queryEnvironment, Boolean.class);
-        final IType booleanSequenceType = new ForkedSequenceType(queryEnvironment, booleanType);
-        final IType booleanOrderedSetType = new ForkedSetType(queryEnvironment, booleanType);
+        final IType booleanSequenceType = new SequenceType(queryEnvironment, booleanType);
+        final IType booleanOrderedSetType = new SetType(queryEnvironment, booleanType);
         for (IType type : types) {
             if (eObjectType.isAssignableFrom(type)) {
                 res = GenconfPackage.eINSTANCE.getGenconfFactory().createModelDefinition();
@@ -502,20 +503,20 @@ public final class GenconfUtils {
         boolean res = false;
 
         final IType eObjectType = new ClassType(queryEnvironment, EObject.class);
-        final IType eObjectSequenceType = new ForkedSequenceType(queryEnvironment, eObjectType);
-        final IType eObjectOrderedSetType = new ForkedSetType(queryEnvironment, eObjectType);
+        final IType eObjectSequenceType = new SequenceType(queryEnvironment, eObjectType);
+        final IType eObjectOrderedSetType = new SetType(queryEnvironment, eObjectType);
         final IType stringType = new ClassType(queryEnvironment, String.class);
-        final IType stringSequenceType = new ForkedSequenceType(queryEnvironment, stringType);
-        final IType stringOrderedSetType = new ForkedSetType(queryEnvironment, stringType);
+        final IType stringSequenceType = new SequenceType(queryEnvironment, stringType);
+        final IType stringOrderedSetType = new SetType(queryEnvironment, stringType);
         final IType integerType = new ClassType(queryEnvironment, Integer.class);
-        final IType integerSequenceType = new ForkedSequenceType(queryEnvironment, integerType);
-        final IType integerOrderedSetType = new ForkedSetType(queryEnvironment, integerType);
+        final IType integerSequenceType = new SequenceType(queryEnvironment, integerType);
+        final IType integerOrderedSetType = new SetType(queryEnvironment, integerType);
         final IType realType = new ClassType(queryEnvironment, Double.class);
-        final IType realSequenceType = new ForkedSequenceType(queryEnvironment, realType);
-        final IType realOrderedSetType = new ForkedSetType(queryEnvironment, realType);
+        final IType realSequenceType = new SequenceType(queryEnvironment, realType);
+        final IType realOrderedSetType = new SetType(queryEnvironment, realType);
         final IType booleanType = new ClassType(queryEnvironment, Boolean.class);
-        final IType booleanSequenceType = new ForkedSequenceType(queryEnvironment, booleanType);
-        final IType booleanOrderedSetType = new ForkedSetType(queryEnvironment, booleanType);
+        final IType booleanSequenceType = new SequenceType(queryEnvironment, booleanType);
+        final IType booleanOrderedSetType = new SetType(queryEnvironment, booleanType);
         for (IType type : types) {
             if (eObjectType.isAssignableFrom(type) && definition instanceof ModelDefinition) {
                 res = true;

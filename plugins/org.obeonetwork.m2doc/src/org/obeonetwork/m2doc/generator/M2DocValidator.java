@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -22,6 +23,8 @@ import java.util.concurrent.CancellationException;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
+import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -32,7 +35,6 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -64,7 +66,6 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     /**
@@ -257,7 +258,8 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final Map<String, Set<IType>> parameters = new HashMap<>();
         ValidationMessageLevel parameterLevel = ValidationMessageLevel.OK;
         for (Parameter parameter : template.getParameters()) {
-            final IValidationResult validationResult = aqlValidator.validate(null, parameter.getType());
+            final IValidationResult validationResult = aqlValidator.validate(Collections.emptyMap(),
+                    parameter.getType());
             final XWPFRun run = template.getRuns().get(template.getRuns().size() - 1);
             addValidationMessages(template, run, validationResult);
             if (parameters.containsKey(parameter.getName())) {
@@ -282,11 +284,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseBookmark(Bookmark bookmark) {
-        if (bookmark.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult validationResult = aqlValidator.validate(stack.peek(), bookmark.getName());
-            final XWPFRun run = bookmark.getRuns().get(bookmark.getRuns().size() - 1);
-            addValidationMessages(bookmark, run, validationResult);
-        }
+        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), bookmark.getName());
+        final XWPFRun run = bookmark.getRuns().get(bookmark.getRuns().size() - 1);
+        addValidationMessages(bookmark, run, validationResult);
 
         final ValidationMessageLevel bodyLevel = doSwitch(bookmark.getBody());
 
@@ -295,17 +295,13 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseLink(Link link) {
-        if (link.getName().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult nameValidationResult = aqlValidator.validate(stack.peek(), link.getName());
-            final XWPFRun run = link.getRuns().get(link.getRuns().size() - 1);
-            addValidationMessages(link, run, nameValidationResult);
-        }
+        final XWPFRun run = link.getRuns().get(link.getRuns().size() - 1);
 
-        if (link.getText().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult textValidationResult = aqlValidator.validate(stack.peek(), link.getText());
-            final XWPFRun run = link.getRuns().get(link.getRuns().size() - 1);
-            addValidationMessages(link, run, textValidationResult);
-        }
+        final IValidationResult nameValidationResult = aqlValidator.validate(stack.peek(), link.getName());
+        addValidationMessages(link, run, nameValidationResult);
+
+        final IValidationResult textValidationResult = aqlValidator.validate(stack.peek(), link.getText());
+        addValidationMessages(link, run, textValidationResult);
 
         return getHighestMessageLevel(link);
     }
@@ -313,14 +309,10 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     @Override
     public ValidationMessageLevel caseUserDoc(UserDoc userDoc) {
         final ValidationMessageLevel idLevel;
-        if (userDoc.getId().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult validationResult = aqlValidator.validate(stack.peek(), userDoc.getId());
-            final XWPFRun run = userDoc.getRuns().get(userDoc.getRuns().size() - 1);
-            addValidationMessages(userDoc, run, validationResult);
-            idLevel = checkUserDocIdTypes(userDoc, run, validationResult);
-        } else {
-            idLevel = ValidationMessageLevel.ERROR;
-        }
+        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), userDoc.getId());
+        final XWPFRun run = userDoc.getRuns().get(userDoc.getRuns().size() - 1);
+        addValidationMessages(userDoc, run, validationResult);
+        idLevel = checkUserDocIdTypes(userDoc, run, validationResult);
 
         return ValidationMessageLevel.updateLevel(getHighestMessageLevel(userDoc), idLevel,
                 doSwitch(userDoc.getBody()));
@@ -347,13 +339,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final IValidationResult validationResult = aqlValidator.validate(stack.peek(), conditional.getCondition());
         final Set<IType> types = validationResult.getPossibleTypes(conditional.getCondition().getAst());
         final ValidationMessageLevel conditionLevel;
-        if (conditional.getCondition().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final XWPFRun run = conditional.getRuns().get(conditional.getRuns().size() - 1);
-            addValidationMessages(conditional, run, validationResult);
-            conditionLevel = checkConditionalConditionTypes(conditional, run, types);
-        } else {
-            conditionLevel = ValidationMessageLevel.ERROR;
-        }
+        final XWPFRun run = conditional.getRuns().get(conditional.getRuns().size() - 1);
+        addValidationMessages(conditional, run, validationResult);
+        conditionLevel = checkConditionalConditionTypes(conditional, run, types);
 
         final Map<String, Set<IType>> thenVariables = new HashMap<>(stack.peek());
         thenVariables
@@ -473,12 +461,8 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final Set<IType> types = validationResult.getPossibleTypes(repetition.getQuery().getAst());
         final XWPFRun run = repetition.getRuns().get(repetition.getRuns().size() - 1);
         ValidationMessageLevel iteratorLevel;
-        if (repetition.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            addValidationMessages(repetition, run, validationResult);
-            iteratorLevel = validateRepetitionQueryType(repetition, run, types);
-        } else {
-            iteratorLevel = ValidationMessageLevel.ERROR;
-        }
+        addValidationMessages(repetition, run, validationResult);
+        iteratorLevel = validateRepetitionQueryType(repetition, run, types);
         if (stack.peek().containsKey(repetition.getIterationVar())) {
             iteratorLevel = ValidationMessageLevel.updateLevel(iteratorLevel, ValidationMessageLevel.WARNING);
             repetition.getValidationMessages()
@@ -486,6 +470,15 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
                             String.format("The iteration variable mask an existing variable (%s).",
                                     repetition.getIterationVar()),
                             run));
+        }
+        if ((repetition.getQuery().getAst() instanceof SequenceInExtensionLiteral
+            && ((SequenceInExtensionLiteral) repetition.getQuery().getAst()).getValues().isEmpty())
+            || (repetition.getQuery().getAst() instanceof SetInExtensionLiteral
+                && ((SetInExtensionLiteral) repetition.getQuery().getAst()).getValues().isEmpty())) {
+            iteratorLevel = ValidationMessageLevel.updateLevel(iteratorLevel, ValidationMessageLevel.INFO);
+            repetition.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.INFO,
+                    String.format("Empty collection defined in extension.", repetition.getQuery().getAst()), run));
+
         }
 
         final Set<IType> iteratorTypes = new LinkedHashSet<>();
@@ -520,12 +513,8 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
         final XWPFRun run = let.getRuns().get(let.getRuns().size() - 1);
         ValidationMessageLevel variableLevel;
-        if (let.getValue().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            addValidationMessages(let, run, validationResult);
-            variableLevel = ValidationMessageLevel.OK;
-        } else {
-            variableLevel = ValidationMessageLevel.ERROR;
-        }
+        addValidationMessages(let, run, validationResult);
+        variableLevel = ValidationMessageLevel.OK;
         if (stack.peek().containsKey(let.getName())) {
             variableLevel = ValidationMessageLevel.updateLevel(variableLevel, ValidationMessageLevel.WARNING);
             let.getValidationMessages().add(new TemplateValidationMessage(ValidationMessageLevel.WARNING,
@@ -574,16 +563,14 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
 
     @Override
     public ValidationMessageLevel caseQuery(Query query) {
-        if (query.getQuery().getDiagnostic().getSeverity() != Diagnostic.ERROR) {
-            final IValidationResult validationResult = aqlValidator.validate(stack.peek(), query.getQuery());
-            final XWPFRun run;
-            if (query.getRuns().isEmpty()) {
-                run = query.getStyleRun();
-            } else {
-                run = query.getRuns().get(query.getRuns().size() - 1);
-            }
-            addValidationMessages(query, run, validationResult);
+        final IValidationResult validationResult = aqlValidator.validate(stack.peek(), query.getQuery());
+        final XWPFRun run;
+        if (query.getRuns().isEmpty()) {
+            run = query.getStyleRun();
+        } else {
+            run = query.getRuns().get(query.getRuns().size() - 1);
         }
+        addValidationMessages(query, run, validationResult);
 
         return getHighestMessageLevel(query);
     }

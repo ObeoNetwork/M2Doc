@@ -9,7 +9,7 @@ Bundle-Localization: plugin
 Require-Bundle: org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[4.0.0,5.0.0)",
  org.obeonetwork.m2doc.genconf;bundle-version="[4.0.0,5.0.0)",
- org.eclipse.acceleo.query;bundle-version="[6.0.1,8.0.0)",
+ org.eclipse.acceleo.query;bundle-version="[8.0.3,9.0.0)",
  org.eclipse.emf.cdo,
  org.eclipse.net4j,
  org.eclipse.net4j.tcp,

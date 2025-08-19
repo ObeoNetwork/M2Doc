@@ -1,4 +1,3 @@
 ERROR - setStyle(org.obeonetwork.m2doc.element.MParagraph,java.lang.String) with arguments [org.obeonetwork.m2doc.element.impl.MParagraphImpl@00000000  NotExisting] failed:
-	no text style NotExisting
-java.lang.IllegalArgumentException: no text style NotExisting
+	java.lang.IllegalArgumentException: no text style NotExisting
 ...STACK...

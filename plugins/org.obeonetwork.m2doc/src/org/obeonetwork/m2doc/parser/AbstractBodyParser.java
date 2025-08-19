@@ -26,6 +26,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.Block;
@@ -36,7 +37,6 @@ import org.obeonetwork.m2doc.template.StaticFragment;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
-import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
@@ -78,7 +78,7 @@ public abstract class AbstractBodyParser {
      *            the query environment to used during parsing.
      */
     public AbstractBodyParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
-        this(inputDocument, AQL56Compatibility.createQueryBuilderEngine(queryEnvironment), queryEnvironment);
+        this(inputDocument, new QueryBuilderEngine(), queryEnvironment);
     }
 
     /**

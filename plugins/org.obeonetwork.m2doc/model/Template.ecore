@@ -126,7 +126,7 @@
   <eClassifiers xsi:type="ecore:EDataType" name="WTable" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFTable"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Run" instanceClassName="org.apache.poi.xwpf.usermodel.XWPFRun"/>
   <eClassifiers xsi:type="ecore:EClass" name="StaticFragment" eSuperTypes="#//Statement"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="AstResult" instanceClassName="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="AstResult" instanceClassName="org.eclipse.acceleo.query.parser.AstResult"/>
   <eClassifiers xsi:type="ecore:EDataType" name="TemplateValidationMessage" instanceClassName="org.obeonetwork.m2doc.parser.TemplateValidationMessage"/>
   <eClassifiers xsi:type="ecore:EClass" name="Table" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rows" upperBound="-1" eType="#//Row"

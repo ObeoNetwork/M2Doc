@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021 Obeo. 
+ *  Copyright (c) 2021, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.services;
 
-import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 
 /**
@@ -63,7 +62,7 @@ public class M2DocTemplateServiceCompletionProposal implements IServiceCompletio
     }
 
     @Override
-    public IService getObject() {
+    public M2DocTemplateService getObject() {
         return service;
     }
 

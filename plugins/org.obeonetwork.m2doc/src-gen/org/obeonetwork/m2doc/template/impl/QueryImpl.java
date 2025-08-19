@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.obeonetwork.m2doc.template.impl;
 import java.util.Collection;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -183,7 +183,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
-            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.QUERY__RUNS);
+            runs = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.QUERY__RUNS);
         }
         return runs;
     }
@@ -197,7 +197,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
-            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.QUERY__CLOSING_RUNS);
+            closingRuns = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.QUERY__CLOSING_RUNS);
         }
         return closingRuns;
     }
@@ -211,7 +211,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
+            validationMessages = new EDataTypeUniqueEList<>(TemplateValidationMessage.class,
                     this, TemplatePackage.QUERY__VALIDATION_MESSAGES);
         }
         return validationMessages;

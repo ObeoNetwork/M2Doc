@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2024 Obeo. 
+ *  Copyright (c) 2019, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ public class HTTPServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
+    public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options) {
         resourceSetForModels.getURIConverter().getURIHandlers().add(0, dataHandler);
         resourceSetForModels.getURIConverter().getURIHandlers().add(0, httpHandler);

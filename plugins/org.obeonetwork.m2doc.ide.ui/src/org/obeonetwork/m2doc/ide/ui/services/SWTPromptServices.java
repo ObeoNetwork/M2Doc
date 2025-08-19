@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2023 Obeo. 
+ *  Copyright (c) 2019, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -62,9 +62,11 @@ public class SWTPromptServices extends AbstractServiceProvider {
          *            the {@link Method}
          * @param serviceInstance
          *            the instance
+         * @param forWorkspace
+         *            tells if the {@link IService} will be used in a workspace
          */
-        EOBjectPromptService(Method publicMethod, Object serviceInstance) {
-            super(publicMethod, serviceInstance);
+        EOBjectPromptService(Method publicMethod, Object serviceInstance, boolean forWorkspace) {
+            super(publicMethod, serviceInstance, forWorkspace);
         }
 
         @Override
@@ -157,7 +159,7 @@ public class SWTPromptServices extends AbstractServiceProvider {
     )
     // @formatter:on
     public String promptString(final String message) {
-        final RunnableWithResult<String> runnable = new RunnableWithResult<String>() {
+        final RunnableWithResult<String> runnable = new RunnableWithResult<>() {
 
             @Override
             public void run() {
@@ -198,7 +200,7 @@ public class SWTPromptServices extends AbstractServiceProvider {
     )
     // @formatter:on
     public Integer promptInteger(final String message) {
-        final RunnableWithResult<Integer> runnable = new RunnableWithResult<Integer>() {
+        final RunnableWithResult<Integer> runnable = new RunnableWithResult<>() {
 
             @Override
             public void run() {
@@ -254,7 +256,7 @@ public class SWTPromptServices extends AbstractServiceProvider {
     )
     // @formatter:on
     public Long promptLong(final String message) {
-        final RunnableWithResult<Long> runnable = new RunnableWithResult<Long>() {
+        final RunnableWithResult<Long> runnable = new RunnableWithResult<>() {
 
             @Override
             public void run() {
@@ -310,7 +312,7 @@ public class SWTPromptServices extends AbstractServiceProvider {
     )
     // @formatter:on
     public Float promptFloat(final String message) {
-        final RunnableWithResult<Float> runnable = new RunnableWithResult<Float>() {
+        final RunnableWithResult<Float> runnable = new RunnableWithResult<>() {
 
             @Override
             public void run() {
@@ -366,7 +368,7 @@ public class SWTPromptServices extends AbstractServiceProvider {
     )
     // @formatter:on
     public Double promptDouble(final String message) {
-        final RunnableWithResult<Double> runnable = new RunnableWithResult<Double>() {
+        final RunnableWithResult<Double> runnable = new RunnableWithResult<>() {
 
             @Override
             public void run() {
@@ -417,7 +419,7 @@ public class SWTPromptServices extends AbstractServiceProvider {
     }
 
     public EObject promptEObject(final String message, final Set<EClass> acceptedEClasses) {
-        final RunnableWithResult<EObject> runnable = new RunnableWithResult<EObject>() {
+        final RunnableWithResult<EObject> runnable = new RunnableWithResult<>() {
 
             @Override
             public void run() {
@@ -447,13 +449,13 @@ public class SWTPromptServices extends AbstractServiceProvider {
     }
 
     @Override
-    protected IService getService(Method method) {
-        final IService result;
+    protected IService<Method> getService(Method method, boolean forWorkspace) {
+        final IService<Method> result;
 
         if ("promptEObject".equals(method.getName())) {
-            result = new EOBjectPromptService(method, this);
+            result = new EOBjectPromptService(method, this, forWorkspace);
         } else if (!"dispose".equals(method.getName())) {
-            result = new JavaMethodService(method, this);
+            result = new JavaMethodService(method, this, forWorkspace);
         } else {
             result = null;
         }

@@ -10,5 +10,5 @@
 
 === TEMPLATES ===
 
-template public myTemplate (a : ***ERROR***)
+template public myTemplate (a : Invalid)
   [query: .add(a, a)]

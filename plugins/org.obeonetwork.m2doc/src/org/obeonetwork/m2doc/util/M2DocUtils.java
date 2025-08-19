@@ -14,7 +14,6 @@ package org.obeonetwork.m2doc.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -239,6 +238,11 @@ public final class M2DocUtils {
     private static final int ENGINE_CLEAN_MONITOR_WORK = 5;
 
     /**
+     * The "Unable to open " message.
+     */
+    private static final String UNABLE_TO_OPEN = "Unable to open ";
+
+    /**
      * The generate total monitor work.
      */
     private static final int TOTAL_GENERATE_MONITOR_WORK = INIT_DEST_DOC_MONITOR_WORK + ENGINE_INIT_MONITOR_WORK
@@ -298,61 +302,23 @@ public final class M2DocUtils {
         for (Diagnostic child : diagnostic.getChildren()) {
             switch (child.getSeverity()) {
                 case Diagnostic.INFO:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO,
-                            getMessageWithException(child)));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage()));
                     break;
                 case Diagnostic.WARNING:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING,
-                            getMessageWithException(child)));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.WARNING, child.getMessage()));
                     break;
                 case Diagnostic.ERROR:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR,
-                            getMessageWithException(child)));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.ERROR, child.getMessage()));
                     break;
 
                 default:
-                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO,
-                            getMessageWithException(child)));
+                    res.add(M2DocUtils.appendMessageRun(paragraph, ValidationMessageLevel.INFO, child.getMessage()));
                     break;
             }
             paragraph.getRuns().get(paragraph.getRuns().size() - 1).addBreak();
             if (!child.getChildren().isEmpty()) {
                 res.addAll(appendDiagnosticMessage(paragraph, child));
             }
-        }
-
-        return res;
-    }
-
-    /**
-     * Gets the given {@link Diagnostic} {@link Diagnostic#getMessage() message} and {@link Diagnostic#getException() exception}.
-     * 
-     * @param diagnostic
-     *            the {@link Diagnostic}
-     * @return the given {@link Diagnostic} {@link Diagnostic#getMessage() message} and {@link Diagnostic#getException() exception}
-     */
-    private static String getMessageWithException(Diagnostic diagnostic) {
-        String res;
-
-        final Throwable exception;
-        if (diagnostic.getException() != null) {
-            exception = diagnostic.getException().getCause();
-        } else {
-            exception = null;
-        }
-        if (exception != null) {
-            try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    PrintWriter printWriter = new PrintWriter(out);) {
-                exception.printStackTrace(printWriter);
-                printWriter.flush();
-                out.flush();
-                res = diagnostic.getMessage() + "\n" + new String(out.toByteArray());
-            } catch (IOException e) {
-                // nothing to do here
-                res = diagnostic.getMessage();
-            }
-        } else {
-            res = diagnostic.getMessage();
         }
 
         return res;
@@ -547,7 +513,7 @@ public final class M2DocUtils {
     public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             URI templateURI, Map<String, String> options) {
 
-        Set<IService> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
+        Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment, LinkServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
@@ -638,7 +604,7 @@ public final class M2DocUtils {
             }
 
         } catch (IOException e) {
-            throw new DocumentParserException("Unable to open " + templateURI, e);
+            throw new DocumentParserException(UNABLE_TO_OPEN + templateURI, e);
         } catch (InvalidFormatException e1) {
             throw new DocumentParserException("Invalid .docx format " + templateURI, e1);
         } finally {
@@ -673,7 +639,7 @@ public final class M2DocUtils {
         for (Entry<String, String> entry : properties.getServiceClasses().entrySet()) {
             try {
                 final Class<?> cls = classProvider.getClass(entry.getKey(), entry.getValue());
-                final Set<IService> s = ServiceUtils.getServices(queryEnvironment, cls);
+                final Set<IService<?>> s = ServiceUtils.getServices(queryEnvironment, cls);
                 ServiceUtils.registerServices(queryEnvironment, s);
             } catch (ClassNotFoundException e) {
                 final XWPFRun run = getOrCreateFirstRun(document);
@@ -761,7 +727,7 @@ public final class M2DocUtils {
             }
 
         } catch (IOException e) {
-            throw new DocumentParserException("Unable to open " + documentURI, e);
+            throw new DocumentParserException(UNABLE_TO_OPEN + documentURI, e);
         } catch (InvalidFormatException e1) {
             throw new DocumentParserException("Invalid .docx format " + documentURI, e1);
         }
@@ -1250,7 +1216,7 @@ public final class M2DocUtils {
                 }
             }
         } catch (IOException e) {
-            throw new DocumentParserException("Unable to open " + templateURI + " or save " + outputURI, e);
+            throw new DocumentParserException(UNABLE_TO_OPEN + templateURI + " or save " + outputURI, e);
         } finally {
             monitor.done();
         }

@@ -30,10 +30,10 @@ import java.util.concurrent.Future;
 
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -666,7 +666,7 @@ public class M2DocInterpreterView extends ViewPart {
                 allVariables.put(SELECTION_VARIABLE, selectionValue);
                 allVariables.putAll(parseVariableValues(queryEnvironment, evaluationEngine, allVariables, uriConverter,
                         templateURI));
-                queryBuilder = new QueryBuilderEngine(queryEnvironment);
+                queryBuilder = new QueryBuilderEngine();
             }
 
             final AQLConfiguration configuration = new AQLConfiguration(colorManager, labelProvider, queryEnvironment,

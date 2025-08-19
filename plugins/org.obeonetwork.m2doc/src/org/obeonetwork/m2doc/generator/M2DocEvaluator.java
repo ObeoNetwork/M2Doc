@@ -144,7 +144,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
  * 
  * @author Romain Guider
  */
-@SuppressWarnings("restriction")
 public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
 
     /**
@@ -1075,6 +1074,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
                 res = getAbsoluteWidthFromSection(image, section);
             } else if (body instanceof XWPFHeaderFooter) {
+                @SuppressWarnings("resource")
                 final CTSectPr section = ((XWPFHeaderFooter) body).getXWPFDocument().getDocument().getBody()
                         .getSectPr();
                 res = getAbsoluteWidthFromSection(image, section);
@@ -1140,6 +1140,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                 final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
                 res = getAbsoluteHeightFromSection(image, section);
             } else if (body instanceof XWPFHeaderFooter) {
+                @SuppressWarnings("resource")
                 final CTSectPr section = ((XWPFHeaderFooter) body).getXWPFDocument().getDocument().getBody()
                         .getSectPr();
                 res = getAbsoluteHeightFromSection(image, section);
@@ -1504,6 +1505,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
      *            the numbering level
      * @return the left indentation for the given numbering ID and level
      */
+    @SuppressWarnings("resource")
     private int getNumberingIndentLeft(Long numberingID, Long numberingLevel) {
         int res = 0;
 

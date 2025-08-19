@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -251,7 +251,7 @@ public final class M2DocTestUtils {
         res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");// strip lost user doc date
         res = res.replaceAll("@[a-f0-9]{5,8}[, )]", "@00000000 "); // object address in toString()
         res = res.replaceAll(
-                "(\\tat [a-zA-Z0-9$./]+((<|&lt;)init(>|&gt;))?\\((Unknown Source|Native Method|[a-zA-Z0-9$./]+java:[0-9]+)\\)\n?)+",
+                "(\\t*at [a-zA-Z0-9$./]+((<|&lt;)init(>|&gt;))?\\((Unknown Source|Native Method|[a-zA-Z0-9$./]+java:[0-9]+)\\)\n?)+(\\t)?",
                 "...STACK..."); // strip stack traces
         res = res.replaceAll("127.0.0.100:12.345", "127.0.0.100:12 345"); // localized port...
         res = res.replaceAll("127.0.0.100:12,345", "127.0.0.100:12 345"); // localized port...

@@ -20,7 +20,9 @@ import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.ClassTypeLiteral;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.EClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -37,7 +39,6 @@ import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
-import org.eclipse.emf.ecore.EClassifier;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -168,11 +169,11 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
 
         @Override
         public Void caseEnumLiteral(EnumLiteral enumLiteral) {
-            builder.append(enumLiteral.getLiteral().getEEnum().getEPackage().getName());
+            builder.append(enumLiteral.getEPackageName());
             builder.append("::");
-            builder.append(enumLiteral.getLiteral().getEEnum().getName());
+            builder.append(enumLiteral.getEEnumName());
             builder.append("::");
-            builder.append(enumLiteral.getLiteral().getName());
+            builder.append(enumLiteral.getEEnumLiteralName());
             return null;
         }
 
@@ -280,17 +281,12 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
             return null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseTypeLiteral(org.eclipse.acceleo.query.ast.TypeLiteral)
-         */
         @Override
         public Void caseTypeLiteral(TypeLiteral object) {
-            if (object.getValue() instanceof Class) {
-                builder.append(((Class<?>) object.getValue()).getName());
-            } else if (object.getValue() instanceof EClassifier) {
-                builder.append(((EClassifier) object.getValue()).getName());
+            if (object instanceof ClassTypeLiteral) {
+                builder.append(((ClassTypeLiteral) object).getValue().getName());
+            } else if (object instanceof EClassifierTypeLiteral) {
+                builder.append(((EClassifierTypeLiteral) object).getEClassifierName());
             }
             return null;
         }
@@ -367,11 +363,6 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         builder.append("\n" + indentation);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseDocumentTemplate(org.obeonetwork.m2doc.template.DocumentTemplate)
-     */
     @Override
     public Void caseDocumentTemplate(DocumentTemplate documentTemplate) {
         newLine();
@@ -423,11 +414,6 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseParameter(org.obeonetwork.m2doc.template.Parameter)
-     */
     @Override
     public Void caseParameter(Parameter parameter) {
         builder.append(parameter.getName());
@@ -595,11 +581,6 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.obeonetwork.m2doc.template.util.TemplateSwitch#caseContentControl(org.obeonetwork.m2doc.template.ContentControl)
-     */
     @Override
     public Void caseContentControl(ContentControl contentControl) {
         newLine();

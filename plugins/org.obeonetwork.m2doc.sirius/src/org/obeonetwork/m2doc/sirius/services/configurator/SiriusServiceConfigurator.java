@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Obeo. 
+ * Copyright (c) 2017, 2025 Obeo. 
  *    All rights reserved. This program and the accompanying materials
  *    are made available under the terms of the Eclipse Public License v2.0
  *    which accompanies this distribution, and is available at
@@ -250,9 +250,9 @@ public class SiriusServiceConfigurator implements IServicesConfigurator {
     }
 
     @Override
-    public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
+    public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
             Map<String, String> options) {
-        final Set<IService> res = new LinkedHashSet<>();
+        final Set<IService<?>> res = new LinkedHashSet<>();
 
         final String sessionURIStr = options.get(M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
         if (sessionURIStr != null) {

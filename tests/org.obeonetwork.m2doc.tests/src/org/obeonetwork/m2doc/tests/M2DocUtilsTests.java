@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2024 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -108,8 +108,8 @@ public class M2DocUtilsTests {
         }
 
         @Override
-        public Set<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
-                Map<String, String> options) {
+        public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment,
+                ResourceSet resourceSetForModels, Map<String, String> options) {
             // nothing to do here
             return Collections.emptySet();
         }
@@ -167,7 +167,7 @@ public class M2DocUtilsTests {
     public void createResourceSetForModels() {
         List<Exception> exceptions = new ArrayList<>();
         final ResourceSet rs = M2DocUtils.createResourceSetForModels(exceptions, Query.newEnvironment(), null,
-                new HashMap<String, String>());
+                new HashMap<>());
 
         assertEquals(TestServiceConfigurator.RESOURCE_SET, rs);
     }

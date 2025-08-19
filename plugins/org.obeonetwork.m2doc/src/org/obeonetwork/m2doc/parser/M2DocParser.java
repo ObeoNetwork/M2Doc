@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.parser;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,26 +21,17 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonToken;
-import org.antlr.v4.runtime.CommonTokenFactory;
-import org.antlr.v4.runtime.TokenStream;
-import org.antlr.v4.runtime.UnbufferedCharStream;
-import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.apache.poi.xwpf.usermodel.IBody;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.eclipse.acceleo.query.ast.AstPackage;
-import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
-import org.eclipse.acceleo.query.parser.AstBuilderListener;
-import org.eclipse.acceleo.query.parser.QueryLexer;
-import org.eclipse.acceleo.query.parser.QueryParser;
+import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.AQLUtils.AcceleoAQLResult;
+import org.eclipse.acceleo.query.parser.AstResult;
+import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -60,7 +50,6 @@ import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserDoc;
 import org.obeonetwork.m2doc.template.Visibility;
-import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
@@ -531,7 +520,7 @@ public class M2DocParser extends AbstractBodyParser {
             final XWPFRun lastRun = query.getRuns().get(query.getRuns().size() - 1);
             query.getValidationMessages().addAll(getValidationMessage(diagnostic, queryText, lastRun));
 
-            query.setQuery(new AstResult(null, new HashMap<>(), new HashMap<>(), new ArrayList<>(), diagnostic));
+            query.setQuery(new AstResult(null, new Positions<>(), new ArrayList<>(), diagnostic));
         }
 
         return query;
@@ -809,7 +798,7 @@ public class M2DocParser extends AbstractBodyParser {
         if (indexOfColon < 0) {
             M2DocUtils.validationError(template, M2DocUtils.message(ParsingErrorMessage.MALFORMEDPARAMETERNOCOLON));
             parameter.setName(paramStr);
-            final AstResult type = parseWhileAqlTypeLiteral("");
+            final AstResult type = AQLUtils.parseWhileAqlTypeLiteral("");
             parameter.setType(type);
             if (!type.getErrors().isEmpty()) {
                 final XWPFRun lastRun = template.getRuns().get(template.getRuns().size() - 1);
@@ -822,7 +811,7 @@ public class M2DocParser extends AbstractBodyParser {
                         M2DocUtils.message(ParsingErrorMessage.MALFORMEDPARAMETERNONAMESPECIFIED));
             }
             parameter.setName(name);
-            final AstResult type = parseWhileAqlTypeLiteral(paramStr.substring(indexOfColon + 1));
+            final AstResult type = AQLUtils.parseWhileAqlTypeLiteral(paramStr.substring(indexOfColon + 1));
             parameter.setType(type);
             if (!type.getErrors().isEmpty()) {
                 final XWPFRun lastRun = template.getRuns().get(template.getRuns().size() - 1);
@@ -879,19 +868,21 @@ public class M2DocParser extends AbstractBodyParser {
         String tagText = readTag(link, link.getRuns()).trim();
         // remove the prefix
         tagText = tagText.substring(TokenType.LINK.getValue().length()).trim();
-        final AstResult nameResult = parseWhileAqlExpression(tagText);
-        link.setName(nameResult);
-        if (!nameResult.getErrors().isEmpty()) {
+        final AcceleoAQLResult nameResult = AQLUtils.parseWhileAqlExpression(tagText);
+        link.setName(nameResult.getAstResult());
+        if (!nameResult.getAstResult().getErrors().isEmpty()) {
             final XWPFRun lastRun = link.getRuns().get(link.getRuns().size() - 1);
-            link.getValidationMessages().addAll(getValidationMessage(nameResult.getDiagnostic(), tagText, lastRun));
+            link.getValidationMessages()
+                    .addAll(getValidationMessage(nameResult.getAstResult().getDiagnostic(), tagText, lastRun));
         }
 
-        tagText = tagText.substring(nameResult.getEndPosition(nameResult.getAst()));
-        final AstResult textResult = parseWhileAqlExpression(tagText);
-        link.setText(textResult);
-        if (!textResult.getErrors().isEmpty()) {
+        tagText = tagText.substring(nameResult.getAstResult().getEndPosition(nameResult.getAstResult().getAst()));
+        final AcceleoAQLResult textResult = AQLUtils.parseWhileAqlExpression(tagText);
+        link.setText(textResult.getAstResult());
+        if (!textResult.getAstResult().getErrors().isEmpty()) {
             final XWPFRun lastRun = link.getRuns().get(link.getRuns().size() - 1);
-            link.getValidationMessages().addAll(getValidationMessage(textResult.getDiagnostic(), tagText, lastRun));
+            link.getValidationMessages()
+                    .addAll(getValidationMessage(textResult.getAstResult().getDiagnostic(), tagText, lastRun));
         }
 
         return link;
@@ -931,97 +922,6 @@ public class M2DocParser extends AbstractBodyParser {
         return userDoc;
     }
 
-    /**
-     * Parses while matching an AQL expression.
-     * 
-     * @param expression
-     *            the expression to parse
-     * @return the corresponding {@link AstResult}
-     */
-    private AstResult parseWhileAqlExpression(String expression) {
-        final IQueryBuilderEngine.AstResult result;
-
-        if (expression != null && expression.length() > 0) {
-            AstBuilderListener astBuilder = AQL56Compatibility.createAstBuilderListener(queryEnvironment);
-            CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
-            QueryLexer lexer = new QueryLexer(input);
-            lexer.setTokenFactory(new CommonTokenFactory(true));
-            lexer.removeErrorListeners();
-            lexer.addErrorListener(astBuilder.getErrorListener());
-            TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
-            QueryParser parser = new QueryParser(tokens);
-            parser.addParseListener(astBuilder);
-            parser.removeErrorListeners();
-            parser.addErrorListener(astBuilder.getErrorListener());
-            // parser.setTrace(true);
-            parser.expression();
-            result = astBuilder.getAstResult();
-        } else {
-            ErrorExpression errorExpression = (ErrorExpression) EcoreUtil
-                    .create(AstPackage.eINSTANCE.getErrorExpression());
-            List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<>(1);
-            errors.add(errorExpression);
-            final Map<Object, Integer> positions = new HashMap<>();
-            if (expression != null) {
-                positions.put(errorExpression, Integer.valueOf(0));
-            }
-            final BasicDiagnostic diagnostic = new BasicDiagnostic();
-            diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
-                    M2DocUtils.message(ParsingErrorMessage.NULLOREMPTYSTRING), new Object[] {errorExpression }));
-            result = new AstResult(errorExpression, positions, positions, errors, diagnostic);
-        }
-
-        return result;
-    }
-
-    /**
-     * Parses while matching an AQL type literal.
-     * 
-     * @param expression
-     *            the expression to parse
-     * @return the corresponding {@link AstResult}
-     */
-    protected AstResult parseWhileAqlTypeLiteral(String expression) {
-        final IQueryBuilderEngine.AstResult result;
-
-        if (expression != null && expression.length() > 0) {
-            AstBuilderListener astBuilder = AQL56Compatibility.createAstBuilderListener(queryEnvironment);
-            CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
-            QueryLexer lexer = new QueryLexer(input);
-            lexer.setTokenFactory(new CommonTokenFactory(true));
-            lexer.removeErrorListeners();
-            lexer.addErrorListener(astBuilder.getErrorListener());
-            TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
-            QueryParser parser = new QueryParser(tokens);
-            parser.addParseListener(astBuilder);
-            parser.removeErrorListeners();
-            parser.addErrorListener(astBuilder.getErrorListener());
-            // parser.setTrace(true);
-            parser.typeLiteral();
-            result = astBuilder.getAstResult();
-        } else {
-            ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral) EcoreUtil
-                    .create(AstPackage.eINSTANCE.getErrorTypeLiteral());
-            List<org.eclipse.acceleo.query.ast.Error> errs = new ArrayList<>(1);
-            errs.add(errorTypeLiteral);
-            final Map<Object, Integer> positions = new HashMap<>();
-            if (expression != null) {
-                positions.put(errorTypeLiteral, Integer.valueOf(0));
-            }
-            final BasicDiagnostic diagnostic = new BasicDiagnostic();
-            diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
-                    M2DocUtils.message(ParsingErrorMessage.MISSINGTYPELITERAL), new Object[] {errorTypeLiteral }));
-            result = new AstResult(errorTypeLiteral, positions, positions, errs, diagnostic);
-        }
-
-        return result;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.obeonetwork.m2doc.parser.BodyAbstractParser#getNewParser(org.apache.poi.xwpf.usermodel.IBody)
-     */
     @Override
     protected AbstractBodyParser getNewParser(IBody inputDocument) {
         AbstractBodyParser parser = new M2DocParser(inputDocument, this.queryParser, this.queryEnvironment);
