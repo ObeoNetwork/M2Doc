@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.genconf.editor.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -23,6 +24,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -31,6 +34,7 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Generate docx from {@link Generation}.
@@ -81,11 +85,15 @@ public class GenerateHandler extends AbstractGenerationHandler {
                     "Generation succesfull");
 
             final List<URI> generatedfiles = new ArrayList<URI>();
+            final List<Exception> exceptions = new ArrayList<Exception>();
+            final Map<String, String> options = GenconfUtils.getOptions(generation);
+            final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+                    new ResourceSetImpl(), options);
             try {
                 final boolean generate = checkM2DocVersion(shell, M2_DOC_GENERATION, generation);
                 if (generate) {
-                    generatedfiles.addAll(GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(),
-                            BasicMonitor.toMonitor(monitor)));
+                    generatedfiles.addAll(GenconfUtils.generate(generation, resourceSetForModel, options,
+                            M2DocPlugin.getClassProvider(), BasicMonitor.toMonitor(monitor)));
                 }
                 // CHECKSTYLE:OFF any error should be reported back.
             } catch (final Exception e) {// do not let exception leak out.
@@ -100,6 +108,8 @@ public class GenerateHandler extends AbstractGenerationHandler {
                         MessageDialog.openError(shell, "Generation problem. See the error log for details", msg);
                     }
                 });
+            } finally {
+                M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
             }
 
             if (generatedfiles.size() == 1) {

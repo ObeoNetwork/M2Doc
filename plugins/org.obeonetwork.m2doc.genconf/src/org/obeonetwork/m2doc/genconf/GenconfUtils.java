@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -71,8 +72,10 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 public final class GenconfUtils {
 
     static {
-        // make sure org.obeonetwork.m2doc.ide is started
-        M2DocPlugin.INSTANCE.getBaseURL();
+        if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+            // make sure org.obeonetwork.m2doc.ide is started
+            M2DocPlugin.INSTANCE.getBaseURL();
+        }
     }
 
     /**
@@ -584,6 +587,10 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the generation configuration
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for variable loading
+     * @param options
+     *            the {@link Map} of options
      * @param classProvider
      *            the {@link IClassProvider}
      * @param monitor
@@ -596,7 +603,8 @@ public final class GenconfUtils {
      * @throws IOException
      *             IOException
      */
-    public static List<URI> generate(Generation generation, IClassProvider classProvider, Monitor monitor)
+    public static List<URI> generate(Generation generation, ResourceSet resourceSetForModels,
+            Map<String, String> options, IClassProvider classProvider, Monitor monitor)
             throws DocumentGenerationException, IOException, DocumentParserException {
         if (generation == null) {
             throw new IllegalArgumentException("Null configuration object passed.");
@@ -621,7 +629,8 @@ public final class GenconfUtils {
         }
 
         // generate result file and validation file.
-        return generate(generation, classProvider, templateURI, generatedURI, validationURI, monitor);
+        return generate(generation, resourceSetForModels, options, classProvider, templateURI, generatedURI,
+                validationURI, monitor);
     }
 
     /**
@@ -650,6 +659,10 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the generation configuration object
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for variable loading
+     * @param options
+     *            the {@link Map} of options
      * @param classProvider
      *            the {@link IClassProvider}
      * @param templateURI
@@ -668,14 +681,11 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
      */
-    private static List<URI> generate(Generation generation, IClassProvider classProvider, URI templateURI,
-            URI generatedURI, URI validationURI, Monitor monitor)
+    private static List<URI> generate(Generation generation, ResourceSet resourceSetForModels,
+            Map<String, String> options, IClassProvider classProvider, URI templateURI, URI generatedURI,
+            URI validationURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
 
-        final List<Exception> exceptions = new ArrayList<Exception>();
-        final Map<String, String> options = getOptions(generation);
-        final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, generation,
-                new ResourceSetImpl(), options);
         final URIConverter uriConverter = resourceSetForModels.getURIConverter();
         final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
 
@@ -706,8 +716,6 @@ public final class GenconfUtils {
                 generatedURIs.add(resultValidationURI);
             }
 
-            M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModels);
-
             return generatedURIs;
         }
     }
@@ -717,6 +725,12 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            Generation
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for variable loading
+     * @param options
+     *            the {@link Map} of options
+     * @param exceptions
+     *            the {@link List} of {@link Exception} generated while creating the {@link ResourceSet} for models
      * @param classProvider
      *            the {@link IClassProvider}
      * @param monitor
@@ -729,15 +743,13 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      */
-    public static boolean validate(Generation generation, IClassProvider classProvider, Monitor monitor)
+    public static boolean validate(Generation generation, ResourceSet resourceSetForModels, Map<String, String> options,
+            List<Exception> exceptions, IClassProvider classProvider, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
         final boolean res;
 
-        final List<Exception> exceptions = new ArrayList<Exception>();
-        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
-                new ResourceSetImpl(), getOptions(generation));
         // get AQL environment
-        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModel, generation);
+        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
 
         // get the template path
         final String templateFilePath = generation.getTemplateFileName();
@@ -746,7 +758,7 @@ public final class GenconfUtils {
         }
 
         final URI templateURI = getResolvedURI(generation, URI.createURI(templateFilePath, false));
-        if (!resourceSetForModel.getURIConverter().exists(templateURI, Collections.EMPTY_MAP)) {
+        if (!resourceSetForModels.getURIConverter().exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
         }
 
@@ -760,7 +772,7 @@ public final class GenconfUtils {
         }
 
         // parse template
-        try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModel.getURIConverter(), templateURI,
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
                 queryEnvironment, classProvider, monitor)) {
             final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
             for (Exception e : exceptions) {
@@ -769,9 +781,8 @@ public final class GenconfUtils {
             }
 
             // validate template
-            final Map<String, String> options = getOptions(generation);
             final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
-            res = validate(resourceSetForModel.getURIConverter(), templateURI, validationURI, documentTemplate,
+            res = validate(resourceSetForModels.getURIConverter(), templateURI, validationURI, documentTemplate,
                     queryEnvironment, ignoreVersionCheck, monitor) != null;
         }
 
@@ -781,14 +792,14 @@ public final class GenconfUtils {
             throw new DocumentGenerationException("The output path isn't set in the provided configuration");
         } else {
             final URI outputURI = getResolvedURI(generation, URI.createURI(outputPath, false));
-            if (resourceSetForModel.getURIConverter().exists(outputURI, Collections.EMPTY_MAP)) {
-                final Map<Object, Object> options = new HashMap<Object, Object>();
+            if (resourceSetForModels.getURIConverter().exists(outputURI, Collections.EMPTY_MAP)) {
+                final Map<Object, Object> attributeOptions = new HashMap<Object, Object>();
                 final Set<String> attributs = new LinkedHashSet<String>();
                 attributs.add(URIConverter.ATTRIBUTE_DIRECTORY);
                 attributs.add(URIConverter.ATTRIBUTE_READ_ONLY);
-                options.put(URIConverter.OPTION_REQUESTED_ATTRIBUTES, attributs);
-                Map<String, ?> attributeValues = resourceSetForModel.getURIConverter().getAttributes(outputURI,
-                        options);
+                attributeOptions.put(URIConverter.OPTION_REQUESTED_ATTRIBUTES, attributs);
+                Map<String, ?> attributeValues = resourceSetForModels.getURIConverter().getAttributes(outputURI,
+                        attributeOptions);
                 if ((Boolean) attributeValues.get(URIConverter.ATTRIBUTE_DIRECTORY)) {
                     throw new DocumentGenerationException("The output path is a folder");
                 } else if ((Boolean) attributeValues.get(URIConverter.ATTRIBUTE_READ_ONLY)) {
@@ -796,8 +807,6 @@ public final class GenconfUtils {
                 }
             }
         }
-
-        M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
 
         return res;
     }
@@ -1081,13 +1090,14 @@ public final class GenconfUtils {
     /**
      * Gets the Generation from the given {@link URI}.
      * 
+     * @param resourceSet
+     *            the {@link ResourceSet} where the {@link Generation} should be loaded
      * @param uri
      *            the {@link URI}
      * @return the Generation from the given {@link URI}
      */
-    public static Generation getGeneration(URI uri) {
-        ResourceSet rs = new ResourceSetImpl();
-        Resource modelResource = rs.getResource(uri, true);
+    public static Generation getGeneration(ResourceSet resourceSet, URI uri) {
+        Resource modelResource = resourceSet.getResource(uri, true);
         if (modelResource != null && !modelResource.getContents().isEmpty()) {
             EObject root = modelResource.getContents().get(0);
             if (root instanceof Generation) {

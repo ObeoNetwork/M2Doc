@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,6 +11,10 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.command;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -21,6 +25,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -29,6 +35,7 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Initialize configurations for documention generation.
@@ -81,24 +88,32 @@ public class ValidateHandler extends AbstractGenerationHandler {
             try {
                 final boolean validate = checkM2DocVersion(shell, M2_DOC_VALIDATION, generation);
                 if (validate) {
-                    boolean inError = GenconfUtils.validate(generation, M2DocPlugin.getClassProvider(),
-                            BasicMonitor.toMonitor(monitor));
-                    if (!inError) {
-                        Display.getDefault().asyncExec(new Runnable() {
-                            @Override
-                            public void run() {
-                                MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
-                                        "The template validation has been performed successfully.");
-                            }
-                        });
-                    } else {
-                        Display.getDefault().asyncExec(new Runnable() {
-                            @Override
-                            public void run() {
-                                MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
-                                        "Error(s) detected during validation. A log file has been generated next to the template file.");
-                            }
-                        });
+                    final List<Exception> exceptions = new ArrayList<Exception>();
+                    final Map<String, String> options = GenconfUtils.getOptions(generation);
+                    final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions,
+                            generation, new ResourceSetImpl(), options);
+                    try {
+                        boolean inError = GenconfUtils.validate(generation, resourceSetForModel, options, exceptions,
+                                M2DocPlugin.getClassProvider(), BasicMonitor.toMonitor(monitor));
+                        if (!inError) {
+                            Display.getDefault().asyncExec(new Runnable() {
+                                @Override
+                                public void run() {
+                                    MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
+                                            "The template validation has been performed successfully.");
+                                }
+                            });
+                        } else {
+                            Display.getDefault().asyncExec(new Runnable() {
+                                @Override
+                                public void run() {
+                                    MessageDialog.openInformation(shell, M2_DOC_VALIDATION,
+                                            "Error(s) detected during validation. A log file has been generated next to the template file.");
+                                }
+                            });
+                        }
+                    } finally {
+                        M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
                     }
                 }
                 // CHECKSTYLE:OFF

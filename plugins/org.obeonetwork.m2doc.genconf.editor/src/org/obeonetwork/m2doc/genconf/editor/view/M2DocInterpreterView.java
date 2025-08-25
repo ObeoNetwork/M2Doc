@@ -626,7 +626,7 @@ public class M2DocInterpreterView extends ViewPart {
         }
 
         try {
-            generation = GenconfUtils.getGeneration(genconfURI);
+            generation = GenconfUtils.getGeneration(new ResourceSetImpl(), genconfURI);
             final List<Exception> exceptions = new ArrayList<>();
             resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, generation, new ResourceSetImpl(),
                     GenconfUtils.getOptions(generation));

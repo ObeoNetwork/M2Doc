@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020, 2024 Obeo. 
+ *  Copyright (c) 2020, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 /**
  * Listen to {@link Generation} added and removed.
@@ -308,7 +309,7 @@ public class GenconfResourceListener implements IResourceChangeListener {
             && resource.isAccessible()) {
             final URI genconfURI = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
             try {
-                res = GenconfUtils.getGeneration(genconfURI);
+                res = GenconfUtils.getGeneration(new ResourceSetImpl(), genconfURI);
                 // CHECKSTYLE:OFF
             } catch (Exception e) {
                 // CHECKSTYLE:ON

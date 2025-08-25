@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020 Obeo. 
+ *  Copyright (c) 2020, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.genconf.editor.command;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -50,7 +51,7 @@ public class GenerateTemplateContributionItem extends ContributionItem {
                     public void handleEvent(Event event) {
                         final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 
-                        final Generation generation = GenconfUtils.getGeneration(uri);
+                        final Generation generation = GenconfUtils.getGeneration(new ResourceSetImpl(), uri);
                         final GenerateJob job = new GenerateJob(generation, shell);
                         job.setRule(ResourcesPlugin.getWorkspace().getRoot());
                         job.setUser(true);

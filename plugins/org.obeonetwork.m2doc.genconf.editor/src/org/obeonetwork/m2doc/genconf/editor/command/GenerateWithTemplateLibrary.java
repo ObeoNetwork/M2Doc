@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2024 Obeo. 
+ *  Copyright (c) 2024, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +31,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -49,6 +52,7 @@ import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.IClassProvider;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Generates from template library.
@@ -126,9 +130,13 @@ public class GenerateWithTemplateLibrary extends AbstractHandler {
 
             // launch the generation
             final IClassProvider classProvider = M2DocPlugin.getClassProvider();
+            final List<Exception> exceptions = new ArrayList<Exception>();
+            final Map<String, String> options = GenconfUtils.getOptions(generation);
+            final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+                    new ResourceSetImpl(), options);
             boolean error = false;
             try {
-                GenconfUtils.generate(generation, classProvider, new BasicMonitor());
+                GenconfUtils.generate(generation, resourceSetForModel, options, classProvider, new BasicMonitor());
             } catch (DocumentGenerationException e) {
                 e.printStackTrace();
                 error = true;
@@ -138,6 +146,8 @@ public class GenerateWithTemplateLibrary extends AbstractHandler {
             } catch (DocumentParserException e) {
                 e.printStackTrace();
                 error = true;
+            } finally {
+                M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
             }
             if (error) {
                 MessageDialog.openError(shell, "Error", "Generation ended with an error");

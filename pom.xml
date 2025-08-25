@@ -11,13 +11,45 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <prerequisites>
     <maven>3.2</maven>
   </prerequisites>
+
   <groupId>org.obeonetwork.m2doc</groupId>
   <artifactId>org.obeonetwork.m2doc.parent</artifactId>
   <version>4.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
+
+  <properties>
+    <tycho-version>${tycho}</tycho-version>
+    <tycho-extras-version>${tycho}</tycho-extras-version>
+    <resource-encoding>UTF-8</resource-encoding>
+    <maven-resources-version>2.6</maven-resources-version>
+    <maven-enforcer-version>3.0.0-M3</maven-enforcer-version>
+    <maven-deploy-plugin-version>3.1.3</maven-deploy-plugin-version>
+    <maven-clean-plugin-version>3.4.0</maven-clean-plugin-version>
+    <tycho.scmUrl>scm:git:git://github.com/ObeoNetwork/M2Doc.git</tycho.scmUrl>
+
+    <maven-repository>releng/maven/repository-p2</maven-repository>
+  </properties>
+
+  <scm>
+    <developerConnection>scm:git:git://github.com/ObeoNetwork/M2Doc.git</developerConnection>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>repo.eclipse.org</id>
+      <name>M2Doc Repository - Releases</name>
+      <url>file://${maven.multiModuleProjectDirectory}/${maven-repository}</url>
+    </repository>
+    <snapshotRepository>
+      <id>repo.eclipse.org</id>
+      <name>M2Doc Repository - Snapshots</name>
+      <url>file://${maven.multiModuleProjectDirectory}/${maven-repository}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <modules>
     <!-- Eclipse -->
@@ -98,18 +130,6 @@
     <module>features/org.obeonetwork.m2doc.html.feature</module>
     <module>features/org.obeonetwork.m2doc.wikitext.feature</module>
   </modules>
-
-  <properties>
-    <tycho-version>${tycho}</tycho-version>
-    <tycho-extras-version>${tycho}</tycho-extras-version>
-    <resource-encoding>UTF-8</resource-encoding>
-    <maven-resources-version>2.6</maven-resources-version>
-    <maven-enforcer-version>3.0.0-M3</maven-enforcer-version>
-    <tycho.scmUrl>scm:git:git://github.com/ObeoNetwork/M2Doc.git</tycho.scmUrl>
-  </properties>
-  <scm>
-    <developerConnection>scm:git:git://github.com/ObeoNetwork/M2Doc.git</developerConnection>
-  </scm>
 
   <build>
     <!-- This is for checkstyle and PMD -->
@@ -370,6 +390,18 @@
               </goals>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin-version}</version>
+          <configuration>
+            <filesets>
+              <fileset>
+                <directory>${maven-repository}</directory>
+              </fileset>
+            </filesets>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

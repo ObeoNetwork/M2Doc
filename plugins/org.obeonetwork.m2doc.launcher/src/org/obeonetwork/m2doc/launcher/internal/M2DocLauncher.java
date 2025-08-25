@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -36,6 +37,7 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Application class for the M2Doc Launcher. Parses the arguments and launch
@@ -150,9 +152,14 @@ public class M2DocLauncher implements IApplication {
      *            the {@link Monitor}
      */
     private void launchGenerationConfiguration(Generation generation, final Monitor monitor) {
+        final List<Exception> exceptions = new ArrayList<Exception>();
+        final Map<String, String> options = GenconfUtils.getOptions(generation);
+        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+                new ResourceSetImpl(), options);
         try {
             System.out.println("Input: " + generation.eResource().getURI());
-            List<URI> generated = GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(), monitor);
+            List<URI> generated = GenconfUtils.generate(generation, resourceSetForModel, options,
+                    M2DocPlugin.getClassProvider(), monitor);
             for (URI uri : generated) {
                 System.out.println("Output: " + uri.toString());
             }
@@ -163,6 +170,8 @@ public class M2DocLauncher implements IApplication {
                     e.getMessage());
             M2DocLauncherPlugin.INSTANCE
                     .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), message, e));
+        } finally {
+            M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
         }
     }
 

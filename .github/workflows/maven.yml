@@ -106,6 +106,20 @@ jobs:
         echo DISPLAY $DISPLAY
         mvn clean verify -fae -P${{ matrix.profile }} "-Dtycho=${{ matrix.tycho }}" -Dmaven.wagon.provider.http=httpclient -Dmaven.artifact.threads=12 -Dhttp.tcp.nodelay=false
 
+    - name: Build Maven repository
+      env:
+        MAVEN_OPTS: ${{ matrix.mavenOpt }}
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
+      run: |
+        mvn clean deploy -f releng/maven/pom.xml -Dmaven.wagon.provider.http=httpclient -Dmaven.artifact.threads=12 -Dhttp.tcp.nodelay=false
+
+    - name: Build Maven tests
+      env:
+        MAVEN_OPTS: ${{ matrix.mavenOpt }}
+      if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
+      run: |
+        mvn clean verify -f tests/maven/pom.xml -Dmaven.wagon.provider.http=httpclient -Dmaven.artifact.threads=12 -Dhttp.tcp.nodelay=false
+
     - name: Prepare deploy local directory
       id: prepare_deploy
       if: ${{ steps.updatesite_check.outputs.UPDATE_SITES && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}

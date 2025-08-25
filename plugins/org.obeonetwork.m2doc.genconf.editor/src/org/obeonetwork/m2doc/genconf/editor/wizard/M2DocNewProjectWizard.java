@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2023 Obeo. 
+ *  Copyright (c) 2019, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -13,6 +13,9 @@ package org.obeonetwork.m2doc.genconf.editor.wizard;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hpsf.IllegalPropertySetDataException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -156,8 +159,17 @@ public class M2DocNewProjectWizard extends Wizard implements INewWizard {
                         project);
                 final Generation generation = createGenconf(genconfURI, destinationURI, validationURI, templateURI,
                         variableName, variableValue);
+                final List<Exception> exceptions = new ArrayList<Exception>();
+                final Map<String, String> options = GenconfUtils.getOptions(generation);
+                final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+                        new ResourceSetImpl(), options);
                 if (launchGeneration) {
-                    GenconfUtils.generate(generation, M2DocPlugin.getClassProvider(), BasicMonitor.toMonitor(monitor));
+                    try {
+                        GenconfUtils.generate(generation, resourceSetForModel, options, M2DocPlugin.getClassProvider(),
+                                BasicMonitor.toMonitor(monitor));
+                    } finally {
+                        M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
+                    }
                 }
             } catch (IOException | CoreException | DocumentGenerationException | DocumentParserException
                     | InvalidFormatException e) {

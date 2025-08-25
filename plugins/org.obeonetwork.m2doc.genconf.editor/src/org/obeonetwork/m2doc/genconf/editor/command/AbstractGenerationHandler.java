@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -184,7 +184,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
      * @return the Generation from the given {@link URI}
      */
     protected Generation getGeneration(URI uri) {
-        return GenconfUtils.getGeneration(uri);
+        return GenconfUtils.getGeneration(new ResourceSetImpl(), uri);
     }
 
     /**
