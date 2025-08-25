@@ -104,7 +104,7 @@ jobs:
         ps auxwww | grep Xvfb
         export DISPLAY=:99
         echo DISPLAY $DISPLAY
-        mvn clean verify -fae -P${{ matrix.profile }} "-Dtycho=${{ matrix.tycho }}" -Dmaven.wagon.provider.http=httpclient -Dmaven.artifact.threads=12 -Dhttp.tcp.nodelay=false
+        mvn clean deploy -fae -P${{ matrix.profile }} "-Dtycho=${{ matrix.tycho }}" -Dmaven.wagon.provider.http=httpclient -Dmaven.artifact.threads=12 -Dhttp.tcp.nodelay=false
 
     - name: Build Maven repository
       env:
