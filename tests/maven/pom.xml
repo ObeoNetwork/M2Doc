@@ -34,6 +34,10 @@
       <id>M2Doc Repository</id>
       <url>${deployURL}</url>
     </repository>
+    <repository>
+      <id>Acceleo Repository</id>
+      <url>https://download.eclipse.org/acceleo/updates/nightly/latest/</url>
+    </repository>
   </repositories>
 
   <modules>
