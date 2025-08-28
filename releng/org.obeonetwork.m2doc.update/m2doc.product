@@ -36,7 +36,6 @@
       <feature id="org.eclipse.platform"/>
       <feature id="org.obeonetwork.m2doc.feature"/>
       <feature id="org.obeonetwork.m2doc.html.feature"/>
-      <feature id="org.obeonetwork.m2doc.cdo.feature"/>
    </features>
 
    <configurations>

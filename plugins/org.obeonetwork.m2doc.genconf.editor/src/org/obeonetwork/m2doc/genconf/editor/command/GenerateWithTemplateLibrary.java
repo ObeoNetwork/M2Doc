@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -52,7 +53,6 @@ import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.IClassProvider;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Generates from template library.
@@ -132,7 +132,7 @@ public class GenerateWithTemplateLibrary extends AbstractHandler {
             final IClassProvider classProvider = M2DocPlugin.getClassProvider();
             final List<Exception> exceptions = new ArrayList<Exception>();
             final Map<String, String> options = GenconfUtils.getOptions(generation);
-            final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+            final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(exceptions, generation,
                     new ResourceSetImpl(), options);
             boolean error = false;
             try {
@@ -147,7 +147,7 @@ public class GenerateWithTemplateLibrary extends AbstractHandler {
                 e.printStackTrace();
                 error = true;
             } finally {
-                M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
+                AQLUtils.cleanResourceSetForModels(generation, resourceSetForModel);
             }
             if (error) {
                 MessageDialog.openError(shell, "Error", "Generation ended with an error");

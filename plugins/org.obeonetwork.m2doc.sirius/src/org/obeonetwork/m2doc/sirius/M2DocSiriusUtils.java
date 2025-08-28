@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,6 @@ public final class M2DocSiriusUtils {
      * The Plug-in ID.
      */
     public static final String PLUGIN_ID = "org.obeonetwork.m2doc.sirius";
-
-    /**
-     * The Sirius session option.
-     */
-    public static final String SIRIUS_SESSION_OPTION = "SiriusSession";
 
     /**
      * The Sirius force refresh option.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -37,7 +37,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.obeonetwork.m2doc.POIServices;
-import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
 import org.obeonetwork.m2doc.ide.ui.util.ClassPropertyUpdaterRegistryListener;
 import org.obeonetwork.m2doc.ide.ui.util.IClassPropertyUpdater;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -96,7 +95,7 @@ public class M2DocUIPlugin extends AbstractUIPlugin {
         plugin = this;
         final IExtensionRegistry registry = Platform.getExtensionRegistry();
         registry.addListener(CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER,
-                ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
+                ClassPropertyUpdaterRegistryListener.CLASS_PROPERTY_UPDATER_EXTENSION_POINT);
         CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER.parseInitialContributions();
     }
 

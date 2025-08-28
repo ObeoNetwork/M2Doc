@@ -13,10 +13,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.sirius.table;bundle-version="[6.5.1,7.5.0)",
  org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
  org.obeonetwork.m2doc.genconf;bundle-version="[4.0.0,5.0.0)",
- org.eclipse.sirius.common;bundle-version="[6.5.1,7.5.0)",
- org.eclipse.acceleo.query;bundle-version="[8.0.3,9.0.0)",
  org.obeonetwork.m2doc.ide;bundle-version="[4.0.0,5.0.0)",
- org.eclipse.acceleo.annotations;bundle-version="[8.0.3,9.0.0)",
+ org.eclipse.sirius.common;bundle-version="[6.5.1,7.5.0)",
+ org.eclipse.acceleo.query;bundle-version="[8.0.4,9.0.0)",
+ org.eclipse.acceleo.query.sirius;bundle-version="[8.0.4,9.0.0)",
+ org.eclipse.acceleo.annotations;bundle-version="[8.0.4,9.0.0)",
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",
  org.eclipse.emf.edit.ui,
  org.obeonetwork.m2doc.ide.ui;bundle-version="[4.0.0,5.0.0)"
@@ -25,7 +26,6 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.sirius,
  org.obeonetwork.m2doc.sirius.commands,
  org.obeonetwork.m2doc.sirius.services,
- org.obeonetwork.m2doc.sirius.services.configurator,
  org.obeonetwork.m2doc.sirius.util
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

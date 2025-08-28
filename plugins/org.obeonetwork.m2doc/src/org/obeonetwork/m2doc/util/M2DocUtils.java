@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +31,16 @@ import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
+import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -73,9 +76,7 @@ import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.services.PaginationServices;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
-import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
+import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -89,6 +90,11 @@ import org.obeonetwork.m2doc.template.UserContent;
  * @author <a href="mailto:nathalie.lepine@obeo.fr">Nathalie Lepine</a>
  */
 public final class M2DocUtils {
+
+    /**
+     * The AQL language name for {@link IServicesConfigurator}.
+     */
+    public static final String M2DOC_LANGUAGE = "org.obeonetwork.m2doc";
 
     /**
      * M2Doc version.
@@ -161,11 +167,6 @@ public final class M2DocUtils {
     public static final String UPDATE_FIELDS_OPTION = "UpdateFields";
 
     /**
-     * The install {@link ECrossReferenceAdapter} option.
-     */
-    public static final String INSTALL_CROSS_REFERENCE_ADAPTER_OPTION = "InstallCrossReferenceAdapter";
-
-    /**
      * The ignore {@link #VERSION} check option.
      */
     public static final String IGNORE_VERSION_CHECK_OPTION = "IgnoreVersionCheck";
@@ -179,12 +180,6 @@ public final class M2DocUtils {
      * The separator between the tag were a parsing error has been detected and the start of the error message.
      */
     public static final String LOCATION_SEPARATOR = "<---";
-
-    /**
-     * The {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
-     * {@link IServicesConfiguratorDescriptor}.
-     */
-    private static final List<IServicesConfiguratorDescriptor> CONFIGURATORS = new ArrayList<>();
 
     /**
      * The load template monitor work.
@@ -249,14 +244,12 @@ public final class M2DocUtils {
         + TEMPLATE_SERVICES_MONITOR_WORK + M2DocEvaluator.MONITOR_WORK + LOST_FILES_MONITOR_WORK
         + DOCUMENT_SAVE_MONITOR_WORK;
 
-    /**
-     * The mapping from {@link Object key} to installed {@link ECrossReferenceAdapter}.
-     */
-    private static final Map<Object, ECrossReferenceAdapter> CROSS_REFERENCE_ADAPTERS = new HashMap<>();
-
     // register standalone IServiceConfigurator
     static {
-        registerServicesConfigurator(new ServicesConfiguratorDescriptor(new DocumentServiceConfigurator()));
+        if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+            AQLUtils.registerServicesConfigurator(
+                    new ServicesConfiguratorDescriptor(M2DOC_LANGUAGE, new DocumentServiceConfigurator()));
+        }
     }
 
     /**
@@ -461,15 +454,18 @@ public final class M2DocUtils {
      *            the template {@link URI}
      * @param options
      *            the {@link Map} of options
+     * @param forWorkspace
+     *            tells if the {@link IService} will be used in a workspace
      * @return the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options
      */
     public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels, URI templateURI,
-            Map<String, String> options) {
+            Map<String, String> options, boolean forWorkspace) {
         final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
                 ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
         final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(resourceSetForModels);
 
-        return getQueryEnvironment(resourceSetForModels, crossReferenceProvider, rootProvider, templateURI, options);
+        return getQueryEnvironment(resourceSetForModels, crossReferenceProvider, rootProvider, templateURI, options,
+                forWorkspace);
     }
 
     /**
@@ -485,15 +481,18 @@ public final class M2DocUtils {
      *            the template {@link URI}
      * @param options
      *            the {@link Map} of options
+     * @param forWorkspace
+     *            tells if the {@link IService} will be used in a workspace
      * @return the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options
      */
     public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels,
             CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, URI templateURI,
-            Map<String, String> options) {
+            Map<String, String> options, boolean forWorkspace) {
         final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
                 .newEnvironmentWithDefaultServices(crossReferenceProvider, rootProvider);
 
-        M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModels, templateURI, options);
+        M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModels, templateURI, options,
+                forWorkspace);
 
         return queryEnvironment;
     }
@@ -509,9 +508,11 @@ public final class M2DocUtils {
      *            the template {@link URI}
      * @param options
      *            the {@link Map} of options
+     * @param forWorkspace
+     *            tells if the {@link IService} will be used in a workspace
      */
     public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
-            URI templateURI, Map<String, String> options) {
+            URI templateURI, Map<String, String> options, boolean forWorkspace) {
 
         Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
@@ -526,9 +527,9 @@ public final class M2DocUtils {
         services = ServiceUtils.getServices(queryEnvironment,
                 new ExcelServices(resourceSetForModels.getURIConverter(), templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
-        for (IServicesConfigurator configurator : getConfigurators()) {
+        for (IServicesConfigurator configurator : AQLUtils.getServicesConfigurators(M2DOC_LANGUAGE)) {
             ServiceUtils.registerServices(queryEnvironment,
-                    configurator.getServices(queryEnvironment, resourceSetForModels, options));
+                    configurator.getServices(queryEnvironment, resourceSetForModels, options, forWorkspace));
         }
     }
 
@@ -855,8 +856,10 @@ public final class M2DocUtils {
 
             nextSubTask(monitor, INIT_DEST_DOC_MONITOR_WORK, "Initializing engine");
 
-            for (IServicesConfigurator configurator : getConfigurators()) {
-                configurator.startGeneration(queryEnvironment, destinationDocument);
+            for (IServicesConfigurator configurator : AQLUtils.getServicesConfigurators(M2DOC_LANGUAGE)) {
+                if (configurator instanceof IM2DocServicesConfigurator) {
+                    ((IM2DocServicesConfigurator) configurator).startGeneration(queryEnvironment, destinationDocument);
+                }
             }
 
             final M2DocEvaluationEnvironment m2docEnv = new M2DocEvaluationEnvironment(queryEnvironment, uriConverter,
@@ -897,9 +900,7 @@ public final class M2DocUtils {
 
             nextSubTask(monitor, DOCUMENT_SAVE_MONITOR_WORK, "Cleaning template services");
 
-            for (IServicesConfigurator configurator : getConfigurators()) {
-                configurator.cleanServices(queryEnvironment, resourceSetForModels);
-            }
+            AQLUtils.cleanServices(M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
 
             monitor.worked(ENGINE_CLEAN_MONITOR_WORK);
 
@@ -951,55 +952,6 @@ public final class M2DocUtils {
     }
 
     /**
-     * Registers the given {@link IServicesConfiguratorDescriptor}.
-     * 
-     * @param configurator
-     *            the {@link IServicesConfiguratorDescriptor} to register
-     */
-    public static void registerServicesConfigurator(IServicesConfiguratorDescriptor configurator) {
-        if (configurator != null) {
-            synchronized (CONFIGURATORS) {
-                CONFIGURATORS.add(configurator);
-            }
-        }
-    }
-
-    /**
-     * Unregister the given {@link IServicesConfiguratorDescriptor}.
-     * 
-     * @param configuratorDescriptor
-     *            the {@link IServicesConfiguratorDescriptor} to unregister
-     */
-    public static void unregisterServicesConfigurator(IServicesConfiguratorDescriptor configuratorDescriptor) {
-        if (configuratorDescriptor != null) {
-            synchronized (CONFIGURATORS) {
-                CONFIGURATORS.remove(configuratorDescriptor);
-            }
-        }
-    }
-
-    /**
-     * Gets the {@link List} of registered {@link IServicesConfigurator}.
-     * 
-     * @return the {@link List} of {@link #registerServicesConfigurator(IServicesConfiguratorDescriptor) registered}
-     *         {@link IServicesConfigurator}
-     */
-    public static List<IServicesConfigurator> getConfigurators() {
-        final List<IServicesConfigurator> res = new ArrayList<>();
-
-        synchronized (CONFIGURATORS) {
-            for (IServicesConfiguratorDescriptor descriptor : CONFIGURATORS) {
-                final IServicesConfigurator configurator = descriptor.getServicesConfigurator();
-                if (configurator != null) {
-                    res.add(configurator);
-                }
-            }
-        }
-
-        return res;
-    }
-
-    /**
      * Gets the {@link Map} of initialized options.
      * 
      * @param options
@@ -1011,9 +963,7 @@ public final class M2DocUtils {
 
         res.put(M2DocUtils.UPDATE_FIELDS_OPTION, Boolean.FALSE.toString());
         res.put(M2DocUtils.IGNORE_VERSION_CHECK_OPTION, Boolean.FALSE.toString());
-        for (IServicesConfigurator configurator : getConfigurators()) {
-            res.putAll(configurator.getInitializedOptions(options));
-        }
+        res.putAll(AQLUtils.getInitializedOptions(M2DOC_LANGUAGE, options));
 
         return res;
     }
@@ -1032,9 +982,7 @@ public final class M2DocUtils {
 
         res.put(M2DocUtils.UPDATE_FIELDS_OPTION, Boolean.FALSE.toString());
         res.put(M2DocUtils.IGNORE_VERSION_CHECK_OPTION, Boolean.FALSE.toString());
-        for (IServicesConfigurator configurator : getConfigurators()) {
-            res.putAll(configurator.getInitializedOptions(options));
-        }
+        res.putAll(AQLUtils.getInitializedOptions(M2DOC_LANGUAGE, options, eObj));
 
         return res;
     }
@@ -1047,81 +995,12 @@ public final class M2DocUtils {
     public static List<String> getPossibleOptionNames() {
         final List<String> res = new ArrayList<>();
 
-        for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
-            res.addAll(configurator.getOptions());
-        }
+        res.addAll(AQLUtils.getPossibleOptionNames(M2DOC_LANGUAGE));
 
         res.add(UPDATE_FIELDS_OPTION);
         res.add(IGNORE_VERSION_CHECK_OPTION);
-        res.add(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION);
 
         return res;
-    }
-
-    /**
-     * Create a new {@link ResourceSet} suitable for loading {@link EObject} from the given options.
-     * 
-     * @param exceptions
-     *            the {@link List} of resulting exceptions (filled by this method)
-     * @param key
-     *            the {@link Object} key
-     * @param defaultResourceSet
-     *            the default {@link ResourceSet} to use if none is created
-     * @param options
-     *            the {@link Map} of existing options.
-     * @return the {@link ResourceSet} suitable for loading {@link EObject} from the given options if any, the default {@link ResourceSet}
-     *         otherwise
-     * @see #cleanResourceSetForModels(Object)
-     */
-    public static ResourceSet createResourceSetForModels(List<Exception> exceptions, Object key,
-            ResourceSet defaultResourceSet, Map<String, String> options) {
-        ResourceSet res = null;
-
-        for (IServicesConfigurator configurator : getConfigurators()) {
-            try {
-                res = configurator.createResourceSetForModels(key, options);
-                if (res != null) {
-                    break;
-                }
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
-                exceptions.add(e);
-            }
-        }
-
-        if (res == null) {
-            res = defaultResourceSet;
-        }
-
-        if (Boolean.valueOf(options.get(INSTALL_CROSS_REFERENCE_ADAPTER_OPTION))) {
-            final ECrossReferenceAdapter adapter = new ECrossReferenceAdapter();
-            adapter.setTarget(res);
-            res.eAdapters().add(adapter);
-            CROSS_REFERENCE_ADAPTERS.put(key, adapter);
-        }
-
-        return res;
-    }
-
-    /**
-     * Cleans the {@link #createResourceSetForModels(List, Object, ResourceSet, Map) created} {@link ResourceSet} for the
-     * given {@link Object} key.
-     * 
-     * @param key
-     *            the {@link Object} key
-     * @param resourceSet
-     *            the {@link ResourceSet} created using {@link #createResourceSetForModels(List, Object, ResourceSet, Map)}
-     */
-    public static void cleanResourceSetForModels(Object key, ResourceSet resourceSet) {
-        final ECrossReferenceAdapter adapter = CROSS_REFERENCE_ADAPTERS.remove(key);
-        if (adapter != null) {
-            adapter.unsetTarget(resourceSet);
-            resourceSet.eAdapters().remove(adapter);
-        }
-        for (IServicesConfigurator configurator : getConfigurators()) {
-            configurator.cleanResourceSetForModels(key);
-        }
     }
 
     /**

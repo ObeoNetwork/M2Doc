@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
@@ -59,14 +60,14 @@ public class MavenTests {
 		final Map<String, String> options = new HashMap<String, String>();
 		List<Exception> exceptions = new ArrayList<>();
 
-		final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, this,
+		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this,
 				new ResourceSetImpl(), options);
 		resourceSetForModels.getURIConverter().getURIHandlers().add(0, uriHandler);
 		resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
 				new XMIResourceFactoryImpl());
 
 		final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels,
-				templateURI, options);
+				templateURI, options, false);
 
 		final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader());
 		final Monitor monitor = new BasicMonitor();
@@ -91,7 +92,7 @@ public class MavenTests {
 			assertEquals(ValidationMessageLevel.OK, generationResult.getLevel());
 			assertTrue(uriHandler.exists(outputURI, null));
 		} finally {
-			M2DocUtils.cleanResourceSetForModels(this, resourceSetForModels);
+			AQLUtils.cleanResourceSetForModels(this, resourceSetForModels);
 			uriHandler.clear();
 		}
 	}

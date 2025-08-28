@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.obeonetwork.m2doc.ide.services.configurator.ServicesConfiguratorRegistryListener;
 import org.obeonetwork.m2doc.ide.util.ClassProviderRegistryListener;
 import org.obeonetwork.m2doc.ide.util.EclipseClassProvider;
 import org.obeonetwork.m2doc.ide.util.IClassProviderDescriptor;
@@ -92,9 +91,6 @@ public class M2DocPlugin extends EMFPlugin {
     public static class Implementation extends EclipsePlugin {
 
         /** The registry listener that will be used to listen to extension changes. */
-        private ServicesConfiguratorRegistryListener registryListener = new ServicesConfiguratorRegistryListener();
-
-        /** The registry listener that will be used to listen to extension changes. */
         private ClassProviderRegistryListener providerListener = new ClassProviderRegistryListener();
 
         /** The listener for M2Doc services and package tokens. */
@@ -118,9 +114,6 @@ public class M2DocPlugin extends EMFPlugin {
         public void start(BundleContext context) throws Exception {
             super.start(context);
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
-            registry.addListener(registryListener,
-                    ServicesConfiguratorRegistryListener.SERVICES_CONFIGURATOR_EXTENSION_POINT);
-            registryListener.parseInitialContributions();
             registry.addListener(providerListener, ClassProviderRegistryListener.CLASS_PROVIDER_EXTENSION_POINT);
             providerListener.parseInitialContributions();
             registry.addListener(servicesListener, DeclaredTokensListener.SERVICE_REGISTERY_EXTENSION_POINT);
@@ -138,7 +131,6 @@ public class M2DocPlugin extends EMFPlugin {
             }
             classProvider = new ClassProvider(M2DocPlugin.class.getClassLoader());
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
-            registry.removeListener(registryListener);
             registry.removeListener(servicesListener);
             // TODO clear registry and registryListener ?
         }

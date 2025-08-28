@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
-         point="org.obeonetwork.m2doc.ide.servicesConfigurator">
+   <extension point="org.eclipse.acceleo.query.ide.servicesConfigurator">
       <servicesConfigurators
-            class="org.obeonetwork.m2doc.html.services.HTMLServicesConfigurator">
+            class="org.obeonetwork.m2doc.html.services.HTMLServicesConfigurator"
+            language="org.obeonetwork.m2doc">
       </servicesConfigurators>
    </extension>
 

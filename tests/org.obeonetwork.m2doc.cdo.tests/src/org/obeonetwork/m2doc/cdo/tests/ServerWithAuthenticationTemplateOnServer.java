@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -18,6 +18,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.cdo.AqlCDOUtils;
+import org.eclipse.acceleo.query.cdo.services.configurator.CDOResourceSetConfigurator;
+import org.eclipse.acceleo.query.services.configurator.IResourceSetConfiguratorDescriptor;
+import org.eclipse.acceleo.query.services.configurator.ResourceSetConfiguratorDescriptor;
 import org.eclipse.emf.cdo.common.lob.CDOBlob;
 import org.eclipse.emf.cdo.eresource.CDOBinaryResource;
 import org.eclipse.emf.cdo.eresource.CDOResource;
@@ -35,12 +40,8 @@ import org.eclipse.net4j.connector.IConnector;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.cdo.M2DocCDOUtils;
-import org.obeonetwork.m2doc.cdo.services.configurator.CDOServicesConfigurator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Tests with authenticated CDO server and template on server.
@@ -60,10 +61,10 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
     private static CDOServer server;
 
     /**
-     * The instance of {@link CDOServicesConfigurator} for standalone use.
+     * The instance of {@link CDOResourceSetConfigurator} descriptor for standalone use.
      */
-    private static final ServicesConfiguratorDescriptor SERVICES_CONFIGURATOR_DESCRIPTOR = new ServicesConfiguratorDescriptor(
-            new CDOServicesConfigurator());
+    private static final IResourceSetConfiguratorDescriptor CONFIGURATOR_DESCRIPTOR = new ResourceSetConfiguratorDescriptor(
+            new CDOResourceSetConfigurator());
 
     /**
      * Constructor.
@@ -103,11 +104,11 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
         server = new CDOServer(true);
         server.start();
 
-        final IConnector connector = M2DocCDOUtils
+        final IConnector connector = AqlCDOUtils
                 .getConnector(CDOServer.PROTOCOL + "://" + CDOServer.IP + ":" + CDOServer.PORT);
-        final CDOSession session = M2DocCDOUtils.openSession(connector, CDOServer.REPOSITORY_NAME, CDOServer.USER_NAME,
+        final CDOSession session = AqlCDOUtils.openSession(connector, CDOServer.REPOSITORY_NAME, CDOServer.USER_NAME,
                 CDOServer.PASSWORD);
-        final CDOTransaction transaction = M2DocCDOUtils.openTransaction(session);
+        final CDOTransaction transaction = AqlCDOUtils.openTransaction(session);
 
         final CDOResource resource = transaction.createResource("anydsl.ecore");
         final ResourceSet resourceSet = new ResourceSetImpl();
@@ -141,7 +142,7 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
         connector.close();
 
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.registerResourceSetConfigurator(CONFIGURATOR_DESCRIPTOR);
         }
     }
 
@@ -153,7 +154,7 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
         server.stop();
 
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.unregisterResourceSetConfigurator(CONFIGURATOR_DESCRIPTOR);
         }
     }
 

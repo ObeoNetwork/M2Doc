@@ -17,16 +17,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.obeonetwork.m2doc.ide.ui.services.M2DocEObjectServices;
 import org.obeonetwork.m2doc.ide.ui.services.SWTPromptServices;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 
 /**
  * {@link SWTPromptServices} {@link IServicesConfigurator}.
@@ -63,16 +62,11 @@ public class M2DocEObjectServicesConfigurator implements IServicesConfigurator {
 
     @Override
     public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
-            Map<String, String> options) {
+            Map<String, String> options, boolean forWorksapce) {
         M2DocEObjectServices serviceInstance = new M2DocEObjectServices();
         services.put(queryEnvironment, serviceInstance);
 
         return ServiceUtils.getServices(queryEnvironment, serviceInstance);
-    }
-
-    @Override
-    public void startGeneration(IReadOnlyQueryEnvironment queryEnvironment, XWPFDocument destinationDocument) {
-        // nothing to do here
     }
 
     @Override
@@ -81,16 +75,6 @@ public class M2DocEObjectServicesConfigurator implements IServicesConfigurator {
         if (serviceInstance != null) {
             serviceInstance.dispose();
         }
-    }
-
-    @Override
-    public ResourceSet createResourceSetForModels(Object context, Map<String, String> options) {
-        return null;
-    }
-
-    @Override
-    public void cleanResourceSetForModels(Object context) {
-        // nothing to do here
     }
 
 }

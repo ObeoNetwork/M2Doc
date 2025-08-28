@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2024 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.command.Command;
@@ -559,8 +560,8 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
                 defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
                         .putAll(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
 
-                final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(
-                        new ArrayList<Exception>(), queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
+                final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(new ArrayList<Exception>(),
+                        queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
 
                 final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, properties);
                 final Command addCommand = AddCommand.create(editingDomain, gen, GenconfPackage.GENERATION__DEFINITIONS,

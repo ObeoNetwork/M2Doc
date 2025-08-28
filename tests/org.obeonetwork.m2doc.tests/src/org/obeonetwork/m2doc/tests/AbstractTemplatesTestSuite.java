@@ -29,7 +29,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.services.configurator.HTTPServiceConfigurator;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfiguratorDescriptor;
+import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -55,9 +59,6 @@ import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.services.HTTPServiceConfigurator;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
-import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
@@ -98,7 +99,7 @@ public abstract class AbstractTemplatesTestSuite {
      * The {@link HTTPServiceConfigurator}.
      */
     private static final IServicesConfiguratorDescriptor SERVICES_CONFIGURATOR_DESCRIPTOR = new ServicesConfiguratorDescriptor(
-            new HTTPServiceConfigurator());
+            M2DocUtils.M2DOC_LANGUAGE, new HTTPServiceConfigurator());
 
     /**
      * The {@link URIHandler} that check we don't have adherence to {@link File}.
@@ -165,7 +166,7 @@ public abstract class AbstractTemplatesTestSuite {
         setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
         final List<Exception> exceptions = new ArrayList<>();
         resourceSetForModels = getResourceSetForModel(exceptions);
-        queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
+        queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation, false);
         documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
                 new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor());
         for (Exception e : exceptions) {
@@ -187,7 +188,7 @@ public abstract class AbstractTemplatesTestSuite {
                 xmiResourceFactory);
         rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("uml", xmiResourceFactory);
 
-        final ResourceSet res = M2DocUtils.createResourceSetForModels(exceptions, generation, rs,
+        final ResourceSet res = AQLUtils.createResourceSetForModels(exceptions, generation, rs,
                 GenconfUtils.getOptions(generation));
         res.getURIConverter().getURIHandlers().add(0, uriHandler);
 
@@ -196,7 +197,7 @@ public abstract class AbstractTemplatesTestSuite {
 
     @After
     public void after() {
-        M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModels);
+        AQLUtils.cleanResourceSetForModels(generation, resourceSetForModels);
         uriHandler.clear();
     }
 
@@ -218,7 +219,7 @@ public abstract class AbstractTemplatesTestSuite {
     @BeforeClass
     public static void beforeClass() {
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
         }
     }
 
@@ -232,7 +233,7 @@ public abstract class AbstractTemplatesTestSuite {
     public static void afterClass() throws IOException {
         documentTemplate.close();
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
         }
     }
 

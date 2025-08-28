@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2017, 2025 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v2.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v20.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
 package org.obeonetwork.m2doc.ide.tests;
 
 import java.util.List;
@@ -9,17 +20,14 @@ import org.eclipse.emf.ecore.EPackage;
 import org.junit.Before;
 import org.junit.Test;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.services.HTTPServiceConfigurator;
 import org.obeonetwork.m2doc.services.TemplateRegistry;
 import org.obeonetwork.m2doc.services.TokenRegistry;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.osgi.framework.Bundle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Bundle tests.
@@ -79,18 +87,6 @@ public class BundleTests {
         assertEquals(1, map.size());
         assertEquals("platform:/plugin/org.obeonetwork.m2doc.ide.tests/resources/test-template.docx",
                 map.get("Test template").toString());
-    }
-
-    @Test
-    public void isRegisteredHTTPServiceConfigurator() {
-        boolean hasHTTPServiceConfigurator = false;
-        for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
-            if (configurator instanceof HTTPServiceConfigurator) {
-                hasHTTPServiceConfigurator = true;
-                break;
-            }
-        }
-        assertTrue(hasHTTPServiceConfigurator);
     }
 
 }

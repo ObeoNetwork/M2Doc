@@ -30,6 +30,7 @@ import java.util.concurrent.Future;
 
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -44,6 +45,7 @@ import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -100,7 +102,7 @@ import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.M2DocTemplateService;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
+import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Parameter;
@@ -613,9 +615,7 @@ public class M2DocInterpreterView extends ViewPart {
         sourceViewer.unconfigure();
 
         if (generation != null) {
-            for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
-                configurator.cleanServices(queryEnvironment, resourceSetForModels);
-            }
+            AQLUtils.cleanServices(M2DocUtils.M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
             try {
                 if (m2docEnv != null) {
                     m2docEnv.getUserContentManager().dispose();
@@ -628,9 +628,9 @@ public class M2DocInterpreterView extends ViewPart {
         try {
             generation = GenconfUtils.getGeneration(new ResourceSetImpl(), genconfURI);
             final List<Exception> exceptions = new ArrayList<>();
-            resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, generation, new ResourceSetImpl(),
+            resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, generation, new ResourceSetImpl(),
                     GenconfUtils.getOptions(generation));
-            queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
+            queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation, false);
             final URI templateURI = GenconfUtils.getResolvedURI(generation,
                     URI.createURI(generation.getTemplateFileName(), false));
             final IClassProvider classProvider = M2DocPlugin.getClassProvider();
@@ -674,8 +674,10 @@ public class M2DocInterpreterView extends ViewPart {
             sourceViewer.configure(configuration);
             setUpContentAssist(configuration.getContentAssistant(sourceViewer));
 
-            for (IServicesConfigurator configurator : M2DocUtils.getConfigurators()) {
-                configurator.startGeneration(queryEnvironment, new XWPFDocument());
+            for (IServicesConfigurator configurator : AQLUtils.getServicesConfigurators(M2DocUtils.M2DOC_LANGUAGE)) {
+                if (configurator instanceof IM2DocServicesConfigurator) {
+                    ((IM2DocServicesConfigurator) configurator).startGeneration(queryEnvironment, new XWPFDocument());
+                }
             }
 
             if (generation != null) {

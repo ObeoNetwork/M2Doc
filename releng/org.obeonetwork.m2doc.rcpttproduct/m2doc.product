@@ -132,6 +132,11 @@ Exhibit A – Form of Secondary Licenses Notice
       <feature id="org.obeonetwork.m2doc.ui.feature"/>
       <feature id="org.obeonetwork.m2doc.ui.jdt.feature"/>
       <feature id="org.obeonetwork.m2doc.rcptt.feature"/>
+
+      <feature id="org.eclipse.acceleo.query"/>
+      <feature id="org.eclipse.acceleo.query.cdo"/>
+      <feature id="org.eclipse.acceleo.query.sirius"/>
+
       <feature id="org.eclipse.equinox.core.feature"/>
       <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.eclipse.pde"/>

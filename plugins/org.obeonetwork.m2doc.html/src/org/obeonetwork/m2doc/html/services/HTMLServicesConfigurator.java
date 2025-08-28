@@ -21,11 +21,12 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
+import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -33,7 +34,7 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class HTMLServicesConfigurator implements IServicesConfigurator {
+public class HTMLServicesConfigurator implements IM2DocServicesConfigurator {
 
     /**
      * Mapping from {@link IReadOnlyQueryEnvironment} to its instance of {@link M2DocHTMLServices}.
@@ -63,7 +64,7 @@ public class HTMLServicesConfigurator implements IServicesConfigurator {
 
     @Override
     public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
-            Map<String, String> options) {
+            Map<String, String> options, boolean forWorkspace) {
         M2DocHTMLServices instance = new M2DocHTMLServices(resourceSetForModels.getURIConverter(),
                 URI.createURI(options.get(M2DocUtils.TEMPLATE_URI_OPTION)));
         instancies.put(queryEnvironment, instance);
@@ -79,17 +80,6 @@ public class HTMLServicesConfigurator implements IServicesConfigurator {
     @Override
     public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
         instancies.remove(queryEnvironment);
-    }
-
-    @Override
-    public ResourceSet createResourceSetForModels(Object context, Map<String, String> options) {
-        // nothing to do here
-        return null;
-    }
-
-    @Override
-    public void cleanResourceSetForModels(Object context) {
-        // nothing to do here
     }
 
 }

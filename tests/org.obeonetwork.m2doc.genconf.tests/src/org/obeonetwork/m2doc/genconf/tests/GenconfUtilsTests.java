@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2023 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -79,8 +80,9 @@ public class GenconfUtilsTests {
         resource.getContents().add(generation);
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
-        assertEquals(1, options.size());
+        assertEquals(2, options.size());
         assertEquals("test", options.get(GenconfUtils.GENCONF_URI_OPTION));
+        assertEquals("test", options.get(AQLUtils.BASE_URI_OPTION));
     }
 
     @Test
@@ -127,8 +129,9 @@ public class GenconfUtilsTests {
         generation.setValidationFileName("validation.docx");
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
-        assertEquals(4, options.size());
+        assertEquals(5, options.size());
         assertEquals("file:/generation.xmi", options.get(GenconfUtils.GENCONF_URI_OPTION));
+        assertEquals("file:/generation.xmi", options.get(AQLUtils.BASE_URI_OPTION));
         assertEquals("file:/template.docx", options.get(M2DocUtils.TEMPLATE_URI_OPTION));
         assertEquals("file:/result.docx", options.get(M2DocUtils.RESULT_URI_OPTION));
         assertEquals("file:/validation.docx", options.get(M2DocUtils.VALIDATION_URI_OPTION));
@@ -160,8 +163,9 @@ public class GenconfUtilsTests {
         generation.getOptions().add(option3);
 
         final Map<String, String> options = GenconfUtils.getOptions(generation);
-        assertEquals(7, options.size());
+        assertEquals(8, options.size());
         assertEquals("file:/generation.xmi", options.get(GenconfUtils.GENCONF_URI_OPTION));
+        assertEquals("file:/generation.xmi", options.get(AQLUtils.BASE_URI_OPTION));
         assertEquals("file:/template.docx", options.get(M2DocUtils.TEMPLATE_URI_OPTION));
         assertEquals("file:/result.docx", options.get(M2DocUtils.RESULT_URI_OPTION));
         assertEquals("file:/validation.docx", options.get(M2DocUtils.VALIDATION_URI_OPTION));

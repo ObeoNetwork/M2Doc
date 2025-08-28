@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,13 +14,14 @@ package org.obeonetwork.m2doc.wikitext.tests.services;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfiguratorDescriptor;
+import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
 import org.eclipse.emf.common.EMFPlugin;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfiguratorDescriptor;
-import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.wikitext.services.M2DocWikiTextServices;
@@ -36,8 +37,8 @@ public class M2DocWikiTextServicesTests extends AbstractTemplatesTestSuite {
     /**
      * The {@link WikiTextServicesConfigurator}.
      */
-    private static final IServicesConfiguratorDescriptor SERVICES_CONFIGURATOR_DESCRIPTOR = new ServicesConfiguratorDescriptor(
-            new WikiTextServicesConfigurator());
+    private static final IServicesConfiguratorDescriptor CONFIGURATOR_DESCRIPTOR = new ServicesConfiguratorDescriptor(
+            M2DocUtils.M2DOC_LANGUAGE, new WikiTextServicesConfigurator());
 
     /**
      * Constructor.
@@ -59,7 +60,7 @@ public class M2DocWikiTextServicesTests extends AbstractTemplatesTestSuite {
     @BeforeClass
     public static void beforeClass() {
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.registerServicesConfigurator(CONFIGURATOR_DESCRIPTOR);
         }
     }
 
@@ -73,7 +74,7 @@ public class M2DocWikiTextServicesTests extends AbstractTemplatesTestSuite {
     public static void afterClass() throws IOException {
         AbstractTemplatesTestSuite.afterClass();
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.unregisterServicesConfigurator(CONFIGURATOR_DESCRIPTOR);
         }
     }
 

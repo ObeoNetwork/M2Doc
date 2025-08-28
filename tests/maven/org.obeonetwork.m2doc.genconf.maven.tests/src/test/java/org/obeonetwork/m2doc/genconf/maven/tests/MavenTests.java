@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -30,7 +31,6 @@ import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.IClassProvider;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;
 
 import static org.junit.Assert.assertEquals;
@@ -64,7 +64,7 @@ public class MavenTests {
 		final Map<String, String> options = GenconfUtils.getOptions(generation);
 		final List<Exception> exceptions = new ArrayList<>();
 
-		final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions, this,
+		final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this,
 				new ResourceSetImpl(), options);
 		resourceSetForModels.getURIConverter().getURIHandlers().add(0, uriHandler);
 		resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
@@ -84,7 +84,7 @@ public class MavenTests {
 			assertEquals(1, generatedURIs.size());
 			assertTrue(uriHandler.exists(generatedURIs.get(0), null));
 		} finally {
-			M2DocUtils.cleanResourceSetForModels(this, resourceSetForModels);
+			AQLUtils.cleanResourceSetForModels(this, resourceSetForModels);
 			uriHandler.clear();
 		}
 	}

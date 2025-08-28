@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2024 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -40,8 +40,8 @@ import org.obeonetwork.m2doc.services.TokenRegistry;
 public class TemplateCustomPropertiesWizard extends Wizard {
 
     {
-        // make sure org.obeonetwork.m2doc.ide is activated
-        M2DocPlugin.getDefault();
+        // make sure org.obeonetwork.m2doc.ide is started
+        M2DocPlugin.getPlugin();
     }
 
     /**
@@ -110,7 +110,8 @@ public class TemplateCustomPropertiesWizard extends Wizard {
                     setPageComplete(false);
                 }
             });
-            M2DocUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, e.getMessage(), e));
+            M2DocUIPlugin.getDefault().getLog()
+                    .log(new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, e.getMessage(), e));
         }
     }
 
@@ -146,7 +147,8 @@ public class TemplateCustomPropertiesWizard extends Wizard {
             try {
                 document.close();
             } catch (IOException e) {
-                M2DocUIPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, e.getMessage(), e));
+                M2DocUIPlugin.getDefault().getLog()
+                        .log(new Status(IStatus.ERROR, M2DocUIPlugin.PLUGIN_ID, e.getMessage(), e));
             }
         }
         return super.performCancel();

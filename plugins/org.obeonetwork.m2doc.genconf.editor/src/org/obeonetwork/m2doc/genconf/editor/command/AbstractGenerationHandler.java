@@ -19,6 +19,7 @@ import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -207,7 +208,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
         boolean res = true;
 
         final Map<String, String> options = GenconfUtils.getOptions(gen);
-        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(), gen,
+        final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(new ArrayList<Exception>(), gen,
                 new ResourceSetImpl(), options);
         final String templateFilePath = gen.getTemplateFileName();
         if (templateFilePath != null && !templateFilePath.isEmpty()) {
@@ -231,7 +232,7 @@ public abstract class AbstractGenerationHandler extends AbstractHandler {
             }
 
         }
-        M2DocUtils.cleanResourceSetForModels(gen, resourceSetForModel);
+        AQLUtils.cleanResourceSetForModels(gen, resourceSetForModel);
 
         return res;
     }

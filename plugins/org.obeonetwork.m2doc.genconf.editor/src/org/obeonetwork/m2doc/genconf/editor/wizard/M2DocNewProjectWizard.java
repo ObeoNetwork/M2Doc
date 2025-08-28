@@ -20,6 +20,7 @@ import java.util.Map;
 import org.apache.poi.hpsf.IllegalPropertySetDataException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -161,14 +162,14 @@ public class M2DocNewProjectWizard extends Wizard implements INewWizard {
                         variableName, variableValue);
                 final List<Exception> exceptions = new ArrayList<Exception>();
                 final Map<String, String> options = GenconfUtils.getOptions(generation);
-                final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+                final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(exceptions, generation,
                         new ResourceSetImpl(), options);
                 if (launchGeneration) {
                     try {
                         GenconfUtils.generate(generation, resourceSetForModel, options, M2DocPlugin.getClassProvider(),
                                 BasicMonitor.toMonitor(monitor));
                     } finally {
-                        M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
+                        AQLUtils.cleanResourceSetForModels(generation, resourceSetForModel);
                     }
                 }
             } catch (IOException | CoreException | DocumentGenerationException | DocumentParserException

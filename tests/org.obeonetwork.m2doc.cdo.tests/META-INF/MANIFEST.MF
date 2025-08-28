@@ -14,7 +14,8 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
  org.eclipse.net4j.tcp,
  org.eclipse.emf.cdo.net4j,
  org.eclipse.emf.cdo.server.net4j,
- org.obeonetwork.m2doc.cdo
+ org.eclipse.acceleo.query.cdo;bundle-version="[8.0.4,9.0.0)",
+ org.eclipse.acceleo.query;bundle-version="[8.0.4,9.0.0)"
 Export-Package: org.obeonetwork.m2doc.cdo.tests
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

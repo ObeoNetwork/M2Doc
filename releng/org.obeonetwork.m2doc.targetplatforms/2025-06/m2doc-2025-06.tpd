@@ -88,10 +88,12 @@ location GEF-Classic  "https://archive.eclipse.org/tools/gef/classic/releases/3.
 	org.eclipse.draw2d.sdk.feature.group lazy
 }
 
-location "https://download.eclipse.org/acceleo/updates/releases/4.1/R202502130921/" {
+location "https://download.eclipse.org/acceleo/updates/nightly/latest/" {
 	// AQL
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.source.feature.group lazy
+	org.eclipse.acceleo.query.cdo.feature.group lazy
+	org.eclipse.acceleo.query.sirius.feature.group lazy
 }
 
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {

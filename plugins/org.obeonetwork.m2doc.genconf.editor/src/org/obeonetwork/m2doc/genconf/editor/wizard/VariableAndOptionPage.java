@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2023 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -81,7 +82,6 @@ import org.obeonetwork.m2doc.genconf.editor.VariableValueCellLabelProvider;
 import org.obeonetwork.m2doc.genconf.editor.dialog.DefinitionValueDialog;
 import org.obeonetwork.m2doc.genconf.editor.dialog.M2DocOptionDialog;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Option selection page.
@@ -637,7 +637,7 @@ public class VariableAndOptionPage extends WizardPage {
     public void dispose() {
         super.dispose();
         if (editingDomain != null) {
-            M2DocUtils.cleanResourceSetForModels(queryEnvironment, editingDomain.getResourceSet());
+            AQLUtils.cleanResourceSetForModels(queryEnvironment, editingDomain.getResourceSet());
         }
         if (createdEditingDomaine) {
             editingDomain.dispose();
@@ -660,14 +660,14 @@ public class VariableAndOptionPage extends WizardPage {
                 .putAll(Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap());
 
         if (editingDomain != null) {
-            M2DocUtils.cleanResourceSetForModels(queryEnvironment, editingDomain.getResourceSet());
+            AQLUtils.cleanResourceSetForModels(queryEnvironment, editingDomain.getResourceSet());
         }
         if (createdEditingDomaine) {
             editingDomain.dispose();
             editingDomain = null;
         }
 
-        final ResourceSet modelResourceSet = M2DocUtils.createResourceSetForModels(new ArrayList<Exception>(),
+        final ResourceSet modelResourceSet = AQLUtils.createResourceSetForModels(new ArrayList<Exception>(),
                 queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
         final TransactionalEditingDomain modelEditingDomain = TransactionUtil.getEditingDomain(modelResourceSet);
         if (modelEditingDomain == null) {

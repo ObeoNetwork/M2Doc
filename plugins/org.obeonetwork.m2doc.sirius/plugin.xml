@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <!--
-    Copyright (c) 2016, 2020 Obeo. 
+    Copyright (c) 2016, 2025 Obeo. 
        All rights reserved. This program and the accompanying materials
        are made available under the terms of the Eclipse Public License v2.0
        which accompanies this distribution, and is available at
@@ -13,9 +13,10 @@
 
 <plugin>
    <extension
-         point="org.obeonetwork.m2doc.ide.servicesConfigurator">
+         point="org.eclipse.acceleo.query.ide.servicesConfigurator">
       <servicesConfigurators
-            class="org.obeonetwork.m2doc.sirius.services.configurator.SiriusServiceConfigurator">
+            class="org.obeonetwork.m2doc.sirius.services.configurator.SiriusServiceConfigurator"
+            language="org.obeonetwork.m2doc">
       </servicesConfigurators>
    </extension>
    <extension

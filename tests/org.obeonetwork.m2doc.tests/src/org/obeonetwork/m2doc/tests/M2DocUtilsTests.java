@@ -23,9 +23,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.services.configurator.IResourceSetConfigurator;
+import org.eclipse.acceleo.query.services.configurator.IResourceSetConfiguratorDescriptor;
+import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
+import org.eclipse.acceleo.query.services.configurator.ResourceSetConfiguratorDescriptor;
+import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
@@ -34,8 +40,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
-import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
+import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -52,7 +57,7 @@ public class M2DocUtilsTests {
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    public static final class TestServiceConfigurator implements IServicesConfigurator {
+    public static final class TestServiceConfigurator implements IM2DocServicesConfigurator, IResourceSetConfigurator {
 
         /**
          * The option name.
@@ -109,7 +114,7 @@ public class M2DocUtilsTests {
 
         @Override
         public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment,
-                ResourceSet resourceSetForModels, Map<String, String> options) {
+                ResourceSet resourceSetForModels, Map<String, String> options, boolean forForkspace) {
             // nothing to do here
             return Collections.emptySet();
         }
@@ -138,17 +143,25 @@ public class M2DocUtilsTests {
     /**
      * The {@link TestServiceConfigurator}.
      */
-    private static final ServicesConfiguratorDescriptor CONFIGURATOR = new ServicesConfiguratorDescriptor(
+    private static final ServicesConfiguratorDescriptor SERVICE_CONFIGURATOR = new ServicesConfiguratorDescriptor(
+            M2DocUtils.M2DOC_LANGUAGE, new TestServiceConfigurator());
+
+    /**
+     * The {@link TestServiceConfigurator}.
+     */
+    private static final IResourceSetConfiguratorDescriptor RESOURCE_SET_CONFIGURATOR = new ResourceSetConfiguratorDescriptor(
             new TestServiceConfigurator());
 
     @BeforeClass
     public static void beforeClass() {
-        M2DocUtils.registerServicesConfigurator(CONFIGURATOR);
+        AQLUtils.registerServicesConfigurator(SERVICE_CONFIGURATOR);
+        AQLUtils.registerResourceSetConfigurator(RESOURCE_SET_CONFIGURATOR);
     }
 
     @AfterClass
     public static void afterClass() {
-        M2DocUtils.unregisterServicesConfigurator(CONFIGURATOR);
+        AQLUtils.unregisterServicesConfigurator(SERVICE_CONFIGURATOR);
+        AQLUtils.unregisterResourceSetConfigurator(RESOURCE_SET_CONFIGURATOR);
     }
 
     @Test
@@ -166,7 +179,7 @@ public class M2DocUtilsTests {
     @Test
     public void createResourceSetForModels() {
         List<Exception> exceptions = new ArrayList<>();
-        final ResourceSet rs = M2DocUtils.createResourceSetForModels(exceptions, Query.newEnvironment(), null,
+        final ResourceSet rs = AQLUtils.createResourceSetForModels(exceptions, Query.newEnvironment(), null,
                 new HashMap<>());
 
         assertEquals(TestServiceConfigurator.RESOURCE_SET, rs);

@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 
 <!--
-     Copyright (c) 2016, 2020 Obeo. 
+     Copyright (c) 2016, 2025 Obeo. 
      All rights reserved. This program and the accompanying materials
      are made available under the terms of the Eclipse Public License v2.0
      which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@
 
 <plugin>
    <extension-point id="org.obeonetwork.m2doc.ide.services.register" name="M2Doc Service Register" schema="schema/org.obeonetwork.m2doc.ide.services.register.exsd"/>
-   <extension-point id="org.obeonetwork.m2doc.ide.servicesConfigurator" name="Services Configurator" schema="schema/org.obeonetwork.m2doc.ide.servicesConfigurator.exsd"/>
    <extension-point id="org.obeonetwork.m2doc.ide.templates.register" name="M2Doc template Register" schema="schema/org.obeonetwork.m2doc.ide.templates.register.exsd"/>
    <extension-point id="org.obeonetwork.m2doc.ide.classprovider" name="M2Doc class provider" schema="schema/org.obeonetwork.m2doc.ide.classprovider.exsd"/>
 
@@ -30,9 +29,10 @@
             genModel="platform:/plugin/org.obeonetwork.m2doc/model/Template.genmodel"/>
    </extension>
    <extension
-         point="org.obeonetwork.m2doc.ide.servicesConfigurator">
+         point="org.eclipse.acceleo.query.ide.servicesConfigurator">
       <servicesConfigurators
-            class="org.obeonetwork.m2doc.services.HTTPServiceConfigurator">
+            class="org.obeonetwork.m2doc.services.DocumentServiceConfigurator"
+            language="org.obeonetwork.m2doc">
       </servicesConfigurators>
    </extension>
 

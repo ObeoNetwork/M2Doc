@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.core.resources.IFile;
@@ -133,7 +134,6 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.provider.GenconfItemProviderAdapterFactory;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * This is an example of a Genconf model editor.
@@ -1076,7 +1076,7 @@ public class GenconfEditor extends MultiPageEditorPart
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
-            resourceSet = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment, defaultResourceSet,
+            resourceSet = AQLUtils.createResourceSetForModels(exceptions, queryEnvironment, defaultResourceSet,
                     GenconfUtils.getOptions(gen));
             isDefaultResourceSet = resourceSet == defaultResourceSet;
         } else {
@@ -1693,13 +1693,13 @@ public class GenconfEditor extends MultiPageEditorPart
 
         final ResourceSet newResourceSet;
         if (isDefaultResourceSet) {
-            newResourceSet = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment,
+            newResourceSet = AQLUtils.createResourceSetForModels(exceptions, queryEnvironment,
                     editingDomain.getResourceSet(), GenconfUtils.getOptions(generation));
         } else {
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
-            newResourceSet = M2DocUtils.createResourceSetForModels(exceptions, queryEnvironment, defaultResourceSet,
+            newResourceSet = AQLUtils.createResourceSetForModels(exceptions, queryEnvironment, defaultResourceSet,
                     GenconfUtils.getOptions(generation));
             isDefaultResourceSet = newResourceSet == defaultResourceSet;
         }

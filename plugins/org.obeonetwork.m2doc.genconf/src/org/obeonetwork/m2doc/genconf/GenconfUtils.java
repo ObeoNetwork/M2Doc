@@ -25,11 +25,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -74,7 +77,9 @@ public final class GenconfUtils {
     static {
         if (EMFPlugin.IS_ECLIPSE_RUNNING) {
             // make sure org.obeonetwork.m2doc.ide is started
-            M2DocPlugin.INSTANCE.getBaseURL();
+            M2DocPlugin.getPlugin();
+            // make sure org.eclipse.acceleo.query.ide is started
+            QueryPlugin.getPlugin();
         }
     }
 
@@ -107,6 +112,7 @@ public final class GenconfUtils {
         final Resource eResource = generation.eResource();
         if (eResource != null && eResource.getURI() != null) {
             res.put(GENCONF_URI_OPTION, eResource.getURI().toString());
+            res.put(AQLUtils.BASE_URI_OPTION, eResource.getURI().toString());
         }
         if (generation.getTemplateFileName() != null) {
             res.put(M2DocUtils.TEMPLATE_URI_OPTION,
@@ -188,15 +194,18 @@ public final class GenconfUtils {
      *            the {@link ResourceSet} for model elements
      * @param generation
      *            the {@link Generation}
+     * @param forWorkspace
+     *            tells if the {@link IService} will be used in a workspace
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
-    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels, Generation generation) {
+    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels, Generation generation,
+            boolean forWorkspace) {
         final URI templateURI;
         templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
         final Map<String, String> options = getOptions(generation);
         final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels, templateURI,
-                options);
+                options, forWorkspace);
 
         return queryEnvironment;
     }
@@ -212,16 +221,19 @@ public final class GenconfUtils {
      *            the {@link IRootEObjectProvider} used for the allInstances() service
      * @param generation
      *            the {@link Generation}
+     * @param forWorkspace
+     *            tells if the {@link IService} will be used in a workspace
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
     public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels,
-            CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, Generation generation) {
+            CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, Generation generation,
+            boolean forWorkspace) {
         final URI templateURI;
         templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
         final Map<String, String> options = getOptions(generation);
         final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels,
-                crossReferenceProvider, rootProvider, templateURI, options);
+                crossReferenceProvider, rootProvider, templateURI, options, forWorkspace);
 
         return queryEnvironment;
     }
@@ -687,7 +699,8 @@ public final class GenconfUtils {
             throws IOException, DocumentParserException, DocumentGenerationException {
 
         final URIConverter uriConverter = resourceSetForModels.getURIConverter();
-        final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
+        final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation,
+                false);
 
         if (!uriConverter.exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template doest not exist " + templateURI);
@@ -749,7 +762,7 @@ public final class GenconfUtils {
         final boolean res;
 
         // get AQL environment
-        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation);
+        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation, false);
 
         // get the template path
         final String templateFilePath = generation.getTemplateFileName();

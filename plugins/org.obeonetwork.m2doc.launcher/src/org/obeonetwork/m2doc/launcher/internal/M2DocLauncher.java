@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Monitor;
@@ -37,7 +38,6 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Application class for the M2Doc Launcher. Parses the arguments and launch
@@ -154,7 +154,7 @@ public class M2DocLauncher implements IApplication {
     private void launchGenerationConfiguration(Generation generation, final Monitor monitor) {
         final List<Exception> exceptions = new ArrayList<Exception>();
         final Map<String, String> options = GenconfUtils.getOptions(generation);
-        final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+        final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(exceptions, generation,
                 new ResourceSetImpl(), options);
         try {
             System.out.println("Input: " + generation.eResource().getURI());
@@ -171,7 +171,7 @@ public class M2DocLauncher implements IApplication {
             M2DocLauncherPlugin.INSTANCE
                     .log(new Status(IStatus.ERROR, M2DocLauncherPlugin.INSTANCE.getSymbolicName(), message, e));
         } finally {
-            M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
+            AQLUtils.cleanResourceSetForModels(generation, resourceSetForModel);
         }
     }
 
@@ -234,7 +234,8 @@ public class M2DocLauncher implements IApplication {
          * CmdLineException
          */
         if (genconfs == null || genconfs.length == 0) {
-            throw new CmdLineException(parser, "You must specify genconfs models.");
+            throw new CmdLineException(parser, "You must specify genconfs models.",
+                    new IllegalArgumentException("You must specify genconfs models."));
         }
         for (String modelPath : genconfs) {
 

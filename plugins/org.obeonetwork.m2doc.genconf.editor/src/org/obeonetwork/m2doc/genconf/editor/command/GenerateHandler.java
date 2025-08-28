@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -34,7 +35,6 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Generate docx from {@link Generation}.
@@ -87,7 +87,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
             final List<URI> generatedfiles = new ArrayList<URI>();
             final List<Exception> exceptions = new ArrayList<Exception>();
             final Map<String, String> options = GenconfUtils.getOptions(generation);
-            final ResourceSet resourceSetForModel = M2DocUtils.createResourceSetForModels(exceptions, generation,
+            final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(exceptions, generation,
                     new ResourceSetImpl(), options);
             try {
                 final boolean generate = checkM2DocVersion(shell, M2_DOC_GENERATION, generation);
@@ -109,7 +109,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
                     }
                 });
             } finally {
-                M2DocUtils.cleanResourceSetForModels(generation, resourceSetForModel);
+                AQLUtils.cleanResourceSetForModels(generation, resourceSetForModel);
             }
 
             if (generatedfiles.size() == 1) {

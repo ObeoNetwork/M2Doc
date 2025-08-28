@@ -73,11 +73,15 @@ location GMF-Runtime-1.16.3 "https://download.eclipse.org/modeling/gmp/gmf-runti
 	org.apache.xmlgraphics [2.9.0,2.9.1)
 }
 
-location "https://download.eclipse.org/acceleo/updates/releases/4.1/R202502130921/" {
+
+location "https://download.eclipse.org/acceleo/updates/nightly/latest/" {
 	// AQL
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.source.feature.group lazy
+	org.eclipse.acceleo.query.cdo.feature.group lazy
+	org.eclipse.acceleo.query.sirius.feature.group lazy
 }
+
 
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
 	org.kohsuke.args4j [2.0.21,2.1.0)

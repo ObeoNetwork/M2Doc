@@ -24,14 +24,14 @@ import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.obeonetwork.m2doc.services.configurator.IServicesConfigurator;
+import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
 
 /**
  * {@link DocumentServices} configurator.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class DocumentServiceConfigurator implements IServicesConfigurator {
+public class DocumentServiceConfigurator implements IM2DocServicesConfigurator {
 
     /**
      * Mapping from {@link IReadOnlyQueryEnvironment} to its instance of {@link DocumentServices}.
@@ -61,7 +61,7 @@ public class DocumentServiceConfigurator implements IServicesConfigurator {
 
     @Override
     public Set<IService<?>> getServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
-            Map<String, String> options) {
+            Map<String, String> options, boolean forWorkspace) {
         final DocumentServices instance = new DocumentServices();
         instancies.put(queryEnvironment, instance);
 
@@ -76,17 +76,6 @@ public class DocumentServiceConfigurator implements IServicesConfigurator {
     @Override
     public void cleanServices(IReadOnlyQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels) {
         instancies.remove(queryEnvironment);
-    }
-
-    @Override
-    public ResourceSet createResourceSetForModels(Object context, Map<String, String> options) {
-        // nothing to do here
-        return null;
-    }
-
-    @Override
-    public void cleanResourceSetForModels(Object context) {
-        // nothing to do here
     }
 
 }

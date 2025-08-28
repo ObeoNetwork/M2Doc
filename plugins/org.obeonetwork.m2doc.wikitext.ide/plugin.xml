@@ -2,9 +2,10 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.obeonetwork.m2doc.ide.servicesConfigurator">
+         point="org.eclipse.acceleo.query.ide.servicesConfigurator">
       <servicesConfigurators
-            class="org.obeonetwork.m2doc.wikitext.services.WikiTextServicesConfigurator">
+            class="org.obeonetwork.m2doc.wikitext.services.WikiTextServicesConfigurator"
+            language="org.obeonetwork.m2doc">
       </servicesConfigurators>
    </extension>
 

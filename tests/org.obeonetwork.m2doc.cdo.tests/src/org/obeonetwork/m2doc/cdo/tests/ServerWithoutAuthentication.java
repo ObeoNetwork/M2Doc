@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,6 +14,11 @@ package org.obeonetwork.m2doc.cdo.tests;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.cdo.AqlCDOUtils;
+import org.eclipse.acceleo.query.cdo.services.configurator.CDOResourceSetConfigurator;
+import org.eclipse.acceleo.query.services.configurator.IResourceSetConfiguratorDescriptor;
+import org.eclipse.acceleo.query.services.configurator.ResourceSetConfiguratorDescriptor;
 import org.eclipse.emf.cdo.eresource.CDOResource;
 import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
@@ -28,12 +33,8 @@ import org.eclipse.net4j.connector.IConnector;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.cdo.M2DocCDOUtils;
-import org.obeonetwork.m2doc.cdo.services.configurator.CDOServicesConfigurator;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.services.configurator.ServicesConfiguratorDescriptor;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
-import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Tests with authenticated CDO server.
@@ -48,10 +49,10 @@ public class ServerWithoutAuthentication extends AbstractTemplatesTestSuite {
     private static CDOServer server;
 
     /**
-     * The instance of {@link CDOServicesConfigurator} for standalone use.
+     * The instance of {@link CDOResourceSetConfigurator} descriptor for standalone use.
      */
-    private static final ServicesConfiguratorDescriptor SERVICES_CONFIGURATOR_DESCRIPTOR = new ServicesConfiguratorDescriptor(
-            new CDOServicesConfigurator());
+    private static final IResourceSetConfiguratorDescriptor CONFIGURATOR_DESCRIPTOR = new ResourceSetConfiguratorDescriptor(
+            new CDOResourceSetConfigurator());
 
     /**
      * Constructor.
@@ -74,11 +75,11 @@ public class ServerWithoutAuthentication extends AbstractTemplatesTestSuite {
     public static void startCDOServer() {
         server = new CDOServer(false);
         server.start();
-        IConnector connector = M2DocCDOUtils
+        IConnector connector = AqlCDOUtils
                 .getConnector(CDOServer.PROTOCOL + "://" + CDOServer.IP + ":" + CDOServer.PORT);
-        CDOSession session = M2DocCDOUtils.openSession(connector, CDOServer.REPOSITORY_NAME, CDOServer.USER_NAME,
+        CDOSession session = AqlCDOUtils.openSession(connector, CDOServer.REPOSITORY_NAME, CDOServer.USER_NAME,
                 CDOServer.PASSWORD);
-        final CDOTransaction transaction = M2DocCDOUtils.openTransaction(session);
+        final CDOTransaction transaction = AqlCDOUtils.openTransaction(session);
         final CDOResource resource = transaction.createResource("anydsl.ecore");
         final ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
@@ -97,7 +98,7 @@ public class ServerWithoutAuthentication extends AbstractTemplatesTestSuite {
         connector.close();
 
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.registerResourceSetConfigurator(CONFIGURATOR_DESCRIPTOR);
         }
     }
 
@@ -109,7 +110,7 @@ public class ServerWithoutAuthentication extends AbstractTemplatesTestSuite {
         server.stop();
 
         if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            M2DocUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+            AQLUtils.unregisterResourceSetConfigurator(CONFIGURATOR_DESCRIPTOR);
         }
     }
 

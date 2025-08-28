@@ -27,12 +27,6 @@
    <feature id="org.obeonetwork.m2doc.sirius.feature.source" version="0.0.0">
       <category name="M2Doc"/>
    </feature>
-   <feature id="org.obeonetwork.m2doc.cdo.feature" version="0.0.0">
-      <category name="M2Doc"/>
-   </feature>
-   <feature id="org.obeonetwork.m2doc.cdo.feature.source" version="0.0.0">
-      <category name="M2Doc"/>
-   </feature>
    <feature id="org.obeonetwork.m2doc.html.feature" version="0.0.0">
       <category name="M2Doc"/>
    </feature>

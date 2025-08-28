@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.obeonetwork.m2doc.sirius.tests;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.sirius.AqlSiriusUtils;
 import org.eclipse.emf.common.util.URI;
 import org.junit.AfterClass;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
@@ -21,7 +23,6 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.sirius.M2DocSiriusUtils;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
@@ -43,8 +44,10 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      */
     public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
         super(testFolder);
-        // make sure m2doc.ide is activated
+        // make sure m2doc.ide is started
         M2DocPlugin.getPlugin();
+        // make sure org.eclipse.acceleo.query.ide is started
+        QueryPlugin.getPlugin();
     }
 
     /**
@@ -61,7 +64,7 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
     @Override
     protected void setTemplateFileName(Generation gen, String templateFileName) {
         super.setTemplateFileName(gen, templateFileName);
-        final Option option = GenconfUtils.getOrCreateOption(gen, M2DocSiriusUtils.SIRIUS_SESSION_OPTION);
+        final Option option = GenconfUtils.getOrCreateOption(gen, AqlSiriusUtils.SIRIUS_SESSION_OPTION);
         option.setValue(getSessionURI(new File(getTestFolderPath())).deresolve(gen.eResource().getURI()).toString());
     }
 
