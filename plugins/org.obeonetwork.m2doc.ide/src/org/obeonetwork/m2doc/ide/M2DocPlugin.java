@@ -15,6 +15,7 @@ package org.obeonetwork.m2doc.ide;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -104,6 +105,9 @@ public class M2DocPlugin extends EMFPlugin {
          */
         public Implementation() {
             super();
+
+            // make sure org.eclipse.acceleo.query.ide is started
+            QueryPlugin.getPlugin();
 
             // Remember the static instance.
             //

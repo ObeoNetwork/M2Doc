@@ -427,6 +427,19 @@
         <module>releng/org.obeonetwork.m2doc.rcpttproduct</module>
         <module>tests/org.obeonetwork.m2doc.rcptt</module>
         <module>features/org.obeonetwork.m2doc.rcptt.feature</module>
+
+        <module>tests/org.obeonetwork.m2doc.tests</module>
+        <module>tests/org.obeonetwork.m2doc.ide.tests</module>
+        <module>tests/org.obeonetwork.m2doc.sirius.tests</module>
+        <module>tests/org.obeonetwork.m2doc.genconf.tests</module>
+        <module>tests/org.obeonetwork.m2doc.genconf.edit.tests</module>
+        <module>tests/org.obeonetwork.m2doc.cdo.tests</module>
+        <module>tests/org.obeonetwork.m2doc.html.tests</module>
+        <module>tests/org.obeonetwork.m2doc.wikitext.tests</module>
+
+        <module>tests/org.xtext.example.mydsl</module>
+        <module>tests/org.xtext.example.mydsl.ide</module>
+        <module>tests/org.xtext.example.mydsl.ui</module>
       </modules>
       <properties>
         <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2024-03</eclipse-rcptt-inject-site>

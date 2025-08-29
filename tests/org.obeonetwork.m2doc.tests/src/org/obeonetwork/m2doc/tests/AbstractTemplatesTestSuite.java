@@ -34,7 +34,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.services.configurator.HTTPServiceConfigurator;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfiguratorDescriptor;
 import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
-import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -218,9 +217,7 @@ public abstract class AbstractTemplatesTestSuite {
      */
     @BeforeClass
     public static void beforeClass() {
-        if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            AQLUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
-        }
+        AQLUtils.registerServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
     }
 
     /**
@@ -232,9 +229,7 @@ public abstract class AbstractTemplatesTestSuite {
     @AfterClass
     public static void afterClass() throws IOException {
         documentTemplate.close();
-        if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-            AQLUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
-        }
+        AQLUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
     }
 
     /**

@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.AQLUtils;
-import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -41,7 +40,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -58,7 +56,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -73,15 +70,6 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class GenconfUtils {
-
-    static {
-        if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-            // make sure org.obeonetwork.m2doc.ide is started
-            M2DocPlugin.getPlugin();
-            // make sure org.eclipse.acceleo.query.ide is started
-            QueryPlugin.getPlugin();
-        }
-    }
 
     /**
      * The genconf extension file.

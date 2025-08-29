@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,12 +14,14 @@ package org.obeonetwork.m2doc.genconf;
 
 import java.util.List;
 
+import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.common.util.URI;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -86,6 +88,12 @@ public class GenconfPlugin extends EMFPlugin {
         @Override
         public void start(BundleContext context) throws Exception {
             super.start(context);
+
+            // make sure org.obeonetwork.m2doc.ide is started
+            M2DocPlugin.getPlugin();
+            // make sure org.eclipse.acceleo.query.ide is started
+            QueryPlugin.getPlugin();
+
             listener = new GenconfResourceListener();
             ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
             listener.walkWorkspace(ResourcesPlugin.getWorkspace());
