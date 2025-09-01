@@ -32,7 +32,6 @@ import org.eclipse.acceleo.query.AQLUtils.AcceleoAQLResult;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.Positions;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -73,11 +72,9 @@ public class M2DocParser extends AbstractBodyParser {
      * 
      * @param inputDocument
      *            the input template to parser
-     * @param queryEnvironment
-     *            the query environment to used during parsing.
      */
-    public M2DocParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
-        super(inputDocument, queryEnvironment);
+    public M2DocParser(IBody inputDocument) {
+        super(inputDocument);
     }
 
     /**
@@ -87,11 +84,9 @@ public class M2DocParser extends AbstractBodyParser {
      *            the input template to parser
      * @param queryParser
      *            the query parser to use during parsing
-     * @param queryEnvironment
-     *            The {@link IQueryEnvironment}
      */
-    private M2DocParser(IBody inputDocument, IQueryBuilderEngine queryParser, IQueryEnvironment queryEnvironment) {
-        super(inputDocument, queryParser, queryEnvironment);
+    private M2DocParser(IBody inputDocument, IQueryBuilderEngine queryParser) {
+        super(inputDocument, queryParser);
     }
 
     @Override
@@ -924,7 +919,7 @@ public class M2DocParser extends AbstractBodyParser {
 
     @Override
     protected AbstractBodyParser getNewParser(IBody inputDocument) {
-        AbstractBodyParser parser = new M2DocParser(inputDocument, this.queryParser, this.queryEnvironment);
+        AbstractBodyParser parser = new M2DocParser(inputDocument, this.queryParser);
         return parser;
     }
 }

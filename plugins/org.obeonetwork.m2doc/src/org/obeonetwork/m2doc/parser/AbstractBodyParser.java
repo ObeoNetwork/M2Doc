@@ -25,7 +25,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -65,20 +64,13 @@ public abstract class AbstractBodyParser {
     protected final IQueryBuilderEngine queryParser;
 
     /**
-     * The {@link IQueryEnvironment}.
-     */
-    protected final IQueryEnvironment queryEnvironment;
-
-    /**
      * Creates a new {@link M2DocParser} instance.
      * 
      * @param inputDocument
      *            the input template to parser
-     * @param queryEnvironment
-     *            the query environment to used during parsing.
      */
-    public AbstractBodyParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
-        this(inputDocument, new QueryBuilderEngine(), queryEnvironment);
+    public AbstractBodyParser(IBody inputDocument) {
+        this(inputDocument, new QueryBuilderEngine());
     }
 
     /**
@@ -88,15 +80,11 @@ public abstract class AbstractBodyParser {
      *            the input template to parser
      * @param queryParser
      *            the query parser to use during parsing
-     * @param queryEnvironment
-     *            The {@link IQueryEnvironment}
      */
-    protected AbstractBodyParser(IBody inputDocument, IQueryBuilderEngine queryParser,
-            IQueryEnvironment queryEnvironment) {
+    protected AbstractBodyParser(IBody inputDocument, IQueryBuilderEngine queryParser) {
         this.document = inputDocument;
         runIterator = createTokenProvider(inputDocument);
         this.queryParser = queryParser;
-        this.queryEnvironment = queryEnvironment;
     }
 
     /**

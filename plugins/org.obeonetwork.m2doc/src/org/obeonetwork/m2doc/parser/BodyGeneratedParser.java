@@ -23,7 +23,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.IConstruct;
@@ -58,11 +57,9 @@ public class BodyGeneratedParser extends AbstractBodyParser {
      * 
      * @param inputDocument
      *            the input template to parser
-     * @param queryEnvironment
-     *            the query environment to used during parsing.
      */
-    public BodyGeneratedParser(IBody inputDocument, IQueryEnvironment queryEnvironment) {
-        super(inputDocument, queryEnvironment);
+    public BodyGeneratedParser(IBody inputDocument) {
+        super(inputDocument);
     }
 
     /**
@@ -72,12 +69,9 @@ public class BodyGeneratedParser extends AbstractBodyParser {
      *            the input template to parser
      * @param queryParser
      *            the query parser to use during parsing
-     * @param queryEnvironment
-     *            The {@link IQueryEnvironment}
      */
-    private BodyGeneratedParser(IBody inputDocument, IQueryBuilderEngine queryParser,
-            IQueryEnvironment queryEnvironment) {
-        super(inputDocument, queryParser, queryEnvironment);
+    private BodyGeneratedParser(IBody inputDocument, IQueryBuilderEngine queryParser) {
+        super(inputDocument, queryParser);
     }
 
     @Override
@@ -274,7 +268,7 @@ public class BodyGeneratedParser extends AbstractBodyParser {
 
     @Override
     protected AbstractBodyParser getNewParser(IBody inputDocument) {
-        AbstractBodyParser parser = new BodyGeneratedParser(inputDocument, this.queryParser, this.queryEnvironment);
+        AbstractBodyParser parser = new BodyGeneratedParser(inputDocument, this.queryParser);
         return parser;
     }
 }

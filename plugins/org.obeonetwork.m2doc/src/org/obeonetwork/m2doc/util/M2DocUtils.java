@@ -578,7 +578,7 @@ public final class M2DocUtils {
             final int unitOfWork = PARSE_TEMPLATE_MONITOR_WORK
                 / (1 + document.getFooterList().size() + document.getHeaderList().size());
 
-            final M2DocParser parser = new M2DocParser(document, queryEnvironment);
+            final M2DocParser parser = new M2DocParser(document);
             final Block documentBody = parser.parseBlock(result.getTemplates(), TokenType.EOF);
             for (TemplateValidationMessage validationMessage : messages) {
                 documentBody.getValidationMessages().add(validationMessage);
@@ -591,7 +591,7 @@ public final class M2DocUtils {
             nextSubTask(monitor, unitOfWork, "Parsing template footers");
 
             for (XWPFFooter footer : document.getFooterList()) {
-                final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
+                final M2DocParser footerParser = new M2DocParser(footer);
                 result.getFooters().add(footerParser.parseBlock(null, TokenType.EOF));
 
                 monitor.worked(unitOfWork);
@@ -600,7 +600,7 @@ public final class M2DocUtils {
             nextSubTask(monitor, 0, "Parsing template headers");
 
             for (XWPFHeader header : document.getHeaderList()) {
-                final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
+                final M2DocParser headerParser = new M2DocParser(header);
                 result.getHeaders().add(headerParser.parseBlock(null, TokenType.EOF));
 
                 monitor.worked(unitOfWork);
@@ -697,16 +697,14 @@ public final class M2DocUtils {
      *            the {@link URIConverter uri converter} to use.
      * @param documentURI
      *            URI for the document
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
      * @return the {@link DocumentTemplate} resulting from parsing the specified
      *         document
      * @throws DocumentParserException
      *             if a problem occurs while parsing the document.
      */
     @SuppressWarnings("resource")
-    public static DocumentTemplate parseUserContent(URIConverter uriConverter, URI documentURI,
-            IQueryEnvironment queryEnvironment) throws DocumentParserException {
+    public static DocumentTemplate parseUserContent(URIConverter uriConverter, URI documentURI)
+            throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         final ResourceImpl r = new ResourceImpl(documentURI);
 
@@ -716,17 +714,17 @@ public final class M2DocUtils {
             final OPCPackage oPackage = OPCPackage.open(is);
             final XWPFDocument document = new XWPFDocument(oPackage);
             r.getContents().add(result);
-            final BodyGeneratedParser parser = new BodyGeneratedParser(document, queryEnvironment);
+            final BodyGeneratedParser parser = new BodyGeneratedParser(document);
             result.setBody(parser.parseBlock(null, TokenType.EOF));
             result.setInputStream(is);
             result.setOpcPackage(oPackage);
             result.setDocument(document);
             for (XWPFFooter footer : document.getFooterList()) {
-                final BodyGeneratedParser footerParser = new BodyGeneratedParser(footer, queryEnvironment);
+                final BodyGeneratedParser footerParser = new BodyGeneratedParser(footer);
                 result.getFooters().add(footerParser.parseBlock(null, TokenType.EOF));
             }
             for (XWPFHeader header : document.getHeaderList()) {
-                final BodyGeneratedParser headerParser = new BodyGeneratedParser(header, queryEnvironment);
+                final BodyGeneratedParser headerParser = new BodyGeneratedParser(header);
                 result.getHeaders().add(headerParser.parseBlock(null, TokenType.EOF));
             }
 

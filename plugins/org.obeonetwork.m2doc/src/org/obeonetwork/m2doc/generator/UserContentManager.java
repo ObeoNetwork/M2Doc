@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -29,7 +29,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -135,12 +134,10 @@ public class UserContentManager {
      * Launch Parsing.
      */
     private void launchParsing() {
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
         mapIdUserContent = new HashMap<>();
         if (memoryCopy != null) {
             try {
-                userDocDocument = M2DocUtils.parseUserContent(uriConverter, memoryCopy, queryEnvironment);
+                userDocDocument = M2DocUtils.parseUserContent(uriConverter, memoryCopy);
                 copyToLostDocument = hasError(userDocDocument);
                 final TreeIterator<EObject> iter = userDocDocument.eAllContents();
                 while (iter.hasNext()) {

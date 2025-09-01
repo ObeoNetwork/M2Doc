@@ -36,7 +36,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
@@ -471,8 +470,7 @@ public class TemplateCustomProperties {
     public List<String> getMissingVariables() {
         final List<String> res = new ArrayList<>();
 
-        final IQueryEnvironment queryEnvironment = Query.newEnvironment();
-        final M2DocParser parser = new M2DocParser(document, queryEnvironment);
+        final M2DocParser parser = new M2DocParser(document);
         try {
             final List<Template> templates = new ArrayList<>();
             final Block block = parser.parseBlock(templates);
@@ -480,12 +478,12 @@ public class TemplateCustomProperties {
             final Set<String> used = new LinkedHashSet<>();
             walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, block);
             for (XWPFFooter footer : document.getFooterList()) {
-                final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
+                final M2DocParser footerParser = new M2DocParser(footer);
                 final Block footerBlock = footerParser.parseBlock(null, TokenType.EOF);
                 walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, footerBlock);
             }
             for (XWPFHeader header : document.getHeaderList()) {
-                final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
+                final M2DocParser headerParser = new M2DocParser(header);
                 final Block headerBlock = headerParser.parseBlock(null, TokenType.EOF);
                 walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, headerBlock);
             }
@@ -505,8 +503,7 @@ public class TemplateCustomProperties {
     public List<String> getUnusedDeclarations() {
         final List<String> res = new ArrayList<>(getVariables().keySet());
 
-        final IQueryEnvironment queryEnvironment = Query.newEnvironment();
-        final M2DocParser parser = new M2DocParser(document, queryEnvironment);
+        final M2DocParser parser = new M2DocParser(document);
         try {
             final List<Template> templates = new ArrayList<>();
             final Block block = parser.parseBlock(templates);
@@ -514,12 +511,12 @@ public class TemplateCustomProperties {
             final Set<String> used = new LinkedHashSet<>();
             walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, block);
             for (XWPFFooter footer : document.getFooterList()) {
-                final M2DocParser footerParser = new M2DocParser(footer, queryEnvironment);
+                final M2DocParser footerParser = new M2DocParser(footer);
                 final Block footerBlock = footerParser.parseBlock(null, TokenType.EOF);
                 walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, footerBlock);
             }
             for (XWPFHeader header : document.getHeaderList()) {
-                final M2DocParser headerParser = new M2DocParser(header, queryEnvironment);
+                final M2DocParser headerParser = new M2DocParser(header);
                 final Block headerBlock = headerParser.parseBlock(null, TokenType.EOF);
                 walkForNeededVariables(new ArrayList<>(getVariables().keySet()), missing, used, headerBlock);
             }
