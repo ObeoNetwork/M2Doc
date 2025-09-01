@@ -366,6 +366,24 @@ public class TemplateAstSerializer extends TemplateSwitch<Void> {
     @Override
     public Void caseDocumentTemplate(DocumentTemplate documentTemplate) {
         newLine();
+        builder.append("=== PROPERTIES ===");
+        newLine();
+        builder.append("version: ");
+        builder.append(documentTemplate.getM2DocVersion());
+        newLine();
+        builder.append("metamodels: ");
+        newLine();
+        for (String metamodel : documentTemplate.getMetamodels()) {
+            builder.append(metamodel);
+            newLine();
+        }
+        builder.append("imports: ");
+        newLine();
+        for (String imported : documentTemplate.getImports()) {
+            builder.append(imported);
+            newLine();
+        }
+
         builder.append("=== HEADER ===");
         newLine();
         for (Block header : documentTemplate.getHeaders()) {

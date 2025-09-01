@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -1398,6 +1398,46 @@ public interface TemplatePackage extends EPackage {
     int DOCUMENT_TEMPLATE__TEMPLATES = IGENERATEABLE_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__PROPERTIES = IGENERATEABLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>M2 Doc Version</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__M2_DOC_VERSION = IGENERATEABLE_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>Metamodels</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__METAMODELS = IGENERATEABLE_FEATURE_COUNT + 9;
+
+    /**
+     * The feature id for the '<em><b>Imports</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__IMPORTS = IGENERATEABLE_FEATURE_COUNT + 10;
+
+    /**
      * The number of structural features of the '<em>Document Template</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1405,7 +1445,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_TEMPLATE_FEATURE_COUNT = IGENERATEABLE_FEATURE_COUNT + 7;
+    int DOCUMENT_TEMPLATE_FEATURE_COUNT = IGENERATEABLE_FEATURE_COUNT + 11;
 
     /**
      * The number of operations of the '<em>Document Template</em>' class.
@@ -1863,7 +1903,7 @@ public interface TemplatePackage extends EPackage {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
-     * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
+     * @see org.eclipse.acceleo.query.parser.AstResult
      * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
      * @generated
      */
@@ -1923,6 +1963,17 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     int CT_SDT_BLOCK = 33;
+
+    /**
+     * The meta object id for the '<em>Custom Properties</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see org.obeonetwork.m2doc.properties.TemplateCustomProperties
+     * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateCustomProperties()
+     * @generated
+     */
+    int TEMPLATE_CUSTOM_PROPERTIES = 34;
 
     /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.IConstruct <em>IConstruct</em>}'.
@@ -2556,6 +2607,57 @@ public interface TemplatePackage extends EPackage {
     EReference getDocumentTemplate_Templates();
 
     /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getProperties
+     * <em>Properties</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute '<em>Properties</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getProperties()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_Properties();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getM2DocVersion <em>M2 Doc
+     * Version</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute '<em>M2 Doc Version</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getM2DocVersion()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_M2DocVersion();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getMetamodels
+     * <em>Metamodels</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Metamodels</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getMetamodels()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_Metamodels();
+
+    /**
+     * Returns the meta object for the attribute list '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getImports <em>Imports</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute list '<em>Imports</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getImports()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_Imports();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Bookmark <em>Bookmark</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2789,13 +2891,13 @@ public interface TemplatePackage extends EPackage {
     EDataType getRun();
 
     /**
-     * Returns the meta object for data type '{@link org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult <em>Ast Result</em>}'.
+     * Returns the meta object for data type '{@link org.eclipse.acceleo.query.parser.AstResult <em>Ast Result</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @return the meta object for data type '<em>Ast Result</em>'.
-     * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
-     * @model instanceClass="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"
+     * @see org.eclipse.acceleo.query.parser.AstResult
+     * @model instanceClass="org.eclipse.acceleo.query.parser.AstResult"
      * @generated
      */
     EDataType getAstResult();
@@ -2860,6 +2962,18 @@ public interface TemplatePackage extends EPackage {
      * @generated
      */
     EDataType getCTSdtBlock();
+
+    /**
+     * Returns the meta object for data type '{@link org.obeonetwork.m2doc.properties.TemplateCustomProperties <em>Custom Properties</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for data type '<em>Custom Properties</em>'.
+     * @see org.obeonetwork.m2doc.properties.TemplateCustomProperties
+     * @model instanceClass="org.obeonetwork.m2doc.properties.TemplateCustomProperties"
+     * @generated
+     */
+    EDataType getTemplateCustomProperties();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -3397,6 +3511,42 @@ public interface TemplatePackage extends EPackage {
         EReference DOCUMENT_TEMPLATE__TEMPLATES = eINSTANCE.getDocumentTemplate_Templates();
 
         /**
+         * The meta object literal for the '<em><b>Properties</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__PROPERTIES = eINSTANCE.getDocumentTemplate_Properties();
+
+        /**
+         * The meta object literal for the '<em><b>M2 Doc Version</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__M2_DOC_VERSION = eINSTANCE.getDocumentTemplate_M2DocVersion();
+
+        /**
+         * The meta object literal for the '<em><b>Metamodels</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__METAMODELS = eINSTANCE.getDocumentTemplate_Metamodels();
+
+        /**
+         * The meta object literal for the '<em><b>Imports</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__IMPORTS = eINSTANCE.getDocumentTemplate_Imports();
+
+        /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl <em>Bookmark</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -3605,7 +3755,7 @@ public interface TemplatePackage extends EPackage {
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * 
-         * @see org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult
+         * @see org.eclipse.acceleo.query.parser.AstResult
          * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getAstResult()
          * @generated
          */
@@ -3665,6 +3815,17 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EDataType CT_SDT_BLOCK = eINSTANCE.getCTSdtBlock();
+
+        /**
+         * The meta object literal for the '<em>Custom Properties</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @see org.obeonetwork.m2doc.properties.TemplateCustomProperties
+         * @see org.obeonetwork.m2doc.template.impl.TemplatePackageImpl#getTemplateCustomProperties()
+         * @generated
+         */
+        EDataType TEMPLATE_CUSTOM_PROPERTIES = eINSTANCE.getTemplateCustomProperties();
 
     }
 

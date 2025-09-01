@@ -1,4 +1,8 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+imports: 
 === HEADER ===
 
   This demonstrate the simple usage of asTableByRepresentationName service :

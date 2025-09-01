@@ -1,4 +1,9 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+imports: 
+org.obeonetwork.m2doc.tests.services.MTextTestServices
 === HEADER ===
 
 === BODY ===

@@ -1,4 +1,8 @@
 
+=== PROPERTIES ===
+version: 0.0.0
+metamodels: 
+imports: 
 === HEADER ===
 
 === BODY ===

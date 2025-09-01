@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -341,6 +342,14 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     private EDataType ctSdtBlockEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    private EDataType templateCustomPropertiesEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1000,6 +1009,50 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     @Override
+    public EAttribute getDocumentTemplate_Properties() {
+        return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public EAttribute getDocumentTemplate_M2DocVersion() {
+        return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public EAttribute getDocumentTemplate_Metamodels() {
+        return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public EAttribute getDocumentTemplate_Imports() {
+        return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(10);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
     public EClass getBookmark() {
         return bookmarkEClass;
     }
@@ -1286,6 +1339,17 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     @Override
+    public EDataType getTemplateCustomProperties() {
+        return templateCustomPropertiesEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
     public TemplateFactory getTemplateFactory() {
         return (TemplateFactory) getEFactoryInstance();
     }
@@ -1380,6 +1444,10 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__OPC_PACKAGE);
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__DOCUMENT);
         createEReference(documentTemplateEClass, DOCUMENT_TEMPLATE__TEMPLATES);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__PROPERTIES);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__M2_DOC_VERSION);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__METAMODELS);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__IMPORTS);
 
         bookmarkEClass = createEClass(BOOKMARK);
         createEAttribute(bookmarkEClass, BOOKMARK__NAME);
@@ -1415,6 +1483,7 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         wTableCellEDataType = createEDataType(WTABLE_CELL);
         bodyEDataType = createEDataType(BODY);
         ctSdtBlockEDataType = createEDataType(CT_SDT_BLOCK);
+        templateCustomPropertiesEDataType = createEDataType(TEMPLATE_CUSTOM_PROPERTIES);
     }
 
     /**
@@ -1602,6 +1671,18 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEReference(getDocumentTemplate_Templates(), this.getTemplate(), this.getTemplate_DocumentTemplate(),
                 "templates", null, 0, -1, DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_Properties(), this.getTemplateCustomProperties(), "properties", null, 0, 1,
+                DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_M2DocVersion(), ecorePackage.getEString(), "M2DocVersion", null, 0, 1,
+                DocumentTemplate.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_Metamodels(), ecorePackage.getEString(), "metamodels", null, 0, -1,
+                DocumentTemplate.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_Imports(), ecorePackage.getEString(), "imports", null, 0, -1,
+                DocumentTemplate.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                IS_DERIVED, IS_ORDERED);
 
         initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -1661,6 +1742,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEDataType(bodyEDataType, IBody.class, "Body", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(ctSdtBlockEDataType, CTSdtBlock.class, "CTSdtBlock", IS_SERIALIZABLE,
                 !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(templateCustomPropertiesEDataType, TemplateCustomProperties.class, "TemplateCustomProperties",
+                IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

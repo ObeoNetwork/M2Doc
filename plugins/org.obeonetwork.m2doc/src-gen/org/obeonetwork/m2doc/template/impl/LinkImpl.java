@@ -206,7 +206,7 @@ public class LinkImpl extends MinimalEObjectImpl.Container implements Link {
     @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
-            runs = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.LINK__RUNS);
+            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.LINK__RUNS);
         }
         return runs;
     }
@@ -220,7 +220,7 @@ public class LinkImpl extends MinimalEObjectImpl.Container implements Link {
     @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
-            closingRuns = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.LINK__CLOSING_RUNS);
+            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.LINK__CLOSING_RUNS);
         }
         return closingRuns;
     }
@@ -234,7 +234,7 @@ public class LinkImpl extends MinimalEObjectImpl.Container implements Link {
     @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<>(TemplateValidationMessage.class,
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
                     this, TemplatePackage.LINK__VALIDATION_MESSAGES);
         }
         return validationMessages;

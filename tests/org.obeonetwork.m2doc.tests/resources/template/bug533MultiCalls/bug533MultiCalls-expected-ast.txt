@@ -1,4 +1,9 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+http://www.eclipse.org/emf/2002/Ecore
+imports: 
 === HEADER ===
 
 === BODY ===

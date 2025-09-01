@@ -198,7 +198,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
     @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
-            runs = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.USER_DOC__RUNS);
+            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.USER_DOC__RUNS);
         }
         return runs;
     }
@@ -212,7 +212,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
     @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
-            closingRuns = new EDataTypeUniqueEList<>(XWPFRun.class, this,
+            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this,
                     TemplatePackage.USER_DOC__CLOSING_RUNS);
         }
         return closingRuns;
@@ -227,7 +227,7 @@ public class UserDocImpl extends MinimalEObjectImpl.Container implements UserDoc
     @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<>(TemplateValidationMessage.class,
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
                     this, TemplatePackage.USER_DOC__VALIDATION_MESSAGES);
         }
         return validationMessages;

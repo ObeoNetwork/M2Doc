@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -183,6 +184,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return createBodyFromString(eDataType, initialValue);
             case TemplatePackage.CT_SDT_BLOCK:
                 return createCTSdtBlockFromString(eDataType, initialValue);
+            case TemplatePackage.TEMPLATE_CUSTOM_PROPERTIES:
+                return createTemplateCustomPropertiesFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException(
                         "The datatype '" + eDataType.getName() + "' is not a valid classifier");
@@ -224,6 +227,8 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
                 return convertBodyToString(eDataType, instanceValue);
             case TemplatePackage.CT_SDT_BLOCK:
                 return convertCTSdtBlockToString(eDataType, instanceValue);
+            case TemplatePackage.TEMPLATE_CUSTOM_PROPERTIES:
+                return convertTemplateCustomPropertiesToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException(
                         "The datatype '" + eDataType.getName() + "' is not a valid classifier");
@@ -712,6 +717,26 @@ public class TemplateFactoryImpl extends EFactoryImpl implements TemplateFactory
      * @generated
      */
     public String convertCTSdtBlockToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public TemplateCustomProperties createTemplateCustomPropertiesFromString(EDataType eDataType, String initialValue) {
+        return (TemplateCustomProperties) super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public String convertTemplateCustomPropertiesToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

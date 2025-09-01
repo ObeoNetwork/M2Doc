@@ -183,7 +183,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
-            runs = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.QUERY__RUNS);
+            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.QUERY__RUNS);
         }
         return runs;
     }
@@ -197,7 +197,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
-            closingRuns = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.QUERY__CLOSING_RUNS);
+            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.QUERY__CLOSING_RUNS);
         }
         return closingRuns;
     }
@@ -211,7 +211,7 @@ public class QueryImpl extends MinimalEObjectImpl.Container implements Query {
     @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<>(TemplateValidationMessage.class,
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
                     this, TemplatePackage.QUERY__VALIDATION_MESSAGES);
         }
         return validationMessages;

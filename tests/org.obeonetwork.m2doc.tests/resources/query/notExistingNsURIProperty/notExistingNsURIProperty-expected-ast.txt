@@ -1,4 +1,9 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+NotExistingEPackage
+imports: 
 === HEADER ===
 
 === BODY ===

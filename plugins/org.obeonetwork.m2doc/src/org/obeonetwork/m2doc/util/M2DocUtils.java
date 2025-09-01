@@ -568,8 +568,10 @@ public final class M2DocUtils {
 
             nextSubTask(monitor, LOAD_TEMPLATE_MONITOR_WORK, "Parsing template custom properties");
 
+            final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            result.setProperties(properties);
             final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment,
-                    classProvider, document);
+                    classProvider, properties, document);
             r.getContents().add(result);
 
             nextSubTask(monitor, PARSE_TEMPLATE_CUSTOM_PROPERTIES_MONITOR_WORK, "Parsing template body");
@@ -622,13 +624,14 @@ public final class M2DocUtils {
      *            the {@link IQueryEnvironment}
      * @param classProvider
      *            the {@link IClassProvider} to use for service Loading
+     * @param properties
+     *            the {@link TemplateCustomProperties}
      * @param document
      *            the {@link XWPFDocument}
      * @return the {@link List} of {@link TemplateValidationMessage} produced while reading the {@link TemplateCustomProperties}
      */
     private static List<TemplateValidationMessage> parseTemplateCustomProperties(IQueryEnvironment queryEnvironment,
-            IClassProvider classProvider, final XWPFDocument document) {
-        final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+            IClassProvider classProvider, TemplateCustomProperties properties, XWPFDocument document) {
         final List<TemplateValidationMessage> messages = new ArrayList<>();
         final List<String> missingNsURIs = properties.configureQueryEnvironmentWithResult(queryEnvironment);
         for (String nsURI : missingNsURIs) {

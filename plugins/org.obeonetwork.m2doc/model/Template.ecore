@@ -160,6 +160,15 @@
         eType="#//Document"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="templates" upperBound="-1"
         eType="#//Template" containment="true" eOpposite="#//Template/documentTemplate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="properties" eType="#//TemplateCustomProperties"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="M2DocVersion" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metamodels" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
+        volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imports" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
+        volatile="true" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="POSITION">
     <eLiterals name="ABOVE"/>
@@ -202,4 +211,5 @@
     <eLiterals name="protected" value="1"/>
     <eLiterals name="public" value="2"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="TemplateCustomProperties" instanceClassName="org.obeonetwork.m2doc.properties.TemplateCustomProperties"/>
 </ecore:EPackage>

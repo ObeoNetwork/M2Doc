@@ -221,7 +221,7 @@ public class RepetitionImpl extends MinimalEObjectImpl.Container implements Repe
     @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
-            runs = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.REPETITION__RUNS);
+            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.REPETITION__RUNS);
         }
         return runs;
     }
@@ -235,7 +235,7 @@ public class RepetitionImpl extends MinimalEObjectImpl.Container implements Repe
     @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
-            closingRuns = new EDataTypeUniqueEList<>(XWPFRun.class, this,
+            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this,
                     TemplatePackage.REPETITION__CLOSING_RUNS);
         }
         return closingRuns;
@@ -250,7 +250,7 @@ public class RepetitionImpl extends MinimalEObjectImpl.Container implements Repe
     @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<>(TemplateValidationMessage.class,
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
                     this, TemplatePackage.REPETITION__VALIDATION_MESSAGES);
         }
         return validationMessages;

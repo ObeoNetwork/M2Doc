@@ -1,4 +1,8 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+imports: 
 === HEADER ===
 
   A simple demonstration of a user doc :

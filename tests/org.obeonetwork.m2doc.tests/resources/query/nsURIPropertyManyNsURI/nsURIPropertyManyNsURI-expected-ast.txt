@@ -1,4 +1,10 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+http://www.obeonetwork.org/m2doc/template/1.0
+http://www.obeonetwork.org/m2doc/genconf/1.0
+imports: 
 === HEADER ===
 
 === BODY ===

@@ -210,7 +210,7 @@ public class ConditionalImpl extends MinimalEObjectImpl.Container implements Con
     @Override
     public EList<XWPFRun> getRuns() {
         if (runs == null) {
-            runs = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.CONDITIONAL__RUNS);
+            runs = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this, TemplatePackage.CONDITIONAL__RUNS);
         }
         return runs;
     }
@@ -224,7 +224,8 @@ public class ConditionalImpl extends MinimalEObjectImpl.Container implements Con
     @Override
     public EList<XWPFRun> getClosingRuns() {
         if (closingRuns == null) {
-            closingRuns = new EDataTypeUniqueEList<>(XWPFRun.class, this, TemplatePackage.CONDITIONAL__CLOSING_RUNS);
+            closingRuns = new EDataTypeUniqueEList<XWPFRun>(XWPFRun.class, this,
+                    TemplatePackage.CONDITIONAL__CLOSING_RUNS);
         }
         return closingRuns;
     }
@@ -238,8 +239,8 @@ public class ConditionalImpl extends MinimalEObjectImpl.Container implements Con
     @Override
     public EList<TemplateValidationMessage> getValidationMessages() {
         if (validationMessages == null) {
-            validationMessages = new EDataTypeUniqueEList<>(TemplateValidationMessage.class, this,
-                    TemplatePackage.CONDITIONAL__VALIDATION_MESSAGES);
+            validationMessages = new EDataTypeUniqueEList<TemplateValidationMessage>(TemplateValidationMessage.class,
+                    this, TemplatePackage.CONDITIONAL__VALIDATION_MESSAGES);
         }
         return validationMessages;
     }

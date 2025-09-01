@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -12,12 +12,15 @@ package org.obeonetwork.m2doc.template.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -26,6 +29,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Template;
@@ -46,6 +50,10 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getOpcPackage <em>Opc Package</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getDocument <em>Document</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getTemplates <em>Templates</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getProperties <em>Properties</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getM2DocVersion <em>M2 Doc Version</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getMetamodels <em>Metamodels</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getImports <em>Imports</em>}</li>
  * </ul>
  *
  * @generated
@@ -170,6 +178,39 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     protected EList<Template> templates;
 
     /**
+     * The default value of the '{@link #getProperties() <em>Properties</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getProperties()
+     * @generated
+     * @ordered
+     */
+    protected static final TemplateCustomProperties PROPERTIES_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getProperties() <em>Properties</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getProperties()
+     * @generated
+     * @ordered
+     */
+    protected TemplateCustomProperties properties = PROPERTIES_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getM2DocVersion() <em>M2 Doc Version</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getM2DocVersion()
+     * @generated
+     * @ordered
+     */
+    protected static final String M2_DOC_VERSION_EDEFAULT = null;
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -199,7 +240,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Block> getHeaders() {
         if (headers == null) {
-            headers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
+            headers = new EObjectContainmentEList<>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
         }
         return headers;
     }
@@ -213,7 +254,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Block> getFooters() {
         if (footers == null) {
-            footers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
+            footers = new EObjectContainmentEList<>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
         }
         return footers;
     }
@@ -359,10 +400,98 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Template> getTemplates() {
         if (templates == null) {
-            templates = new EObjectContainmentWithInverseEList<Template>(Template.class, this,
+            templates = new EObjectContainmentWithInverseEList<>(Template.class, this,
                     TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES, TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE);
         }
         return templates;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public TemplateCustomProperties getProperties() {
+        return properties;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public void setProperties(TemplateCustomProperties newProperties) {
+        TemplateCustomProperties oldProperties = properties;
+        properties = newProperties;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__PROPERTIES,
+                    oldProperties, properties));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated NOT
+     */
+    @Override
+    public String getM2DocVersion() {
+        final String res;
+
+        final TemplateCustomProperties properties = getProperties();
+        if (properties != null) {
+            res = properties.getM2DocVersion();
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated NOT
+     */
+    @Override
+    public EList<String> getMetamodels() {
+        final EList<String> res;
+
+        final TemplateCustomProperties properties = getProperties();
+        if (properties != null) {
+            res = ECollections
+                    .unmodifiableEList(ECollections.asEList(ECollections.asEList(properties.getPackagesURIs())));
+        } else {
+            res = ECollections.emptyEList();
+        }
+
+        return res;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated NOT
+     */
+    @Override
+    public EList<String> getImports() {
+        final EList<String> res;
+
+        final TemplateCustomProperties properties = getProperties();
+        if (properties != null) {
+            final List<String> list = new ArrayList<>(properties.getServiceClasses().keySet());
+            res = ECollections.unmodifiableEList(ECollections.asEList(ECollections.asEList(list)));
+        } else {
+            res = ECollections.emptyEList();
+        }
+
+        return res;
     }
 
     /**
@@ -425,6 +554,14 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return getDocument();
             case TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES:
                 return getTemplates();
+            case TemplatePackage.DOCUMENT_TEMPLATE__PROPERTIES:
+                return getProperties();
+            case TemplatePackage.DOCUMENT_TEMPLATE__M2_DOC_VERSION:
+                return getM2DocVersion();
+            case TemplatePackage.DOCUMENT_TEMPLATE__METAMODELS:
+                return getMetamodels();
+            case TemplatePackage.DOCUMENT_TEMPLATE__IMPORTS:
+                return getImports();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -463,6 +600,9 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 getTemplates().clear();
                 getTemplates().addAll((Collection<? extends Template>) newValue);
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__PROPERTIES:
+                setProperties((TemplateCustomProperties) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -497,6 +637,9 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             case TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES:
                 getTemplates().clear();
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__PROPERTIES:
+                setProperties(PROPERTIES_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -524,6 +667,15 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return DOCUMENT_EDEFAULT == null ? document != null : !DOCUMENT_EDEFAULT.equals(document);
             case TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES:
                 return templates != null && !templates.isEmpty();
+            case TemplatePackage.DOCUMENT_TEMPLATE__PROPERTIES:
+                return PROPERTIES_EDEFAULT == null ? properties != null : !PROPERTIES_EDEFAULT.equals(properties);
+            case TemplatePackage.DOCUMENT_TEMPLATE__M2_DOC_VERSION:
+                return M2_DOC_VERSION_EDEFAULT == null ? getM2DocVersion() != null
+                        : !M2_DOC_VERSION_EDEFAULT.equals(getM2DocVersion());
+            case TemplatePackage.DOCUMENT_TEMPLATE__METAMODELS:
+                return !getMetamodels().isEmpty();
+            case TemplatePackage.DOCUMENT_TEMPLATE__IMPORTS:
+                return !getImports().isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -546,6 +698,8 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         result.append(opcPackage);
         result.append(", document: ");
         result.append(document);
+        result.append(", properties: ");
+        result.append(properties);
         result.append(')');
         return result.toString();
     }

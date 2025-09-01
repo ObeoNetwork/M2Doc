@@ -1,4 +1,10 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+http://www.eclipse.org/uml2/5.0.0/UML
+http://www.eclipse.org/uml2/5.0.0/Types
+imports: 
 === HEADER ===
 
 === BODY ===

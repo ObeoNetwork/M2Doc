@@ -29,6 +29,7 @@
     <genDataTypes ecoreDataType="Template.ecore#//WTableCell"/>
     <genDataTypes ecoreDataType="Template.ecore#//Body"/>
     <genDataTypes ecoreDataType="Template.ecore#//CTSdtBlock"/>
+    <genDataTypes ecoreDataType="Template.ecore#//TemplateCustomProperties"/>
     <genClasses image="false" ecoreClass="Template.ecore#//IConstruct">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//IConstruct/styleRun"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//IConstruct/runs"/>
@@ -95,6 +96,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/opcPackage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/document"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Template.ecore#//DocumentTemplate/templates"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/properties"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/M2DocVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/metamodels"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/imports"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Bookmark">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Bookmark/name"/>

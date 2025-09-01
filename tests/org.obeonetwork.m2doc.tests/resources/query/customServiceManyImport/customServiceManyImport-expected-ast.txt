@@ -1,4 +1,10 @@
 
+=== PROPERTIES ===
+version: 4.0.0
+metamodels: 
+imports: 
+org.obeonetwork.m2doc.tests.services.ServicePackage1
+org.obeonetwork.m2doc.tests.services.ServicePackage2
 === HEADER ===
 
 === BODY ===
