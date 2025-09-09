@@ -81,7 +81,8 @@ public class MavenTests {
 		final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader());
 		final Monitor monitor = new BasicMonitor();
 		try (DocumentTemplate template = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
-				queryEnvironment, classProvider, monitor)) {
+				monitor)) {
+			M2DocUtils.prepareEnvironment(queryEnvironment, classProvider, template);
 
 			final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment,
 					monitor);
