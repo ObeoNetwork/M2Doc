@@ -695,9 +695,8 @@ public final class GenconfUtils {
         }
 
         // create generated file
-        try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, queryEnvironment,
-                classProvider, monitor)) {
-
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, monitor)) {
+            M2DocUtils.prepareEnvironment(queryEnvironment, classProvider, documentTemplate);
             // create definitions
             Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
 
@@ -774,7 +773,8 @@ public final class GenconfUtils {
 
         // parse template
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
-                queryEnvironment, classProvider, monitor)) {
+                monitor)) {
+            M2DocUtils.prepareEnvironment(queryEnvironment, classProvider, documentTemplate);
             final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
             for (Exception e : exceptions) {
                 documentTemplate.getBody().getValidationMessages()

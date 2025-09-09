@@ -166,8 +166,9 @@ public abstract class AbstractTemplatesTestSuite {
         final List<Exception> exceptions = new ArrayList<>();
         resourceSetForModels = getResourceSetForModel(exceptions);
         queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation, false);
-        documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor());
+        documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, new BasicMonitor());
+        M2DocUtils.prepareEnvironment(queryEnvironment, new ClassProvider(this.getClass().getClassLoader()),
+                documentTemplate);
         for (Exception e : exceptions) {
             @SuppressWarnings("resource")
             final XWPFRun run = M2DocUtils.getOrCreateFirstRun(documentTemplate.getDocument());

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CancellationException;
 
@@ -541,10 +540,6 @@ public final class M2DocUtils {
      *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            URI for the template, used when external links (images, includes) have to be resolved
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
-     * @param classProvider
-     *            the {@link IClassProvider} to use for service Loading
      * @param monitor
      *            used to track the progress will generating
      * @return the {@link DocumentTemplate} resulting from parsing the specified
@@ -553,8 +548,8 @@ public final class M2DocUtils {
      *             if a problem occurs while parsing the document.
      */
     @SuppressWarnings("resource")
-    public static DocumentTemplate parse(URIConverter uriConverter, URI templateURI, IQueryEnvironment queryEnvironment,
-            IClassProvider classProvider, Monitor monitor) throws DocumentParserException {
+    public static DocumentTemplate parse(URIConverter uriConverter, URI templateURI, Monitor monitor)
+            throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
         final ResourceImpl r = new ResourceImpl(templateURI);
 
@@ -570,8 +565,6 @@ public final class M2DocUtils {
 
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
             result.setProperties(properties);
-            final List<TemplateValidationMessage> messages = parseTemplateCustomProperties(queryEnvironment,
-                    classProvider, properties, document);
             r.getContents().add(result);
 
             nextSubTask(monitor, PARSE_TEMPLATE_CUSTOM_PROPERTIES_MONITOR_WORK, "Parsing template body");
@@ -580,9 +573,6 @@ public final class M2DocUtils {
 
             final M2DocParser parser = new M2DocParser(document);
             final Block documentBody = parser.parseBlock(result.getTemplates(), TokenType.EOF);
-            for (TemplateValidationMessage validationMessage : messages) {
-                documentBody.getValidationMessages().add(validationMessage);
-            }
             result.setBody(documentBody);
             result.setInputStream(is);
             result.setOpcPackage(oPackage);
@@ -618,47 +608,39 @@ public final class M2DocUtils {
     }
 
     /**
-     * Parses {@link TemplateCustomProperties} for the given {@link XWPFDocument} and initializes the given {@link IQueryEnvironment}.
+     * Prepares the given {@link IQueryEnvironment} for the given {@link DocumentTemplate}.
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment}
      * @param classProvider
      *            the {@link IClassProvider} to use for service Loading
-     * @param properties
-     *            the {@link TemplateCustomProperties}
-     * @param document
+     * @param documentTemplate
      *            the {@link XWPFDocument}
-     * @return the {@link List} of {@link TemplateValidationMessage} produced while reading the {@link TemplateCustomProperties}
+     * @return the {@link List} of {@link TemplateValidationMessage} produced preparing the {@link IQueryEnvironment}.
      */
-    private static List<TemplateValidationMessage> parseTemplateCustomProperties(IQueryEnvironment queryEnvironment,
-            IClassProvider classProvider, TemplateCustomProperties properties, XWPFDocument document) {
+    public static List<TemplateValidationMessage> prepareEnvironment(IQueryEnvironment queryEnvironment,
+            IClassProvider classProvider, DocumentTemplate documentTemplate) {
         final List<TemplateValidationMessage> messages = new ArrayList<>();
+        final TemplateCustomProperties properties = documentTemplate.getProperties();
         final List<String> missingNsURIs = properties.configureQueryEnvironmentWithResult(queryEnvironment);
         for (String nsURI : missingNsURIs) {
-            final XWPFRun run = getOrCreateFirstRun(document);
+            @SuppressWarnings("resource")
+            final XWPFRun run = getOrCreateFirstRun(documentTemplate.getDocument());
             final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
             messages.add(validationMessage);
         }
-        for (Entry<String, String> entry : properties.getServiceClasses().entrySet()) {
-            try {
-                final Class<?> cls = classProvider.getClass(entry.getKey(), entry.getValue());
-                final Set<IService<?>> s = ServiceUtils.getServices(queryEnvironment, cls);
-                ServiceUtils.registerServices(queryEnvironment, s);
-            } catch (ClassNotFoundException e) {
-                final XWPFRun run = getOrCreateFirstRun(document);
-                final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
-                        ValidationMessageLevel.ERROR, "can't load service class: " + entry.getKey(), run);
-                messages.add(validationMessage);
-            }
-        }
         final List<String> notLoadedClasses = properties.configureQueryEnvironmentWithResult(queryEnvironment,
                 classProvider);
         for (String notLoadedClass : notLoadedClasses) {
-            final XWPFRun run = getOrCreateFirstRun(document);
+            @SuppressWarnings("resource")
+            final XWPFRun run = getOrCreateFirstRun(documentTemplate.getDocument());
             final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, "can't load service class: " + notLoadedClass, run);
             messages.add(validationMessage);
+        }
+        for (TemplateValidationMessage validationMessage : messages) {
+            documentTemplate.getBody().getValidationMessages().add(validationMessage);
         }
 
         return messages;

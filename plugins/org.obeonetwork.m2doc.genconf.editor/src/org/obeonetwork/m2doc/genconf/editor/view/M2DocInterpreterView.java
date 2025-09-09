@@ -637,9 +637,9 @@ public class M2DocInterpreterView extends ViewPart {
             final URIConverter uriConverter = resourceSetForModels.getURIConverter();
             try (XWPFDocument document = POIServices.getInstance()
                     .getXWPFDocument(resourceSetForModels.getURIConverter(), templateURI);
-                    DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, queryEnvironment,
-                            classProvider, new BasicMonitor());) {
-                final TemplateCustomProperties properties = new TemplateCustomProperties(document);
+                    DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI,
+                            new BasicMonitor());) {
+                final TemplateCustomProperties properties = documentTemplate.getProperties();
                 properties.configureQueryEnvironmentWithResult(queryEnvironment);
                 properties.configureQueryEnvironmentWithResult(queryEnvironment, classProvider);
                 if (!documentTemplate.getTemplates().isEmpty()) {
@@ -859,8 +859,10 @@ public class M2DocInterpreterView extends ViewPart {
             Map<String, Set<IType>> varTypes, URIConverter uriConv, URI tpltURI) {
         final Map<String, Set<IType>> res = new HashMap<>();
 
-        try (DocumentTemplate template = M2DocUtils.parse(uriConv, tpltURI, (IQueryEnvironment) env,
-                M2DocPlugin.getClassProvider(), new BasicMonitor())) {
+        try (DocumentTemplate template = M2DocUtils.parse(uriConv, tpltURI, new BasicMonitor())) {
+            final TemplateCustomProperties properties = template.getProperties();
+            properties.configureQueryEnvironmentWithResult(queryEnvironment);
+            properties.configureQueryEnvironmentWithResult(queryEnvironment, M2DocPlugin.getClassProvider());
             final Iterator<EObject> it = template.eAllContents();
             while (it.hasNext()) {
                 final EObject current = it.next();
@@ -921,8 +923,10 @@ public class M2DocInterpreterView extends ViewPart {
             Map<String, Object> variables, URIConverter uriConverter, URI tpltURI) {
         final Map<String, Object> res = new HashMap<>(variables);
 
-        try (DocumentTemplate template = M2DocUtils.parse(uriConverter, tpltURI, (IQueryEnvironment) env,
-                M2DocPlugin.getClassProvider(), new BasicMonitor())) {
+        try (DocumentTemplate template = M2DocUtils.parse(uriConverter, tpltURI, new BasicMonitor())) {
+            final TemplateCustomProperties properties = template.getProperties();
+            properties.configureQueryEnvironmentWithResult(queryEnvironment);
+            properties.configureQueryEnvironmentWithResult(queryEnvironment, M2DocPlugin.getClassProvider());
             final Iterator<EObject> it = template.eAllContents();
             while (it.hasNext()) {
                 final EObject current = it.next();

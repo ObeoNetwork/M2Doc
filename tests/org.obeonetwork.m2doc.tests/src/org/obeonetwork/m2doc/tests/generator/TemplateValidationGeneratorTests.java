@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.tests.M2DocTestUtils;
 import org.obeonetwork.m2doc.util.ClassProvider;
@@ -62,8 +63,11 @@ public class TemplateValidationGeneratorTests {
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
+            final TemplateCustomProperties properties = documentTemplate.getProperties();
+            properties.configureQueryEnvironmentWithResult(queryEnvironment);
+            properties.configureQueryEnvironmentWithResult(queryEnvironment,
+                    new ClassProvider(this.getClass().getClassLoader()));
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(
@@ -103,8 +107,11 @@ public class TemplateValidationGeneratorTests {
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
+            final TemplateCustomProperties properties = documentTemplate.getProperties();
+            properties.configureQueryEnvironmentWithResult(queryEnvironment);
+            properties.configureQueryEnvironmentWithResult(queryEnvironment,
+                    new ClassProvider(this.getClass().getClassLoader()));
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(
@@ -144,8 +151,11 @@ public class TemplateValidationGeneratorTests {
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
+            final TemplateCustomProperties properties = documentTemplate.getProperties();
+            properties.configureQueryEnvironmentWithResult(queryEnvironment);
+            properties.configureQueryEnvironmentWithResult(queryEnvironment,
+                    new ClassProvider(this.getClass().getClassLoader()));
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(
@@ -185,8 +195,11 @@ public class TemplateValidationGeneratorTests {
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), queryEnvironment,
-                new ClassProvider(this.getClass().getClassLoader()), new BasicMonitor())) {
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
+            final TemplateCustomProperties properties = documentTemplate.getProperties();
+            properties.configureQueryEnvironmentWithResult(queryEnvironment);
+            properties.configureQueryEnvironmentWithResult(queryEnvironment,
+                    new ClassProvider(this.getClass().getClassLoader()));
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages()
