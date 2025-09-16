@@ -18,6 +18,7 @@ import java.util.Map;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.junit.AfterClass;
@@ -258,7 +259,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", "ecore::EClass");
 
-            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(1, definitions.size());
             assertTrue(definitions.get(0) instanceof ModelDefinition);
@@ -274,7 +276,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
 
-            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(1, definitions.size());
             assertTrue(definitions.get(0) instanceof StringDefinition);
@@ -294,7 +297,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
 
-            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(0, definitions.size());
         }
@@ -312,7 +316,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", "ecore::EClass");
 
-            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(1, definitions.size());
             assertTrue(definitions.get(0) instanceof ModelDefinition);
@@ -330,7 +335,8 @@ public class GenconfUtilsTests {
         try (XWPFDocument document = new XWPFDocument()) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
-            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(0, definitions.size());
         }
@@ -344,7 +350,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", "ecore::EClass");
 
-            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(0, definitions.size());
         }
@@ -358,7 +365,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
 
-            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(0, definitions.size());
         }
@@ -376,7 +384,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", TemplateCustomProperties.STRING_TYPE);
 
-            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(0, definitions.size());
         }
@@ -394,7 +403,8 @@ public class GenconfUtilsTests {
 
             properties.getVariables().put("variable", "ecore::EClass");
 
-            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(1, definitions.size());
             assertEquals(stringDefinition, definitions.get(0));
@@ -411,7 +421,8 @@ public class GenconfUtilsTests {
         try (XWPFDocument document = new XWPFDocument()) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
 
-            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, properties);
+            final List<Definition> definitions = GenconfUtils.getOldDefinitions(generation, EPackage.Registry.INSTANCE,
+                    properties);
 
             assertEquals(1, definitions.size());
             assertEquals(stringDefinition, definitions.get(0));

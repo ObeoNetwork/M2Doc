@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017 Obeo. 
+ *  Copyright (c) 2017, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,9 +14,7 @@ package org.obeonetwork.m2doc.cdo.tests;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.common.util.URI;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
  * Tests with authenticated CDO server and template on server and generate to the server.
@@ -32,13 +30,10 @@ public class ServerWithAuthenticationTemplateOnServerGenerateToServer extends Se
      *            the test folder
      * @throws IOException
      *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
-     * @throws CommitException
-     *             if something went wrong with CDO
+     * @throws Exception
+     *             if something went wrong
      */
-    public ServerWithAuthenticationTemplateOnServerGenerateToServer(String testFolder)
-            throws IOException, DocumentParserException, CommitException {
+    public ServerWithAuthenticationTemplateOnServerGenerateToServer(String testFolder) throws Exception {
         super(testFolder);
     }
 

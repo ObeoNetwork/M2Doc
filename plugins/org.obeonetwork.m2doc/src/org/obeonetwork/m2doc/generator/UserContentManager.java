@@ -67,19 +67,14 @@ public class UserContentManager {
     private final DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     /**
-     * The memory copy {@link URI}.
-     */
-    private URI memoryCopy;
-
-    /**
      * Map for id to the {@link List} of {@link UserContent}.
      */
     private Map<String, List<UserContent>> mapIdUserContent;
 
     /**
-     * The source {@link URI}.
+     * The template {@link URI}.
      */
-    private final URI sourceURI;
+    private final URI templateURI;
 
     /**
      * The destination {@link URI}.
@@ -111,23 +106,15 @@ public class UserContentManager {
      * 
      * @param uriConverter
      *            the {@link URIConverter uri converter} to use.
-     * @param sourceURI
-     *            the source {@link URI}
+     * @param templateURI
+     *            the template {@link URI}
      * @param destinationURI
      *            the destination {@link URI}
      */
-    public UserContentManager(URIConverter uriConverter, URI sourceURI, URI destinationURI) {
+    public UserContentManager(URIConverter uriConverter, URI templateURI, URI destinationURI) {
         this.uriConverter = uriConverter;
-        this.sourceURI = sourceURI;
+        this.templateURI = templateURI;
         this.destinationURI = destinationURI;
-        if (uriConverter != null && destinationURI != null
-            && uriConverter.exists(destinationURI, Collections.EMPTY_MAP)) {
-            // Copy file
-            uriConverter.getURIHandlers().add(0, uriHandler);
-            memoryCopy = memoryCopy(destinationURI);
-        } else {
-            memoryCopy = null;
-        }
     }
 
     /**
@@ -135,27 +122,33 @@ public class UserContentManager {
      */
     private void launchParsing() {
         mapIdUserContent = new HashMap<>();
-        if (memoryCopy != null) {
-            try {
-                userDocDocument = M2DocUtils.parseUserContent(uriConverter, memoryCopy);
-                copyToLostDocument = hasError(userDocDocument);
-                final TreeIterator<EObject> iter = userDocDocument.eAllContents();
-                while (iter.hasNext()) {
-                    EObject eObject = iter.next();
-                    if (eObject instanceof UserContent) {
-                        UserContent userContent = (UserContent) eObject;
-                        storeUserContent(mapIdUserContent, userContent);
+        if (uriConverter != null && destinationURI != null
+            && uriConverter.exists(destinationURI, Collections.EMPTY_MAP)) {
+            // Copy file
+            uriConverter.getURIHandlers().add(0, uriHandler);
+            final URI memoryCopy = memoryCopy(destinationURI);
+            if (memoryCopy != null) {
+                try {
+                    userDocDocument = M2DocUtils.parseUserContent(uriConverter, memoryCopy);
+                    copyToLostDocument = hasError(userDocDocument);
+                    final TreeIterator<EObject> iter = userDocDocument.eAllContents();
+                    while (iter.hasNext()) {
+                        EObject eObject = iter.next();
+                        if (eObject instanceof UserContent) {
+                            UserContent userContent = (UserContent) eObject;
+                            storeUserContent(mapIdUserContent, userContent);
+                        }
                     }
+                    // CHECKSTYLE:OFF
+                } catch (Exception e) {
+                    // CHECKSTYLE:ON
+                    // In this case, we do nothing.
+                    // The old output doc is not a docx document and it will be overwrite at current generation.
+                    // And we have nothing to extract from a no docx file.
+                } finally {
+                    uriConverter.getURIHandlers().remove(uriHandler);
+                    uriHandler.clear();
                 }
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
-                // In this case, we do nothing.
-                // The old output doc is not a docx document and it will be overwrite at current generation.
-                // And we have nothing to extract from a no docx file.
-            } finally {
-                uriConverter.getURIHandlers().remove(uriHandler);
-                uriHandler.clear();
             }
         }
     }
@@ -166,7 +159,7 @@ public class UserContentManager {
      * @param document
      *            the {@link DocumentTemplate}.
      * @return <code>true</code> if the given {@link DocumentTemplate} has {@link ValidationMessageLevel#ERROR errors}, <code>false</code>
-     *         oterhwise
+     *         otherwise
      */
     private boolean hasError(DocumentTemplate document) {
         boolean res = false;
@@ -331,7 +324,7 @@ public class UserContentManager {
             launchParsing();
         }
 
-        try (InputStream is = uriConverter.createInputStream(sourceURI);
+        try (InputStream is = uriConverter.createInputStream(templateURI);
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
             if (copyToLostDocument) {
@@ -353,7 +346,7 @@ public class UserContentManager {
                 inputURI = lostUserContentURI;
                 isNewUserContentLoss = false;
             } else {
-                inputURI = sourceURI;
+                inputURI = templateURI;
                 isNewUserContentLoss = true;
             }
 

@@ -80,6 +80,7 @@ location "https://download.eclipse.org/acceleo/updates/nightly/latest/" {
 	org.eclipse.acceleo.query.source.feature.group lazy
 	org.eclipse.acceleo.query.cdo.feature.group lazy
 	org.eclipse.acceleo.query.sirius.feature.group lazy
+	org.eclipse.acceleo.query.jdt.feature.group lazy
 }
 
 

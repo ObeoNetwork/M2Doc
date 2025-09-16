@@ -257,4 +257,41 @@ public interface DocumentTemplate extends IGenerateable, Closeable {
      */
     EList<String> getImports();
 
+    /**
+     * Returns the value of the '<em><b>Extend</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the value of the '<em>Extend</em>' attribute.
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_Extend()
+     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @generated
+     */
+    String getExtend();
+
+    /**
+     * Returns the value of the '<em><b>Qualified Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the value of the '<em>Qualified Name</em>' attribute.
+     * @see #setQualifiedName(String)
+     * @see org.obeonetwork.m2doc.template.TemplatePackage#getDocumentTemplate_QualifiedName()
+     * @model required="true"
+     * @generated
+     */
+    String getQualifiedName();
+
+    /**
+     * Sets the value of the '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getQualifiedName <em>Qualified Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @param value
+     *            the new value of the '<em>Qualified Name</em>' attribute.
+     * @see #getQualifiedName()
+     * @generated
+     */
+    void setQualifiedName(String value);
+
 } // DocumentTemplate

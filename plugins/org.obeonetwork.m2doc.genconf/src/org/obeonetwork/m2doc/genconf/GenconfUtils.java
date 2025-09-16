@@ -34,6 +34,8 @@ import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -45,6 +47,7 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
@@ -56,12 +59,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
-import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -176,24 +179,26 @@ public final class GenconfUtils {
     }
 
     /**
-     * Gets the initialized {@link IQueryEnvironment} for the given {@link Generation}.
+     * Gets the initialized {@link IQualifiedNameQueryEnvironment} for the given {@link Generation}.
      * 
+     * @param resolver
+     *            the {@link IQualifiedNameResolver}
      * @param resourceSetForModels
      *            the {@link ResourceSet} for model elements
      * @param generation
      *            the {@link Generation}
      * @param forWorkspace
      *            tells if the {@link IService} will be used in a workspace
-     * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
+     * @return the initialized {@link IQualifiedNameQueryEnvironment} for the given {@link Generation}
      */
-    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels, Generation generation,
-            boolean forWorkspace) {
+    public static IQualifiedNameQueryEnvironment getQueryEnvironment(IQualifiedNameResolver resolver,
+            ResourceSet resourceSetForModels, Generation generation, boolean forWorkspace) {
         final URI templateURI;
         templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
         final Map<String, String> options = getOptions(generation);
-        final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels, templateURI,
-                options, forWorkspace);
+        final IQualifiedNameQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resolver,
+                resourceSetForModels, templateURI, options, forWorkspace);
 
         return queryEnvironment;
     }
@@ -201,6 +206,8 @@ public final class GenconfUtils {
     /**
      * Gets the initialized {@link IQueryEnvironment} for the given {@link Generation}.
      * 
+     * @param resolver
+     *            the {@link IQualifiedNameResolver}
      * @param resourceSetForModels
      *            the {@link ResourceSet} for model elements
      * @param crossReferenceProvider
@@ -213,14 +220,14 @@ public final class GenconfUtils {
      *            tells if the {@link IService} will be used in a workspace
      * @return the initialized {@link IQueryEnvironment} for the given {@link Generation}
      */
-    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels,
-            CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, Generation generation,
-            boolean forWorkspace) {
+    public static IQueryEnvironment getQueryEnvironment(IQualifiedNameResolver resolver,
+            ResourceSet resourceSetForModels, CrossReferenceProvider crossReferenceProvider,
+            IRootEObjectProvider rootProvider, Generation generation, boolean forWorkspace) {
         final URI templateURI;
         templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
 
         final Map<String, String> options = getOptions(generation);
-        final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels,
+        final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resolver, resourceSetForModels,
                 crossReferenceProvider, rootProvider, templateURI, options, forWorkspace);
 
         return queryEnvironment;
@@ -323,11 +330,13 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the {@link Generation}
+     * @param ePackageRegistry
+     *            the {@link EPackage.Registry}
      * @param templateCustomProperties
      *            the {@link TemplateCustomProperties}
      * @return the {@link List} of new {@link Definition}
      */
-    public static List<Definition> getOldDefinitions(Generation generation,
+    public static List<Definition> getOldDefinitions(Generation generation, EPackage.Registry ePackageRegistry,
             TemplateCustomProperties templateCustomProperties) {
         final List<Definition> oldDefinitions = new ArrayList<Definition>();
 
@@ -335,7 +344,7 @@ public final class GenconfUtils {
         queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
         queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
                 EStringToStringMapEntryImpl.class);
-        templateCustomProperties.configureQueryEnvironmentWithResult(queryEnvironment);
+        templateCustomProperties.configureQueryEnvironmentWithResult(queryEnvironment, ePackageRegistry);
         final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
         final Map<String, Set<IType>> variablesTypes = templateCustomProperties.getVariableTypes(validator,
                 queryEnvironment);
@@ -355,17 +364,19 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the {@link Generation}
+     * @param ePackageRegistry
+     *            the {@link EPackage.Registry}
      * @param templateCustomProperties
      *            the {@link TemplateCustomProperties}
      * @return the {@link List} of new {@link Definition}
      */
-    public static List<Definition> getNewDefinitions(Generation generation,
+    public static List<Definition> getNewDefinitions(Generation generation, EPackage.Registry ePackageRegistry,
             TemplateCustomProperties templateCustomProperties) {
         final IQueryEnvironment queryEnvironment = Query.newEnvironment();
         queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
         queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
                 EStringToStringMapEntryImpl.class);
-        templateCustomProperties.configureQueryEnvironmentWithResult(queryEnvironment);
+        templateCustomProperties.configureQueryEnvironmentWithResult(queryEnvironment, ePackageRegistry);
         final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
         final Map<String, Set<IType>> variablesTypes = templateCustomProperties.getVariableTypes(validator,
                 queryEnvironment);
@@ -583,16 +594,44 @@ public final class GenconfUtils {
     }
 
     /**
+     * Creates a {@link M2DocEvaluationEnvironment} from the given {@link Generation}.
+     * 
+     * @param generation
+     *            the {@link Generation}
+     * @param resolver
+     *            the {@link IQualifiedNameResolver}
+     * @param resourceSetForModels
+     *            the {@link ResourceSet} for loading models
+     * @return the created {@link M2DocEvaluationEnvironment}
+     */
+    public static M2DocEvaluationEnvironment createM2DocEvaluationEnvironment(Generation generation,
+            IQualifiedNameResolver resolver, ResourceSet resourceSetForModels) {
+
+        final URI templateURI;
+        if (generation.getTemplateFileName() != null) {
+            templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
+        } else {
+            templateURI = null;
+        }
+        final URI destinationURI;
+        if (generation.getResultFileName() != null) {
+            destinationURI = getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false));
+        } else {
+            destinationURI = null;
+        }
+
+        return new M2DocEvaluationEnvironment(resolver, resourceSetForModels, templateURI, destinationURI);
+    }
+
+    /**
      * Generate a document from the specified generation configuration.
      * 
      * @param generation
      *            the generation configuration
-     * @param resourceSetForModels
-     *            the {@link ResourceSet} for variable loading
+     * @param m2docEnv
+     *            the {@link M2DocEvaluationEnvironment}
      * @param options
      *            the {@link Map} of options
-     * @param classProvider
-     *            the {@link IClassProvider}
      * @param monitor
      *            used to track the progress will generating.
      * @return generated file
@@ -603,8 +642,8 @@ public final class GenconfUtils {
      * @throws IOException
      *             IOException
      */
-    public static List<URI> generate(Generation generation, ResourceSet resourceSetForModels,
-            Map<String, String> options, IClassProvider classProvider, Monitor monitor)
+    public static List<URI> generate(Generation generation, M2DocEvaluationEnvironment m2docEnv,
+            Map<String, String> options, Monitor monitor)
             throws DocumentGenerationException, IOException, DocumentParserException {
         if (generation == null) {
             throw new IllegalArgumentException("Null configuration object passed.");
@@ -619,8 +658,6 @@ public final class GenconfUtils {
             throw new DocumentGenerationException("The result file path isn't set in the provided configuration");
         }
 
-        final URI templateURI = getResolvedURI(generation, URI.createURI(generation.getTemplateFileName(), false));
-        final URI generatedURI = getResolvedURI(generation, URI.createURI(generation.getResultFileName(), false));
         final URI validationURI;
         if (generation.getValidationFileName() != null && !generation.getValidationFileName().isEmpty()) {
             validationURI = getResolvedURI(generation, URI.createURI(generation.getValidationFileName(), false));
@@ -629,8 +666,7 @@ public final class GenconfUtils {
         }
 
         // generate result file and validation file.
-        return generate(generation, resourceSetForModels, options, classProvider, templateURI, generatedURI,
-                validationURI, monitor);
+        return generate(generation, m2docEnv, options, validationURI, monitor);
     }
 
     /**
@@ -659,16 +695,10 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            the generation configuration object
-     * @param resourceSetForModels
-     *            the {@link ResourceSet} for variable loading
+     * @param m2docEnv
+     *            the {@link M2DocEvaluationEnvironment}
      * @param options
      *            the {@link Map} of options
-     * @param classProvider
-     *            the {@link IClassProvider}
-     * @param templateURI
-     *            the template {@link URI}
-     * @param generatedURI
-     *            the generated docx {@link URI}
      * @param validationURI
      *            the validation docx {@link URI}
      * @param monitor
@@ -681,42 +711,51 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             if the document couldn't be generated
      */
-    private static List<URI> generate(Generation generation, ResourceSet resourceSetForModels,
-            Map<String, String> options, IClassProvider classProvider, URI templateURI, URI generatedURI,
-            URI validationURI, Monitor monitor)
+    private static List<URI> generate(Generation generation, M2DocEvaluationEnvironment m2docEnv,
+            Map<String, String> options, URI validationURI, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
 
+        final ResourceSet resourceSetForModels = m2docEnv.getResourceSetForModels();
+        final IQualifiedNameResolver resolver = m2docEnv.getResolver();
+        final URI templateURI = m2docEnv.getTemplateURI();
+        final URI destinationURI = m2docEnv.getDestinationURI();
+        final EPackage.Registry ePackageRegistry = resourceSetForModels.getPackageRegistry();
+
         final URIConverter uriConverter = resourceSetForModels.getURIConverter();
-        final IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation,
-                false);
+        final IQualifiedNameQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resolver,
+                resourceSetForModels, generation, false);
 
         if (!uriConverter.exists(templateURI, Collections.EMPTY_MAP)) {
             throw new DocumentGenerationException("The template doest not exist " + templateURI);
         }
 
         // create generated file
-        try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, monitor)) {
-            M2DocUtils.prepareEnvironment(queryEnvironment, classProvider, documentTemplate);
+        try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, GENCONF_EXTENSION_FILE,
+                monitor)) {
+            resolver.register(GENCONF_EXTENSION_FILE, documentTemplate);
+            M2DocUtils.prepareEnvironment(queryEnvironment, ePackageRegistry, documentTemplate);
             // create definitions
             Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
 
             // validate template
             final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
-            final URI resultValidationURI = validate(uriConverter, generatedURI, validationURI, documentTemplate,
+            final URI resultValidationURI = validate(uriConverter, destinationURI, validationURI, documentTemplate,
                     queryEnvironment, ignoreVersionCheck, monitor);
 
             // launch generation
             final boolean updateFields = Boolean.valueOf(options.get(M2DocUtils.UPDATE_FIELDS_OPTION));
-            M2DocUtils.generate(documentTemplate, queryEnvironment, definitions, resourceSetForModels, generatedURI,
-                    updateFields, monitor);
+            M2DocUtils.generate(m2docEnv, documentTemplate, definitions, updateFields, monitor);
 
             List<URI> generatedURIs = new ArrayList<URI>();
-            generatedURIs.add(generatedURI);
+            generatedURIs.add(destinationURI);
             if (resultValidationURI != null) {
                 generatedURIs.add(resultValidationURI);
             }
 
             return generatedURIs;
+        } finally {
+            AQLUtils.cleanServices(M2DocUtils.M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
+            queryEnvironment.getLookupEngine().getResolver().dispose();
         }
     }
 
@@ -725,14 +764,12 @@ public final class GenconfUtils {
      * 
      * @param generation
      *            Generation
-     * @param resourceSetForModels
-     *            the {@link ResourceSet} for variable loading
+     * @param m2DocEnv
+     *            the {@link M2DocEvaluationEnvironment}
      * @param options
      *            the {@link Map} of options
      * @param exceptions
      *            the {@link List} of {@link Exception} generated while creating the {@link ResourceSet} for models
-     * @param classProvider
-     *            the {@link IClassProvider}
      * @param monitor
      *            the {@link Monitor}
      * @return if template contains errors.
@@ -743,13 +780,13 @@ public final class GenconfUtils {
      * @throws DocumentGenerationException
      *             DocumentGenerationException
      */
-    public static boolean validate(Generation generation, ResourceSet resourceSetForModels, Map<String, String> options,
-            List<Exception> exceptions, IClassProvider classProvider, Monitor monitor)
+    public static boolean validate(Generation generation, M2DocEvaluationEnvironment m2DocEnv,
+            Map<String, String> options, List<Exception> exceptions, Monitor monitor)
             throws IOException, DocumentParserException, DocumentGenerationException {
         final boolean res;
 
-        // get AQL environment
-        IQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation, false);
+        final ResourceSet resourceSetForModels = m2DocEnv.getResourceSetForModels();
+        final IQualifiedNameResolver resolver = m2DocEnv.getResolver();
 
         // get the template path
         final String templateFilePath = generation.getTemplateFileName();
@@ -762,6 +799,10 @@ public final class GenconfUtils {
             throw new DocumentGenerationException("The template file does not exist " + templateFilePath);
         }
 
+        // get AQL environment
+        IQualifiedNameQueryEnvironment queryEnvironment = GenconfUtils.getQueryEnvironment(resolver,
+                resourceSetForModels, generation, false);
+
         // get the validation path
         final String validationFilePath = generation.getValidationFileName();
         final URI validationURI;
@@ -771,10 +812,12 @@ public final class GenconfUtils {
             validationURI = getResolvedURI(generation, URI.createURI(validationFilePath, false));
         }
 
-        // parse template
+        // resolve template
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
-                monitor)) {
-            M2DocUtils.prepareEnvironment(queryEnvironment, classProvider, documentTemplate);
+                GENCONF_EXTENSION_FILE, monitor)) {
+            resolver.register(GENCONF_EXTENSION_FILE, documentTemplate);
+            M2DocUtils.prepareEnvironment(queryEnvironment, resourceSetForModels.getPackageRegistry(),
+                    documentTemplate);
             final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
             for (Exception e : exceptions) {
                 documentTemplate.getBody().getValidationMessages()
@@ -785,6 +828,9 @@ public final class GenconfUtils {
             final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
             res = validate(resourceSetForModels.getURIConverter(), templateURI, validationURI, documentTemplate,
                     queryEnvironment, ignoreVersionCheck, monitor) != null;
+        } finally {
+            AQLUtils.cleanServices(M2DocUtils.M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
+            queryEnvironment.getLookupEngine().getResolver().dispose();
         }
 
         // validate output path
@@ -824,7 +870,7 @@ public final class GenconfUtils {
      * @param documentTemplate
      *            DocumentTemplate
      * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     *            the {@link IQualifiedNameQueryEnvironment}
      * @param ignoreVersionCheck
      *            ignore the {@link M2DocUtils#VERSION} check
      * @param monitor
@@ -836,8 +882,8 @@ public final class GenconfUtils {
      *             IOException
      */
     private static URI validate(URIConverter uriConverter, URI generatedURI, URI validationURI,
-            DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnvironment, boolean ignoreVersionCheck,
-            Monitor monitor) throws DocumentGenerationException, IOException {
+            DocumentTemplate documentTemplate, IQualifiedNameQueryEnvironment queryEnvironment,
+            boolean ignoreVersionCheck, Monitor monitor) throws DocumentGenerationException, IOException {
         final URI res;
 
         final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment,
@@ -887,19 +933,22 @@ public final class GenconfUtils {
      *            the {@link URIConverter}
      * @param templateURI
      *            the template {@link URI}
+     * @param ePackageRegistry
+     *            the {@link EPackage.Registry}
      * @return the EMF {@link Resource} containing the {@link Generation} model. The {@link URI} of that resource is built based on
      *         {@code templateURI}.
      * @throws IOException
      *             IOException
      */
-    public static Resource createConfigurationModel(URIConverter uriConverter, URI templateURI) throws IOException {
+    public static Resource createConfigurationModel(URIConverter uriConverter, URI templateURI,
+            EPackage.Registry ePackageRegistry) throws IOException {
         Resource resource = null;
         TemplateCustomProperties templateProperties = POIServices.getInstance()
                 .getTemplateCustomProperties(uriConverter, templateURI);
 
         // create genconf model
         if (templateProperties != null) {
-            resource = createConfigurationModel(templateProperties, templateURI);
+            resource = createConfigurationModel(templateProperties, templateURI, ePackageRegistry);
         }
         return resource;
     }
@@ -928,10 +977,12 @@ public final class GenconfUtils {
      *            TemplateInfo
      * @param templateURI
      *            File
+     * @param ePackageRegistry
+     *            the {@link EPackage.Registry}
      * @return configuration model
      */
-    private static Resource createConfigurationModel(TemplateCustomProperties templateProperties,
-            final URI templateURI) {
+    private static Resource createConfigurationModel(TemplateCustomProperties templateProperties, final URI templateURI,
+            EPackage.Registry ePackageRegistry) {
         // create genconf resource.
         URI genConfURI = templateURI.trimFileExtension().appendFileExtension(GenconfUtils.GENCONF_EXTENSION_FILE);
         Resource resource = createResource(templateURI, genConfURI);
@@ -940,7 +991,8 @@ public final class GenconfUtils {
         final Generation generation = createInitialModel(genConfURI.trimFileExtension().lastSegment(),
                 templateURI.deresolve(genConfURI).toString());
         // add docx properties
-        final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, templateProperties);
+        final List<Definition> definitions = GenconfUtils.getNewDefinitions(generation, ePackageRegistry,
+                templateProperties);
         generation.getDefinitions().addAll(definitions);
         if (generation != null) {
             resource.getContents().add(generation);

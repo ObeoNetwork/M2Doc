@@ -34,9 +34,7 @@ import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -50,7 +48,6 @@ import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Link;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Template;
-import org.obeonetwork.m2doc.util.IClassProvider;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 
 /**
@@ -106,14 +103,19 @@ public class TemplateCustomProperties {
     public static final int URI_PROPERTY_PREFIX_LENGTH = URI_PROPERTY_PREFIX.length();
 
     /**
-     * Prefix of the service import custom properties.
+     * Prefix of the import custom properties.
      */
-    public static final String SERVICE_IMPORT_PROPERTY_PREFIX = "m:import:";
+    public static final String IMPORT_PROPERTY_PREFIX = "m:import:";
 
     /**
-     * Prefix of the service import custom properties length.
+     * Prefix of the import custom properties length.
      */
-    public static final int SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH = SERVICE_IMPORT_PROPERTY_PREFIX.length();
+    public static final int IMPORT_PROPERTY_PREFIX_LENGTH = IMPORT_PROPERTY_PREFIX.length();
+
+    /**
+     * The extend property.
+     */
+    public static final String EXTEND_PROPERTY = "m:extend";
 
     /**
      * The validation name {@link Pattern}.
@@ -131,14 +133,19 @@ public class TemplateCustomProperties {
     private final Map<String, String> variables = new LinkedHashMap<>();
 
     /**
-     * The list of nsURIs declared in the template.
+     * The {@link Set} of {@link EPackage#getNsURI() nsURI} imported in the template.
      */
-    private final List<String> nsURIs = new ArrayList<>();
+    private final Set<String> nsURIs = new LinkedHashSet<>();
 
     /**
-     * The {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).
+     * The {@link Set} of imported qualified name.
      */
-    private final Map<String, String> serviceClasses = new LinkedHashMap<>();
+    private final Set<String> imports = new LinkedHashSet<>();
+
+    /**
+     * The extended qualified name if any, <code>null</code> otherwise.
+     */
+    private String extend;
 
     /**
      * The {@link XWPFDocument}.
@@ -174,6 +181,12 @@ public class TemplateCustomProperties {
 
             if (M2DOC_VERSION_PROPERTY.equals(propertyName)) {
                 m2DocVersion = property.getLpwstr();
+                continue;
+            }
+
+            if (EXTEND_PROPERTY.equals(propertyName)) {
+                extend = property.getLpwstr();
+                continue;
             }
 
             final String nsURI = getNsURI(propertyName);
@@ -182,10 +195,9 @@ public class TemplateCustomProperties {
                 continue;
             }
 
-            final String serviceClasse = getServiceImport(propertyName);
-            if (serviceClasse != null) {
-                final String bundleName = property.getLpwstr();
-                serviceClasses.put(serviceClasse, bundleName);
+            final String qualifiedName = getImportQualifiedName(propertyName);
+            if (qualifiedName != null) {
+                imports.add(qualifiedName);
                 continue;
             }
 
@@ -207,15 +219,25 @@ public class TemplateCustomProperties {
         final List<Integer> indexToDelete = new ArrayList<>();
         int currentIndex = 0;
         List<String> tmpNsURI = new ArrayList<>(nsURIs);
-        Map<String, String> tmpServiceImports = new LinkedHashMap<>(serviceClasses);
+        Set<String> tmpServiceImports = new LinkedHashSet<>(imports);
         Map<String, String> tmpVars = new LinkedHashMap<>(variables);
         boolean versionAdded = false;
+        boolean extendAdded = false;
         for (CTProperty property : properties) {
             final String propertyName = property.getName();
 
             if (M2DOC_VERSION_PROPERTY.equals(propertyName)) {
                 property.setLpwstr(m2DocVersion);
                 versionAdded = true;
+            }
+
+            if (EXTEND_PROPERTY.equals(propertyName)) {
+                if (extend != null) {
+                    property.setLpwstr(extend);
+                } else {
+                    indexToDelete.add(currentIndex);
+                }
+                extendAdded = true;
             }
 
             final String nsURI = getNsURI(propertyName);
@@ -227,12 +249,9 @@ public class TemplateCustomProperties {
                 continue;
             }
 
-            final String serviceClasse = getServiceImport(propertyName);
-            if (serviceClasse != null) {
-                final String bundleName = tmpServiceImports.remove(serviceClasse);
-                if (bundleName != null) {
-                    property.setLpwstr(bundleName);
-                } else {
+            final String qualifiedName = getImportQualifiedName(propertyName);
+            if (qualifiedName != null) {
+                if (!tmpServiceImports.remove(qualifiedName)) {
                     indexToDelete.add(currentIndex);
                 }
                 currentIndex++;
@@ -255,6 +274,10 @@ public class TemplateCustomProperties {
             props.addProperty(M2DOC_VERSION_PROPERTY, m2DocVersion);
         }
 
+        if (!extendAdded && extend != null) {
+            props.addProperty(EXTEND_PROPERTY, extendAdded);
+        }
+
         for (int i = indexToDelete.size() - 1; i > -1; i--) {
             props.getUnderlyingProperties().removeProperty(indexToDelete.get(i));
         }
@@ -262,8 +285,8 @@ public class TemplateCustomProperties {
         for (String nsURI : tmpNsURI) {
             props.addProperty(URI_PROPERTY_PREFIX + nsURI, "");
         }
-        for (Entry<String, String> entry : tmpServiceImports.entrySet()) {
-            props.addProperty(SERVICE_IMPORT_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
+        for (String qualifiedName : tmpServiceImports) {
+            props.addProperty(IMPORT_PROPERTY_PREFIX + qualifiedName, "");
         }
         for (Entry<String, String> entry : tmpVars.entrySet()) {
             props.addProperty(VAR_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
@@ -298,12 +321,11 @@ public class TemplateCustomProperties {
      * @return the {@link Class#getName() class name} from the given {@link CTProperty#getName() property name} if any, <code>null</code>
      *         otherwise
      */
-    private String getServiceImport(String propertyName) {
+    private String getImportQualifiedName(String propertyName) {
         final String res;
 
-        if (propertyName.startsWith(SERVICE_IMPORT_PROPERTY_PREFIX)
-            && propertyName.length() > SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH) {
-            res = propertyName.substring(SERVICE_IMPORT_PROPERTY_PREFIX_LENGTH);
+        if (propertyName.startsWith(IMPORT_PROPERTY_PREFIX) && propertyName.length() > IMPORT_PROPERTY_PREFIX_LENGTH) {
+            res = propertyName.substring(IMPORT_PROPERTY_PREFIX_LENGTH);
         } else {
             res = null;
         }
@@ -332,30 +354,39 @@ public class TemplateCustomProperties {
     }
 
     /**
-     * Returns a non modifiable copy of the uris.
+     * Gets the {@link Set} of imported {@link EPackage#getNsURI() nsURI}.
      * 
-     * @return the list of service tokens.
+     * @return the {@link Set} of imported {@link EPackage#getNsURI() nsURI}
      */
-    public List<String> getPackagesURIs() {
+    public Set<String> getPackagesURIs() {
         return nsURIs;
     }
 
     /**
-     * Returns an unmodifiable copy of the variable type map.
+     * Gets the {@link Map} of declared variable name to variable type.
      * 
-     * @return the variable type map.
+     * @return the {@link Map} of declared variable name to variable type.
      */
     public Map<String, String> getVariables() {
         return variables;
     }
 
     /**
-     * Gets the {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).
+     * Gets the {@link Set} or imported qualified name.
      * 
-     * @return the {@link Map} of service {@link Class#getName() class names} to bundle name (needed for Eclipse workspace mode).
+     * @return the {@link Set} or imported qualified name
      */
-    public Map<String, String> getServiceClasses() {
-        return serviceClasses;
+    public Set<String> getImports() {
+        return imports;
+    }
+
+    /**
+     * Gets the extended qualified name.
+     * 
+     * @return the extended qualified name if any, <code>null</code> otherwise
+     */
+    public String getExtend() {
+        return extend;
     }
 
     /**
@@ -363,43 +394,20 @@ public class TemplateCustomProperties {
      * 
      * @param queryEnvironment
      *            the {@link IQueryEnvironment} to configure
+     * @param ePackageRegistry
+     *            the {@link EPackage.Registry} to use to resolve {@link EPackage#getNsURI() nsURI}
      * @return the {@link List} of nsURI with no {@link EPackage.Registry#put(String, Object) registered} {@link EPackage}
      */
-    public List<String> configureQueryEnvironmentWithResult(IQueryEnvironment queryEnvironment) {
+    public List<String> configureQueryEnvironmentWithResult(IQueryEnvironment queryEnvironment,
+            EPackage.Registry ePackageRegistry) {
         final List<String> res = new ArrayList<>();
 
         for (String nsURI : getPackagesURIs()) {
-            final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
+            final EPackage ePackage = ePackageRegistry.getEPackage(nsURI);
             if (ePackage != null) {
                 queryEnvironment.registerEPackage(ePackage);
             } else {
                 res.add(nsURI);
-            }
-        }
-
-        return res;
-    }
-
-    /**
-     * Configures the given {@link IQueryEnvironment} with {@link #getServiceClasses() declared service Class}.
-     * 
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment} to configure
-     * @param classProvider
-     *            the {@link IClassProvider}
-     * @return the {@link List} of {@link Class#getCanonicalName() class canonical names} that can't be loaded.
-     */
-    public List<String> configureQueryEnvironmentWithResult(IQueryEnvironment queryEnvironment,
-            IClassProvider classProvider) {
-        final List<String> res = new ArrayList<>();
-
-        for (Entry<String, String> entry : getServiceClasses().entrySet()) {
-            try {
-                final Class<?> cls = classProvider.getClass(entry.getKey(), entry.getValue());
-                final Set<IService<?>> s = ServiceUtils.getServices(queryEnvironment, cls);
-                ServiceUtils.registerServices(queryEnvironment, s);
-            } catch (ClassNotFoundException e) {
-                res.add(entry.getKey());
             }
         }
 

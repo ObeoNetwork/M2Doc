@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.sirius.tests;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import org.eclipse.sirius.ui.business.api.dialect.ExportFormat.ScalingPolicy;
@@ -19,7 +18,6 @@ import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.Option;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.sirius.M2DocSiriusUtils;
 import org.obeonetwork.m2doc.sirius.services.M2DocSiriusServices;
 
@@ -35,12 +33,10 @@ public class M2DocSiriusServicesWithForceRefreshTests extends AbstractTemplatesT
      * 
      * @param testFolder
      *            the test folder path
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public M2DocSiriusServicesWithForceRefreshTests(String testFolder) throws IOException, DocumentParserException {
+    public M2DocSiriusServicesWithForceRefreshTests(String testFolder) throws Exception {
         super(testFolder);
     }
 

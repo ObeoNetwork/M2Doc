@@ -1053,6 +1053,28 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
      * @generated
      */
     @Override
+    public EAttribute getDocumentTemplate_Extend() {
+        return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(11);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public EAttribute getDocumentTemplate_QualifiedName() {
+        return (EAttribute) documentTemplateEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
     public EClass getBookmark() {
         return bookmarkEClass;
     }
@@ -1448,6 +1470,8 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__M2_DOC_VERSION);
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__METAMODELS);
         createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__IMPORTS);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__EXTEND);
+        createEAttribute(documentTemplateEClass, DOCUMENT_TEMPLATE__QUALIFIED_NAME);
 
         bookmarkEClass = createEClass(BOOKMARK);
         createEAttribute(bookmarkEClass, BOOKMARK__NAME);
@@ -1683,6 +1707,12 @@ public class TemplatePackageImpl extends EPackageImpl implements TemplatePackage
         initEAttribute(getDocumentTemplate_Imports(), ecorePackage.getEString(), "imports", null, 0, -1,
                 DocumentTemplate.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_Extend(), ecorePackage.getEString(), "extend", null, 0, 1,
+                DocumentTemplate.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDocumentTemplate_QualifiedName(), ecorePackage.getEString(), "qualifiedName", null, 1, 1,
+                DocumentTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
         initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);

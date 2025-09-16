@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -34,7 +38,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Generate docx from {@link Generation}.
@@ -87,13 +93,26 @@ public class GenerateHandler extends AbstractGenerationHandler {
             final List<URI> generatedfiles = new ArrayList<URI>();
             final List<Exception> exceptions = new ArrayList<Exception>();
             final Map<String, String> options = GenconfUtils.getOptions(generation);
-            final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(exceptions, generation,
+            final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, generation,
                     new ResourceSetImpl(), options);
             try {
                 final boolean generate = checkM2DocVersion(shell, M2_DOC_GENERATION, generation);
                 if (generate) {
-                    generatedfiles.addAll(GenconfUtils.generate(generation, resourceSetForModel, options,
-                            M2DocPlugin.getClassProvider(), BasicMonitor.toMonitor(monitor)));
+                    final URI templateURI = GenconfUtils.getResolvedURI(generation,
+                            URI.createURI(generation.getTemplateFileName(), false));
+                    final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createResolver(templateURI,
+                            this.getClass().getClassLoader(), resourceSetForModels.getPackageRegistry(),
+                            M2DocUtils.QUALIFIER_SEPARATOR, false);
+                    M2DocEvaluationEnvironment m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation,
+                            resolver, resourceSetForModels);
+
+                    resolver.addLoader(new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+                            M2DocUtils.QUALIFIER_SEPARATOR));
+                    final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+                    resolver.addLoader(javaLoader);
+
+                    generatedfiles.addAll(
+                            GenconfUtils.generate(generation, m2docEnv, options, BasicMonitor.toMonitor(monitor)));
                 }
                 // CHECKSTYLE:OFF any error should be reported back.
             } catch (final Exception e) {// do not let exception leak out.
@@ -109,7 +128,7 @@ public class GenerateHandler extends AbstractGenerationHandler {
                     }
                 });
             } finally {
-                AQLUtils.cleanResourceSetForModels(generation, resourceSetForModel);
+                AQLUtils.cleanResourceSetForModels(generation, resourceSetForModels);
             }
 
             if (generatedfiles.size() == 1) {

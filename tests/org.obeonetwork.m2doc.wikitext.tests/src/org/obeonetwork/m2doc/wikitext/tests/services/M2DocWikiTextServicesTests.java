@@ -21,7 +21,6 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.wikitext.services.M2DocWikiTextServices;
@@ -45,12 +44,10 @@ public class M2DocWikiTextServicesTests extends AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public M2DocWikiTextServicesTests(String testFolder) throws IOException, DocumentParserException {
+    public M2DocWikiTextServicesTests(String testFolder) throws Exception {
         super(testFolder);
     }
 

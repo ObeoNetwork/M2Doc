@@ -18,11 +18,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.query.AQLUtils;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.services.configurator.AQLServiceConfigurator;
 import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -30,11 +37,11 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
-import org.obeonetwork.m2doc.util.ClassProvider;
-import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;
 import org.obeonetwork.m2doc.wikitext.services.WikiTextServicesConfigurator;
@@ -66,6 +73,8 @@ public class MavenTests {
 
 		AQLUtils.registerServicesConfigurator(new ServicesConfiguratorDescriptor(M2DocUtils.M2DOC_LANGUAGE,
 				new WikiTextServicesConfigurator()));
+		AQLUtils.registerServicesConfigurator(new ServicesConfiguratorDescriptor(AQLUtils.AQL_LANGUAGE,
+				new AQLServiceConfigurator()));
 
 		List<Exception> exceptions = new ArrayList<>();
 
@@ -75,17 +84,26 @@ public class MavenTests {
 		resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
 				new XMIResourceFactoryImpl());
 
-		final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels,
-				templateURI, options, false);
+		final Registry ePackageRegistry = EPackage.Registry.INSTANCE;
+		final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass()
+				.getClassLoader(), ePackageRegistry, M2DocUtils.QUALIFIER_SEPARATOR);
+		final IQualifiedNameQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resolver,
+				resourceSetForModels, templateURI, options, false);
+		final M2DocEvaluationEnvironment m2docEnv = new M2DocEvaluationEnvironment(resolver,
+				resourceSetForModels, templateURI, outputURI);
 
-		final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader());
+		resolver.addLoader(new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+				M2DocUtils.QUALIFIER_SEPARATOR));
+		final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+		resolver.addLoader(javaLoader);
+
 		final Monitor monitor = new BasicMonitor();
-		try (DocumentTemplate template = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
-				monitor)) {
-			M2DocUtils.prepareEnvironment(queryEnvironment, classProvider, template);
+		try (DocumentTemplate documentTemplate = (DocumentTemplate)resolver.resolve(
+				"org.obeonetwork.m2doc.wikitext.maven.tests.main")) {
+			M2DocUtils.prepareEnvironment(queryEnvironment, ePackageRegistry, documentTemplate);
 
-			final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment,
-					monitor);
+			final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate,
+					queryEnvironment, monitor);
 			assertEquals(ValidationMessageLevel.OK, validationLevel);
 
 			final URI modelURI = URI.createFileURI(new File(
@@ -96,13 +114,14 @@ public class MavenTests {
 			final Map<String, Object> variables = new HashMap<String, Object>();
 			variables.put("self", resource.getContents().get(0));
 
-			final GenerationResult generationResult = M2DocUtils.generate(template, queryEnvironment,
-					variables, resourceSetForModels, outputURI, false, monitor);
+			final GenerationResult generationResult = M2DocUtils.generate(m2docEnv, documentTemplate,
+					variables, false, monitor);
 
 			assertEquals(ValidationMessageLevel.OK, generationResult.getLevel());
 			assertTrue(uriHandler.exists(outputURI, null));
 		} finally {
 			AQLUtils.cleanResourceSetForModels(this, resourceSetForModels);
+			AQLUtils.cleanServices(M2DocUtils.M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
 			uriHandler.clear();
 		}
 	}

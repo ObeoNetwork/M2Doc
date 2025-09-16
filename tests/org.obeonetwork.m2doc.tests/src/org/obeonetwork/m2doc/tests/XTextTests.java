@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020 Obeo. 
+ *  Copyright (c) 2020, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,13 +11,11 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.xtext.example.mydsl.MyDslStandaloneSetup;
 import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
@@ -37,12 +35,10 @@ public class XTextTests extends AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public XTextTests(String testFolder) throws IOException, DocumentParserException {
+    public XTextTests(String testFolder) throws Exception {
         super(testFolder);
     }
 

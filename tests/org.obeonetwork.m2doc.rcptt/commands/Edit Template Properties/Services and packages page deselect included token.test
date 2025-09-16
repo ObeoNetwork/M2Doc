@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _eIYRcDQkEemLi7FxYOxtAw
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 2/19/19 10:08 AM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 9/19/25, 11:58 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -43,12 +43,8 @@ get-window "Template properties" | get-tab-folder | get-tab-item "Services (expe
 with [get-window "Template properties" | get-table] {
     get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1" | get-property "columns[0]" 
         | equals "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1" | verify-true
-    get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass1" | get-property "columns[1]" 
-        | equals "org.obeonetwork.m2doc.ide.tests" | verify-true
     get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2" | get-property "columns[0]" 
         | equals "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2" | verify-true
-    get-item -path "org.obeonetwork.m2doc.ide.tests.services.TestServiceClass2" | get-property "columns[1]" 
-        | equals "org.obeonetwork.m2doc.ide.tests" | verify-true
 }
 get-window "Template properties" | get-button Cancel | click
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
 import org.obeonetwork.m2doc.html.services.HTMLServicesConfigurator;
 import org.obeonetwork.m2doc.html.services.M2DocHTMLServices;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
@@ -45,12 +44,10 @@ public class M2DocHTMLServicesTests extends AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public M2DocHTMLServicesTests(String testFolder) throws IOException, DocumentParserException {
+    public M2DocHTMLServicesTests(String testFolder) throws Exception {
         super(testFolder);
     }
 

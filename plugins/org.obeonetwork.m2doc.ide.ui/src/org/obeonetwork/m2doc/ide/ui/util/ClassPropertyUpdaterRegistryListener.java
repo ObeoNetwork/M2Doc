@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2024 Obeo. 
+ *  Copyright (c) 2024, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
-import org.obeonetwork.m2doc.util.IClassProvider;
 
 /**
  * Listener that registers class provider that are declared through an extension.
@@ -36,17 +35,17 @@ public class ClassPropertyUpdaterRegistryListener implements IRegistryEventListe
     public static final String CLASS = "class";
 
     /**
-     * {@link IClassProvider} extension point to parse for extensions.
+     * {@link IClassPropertyUpdater} extension point to parse for extensions.
      */
     public static final String CLASS_PROPERTY_UPDATER_EXTENSION_POINT = "org.obeonetwork.m2doc.ide.ui.classpropertyupdater";
 
     /**
-     * {@link IClassProvider} tag.
+     * {@link IClassPropertyUpdater} tag.
      */
     public static final String CLASS_PROPERTY_UPDATER_TAG_EXTENSION = "classpropertyupdater";
 
     /**
-     * The {@link IClassProvider} extension point class attribute.
+     * The {@link IClassPropertyUpdater} extension point class attribute.
      */
     public static final String CLASS_PROPERTY_UPDATER_ATTRIBUTE_CLASS = CLASS;
 

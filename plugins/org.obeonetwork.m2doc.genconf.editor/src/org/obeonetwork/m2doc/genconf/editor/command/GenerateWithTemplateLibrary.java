@@ -20,8 +20,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.commands.AbstractHandler;
@@ -48,11 +52,12 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.editor.wizard.GenerationWithTemplateLibraryWizard;
 import org.obeonetwork.m2doc.genconf.impl.GenconfFactoryImpl;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.util.IClassProvider;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Generates from template library.
@@ -129,14 +134,24 @@ public class GenerateWithTemplateLibrary extends AbstractHandler {
             GenconfUtils.initializeOptions(generation, eObj);
 
             // launch the generation
-            final IClassProvider classProvider = M2DocPlugin.getClassProvider();
             final List<Exception> exceptions = new ArrayList<Exception>();
             final Map<String, String> options = GenconfUtils.getOptions(generation);
             final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(exceptions, generation,
                     new ResourceSetImpl(), options);
             boolean error = false;
             try {
-                GenconfUtils.generate(generation, resourceSetForModel, options, classProvider, new BasicMonitor());
+                final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createResolver(templateFile,
+                        this.getClass().getClassLoader(), resourceSetForModel.getPackageRegistry(),
+                        M2DocUtils.QUALIFIER_SEPARATOR, false);
+                final M2DocEvaluationEnvironment m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation,
+                        resolver, resourceSetForModel);
+
+                resolver.addLoader(
+                        new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(), M2DocUtils.QUALIFIER_SEPARATOR));
+                final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+                resolver.addLoader(javaLoader);
+
+                GenconfUtils.generate(generation, m2docEnv, options, new BasicMonitor());
             } catch (DocumentGenerationException e) {
                 e.printStackTrace();
                 error = true;

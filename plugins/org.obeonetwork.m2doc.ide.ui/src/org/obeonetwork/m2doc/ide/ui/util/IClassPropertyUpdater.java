@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.ide.ui.util;
 
+import org.eclipse.emf.common.util.URI;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 /**
@@ -25,8 +26,10 @@ public interface IClassPropertyUpdater {
      * 
      * @param customProperties
      *            the {@link TemplateCustomProperties} to update
+     * @param templateURI
+     *            the template {@link URI}
      * @return <code>true</code> if the given {@link TemplateCustomProperties} has been updated, <code>false</code> otherwise
      */
-    boolean updatePropertyClasses(TemplateCustomProperties customProperties);
+    boolean updatePropertyClasses(TemplateCustomProperties customProperties, URI templateURI);
 
 }

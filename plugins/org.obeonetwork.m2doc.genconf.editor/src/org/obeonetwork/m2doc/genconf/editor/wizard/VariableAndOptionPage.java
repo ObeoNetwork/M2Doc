@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -691,7 +692,8 @@ public class VariableAndOptionPage extends WizardPage {
         ((IQueryEnvironment) queryEnvironment).registerCustomClassMapping(
                 EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
         if (properties != null) {
-            properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+            properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment,
+                    EPackage.Registry.INSTANCE);
         }
 
         final TransactionalEditingDomain generationDomain = TransactionUtil.getEditingDomain(gen);

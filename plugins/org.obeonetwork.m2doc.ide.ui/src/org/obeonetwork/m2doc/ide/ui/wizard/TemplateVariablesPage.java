@@ -20,6 +20,7 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -251,7 +252,7 @@ public class TemplateVariablesPage extends WizardPage {
         queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
         queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
                 EStringToStringMapEntryImpl.class);
-        customProperties.configureQueryEnvironmentWithResult(queryEnvironment);
+        customProperties.configureQueryEnvironmentWithResult(queryEnvironment, EPackage.Registry.INSTANCE);
         final AstValidator aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         for (Entry<String, Set<IType>> entry : customProperties.getVariableTypes(aqlValidator, queryEnvironment)
                 .entrySet()) {

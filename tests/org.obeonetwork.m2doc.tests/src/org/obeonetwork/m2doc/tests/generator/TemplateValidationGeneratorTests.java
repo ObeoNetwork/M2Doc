@@ -21,7 +21,6 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -30,10 +29,8 @@ import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
-import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.tests.M2DocTestUtils;
-import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -58,16 +55,11 @@ public class TemplateValidationGeneratorTests {
     @Test
     public void testInfoGeneration()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
-            final TemplateCustomProperties properties = documentTemplate.getProperties();
-            properties.configureQueryEnvironmentWithResult(queryEnvironment);
-            properties.configureQueryEnvironmentWithResult(queryEnvironment,
-                    new ClassProvider(this.getClass().getClassLoader()));
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), "qualified.name",
+                new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(
@@ -102,16 +94,11 @@ public class TemplateValidationGeneratorTests {
     @Test
     public void testWarningGeneration()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
-            final TemplateCustomProperties properties = documentTemplate.getProperties();
-            properties.configureQueryEnvironmentWithResult(queryEnvironment);
-            properties.configureQueryEnvironmentWithResult(queryEnvironment,
-                    new ClassProvider(this.getClass().getClassLoader()));
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), "qualified.name",
+                new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(new TemplateValidationMessage(
@@ -146,16 +133,11 @@ public class TemplateValidationGeneratorTests {
     @Test
     public void testErrorGeneration()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
-            final TemplateCustomProperties properties = documentTemplate.getProperties();
-            properties.configureQueryEnvironmentWithResult(queryEnvironment);
-            properties.configureQueryEnvironmentWithResult(queryEnvironment,
-                    new ClassProvider(this.getClass().getClassLoader()));
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), "qualified.name",
+                new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages().add(
@@ -190,16 +172,11 @@ public class TemplateValidationGeneratorTests {
     @Test
     public void testErrorGenerationOrder()
             throws InvalidFormatException, IOException, DocumentParserException, DocumentGenerationException {
-        IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(null);
         final File tempFile = File.createTempFile("testParsingErrorSimpleTag", ".docx");
 
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(URIConverter.INSTANCE,
-                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), new BasicMonitor())) {
-            final TemplateCustomProperties properties = documentTemplate.getProperties();
-            properties.configureQueryEnvironmentWithResult(queryEnvironment);
-            properties.configureQueryEnvironmentWithResult(queryEnvironment,
-                    new ClassProvider(this.getClass().getClassLoader()));
+                URI.createFileURI("resources/document/notEmpty/notEmpty-template.docx"), "qualified.name",
+                new BasicMonitor())) {
             final XWPFRun location = ((XWPFParagraph) documentTemplate.getDocument().getBodyElements().get(0)).getRuns()
                     .get(0);
             documentTemplate.getBody().getValidationMessages()

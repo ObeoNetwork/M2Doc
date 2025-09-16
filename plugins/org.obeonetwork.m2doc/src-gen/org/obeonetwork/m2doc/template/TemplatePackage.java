@@ -1438,6 +1438,26 @@ public interface TemplatePackage extends EPackage {
     int DOCUMENT_TEMPLATE__IMPORTS = IGENERATEABLE_FEATURE_COUNT + 10;
 
     /**
+     * The feature id for the '<em><b>Extend</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__EXTEND = IGENERATEABLE_FEATURE_COUNT + 11;
+
+    /**
+     * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_TEMPLATE__QUALIFIED_NAME = IGENERATEABLE_FEATURE_COUNT + 12;
+
+    /**
      * The number of structural features of the '<em>Document Template</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1445,7 +1465,7 @@ public interface TemplatePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DOCUMENT_TEMPLATE_FEATURE_COUNT = IGENERATEABLE_FEATURE_COUNT + 11;
+    int DOCUMENT_TEMPLATE_FEATURE_COUNT = IGENERATEABLE_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Document Template</em>' class.
@@ -2658,6 +2678,31 @@ public interface TemplatePackage extends EPackage {
     EAttribute getDocumentTemplate_Imports();
 
     /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getExtend <em>Extend</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute '<em>Extend</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getExtend()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_Extend();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.obeonetwork.m2doc.template.DocumentTemplate#getQualifiedName <em>Qualified
+     * Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the attribute '<em>Qualified Name</em>'.
+     * @see org.obeonetwork.m2doc.template.DocumentTemplate#getQualifiedName()
+     * @see #getDocumentTemplate()
+     * @generated
+     */
+    EAttribute getDocumentTemplate_QualifiedName();
+
+    /**
      * Returns the meta object for class '{@link org.obeonetwork.m2doc.template.Bookmark <em>Bookmark</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3545,6 +3590,24 @@ public interface TemplatePackage extends EPackage {
          * @generated
          */
         EAttribute DOCUMENT_TEMPLATE__IMPORTS = eINSTANCE.getDocumentTemplate_Imports();
+
+        /**
+         * The meta object literal for the '<em><b>Extend</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__EXTEND = eINSTANCE.getDocumentTemplate_Extend();
+
+        /**
+         * The meta object literal for the '<em><b>Qualified Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EAttribute DOCUMENT_TEMPLATE__QUALIFIED_NAME = eINSTANCE.getDocumentTemplate_QualifiedName();
 
         /**
          * The meta object literal for the '{@link org.obeonetwork.m2doc.template.impl.BookmarkImpl <em>Bookmark</em>}' class.

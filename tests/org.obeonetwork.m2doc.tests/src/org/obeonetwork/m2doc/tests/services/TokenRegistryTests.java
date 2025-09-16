@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.obeonetwork.m2doc.tests.services;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public class TokenRegistryTests {
             registry.deselectToken(properties, null);
 
             assertTrue(properties.getPackagesURIs().isEmpty());
-            assertTrue(properties.getServiceClasses().isEmpty());
+            assertTrue(properties.getImports().isEmpty());
         }
 
     }
@@ -108,12 +109,12 @@ public class TokenRegistryTests {
             registry.selectToken(properties, "testToken");
 
             assertTrue(!properties.getPackagesURIs().isEmpty());
-            assertTrue(!properties.getServiceClasses().isEmpty());
+            assertTrue(!properties.getImports().isEmpty());
 
             registry.deselectToken(properties, "testToken");
 
             assertTrue(properties.getPackagesURIs().isEmpty());
-            assertTrue(properties.getServiceClasses().isEmpty());
+            assertTrue(properties.getImports().isEmpty());
         }
     }
 
@@ -149,16 +150,18 @@ public class TokenRegistryTests {
             registry.selectToken(properties, "testToken2");
 
             assertEquals(3, properties.getPackagesURIs().size());
-            assertEquals(3, properties.getServiceClasses().size());
+            assertEquals(3, properties.getImports().size());
 
             registry.deselectToken(properties, "testToken1");
 
             assertEquals(2, properties.getPackagesURIs().size());
-            assertEquals(2, properties.getServiceClasses().size());
-            assertEquals("package3", properties.getPackagesURIs().get(0));
-            assertEquals("package2", properties.getPackagesURIs().get(1));
-            assertEquals("someBundle", properties.getServiceClasses().get("someClass3"));
-            assertEquals("someBundle", properties.getServiceClasses().get("someClass2"));
+            assertEquals(2, properties.getImports().size());
+            Iterator<String> it = properties.getPackagesURIs().iterator();
+            assertEquals("package3", it.next());
+            assertEquals("package2", it.next());
+            it = properties.getImports().iterator();
+            assertEquals("someClass3", it.next());
+            assertEquals("someClass2", it.next());
         }
 
     }

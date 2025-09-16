@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -39,7 +40,6 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
  * 
  * @generated
  */
-@SuppressWarnings("restriction")
 public class ModelDefinitionItemProvider extends DefinitionItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!--
@@ -107,7 +107,8 @@ public class ModelDefinitionItemProvider extends DefinitionItemProvider {
                                     queryEnvironment.registerCustomClassMapping(
                                             EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
                                             EStringToStringMapEntryImpl.class);
-                                    properties.configureQueryEnvironmentWithResult(queryEnvironment);
+                                    properties.configureQueryEnvironmentWithResult(queryEnvironment,
+                                            EPackage.Registry.INSTANCE);
                                     final AstValidator validator = new AstValidator(
                                             new ValidationServices(queryEnvironment));
                                     final Set<IType> possibleTypes = properties.getVariableTypes(validator,

@@ -21,6 +21,10 @@ import org.apache.poi.hpsf.IllegalPropertySetDataException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -51,10 +55,11 @@ import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.ide.ui.wizard.M2DocMainVariablePage;
 import org.obeonetwork.m2doc.ide.ui.wizard.M2DocNewTemplatePage;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;
 
@@ -166,8 +171,18 @@ public class M2DocNewProjectWizard extends Wizard implements INewWizard {
                         new ResourceSetImpl(), options);
                 if (launchGeneration) {
                     try {
-                        GenconfUtils.generate(generation, resourceSetForModel, options, M2DocPlugin.getClassProvider(),
-                                BasicMonitor.toMonitor(monitor));
+                        final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createQualifiedNameResolver(
+                                this.getClass().getClassLoader(), resourceSetForModel.getPackageRegistry(), project,
+                                M2DocUtils.QUALIFIER_SEPARATOR, false);
+                        M2DocEvaluationEnvironment m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation,
+                                resolver, resourceSetForModel);
+
+                        resolver.addLoader(new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+                                M2DocUtils.QUALIFIER_SEPARATOR));
+                        final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+                        resolver.addLoader(javaLoader);
+
+                        GenconfUtils.generate(generation, m2docEnv, options, BasicMonitor.toMonitor(monitor));
                     } finally {
                         AQLUtils.cleanResourceSetForModels(generation, resourceSetForModel);
                     }

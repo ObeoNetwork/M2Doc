@@ -40,7 +40,6 @@ import org.eclipse.net4j.connector.IConnector;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
 
 /**
@@ -73,13 +72,10 @@ public class ServerWithAuthenticationTemplateOnServer extends AbstractTemplatesT
      *            the test folder
      * @throws IOException
      *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
-     * @throws CommitException
-     *             if something went wrong with CDO
+     * @throws Exception
+     *             if something went wrong
      */
-    public ServerWithAuthenticationTemplateOnServer(String testFolder)
-            throws IOException, DocumentParserException, CommitException {
+    public ServerWithAuthenticationTemplateOnServer(String testFolder) throws Exception {
         super(testFolder);
     }
 

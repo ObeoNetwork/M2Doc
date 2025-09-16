@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
@@ -32,11 +31,12 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.AQLUtils;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
 import org.eclipse.emf.common.EMFPlugin;
@@ -45,6 +45,7 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -73,13 +74,11 @@ import org.obeonetwork.m2doc.services.DocumentServiceConfigurator;
 import org.obeonetwork.m2doc.services.ExcelServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
-import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.services.PaginationServices;
 import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.IConstruct;
-import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.template.UserContent;
 
@@ -94,6 +93,11 @@ public final class M2DocUtils {
      * The AQL language name for {@link IServicesConfigurator}.
      */
     public static final String M2DOC_LANGUAGE = "org.obeonetwork.m2doc";
+
+    /**
+     * A qualifier separator.
+     */
+    public static final String QUALIFIER_SEPARATOR = ".";
 
     /**
      * M2Doc version.
@@ -207,11 +211,6 @@ public final class M2DocUtils {
     private static final int INIT_DEST_DOC_MONITOR_WORK = LOAD_TEMPLATE_MONITOR_WORK;
 
     /**
-     * The engine init monitor work.
-     */
-    private static final int ENGINE_INIT_MONITOR_WORK = 5;
-
-    /**
      * The template services monitor work.
      */
     private static final int TEMPLATE_SERVICES_MONITOR_WORK = 10;
@@ -239,9 +238,8 @@ public final class M2DocUtils {
     /**
      * The generate total monitor work.
      */
-    private static final int TOTAL_GENERATE_MONITOR_WORK = INIT_DEST_DOC_MONITOR_WORK + ENGINE_INIT_MONITOR_WORK
-        + TEMPLATE_SERVICES_MONITOR_WORK + M2DocEvaluator.MONITOR_WORK + LOST_FILES_MONITOR_WORK
-        + DOCUMENT_SAVE_MONITOR_WORK;
+    private static final int TOTAL_GENERATE_MONITOR_WORK = INIT_DEST_DOC_MONITOR_WORK + TEMPLATE_SERVICES_MONITOR_WORK
+        + M2DocEvaluator.MONITOR_WORK + LOST_FILES_MONITOR_WORK + DOCUMENT_SAVE_MONITOR_WORK;
 
     // register standalone IServiceConfigurator
     static {
@@ -445,8 +443,10 @@ public final class M2DocUtils {
     }
 
     /**
-     * Gets the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options.
+     * Gets the initialized {@link IQualifiedNameQueryEnvironment} for the given {@link ResourceSet} and options.
      * 
+     * @param resolver
+     *            the {@link IQualifiedNameResolver}
      * @param resourceSetForModels
      *            the {@link ResourceSet} for model elements
      * @param templateURI
@@ -455,21 +455,23 @@ public final class M2DocUtils {
      *            the {@link Map} of options
      * @param forWorkspace
      *            tells if the {@link IService} will be used in a workspace
-     * @return the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options
+     * @return the initialized {@link IQualifiedNameQueryEnvironment} for the given {@link ResourceSet} and options
      */
-    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels, URI templateURI,
-            Map<String, String> options, boolean forWorkspace) {
+    public static IQualifiedNameQueryEnvironment getQueryEnvironment(IQualifiedNameResolver resolver,
+            ResourceSet resourceSetForModels, URI templateURI, Map<String, String> options, boolean forWorkspace) {
         final ECrossReferenceAdapterCrossReferenceProvider crossReferenceProvider = new ECrossReferenceAdapterCrossReferenceProvider(
                 ECrossReferenceAdapter.getCrossReferenceAdapter(resourceSetForModels));
         final ResourceSetRootEObjectProvider rootProvider = new ResourceSetRootEObjectProvider(resourceSetForModels);
 
-        return getQueryEnvironment(resourceSetForModels, crossReferenceProvider, rootProvider, templateURI, options,
-                forWorkspace);
+        return getQueryEnvironment(resolver, resourceSetForModels, crossReferenceProvider, rootProvider, templateURI,
+                options, forWorkspace);
     }
 
     /**
-     * Gets the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options.
+     * Gets the initialized {@link IQualifiedNameQueryEnvironment} for the given {@link ResourceSet} and options.
      * 
+     * @param resolver
+     *            the {@link IQualifiedNameResolver}
      * @param resourceSetForModels
      *            the {@link ResourceSet} for model elements
      * @param crossReferenceProvider
@@ -482,36 +484,13 @@ public final class M2DocUtils {
      *            the {@link Map} of options
      * @param forWorkspace
      *            tells if the {@link IService} will be used in a workspace
-     * @return the initialized {@link IQueryEnvironment} for the given {@link ResourceSet} and options
+     * @return the initialized {@link IQualifiedNameQueryEnvironment} for the given {@link ResourceSet} and options
      */
-    public static IQueryEnvironment getQueryEnvironment(ResourceSet resourceSetForModels,
-            CrossReferenceProvider crossReferenceProvider, IRootEObjectProvider rootProvider, URI templateURI,
-            Map<String, String> options, boolean forWorkspace) {
-        final IQueryEnvironment queryEnvironment = org.eclipse.acceleo.query.runtime.Query
-                .newEnvironmentWithDefaultServices(crossReferenceProvider, rootProvider);
-
-        M2DocUtils.prepareEnvironmentServices(queryEnvironment, resourceSetForModels, templateURI, options,
-                forWorkspace);
-
-        return queryEnvironment;
-    }
-
-    /**
-     * Prepares the given {@link IQueryEnvironment} for M2Doc services.
-     * 
-     * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
-     * @param resourceSetForModels
-     *            the {@link ResourceSet} for model elements
-     * @param templateURI
-     *            the template {@link URI}
-     * @param options
-     *            the {@link Map} of options
-     * @param forWorkspace
-     *            tells if the {@link IService} will be used in a workspace
-     */
-    public static void prepareEnvironmentServices(IQueryEnvironment queryEnvironment, ResourceSet resourceSetForModels,
-            URI templateURI, Map<String, String> options, boolean forWorkspace) {
+    public static IQualifiedNameQueryEnvironment getQueryEnvironment(IQualifiedNameResolver resolver,
+            ResourceSet resourceSetForModels, CrossReferenceProvider crossReferenceProvider,
+            IRootEObjectProvider rootProvider, URI templateURI, Map<String, String> options, boolean forWorkspace) {
+        final IQualifiedNameQueryEnvironment queryEnvironment = AQLUtils.newQualifiedNameEnvironmentDefaultServices(
+                M2DOC_LANGUAGE, options, resolver, resourceSetForModels, forWorkspace);
 
         Set<IService<?>> services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
         ServiceUtils.registerServices(queryEnvironment, services);
@@ -526,10 +505,8 @@ public final class M2DocUtils {
         services = ServiceUtils.getServices(queryEnvironment,
                 new ExcelServices(resourceSetForModels.getURIConverter(), templateURI));
         ServiceUtils.registerServices(queryEnvironment, services);
-        for (IServicesConfigurator configurator : AQLUtils.getServicesConfigurators(M2DOC_LANGUAGE)) {
-            ServiceUtils.registerServices(queryEnvironment,
-                    configurator.getServices(queryEnvironment, resourceSetForModels, options, forWorkspace));
-        }
+
+        return queryEnvironment;
     }
 
     /**
@@ -540,6 +517,8 @@ public final class M2DocUtils {
      *            the {@link URIConverter uri converter} to use.
      * @param templateURI
      *            URI for the template, used when external links (images, includes) have to be resolved
+     * @param qualifiedName
+     *            the qualified name of the parsed {@link DocumentTemplate}
      * @param monitor
      *            used to track the progress will generating
      * @return the {@link DocumentTemplate} resulting from parsing the specified
@@ -548,9 +527,10 @@ public final class M2DocUtils {
      *             if a problem occurs while parsing the document.
      */
     @SuppressWarnings("resource")
-    public static DocumentTemplate parse(URIConverter uriConverter, URI templateURI, Monitor monitor)
-            throws DocumentParserException {
+    public static DocumentTemplate parse(URIConverter uriConverter, URI templateURI, String qualifiedName,
+            Monitor monitor) throws DocumentParserException {
         final DocumentTemplate result = (DocumentTemplate) EcoreUtil.create(TemplatePackage.Literals.DOCUMENT_TEMPLATE);
+        result.setQualifiedName(qualifiedName);
         final ResourceImpl r = new ResourceImpl(templateURI);
 
         try {
@@ -608,35 +588,28 @@ public final class M2DocUtils {
     }
 
     /**
-     * Prepares the given {@link IQueryEnvironment} for the given {@link DocumentTemplate}.
+     * Prepares the given {@link IQualifiedNameQueryEnvironment} for the given {@link DocumentTemplate}.
      * 
      * @param queryEnvironment
-     *            the {@link IQueryEnvironment}
-     * @param classProvider
-     *            the {@link IClassProvider} to use for service Loading
+     *            the {@link IQualifiedNameQueryEnvironment}
+     * @param ePackageRegistry
+     *            the {@link EPackage.Registry} to use to resolve {@link EPackage#getNsURI() nsURI}
      * @param documentTemplate
      *            the {@link XWPFDocument}
-     * @return the {@link List} of {@link TemplateValidationMessage} produced preparing the {@link IQueryEnvironment}.
+     * @return the {@link List} of {@link TemplateValidationMessage} produced preparing the {@link IQualifiedNameQueryEnvironment}.
      */
-    public static List<TemplateValidationMessage> prepareEnvironment(IQueryEnvironment queryEnvironment,
-            IClassProvider classProvider, DocumentTemplate documentTemplate) {
+    public static List<TemplateValidationMessage> prepareEnvironment(IQualifiedNameQueryEnvironment queryEnvironment,
+            EPackage.Registry ePackageRegistry, DocumentTemplate documentTemplate) {
+        final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+        final String qualifiedName = documentTemplate.getQualifiedName();
+        final Set<String> nsURIs = AQLUtils.getAllNeededEPackages(resolver, qualifiedName);
         final List<TemplateValidationMessage> messages = new ArrayList<>();
-        final TemplateCustomProperties properties = documentTemplate.getProperties();
-        final List<String> missingNsURIs = properties.configureQueryEnvironmentWithResult(queryEnvironment);
+        final List<String> missingNsURIs = AQLUtils.registerEPackages(queryEnvironment, ePackageRegistry, nsURIs);
         for (String nsURI : missingNsURIs) {
             @SuppressWarnings("resource")
             final XWPFRun run = getOrCreateFirstRun(documentTemplate.getDocument());
             final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
                     ValidationMessageLevel.ERROR, "can't find EPackage: " + nsURI, run);
-            messages.add(validationMessage);
-        }
-        final List<String> notLoadedClasses = properties.configureQueryEnvironmentWithResult(queryEnvironment,
-                classProvider);
-        for (String notLoadedClass : notLoadedClasses) {
-            @SuppressWarnings("resource")
-            final XWPFRun run = getOrCreateFirstRun(documentTemplate.getDocument());
-            final TemplateValidationMessage validationMessage = new TemplateValidationMessage(
-                    ValidationMessageLevel.ERROR, "can't load service class: " + notLoadedClass, run);
             messages.add(validationMessage);
         }
         for (TemplateValidationMessage validationMessage : messages) {
@@ -720,28 +693,28 @@ public final class M2DocUtils {
     }
 
     /**
-     * Validates the given {@link DocumentTemplate} with the given {@link IReadOnlyQueryEnvironment} and variables types.
+     * Validates the given {@link DocumentTemplate} with the given {@link IQualifiedNameQueryEnvironment} and variables types.
      * 
      * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     *            the {@link IQualifiedNameQueryEnvironment}
      * @param monitor
      *            used to track the progress will generating
      * @return the {@link ValidationMessageLevel}
      */
     public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Monitor monitor) {
+            IQualifiedNameQueryEnvironment queryEnvironment, Monitor monitor) {
         return validate(documentTemplate, queryEnvironment, false, monitor);
     }
 
     /**
-     * Validates the given {@link DocumentTemplate} with the given {@link IReadOnlyQueryEnvironment} and variables types.
+     * Validates the given {@link DocumentTemplate} with the given {@link IQualifiedNameQueryEnvironment} and variables types.
      * 
      * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
+     *            the {@link IQualifiedNameQueryEnvironment}
      * @param ignoreVersionCheck
      *            ignore the {@link #VERSION} check
      * @param monitor
@@ -749,9 +722,15 @@ public final class M2DocUtils {
      * @return the {@link ValidationMessageLevel}
      */
     public static ValidationMessageLevel validate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, boolean ignoreVersionCheck, Monitor monitor) {
+            IQualifiedNameQueryEnvironment queryEnvironment, boolean ignoreVersionCheck, Monitor monitor) {
         final M2DocValidator validator = new M2DocValidator();
-        return validator.validate(documentTemplate, queryEnvironment, ignoreVersionCheck, monitor);
+        queryEnvironment.getLookupEngine().pushImportsContext(documentTemplate.getQualifiedName(),
+                documentTemplate.getQualifiedName());
+        try {
+            return validator.validate(documentTemplate, queryEnvironment, ignoreVersionCheck, monitor);
+        } finally {
+            queryEnvironment.getLookupEngine().popContext(documentTemplate.getQualifiedName());
+        }
     }
 
     /**
@@ -779,44 +758,12 @@ public final class M2DocUtils {
     /**
      * Generates the given template into the given destination.
      * 
+     * @param m2docEnv
+     *            the {@link M2DocEvaluationEnvironment}
      * @param documentTemplate
      *            the {@link DocumentTemplate}
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
      * @param variables
      *            variables
-     * @param resourceSetForModels
-     *            the {@link ResourceSet} for model elements
-     * @param destination
-     *            the destination
-     * @param monitor
-     *            used to track the progress will generating
-     * @return the {@link GenerationResult}
-     * @throws DocumentGenerationException
-     *             if the generation fails
-     * @see #generate(DocumentTemplate, IReadOnlyQueryEnvironment, Map, ResourceSet, URI, boolean, Monitor)
-     */
-    @Deprecated
-    public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, ResourceSet resourceSetForModels,
-            URI destination, Monitor monitor) throws DocumentGenerationException {
-        return generate(documentTemplate, queryEnvironment, variables, resourceSetForModels, destination, false,
-                monitor);
-    }
-
-    /**
-     * Generates the given template into the given destination.
-     * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate}
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param variables
-     *            variables
-     * @param resourceSetForModels
-     *            the {@link ResourceSet} for model elements
-     * @param destination
-     *            the destination
      * @param updateFields
      *            tells if we should update fields at the end of the generations
      * @param monitor
@@ -825,14 +772,17 @@ public final class M2DocUtils {
      * @throws DocumentGenerationException
      *             if the generation fails
      */
-    public static GenerationResult generate(DocumentTemplate documentTemplate,
-            IReadOnlyQueryEnvironment queryEnvironment, Map<String, Object> variables, ResourceSet resourceSetForModels,
-            URI destination, boolean updateFields, Monitor monitor) throws DocumentGenerationException {
+    public static GenerationResult generate(M2DocEvaluationEnvironment m2docEnv, DocumentTemplate documentTemplate,
+            Map<String, Object> variables, boolean updateFields, Monitor monitor) throws DocumentGenerationException {
 
-        monitor.beginTask("Generating " + destination.lastSegment(), TOTAL_GENERATE_MONITOR_WORK);
+        monitor.beginTask("Generating " + m2docEnv.getDestinationURI().lastSegment(), TOTAL_GENERATE_MONITOR_WORK);
         monitor.subTask("Initializing desination document");
 
-        final URIConverter uriConverter = resourceSetForModels.getURIConverter();
+        final IQualifiedNameQueryEnvironment queryEnvironment = m2docEnv.getResolver().getLookupEngine()
+                .getQueryEnvironment();
+        queryEnvironment.getLookupEngine().pushImportsContext(documentTemplate.getQualifiedName(),
+                documentTemplate.getQualifiedName());
+        final URIConverter uriConverter = m2docEnv.getResourceSetForModels().getURIConverter();
         try (InputStream is = uriConverter.createInputStream(documentTemplate.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
@@ -845,19 +795,7 @@ public final class M2DocUtils {
                 }
             }
 
-            final M2DocEvaluationEnvironment m2docEnv = new M2DocEvaluationEnvironment(queryEnvironment, uriConverter,
-                    documentTemplate.eResource().getURI(), destination);
             final M2DocEvaluator evaluator = new M2DocEvaluator(m2docEnv, monitor);
-
-            nextSubTask(monitor, ENGINE_INIT_MONITOR_WORK, "Initializing template services");
-
-            if (!documentTemplate.getTemplates().isEmpty()) {
-                final byte[] serializedDocument = serializeDocument(documentTemplate);
-                for (Template template : documentTemplate.getTemplates()) {
-                    ((IQueryEnvironment) queryEnvironment)
-                            .registerService(new M2DocTemplateService(template, serializedDocument, m2docEnv, monitor));
-                }
-            }
 
             nextSubTask(monitor, TEMPLATE_SERVICES_MONITOR_WORK, "Generating");
 
@@ -879,11 +817,9 @@ public final class M2DocUtils {
             nextSubTask(monitor, LOST_FILES_MONITOR_WORK, "Saving generated document");
 
             // At this point, the document has been generated and just needs to be written on disk.
-            POIServices.getInstance().saveFile(uriConverter, destinationDocument, destination);
+            POIServices.getInstance().saveFile(uriConverter, destinationDocument, m2docEnv.getDestinationURI());
 
             nextSubTask(monitor, DOCUMENT_SAVE_MONITOR_WORK, "Cleaning template services");
-
-            AQLUtils.cleanServices(M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
 
             monitor.worked(ENGINE_CLEAN_MONITOR_WORK);
 
@@ -894,6 +830,7 @@ public final class M2DocUtils {
             throw new DocumentGenerationException("Input document seems to have an invalid format.", e);
         } finally {
             monitor.done();
+            queryEnvironment.getLookupEngine().popContext(documentTemplate.getQualifiedName());
         }
     }
 
@@ -913,25 +850,6 @@ public final class M2DocUtils {
         }
         monitor.worked(previousTaskDone);
         monitor.subTask(nextSubTaskName);
-    }
-
-    /**
-     * Serializes the given {@link DocumentTemplate}.
-     * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate} to serialize
-     * @return the byte array of the serialized {@link DocumentTemplate}
-     * @throws IOException
-     *             if the serialization fail
-     */
-    @SuppressWarnings("resource")
-    private static byte[] serializeDocument(DocumentTemplate documentTemplate) throws IOException {
-        final byte[] serializedDocument;
-        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-            documentTemplate.getDocument().write(output);
-            serializedDocument = output.toByteArray();
-        }
-        return serializedDocument;
     }
 
     /**

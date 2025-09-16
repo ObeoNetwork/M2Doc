@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2023 Obeo. 
+ *  Copyright (c) 2019, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -167,7 +167,7 @@ public class EObjectSelectionDialog extends MessageDialog {
         } else {
             style = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
         }
-        final FilteredTree filteredTree = new FilteredTree(container, style, new PatternFilter(), true);
+        final FilteredTree filteredTree = new FilteredTree(container, style, new PatternFilter(), true, true);
         final TreeViewer treeViewer = filteredTree.getViewer();
 
         if (multiSelection) {

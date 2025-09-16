@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.genconf.editor.view;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ import java.util.concurrent.Future;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.acceleo.query.parser.AstResult;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
@@ -45,16 +46,24 @@ import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -90,7 +99,6 @@ import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
-import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.editor.view.aql.AQLConfiguration;
@@ -99,17 +107,15 @@ import org.obeonetwork.m2doc.genconf.editor.view.aql.ProposalLabelProvider;
 import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Parameter;
 import org.obeonetwork.m2doc.template.Repetition;
 import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.util.HtmlSerializer;
-import org.obeonetwork.m2doc.util.IClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -118,6 +124,70 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class M2DocInterpreterView extends ViewPart {
+
+    /**
+     * Interpreter {@link M2DocDocumentTemplateLoader} that cache the serialized version of the {@link DocumentTemplate}.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private final class InterpreterLoader extends M2DocDocumentTemplateLoader {
+
+        /**
+         * The cached serialized {@link DocumentTemplate}.
+         */
+        private final byte[] cachedSerializedDocument;
+
+        /**
+         * The qualified name we are caching for.
+         */
+        private final String qualifiedName;
+
+        /**
+         * Constructor.
+         * 
+         * @param m2docEnv
+         *            the {@link M2DocEvaluationEnvironment}
+         * @param monitor
+         *            the {@link Monitor}
+         * @param qualifierSeparator
+         *            the qualifier separator
+         * @param documentTemplate
+         *            the {@link DocumentTemplate} to serialize and cache
+         * @param qualifiedName
+         *            the qualified name
+         */
+        InterpreterLoader(M2DocEvaluationEnvironment m2docEnv, Monitor monitor, String qualifierSeparator,
+                DocumentTemplate documentTemplate, String qualifiedName) {
+            super(m2docEnv, monitor, qualifierSeparator);
+            this.cachedSerializedDocument = super.serializeDocument(documentTemplate);
+            this.qualifiedName = qualifiedName;
+        }
+
+        @Override
+        public Set<IService<?>> getServices(IQualifiedNameLookupEngine lookupEngine, Object object,
+                String contextQualifiedName) {
+            final Set<IService<?>> res = new LinkedHashSet<>();
+
+            final DocumentTemplate documentTemplate = (DocumentTemplate) object;
+            if (!documentTemplate.getTemplates().isEmpty()) {
+                final byte[] serializedDocument;
+                if (this.qualifiedName.equals(qualifiedName)) {
+                    serializedDocument = this.cachedSerializedDocument;
+                } else {
+                    serializedDocument = serializeDocument(documentTemplate);
+                }
+                if (serializedDocument != null) {
+                    for (Template template : documentTemplate.getTemplates()) {
+                        res.add(new M2DocTemplateService(template, serializedDocument, m2docEnv, lookupEngine,
+                                contextQualifiedName, monitor));
+                    }
+                }
+            }
+
+            return res;
+        }
+
+    }
 
     /**
      * Updates the browser with a given expression.
@@ -180,7 +250,9 @@ public class M2DocInterpreterView extends ViewPart {
 
                     @Override
                     public void run() {
-                        browser.setText(html);
+                        if (!browser.isDisposed()) {
+                            browser.setText(html);
+                        }
                     }
                 });
             }
@@ -403,9 +475,9 @@ public class M2DocInterpreterView extends ViewPart {
     private Object selectionValue;
 
     /**
-     * The {@link IQueryEnvironment}.
+     * The {@link IQualifiedNameQueryEnvironment}.
      */
-    private IQueryEnvironment queryEnvironment;
+    private IQualifiedNameQueryEnvironment queryEnvironment;
 
     /**
      * The {@link ResourceSet} for models.
@@ -437,6 +509,10 @@ public class M2DocInterpreterView extends ViewPart {
      */
     private M2DocEvaluationEnvironment m2docEnv;
 
+    /**
+     * The template qualified name.
+     */
+    private String qualifiedName;
     /**
      * The single thread executor.
      */
@@ -616,6 +692,9 @@ public class M2DocInterpreterView extends ViewPart {
 
         if (generation != null) {
             AQLUtils.cleanServices(M2DocUtils.M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
+            queryEnvironment.getLookupEngine().getResolver().dispose();
+            AQLUtils.cleanResourceSetForModels(generation, resourceSetForModels);
+            queryEnvironment.getLookupEngine().clearContext(EXPRESSION);
             try {
                 if (m2docEnv != null) {
                     m2docEnv.getUserContentManager().dispose();
@@ -630,33 +709,34 @@ public class M2DocInterpreterView extends ViewPart {
             final List<Exception> exceptions = new ArrayList<>();
             resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, generation, new ResourceSetImpl(),
                     GenconfUtils.getOptions(generation));
-            queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation, false);
+            final EPackage.Registry ePackageregistry = resourceSetForModels.getPackageRegistry();
             final URI templateURI = GenconfUtils.getResolvedURI(generation,
                     URI.createURI(generation.getTemplateFileName(), false));
-            final IClassProvider classProvider = M2DocPlugin.getClassProvider();
+
+            qualifiedName = "interpreter";
             final URIConverter uriConverter = resourceSetForModels.getURIConverter();
-            try (XWPFDocument document = POIServices.getInstance()
-                    .getXWPFDocument(resourceSetForModels.getURIConverter(), templateURI);
-                    DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI,
-                            new BasicMonitor());) {
-                final TemplateCustomProperties properties = documentTemplate.getProperties();
-                properties.configureQueryEnvironmentWithResult(queryEnvironment);
-                properties.configureQueryEnvironmentWithResult(queryEnvironment, classProvider);
-                if (!documentTemplate.getTemplates().isEmpty()) {
-                    final byte[] serializedDocument = serializeDocument(documentTemplate);
-                    m2docEnv = new M2DocEvaluationEnvironment(queryEnvironment, uriConverter,
-                            documentTemplate.eResource().getURI(), null);
-                    for (Template template : documentTemplate.getTemplates()) {
-                        queryEnvironment.registerService(
-                                new M2DocTemplateService(template, serializedDocument, m2docEnv, new BasicMonitor()));
-                    }
-                }
+            try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, qualifiedName,
+                    new BasicMonitor())) {
+
+                final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createResolver(templateURI,
+                        this.getClass().getClassLoader(), ePackageregistry, M2DocUtils.QUALIFIER_SEPARATOR, false);
+                queryEnvironment = GenconfUtils.getQueryEnvironment(resolver, resourceSetForModels, generation, false);
+
+                m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation, resolver, resourceSetForModels);
+
+                resolver.addLoader(new InterpreterLoader(m2docEnv, new BasicMonitor(), M2DocUtils.QUALIFIER_SEPARATOR,
+                        documentTemplate, qualifiedName));
+                resolver.addLoader(new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false));
+
+                resolver.register(qualifiedName, documentTemplate);
+                resolver.getLookupEngine().pushImportsContext(qualifiedName, qualifiedName);
+
+                M2DocUtils.prepareEnvironment(queryEnvironment, ePackageregistry, documentTemplate);
                 final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
                 variableTypes.clear();
                 variableTypes.put(SELECTION_VARIABLE, getPossibleTypesForValue(queryEnvironment, selectionValue));
-                variableTypes.putAll(properties.getVariableTypes(validator, queryEnvironment));
-                variableTypes.putAll(parseVariableTypes(queryEnvironment, validator, variableTypes,
-                        resourceSetForModels.getURIConverter(), templateURI));
+                variableTypes.putAll(documentTemplate.getProperties().getVariableTypes(validator, queryEnvironment));
+                variableTypes.putAll(parseVariableTypes(queryEnvironment, validator, variableTypes));
 
                 validationEngine = new QueryValidationEngine(queryEnvironment);
 
@@ -664,8 +744,7 @@ public class M2DocInterpreterView extends ViewPart {
                 final Map<String, Object> variables = GenconfUtils.getVariables(generation, resourceSetForModels);
                 allVariables = new HashMap<>(variables);
                 allVariables.put(SELECTION_VARIABLE, selectionValue);
-                allVariables.putAll(parseVariableValues(queryEnvironment, evaluationEngine, allVariables, uriConverter,
-                        templateURI));
+                allVariables.putAll(parseVariableValues(queryEnvironment, evaluationEngine, allVariables));
                 queryBuilder = new QueryBuilderEngine();
             }
 
@@ -690,28 +769,11 @@ public class M2DocInterpreterView extends ViewPart {
         } catch (Exception e) {
             // CHECKSTYLE:ON
             browser.setText(htmlSerializer.serialize("can't load .genconf file: " + e.getMessage()));
+            M2DocPlugin.getPlugin().log(new Status(IStatus.ERROR, getClass(), "can't load .genconf file", e));
             genconfLabel.setText("can't load .genconf file");
             generation = null;
             m2docEnv = null;
         }
-    }
-
-    /**
-     * Serializes the given {@link DocumentTemplate}.
-     * 
-     * @param documentTemplate
-     *            the {@link DocumentTemplate} to serialize
-     * @return the byte array of the serialized {@link DocumentTemplate}
-     * @throws IOException
-     *             if the serialization fail
-     */
-    private static byte[] serializeDocument(DocumentTemplate documentTemplate) throws IOException {
-        final byte[] serializedDocument;
-        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-            documentTemplate.getDocument().write(output);
-            serializedDocument = output.toByteArray();
-        }
-        return serializedDocument;
     }
 
     /**
@@ -849,20 +911,14 @@ public class M2DocInterpreterView extends ViewPart {
      *            the {@link AstValidator}
      * @param varTypes
      *            the declared variable types
-     * @param uriConv
-     *            the {@link URIConverter}
-     * @param tpltURI
-     *            the template URI
      * @return the mapping of internal variable (let, for, template, ...) types
      */
     private Map<String, Set<IType>> parseVariableTypes(IReadOnlyQueryEnvironment env, AstValidator validator,
-            Map<String, Set<IType>> varTypes, URIConverter uriConv, URI tpltURI) {
+            Map<String, Set<IType>> varTypes) {
         final Map<String, Set<IType>> res = new HashMap<>();
 
-        try (DocumentTemplate template = M2DocUtils.parse(uriConv, tpltURI, new BasicMonitor())) {
-            final TemplateCustomProperties properties = template.getProperties();
-            properties.configureQueryEnvironmentWithResult(queryEnvironment);
-            properties.configureQueryEnvironmentWithResult(queryEnvironment, M2DocPlugin.getClassProvider());
+        final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+        try (DocumentTemplate template = (DocumentTemplate) resolver.resolve(qualifiedName)) {
             final Iterator<EObject> it = template.eAllContents();
             while (it.hasNext()) {
                 final EObject current = it.next();
@@ -897,8 +953,6 @@ public class M2DocInterpreterView extends ViewPart {
 
         } catch (IOException e) {
             // nothing to do here: if we can't parse it doesn't matter
-        } catch (DocumentParserException e) {
-            // nothing to do here: if we can't parse it doesn't matter
         }
 
         return res;
@@ -913,20 +967,14 @@ public class M2DocInterpreterView extends ViewPart {
      *            the {@link QueryEvaluationEngine}
      * @param variables
      *            the declared variable values
-     * @param uriConverter
-     *            the {@link URIConverter}
-     * @param tpltURI
-     *            the template URI
      * @return the mapping of internal variable (let, for, template, ...) values
      */
     private Map<String, Object> parseVariableValues(IReadOnlyQueryEnvironment env, QueryEvaluationEngine engine,
-            Map<String, Object> variables, URIConverter uriConverter, URI tpltURI) {
+            Map<String, Object> variables) {
         final Map<String, Object> res = new HashMap<>(variables);
 
-        try (DocumentTemplate template = M2DocUtils.parse(uriConverter, tpltURI, new BasicMonitor())) {
-            final TemplateCustomProperties properties = template.getProperties();
-            properties.configureQueryEnvironmentWithResult(queryEnvironment);
-            properties.configureQueryEnvironmentWithResult(queryEnvironment, M2DocPlugin.getClassProvider());
+        final IQualifiedNameResolver resolver = queryEnvironment.getLookupEngine().getResolver();
+        try (DocumentTemplate template = (DocumentTemplate) resolver.resolve(qualifiedName)) {
             final Iterator<EObject> it = template.eAllContents();
             while (it.hasNext()) {
                 final EObject current = it.next();
@@ -946,8 +994,6 @@ public class M2DocInterpreterView extends ViewPart {
                 }
             }
         } catch (IOException e) {
-            // nothing to do here: if we can't parse it doesn't matter
-        } catch (DocumentParserException e) {
             // nothing to do here: if we can't parse it doesn't matter
         }
 

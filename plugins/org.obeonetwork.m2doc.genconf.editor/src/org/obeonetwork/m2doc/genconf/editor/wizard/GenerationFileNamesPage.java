@@ -20,6 +20,7 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -546,14 +547,16 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
                 final TemplateCustomProperties properties = POIServices.getInstance()
                         .getTemplateCustomProperties(URIConverter.INSTANCE, absoluteURI);
                 res = properties;
-                final List<Definition> oldDefinitions = GenconfUtils.getOldDefinitions(gen, properties);
+                final List<Definition> oldDefinitions = GenconfUtils.getOldDefinitions(gen, EPackage.Registry.INSTANCE,
+                        properties);
                 final Command removeCommand = RemoveCommand.create(editingDomain, gen,
                         GenconfPackage.GENERATION__DEFINITIONS, oldDefinitions);
                 editingDomain.getCommandStack().execute(removeCommand);
                 ((IQueryEnvironment) queryEnvironment).registerEPackage(EcorePackage.eINSTANCE);
                 ((IQueryEnvironment) queryEnvironment).registerCustomClassMapping(
                         EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
-                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+                properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment,
+                        EPackage.Registry.INSTANCE);
                 final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
                 defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                         new XMIResourceFactoryImpl());
@@ -563,7 +566,8 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
                 final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(new ArrayList<Exception>(),
                         queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
 
-                final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, properties);
+                final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, EPackage.Registry.INSTANCE,
+                        properties);
                 final Command addCommand = AddCommand.create(editingDomain, gen, GenconfPackage.GENERATION__DEFINITIONS,
                         newDefinitions);
                 editingDomain.getCommandStack().execute(addCommand);

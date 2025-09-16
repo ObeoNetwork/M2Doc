@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -64,9 +64,9 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
     private final String defaultType;
 
     /**
-     * The {@link List} of regitered {@link EPackage#getNsURI() nsURI}.
+     * The {@link Set} of registered {@link EPackage#getNsURI() nsURI}.
      */
-    private List<String> nsURIs;
+    private Set<String> nsURIs;
 
     /**
      * The selected type.
@@ -83,9 +83,9 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
      * @param defaultType
      *            the default type of the variable
      * @param nsURIs
-     *            the {@link List} of regitered {@link EPackage#getNsURI() nsURI}
+     *            the {@link List} of registered {@link EPackage#getNsURI() nsURI}
      */
-    public M2DocTypeSelectionDialog(Shell parentShell, String variableName, String defaultType, List<String> nsURIs) {
+    public M2DocTypeSelectionDialog(Shell parentShell, String variableName, String defaultType, Set<String> nsURIs) {
         super(parentShell, "Select a variable type for " + variableName, null, "Select a type.", MessageDialog.QUESTION,
                 new String[] {IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0);
         this.nsURIs = nsURIs;
@@ -98,7 +98,7 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
         container.setLayout(new GridLayout(1, false));
         container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-        final FilteredTree filteredTree = new FilteredTree(container, SWT.BORDER, new PatternFilter(), true);
+        final FilteredTree filteredTree = new FilteredTree(container, SWT.BORDER, new PatternFilter(), true, true);
         final TreeViewer treeViewer = filteredTree.getViewer();
         final Tree tree = treeViewer.getTree();
         final GridData gdTable = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
@@ -130,7 +130,7 @@ public class M2DocTypeSelectionDialog extends MessageDialog {
      *            the {@link List} of regitered {@link EPackage#getNsURI() nsURI}
      * @return the {@link List} of available types for the given {@link List} of regitered {@link EPackage#getNsURI() nsURI}
      */
-    List<String> getAvailableTypes(List<String> uris) {
+    List<String> getAvailableTypes(Set<String> uris) {
         final Set<String> types = new HashSet<>();
 
         types.add(TemplateCustomProperties.STRING_TYPE);

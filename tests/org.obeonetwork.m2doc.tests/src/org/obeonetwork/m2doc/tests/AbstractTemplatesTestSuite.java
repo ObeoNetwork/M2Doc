@@ -20,6 +20,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,12 +33,17 @@ import java.util.Map.Entry;
 
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.AQLUtils;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.configurator.HTTPServiceConfigurator;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfiguratorDescriptor;
 import org.eclipse.acceleo.query.services.configurator.ServicesConfiguratorDescriptor;
+import org.eclipse.acceleo.query.util.AqlResolverURIHandler;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -55,11 +63,11 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.GenerationResult;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
-import org.obeonetwork.m2doc.util.ClassProvider;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -103,7 +111,7 @@ public abstract class AbstractTemplatesTestSuite {
     /**
      * The {@link URIHandler} that check we don't have adherence to {@link File}.
      */
-    private final TestMemoryURIHandler uriHandler = new TestMemoryURIHandler();
+    private final TestMemoryURIHandler memoryUriHandler = new TestMemoryURIHandler();
 
     /**
      * The {@link DocumentTemplate}.
@@ -126,9 +134,9 @@ public abstract class AbstractTemplatesTestSuite {
     private final Generation generation;
 
     /**
-     * The {@link IQueryEnvironment}.
+     * The {@link IQualifiedNameQueryEnvironment}.
      */
-    private final IQueryEnvironment queryEnvironment;
+    private static IQualifiedNameQueryEnvironment queryEnvironment;
 
     /**
      * Variables.
@@ -138,21 +146,40 @@ public abstract class AbstractTemplatesTestSuite {
     /**
      * The {@link ResourceSet} for models.
      */
-    private final ResourceSet resourceSetForModels;
+    private static ResourceSet resourceSetForModels;
+
+    /**
+     * The expected output of the generation.
+     */
+    private final URI expectedGeneratedURI;
+
+    /**
+     * The user content {@link URI}.
+     */
+    private final URI userContentURI;
+
+    /**
+     * The output {@link URI} of the generation
+     */
+    private final URI outputURI;
+
+    /**
+     * The {@link M2DocEvaluationEnvironment}.
+     */
+    private final M2DocEvaluationEnvironment m2docEnv;
 
     /**
      * Constructor.
      * 
      * @param testFolder
      *            the test folder path
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
+    public AbstractTemplatesTestSuite(String testFolder) throws Exception {
         this.testFolderPath = testFolder.replaceAll("\\\\", "/");
-        final URI genconfURI = getGenconfURI(new File(testFolderPath));
+        final File testFolderFile = new File(testFolderPath);
+        final URI genconfURI = getGenconfURI(testFolderFile);
         if (URIConverter.INSTANCE.exists(genconfURI, Collections.EMPTY_MAP)) {
             final ResourceSet rs = getResourceSetForGenconf();
             generation = getGeneration(genconfURI, rs);
@@ -162,13 +189,48 @@ public abstract class AbstractTemplatesTestSuite {
             r.getContents().add(generation);
         }
         final URI templateURI = getTemplateURI(new File(testFolderPath));
+        final File templateFile = new File(templateURI.path());
         setTemplateFileName(generation, URI.decode(templateURI.deresolve(genconfURI).toString()));
         final List<Exception> exceptions = new ArrayList<>();
         resourceSetForModels = getResourceSetForModel(exceptions);
-        queryEnvironment = GenconfUtils.getQueryEnvironment(resourceSetForModels, generation, false);
-        documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, new BasicMonitor());
-        M2DocUtils.prepareEnvironment(queryEnvironment, new ClassProvider(this.getClass().getClassLoader()),
-                documentTemplate);
+
+        expectedGeneratedURI = getExpectedGeneratedURI(new File(testFolderPath));
+        userContentURI = getUserContentURI(new File(testFolderPath));
+
+        if (resourceSetForModels.getURIConverter().exists(expectedGeneratedURI, Collections.EMPTY_MAP)) {
+            outputURI = getGenerationOutputURI(testFolderPath);
+        } else {
+            outputURI = getActualGeneratedURI(new File(testFolderPath));
+            prepareoutputAndGenerate(userContentURI, outputURI);
+            fail(expectedGeneratedURI + DOESN_T_EXIST);
+        }
+
+        final Path rootPath = testFolderFile.toPath().getName(0);
+        final URL[] urls = new URL[] {testFolderFile.toPath().getName(0).toUri().toURL() };
+
+        final ClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
+        final EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
+        final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(classLoader, ePackageRegistry,
+                M2DocUtils.QUALIFIER_SEPARATOR);
+
+        final String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
+                M2DocUtils.QUALIFIER_SEPARATOR)
+            + M2DocUtils.QUALIFIER_SEPARATOR;
+        final String qualifiedName = namespace
+            + templateFile.getName().substring(0, templateFile.getName().lastIndexOf('.'));
+
+        resourceSetForModels.getURIConverter().getURIHandlers().add(0, new AqlResolverURIHandler(resolver));
+
+        queryEnvironment = GenconfUtils.getQueryEnvironment(resolver, resourceSetForModels, generation, false);
+
+        m2docEnv = new M2DocEvaluationEnvironment(resolver, resourceSetForModels, templateURI, outputURI);
+
+        resolver.addLoader(
+                new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(), M2DocUtils.QUALIFIER_SEPARATOR));
+        resolver.addLoader(new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false));
+
+        documentTemplate = (DocumentTemplate) resolver.resolve(qualifiedName);
+        M2DocUtils.prepareEnvironment(queryEnvironment, ePackageRegistry, documentTemplate);
         for (Exception e : exceptions) {
             @SuppressWarnings("resource")
             final XWPFRun run = M2DocUtils.getOrCreateFirstRun(documentTemplate.getDocument());
@@ -190,7 +252,7 @@ public abstract class AbstractTemplatesTestSuite {
 
         final ResourceSet res = AQLUtils.createResourceSetForModels(exceptions, generation, rs,
                 GenconfUtils.getOptions(generation));
-        res.getURIConverter().getURIHandlers().add(0, uriHandler);
+        res.getURIConverter().getURIHandlers().add(0, memoryUriHandler);
 
         return res;
     }
@@ -198,7 +260,7 @@ public abstract class AbstractTemplatesTestSuite {
     @After
     public void after() {
         AQLUtils.cleanResourceSetForModels(generation, resourceSetForModels);
-        uriHandler.clear();
+        memoryUriHandler.clear();
     }
 
     /**
@@ -231,6 +293,8 @@ public abstract class AbstractTemplatesTestSuite {
     public static void afterClass() throws IOException {
         documentTemplate.close();
         AQLUtils.unregisterServicesConfigurator(SERVICES_CONFIGURATOR_DESCRIPTOR);
+        AQLUtils.cleanServices(DOESN_T_EXIST, queryEnvironment, resourceSetForModels);
+        queryEnvironment.getLookupEngine().getResolver().dispose();
     }
 
     /**
@@ -377,17 +441,6 @@ public abstract class AbstractTemplatesTestSuite {
      */
     @Test
     public void generation() throws Exception {
-        final URI expectedGeneratedURI = getExpectedGeneratedURI(new File(testFolderPath));
-        final URI userContentURI = getUserContentURI(new File(testFolderPath));
-
-        URI outputURI = null;
-        if (resourceSetForModels.getURIConverter().exists(expectedGeneratedURI, Collections.EMPTY_MAP)) {
-            outputURI = getGenerationOutputURI(testFolderPath);
-        } else {
-            outputURI = getActualGeneratedURI(new File(testFolderPath));
-            prepareoutputAndGenerate(userContentURI, outputURI);
-            fail(expectedGeneratedURI + DOESN_T_EXIST);
-        }
 
         final GenerationResult generationResult = prepareoutputAndGenerate(userContentURI, outputURI);
         M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedGeneratedURI, outputURI);
@@ -493,8 +546,8 @@ public abstract class AbstractTemplatesTestSuite {
         }
         final boolean updateFields = Boolean
                 .valueOf(GenconfUtils.getOptions(generation).get(M2DocUtils.UPDATE_FIELDS_OPTION));
-        final GenerationResult generationResult = M2DocUtils.generate(documentTemplate, queryEnvironment, variables,
-                resourceSetForModels, outputURI, updateFields, new BasicMonitor());
+        final GenerationResult generationResult = M2DocUtils.generate(m2docEnv, documentTemplate, variables,
+                updateFields, new BasicMonitor());
         return generationResult;
     }
 

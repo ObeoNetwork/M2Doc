@@ -11,11 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
  * Tests {@link org.obeonetwork.m2doc.element.MTable MTable}.
@@ -29,12 +27,10 @@ public class MTableTests extends AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public MTableTests(String testFolder) throws IOException, DocumentParserException {
+    public MTableTests(String testFolder) throws Exception {
         super(testFolder);
     }
 

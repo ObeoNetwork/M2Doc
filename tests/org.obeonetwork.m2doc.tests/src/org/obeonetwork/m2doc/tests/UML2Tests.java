@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2020 Obeo. 
+ *  Copyright (c) 2020, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,12 +11,10 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 
 /**
  * Tests {@link org.obeonetwork.m2doc.template.Query Query}.
@@ -34,12 +32,10 @@ public class UML2Tests extends AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public UML2Tests(String testFolder) throws IOException, DocumentParserException {
+    public UML2Tests(String testFolder) throws Exception {
         super(testFolder);
     }
 

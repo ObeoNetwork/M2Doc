@@ -55,8 +55,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 /**
  * DocumentParser reads a {@link XWPFDocument} and produces a abstract syntax
  * tree that represents the template in the document.
- * The parsing algorithm is an LL(k) like algorithm that uses look ahead to predict parsing decisions. Tokens are only read from fields so
- * that there's no ambiguity with the rest of the text.
+ * The parsing algorithm is an LL(k) like algorithm that uses look ahead to predict parsing decisions.
  * 
  * @author Romain Guider
  */

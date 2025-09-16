@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -208,27 +208,24 @@ public final class TokenRegistry {
     public List<String> getSelectedToken(TemplateCustomProperties customProperties) {
         final List<String> res = new ArrayList<>();
 
-        for (String tokenName : getRegisteredTokens()) {
-            boolean isSelected = true;
+        nextToken: for (String tokenName : getRegisteredTokens()) {
             for (Entry<String, List<String>> entry : getServices(tokenName).entrySet()) {
-                final String bundleName = entry.getKey();
                 for (String className : entry.getValue()) {
-                    if (!bundleName.equals(customProperties.getServiceClasses().get(className))) {
-                        isSelected = false;
-                        break;
+                    if (!customProperties.getImports().contains(className)) {
+                        // current token is not selected
+                        continue nextToken;
                     }
                 }
             }
             final Set<String> packages = new HashSet<>(customProperties.getPackagesURIs());
             for (String pkg : getPackages(tokenName)) {
                 if (!packages.contains(pkg)) {
-                    isSelected = false;
-                    break;
+                    // current token is not selected
+                    continue nextToken;
                 }
             }
-            if (isSelected) {
-                res.add(tokenName);
-            }
+            // current token is selected
+            res.add(tokenName);
         }
 
         return res;
@@ -263,15 +260,12 @@ public final class TokenRegistry {
      */
     public void selectToken(TemplateCustomProperties customProperties, String tokenName) {
         for (Entry<String, List<String>> entry : getServices(tokenName).entrySet()) {
-            final String bundleName = entry.getKey();
             for (String cls : entry.getValue()) {
-                customProperties.getServiceClasses().put(cls, bundleName);
+                customProperties.getImports().add(cls);
             }
         }
         for (String nsURI : getPackages(tokenName)) {
-            if (!customProperties.getPackagesURIs().contains(nsURI)) {
-                customProperties.getPackagesURIs().add(nsURI);
-            }
+            customProperties.getPackagesURIs().add(nsURI);
         }
     }
 
@@ -289,7 +283,7 @@ public final class TokenRegistry {
 
         for (List<String> classes : getServices(tokenName).values()) {
             for (String cls : classes) {
-                customProperties.getServiceClasses().remove(cls);
+                customProperties.getImports().remove(cls);
             }
         }
         customProperties.getPackagesURIs().removeAll(getPackages(tokenName));

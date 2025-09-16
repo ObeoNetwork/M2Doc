@@ -22,7 +22,6 @@ import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 
 /**
@@ -37,12 +36,10 @@ public abstract class AbstractTemplatesTestSuite extends org.obeonetwork.m2doc.t
      * 
      * @param testFolder
      *            the test folder path
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public AbstractTemplatesTestSuite(String testFolder) throws IOException, DocumentParserException {
+    public AbstractTemplatesTestSuite(String testFolder) throws Exception {
         super(testFolder);
         // make sure m2doc.ide is started
         M2DocPlugin.getPlugin();

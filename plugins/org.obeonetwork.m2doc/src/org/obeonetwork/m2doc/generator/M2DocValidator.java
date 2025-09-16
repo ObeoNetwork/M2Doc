@@ -39,7 +39,6 @@ import org.eclipse.emf.common.util.Monitor;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.template.Block;
 import org.obeonetwork.m2doc.template.Bookmark;
 import org.obeonetwork.m2doc.template.Cell;
@@ -172,13 +171,6 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
             documentTemplate.getBody().getValidationMessages().add(
                     new TemplateValidationMessage(ValidationMessageLevel.WARNING, "M2Doc version mismatch: template is "
                         + templateProperties.getM2DocVersion() + " and runtime is " + M2DocUtils.VERSION, run));
-        }
-
-        if (!documentTemplate.getTemplates().isEmpty()) {
-            for (Template template : documentTemplate.getTemplates()) {
-                ((IQueryEnvironment) queryEnvironment)
-                        .registerService(new M2DocTemplateService(template, queryEnvironment));
-            }
         }
 
         Map<String, Set<IType>> types = new LinkedHashMap<>();

@@ -54,6 +54,8 @@ import org.obeonetwork.m2doc.template.TemplatePackage;
  * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getM2DocVersion <em>M2 Doc Version</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getMetamodels <em>Metamodels</em>}</li>
  * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getImports <em>Imports</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getExtend <em>Extend</em>}</li>
+ * <li>{@link org.obeonetwork.m2doc.template.impl.DocumentTemplateImpl#getQualifiedName <em>Qualified Name</em>}</li>
  * </ul>
  *
  * @generated
@@ -211,6 +213,39 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     protected static final String M2_DOC_VERSION_EDEFAULT = null;
 
     /**
+     * The default value of the '{@link #getExtend() <em>Extend</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getExtend()
+     * @generated
+     * @ordered
+     */
+    protected static final String EXTEND_EDEFAULT = null;
+
+    /**
+     * The default value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getQualifiedName()
+     * @generated
+     * @ordered
+     */
+    protected static final String QUALIFIED_NAME_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @see #getQualifiedName()
+     * @generated
+     * @ordered
+     */
+    protected String qualifiedName = QUALIFIED_NAME_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -240,7 +275,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Block> getHeaders() {
         if (headers == null) {
-            headers = new EObjectContainmentEList<>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
+            headers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
         }
         return headers;
     }
@@ -254,7 +289,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Block> getFooters() {
         if (footers == null) {
-            footers = new EObjectContainmentEList<>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
+            footers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
         }
         return footers;
     }
@@ -400,7 +435,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Template> getTemplates() {
         if (templates == null) {
-            templates = new EObjectContainmentWithInverseEList<>(Template.class, this,
+            templates = new EObjectContainmentWithInverseEList<Template>(Template.class, this,
                     TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES, TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE);
         }
         return templates;
@@ -464,8 +499,8 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
 
         final TemplateCustomProperties properties = getProperties();
         if (properties != null) {
-            res = ECollections
-                    .unmodifiableEList(ECollections.asEList(ECollections.asEList(properties.getPackagesURIs())));
+            final List<String> list = new ArrayList<>(properties.getPackagesURIs());
+            res = ECollections.unmodifiableEList(ECollections.asEList(list));
         } else {
             res = ECollections.emptyEList();
         }
@@ -485,13 +520,59 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
 
         final TemplateCustomProperties properties = getProperties();
         if (properties != null) {
-            final List<String> list = new ArrayList<>(properties.getServiceClasses().keySet());
-            res = ECollections.unmodifiableEList(ECollections.asEList(ECollections.asEList(list)));
+            final List<String> list = new ArrayList<>(properties.getImports());
+            res = ECollections.unmodifiableEList(ECollections.asEList(list));
         } else {
             res = ECollections.emptyEList();
         }
 
         return res;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated NOT
+     */
+    @Override
+    public String getExtend() {
+        final String res;
+
+        final TemplateCustomProperties properties = getProperties();
+        if (properties != null) {
+            res = properties.getExtend();
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public void setQualifiedName(String newQualifiedName) {
+        String oldQualifiedName = qualifiedName;
+        qualifiedName = newQualifiedName;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TemplatePackage.DOCUMENT_TEMPLATE__QUALIFIED_NAME,
+                    oldQualifiedName, qualifiedName));
     }
 
     /**
@@ -562,6 +643,10 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return getMetamodels();
             case TemplatePackage.DOCUMENT_TEMPLATE__IMPORTS:
                 return getImports();
+            case TemplatePackage.DOCUMENT_TEMPLATE__EXTEND:
+                return getExtend();
+            case TemplatePackage.DOCUMENT_TEMPLATE__QUALIFIED_NAME:
+                return getQualifiedName();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -603,6 +688,9 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             case TemplatePackage.DOCUMENT_TEMPLATE__PROPERTIES:
                 setProperties((TemplateCustomProperties) newValue);
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__QUALIFIED_NAME:
+                setQualifiedName((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -640,6 +728,9 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
             case TemplatePackage.DOCUMENT_TEMPLATE__PROPERTIES:
                 setProperties(PROPERTIES_EDEFAULT);
                 return;
+            case TemplatePackage.DOCUMENT_TEMPLATE__QUALIFIED_NAME:
+                setQualifiedName(QUALIFIED_NAME_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -676,6 +767,11 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
                 return !getMetamodels().isEmpty();
             case TemplatePackage.DOCUMENT_TEMPLATE__IMPORTS:
                 return !getImports().isEmpty();
+            case TemplatePackage.DOCUMENT_TEMPLATE__EXTEND:
+                return EXTEND_EDEFAULT == null ? getExtend() != null : !EXTEND_EDEFAULT.equals(getExtend());
+            case TemplatePackage.DOCUMENT_TEMPLATE__QUALIFIED_NAME:
+                return QUALIFIED_NAME_EDEFAULT == null ? qualifiedName != null
+                        : !QUALIFIED_NAME_EDEFAULT.equals(qualifiedName);
         }
         return super.eIsSet(featureID);
     }
@@ -700,6 +796,8 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         result.append(document);
         result.append(", properties: ");
         result.append(properties);
+        result.append(", qualifiedName: ");
+        result.append(qualifiedName);
         result.append(')');
         return result.toString();
     }

@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -224,7 +225,8 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
             ((IQueryEnvironment) queryEnvironment).registerEPackage(EcorePackage.eINSTANCE);
             ((IQueryEnvironment) queryEnvironment).registerCustomClassMapping(
                     EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
-            properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment);
+            properties.configureQueryEnvironmentWithResult((IQueryEnvironment) queryEnvironment,
+                    EPackage.Registry.INSTANCE);
             final ResourceSetImpl defaultResourceSet = new ResourceSetImpl();
             defaultResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
                     new XMIResourceFactoryImpl());
@@ -233,7 +235,8 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
 
             final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(new ArrayList<Exception>(),
                     queryEnvironment, defaultResourceSet, GenconfUtils.getOptions(gen));
-            final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, properties);
+            final List<Definition> newDefinitions = GenconfUtils.getNewDefinitions(gen, EPackage.Registry.INSTANCE,
+                    properties);
             gen.getDefinitions().addAll(newDefinitions);
             GenconfUtils.initializeVariableDefinition(gen, queryEnvironment, properties, resourceSetForModel);
             AQLUtils.cleanResourceSetForModels(queryEnvironment, resourceSetForModel);

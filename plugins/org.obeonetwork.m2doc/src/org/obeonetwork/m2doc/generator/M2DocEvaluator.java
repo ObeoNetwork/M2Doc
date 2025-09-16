@@ -57,7 +57,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -306,7 +305,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         this.bookmarkManager = m2docEnv.getBookmarkManager();
         this.userContentManager = m2docEnv.getUserContentManager();
         this.copier = m2docEnv.getCopier();
-        this.evaluator = new QueryEvaluationEngine((IQueryEnvironment) m2docEnv.getQueryEnvironment());
+        this.evaluator = new QueryEvaluationEngine(m2docEnv.getResolver().getLookupEngine().getQueryEnvironment());
         this.monitor = monitor;
     }
 

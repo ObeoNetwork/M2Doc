@@ -12,9 +12,6 @@
 
 package org.obeonetwork.m2doc.ide;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
@@ -22,12 +19,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.obeonetwork.m2doc.ide.util.ClassProviderRegistryListener;
-import org.obeonetwork.m2doc.ide.util.EclipseClassProvider;
-import org.obeonetwork.m2doc.ide.util.IClassProviderDescriptor;
-import org.obeonetwork.m2doc.util.ClassProvider;
-import org.obeonetwork.m2doc.util.IClassProvider;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -53,20 +44,9 @@ public class M2DocPlugin extends EMFPlugin {
     private static Implementation plugin;
 
     /**
-     * The {@link IClassProvider}.
-     */
-    private static IClassProvider classProvider = new ClassProvider(M2DocPlugin.class.getClassLoader());
-
-    /**
      * The {@link BundleContext}.
      */
     private static BundleContext bundlerContext;
-
-    /**
-     * The {@link List} of {@link #registerClassProvider(IClassProviderDescriptor) registered}
-     * {@link IClassProviderDescriptor}.
-     */
-    private static final List<IClassProviderDescriptor> PROVIDERS = new ArrayList<>();
 
     /**
      * The constructor.
@@ -90,9 +70,6 @@ public class M2DocPlugin extends EMFPlugin {
      * @author cedric
      */
     public static class Implementation extends EclipsePlugin {
-
-        /** The registry listener that will be used to listen to extension changes. */
-        private ClassProviderRegistryListener providerListener = new ClassProviderRegistryListener();
 
         /** The listener for M2Doc services and package tokens. */
         private DeclaredTokensListener servicesListener = new DeclaredTokensListener();
@@ -118,8 +95,6 @@ public class M2DocPlugin extends EMFPlugin {
         public void start(BundleContext context) throws Exception {
             super.start(context);
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
-            registry.addListener(providerListener, ClassProviderRegistryListener.CLASS_PROVIDER_EXTENSION_POINT);
-            providerListener.parseInitialContributions();
             registry.addListener(servicesListener, DeclaredTokensListener.SERVICE_REGISTERY_EXTENSION_POINT);
             servicesListener.parseInitialContributions();
             registry.addListener(templatesListener, DeclaredTemplatesListener.TEMPLATE_REGISTERY_EXTENSION_POINT);
@@ -130,42 +105,11 @@ public class M2DocPlugin extends EMFPlugin {
         @Override
         public void stop(BundleContext context) throws Exception {
             super.stop(context);
-            if (classProvider instanceof EclipseClassProvider) {
-                ((EclipseClassProvider) classProvider).dispose();
-            }
-            classProvider = new ClassProvider(M2DocPlugin.class.getClassLoader());
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
             registry.removeListener(servicesListener);
             // TODO clear registry and registryListener ?
         }
 
-    }
-
-    /**
-     * Gets the {@link IClassProvider} with {@link Bundle} support.
-     * 
-     * @return the {@link IClassProvider} with {@link Bundle} support
-     */
-    public static IClassProvider getClassProvider() {
-        if (classProvider.getClass() == ClassProvider.class) {
-            if (!PROVIDERS.isEmpty()) {
-                classProvider = PROVIDERS.get(0).getClassProvider();
-            } else {
-                classProvider = new EclipseClassProvider(bundlerContext,
-                        M2DocPlugin.getPlugin().getClass().getClassLoader());
-            }
-        }
-        return classProvider;
-    }
-
-    /**
-     * Sets the {@link EclipseClassProvider} with {@link Bundle} support.
-     * 
-     * @param classProvider
-     *            the {@link EclipseClassProvider}
-     */
-    public static void setClassProvider(EclipseClassProvider classProvider) {
-        M2DocPlugin.classProvider = classProvider;
     }
 
     /**
@@ -213,55 +157,6 @@ public class M2DocPlugin extends EMFPlugin {
             errorMessage = "Logging null message should never happens."; //$NON-NLS-1$
         }
         M2DocPlugin.INSTANCE.log(new Status(severity, PLUGIN_ID, errorMessage));
-    }
-
-    /**
-     * Registers the given {@link IClassProviderDescriptor}.
-     * 
-     * @param configurator
-     *            the {@link IClassProviderDescriptor} to register
-     */
-    public static void registerClassProvider(IClassProviderDescriptor configurator) {
-        if (configurator != null) {
-            synchronized (PROVIDERS) {
-                PROVIDERS.add(configurator);
-            }
-        }
-    }
-
-    /**
-     * Unregister the given {@link IClassProviderDescriptor}.
-     * 
-     * @param providerDescriptor
-     *            the {@link IClassProviderDescriptor} to unregister
-     */
-    public static void unregisterClassProvider(IClassProviderDescriptor providerDescriptor) {
-        if (providerDescriptor != null) {
-            synchronized (PROVIDERS) {
-                PROVIDERS.remove(providerDescriptor);
-            }
-        }
-    }
-
-    /**
-     * Gets the {@link List} of registered {@link IClassProviderDescriptor}.
-     * 
-     * @return the {@link List} of {@link #registerServicesConfigurator(IClassProviderDescriptor) registered}
-     *         {@link IClassProviderDescriptor}
-     */
-    public static List<IClassProvider> getProviders() {
-        final List<IClassProvider> res = new ArrayList<>();
-
-        synchronized (PROVIDERS) {
-            for (IClassProviderDescriptor descriptor : PROVIDERS) {
-                final IClassProvider configurator = descriptor.getClassProvider();
-                if (configurator != null) {
-                    res.add(configurator);
-                }
-            }
-        }
-
-        return res;
     }
 
     /**

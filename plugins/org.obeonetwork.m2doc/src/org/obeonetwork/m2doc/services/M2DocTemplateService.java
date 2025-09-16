@@ -30,8 +30,9 @@ import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.impl.AbstractService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.impl.namespace.AbstractQualifiedNameService;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.Monitor;
@@ -48,7 +49,7 @@ import org.obeonetwork.m2doc.template.Template;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class M2DocTemplateService extends AbstractService<Template> {
+public class M2DocTemplateService extends AbstractQualifiedNameService<Template> {
 
     /**
      * The maximum depth of a recursive call.
@@ -96,18 +97,6 @@ public class M2DocTemplateService extends AbstractService<Template> {
     private int callDepth = -1;
 
     /**
-     * Constructor. For validation only.
-     * 
-     * @param template
-     *            the {@link Template} to call
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment} for validation
-     */
-    public M2DocTemplateService(Template template, IReadOnlyQueryEnvironment queryEnvironment) {
-        this(template, null, new M2DocEvaluationEnvironment(queryEnvironment, null, null, null), null);
-    }
-
-    /**
      * Constructor. For evaluation.
      * 
      * @param template
@@ -116,12 +105,16 @@ public class M2DocTemplateService extends AbstractService<Template> {
      *            the serialized output {@link XWPFDocument}
      * @param m2docEnv
      *            the {@link M2DocEvaluationEnvironment}
+     * @param lookupEngine
+     *            the {@link IQualifiedNameLookupEngine}
+     * @param contextQualifiedName
+     *            the qualified name containing this service
      * @param monitor
      *            the {@link Monitor} for evaluation
      */
     public M2DocTemplateService(Template template, byte[] serializedDocument, M2DocEvaluationEnvironment m2docEnv,
-            Monitor monitor) {
-        super(template);
+            IQualifiedNameLookupEngine lookupEngine, String contextQualifiedName, Monitor monitor) {
+        super(template, lookupEngine, contextQualifiedName);
         this.m2docEnv = m2docEnv;
         this.monitor = monitor;
         this.shortSignature = computeShortSignature(template);
@@ -142,12 +135,13 @@ public class M2DocTemplateService extends AbstractService<Template> {
     /**
      * Computes the {@link #getShortSignature() short signature}.
      * 
-     * @param t
+     * @param template
      *            the {@link Template}
      * @return the {@link #getShortSignature() short signature}
      */
-    private String computeShortSignature(Template t) {
-        final List<Set<IType>> parameterTypes = getParameterTypes(null);
+    private String computeShortSignature(Template template) {
+        final List<Set<IType>> parameterTypes = getParameterTypes(
+                m2docEnv.getResolver().getLookupEngine().getQueryEnvironment());
         final Object[] argumentTypes = parameterTypes.toArray(new Object[parameterTypes.size()]);
 
         return serviceShortSignature(argumentTypes);
@@ -233,11 +227,11 @@ public class M2DocTemplateService extends AbstractService<Template> {
     protected List<Set<IType>> computeParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
         List<Set<IType>> res = new ArrayList<>();
 
-        final AstValidator aqlValidator = new AstValidator(new ValidationServices(m2docEnv.getQueryEnvironment()));
+        final AstValidator aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
         for (Parameter parameter : getOrigin().getParameters()) {
             final AstResult type = parameter.getType();
             final IValidationResult validatationResult = aqlValidator.validate(Collections.emptyMap(), type);
-            Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(m2docEnv.getQueryEnvironment(),
+            Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(queryEnvironment,
                     validatationResult.getPossibleTypes(type.getAst()));
             res.add(possibleTypes);
         }
@@ -249,7 +243,7 @@ public class M2DocTemplateService extends AbstractService<Template> {
     protected Set<IType> computeType(IReadOnlyQueryEnvironment queryEnvironment) {
         final Set<IType> res = new LinkedHashSet<>();
 
-        res.add(new ClassType(m2docEnv.getQueryEnvironment(), GenerationResult.class));
+        res.add(new ClassType(queryEnvironment, GenerationResult.class));
 
         return res;
     }

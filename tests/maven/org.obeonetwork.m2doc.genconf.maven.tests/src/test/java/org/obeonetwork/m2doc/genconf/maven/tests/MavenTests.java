@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -28,9 +32,10 @@ import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.util.ClassProvider;
-import org.obeonetwork.m2doc.util.IClassProvider;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;
 
 import static org.junit.Assert.assertEquals;
@@ -70,16 +75,25 @@ public class MavenTests {
 		resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
 				new XMIResourceFactoryImpl());
 
-		final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader());
 		final Monitor monitor = new BasicMonitor();
 		try {
 
-			final boolean hasErrors = GenconfUtils.validate(generation, resourceSetForModels, options,
-					exceptions, classProvider, monitor);
+			IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass()
+					.getClassLoader(), resourceSetForModels.getPackageRegistry(),
+					M2DocUtils.QUALIFIER_SEPARATOR);
+			M2DocEvaluationEnvironment m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation,
+					resolver, resourceSetForModels);
+
+			resolver.addLoader(new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+					M2DocUtils.QUALIFIER_SEPARATOR));
+			final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+			resolver.addLoader(javaLoader);
+
+			final boolean hasErrors = GenconfUtils.validate(generation, m2docEnv, options, exceptions,
+					monitor);
 			assertEquals(false, hasErrors);
 
-			final List<URI> generatedURIs = GenconfUtils.generate(generation, resourceSetForModels, options,
-					classProvider, monitor);
+			final List<URI> generatedURIs = GenconfUtils.generate(generation, m2docEnv, options, monitor);
 
 			assertEquals(1, generatedURIs.size());
 			assertTrue(uriHandler.exists(generatedURIs.get(0), null));

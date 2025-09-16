@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2024 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@ package org.obeonetwork.m2doc.ide.ui.wizard;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.presentation.EcoreActionBarContributor.ExtendedLoadResourceAction.RegisteredPackageDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -57,7 +57,6 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class TemplateCustomPropertiesPage extends WizardPage {
 
     /**
@@ -73,12 +72,17 @@ public class TemplateCustomPropertiesPage extends WizardPage {
     /**
      * The {@link TokenRegistry}.
      */
-    private TokenRegistry registry;
+    private final TokenRegistry registry;
 
     /**
      * The {@link TemplateVariablesPage} to {@link TemplateVariablesPage#validatePage(TemplateCustomProperties) validate}.
      */
     private TemplateVariablesPage templateVariablesProperties;
+
+    /**
+     * The template {@link URI}.
+     */
+    private final URI templateURI;
 
     /**
      * Constructor.
@@ -87,13 +91,16 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      *            the edited {@link TemplateCustomProperties}
      * @param registry
      *            the {@link TokenRegistry}
+     * @param templateURI
+     *            the template {@link URI}
      * @param templateVariablesProperties
      *            the {@link TemplateVariablesPage} to {@link TemplateVariablesPage#validatePage(TemplateCustomProperties) validate}
      */
-    protected TemplateCustomPropertiesPage(TokenRegistry registry, TemplateCustomProperties properties,
+    protected TemplateCustomPropertiesPage(TokenRegistry registry, TemplateCustomProperties properties, URI templateURI,
             TemplateVariablesPage templateVariablesProperties) {
         super("Template properties");
         this.properties = properties;
+        this.templateURI = templateURI;
         this.registry = registry;
         this.templateVariablesProperties = templateVariablesProperties;
     }
@@ -146,21 +153,9 @@ public class TemplateCustomPropertiesPage extends WizardPage {
         classNameColumn.getColumn().setWidth(WIDTH);
         classNameColumn.setLabelProvider(new CellLabelProvider() {
 
-            @SuppressWarnings("unchecked")
             @Override
             public void update(ViewerCell cell) {
-                cell.setText(((Entry<String, String>) cell.getElement()).getKey());
-            }
-        });
-        TableViewerColumn bundleNameColumn = new TableViewerColumn(servicesTable, tabFolder.getStyle());
-        bundleNameColumn.getColumn().setText("Bundle");
-        bundleNameColumn.getColumn().setWidth(WIDTH);
-        bundleNameColumn.setLabelProvider(new CellLabelProvider() {
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public void update(ViewerCell cell) {
-                cell.setText(((Entry<String, String>) cell.getElement()).getValue());
+                cell.setText((String) cell.getElement());
             }
         });
         servicesTable.setContentProvider(new IStructuredContentProvider() {
@@ -177,7 +172,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
             @Override
             public Object[] getElements(Object inputElement) {
-                return ((TemplateCustomProperties) inputElement).getServiceClasses().entrySet().toArray();
+                return ((TemplateCustomProperties) inputElement).getImports().toArray();
             }
         });
 
@@ -219,9 +214,8 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             @SuppressWarnings("unchecked")
             @Override
             public void widgetSelected(SelectionEvent e) {
-                for (Entry<?, ?> entry : (List<Entry<?, ?>>) ((IStructuredSelection) servicesTable.getSelection())
-                        .toList()) {
-                    customProperties.getServiceClasses().remove(entry.getKey());
+                for (String imported : (List<String>) ((IStructuredSelection) servicesTable.getSelection()).toList()) {
+                    customProperties.getImports().remove(imported);
                 }
                 servicesTable.refresh();
                 tokenViewer.refresh();
@@ -493,7 +487,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
         if (updater == null) {
             MessageDialog.openInformation(getShell(), "No class property updater is registered",
                     "You can try to install the M2Doc JDT feature to solve this issue.");
-        } else if (updater.updatePropertyClasses(customProperties)) {
+        } else if (updater.updatePropertyClasses(customProperties, templateURI)) {
             tokenViewer.refresh();
             servicesTable.refresh();
             templateVariablesProperties.validatePage(customProperties);

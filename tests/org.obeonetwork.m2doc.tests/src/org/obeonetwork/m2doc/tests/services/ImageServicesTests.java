@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,11 +11,9 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.tests.services;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import org.junit.runners.Parameterized.Parameters;
-import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.tests.AbstractTemplatesTestSuite;
 
@@ -31,12 +29,10 @@ public class ImageServicesTests extends AbstractTemplatesTestSuite {
      * 
      * @param testFolder
      *            the test folder
-     * @throws IOException
-     *             if the tested template can't be read
-     * @throws DocumentParserException
-     *             if the tested template can't be parsed
+     * @throws Exception
+     *             if something went wrong
      */
-    public ImageServicesTests(String testFolder) throws IOException, DocumentParserException {
+    public ImageServicesTests(String testFolder) throws Exception {
         super(testFolder);
     }
 

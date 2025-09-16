@@ -7,20 +7,20 @@ Element-Version: 3.0
 External-Reference: 
 Id: _mQalIBWoEeqNEaKdKpcCSw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 2/7/25, 12:22 PM
+Save-Time: 9/18/25, 4:08 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-get-view "Project Explorer" | get-tree | select "test/template.docx" | get-menu -path "Edit Template properties" | click
+get-view "Project Explorer" | get-tree | select "test/src/template/template.docx" | get-menu -path "Edit Template properties" | click
 with [get-window "Template properties"] {
     get-button "Next >" | click
     get-editbox -after [get-label "M2Doc version:"] | set-text "-1"
     get-button Finish | click
 }
-get-view "Project Explorer" | get-tree | select "test/template.genconf"
+get-view "Project Explorer" | get-tree | select "test/generation/template.genconf"
 exec-with-options {
     get-view "Project Explorer" | get-tree | get-menu -path "Generate Documentation" | click
 }
@@ -29,5 +29,5 @@ get-window "M2Doc generation"
     | get-property caption | equals "M2Doc version mismatch: template version is -1 and current M2Doc version is 4.0.0. Do you want to continue ?" 
     | verify-true
 get-window "M2Doc generation" | get-button Cancel | click
-get-view "Project Explorer" | get-tree | get-item -path test | get-property childCount | equals 4 | verify-true
+get-view "Project Explorer" | get-tree | get-item -path test | get-property childCount | equals 6 | verify-true
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

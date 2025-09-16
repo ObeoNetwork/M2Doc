@@ -100,6 +100,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/M2DocVersion"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/metamodels"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/imports"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/extend"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//DocumentTemplate/qualifiedName"/>
     </genClasses>
     <genClasses ecoreClass="Template.ecore#//Bookmark">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Template.ecore#//Bookmark/name"/>

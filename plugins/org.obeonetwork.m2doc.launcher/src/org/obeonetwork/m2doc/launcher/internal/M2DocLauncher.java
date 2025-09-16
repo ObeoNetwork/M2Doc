@@ -19,8 +19,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.query.AQLUtils;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -36,8 +41,10 @@ import org.kohsuke.args4j.spi.StringArrayOptionHandler;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
-import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
  * Application class for the M2Doc Launcher. Parses the arguments and launch
@@ -151,15 +158,27 @@ public class M2DocLauncher implements IApplication {
      * @param monitor
      *            the {@link Monitor}
      */
-    private void launchGenerationConfiguration(Generation generation, final Monitor monitor) {
+    private void launchGenerationConfiguration(Generation generation, Monitor monitor) {
         final List<Exception> exceptions = new ArrayList<Exception>();
         final Map<String, String> options = GenconfUtils.getOptions(generation);
         final ResourceSet resourceSetForModel = AQLUtils.createResourceSetForModels(exceptions, generation,
                 new ResourceSetImpl(), options);
         try {
             System.out.println("Input: " + generation.eResource().getURI());
-            List<URI> generated = GenconfUtils.generate(generation, resourceSetForModel, options,
-                    M2DocPlugin.getClassProvider(), monitor);
+            final URI templateURI = GenconfUtils.getResolvedURI(generation,
+                    URI.createURI(generation.getTemplateFileName(), false));
+            final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createResolver(templateURI,
+                    this.getClass().getClassLoader(), resourceSetForModel.getPackageRegistry(),
+                    M2DocUtils.QUALIFIER_SEPARATOR, false);
+            final M2DocEvaluationEnvironment m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation,
+                    resolver, resourceSetForModel);
+
+            resolver.addLoader(
+                    new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(), M2DocUtils.QUALIFIER_SEPARATOR));
+            final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+            resolver.addLoader(javaLoader);
+
+            List<URI> generated = GenconfUtils.generate(generation, m2docEnv, options, monitor);
             for (URI uri : generated) {
                 System.out.println("Output: " + uri.toString());
             }

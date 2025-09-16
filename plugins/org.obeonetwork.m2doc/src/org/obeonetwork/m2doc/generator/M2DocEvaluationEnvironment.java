@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019 Obeo. 
+ *  Copyright (c) 2019, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -11,9 +11,10 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * Evaluation environemnt for M2Doc.
@@ -28,6 +29,10 @@ public class M2DocEvaluationEnvironment {
     private final BookmarkManager bookmarkManager;
 
     /**
+     * The {@link ResourceSet} for models.
+     */
+    private final ResourceSet resourceSetForModels;
+    /**
      * The {@link UserContentManager}.
      */
     private final UserContentManager userContentManager;
@@ -38,28 +43,42 @@ public class M2DocEvaluationEnvironment {
     private final RawCopier copier;
 
     /**
-     * The {@link IReadOnlyQueryEnvironment}.
+     * The {@link IQualifiedNameResolver}.
      */
-    private final IReadOnlyQueryEnvironment queryEnvironment;
+    private final IQualifiedNameResolver resolver;
+
+    /**
+     * The template {@link URI}.
+     */
+    private URI templateURI;
+
+    /**
+     * The destination {@link URI}.
+     */
+    private URI destinationURI;
 
     /**
      * Constructor.
      * 
-     * @param queryEnvironment
-     *            the {@link IReadOnlyQueryEnvironment}
-     * @param uriConverter
-     *            the {@link URIConverter}
-     * @param sourceURI
-     *            the source {@link URI}
+     * @param resolver
+     *            the {@link IQualifiedNameResolver}
+     * @param resourceSetForModels
+     *            the {@link ResourceSet}
+     * @param templateURI
+     *            the template {@link URI}
      * @param destinationURI
      *            the destination {@link URI}
      */
-    public M2DocEvaluationEnvironment(IReadOnlyQueryEnvironment queryEnvironment, URIConverter uriConverter,
-            URI sourceURI, URI destinationURI) {
+    public M2DocEvaluationEnvironment(IQualifiedNameResolver resolver, ResourceSet resourceSetForModels,
+            URI templateURI, URI destinationURI) {
         this.bookmarkManager = new BookmarkManager();
-        this.userContentManager = new UserContentManager(uriConverter, sourceURI, destinationURI);
+        this.resourceSetForModels = resourceSetForModels;
+        this.userContentManager = new UserContentManager(resourceSetForModels.getURIConverter(), templateURI,
+                destinationURI);
         this.copier = new RawCopier();
-        this.queryEnvironment = queryEnvironment;
+        this.resolver = resolver;
+        this.templateURI = templateURI;
+        this.destinationURI = destinationURI;
     }
 
     /**
@@ -81,12 +100,12 @@ public class M2DocEvaluationEnvironment {
     }
 
     /**
-     * get the {@link IReadOnlyQueryEnvironment}.
+     * get the {@link IQualifiedNameResolver}.
      * 
-     * @return the {@link IReadOnlyQueryEnvironment}
+     * @return the {@link IQualifiedNameResolver}
      */
-    public IReadOnlyQueryEnvironment getQueryEnvironment() {
-        return queryEnvironment;
+    public IQualifiedNameResolver getResolver() {
+        return resolver;
     }
 
     /**
@@ -96,6 +115,33 @@ public class M2DocEvaluationEnvironment {
      */
     public UserContentManager getUserContentManager() {
         return userContentManager;
+    }
+
+    /**
+     * Gets the {@link ResourceServices} for models.
+     * 
+     * @return the {@link ResourceServices} for models
+     */
+    public ResourceSet getResourceSetForModels() {
+        return resourceSetForModels;
+    }
+
+    /**
+     * Gets the template {@link URI}.
+     * 
+     * @return the template {@link URI}
+     */
+    public URI getTemplateURI() {
+        return templateURI;
+    }
+
+    /**
+     * Gets the destination {@link URI}.
+     * 
+     * @return the destination {@link URI}
+     */
+    public URI getDestinationURI() {
+        return destinationURI;
     }
 
 }
