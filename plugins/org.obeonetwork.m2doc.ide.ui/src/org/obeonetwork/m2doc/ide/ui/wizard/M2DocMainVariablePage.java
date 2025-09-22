@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -172,7 +172,7 @@ public class M2DocMainVariablePage extends WizardPage {
         valueComposite.setLayout(new GridLayout(2, false));
         valueComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         final int style = SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
-        final FilteredTree filteredTree = new FilteredTree(valueComposite, style, new PatternFilter(), true);
+        final FilteredTree filteredTree = new FilteredTree(valueComposite, style, new PatternFilter(), true, true);
         filteredTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         final TreeViewer treeViewer = filteredTree.getViewer();
         treeViewer.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));

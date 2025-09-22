@@ -26,9 +26,7 @@ import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -37,8 +35,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.obeonetwork.m2doc.POIServices;
-import org.obeonetwork.m2doc.ide.ui.util.ClassPropertyUpdaterRegistryListener;
-import org.obeonetwork.m2doc.ide.ui.util.IClassPropertyUpdater;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.osgi.framework.BundleContext;
@@ -74,16 +70,6 @@ public class M2DocUIPlugin extends AbstractUIPlugin {
     private static M2DocUIPlugin plugin;
 
     /**
-     * The {@link ClassPropertyUpdaterRegistryListener}.
-     */
-    private static final ClassPropertyUpdaterRegistryListener CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER = new ClassPropertyUpdaterRegistryListener();
-
-    /**
-     * The registered {@link IClassPropertyUpdater}.
-     */
-    private static IClassPropertyUpdater classPropertyUpdater;
-
-    /**
      * The constructor.
      */
     public M2DocUIPlugin() {
@@ -93,18 +79,12 @@ public class M2DocUIPlugin extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        registry.addListener(CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER,
-                ClassPropertyUpdaterRegistryListener.CLASS_PROPERTY_UPDATER_EXTENSION_POINT);
-        CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER.parseInitialContributions();
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
-        final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        registry.removeListener(CLASS_PROPERTY_UPDATER_REGISTERY_LISTENER);
     }
 
     /**
@@ -138,25 +118,6 @@ public class M2DocUIPlugin extends AbstractUIPlugin {
         } catch (MalformedURLException e) {
             getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
         }
-    }
-
-    /**
-     * Gets the registered {@link IClassPropertyUpdater}.
-     * 
-     * @return the registered {@link IClassPropertyUpdater}
-     */
-    public static IClassPropertyUpdater getClassPropertyUpdater() {
-        return classPropertyUpdater;
-    }
-
-    /**
-     * Registers the given {@link IClassPropertyUpdater}.
-     * 
-     * @param updater
-     *            the {@link IClassPropertyUpdater} to update
-     */
-    public static void registerClassPropertyUpdater(IClassPropertyUpdater updater) {
-        classPropertyUpdater = updater;
     }
 
     /**

@@ -107,7 +107,6 @@
     <module>plugins/org.obeonetwork.m2doc</module>
     <module>plugins/org.obeonetwork.m2doc.ide</module>
     <module>plugins/org.obeonetwork.m2doc.ide.ui</module>
-    <module>plugins/org.obeonetwork.m2doc.ide.jdt</module>
     <module>plugins/org.obeonetwork.m2doc.genconf</module>
     <module>plugins/org.obeonetwork.m2doc.genconf.edit</module>
     <module>plugins/org.obeonetwork.m2doc.genconf.editor</module>
@@ -122,7 +121,6 @@
         
     <module>features/org.obeonetwork.m2doc.feature</module>
     <module>features/org.obeonetwork.m2doc.ui.feature</module>
-    <module>features/org.obeonetwork.m2doc.ui.jdt.feature</module>
     <module>features/org.obeonetwork.m2doc.sirius.feature</module>
     <module>features/org.obeonetwork.m2doc.launcher.feature</module>
     <module>features/org.obeonetwork.m2doc.html.feature</module>

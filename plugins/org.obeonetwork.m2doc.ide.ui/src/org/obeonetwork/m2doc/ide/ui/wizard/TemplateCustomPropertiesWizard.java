@@ -14,6 +14,7 @@ package org.obeonetwork.m2doc.ide.ui.wizard;
 import java.io.IOException;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.eclipse.acceleo.query.ide.QueryPlugin;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -42,6 +43,8 @@ public class TemplateCustomPropertiesWizard extends Wizard {
     {
         // make sure org.obeonetwork.m2doc.ide is started
         M2DocPlugin.getPlugin();
+        // make sure org.eclipse.acceleo.query.ide is started
+        QueryPlugin.getPlugin();
     }
 
     /**

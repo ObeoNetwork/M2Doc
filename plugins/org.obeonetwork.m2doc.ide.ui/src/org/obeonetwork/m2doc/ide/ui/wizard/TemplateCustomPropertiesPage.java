@@ -15,11 +15,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.ide.ui.dialog.QualifiedNameSelectionDialog;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.presentation.EcoreActionBarContributor.ExtendedLoadResourceAction.RegisteredPackageDialog;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -46,10 +51,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
-import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
-import org.obeonetwork.m2doc.ide.ui.util.IClassPropertyUpdater;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.TokenRegistry;
+import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -197,7 +201,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                openClassSelectionDialog(tokenViewer, servicesTable, customProperties);
+                openImportSelectionDialog(tokenViewer, servicesTable, customProperties);
             }
 
             @Override
@@ -472,7 +476,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
     }
 
     /**
-     * Opens the class selection dialog.
+     * Opens the import selection dialog.
      * 
      * @param tokenViewer
      *            the token {@link Viewer}
@@ -481,16 +485,26 @@ public class TemplateCustomPropertiesPage extends WizardPage {
      * @param customProperties
      *            the {@link TemplateCustomProperties}
      */
-    private void openClassSelectionDialog(Viewer tokenViewer, Viewer servicesTable,
+    private void openImportSelectionDialog(Viewer tokenViewer, Viewer servicesTable,
             final TemplateCustomProperties customProperties) {
-        final IClassPropertyUpdater updater = M2DocUIPlugin.getClassPropertyUpdater();
-        if (updater == null) {
-            MessageDialog.openInformation(getShell(), "No class property updater is registered",
-                    "You can try to install the M2Doc JDT feature to solve this issue.");
-        } else if (updater.updatePropertyClasses(customProperties, templateURI)) {
-            tokenViewer.refresh();
-            servicesTable.refresh();
-            templateVariablesProperties.validatePage(customProperties);
+        final ClassLoader classLoader = this.getClass().getClassLoader();
+        final EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
+        final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createResolver(templateURI, classLoader,
+                ePackageRegistry, M2DocUtils.QUALIFIER_SEPARATOR, false);
+
+        resolver.addLoader(new M2DocDocumentTemplateLoader(null, null, M2DocUtils.QUALIFIER_SEPARATOR));
+        resolver.addLoader(new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false));
+
+        QualifiedNameSelectionDialog dialog = new QualifiedNameSelectionDialog(getShell(), "Select import.", null,
+                resolver);
+
+        final int dialogResult = dialog.open();
+        if ((dialogResult == IDialogConstants.OK_ID) && dialog.getSelectedQualifiedName() != null) {
+            if (customProperties.getImports().add(dialog.getSelectedQualifiedName())) {
+                tokenViewer.refresh();
+                servicesTable.refresh();
+                templateVariablesProperties.validatePage(customProperties);
+            }
         }
     }
 }

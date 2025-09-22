@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2023 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
+import org.eclipse.acceleo.query.ide.ui.dialog.EObjectSelectionDialog;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
@@ -53,7 +54,6 @@ import org.obeonetwork.m2doc.genconf.RealSequenceDefinition;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.genconf.StringOrderedSetDefinition;
 import org.obeonetwork.m2doc.genconf.StringSequenceDefinition;
-import org.obeonetwork.m2doc.ide.ui.dialog.EObjectSelectionDialog;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 
 /**
@@ -61,7 +61,6 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-@SuppressWarnings("restriction")
 public class DefinitionValueDialog extends EObjectSelectionDialog {
 
     /**

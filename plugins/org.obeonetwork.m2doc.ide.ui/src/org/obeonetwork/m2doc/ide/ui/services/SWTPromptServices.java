@@ -23,6 +23,7 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ide.ui.dialog.EObjectSelectionDialog;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -38,7 +39,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.obeonetwork.m2doc.ide.ui.dialog.AbstractPromptDialog;
-import org.obeonetwork.m2doc.ide.ui.dialog.EObjectSelectionDialog;
 
 /**
  * Services prompting for value.
@@ -50,7 +50,7 @@ import org.obeonetwork.m2doc.ide.ui.dialog.EObjectSelectionDialog;
 value = "Services available for prompting user for values using SWT for graphical user interface."
 )
 //@formatter:on
-@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype", "restriction" })
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class SWTPromptServices extends AbstractServiceProvider {
 
     private static class EOBjectPromptService extends JavaMethodService {
