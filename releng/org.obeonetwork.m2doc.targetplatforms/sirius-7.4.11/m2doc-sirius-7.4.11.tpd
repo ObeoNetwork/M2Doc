@@ -92,6 +92,7 @@ location "https://download.eclipse.org/acceleo/updates/nightly/latest/" {
 	org.eclipse.acceleo.query.cdo.feature.group lazy
 	org.eclipse.acceleo.query.sirius.feature.group lazy
 	org.eclipse.acceleo.query.jdt.feature.group lazy
+	org.eclipse.acceleo.query.ui.feature.group lazy
 }
 
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
