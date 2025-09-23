@@ -23,6 +23,7 @@ import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.obeonetwork.m2doc.generator.GenerationResult;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.util.HtmlSerializer;
 
 //@formatter:off
 @ServiceProvider(
@@ -31,6 +32,11 @@ value = "Services available for GenerationResult after a template construct call
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class GenerationResultServices {
+
+    /**
+     * The {@link HtmlSerializer}.
+     */
+    private static final HtmlSerializer HTML_SERIALIZER = new HtmlSerializer();
 
     // @formatter:off
     @Documentation(
@@ -59,6 +65,35 @@ public class GenerationResultServices {
                 } else {
                     res = text;
                 }
+            }
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    // @formatter:off
+    @Documentation(
+        value = "Insert the HTML representation of the given GenerationResult.",
+        params = {
+            @Param(name = "result", value = "The generation result"),
+        },
+        result = "insert the HTML representation of the given GenerationResult",
+        examples = {
+            @Example(expression = "self.myTemplate().asHTML()", result = "the HTML representation of the given GenerationResult"),
+        }
+    )
+    // @formatter:on
+    public String asHTML(GenerationResult result) throws IOException {
+        final String res;
+
+        if (result.getBody() instanceof XWPFDocument) {
+            // we do the serialization to synchronize the XML content of the document with the POI API.
+            final byte[] serialized = serializeDocument((XWPFDocument) result.getBody());
+            try (XWPFDocument document = new XWPFDocument(new ByteArrayInputStream(serialized));
+                    XWPFWordExtractor extractor = new XWPFWordExtractor(document);) {
+                res = HTML_SERIALIZER.serialize(document);
             }
         } else {
             res = null;

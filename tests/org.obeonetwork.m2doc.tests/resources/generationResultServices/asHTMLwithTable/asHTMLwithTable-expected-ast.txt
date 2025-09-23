@@ -1,0 +1,44 @@
+
+=== PROPERTIES ===
+version: 5.0.0
+metamodels: 
+imports: 
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .asHTML(.myTemplate(2))]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template public myTemplate (a : java.lang.Integer)
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        [query: .add(a, a)]
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  
