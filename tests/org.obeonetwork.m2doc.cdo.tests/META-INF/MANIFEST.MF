@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.cdo.tests
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-21
-Require-Bundle: org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
- org.obeonetwork.m2doc.tests;bundle-version="[4.0.0,5.0.0)",
- org.obeonetwork.m2doc.genconf;bundle-version="[4.0.0,5.0.0)",
+Require-Bundle: org.obeonetwork.m2doc;bundle-version="[5.0.0,6.0.0)",
+ org.obeonetwork.m2doc.tests;bundle-version="[5.0.0,6.0.0)",
+ org.obeonetwork.m2doc.genconf;bundle-version="[5.0.0,6.0.0)",
  org.junit;bundle-version="4.0.0",
  org.eclipse.emf.cdo,
  org.eclipse.emf.cdo.server,
@@ -14,8 +14,8 @@ Require-Bundle: org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
  org.eclipse.net4j.tcp,
  org.eclipse.emf.cdo.net4j,
  org.eclipse.emf.cdo.server.net4j,
- org.eclipse.acceleo.query.cdo;bundle-version="[8.0.4,9.0.0)",
- org.eclipse.acceleo.query;bundle-version="[8.0.4,9.0.0)"
+ org.eclipse.acceleo.query.cdo;bundle-version="[8.1.0,9.0.0)",
+ org.eclipse.acceleo.query;bundle-version="[8.1.0,9.0.0)"
 Export-Package: org.obeonetwork.m2doc.cdo.tests
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

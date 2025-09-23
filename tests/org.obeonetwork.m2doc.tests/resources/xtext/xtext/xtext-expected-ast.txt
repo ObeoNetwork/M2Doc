@@ -1,6 +1,6 @@
 
 === PROPERTIES ===
-version: 4.0.0
+version: 5.0.0
 metamodels: 
 http://www.xtext.org/example/mydsl/MyDsl
 imports: 

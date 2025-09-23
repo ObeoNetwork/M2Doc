@@ -1,6 +1,6 @@
 
 === PROPERTIES ===
-version: 4.0.0
+version: 5.0.0
 metamodels: 
 http://www.eclipse.org/sirius/1.1.0
 http://www.eclipse.org/sirius/diagram/1.1.0

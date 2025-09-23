@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _QxL0cH6WEei72vRv1zbFOA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 8/19/25, 10:55 AM
+Save-Time: 9/23/25, 11:54 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -20,7 +20,7 @@ get-window "Template properties" | get-button "Next >" | click
 with [get-window "Template properties"] {
     get-button "Edit" | get-property enablement | equals false | verify-true
     get-table | get-property itemCount | equals 17 | verify-true
-    get-editbox -after [get-label "M2Doc version:"] | get-property text | equals "4.0.0" | verify-true
+    get-editbox -after [get-label "M2Doc version:"] | get-property text | equals "5.0.0" | verify-true
     get-button "Current version" | get-property enablement | equals true | verify-true
 }
 with [get-window "Template properties"] {

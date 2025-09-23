@@ -2,16 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.obeonetwork.m2doc.genconf.tests
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-21
-Require-Bundle: org.obeonetwork.m2doc;bundle-version="[4.0.0,5.0.0)",
- org.obeonetwork.m2doc.ide;bundle-version="[4.0.0,5.0.0)",
+Require-Bundle: org.obeonetwork.m2doc;bundle-version="[5.0.0,6.0.0)",
+ org.obeonetwork.m2doc.ide;bundle-version="[5.0.0,6.0.0)",
  org.junit;bundle-version="4.0.0",
  org.eclipse.core.runtime,
- org.obeonetwork.m2doc.genconf;bundle-version="[4.0.0,5.0.0)",
- org.eclipse.acceleo.query;bundle-version="[8.0.4,9.0.0)",
+ org.obeonetwork.m2doc.genconf;bundle-version="[5.0.0,6.0.0)",
+ org.eclipse.acceleo.query;bundle-version="[8.1.0,9.0.0)",
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",
- org.obeonetwork.m2doc.tests;bundle-version="[4.0.0,5.0.0)"
+ org.obeonetwork.m2doc.tests;bundle-version="[5.0.0,6.0.0)"
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Automatic-Module-Name: org.obeonetwork.m2doc.genconf.tests
