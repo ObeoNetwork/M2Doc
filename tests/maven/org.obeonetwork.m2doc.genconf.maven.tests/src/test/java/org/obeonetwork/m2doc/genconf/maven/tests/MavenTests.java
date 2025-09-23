@@ -77,7 +77,6 @@ public class MavenTests {
 
 		final Monitor monitor = new BasicMonitor();
 		try {
-
 			IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass()
 					.getClassLoader(), resourceSetForModels.getPackageRegistry(),
 					M2DocUtils.QUALIFIER_SEPARATOR);
