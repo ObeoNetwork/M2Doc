@@ -628,9 +628,9 @@ Select the template import wizard:
 
 To simplify unit testing while developing M2Doc, a [JUnit](https://junit.org/junit4/) test suite has been implemented. It uses a given folder as input and lists each sub directory following a naming pattern as a test case. You can use the same test suite for your own tests. An example of the test suite implementation [QueryTests](https://github.com/ObeoNetwork/M2Doc/blob/master/tests/org.obeonetwork.m2doc.tests/src/org/obeonetwork/m2doc/tests/QueryTests.java) with the folder [resources/query](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/query).
 
-## Maven
+## Maven/Tycho
 
-You can launch your generation using [Maven](https://maven.apache.org/) and [Tycho](https://eclipse.org/tycho/). An example is available [here](https://github.com/ObeoNetwork/M2Doc/tree/master/releng/generate-with-maven). You may probably need to have a look at the [pom.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/releng/generate-with-maven/myModelToDocx/pom.xml) file. To launch the build and the generation you can simply use the following command:
+You can launch your generation using [Maven](https://maven.apache.org/) and [Tycho](https://eclipse.org/tycho/). An example is available [here](https://github.com/ObeoNetwork/M2Doc/tree/master/releng/generate-with-maven-tycho). You may probably need to have a look at the [pom.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/releng/generate-with-maven-tycho/myModelToDocx/pom.xml) file. To launch the build and the generation you can simply use the following command:
 
 `mvn clean verify`
 
@@ -647,18 +647,36 @@ final URI templateURI = ...; // the URI of the template
         
 // can be empty, if you are using a Generation use GenconfUtils.getOptions(generation)
 final Map<String, String> options = ...;
+final String qualifiedName = ...,
 List<Exception> exceptions = new ArrayList<>();
-        
-final ResourceSet resourceSetForModels = M2DocUtils.createResourceSetForModels(exceptions , key, new ResourceSetImpl(), options);
 
-// if you are using a Generation use GenconfUtils.getQueryEnvironment(resourceSetForModels, generation)
-final IQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resourceSetForModels, templateURI, options); // delegate to IServicesConfigurator
-        
-final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
-try (DocumentTemplate template = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI, queryEnvironment, classProvider, monitor)) {
-    // use the template
+AQLUtils.registerServicesConfigurator(new ServicesConfiguratorDescriptor(AQLUtils.AQL_LANGUAGE,
+		new AQLServiceConfigurator()));
+
+final ResourceSet resourceSetForModels = AQLUtils.createResourceSetForModels(exceptions, this,
+		new ResourceSetImpl(), options);
+resourceSetForModels.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*",
+		new XMIResourceFactoryImpl());
+
+final Registry ePackageRegistry = EPackage.Registry.INSTANCE;
+final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(this.getClass()
+		.getClassLoader(), ePackageRegistry, M2DocUtils.QUALIFIER_SEPARATOR);
+final IQualifiedNameQueryEnvironment queryEnvironment = M2DocUtils.getQueryEnvironment(resolver,
+		resourceSetForModels, templateURI, options, false);
+final M2DocEvaluationEnvironment m2docEnv = new M2DocEvaluationEnvironment(resolver,
+		resourceSetForModels, templateURI, outputURI);
+
+resolver.addLoader(new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+		M2DocUtils.QUALIFIER_SEPARATOR));
+final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+resolver.addLoader(javaLoader);
+
+try (DocumentTemplate documentTemplate = (DocumentTemplate)resolver.resolve(qualifiedName)) {
+	M2DocUtils.prepareEnvironment(queryEnvironment, ePackageRegistry, documentTemplate);
+	// use the template here
 } finally {
-    M2DocUtils.cleanResourceSetForModels(key, resourceSetForModels);
+	AQLUtils.cleanResourceSetForModels(this, resourceSetForModels);
+	AQLUtils.cleanServices(M2DocUtils.M2DOC_LANGUAGE, queryEnvironment, resourceSetForModels);
 }
 {% endhighlight %}
 
@@ -666,12 +684,20 @@ try (DocumentTemplate template = M2DocUtils.parse(resourceSetForModels.getURICon
 
 The validation is optional:
 
+#### Core validation API
+
 {% highlight Java %}
-final ValidationMessageLevel validationLevel = M2DocUtils.validate(template, queryEnvironment, monitor);
+final ValidationMessageLevel validationLevel = M2DocUtils.validate(documentTemplate, queryEnvironment, monitor);
 if (validationLevel != ValidationMessageLevel.OK) {
     final URI validationResulURI = ...; // some place to serialize the result of the validation
     M2DocUtils.serializeValidatedDocumentTemplate(resourceSetForModels.getURIConverter(), documentTemplate, validationResulURI);
 }
+{% endhighlight %}
+
+#### Generation configuration API
+
+{% highlight Java %}
+final boolean hasErrors = GenconfUtils.validate(generation, m2docEnv, options, exceptions, monitor);
 {% endhighlight %}
 
 ### Generation
@@ -682,14 +708,44 @@ The generation will produce the final document where M2Doc template is evaluated
 
 {% highlight Java %}
 final Map<String, Object> variables = ...; // your variables and values
-final URI outputURI = ...; // some place to serialize the result of the generation
-M2DocUtils.generate(template, queryEnvironment, variables, resourceSetForModels, outputURI, monitor);
+final GenerationResult generationResult = M2DocUtils.generate(m2docEnv, documentTemplate, variables, false, monitor);
 {% endhighlight %}
 
 #### Generation configuration API
 
 {% highlight Java %}
 final Generation generation = ...; // load from a serialized EMF model or create in memory
-final IClassProvider classProvider = new ClassProvider(this.getClass().getClassLoader()); // use M2DocPlugin.getClassProvider() when running inside Eclipse
-GenconfUtils.generate(generation, classProvider, monitor);
+final List<URI> generatedURIs = GenconfUtils.generate(generation, m2docEnv, options, monitor);
 {% endhighlight %}
+
+## Maven
+
+You can use M2Doc in your maven project with the following repository and dependency:
+
+{% highlight XML %}
+<repositories>
+  <repository>
+    <id>Acceleo Repository</id>
+    <url>https://download.eclipse.org/acceleo/updates/releases/4.1/...</url>
+  </repository>
+  <repository>
+    <id>M2Doc Repository</id>
+    <url>https://s3-eu-west-1.amazonaws.com/obeo-m2doc-releases/.../repository</url>
+  </repository>
+</repositories>
+<dependencies>
+  <dependency>
+    <groupId>org.obeonetwork.m2doc</groupId>
+    <artifactId>m2doc</artifactId>
+    <version>4.1.0</version>
+  </dependency>
+</dependencies>
+{% endhighlight %}
+
+You can check the [test project](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/maven/org.obeonetwork.m2doc.maven.tests) for more details. You can also check the [AQL Maven documentation](https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#maven) for more details on the AQL dependency.
+
+You can optionally add other M2Doc dependencies:
+
+* m2doc-genconf: to use the *.genconf file API (see the [test project](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/maven/org.obeonetwork.m2doc.genconf.maven.tests) for more details).
+* m2doc-html: to use the [HTML services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2dochtmlservices.html) (see the [test project](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/maven/org.obeonetwork.m2doc.html.maven.tests) for more details).
+* m2doc-wikitext: to use [Wikitext services]({{page.relativePath}}/ref-doc/nightly/m2doc_service_m2docwikitextservices.html) (see the [test project](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/maven/org.obeonetwork.m2doc.wikitext.maven.tests) for more details).
