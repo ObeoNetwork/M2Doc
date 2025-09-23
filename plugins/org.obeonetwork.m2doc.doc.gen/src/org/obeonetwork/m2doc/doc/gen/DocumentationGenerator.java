@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Obeo.
+ * Copyright (c) 2017, 2025 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.obeonetwork.m2doc.ide.ui.services.SWTPromptServices;
 import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.DocumentServices;
 import org.obeonetwork.m2doc.services.ExcelServices;
+import org.obeonetwork.m2doc.services.GenerationResultServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
@@ -55,7 +56,7 @@ public final class DocumentationGenerator {
 			ImageServices.class, LinkServices.class, PaginationServices.class, M2DocSiriusServices.class,
 			ExcelServices.class, M2DocHTMLServices.class, PromptServices.class, SWTPromptServices.class,
 			M2DocEObjectServices.class, M2DocWikiTextServices.class, DocumentServices.class, M2DocGenServices.class,
-			SemanticBrowserServices.class, };
+			SemanticBrowserServices.class, GenerationResultServices.class, };
 
 	/**
 	 * The constructor.
@@ -67,8 +68,7 @@ public final class DocumentationGenerator {
 	/**
 	 * Launches the generation of the documentation.
 	 * 
-	 * @param args
-	 *            The arguments of the generation
+	 * @param args The arguments of the generation
 	 */
 	public static void main(String[] args) {
 		File pluginFolder = new File(args[0]);

@@ -197,14 +197,6 @@ public abstract class AbstractTemplatesTestSuite {
         expectedGeneratedURI = getExpectedGeneratedURI(new File(testFolderPath));
         userContentURI = getUserContentURI(new File(testFolderPath));
 
-        if (resourceSetForModels.getURIConverter().exists(expectedGeneratedURI, Collections.EMPTY_MAP)) {
-            outputURI = getGenerationOutputURI(testFolderPath);
-        } else {
-            outputURI = getActualGeneratedURI(new File(testFolderPath));
-            prepareoutputAndGenerate(userContentURI, outputURI);
-            fail(expectedGeneratedURI + DOESN_T_EXIST);
-        }
-
         final Path rootPath = testFolderFile.toPath().getName(0);
         final URL[] urls = new URL[] {testFolderFile.toPath().getName(0).toUri().toURL() };
 
@@ -222,6 +214,12 @@ public abstract class AbstractTemplatesTestSuite {
         resourceSetForModels.getURIConverter().getURIHandlers().add(0, new AqlResolverURIHandler(resolver));
 
         queryEnvironment = GenconfUtils.getQueryEnvironment(resolver, resourceSetForModels, generation, false);
+
+        if (resourceSetForModels.getURIConverter().exists(expectedGeneratedURI, Collections.EMPTY_MAP)) {
+            outputURI = getGenerationOutputURI(testFolderPath);
+        } else {
+            outputURI = getActualGeneratedURI(new File(testFolderPath));
+        }
 
         m2docEnv = new M2DocEvaluationEnvironment(resolver, resourceSetForModels, templateURI, outputURI);
 
@@ -441,6 +439,10 @@ public abstract class AbstractTemplatesTestSuite {
      */
     @Test
     public void generation() throws Exception {
+        if (!resourceSetForModels.getURIConverter().exists(expectedGeneratedURI, Collections.EMPTY_MAP)) {
+            prepareoutputAndGenerate(userContentURI, outputURI);
+            fail(expectedGeneratedURI + DOESN_T_EXIST);
+        }
 
         final GenerationResult generationResult = prepareoutputAndGenerate(userContentURI, outputURI);
         M2DocTestUtils.assertDocx(resourceSetForModels.getURIConverter(), expectedGeneratedURI, outputURI);

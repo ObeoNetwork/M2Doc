@@ -72,6 +72,7 @@ import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.BooleanServices;
 import org.obeonetwork.m2doc.services.DocumentServiceConfigurator;
 import org.obeonetwork.m2doc.services.ExcelServices;
+import org.obeonetwork.m2doc.services.GenerationResultServices;
 import org.obeonetwork.m2doc.services.ImageServices;
 import org.obeonetwork.m2doc.services.LinkServices;
 import org.obeonetwork.m2doc.services.PaginationServices;
@@ -504,6 +505,8 @@ public final class M2DocUtils {
         ServiceUtils.registerServices(queryEnvironment, services);
         services = ServiceUtils.getServices(queryEnvironment,
                 new ExcelServices(resourceSetForModels.getURIConverter(), templateURI));
+        ServiceUtils.registerServices(queryEnvironment, services);
+        services = ServiceUtils.getServices(queryEnvironment, new GenerationResultServices());
         ServiceUtils.registerServices(queryEnvironment, services);
 
         return queryEnvironment;
