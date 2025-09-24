@@ -204,6 +204,8 @@ You need to have a model already to be able to generate a document with M2Doc. T
 
 ### New project wizard
 
+This wizard is the fastest and easiest way to get you started with M2Doc. But it wont allow you to use [custom services](index.html#providing-new-services). To do so, you need to create a Java project and make sure your service Class is accessible in the classpath of the project.
+
 This wizard allows to create all needed artifacts:
 
 - an Eclipse project
@@ -561,6 +563,14 @@ In this dialog, you can select the template you want to generate with from the l
 
 You can extends M2Doc by adding services to your templates using the [Template properties wizard](index.html#template-properties-wizard). A service is a simple Java method with at least one parameter and a return value.
 
+To be able to access the service Class you template needs to be in a Java project and the Class needs to be accessible in the project classpath. When deployed the service Class needs to be in the current classpath.
+
+You can create different types of Java projects:
+
+* [simple Java project](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2FgettingStarted%2Fqs-3.htm)
+* [Eclipse plug-in project](https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fguide%2Ftools%2Fproject_wizards%2Fnew_plugin_project.htm&cp%3D4_3_9_0_0)
+* [Maven project](https://www.vogella.com/tutorials/EclipseMaven/article.html)
+
 ### Service class
 
 There are two cases for the class containing the service: either it has a [default constructor](index.html#default-constructor), or it has a [constructor with a parameter](index.html#custom-constructor).
@@ -741,6 +751,23 @@ You can use M2Doc in your maven project with the following repository and depend
   </dependency>
 </dependencies>
 {% endhighlight %}
+
+If you use the source folder for your template make sure you include them as resources:
+
+{% highlight XML %}
+<build>
+  <resources>
+    <resource>
+      <directory>${project.basedir}/src/main/java</directory>
+        <includes>
+          <include>**/*.docx</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+</project>
+{% endhighlight %}
+
 
 You can check the [test project](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/maven/org.obeonetwork.m2doc.maven.tests) for more details. You can also check the [AQL Maven documentation](https://github.com/eclipse-acceleo/acceleo/blob/master/query/plugins/org.eclipse.acceleo.query.doc/pages/index.adoc#maven) for more details on the AQL dependency.
 
