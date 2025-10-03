@@ -9,7 +9,7 @@ Require-Bundle: org.xtext.example.mydsl,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
  org.antlr.runtime
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.xtext.example.mydsl.ide.contentassist.antlr.internal,
  org.xtext.example.mydsl.ide.contentassist.antlr
 Automatic-Module-Name: org.xtext.example.mydsl.ide

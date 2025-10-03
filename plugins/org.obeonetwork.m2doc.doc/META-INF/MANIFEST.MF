@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.obeonetwork.m2doc.doc;singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Require-Bundle: org.eclipse.help,
  org.eclipse.ui.cheatsheets
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

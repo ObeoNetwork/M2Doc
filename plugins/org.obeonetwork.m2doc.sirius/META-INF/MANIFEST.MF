@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",
  org.eclipse.emf.edit.ui,
  org.obeonetwork.m2doc.ide.ui;bundle-version="[5.0.0,6.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.m2doc.sirius,
  org.obeonetwork.m2doc.sirius.commands,

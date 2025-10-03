@@ -161,7 +161,7 @@ location amalgam "https://download.eclipse.org/modeling/amalgam/updates/releases
 
 location egf "https://download.eclipse.org/egf/updates/1.6.4/2023-03/" {
 	org.eclipse.egf.sdk.feature.source.feature.group lazy
-} 
+}
 
 location Nattable "https://download.eclipse.org/nattable/releases/2.1.0/repository/" {
 	org.eclipse.nebula.widgets.nattable.core.feature.feature.group lazy

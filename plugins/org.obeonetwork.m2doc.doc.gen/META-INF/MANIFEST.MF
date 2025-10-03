@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.obeonetwork.m2doc.doc.gen
 Bundle-Version: 3.1.0.qualifier
 Bundle-Vendor: Obeo
 Automatic-Module-Name: org.obeonetwork.m2doc.doc.gen
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.obeonetwork.m2doc,
  org.obeonetwork.m2doc.sirius,
  org.obeonetwork.m2doc.html,
