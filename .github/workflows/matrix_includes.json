@@ -1,11 +1,11 @@
 [
   {
-    "java":"17",
+    "java":"21",
     "profile":"platform-2024-12,tests,updatesites",
     "tycho":"4.0.13"
   },
   {
-    "java":"17",
+    "java":"21",
     "profile":"platform-sirius-7.4.11,tests",
     "tycho":"4.0.13"
   }
