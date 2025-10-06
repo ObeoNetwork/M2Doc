@@ -49,9 +49,11 @@
 			<topic href="doc/ref-doc/nightly/index.html#service-class" label="Service class">
 				<topic href="doc/ref-doc/nightly/index.html#default-constructor" label="Default constructor"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#custom-constructor" label="Custom constructor"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#special-return-types" label="Special return types"></topic>
 			</topic>
-			<topic href="doc/ref-doc/nightly/index.html#special-return-types" label="Special return types"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#template" label="Template"></topic>
 		</topic>
+		<topic href="doc/ref-doc/nightly/index.html#template-migration" label="Template migration"></topic>
 		<topic href="doc/ref-doc/nightly/index.html#extension-points" label="Extension points">
 			<topic href="doc/ref-doc/nightly/index.html#services-and-packages-token" label="Services and packages token"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#template-registry" label="Template registry">
@@ -59,14 +61,18 @@
 			</topic>
 		</topic>
 		<topic href="doc/ref-doc/nightly/index.html#template-testing" label="Template testing"></topic>
-		<topic href="doc/ref-doc/nightly/index.html#maven" label="Maven"></topic>
+		<topic href="doc/ref-doc/nightly/index.html#maven-tycho" label="Maven/Tycho"></topic>
 		<topic href="doc/ref-doc/nightly/index.html#using-m2doc-programmatically" label="Using M2Doc programmatically">
 			<topic href="doc/ref-doc/nightly/index.html#parsing" label="Parsing"></topic>
-			<topic href="doc/ref-doc/nightly/index.html#validation" label="Validation"></topic>
-			<topic href="doc/ref-doc/nightly/index.html#generation" label="Generation">
-				<topic href="doc/ref-doc/nightly/index.html#core-generation-api" label="Core generation API"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#validation" label="Validation">
+				<topic href="doc/ref-doc/nightly/index.html#core-validation-api" label="Core validation API"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#generation-configuration-api" label="Generation configuration API"></topic>
 			</topic>
+			<topic href="doc/ref-doc/nightly/index.html#generation" label="Generation">
+				<topic href="doc/ref-doc/nightly/index.html#core-generation-api" label="Core generation API"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#generation-configuration-api2" label="Generation configuration API"></topic>
+			</topic>
 		</topic>
+		<topic href="doc/ref-doc/nightly/index.html#maven" label="Maven"></topic>
 	</topic>
 </toc>

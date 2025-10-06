@@ -561,7 +561,7 @@ In this dialog, you can select the template you want to generate with from the l
 
 ## Providing new services
 
-You can extends M2Doc by adding services to your templates using the [Template properties wizard](index.html#template-properties-wizard). A service is a simple Java method with at least one parameter and a return value.
+You can extends M2Doc by adding services to your templates using the [Template properties wizard](index.html#template-properties-wizard). A service is a simple Java method with at least one parameter and a return value or a [template construct](index.html#template-construct-example) from an other template.
 
 To be able to access the service Class you template needs to be in a Java project and the Class needs to be accessible in the project classpath. When deployed the service Class needs to be in the current classpath.
 
@@ -585,7 +585,7 @@ When there is an explicit constructor with at least a parameter M2Doc can&#8217;
 
 An example of implementation can be found in the [Sirius](https://www.eclipse.dev/sirius/) integration plug-in see the class [SiriusServiceConfigurator](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/src/org/obeonetwork/m2doc/sirius/services/configurator/SiriusServiceConfigurator.java) and the extension in the [plugin.xml](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc.sirius/plugin.xml).
 
-### Special return types
+#### Special return types
 
 The M2Doc evaluation engine converts any object to a string in order to insert it in the generated document. To add flexibility in the produced document we chose to expose some special types to service creators. Those types are [MElement](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MElement.java) and allow directly inserting document artifacts:
 
@@ -598,6 +598,14 @@ The M2Doc evaluation engine converts any object to a string in order to insert i
 * [MList](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MList.java) to insert a list of [MElement](https://github.com/ObeoNetwork/M2Doc/blob/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/MElement.java).
 
 Default implementations are also provided by M2Doc in [this package](https://github.com/ObeoNetwork/M2Doc/tree/master/plugins/org.obeonetwork.m2doc/src/org/obeonetwork/m2doc/element/impl).
+
+### Template
+
+You can import a template with public [template construct](index.html#template-construct-example) to reuse them. You just need to specify the qualified name of the template (.docx file) and once imported public template construct can be called the same way as local template construct.
+
+One important thing about styling. Styles are indexed using their ID. If a style is used in the imported template but not present in the calling template, it will be copied. If the style ID is already used in the calling template, then the calling template style is used. This allows the caller to override the styling when calling a template construct.
+
+One example where this is useful is when you need to provide some document to several entities. For instance several suppliers or customers that have different style guides, You can create a template construct in a template that you will later import in the template for supplier A and an other template for customer B. And by reusing the same style IDs apply the needed style for supplier A and customer B without changing the content nor styling of the imported template construct.
 
 ## Template migration
 
