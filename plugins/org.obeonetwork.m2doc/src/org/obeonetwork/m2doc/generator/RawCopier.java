@@ -61,6 +61,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTStyle;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -114,6 +116,11 @@ public class RawCopier {
     private final Map<XWPFDocument, Map<String, URI>> partMD5ToName = new HashMap<>();
 
     /**
+     * The mapping from a {@link XWPFDocument} to the Mapping from its style ID to the actual {@link CTStyle}.
+     */
+    private final Map<XWPFDocument, Map<String, CTStyle>> knownStyles = new HashMap<>();
+
+    /**
      * Gets the mapping form {@link PackagePart}'s MD5 to its {@link PackagePart#getPartName() name} for the given {@link XWPFDocument}.
      * 
      * @param document
@@ -133,11 +140,38 @@ public class RawCopier {
                     }
                 }
             } catch (NoSuchAlgorithmException e) {
-                // nothing to do here: worst case senario the generated document is not optimized in size
+                // nothing to do here: worst case scenario the generated document is not optimized in size
             } catch (IOException e) {
-                // nothing to do here: worst case senario the generated document is not optimized in size
+                // nothing to do here: worst case scenario the generated document is not optimized in size
             }
             partMD5ToName.put(document, res);
+        }
+
+        return res;
+    }
+
+    /**
+     * Gets the {@link Map} of known styles for the given {@link XWPFDocument}.
+     * 
+     * @param document
+     *            the {@link XWPFDocument}
+     * @return the {@link Map} of known styles for the given {@link XWPFDocument}
+     */
+    public Map<String, CTStyle> getKnownStyles(XWPFDocument document) {
+        Map<String, CTStyle> res = knownStyles.get(document);
+
+        if (res == null) {
+            res = new HashMap<>();
+            try {
+                for (CTStyle style : document.getStyle().getStyleList()) {
+                    res.put(style.getStyleId(), style);
+                }
+            } catch (XmlException e) {
+                // nothing to do here: worst case scenario the generated document is not optimized in size
+            } catch (IOException e) {
+                // nothing to do here: worst case scenario the generated document is not optimized in size
+            }
+            knownStyles.put(document, res);
         }
 
         return res;
@@ -344,7 +378,7 @@ public class RawCopier {
         // Copy new paragraph
         res.getCTP().set(inputParagraph.getCTP());
         // Create relation embedded in run and keep relation id in map (input to output)
-        updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+        updateRelationNumberingIdsAndStyles(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
                 inputParagraph.getBody(), outputBody, res.getCTP());
         if (bookmarkManager != null) {
             updateBookmarks(bookmarkManager, res.getCTP(), inputParagraph.getCTP(), outputBody);
@@ -413,9 +447,8 @@ public class RawCopier {
         final XWPFTable res = POIServices.getInstance().createTable(outputBody);
 
         res.getCTTbl().set(inputTable.getCTTbl().copy());
-        copyTableStyle(inputTable, outputBody.getXWPFDocument());
         // Create relation embedded in run and keep relation id in map (input to output)
-        updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+        updateRelationNumberingIdsAndStyles(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
                 inputTable.getBody(), res.getBody(), res.getCTTbl());
         if (bookmarkManager != null) {
             updateBookmarks(bookmarkManager, res, inputTable);
@@ -480,7 +513,7 @@ public class RawCopier {
                         try (XmlCursor tmpCursor = outputCursor.newCursor()) {
                             tmpCursor.toPrevSibling();
                             tmpCursor.getObject();
-                            updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
+                            updateRelationNumberingIdsAndStyles(inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
                                     numIDmap, inputParagraph.getBody(), outputParagraph.getBody(),
                                     tmpCursor.getObject());
                             // TODO update bookmark manager
@@ -572,32 +605,6 @@ public class RawCopier {
     }
 
     /**
-     * Copy Table Style.
-     * 
-     * @param inputTable
-     *            input Table
-     * @param outputDoc
-     *            outputDoc where copy style
-     * @throws IOException
-     *             if the copy fails
-     */
-    private static void copyTableStyle(XWPFTable inputTable, XWPFDocument outputDoc) throws IOException {
-        @SuppressWarnings("resource")
-        final XWPFDocument inputDoc = inputTable.getBody().getXWPFDocument();
-        final XWPFStyle style = inputDoc.getStyles().getStyle(inputTable.getStyleID());
-        if (outputDoc != null && style != null) {
-            if (outputDoc.getStyles() == null) {
-                outputDoc.createStyles();
-            }
-
-            List<XWPFStyle> usedStyleList = inputDoc.getStyles().getUsedStyleList(style);
-            for (XWPFStyle xwpfStyle : usedStyleList) {
-                outputDoc.getStyles().addStyle(xwpfStyle);
-            }
-        }
-    }
-
-    /**
      * Get Xml With Ouput relation Id.
      * 
      * @param inputRelationIdToOutputMap
@@ -621,7 +628,7 @@ public class RawCopier {
      * @throws NoSuchAlgorithmException
      *             if MD5 can't be read
      */
-    private void updateRelationAndNumberingIds(Map<String, String> inputRelationIdToOutputMap,
+    private void updateRelationNumberingIdsAndStyles(Map<String, String> inputRelationIdToOutputMap,
             Map<URI, URI> inputPartURIToOutputPartURI, Map<BigInteger, BigInteger> numIDmap, IBody inputBody,
             IBody outputBody, XmlObject xmlObject)
             throws XmlException, InvalidFormatException, NoSuchAlgorithmException, IOException {
@@ -635,7 +642,22 @@ public class RawCopier {
                         id -> copyNumID(inputBody, outputBody, id));
                 numIdChild.setVal(outputNumID);
             }
+        } else if (xmlObject instanceof CTPPr) {
+            final CTPPr ctPPr = (CTPPr) xmlObject;
+            if (ctPPr.getPStyle() != null) {
+                // copy style
+                final String styleID = ctPPr.getPStyle().getVal();
+                copyStyle(inputBody, outputBody, styleID);
+            }
+        } else if (xmlObject instanceof CTTblPr) {
+            final CTTblPr ctTblPr = (CTTblPr) xmlObject;
+            if (ctTblPr.getTblStyle() != null) {
+                // copy style
+                final String styleID = ctTblPr.getTblStyle().getVal();
+                copyStyle(inputBody, outputBody, styleID);
+            }
         }
+
         final XmlObject idAttr = xmlObject.selectAttribute(RELATIONSHIPS_URI, "id");
         if (idAttr != null) {
             updateRelationAttribute(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, inputBody, outputBody,
@@ -649,11 +671,38 @@ public class RawCopier {
         }
         try (XmlCursor cursor = xmlObject.newCursor()) {
             if (cursor.toFirstChild()) {
-                updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
+                updateRelationNumberingIdsAndStyles(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
                         inputBody, outputBody, cursor.getObject());
                 while (cursor.toNextSibling()) {
-                    updateRelationAndNumberingIds(inputRelationIdToOutputMap, inputPartURIToOutputPartURI, numIDmap,
-                            inputBody, outputBody, cursor.getObject());
+                    updateRelationNumberingIdsAndStyles(inputRelationIdToOutputMap, inputPartURIToOutputPartURI,
+                            numIDmap, inputBody, outputBody, cursor.getObject());
+                }
+            }
+        }
+    }
+
+    /**
+     * Copies the style with the given ID from the given input {@link IBody} to the given output {@link IBody}.
+     * 
+     * @param inputBody
+     *            the input {@link IBody}
+     * @param outputBody
+     *            the output {@link IBody}
+     * @param styleID
+     *            the style ID to copy
+     */
+    @SuppressWarnings("resource")
+    private void copyStyle(IBody inputBody, IBody outputBody, final String styleID) {
+        final Map<String, CTStyle> outputStyles = getKnownStyles(outputBody.getXWPFDocument());
+        if (!outputStyles.containsKey(styleID)) {
+            final XWPFStyle inputStyle = inputBody.getXWPFDocument().getStyles().getStyle(styleID);
+            final XWPFStyle outputStyle = new XWPFStyle((CTStyle) inputStyle.getCTStyle().copy());
+            outputBody.getXWPFDocument().getStyles().addStyle(outputStyle);
+            outputStyles.put(styleID, outputStyle.getCTStyle());
+            for (XWPFStyle usedStyle : inputBody.getXWPFDocument().getStyles().getUsedStyleList(inputStyle)) {
+                final String usedStyleID = usedStyle.getStyleId();
+                if (!outputStyles.containsKey(usedStyleID)) {
+                    copyStyle(inputBody, outputBody, usedStyleID);
                 }
             }
         }

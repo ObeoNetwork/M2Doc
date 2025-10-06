@@ -1,0 +1,16 @@
+
+=== PROPERTIES ===
+version: 5.0.0
+metamodels: 
+imports: 
+template-import.nominal.imported
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate(2)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

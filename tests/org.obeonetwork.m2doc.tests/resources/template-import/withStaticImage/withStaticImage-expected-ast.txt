@@ -1,0 +1,16 @@
+
+=== PROPERTIES ===
+version: 5.0.0
+metamodels: 
+imports: 
+template-import.withStaticImage.imported
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a template :
+  [query: .myTemplate('dh1.gif')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===

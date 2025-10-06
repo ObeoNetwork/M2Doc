@@ -31,7 +31,7 @@ import org.obeonetwork.m2doc.tests.userdoc.UserdocTests;
     UserdocTests.class, BookmarkTests.class, CommentTests.class, ConditionalTests.class, LetTests.class,
     QueryTests.class, UML2Tests.class, XTextTests.class, RepetitionTests.class, StaticTests.class, UserDocTests.class,
     M2DocUtilsTests.class, MTableTests.class, MListTests.class, MParagraphTests.class, TemplateTests.class,
-    MigrationTests.class })
+    TemplateImportTests.class, MigrationTests.class })
 public class AllTests {
 
 }
