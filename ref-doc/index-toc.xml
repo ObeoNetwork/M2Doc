@@ -33,15 +33,18 @@
 				<topic href="doc/ref-doc/nightly/index.html#user-documentation-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-userdoc-nominal" label="User Documentation ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/userDoc/nominal))"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#template-construct-example-https-github-com-obeonetwork-m2doc-tree-master-tests-org-obeonetwork-m2doc-tests-resources-template-nominal" label="Template construct ([example](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources/template/nominal))"></topic>
 			</topic>
-			<topic href="doc/ref-doc/nightly/index.html#services" label="Services">
-			        <link toc="doc/ref-doc/nightly/services-toc.xml"/>
+			<topic href="doc/ref-doc/nightly/index.html#template-construct-reuse" label="Template construct reuse">
+				<topic href="doc/ref-doc/nightly/index.html#extend" label="Extend"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#import" label="Import"></topic>
 			</topic>
+			<topic href="doc/ref-doc/nightly/index.html#services" label="Services"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#template-properties-wizard" label="Template properties wizard"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#template-custom-properties" label="Template custom properties">
 				<topic href="doc/ref-doc/nightly/index.html#m2doc-version-custom-properties" label="M2Doc version custom properties"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#variable-custom-properties" label="Variable custom properties"></topic>
 				<topic href="doc/ref-doc/nightly/index.html#package-custom-properties" label="Package custom properties"></topic>
-				<topic href="doc/ref-doc/nightly/index.html#service-custom-properties" label="Service custom properties"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#extend-custom-properties" label="Extend custom properties"></topic>
+				<topic href="doc/ref-doc/nightly/index.html#import-custom-properties" label="Import custom properties"></topic>
 			</topic>
 			<topic href="doc/ref-doc/nightly/index.html#template-libraries" label="Template Libraries"></topic>
 		</topic>

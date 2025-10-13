@@ -425,6 +425,21 @@ The template contruct visibility can be one of:
 If you want more examples of M2Doc syntax you can have a look at the nominal cases in [unit tests](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/org.obeonetwork.m2doc.tests/resources).
 If you want to use a variable named 'template' or 'endtemplate' you can use an extra space after 'm:'.
 
+### Template construct reuse
+
+You can import and extend template to reuse and override [template constructs](index.html#template-construct-example). In both cases all templates needs to be in a Java project. Imported and extended template needs to be accessible by the classpath of the project.
+
+#### Extend
+
+When you import a template, you can override public and protected [template constructs](index.html#template-construct-example) from the extended template. To override a template construct, you need to write a template construct with the same signature (name and template parameter types).
+When generating the top most template in the extend hierarchy will be used as the entry of the generation and all call to overridden template construct will be delegated to the bottom most override template construct in the extend hierarchy.
+
+To extend the template you need to use the [Template properties wizard](index.html#template-properties-wizard).
+
+#### Import
+
+A template can be imported like any Java class. Once imported each public [template construct](index.html#template-construct-example) can be called like any other service in AQL expressions. To import the template you need to use the [Template properties wizard](index.html#template-properties-wizard).
+
 ### Services
 
 All [AQL services](https://www.eclipse.dev/acceleo/documentation/aql.html#LanguageReference) are available. On top of that, specific services are provided by M2Doc. See the following reference documentation. If you don&#8217;t find your needs in this list, you can [provide custom services](index.html#providing-new-services).
@@ -471,7 +486,7 @@ When a service package is included in one or more other service packages you can
 
 In this example, the "other test token" is included in the "test token". "other test token" can't be deselected without deselecting "test token".
 
-Note you can also use the `nsURI (expert)` and `Services (expert)` to select metamodels and services manually.
+Note you can also use the `nsURI (expert)` and `Services (expert)` to select metamodels and services manually. The service tab can be used to import Java service classes and select a template to extend.
 
 The second page is dedicated to variable declarations. The list of declarations is initialized from the variable used in the template.
 
@@ -521,17 +536,29 @@ For example:
 * Name: `m:uri:https://www.eclipse.org/uml2/5.0.0/UML` 
 * Value:
 
-#### Service custom properties
+#### Extend custom properties
+
+To extend an other template and override its [template constructs](index.html#template-construct-example) you can add the following custom property:
+
+* Name: `m:extend:`**qualified name**
+* Value:
+
+For example:
+
+* Name: `m:extend:org.obeonetwork.m2doc.rcptt.a.otherTemplate` 
+* Value:
+
+#### Import custom properties
 
 To import a service class with a [default constructor](index.html#default-constructor). To use a service class with a custom constructor you can read the [custom constructor](index.html#custom-constructor) section.
 
-* Name: `m:import:`**qualified class name**
-* Value: **bundle symbolic name**
+* Name: `m:import:`**qualified name**
+* Value:
 
 For example:
 
 * Name: `m:import:org.obeonetwork.m2doc.rcptt.a.ServiceClassA`
-* Value: `org.obeonetwork.m2doc.rcptt.a` 
+* Value:
 
 ### Template Libraries
 
