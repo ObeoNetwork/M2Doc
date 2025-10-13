@@ -16,11 +16,11 @@ import java.util.Collection;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Tests template import.
+ * Tests template extend.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class TemplateImportTests extends AbstractTemplatesTestSuite {
+public class TemplateExtendTests extends AbstractTemplatesTestSuite {
 
     /**
      * Constructor.
@@ -30,7 +30,7 @@ public class TemplateImportTests extends AbstractTemplatesTestSuite {
      * @throws Exception
      *             if something went wrong
      */
-    public TemplateImportTests(String testFolder) throws Exception {
+    public TemplateExtendTests(String testFolder) throws Exception {
         super(testFolder);
     }
 
@@ -41,7 +41,7 @@ public class TemplateImportTests extends AbstractTemplatesTestSuite {
      */
     @Parameters(name = "{0}")
     public static Collection<Object[]> retrieveTestFolders() {
-        return retrieveTestFolders("resources/template-import");
+        return retrieveTestFolders("resources/template-extend");
     }
 
 }

@@ -1,0 +1,19 @@
+
+=== PROPERTIES ===
+version: 5.0.0
+metamodels: 
+imports: 
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .someCustomService(self)]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template public someCustomService (pkg : EPackage)
+  OVERRIDEN: 
+  [query: .aqlFeatureAccess(pkg, 'name')]

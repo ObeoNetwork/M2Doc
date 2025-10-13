@@ -35,6 +35,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameLookupEngine;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.services.configurator.IServicesConfigurator;
@@ -781,12 +782,29 @@ public final class M2DocUtils {
         monitor.beginTask("Generating " + m2docEnv.getDestinationURI().lastSegment(), TOTAL_GENERATE_MONITOR_WORK);
         monitor.subTask("Initializing desination document");
 
+        // prepare the lookup engine context and find the main template
         final IQualifiedNameQueryEnvironment queryEnvironment = m2docEnv.getResolver().getLookupEngine()
                 .getQueryEnvironment();
-        queryEnvironment.getLookupEngine().pushImportsContext(documentTemplate.getQualifiedName(),
-                documentTemplate.getQualifiedName());
+        final IQualifiedNameLookupEngine lookupEngine = queryEnvironment.getLookupEngine();
+        lookupEngine.pushImportsContext(documentTemplate.getQualifiedName(), documentTemplate.getQualifiedName());
+        String currentExtendQualifiedName = lookupEngine.getExtend(documentTemplate.getQualifiedName());
+        DocumentTemplate mainDocument = documentTemplate;
+        final List<String> extendQualifiedNamesToPop = new ArrayList<>();
+        while (currentExtendQualifiedName != null) {
+            Object extended = m2docEnv.getResolver().resolve(currentExtendQualifiedName);
+            if (extended instanceof DocumentTemplate) {
+                mainDocument = (DocumentTemplate) extended;
+                lookupEngine.pushContext(currentExtendQualifiedName);
+                extendQualifiedNamesToPop.add(0, currentExtendQualifiedName);
+
+                currentExtendQualifiedName = lookupEngine.getExtend(currentExtendQualifiedName);
+            } else {
+                currentExtendQualifiedName = null;
+            }
+        }
+
         final URIConverter uriConverter = m2docEnv.getResourceSetForModels().getURIConverter();
-        try (InputStream is = uriConverter.createInputStream(documentTemplate.eResource().getURI());
+        try (InputStream is = uriConverter.createInputStream(mainDocument.eResource().getURI());
                 OPCPackage oPackage = OPCPackage.open(is);
                 XWPFDocument destinationDocument = new XWPFDocument(oPackage);) {
 
@@ -802,7 +820,7 @@ public final class M2DocUtils {
 
             nextSubTask(monitor, TEMPLATE_SERVICES_MONITOR_WORK, "Generating");
 
-            final GenerationResult result = evaluator.generate(documentTemplate, variables, destinationDocument);
+            final GenerationResult result = evaluator.generate(mainDocument, variables, destinationDocument);
 
             nextSubTask(monitor, 0, "Saving lost files");
             // monitor.subTask("Saving lost files");
@@ -833,7 +851,10 @@ public final class M2DocUtils {
             throw new DocumentGenerationException("Input document seems to have an invalid format.", e);
         } finally {
             monitor.done();
-            queryEnvironment.getLookupEngine().popContext(documentTemplate.getQualifiedName());
+            for (String extendQualifiedName : extendQualifiedNamesToPop) {
+                lookupEngine.popContext(extendQualifiedName);
+            }
+            lookupEngine.popContext(documentTemplate.getQualifiedName());
         }
     }
 

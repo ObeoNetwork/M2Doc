@@ -1,0 +1,15 @@
+
+=== PROPERTIES ===
+version: 5.0.0
+metamodels: 
+imports: 
+=== HEADER ===
+
+=== BODY ===
+
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template public myTemplate (name : java.lang.String)
+  [query: .myTemplate(.add(name, '_override.gif'))]

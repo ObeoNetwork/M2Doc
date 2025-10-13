@@ -11,10 +11,12 @@
  *******************************************************************************/
 package org.obeonetwork.m2doc.generator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -25,12 +27,12 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
-import org.eclipse.acceleo.query.parser.AstValidator;
+import org.eclipse.acceleo.query.parser.namespace.QualifiedNameAstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.impl.namespace.QualifiedNameValidationServices;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -108,9 +110,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     private final Stack<Map<String, Set<IType>>> stack = new Stack<>();
 
     /**
-     * AQL {@link AstValidator}.
+     * AQL {@link QualifiedNameAstValidator}.
      */
-    private AstValidator aqlValidator;
+    private QualifiedNameAstValidator aqlValidator;
 
     /**
      * The {@link Monitor}.
@@ -118,9 +120,9 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
     private Monitor progressMonitor;
 
     /**
-     * The {@link IReadOnlyQueryEnvironment}.
+     * The {@link IQualifiedNameQueryEnvironment}.
      */
-    private IReadOnlyQueryEnvironment queryEnvironment;
+    private IQualifiedNameQueryEnvironment queryEnvironment;
 
     /**
      * Validates the given {@link DocumentTemplate} against the given {@link IQueryEnvironment} and variables types.
@@ -128,12 +130,12 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param queryEnv
-     *            the {@link IQueryEnvironment}
+     *            the {@link IQualifiedNameQueryEnvironment}
      * @param monitor
      *            the {@link Monitor}
      * @return the {@link ValidationMessageLevel}
      */
-    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnv,
+    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IQualifiedNameQueryEnvironment queryEnv,
             Monitor monitor) {
         return validate(documentTemplate, queryEnv, false, monitor);
     }
@@ -144,7 +146,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      * @param documentTemplate
      *            the {@link DocumentTemplate}
      * @param queryEnv
-     *            the {@link IQueryEnvironment}
+     *            the {@link IQualifiedNameQueryEnvironment}
      * @param ignoreVersionCheck
      *            ignore the {@link M2DocUtils#VERSION} check
      * @param monitor
@@ -152,7 +154,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
      * @return the {@link ValidationMessageLevel}
      */
     @SuppressWarnings("resource")
-    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IReadOnlyQueryEnvironment queryEnv,
+    public ValidationMessageLevel validate(DocumentTemplate documentTemplate, IQualifiedNameQueryEnvironment queryEnv,
             boolean ignoreVersionCheck, Monitor monitor) {
 
         progressMonitor = monitor;
@@ -160,7 +162,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         progressMonitor.subTask("Initialize engine");
 
         this.queryEnvironment = queryEnv;
-        aqlValidator = new AstValidator(new ValidationServices(queryEnvironment));
+        aqlValidator = new QualifiedNameAstValidator(new QualifiedNameValidationServices(queryEnvironment));
         final XWPFDocument document = documentTemplate.getDocument();
         final TemplateCustomProperties templateProperties = new TemplateCustomProperties(document);
         final XWPFRun run = M2DocUtils.getOrCreateFirstRun(document);
@@ -248,6 +250,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
         final ValidationMessageLevel parsingLevel = getHighestMessageLevel(template);
 
         final Map<String, Set<IType>> parameters = new HashMap<>();
+        final List<Set<IType>> parameterTypes = new ArrayList<>(template.getParameters().size());
         ValidationMessageLevel parameterLevel = ValidationMessageLevel.OK;
         for (Parameter parameter : template.getParameters()) {
             final IValidationResult validationResult = aqlValidator.validate(Collections.emptyMap(),
@@ -262,7 +265,21 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
             Set<IType> possibleTypes = aqlValidator.getDeclarationTypes(queryEnvironment,
                     validationResult.getPossibleTypes(parameter.getType().getAst()));
             parameters.put(parameter.getName(), possibleTypes);
+            parameterTypes.add(aqlValidator.getDeclarationTypes(queryEnvironment, possibleTypes));
         }
+
+        final Set<IType> returnTypes = Collections.singleton(new ClassType(queryEnvironment, GenerationResult.class));
+        final String overrideMessage = aqlValidator.validateOverrideReturnType(template.getName(), returnTypes,
+                parameterTypes);
+        final ValidationMessageLevel overrideLevel;
+        if (overrideMessage != null) {
+            final XWPFRun run = template.getRuns().get(template.getRuns().size() - 1);
+            overrideLevel = ValidationMessageLevel.ERROR;
+            template.getValidationMessages().add(new TemplateValidationMessage(overrideLevel, overrideMessage, run));
+        } else {
+            overrideLevel = ValidationMessageLevel.OK;
+        }
+
         stack.push(parameters);
         final ValidationMessageLevel bodyLevel;
         try {
@@ -271,7 +288,7 @@ public class M2DocValidator extends TemplateSwitch<ValidationMessageLevel> {
             stack.pop();
         }
 
-        return ValidationMessageLevel.updateLevel(parsingLevel, bodyLevel, parameterLevel);
+        return ValidationMessageLevel.updateLevel(parsingLevel, parameterLevel, overrideLevel, bodyLevel);
     }
 
     @Override

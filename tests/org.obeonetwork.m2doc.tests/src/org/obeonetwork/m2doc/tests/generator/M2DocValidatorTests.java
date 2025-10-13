@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2023 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -18,12 +18,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
+import org.eclipse.acceleo.query.runtime.impl.namespace.ClassLoaderQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
@@ -36,6 +39,7 @@ import org.obeonetwork.m2doc.template.Row;
 import org.obeonetwork.m2doc.template.Table;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.tests.M2DocTestUtils;
+import org.obeonetwork.m2doc.util.M2DocUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.obeonetwork.m2doc.tests.M2DocTestUtils.assertTemplateValidationMessage;
@@ -48,8 +52,8 @@ import static org.obeonetwork.m2doc.tests.M2DocTestUtils.assertTemplateValidatio
 public class M2DocValidatorTests {
 
     public void conditionalInferedTypeInElse() throws IOException {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
+        IQualifiedNameQueryEnvironment queryEnvironment = Query.newQualifiedNameEnvironment(null);
+        final IQueryBuilderEngine engine = QueryParsing.newBuilder();
         final Conditional conditional = TemplatePackage.eINSTANCE.getTemplateFactory().createConditional();
         conditional.setCondition(engine.build("self.oclIsKindOf(ecore::EClassifier)"));
         final Block thenCompound = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();
@@ -86,8 +90,10 @@ public class M2DocValidatorTests {
 
     @Test
     public void tableRowCellTemplate() {
-        IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-        final IQueryBuilderEngine engine = QueryParsing.newBuilder(queryEnvironment);
+        final IQualifiedNameResolver resolver = new ClassLoaderQualifiedNameResolver(getClass().getClassLoader(),
+                EPackage.Registry.INSTANCE, M2DocUtils.QUALIFIER_SEPARATOR);
+        IQualifiedNameQueryEnvironment queryEnvironment = Query.newQualifiedNameEnvironment(resolver);
+        final IQueryBuilderEngine engine = QueryParsing.newBuilder();
         final org.obeonetwork.m2doc.template.Query query = TemplatePackage.eINSTANCE.getTemplateFactory().createQuery();
         query.setQuery(engine.build("self"));
         final Block body = TemplatePackage.eINSTANCE.getTemplateFactory().createBlock();

@@ -1,0 +1,16 @@
+
+=== PROPERTIES ===
+version: 5.0.0
+metamodels: 
+imports: 
+=== HEADER ===
+
+=== BODY ===
+
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template public myTemplate (a : java.lang.Integer)
+  OVERRIDE : 
+  [query: .add(a, a)]

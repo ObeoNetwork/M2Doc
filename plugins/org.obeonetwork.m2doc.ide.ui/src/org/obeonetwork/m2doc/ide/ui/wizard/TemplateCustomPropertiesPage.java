@@ -41,6 +41,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -48,9 +50,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
 import org.obeonetwork.m2doc.services.TokenRegistry;
 import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
@@ -144,11 +148,17 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             final TemplateCustomProperties customProperties) {
         final TabItem servicesTabItem = new TabItem(tabFolder, tabFolder.getStyle());
         servicesTabItem.setText("Services (expert)");
-        final Composite servicesContainer = new Composite(tabFolder, tabFolder.getStyle());
-        servicesTabItem.setControl(servicesContainer);
-        servicesContainer.setLayout(new GridLayout(2, false));
 
-        final TableViewer servicesTable = new TableViewer(servicesContainer, servicesContainer.getStyle() | SWT.MULTI);
+        final Composite importContainer = new Composite(tabFolder, tabFolder.getStyle());
+        importContainer.setLayout(new GridLayout(2, false));
+        importContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+        createExtendContainer(tabFolder, customProperties, importContainer);
+
+        servicesTabItem.setControl(importContainer);
+        importContainer.setLayout(new GridLayout(2, false));
+
+        final TableViewer servicesTable = new TableViewer(importContainer, importContainer.getStyle() | SWT.MULTI);
         Table table = servicesTable.getTable();
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
         servicesTable.getTable().setHeaderVisible(true);
@@ -190,7 +200,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
         servicesTable.setInput(customProperties);
 
-        final Composite servicesButtonComposite = new Composite(servicesContainer, tabFolder.getStyle());
+        final Composite servicesButtonComposite = new Composite(importContainer, tabFolder.getStyle());
         servicesButtonComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
         servicesButtonComposite.setLayout(new GridLayout(1, false));
 
@@ -206,7 +216,7 @@ public class TemplateCustomPropertiesPage extends WizardPage {
 
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
-                // nothing to do here
+                openImportSelectionDialog(tokenViewer, servicesTable, customProperties);
             }
         });
 
@@ -239,6 +249,64 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             }
         });
         removeButton.setEnabled(false);
+    }
+
+    /**
+     * Creates the extend container.
+     * 
+     * @param tabFolder
+     *            the containing {@link TabFolder}
+     * @param customProperties
+     *            the {@link TemplateCustomProperties}
+     * @param importContainer
+     *            the import container {@link Composite}
+     */
+    private void createExtendContainer(TabFolder tabFolder, final TemplateCustomProperties customProperties,
+            final Composite importContainer) {
+        final Composite extendContainer = new Composite(importContainer, tabFolder.getStyle());
+        extendContainer.setLayout(new GridLayout(2, false));
+        extendContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+        final Label extendLabel = new Label(extendContainer, tabFolder.getStyle());
+        extendLabel.setText("Extend: ");
+
+        final Text extendText = new Text(extendContainer, tabFolder.getStyle());
+        extendText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        if (customProperties.getExtend() != null) {
+            extendText.setText(customProperties.getExtend());
+        }
+        extendText.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final String newExtend = extendText.getText();
+                if (newExtend != null && newExtend.isBlank()) {
+                    customProperties.setExtend(newExtend);
+                } else {
+                    customProperties.setExtend(null);
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // nothing to do here
+            }
+        });
+
+        final Button selectExtendButton = new Button(importContainer, tabFolder.getStyle());
+        selectExtendButton.setText("Select");
+        selectExtendButton.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                openExtendSelectionDialog(extendText, customProperties);
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                openExtendSelectionDialog(extendText, customProperties);
+            }
+        });
     }
 
     /**
@@ -507,4 +575,33 @@ public class TemplateCustomPropertiesPage extends WizardPage {
             }
         }
     }
+
+    /**
+     * Opens the extend selection dialog.
+     * 
+     * @param extendText
+     *            the extend {@link Text}
+     * @param customProperties
+     *            the {@link TemplateCustomProperties}
+     */
+    private void openExtendSelectionDialog(Text extendText, final TemplateCustomProperties customProperties) {
+        final ClassLoader classLoader = this.getClass().getClassLoader();
+        final EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
+        final IQualifiedNameResolver resolver = QueryPlugin.getPlugin().createResolver(templateURI, classLoader,
+                ePackageRegistry, M2DocUtils.QUALIFIER_SEPARATOR, false);
+
+        resolver.addLoader(new M2DocDocumentTemplateLoader(null, null, M2DocUtils.QUALIFIER_SEPARATOR));
+        resolver.addLoader(new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false));
+
+        QualifiedNameSelectionDialog dialog = new QualifiedNameSelectionDialog(getShell(), "Select extend.", null,
+                resolver);
+
+        final int dialogResult = dialog.open();
+        if ((dialogResult == IDialogConstants.OK_ID) && dialog.getSelectedQualifiedName() != null) {
+            extendText.setText(dialog.getSelectedQualifiedName());
+            customProperties.setExtend(dialog.getSelectedQualifiedName());
+            templateVariablesProperties.validatePage(customProperties);
+        }
+    }
+
 }

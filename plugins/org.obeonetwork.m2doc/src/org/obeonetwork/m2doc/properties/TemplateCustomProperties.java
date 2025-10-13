@@ -179,13 +179,13 @@ public class TemplateCustomProperties {
             }
             propertyName = propertyName.trim();
 
-            if (M2DOC_VERSION_PROPERTY.equals(propertyName)) {
-                m2DocVersion = property.getLpwstr();
+            if (M2DOC_VERSION_PROPERTY.equals(propertyName) && property.getLpwstr() != null) {
+                m2DocVersion = property.getLpwstr().trim();
                 continue;
             }
 
-            if (EXTEND_PROPERTY.equals(propertyName)) {
-                extend = property.getLpwstr();
+            if (EXTEND_PROPERTY.equals(propertyName) && property.getLpwstr() != null) {
+                extend = property.getLpwstr().trim();
                 continue;
             }
 
@@ -275,7 +275,7 @@ public class TemplateCustomProperties {
         }
 
         if (!extendAdded && extend != null) {
-            props.addProperty(EXTEND_PROPERTY, extendAdded);
+            props.addProperty(EXTEND_PROPERTY, extend);
         }
 
         for (int i = indexToDelete.size() - 1; i > -1; i--) {
@@ -305,7 +305,7 @@ public class TemplateCustomProperties {
         final String res;
 
         if (propertyName.startsWith(URI_PROPERTY_PREFIX) && propertyName.length() > URI_PROPERTY_PREFIX_LENGTH) {
-            res = propertyName.substring(URI_PROPERTY_PREFIX_LENGTH);
+            res = propertyName.substring(URI_PROPERTY_PREFIX_LENGTH).trim();
         } else {
             res = null;
         }
@@ -325,7 +325,7 @@ public class TemplateCustomProperties {
         final String res;
 
         if (propertyName.startsWith(IMPORT_PROPERTY_PREFIX) && propertyName.length() > IMPORT_PROPERTY_PREFIX_LENGTH) {
-            res = propertyName.substring(IMPORT_PROPERTY_PREFIX_LENGTH);
+            res = propertyName.substring(IMPORT_PROPERTY_PREFIX_LENGTH).trim();
         } else {
             res = null;
         }
@@ -345,7 +345,7 @@ public class TemplateCustomProperties {
         final String res;
 
         if (propertyName.startsWith(VAR_PROPERTY_PREFIX) && propertyName.length() > VAR_PROPERTY_PREFIX_LENGTH) {
-            res = propertyName.substring(VAR_PROPERTY_PREFIX_LENGTH);
+            res = propertyName.substring(VAR_PROPERTY_PREFIX_LENGTH).trim();
         } else {
             res = null;
         }
@@ -387,6 +387,16 @@ public class TemplateCustomProperties {
      */
     public String getExtend() {
         return extend;
+    }
+
+    /**
+     * Sets extend qualified name.
+     * 
+     * @param extend
+     *            the new extend qualified name
+     */
+    public void setExtend(String extend) {
+        this.extend = extend;
     }
 
     /**
